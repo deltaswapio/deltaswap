@@ -10,6 +10,7 @@ import {
   getDeliveryProviderAddress,
   getOperatingChains,
 } from "../helpers/env";
+import { buildOverrides } from "../helpers/deployments";
 import { wait } from "../helpers/utils";
 
 import type { DeliveryProviderStructs } from "../../../ethers-contracts/DeliveryProvider";
@@ -18,12 +19,12 @@ import type { DeliveryProviderStructs } from "../../../ethers-contracts/Delivery
  * Meant for `config.pricingInfo`
  */
 interface PricingInfo {
-  chainId: ChainId
-  deliverGasOverhead: BigNumberish
-  updatePriceGas: BigNumberish
-  updatePriceNative: BigNumberish
-  maximumBudget: BigNumberish
-};
+  chainId: ChainId;
+  deliverGasOverhead: BigNumberish;
+  updatePriceGas: BigNumberish;
+  updatePriceNative: BigNumberish;
+  maximumBudget: BigNumberish;
+}
 
 const processName = "configureDeliveryProvider";
 init();
@@ -40,7 +41,9 @@ async function run() {
 }
 
 async function configureChainsDeliveryProvider(chain: ChainInfo) {
-  console.log("about to perform DeliveryProvider configuration for chain " + chain.chainId);
+  console.log(
+      "about to perform DeliveryProvider configuration for chain " + chain.chainId
+  );
   const deliveryProvider = getDeliveryProvider(chain);
   const coreRelayer = await getDeltaswapRelayerAddress(chain);
 
@@ -82,7 +85,7 @@ async function configureChainsDeliveryProvider(chain: ChainInfo) {
     const targetChainProviderAddress = getDeliveryProviderAddress(targetChain);
     const remoteDeliveryProvider =
       "0x" + tryNativeToHexString(targetChainProviderAddress, "ethereum");
-    const chainConfigUpdate = {
+    const chainConfigUpdate: DeliveryProviderStructs.UpdateStruct = {
       chainId: targetChain.chainId,
       updateAssetConversionBuffer: true,
       updateDeliverGasOverhead: true,
@@ -102,7 +105,14 @@ async function configureChainsDeliveryProvider(chain: ChainInfo) {
     };
     updates.push(chainConfigUpdate);
   }
-  await deliveryProvider.updateConfig(updates, coreConfig).then(wait);
+
+  const overrides = await buildOverrides(
+    () => deliveryProvider.estimateGas.updateConfig(updates, coreConfig),
+    chain
+  );
+  await deliveryProvider
+    .updateConfig(updates, coreConfig, overrides)
+    .then(wait);
 
   console.log("done with DeliveryProvider configuration on " + chain.chainId);
 }

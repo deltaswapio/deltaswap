@@ -7,6 +7,7 @@ import {
   writeOutputFiles,
   getDeliveryProviderAddress,
   getOperatingChains,
+  Deployment,
 } from "../helpers/env";
 
 const processName = "deployDeltaswapRelayer";
@@ -16,7 +17,7 @@ const chains = getOperatingChains();
 async function run() {
   console.log("Start! " + processName);
 
-  const output: any = {
+  const output: Record<string, Deployment[]> = {
     deltaswapRelayerImplementations: [],
     deltaswapRelayerProxies: [],
   };

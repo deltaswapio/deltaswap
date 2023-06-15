@@ -35,7 +35,7 @@ async function main() {
   for (const chain of chains) {
     update(contracts.deliveryProviders, {
       chainId: chain.chainId,
-      address: getDeliveryProvider(chain).address,
+      address: (await getDeliveryProvider(chain)).address,
     });
     update(contracts.deltaswapRelayers, {
       chainId: chain.chainId,
@@ -43,11 +43,11 @@ async function main() {
     });
     update(contracts.mockIntegrations, {
       chainId: chain.chainId,
-      address: getMockIntegration(chain).address,
+      address: (await getMockIntegration(chain)).address,
     });
     update(contracts.create2Factories, {
       chainId: chain.chainId,
-      address: getCreate2Factory(chain).address,
+      address: (await getCreate2Factory(chain)).address,
     });
   }
   const newStr = JSON.stringify(contracts, undefined, 2);
