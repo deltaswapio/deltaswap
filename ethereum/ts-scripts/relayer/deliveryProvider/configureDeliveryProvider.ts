@@ -35,8 +35,8 @@ const config = loadScriptConfig(processName);
 async function run() {
   console.log("Start! " + processName);
 
-  for (let i = 0; i < operatingChains.length; i++) {
-    await configureChainsDeliveryProvider(chains[i]);
+  for (const chain of operatingChains) {
+    await configureChainsDeliveryProvider(chain);
   }
 }
 
@@ -44,8 +44,7 @@ async function configureChainsDeliveryProvider(chain: ChainInfo) {
   console.log(
       "about to perform DeliveryProvider configuration for chain " + chain.chainId
   );
-  const deliveryProvider = getDeliveryProvider(chain);
-  const coreRelayer = await getDeltaswapRelayerAddress(chain);
+  const deliveryProvider = await getDeliveryProvider(chain);
 
   const thisChainsConfigInfo = config.addresses.find(
     (x: any) => x.chainId == chain.chainId
@@ -63,10 +62,10 @@ async function configureChainsDeliveryProvider(chain: ChainInfo) {
   }
 
   const coreConfig: DeliveryProviderStructs.CoreConfigStruct = {
-    updateDeltaswapRelayer: true,
+    updateDeltaswapRelayer: false,
     updateRewardAddress: true,
     updateSupportedKeyTypes: true,
-    coreRelayer,
+    coreRelayer: "0x0000000000000000000000000000000000000000",
     rewardAddress: thisChainsConfigInfo.rewardAddress,
     supportedKeyTypesBitmap: 1 << 1 // VAA_KEY_TYPE
   };
