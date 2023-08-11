@@ -48,7 +48,7 @@ async function run() {
 
     const overrides = await buildOverrides(
       () => mockIntegration.estimateGas.registerEmitters(emitters),
-      chain
+      chain,
     );
     await mockIntegration.registerEmitters(emitters, overrides).then(wait);
   }

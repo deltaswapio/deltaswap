@@ -25,12 +25,12 @@ async function run() {
   for (const chain of chains) {
     console.log(`Deploying for chain ${chain.chainId}...`);
     const coreRelayerImplementation = await deployDeltaswapRelayerImplementation(
-      chain
+      chain,
     );
     const coreRelayerProxy = await deployDeltaswapRelayerProxy(
       chain,
       coreRelayerImplementation.address,
-      getDeliveryProviderAddress(chain)
+      getDeliveryProviderAddress(chain),
     );
 
     output.deltaswapRelayerImplementations.push(coreRelayerImplementation);

@@ -18,7 +18,7 @@ export const setupContractSalt = Buffer.from("0xSetup");
 export const proxyContractSalt = Buffer.from("0xGenericRelayer");
 
 export async function deployDeliveryProviderImplementation(
-  chain: ChainInfo
+  chain: ChainInfo,
 ): Promise<Deployment> {
   console.log("deployDeliveryProviderImplementation " + chain.chainId);
   const signer = await getSigner(chain);
@@ -32,7 +32,7 @@ export async function deployDeliveryProviderImplementation(
 }
 
 export async function deployDeliveryProviderSetup(
-  chain: ChainInfo
+  chain: ChainInfo,
 ): Promise<Deployment> {
   console.log("deployDeliveryProviderSetup " + chain.chainId);
 
@@ -52,7 +52,7 @@ export async function deployDeliveryProviderSetup(
 export async function deployDeliveryProviderProxy(
   chain: ChainInfo,
   deliveryProviderSetupAddress: string,
-  deliveryProviderImplementationAddress: string
+  deliveryProviderImplementationAddress: string,
 ): Promise<Deployment> {
   console.log("deployDeliveryProviderProxy " + chain.chainId);
 
@@ -72,7 +72,7 @@ export async function deployDeliveryProviderProxy(
   const contract = await factory.deploy(
     deliveryProviderSetupAddress,
     encodedData,
-    overrides
+    overrides,
   );
   const receipt = await contract.deployTransaction.wait();
   console.log("Successfully deployed contract at " + receipt.contractAddress);
@@ -80,7 +80,7 @@ export async function deployDeliveryProviderProxy(
 }
 
 export async function deployMockIntegration(
-  chain: ChainInfo
+  chain: ChainInfo,
 ): Promise<Deployment> {
   console.log("deployMockIntegration " + chain.chainId);
 
@@ -95,7 +95,7 @@ export async function deployMockIntegration(
   const contract = await factory.deploy(
     chain.deltaswapAddress,
     deltaswapRelayerAddress,
-    overrides
+    overrides,
   );
   const receipt = await contract.deployTransaction.wait();
   console.log("Successfully deployed contract at " + receipt.contractAddress);
@@ -108,7 +108,7 @@ export async function deployMockIntegration(
  * same (address, nonce) tx pair creates the factory across all target chains.
  */
 export async function deployCreate2Factory(
-  chain: ChainInfo
+  chain: ChainInfo,
 ): Promise<Deployment> {
   console.log("deployCreate2Factory " + chain.chainId);
 
@@ -148,7 +148,7 @@ export async function deployDeltaswapRelayerImplementation(
 export async function deployDeltaswapRelayerProxy(
   chain: ChainInfo,
   coreRelayerImplementationAddress: string,
-  defaultDeliveryProvider: string
+  defaultDeliveryProvider: string,
 ): Promise<Deployment> {
   console.log("deployDeltaswapRelayerProxy " + chain.chainId);
 
@@ -156,23 +156,23 @@ export async function deployDeltaswapRelayerProxy(
 
   const initData = DeltaswapRelayer__factory.createInterface().encodeFunctionData(
     "initialize",
-    [ethers.utils.getAddress(defaultDeliveryProvider)]
+    [ethers.utils.getAddress(defaultDeliveryProvider)],
   );
   const overrides = await buildOverrides(
     () =>
       create2Factory.estimateGas.create2Proxy(
         proxyContractSalt,
         coreRelayerImplementationAddress,
-        initData
+        initData,
       ),
-    chain
+    chain,
   );
   const rx = await create2Factory
     .create2Proxy(
       proxyContractSalt,
       coreRelayerImplementationAddress,
       initData,
-      overrides
+      overrides,
     )
     .then(wait);
 
@@ -188,7 +188,7 @@ export async function deployDeltaswapRelayerProxy(
   const signer = await getSigner(chain);
   const computedAddr = await create2Factory.computeProxyAddress(
     await signer.getAddress(),
-    proxyContractSalt
+    proxyContractSalt,
   );
   if (proxyAddress! !== computedAddr) {
     console.error("Computed address does not match desired");
@@ -202,7 +202,7 @@ const deployed = (x: ethers.Contract) => x.deployed();
 
 const estimateGasDeploy = async (
   factory: ethers.ContractFactory,
-  args: unknown[]
+  args: unknown[],
 ): Promise<ethers.BigNumber> => {
   const deployTxArgs = factory.getDeployTransaction(...args);
   return factory.signer.estimateGas(deployTxArgs);
@@ -211,13 +211,13 @@ const estimateGasDeploy = async (
 const buildOverridesDeploy = async (
   factory: ethers.ContractFactory,
   chain: ChainInfo,
-  args: unknown[]
+  args: unknown[],
 ): Promise<ethers.Overrides> => {
   return buildOverrides(() => estimateGasDeploy(factory, args), chain);
 };
 
 async function overshootEstimationGas(
-  estimate: () => Promise<ethers.BigNumber>
+  estimate: () => Promise<ethers.BigNumber>,
 ): Promise<ethers.BigNumber> {
   const gasEstimate = await estimate();
   // we multiply gas estimation by a factor 1.1 to avoid slightly skewed estimations from breaking transactions.
@@ -226,7 +226,7 @@ async function overshootEstimationGas(
 
 export async function buildOverrides(
   estimate: () => Promise<ethers.BigNumber>,
-  chain: ChainInfo
+  chain: ChainInfo,
 ): Promise<ethers.Overrides> {
   const overrides: ethers.Overrides = {
     gasLimit: await overshootEstimationGas(estimate),

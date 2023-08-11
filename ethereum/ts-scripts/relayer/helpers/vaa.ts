@@ -18,7 +18,7 @@ const deltaswapRelayerModule =
 
 export function createDeltaswapRelayerUpgradeVAA(
   chain: ChainInfo,
-  newAddress: string
+  newAddress: string,
 ) {
   /*
       bytes32 module;
@@ -34,7 +34,7 @@ export function createDeltaswapRelayerUpgradeVAA(
       2,
       chain.chainId,
       "0x" + tryNativeToHexString(newAddress, "ethereum"),
-    ]
+    ],
   );
 
   return encodeAndSignGovernancePayload(payload);
@@ -56,14 +56,14 @@ export function createDefaultDeliveryProviderVAA(chain: ChainInfo) {
       chain.chainId,
       "0x" +
         tryNativeToHexString(getDeliveryProviderAddress(chain), "ethereum"),
-    ]
+    ],
   );
 
   return encodeAndSignGovernancePayload(payload);
 }
 
 export async function createRegisterChainVAA(
-  chain: ChainInfo
+  chain: ChainInfo,
 ): Promise<string> {
   const coreRelayerAddress = await getDeltaswapRelayerAddress(chain);
   console.log(
@@ -84,7 +84,7 @@ export async function createRegisterChainVAA(
       0,
       chain.chainId,
       "0x" + tryNativeToHexString(coreRelayerAddress, "ethereum"),
-    ]
+    ],
   );
 
   return encodeAndSignGovernancePayload(payload);
@@ -106,7 +106,7 @@ export function encodeAndSignGovernancePayload(payload: string): string {
       sequence,
       consistencyLevel,
       payload,
-    ]
+    ],
   );
 
   const hash = doubleKeccak256(encodedVAABody);
