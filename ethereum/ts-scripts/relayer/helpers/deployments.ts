@@ -134,11 +134,13 @@ export async function deployDeltaswapRelayerImplementation(
   const overrides = await buildOverridesDeploy(factory, chain, [
     chain.deltaswapAddress,
   ]);
-  const result = await new DeltaswapRelayer__factory(signer)
+  const result = await factory
     .deploy(chain.deltaswapAddress, overrides)
     .then(deployed);
 
-  console.log("Successfully deployed contract at " + result.address);
+  console.log(
+    `Successfully deployed WormholeRelayer contract at ${result.address}`,
+  );
   return { address: result.address, chainId: chain.chainId };
 }
 
@@ -194,7 +196,7 @@ export async function deployDeltaswapRelayerProxy(
     console.error("Computed address does not match desired");
   }
 
-  console.log("Successfully deployed contract at " + computedAddr);
+  console.log(`Successfully deployed contract WormholeRelayerProxy at ${computedAddr}`);
   return { address: computedAddr, chainId: chain.chainId };
 }
 

@@ -1,9 +1,7 @@
 import {
   ChainInfo,
-  getDeltaswapRelayer,
   getOperatingChains,
   init,
-  loadChains,
 } from "../helpers/env";
 import { sendMessage } from "./messageUtils";
 

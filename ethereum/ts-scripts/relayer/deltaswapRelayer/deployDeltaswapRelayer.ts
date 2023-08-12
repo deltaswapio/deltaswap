@@ -6,23 +6,31 @@ import {
   init,
   writeOutputFiles,
   getDeliveryProviderAddress,
-  getOperatingChains,
   Deployment,
+  getOperationDescriptor,
+  loadLastRun,
 } from "../helpers/env";
 
 const processName = "deployDeltaswapRelayer";
 init();
-const chains = getOperatingChains();
+const operation = getOperationDescriptor();
+
+interface DeltaswapRelayerDeployment {
+  deltaswapRelayerImplementations: Deployment[];
+  deltaswapRelayerProxies: Deployment[];
+}
 
 async function run() {
   console.log("Start! " + processName);
 
-  const output: Record<string, Deployment[]> = {
-    deltaswapRelayerImplementations: [],
-    deltaswapRelayerProxies: [],
+  const lastRun: DeltaswapRelayerDeployment | undefined =
+    loadLastRun(processName);
+  const deployments: DeltaswapRelayerDeployment = {
+      deltaswapRelayerImplementations: lastRun?.deltaswapRelayerImplementations?.filter(isSupportedChain) || [],
+      deltaswapRelayerProxies: lastRun?.deltaswapRelayerProxies?.filter(isSupportedChain) || [],
   };
 
-  for (const chain of chains) {
+  for (const chain of operation.operatingChains) {
     console.log(`Deploying for chain ${chain.chainId}...`);
     const coreRelayerImplementation = await deployDeltaswapRelayerImplementation(
       chain,
@@ -33,12 +41,21 @@ async function run() {
       getDeliveryProviderAddress(chain),
     );
 
-    output.deltaswapRelayerImplementations.push(coreRelayerImplementation);
-    output.deltaswapRelayerProxies.push(coreRelayerProxy);
+    deployments.deltaswapRelayerImplementations.push(
+      coreRelayerImplementation,
+    );
+    deployments.deltaswapRelayerProxies.push(coreRelayerProxy);
     console.log("");
   }
 
-  writeOutputFiles(output, processName);
+  writeOutputFiles(deployments, processName);
+}
+
+function isSupportedChain(deploy: Deployment): boolean {
+  const item = operation.supportedChains.find((chain) => {
+    return deploy.chainId === chain.chainId;
+  });
+  return item !== undefined;
 }
 
 run().then(() => console.log("Done! " + processName));

@@ -4,7 +4,8 @@ import {
   writeOutputFiles,
   getMockIntegration,
   Deployment,
-  getOperatingChains,
+  loadLastRun,
+  getOperationDescriptor,
   getMockIntegrationAddress,
 } from "../helpers/env";
 import { deployMockIntegration, buildOverrides} from "../helpers/deployments";
@@ -17,22 +18,29 @@ import { wait } from "../helpers/utils";
 const processName = "deployMockIntegration";
 init();
 const chains = loadChains();
-const operatingChains = getOperatingChains();
+const operation = getOperationDescriptor();
+
+interface MockIntegrationDeployment {
+  mockIntegrations: Deployment[];
+}
 
 async function run() {
   console.log("Start!");
+
+  const lastRun: MockIntegrationDeployment | undefined =
+    loadLastRun(processName);
   const output = {
-    mockIntegrations: [] as Deployment[],
+    mockIntegrations: lastRun?.mockIntegrations?.filter(isSupportedChain) || [],
   };
 
-  for (const chain of operatingChains) {
+  for (const chain of operation.operatingChains) {
     const mockIntegration = await deployMockIntegration(chain);
     output.mockIntegrations.push(mockIntegration);
   }
 
   writeOutputFiles(output, processName);
 
-  for (const chain of operatingChains) {
+  for (const chain of operation.operatingChains) {
     console.log(`Registering emitters for chainId ${chain.chainId}`);
     // note: must use useLastRun = true
     const mockIntegration = await getMockIntegration(chain);
@@ -40,7 +48,7 @@ async function run() {
     const emitters: {
       chainId: BigNumberish;
       addr: BytesLike;
-    }[] = chains.map((c, j) => ({
+    }[] = chains.map((c) => ({
       chainId: c.chainId,
       addr:
         "0x" + tryNativeToHexString(getMockIntegrationAddress(c), "ethereum"),
@@ -52,6 +60,13 @@ async function run() {
     );
     await mockIntegration.registerEmitters(emitters, overrides).then(wait);
   }
+}
+
+function isSupportedChain(deploy: Deployment): boolean {
+  const item = operation.supportedChains.find((chain) => {
+    return deploy.chainId === chain.chainId;
+  });
+  return item !== undefined;
 }
 
 run().then(() => console.log("Done!"));
