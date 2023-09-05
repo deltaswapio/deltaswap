@@ -1,82 +1,123 @@
+import { tryNativeToHexString } from "@deltaswapio/deltaswap-sdk";
 import {
   init,
   loadChains,
   ChainInfo,
-  getDeltaswapRelayer,
+  getDeltaswapRelayer, 
+    getDeltaswapRelayerAddress,
   getOperatingChains,
 } from "../helpers/env";
+import { buildOverrides } from "../helpers/deployments";
 import { wait } from "../helpers/utils";
 import { createRegisterChainVAA } from "../helpers/vaa";
+import type { DeltaswapRelayer } from "../../../ethers-contracts";
 
 const processName = "registerChainsDeltaswapRelayerSelfSign";
 init();
-const operatingChains = getOperatingChains();
-const chains = loadChains();
+const operation = getOperationDescriptor();
+const allChains = loadChains();
+
+const zeroBytes32 =
+  "0x0000000000000000000000000000000000000000000000000000000000000000";
 
 async function run() {
   console.log("Start! " + processName);
 
-  for (const operatingChain of operatingChains) {
+  for (const operatingChain of operation.operatingChains) {
     await registerChainsDeltaswapRelayer(operatingChain);
     await registerOnExistingChainsDeltaswapRelayer(operatingChain);
   }
 }
 
-async function registerChainsDeltaswapRelayer(chain: ChainInfo) {
+async function registerChainsDeltaswapRelayer(operatingChain: ChainInfo) {
   console.log(
     "Registering all the deltaswap relayers onto Deltaswap Relayer " +
-      chain.chainId
+      operatingChain.chainId,
   );
 
-  const coreRelayer = await getDeltaswapRelayer(chain);
-  for (const targetChain of chains) {
-    try {
-      await coreRelayer
-        .registerDeltaswapRelayerContract(createRegisterChainVAA(targetChain))
-        .then(wait);
-    } catch (e) {
-      console.log(
-        `Error in registering chain ${targetChain.chainId} onto ${chain.chainId}`
-      );
-    }
+  const deltaswapRelayer = await getDeltaswapRelayer(operatingChain);
+  for (const targetChain of allChains) {
+    await registerDeltaswapRelayer(deltaswapRelayer, operatingChain, targetChain);
   }
 
   console.log(
-    "Did all contract registrations for the core relayer on " + chain.chainId
+    "Did all contract registrations for the core relayer on " +
+      operatingChain.chainId,
   );
 }
 
-async function registerOnExistingChainsDeltaswapRelayer(chain: ChainInfo) {
+async function registerOnExistingChainsDeltaswapRelayer(targetChain: ChainInfo) {
   console.log(
     "Registering Deltaswap Relayer " +
-      chain.chainId +
-      " onto all the deltaswap relayers"
+      targetChain.chainId +
+      " onto all the deltaswap relayers",
   );
-  const operatingChainIds = operatingChains.map((c) => c.chainId);
-  for (const targetChain of chains) {
-    if (operatingChainIds.find((x) => x === targetChain.chainId)) {
-      continue;
-    }
-    const coreRelayer = await getDeltaswapRelayer(targetChain);
-    try {
-      await coreRelayer
-        .registerDeltaswapRelayerContract(createRegisterChainVAA(chain))
-        .then(wait);
-    } catch (e) {
+  const tasks = await Promise.allSettled(
+    operation.supportedChains.map(async (operatingChain) => {
+      const coreRelayer = await getDeltaswapRelayer(operatingChain);
+
+      return registerDeltaswapRelayer(coreRelayer, operatingChain, targetChain);
+    }),
+  );
+  for (const task of tasks) {
+    if (task.status === "rejected") {
       console.log(
-        `Error in registering chain ${chain.chainId} onto ${targetChain.chainId}`
+        `Failed cross registration. ${task.reason?.stack || task.reason}`,
       );
-      if (targetChain.chainId === 5) {
-        console.log(e);
-      }
     }
   }
 
   console.log(
     "Did all contract registrations of the core relayer on " +
-      chain.chainId +
-      " onto the existing (non operating) chains"
+      targetChain.chainId +
+      " onto the existing (non operating) chains",
   );
+}
+
+async function registerDeltaswapRelayer(
+  deltaswapRelayer: DeltaswapRelayer,
+  operatingChain: ChainInfo,
+  targetChain: ChainInfo,
+) {
+  const registration =
+    await deltaswapRelayer.getRegisteredDeltaswapRelayerContract(
+      targetChain.chainId,
+    );
+  if (registration !== zeroBytes32) {
+    const registrationAddress = await getDeltaswapRelayerAddress(targetChain);
+    const expectedRegistration =
+      "0x" + tryNativeToHexString(registrationAddress, "ethereum");
+    if (registration !== expectedRegistration) {
+      throw new Error(`Found an unexpected registration for chain ${targetChain.chainId} on chain ${operatingChain.chainId}
+Expected: ${expectedRegistration}
+Actual: ${registration}`);
+    }
+
+    console.log(
+      `Chain ${targetChain.chainId} on chain ${operatingChain.chainId} is already registered`,
+    );
+    return;
+  }
+
+  const vaa = await createRegisterChainVAA(targetChain);
+
+  console.log(
+    `Registering chain ${targetChain.chainId} onto chain ${operatingChain.chainId}`,
+  );
+  try {
+    const overrides = await buildOverrides(
+      () => deltaswapRelayer.estimateGas.registerDeltaswapRelayerContract(vaa),
+      operatingChain,
+    );
+    await deltaswapRelayer
+      .registerDeltaswapRelayerContract(vaa, overrides)
+      .then(wait);
+  } catch (error) {
+    console.log(
+      `Error in registering chain ${targetChain.chainId} onto ${operatingChain.chainId}`,
+    );
+    console.log((error as any)?.stack || error);
+  }
 }
 
 run().then(() => console.log("Done! " + processName));
