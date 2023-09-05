@@ -41,7 +41,7 @@ async function readState(
   chain: ChainInfo
 ): Promise<DeltaswapRelayerContractState | null> {
   console.log(
-    "Gathering core relayer contract status for chain " + chain.chainId
+    "Gathering core relayer contract status for chain " + chain.chainId,
   );
 
   try {
