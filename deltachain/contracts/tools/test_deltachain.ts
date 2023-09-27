@@ -45,12 +45,12 @@ async function main() {
 
     /* Set up cosmos client & wallet */
 
-    const WORMCHAIN_ID = 3104
+    const WORMCHAIN_ID = 7077
 
-    let host = devnetConsts.chains[3104].tendermintUrlLocal
+    let host = devnetConsts.chains[7077].tendermintUrlLocal
     if (os.hostname().includes("deltachain-deploy")) {
         // running in tilt devnet
-        host = devnetConsts.chains[3104].tendermintUrlTilt
+        host = devnetConsts.chains[7077].tendermintUrlTilt
     }
     const denom = devnetConsts.chains[WORMCHAIN_ID].addresses.native.denom
     const mnemonic = devnetConsts.chains[WORMCHAIN_ID].accounts.deltachainNodeOfPhylax0.mnemonic

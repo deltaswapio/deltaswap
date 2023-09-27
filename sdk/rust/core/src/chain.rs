@@ -85,7 +85,7 @@ impl From<u16> for Chain {
             30 => Chain::Base,
             32 => Chain::Sei,
             33 => Chain::Rootstock,
-            3104 => Chain::Deltachain,
+            7077 => Chain::Deltachain,
             10002 => Chain::Sepolia,
             c => Chain::Unknown(c),
         }
@@ -127,7 +127,7 @@ impl From<Chain> for u16 {
             Chain::Base => 30,
             Chain::Sei => 32,
             Chain::Rootstock => 33,
-            Chain::Deltachain => 3104,
+            Chain::Deltachain => 7077,
             Chain::Sepolia => 10002,
             Chain::Unknown(c) => c,
         }

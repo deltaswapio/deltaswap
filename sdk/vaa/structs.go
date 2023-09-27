@@ -382,7 +382,7 @@ const (
 	// ChainIDSei is the ChainID of Sei
 	ChainIDSei ChainID = 32
 	//ChainIDDeltachain is the ChainID of Deltachain
-	ChainIDDeltachain ChainID = 3104
+	ChainIDDeltachain ChainID = 7077
 	// ChainIDSepolia is the ChainID of Sepolia
 	ChainIDSepolia ChainID = 10002
 

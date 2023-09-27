@@ -378,7 +378,7 @@ func CmdGeneratePhylaxSetUpdatea() *cobra.Command {
 			}
 
 			action := vaa.ActionPhylaxSetUpdate
-			chain := 3104
+			chain := 7077
 			module := [32]byte{}
 			copy(module[:], vaa.CoreModule)
 			msg := types.NewGovernanceMessage(module, byte(action), uint16(chain), set_update)

@@ -79,14 +79,14 @@ try {
 async function main() {
   /* Set up cosmos client & wallet */
 
-  let host = devnetConsts.chains[3104].tendermintUrlLocal;
+  let host = devnetConsts.chains[7077].tendermintUrlLocal;
   if (os.hostname().includes("deltachain-deploy")) {
     // running in tilt devnet
-    host = devnetConsts.chains[3104].tendermintUrlTilt;
+    host = devnetConsts.chains[7077].tendermintUrlTilt;
   }
 
   const mnemonic =
-    devnetConsts.chains[3104].accounts.deltachainNodeOfPhylax0.mnemonic;
+    devnetConsts.chains[7077].accounts.deltachainNodeOfPhylax0.mnemonic;
 
   const wallet = await getWallet(mnemonic);
   const client = await getDeltachainSigningClient(host, wallet);
@@ -281,7 +281,7 @@ async function main() {
   );
 
   // Generated VAA using
-  // `phylaxd template ibc-receiver-update-channel-chain --channel-id channel-0 --chain-id 32 --target-chain-id 3104 > deltachain.prototxt`
+  // `phylaxd template ibc-receiver-update-channel-chain --channel-id channel-0 --chain-id 32 --target-chain-id 7077 > deltachain.prototxt`
   // `phylaxd admin governance-vaa-verify deltachain.prototxt`
   let deltachainIbcReceiverWhitelistVaa: VAA<Other> = {
     version: 1,

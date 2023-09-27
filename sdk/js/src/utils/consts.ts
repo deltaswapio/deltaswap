@@ -31,7 +31,7 @@ export const CHAINS = {
   base: 30,
   sei: 32,
   rootstock: 33,
-  deltachain: 3104,
+  deltachain: 7077,
   cosmoshub: 4000,
   evmos: 4001,
   kujira: 4002,

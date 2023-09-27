@@ -259,7 +259,7 @@ func TestChainId_String(t *testing.T) {
 		{input: 29, output: "btc"},
 		{input: 30, output: "base"},
 		{input: 32, output: "sei"},
-		{input: 3104, output: "deltachain"},
+		{input: 7077, output: "deltachain"},
 		{input: 10002, output: "sepolia"},
 		{input: 10000, output: "unknown chain ID: 10000"},
 	}

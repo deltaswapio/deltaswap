@@ -321,7 +321,7 @@
     },
     "deltaswap": {
       "config": {
-        "chain_id": 3104,
+        "chain_id": 7077,
         "governance_chain": 1,
         "governance_emitter": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQ=",
         "phylax_set_expiration": 86400

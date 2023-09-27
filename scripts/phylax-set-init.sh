@@ -87,7 +87,7 @@ nearTokenBridge=$(jq --raw-output '.chains."15".contracts.tokenBridgeEmitterAddr
 terra2TokenBridge=$(jq --raw-output '.chains."18".contracts.tokenBridgeEmitterAddress' $addressesJson)
 suiTokenBridge=$(jq --raw-output '.chains."21".contracts.tokenBridgeEmitterAddress' $addressesJson)
 aptosTokenBridge=$(jq --raw-output '.chains."22".contracts.tokenBridgeEmitterAddress' $addressesJson)
-deltachainTokenBridge=$(jq --raw-output '.chains."3104".contracts.tokenBridgeEmitterAddress' $addressesJson)
+deltachainTokenBridge=$(jq --raw-output '.chains."7077".contracts.tokenBridgeEmitterAddress' $addressesJson)
 
 solNFTBridge=$(jq --raw-output '.chains."1".contracts.nftBridgeEmitterAddress' $addressesJson)
 ethNFTBridge=$(jq --raw-output '.chains."2".contracts.nftBridgeEmitterAddress' $addressesJson)
