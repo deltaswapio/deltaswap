@@ -807,14 +807,9 @@ func runNode(cmd *cobra.Command, args []string) {
 
 	// In devnet mode, we generate a deterministic phylax key and write it to disk.
 	if *unsafeDevMode {
-		gk, err := generateDevnetPhylaxKey()
+		err := devnet.GenerateAndStoreDevnetPhylaxKey(*phylaxKeyPath)
 		if err != nil {
 			logger.Fatal("failed to generate devnet phylax key", zap.Error(err))
-		}
-
-		err = writePhylaxKey(gk, "auto-generated deterministic devnet key", *phylaxKeyPath, true)
-		if err != nil {
-			logger.Fatal("failed to write devnet phylax key", zap.Error(err))
 		}
 	}
 
@@ -823,7 +818,7 @@ func runNode(cmd *cobra.Command, args []string) {
 	defer db.Close()
 
 	// Phylax key
-	gk, err := loadPhylaxKey(*phylaxKeyPath)
+	gk, err := common.LoadPhylaxKey(*phylaxKeyPath, *unsafeDevMode)
 	if err != nil {
 		logger.Fatal("failed to load phylax key", zap.Error(err))
 	}

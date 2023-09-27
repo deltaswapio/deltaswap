@@ -21,6 +21,7 @@ import (
 	"github.com/spf13/pflag"
 	"golang.org/x/crypto/sha3"
 
+	"github.com/deltaswapio/deltaswap/node/pkg/common"
 	gossipv1 "github.com/deltaswapio/deltaswap/node/pkg/proto/gossip/v1"
 	publicrpcv1 "github.com/deltaswapio/deltaswap/node/pkg/proto/publicrpc/v1"
 	"github.com/deltaswapio/deltaswap/sdk"
@@ -39,6 +40,7 @@ import (
 var (
 	clientSocketPath *string
 	shouldBackfill   *bool
+	unsafeDevnetMode *bool
 )
 
 func init() {
@@ -67,6 +69,10 @@ func init() {
 	PurgePythNetVaasCmd.Flags().AddFlagSet(pf)
 	SignExistingVaaCmd.Flags().AddFlagSet(pf)
 	SignExistingVaasFromCSVCmd.Flags().AddFlagSet(pf)
+
+	adminClientSignDeltachainAddressFlags := pflag.NewFlagSet("adminClientSignWormchainAddressFlags", pflag.ContinueOnError)
+	unsafeDevnetMode = adminClientSignDeltachainAddressFlags.Bool("unsafeDevMode", false, "Run in unsafe devnet mode")
+	AdminClientSignDeltachainAddress.Flags().AddFlagSet(adminClientSignDeltachainAddressFlags)
 
 	AdminCmd.AddCommand(AdminClientInjectPhylaxSetUpdateCmd)
 	AdminCmd.AddCommand(AdminClientFindMissingMessagesCmd)
@@ -225,7 +231,7 @@ func runSignDeltachainValidatorAddress(cmd *cobra.Command, args []string) error 
 	if !strings.HasPrefix(deltachainAddress, "delta") || strings.HasPrefix(deltachainAddress, "deltaval") {
 		return fmt.Errorf("must provide a bech32 address that has 'deltaswap' prefix")
 	}
-	gk, err := loadPhylaxKey(phylaxKeyPath)
+	gk, err := common.LoadPhylaxKey(phylaxKeyPath, *unsafeDevnetMode)
 	if err != nil {
 		return fmt.Errorf("failed to load phylax key: %w", err)
 	}

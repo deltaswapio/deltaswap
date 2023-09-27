@@ -7,23 +7,14 @@ import (
 	"context"
 	"crypto/ecdsa"
 	"encoding/hex"
-	"fmt"
-	"io"
-	"os"
 	"time"
 
 	"github.com/deltaswapio/deltaswap/node/pkg/accountant"
 	"github.com/deltaswapio/deltaswap/node/pkg/common"
 	"github.com/deltaswapio/deltaswap/node/pkg/deltaconn"
-	nodev1 "github.com/deltaswapio/deltaswap/node/pkg/proto/node/v1"
 	"github.com/deltaswapio/deltaswap/sdk/vaa"
 
 	sdktx "github.com/cosmos/cosmos-sdk/types/tx"
-
-	ethCrypto "github.com/ethereum/go-ethereum/crypto"
-
-	"golang.org/x/crypto/openpgp/armor" //nolint
-	"google.golang.org/protobuf/proto"
 
 	"go.uber.org/zap"
 )
@@ -54,7 +45,7 @@ func main() {
 	)
 
 	logger.Info("Loading phylax key", zap.String("phylaxKeyPath", phylaxKeyPath))
-	gk, err := loadPhylaxKey(phylaxKeyPath)
+	gk, err := common.LoadPhylaxKey(phylaxKeyPath, true)
 	if err != nil {
 		logger.Fatal("failed to load phylax key", zap.Error(err))
 	}
@@ -447,43 +438,4 @@ func submit(
 	phylaxIndex := uint32(0)
 
 	return accountant.SubmitObservationsToContract(ctx, logger, gk, gsIndex, phylaxIndex, deltachainConn, contract, msgs)
-}
-
-const (
-	PhylaxKeyArmoredBlock = "DELTASWAP PHYLAX PRIVATE KEY"
-)
-
-// loadPhylaxKey loads a serialized phylax key from disk.
-func loadPhylaxKey(filename string) (*ecdsa.PrivateKey, error) {
-	f, err := os.Open(filename)
-	if err != nil {
-		return nil, fmt.Errorf("failed to open file: %w", err)
-	}
-
-	p, err := armor.Decode(f)
-	if err != nil {
-		return nil, fmt.Errorf("failed to read armored file: %w", err)
-	}
-
-	if p.Type != PhylaxKeyArmoredBlock {
-		return nil, fmt.Errorf("invalid block type: %s", p.Type)
-	}
-
-	b, err := io.ReadAll(p.Body)
-	if err != nil {
-		return nil, fmt.Errorf("failed to read file: %w", err)
-	}
-
-	var m nodev1.PhylaxKey
-	err = proto.Unmarshal(b, &m)
-	if err != nil {
-		return nil, fmt.Errorf("failed to deserialize protobuf: %w", err)
-	}
-
-	gk, err := ethCrypto.ToECDSA(m.Data)
-	if err != nil {
-		return nil, fmt.Errorf("failed to deserialize raw key data: %w", err)
-	}
-
-	return gk, nil
 }
