@@ -7,7 +7,7 @@ import (
 
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
-	"github.com/wormhole-foundation/wormchain/x/tokenfactory/types"
+	"github.com/wormhole-foundation/deltachain/x/tokenfactory/types"
 )
 
 // GetQueryCmd returns the cli query commands for this module

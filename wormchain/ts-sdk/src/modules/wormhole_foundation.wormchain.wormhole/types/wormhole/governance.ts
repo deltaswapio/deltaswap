@@ -3,7 +3,7 @@
 import { GuardianSet } from "../wormhole/guardian_set";
 import { Writer, Reader } from "protobufjs/minimal";
 
-export const protobufPackage = "wormhole_foundation.wormchain.wormhole";
+export const protobufPackage = "wormhole_foundation.deltachain.wormhole";
 
 /** GuardianSetUpdateProposal defines a guardian set update governance proposal */
 export interface GuardianSetUpdateProposal {

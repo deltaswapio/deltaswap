@@ -62,7 +62,7 @@ const DECIMALS = devnetConsts.chains[CHAIN_ID_ETH].addresses.testGA.decimals;
 const VAA_SIGNERS = process.env.INIT_SIGNERS_KEYS_CSV.split(",");
 const GOVERNANCE_CHAIN = Number(devnetConsts.global.governanceChainId);
 const GOVERNANCE_EMITTER = devnetConsts.global.governanceEmitterAddress;
-const TENDERMINT_URL = ci ? "http://wormchain:26657" : "http://localhost:26659";
+const TENDERMINT_URL = ci ? "http://deltachain:26657" : "http://localhost:26659";
 const GA_ADDRESS =
   "wormhole14hj2tavq8fpesdwxxcu44rty3hh90vhujrvcmstl4zr3txmfvw9srrg465";
 

@@ -4,7 +4,7 @@
 ###                           Base Configuration                            ###
 ###############################################################################
 
-chain-id = "wormchain"
+chain-id = "deltachain"
 
 # The minimum gas prices a validator is willing to accept for processing a
 # transaction. A transaction's fees must meet the minimum of any denomination

@@ -19,7 +19,7 @@ import * as txModule from "../modules/cosmos.tx.v1beta1";
 import * as upgradeModule from "../modules/cosmos.upgrade.v1beta1";
 import * as vestingModule from "../modules/cosmos.vesting.v1beta1";
 import * as wasmModule from "../modules/cosmwasm.wasm.v1";
-import * as coreModule from "../modules/wormhole_foundation.wormchain.wormhole";
+import * as coreModule from "../modules/wormhole_foundation.deltachain.wormhole";
 
 //protobuf isn't guaranteed to have long support, which is used by the stargate signing client,
 //so we're going to use an independent long module and shove it into the globals of protobuf

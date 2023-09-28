@@ -8,9 +8,9 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/version"
 	"github.com/spf13/cobra"
-	"github.com/wormhole-foundation/wormchain/x/ibc-hooks/keeper"
+	"github.com/wormhole-foundation/deltachain/x/ibc-hooks/keeper"
 
-	"github.com/wormhole-foundation/wormchain/x/ibc-hooks/types"
+	"github.com/wormhole-foundation/deltachain/x/ibc-hooks/types"
 )
 
 func indexRunCmd(cmd *cobra.Command, args []string) error {

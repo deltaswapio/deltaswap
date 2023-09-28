@@ -7,12 +7,12 @@ import (
 	wasmdtypes "github.com/CosmWasm/wasmd/x/wasm/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
-	"github.com/wormhole-foundation/wormchain/x/wormhole/types"
+	"github.com/wormhole-foundation/deltachain/x/wormhole/types"
 	"github.com/wormhole-foundation/wormhole/sdk/vaa"
 	"golang.org/x/crypto/sha3"
 )
 
-var WASMD_CONTRACT_ADMIN = sdk.AccAddress("wormchain_wasmd_owner")
+var WASMD_CONTRACT_ADMIN = sdk.AccAddress("deltachain_wasmd_owner")
 
 // Simple wrapper of x/wasmd StoreCode that requires a VAA
 func (k msgServer) StoreCode(goCtx context.Context, msg *types.MsgStoreCode) (*types.MsgStoreCodeResponse, error) {

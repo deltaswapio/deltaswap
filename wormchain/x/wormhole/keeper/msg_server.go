@@ -1,7 +1,7 @@
 package keeper
 
 import (
-	"github.com/wormhole-foundation/wormchain/x/wormhole/types"
+	"github.com/wormhole-foundation/deltachain/x/wormhole/types"
 )
 
 type msgServer struct {

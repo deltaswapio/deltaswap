@@ -7,8 +7,8 @@ VERSION := $(shell echo $(shell git describe --tags 2> /dev/null || echo v0.0.1)
 COMMIT := $(shell git log -1 --format='%h' 2> /dev/null || echo 'abc123')
 
 ldflags = \
-    -X github.com/cosmos/cosmos-sdk/version.Name=wormchain\
-	-X github.com/cosmos/cosmos-sdk/version.ServerName=wormchaind\
+    -X github.com/cosmos/cosmos-sdk/version.Name=deltachain\
+	-X github.com/cosmos/cosmos-sdk/version.ServerName=deltachaind\
 	-X github.com/cosmos/cosmos-sdk/version.Version=$(VERSION) \
 	-X github.com/cosmos/cosmos-sdk/version.Commit=$(COMMIT) \
 	-X "github.com/cosmos/cosmos-sdk/version.BuildTags=ledger"
@@ -17,12 +17,12 @@ BUILD_FLAGS := -ldflags '$(ldflags)'
 .PHONY: all
 all: client
 
-.PHONY: client build/wormchaind
-client: build/wormchaind
+.PHONY: client build/deltachaind
+client: build/deltachaind
 
 
-build/wormchaind: cmd/wormchaind/main.go $(GO_FILES)
-	@echo building "wormchaind-$(VERSION)"
+build/deltachaind: cmd/deltachaind/main.go $(GO_FILES)
+	@echo building "deltachaind-$(VERSION)"
 	go build -v $(BUILD_FLAGS) -tags ledger -o $@ $<
 	cp "$@" "$@"-"$(VERSION)"
 
@@ -42,7 +42,7 @@ ts-sdk: vue
 	npm run build --prefix $@
 
 .PHONY: run
-run: build/wormchaind
+run: build/deltachaind
 	./$< start --home build  --log_level="debug"
 
 # get npm packages for contracts/tools
@@ -64,7 +64,7 @@ contracts-deploy-setup: contracts-tools-deps contracts-devnet-env contracts-arti
 
 # runs the contract deployment script
 contracts-deploy-local: contracts-deploy-setup
-	npm run deploy-wormchain --prefix=contracts/tools
+	npm run deploy-deltachain --prefix=contracts/tools
 
 .PHONY: test
 test:
@@ -76,5 +76,5 @@ bootstrap:
 
 .PHONY: clean
 clean:
-	rm -rf build/wormchaind build/wormchaind-* build/**/*.db build/**/*.wal vue
+	rm -rf build/deltachaind build/deltachaind-* build/**/*.db build/**/*.wal vue
 	echo "{\"height\":\"0\",\"round\":0,\"step\":0}" > build/data/priv_validator_state.json

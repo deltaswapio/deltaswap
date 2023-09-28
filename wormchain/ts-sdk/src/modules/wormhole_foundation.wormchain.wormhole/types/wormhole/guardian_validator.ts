@@ -2,7 +2,7 @@
 /* eslint-disable */
 import { Writer, Reader } from "protobufjs/minimal";
 
-export const protobufPackage = "wormhole_foundation.wormchain.wormhole";
+export const protobufPackage = "wormhole_foundation.deltachain.wormhole";
 
 export interface GuardianValidator {
   guardianKey: Uint8Array;

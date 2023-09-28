@@ -8,7 +8,7 @@ import { ConsensusGuardianSetIndex } from "../wormhole/consensus_guardian_set_in
 import { GuardianValidator } from "../wormhole/guardian_validator";
 import { Writer, Reader } from "protobufjs/minimal";
 
-export const protobufPackage = "wormhole_foundation.wormchain.wormhole";
+export const protobufPackage = "wormhole_foundation.deltachain.wormhole";
 
 /** GenesisState defines the wormhole module's genesis state. */
 export interface GenesisState {

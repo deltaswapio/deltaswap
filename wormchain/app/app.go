@@ -95,36 +95,36 @@ import (
 	"github.com/tendermint/spm/cosmoscmd"
 	"github.com/tendermint/spm/openapiconsole"
 
-	"github.com/wormhole-foundation/wormchain/docs"
-	wormholemodule "github.com/wormhole-foundation/wormchain/x/wormhole"
-	wormholemoduleante "github.com/wormhole-foundation/wormchain/x/wormhole/ante"
-	wormholeclient "github.com/wormhole-foundation/wormchain/x/wormhole/client"
-	wormholemodulekeeper "github.com/wormhole-foundation/wormchain/x/wormhole/keeper"
-	wormholemoduletypes "github.com/wormhole-foundation/wormchain/x/wormhole/types"
+	"github.com/wormhole-foundation/deltachain/docs"
+	wormholemodule "github.com/wormhole-foundation/deltachain/x/wormhole"
+	wormholemoduleante "github.com/wormhole-foundation/deltachain/x/wormhole/ante"
+	wormholeclient "github.com/wormhole-foundation/deltachain/x/wormhole/client"
+	wormholemodulekeeper "github.com/wormhole-foundation/deltachain/x/wormhole/keeper"
+	wormholemoduletypes "github.com/wormhole-foundation/deltachain/x/wormhole/types"
 
 	// this line is used by starport scaffolding # stargate/app/moduleImport
 
-	"github.com/wormhole-foundation/wormchain/x/tokenfactory"
-	"github.com/wormhole-foundation/wormchain/x/tokenfactory/bindings"
-	tokenfactorykeeper "github.com/wormhole-foundation/wormchain/x/tokenfactory/keeper"
-	tokenfactorytypes "github.com/wormhole-foundation/wormchain/x/tokenfactory/types"
+	"github.com/wormhole-foundation/deltachain/x/tokenfactory"
+	"github.com/wormhole-foundation/deltachain/x/tokenfactory/bindings"
+	tokenfactorykeeper "github.com/wormhole-foundation/deltachain/x/tokenfactory/keeper"
+	tokenfactorytypes "github.com/wormhole-foundation/deltachain/x/tokenfactory/types"
 
-	ibchooks "github.com/wormhole-foundation/wormchain/x/ibc-hooks"
-	ibchookskeeper "github.com/wormhole-foundation/wormchain/x/ibc-hooks/keeper"
-	ibchookstypes "github.com/wormhole-foundation/wormchain/x/ibc-hooks/types"
+	ibchooks "github.com/wormhole-foundation/deltachain/x/ibc-hooks"
+	ibchookskeeper "github.com/wormhole-foundation/deltachain/x/ibc-hooks/keeper"
+	ibchookstypes "github.com/wormhole-foundation/deltachain/x/ibc-hooks/types"
 
 	packetforward "github.com/strangelove-ventures/packet-forward-middleware/v4/router"
 	packetforwardkeeper "github.com/strangelove-ventures/packet-forward-middleware/v4/router/keeper"
 	packetforwardtypes "github.com/strangelove-ventures/packet-forward-middleware/v4/router/types"
 
-	ibccomposabilitymw "github.com/wormhole-foundation/wormchain/x/ibc-composability-mw"
-	ibccomposabilitymwkeeper "github.com/wormhole-foundation/wormchain/x/ibc-composability-mw/keeper"
-	ibccomposabilitytypes "github.com/wormhole-foundation/wormchain/x/ibc-composability-mw/types"
+	ibccomposabilitymw "github.com/wormhole-foundation/deltachain/x/ibc-composability-mw"
+	ibccomposabilitymwkeeper "github.com/wormhole-foundation/deltachain/x/ibc-composability-mw/keeper"
+	ibccomposabilitytypes "github.com/wormhole-foundation/deltachain/x/ibc-composability-mw/types"
 )
 
 const (
 	AccountAddressPrefix = "wormhole"
-	Name                 = "wormchain"
+	Name                 = "deltachain"
 )
 
 // this line is used by starport scaffolding # stargate/wasm/app/enabledProposals

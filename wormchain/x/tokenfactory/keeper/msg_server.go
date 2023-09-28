@@ -5,7 +5,7 @@ import (
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
-	"github.com/wormhole-foundation/wormchain/x/tokenfactory/types"
+	"github.com/wormhole-foundation/deltachain/x/tokenfactory/types"
 )
 
 type msgServer struct {

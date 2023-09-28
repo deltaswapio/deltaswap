@@ -22,13 +22,13 @@ import (
 	tmproto "github.com/tendermint/tendermint/proto/tendermint/types"
 	tmtypes "github.com/tendermint/tendermint/types"
 	dbm "github.com/tendermint/tm-db"
-	"github.com/wormhole-foundation/wormchain/app"
-	appparams "github.com/wormhole-foundation/wormchain/app/params"
+	"github.com/wormhole-foundation/deltachain/app"
+	appparams "github.com/wormhole-foundation/deltachain/app/params"
 )
 
 // SimAppChainID hardcoded chainID for simulation
 const (
-	SimAppChainID = "wormchain-app"
+	SimAppChainID = "deltachain-app"
 )
 
 // EmptyBaseAppOptions is a stub implementing AppOptions

@@ -72,8 +72,8 @@ func (m *GenesisState) GetTransposedDataInFlight() map[string][]byte {
 }
 
 func init() {
-	proto.RegisterType((*GenesisState)(nil), "wormhole_foundation.wormchain.ibc_composability_mw.v1.GenesisState")
-	proto.RegisterMapType((map[string][]byte)(nil), "wormhole_foundation.wormchain.ibc_composability_mw.v1.GenesisState.TransposedDataInFlightEntry")
+	proto.RegisterType((*GenesisState)(nil), "wormhole_foundation.deltachain.ibc_composability_mw.v1.GenesisState")
+	proto.RegisterMapType((map[string][]byte)(nil), "wormhole_foundation.deltachain.ibc_composability_mw.v1.GenesisState.TransposedDataInFlightEntry")
 }
 
 func init() {

@@ -97,7 +97,7 @@ func newAccountantForTest(
 	accountantCheckEnabled bool,
 	obsvReqWriteC chan<- *gossipv1.ObservationRequest,
 	acctWriteC chan<- *common.MessagePublication,
-	wormchainConn *MockAccountantWormchainConn,
+	deltachainConn *MockAccountantWormchainConn,
 ) *Accountant {
 	var db db.MockAccountantDB
 
@@ -108,7 +108,7 @@ func newAccountantForTest(
 	gst.Set(gs)
 
 	env := common.GoTest
-	if wormchainConn != nil {
+	if deltachainConn != nil {
 		env = common.AccountantMock
 	}
 
@@ -119,7 +119,7 @@ func newAccountantForTest(
 		obsvReqWriteC,
 		"0xdeadbeef", // accountantContract
 		"none",       // accountantWS
-		wormchainConn,
+		deltachainConn,
 		accountantCheckEnabled,
 		gk,
 		gst,
@@ -327,8 +327,8 @@ func TestForDeadlock(t *testing.T) {
 	logger := zaptest.NewLogger(t)
 	obsvReqWriteC := make(chan *gossipv1.ObservationRequest, 10)
 	acctChan := make(chan *common.MessagePublication, MsgChannelCapacity)
-	wormchainConn := MockAccountantWormchainConn{}
-	acct := newAccountantForTest(t, logger, ctx, enforceAccountant, obsvReqWriteC, acctChan, &wormchainConn)
+	deltachainConn := MockAccountantWormchainConn{}
+	acct := newAccountantForTest(t, logger, ctx, enforceAccountant, obsvReqWriteC, acctChan, &deltachainConn)
 	require.NotNil(t, acct)
 
 	emitterAddr, _ := vaa.StringToAddress("0000000000000000000000000290fb167208af455bb137780163b7b7a9a10c16")
@@ -355,7 +355,7 @@ func TestForDeadlock(t *testing.T) {
 	var txResp sdktx.BroadcastTxResponse
 	err := json.Unmarshal(createTxRespForCommitted(), &txResp)
 	require.NoError(t, err)
-	wormchainConn.SetTxResp(&txResp)
+	deltachainConn.SetTxResp(&txResp)
 
 	shouldPublish, err := acct.SubmitObservation(&msg)
 	require.NoError(t, err)
@@ -364,7 +364,7 @@ func TestForDeadlock(t *testing.T) {
 	assert.Equal(t, 0, len(acct.msgChan))
 
 	// Wait until the response gets received from the contract.
-	wormchainConn.WaitUntilTxRespConsumed()
+	deltachainConn.WaitUntilTxRespConsumed()
 
 	assert.Equal(t, 1, len(acct.msgChan))
 
@@ -382,7 +382,7 @@ func TestForDeadlock(t *testing.T) {
 	var txResp2 sdktx.BroadcastTxResponse
 	err = json.Unmarshal(createTxRespForCommitted(), &txResp2)
 	require.NoError(t, err)
-	wormchainConn.SetTxResp(&txResp2)
+	deltachainConn.SetTxResp(&txResp2)
 
 	shouldPublish, _ = acct.SubmitObservation(&msg2)
 	require.NoError(t, err)
@@ -390,7 +390,7 @@ func TestForDeadlock(t *testing.T) {
 	assert.Equal(t, 1, len(acct.pendingTransfers))
 	assert.Equal(t, 1, len(acct.msgChan))
 
-	wormchainConn.WaitUntilTxRespConsumed()
+	deltachainConn.WaitUntilTxRespConsumed()
 
 	assert.Equal(t, 2, len(acct.msgChan))
 

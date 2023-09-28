@@ -36,7 +36,7 @@ const (
 	ReadinessArbitrumSyncing  readiness.Component = "arbitrumSyncing"
 	ReadinessOptimismSyncing  readiness.Component = "optimismSyncing"
 	ReadinessBaseSyncing      readiness.Component = "baseSyncing"
-	ReadinessWormchainSyncing readiness.Component = "wormchainSyncing"
+	ReadinessWormchainSyncing readiness.Component = "deltachainSyncing"
 )
 
 // This test is just to make sure that nothing got broken when we switched from manually specifying the readiness syncing labels.

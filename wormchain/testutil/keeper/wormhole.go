@@ -16,10 +16,10 @@ import (
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 	capabilitykeeper "github.com/cosmos/cosmos-sdk/x/capability/keeper"
 	capabilitytypes "github.com/cosmos/cosmos-sdk/x/capability/types"
-	"github.com/wormhole-foundation/wormchain/app"
-	"github.com/wormhole-foundation/wormchain/app/wasm_handlers"
-	"github.com/wormhole-foundation/wormchain/x/wormhole/keeper"
-	"github.com/wormhole-foundation/wormchain/x/wormhole/types"
+	"github.com/wormhole-foundation/deltachain/app"
+	"github.com/wormhole-foundation/deltachain/app/wasm_handlers"
+	"github.com/wormhole-foundation/deltachain/x/wormhole/keeper"
+	"github.com/wormhole-foundation/deltachain/x/wormhole/types"
 
 	paramskeeper "github.com/cosmos/cosmos-sdk/x/params/keeper"
 	paramstypes "github.com/cosmos/cosmos-sdk/x/params/types"
@@ -75,7 +75,7 @@ func WormholeKeeperAndWasmd(t testing.TB) (*keeper.Keeper, wasmkeeper.Keeper, *w
 
 	subspaceWasmd, _ := paramsKeeper.GetSubspace(wasmtypes.ModuleName)
 
-	bApp := baseapp.NewBaseApp("wormchain", log.NewNopLogger(), db, encodingConfig.TxConfig.TxDecoder())
+	bApp := baseapp.NewBaseApp("deltachain", log.NewNopLogger(), db, encodingConfig.TxConfig.TxDecoder())
 	bApp.SetVersion(version.Version)
 	bApp.SetInterfaceRegistry(encodingConfig.InterfaceRegistry)
 

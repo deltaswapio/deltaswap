@@ -1,5 +1,5 @@
-// The GatewayRelayer manages the interface to the ibcTranslator smart contract on wormchain. It is called when a signed VAA with quorum gets published.
-// It forwards all payload three VAAs destined for the ibcTranslator contract on wormchain to that contract.
+// The GatewayRelayer manages the interface to the ibcTranslator smart contract on deltachain. It is called when a signed VAA with quorum gets published.
+// It forwards all payload three VAAs destined for the ibcTranslator contract on deltachain to that contract.
 
 package gwrelayer
 
@@ -36,13 +36,13 @@ type (
 	}
 )
 
-// GatewayRelayer is the object that manages the interface to the wormchain accountant smart contract.
+// GatewayRelayer is the object that manages the interface to the deltachain accountant smart contract.
 type (
 	GatewayRelayer struct {
 		ctx                         context.Context
 		logger                      *zap.Logger
 		ibcTranslatorAddress        string
-		wormchainConn               GatewayRelayerWormchainConn
+		deltachainConn              GatewayRelayerWormchainConn
 		env                         common.Environment
 		subChan                     chan *VaaToPublish
 		tokenBridges                tokenBridgeMap
@@ -104,7 +104,7 @@ func NewGatewayRelayer(
 	ctx context.Context,
 	logger *zap.Logger,
 	ibcTranslatorAddress string,
-	wormchainConn GatewayRelayerWormchainConn,
+	deltachainConn GatewayRelayerWormchainConn,
 	env common.Environment,
 ) *GatewayRelayer {
 	if ibcTranslatorAddress == "" {
@@ -115,7 +115,7 @@ func NewGatewayRelayer(
 		ctx:                  ctx,
 		logger:               logger.With(zap.String("component", "gwrelayer")),
 		ibcTranslatorAddress: ibcTranslatorAddress,
-		wormchainConn:        wormchainConn,
+		deltachainConn:       deltachainConn,
 		env:                  env,
 		subChan:              make(chan *VaaToPublish, subChanSize),
 		// tokenBridgeAddress and tokenBridges are initialized in Start().
@@ -202,9 +202,9 @@ func buildTokenBridgeMap(logger *zap.Logger, env common.Environment) (tokenBridg
 
 // Close closes the connection to the smart contract.
 func (gwr *GatewayRelayer) Close() {
-	if gwr.wormchainConn != nil {
-		gwr.wormchainConn.Close()
-		gwr.wormchainConn = nil
+	if gwr.deltachainConn != nil {
+		gwr.deltachainConn.Close()
+		gwr.deltachainConn = nil
 	}
 }
 
@@ -245,7 +245,7 @@ func (gwr *GatewayRelayer) SubmitVAA(v *vaa.VAA) {
 	}
 }
 
-// shouldPublishToIbcTranslator returns true if a message should be forwarded to the contract on wormchain, false if not.
+// shouldPublishToIbcTranslator returns true if a message should be forwarded to the contract on deltachain, false if not.
 func shouldPublishToIbcTranslator(payload []byte, targetChain vaa.ChainID, targetAddress vaa.Address) (bool, error) {
 	if len(payload) == 0 {
 		return false, nil
@@ -301,9 +301,9 @@ func (gwr *GatewayRelayer) worker(ctx context.Context) error {
 	}
 }
 
-// submitVAAToContract submits a VAA to the smart contract on wormchain.
+// submitVAAToContract submits a VAA to the smart contract on deltachain.
 func (gwr *GatewayRelayer) submitVAAToContract(v2p *VaaToPublish) error {
-	_, err := SubmitVAAToContract(gwr.ctx, gwr.logger, gwr.wormchainConn, v2p)
+	_, err := SubmitVAAToContract(gwr.ctx, gwr.logger, gwr.deltachainConn, v2p)
 	if err != nil {
 		submitErrors.Inc()
 		return err
@@ -337,11 +337,11 @@ type (
 	}
 )
 
-// SubmitVAAToContract submits a VAA to the smart contract on wormchain.
+// SubmitVAAToContract submits a VAA to the smart contract on deltachain.
 func SubmitVAAToContract(
 	ctx context.Context,
 	logger *zap.Logger,
-	wormchainConn GatewayRelayerWormchainConn,
+	deltachainConn GatewayRelayerWormchainConn,
 	v2p *VaaToPublish,
 ) (*sdktx.BroadcastTxResponse, error) {
 	logger.Info("submitting VAA to contract", zap.String("message_id", v2p.V.MessageID()), zap.String("contract", v2p.ContractAddress), zap.Uint8("vaaType", uint8(v2p.VType)))
@@ -375,14 +375,14 @@ func SubmitVAAToContract(
 	}
 
 	subMsg := wasmdtypes.MsgExecuteContract{
-		Sender:   wormchainConn.SenderAddress(),
+		Sender:   deltachainConn.SenderAddress(),
 		Contract: v2p.ContractAddress,
 		Msg:      msgBytes,
 		Funds:    sdktypes.Coins{},
 	}
 
 	start := time.Now()
-	txResp, err := wormchainConn.SignAndBroadcastTx(ctx, &subMsg)
+	txResp, err := deltachainConn.SignAndBroadcastTx(ctx, &subMsg)
 	if err != nil {
 		return txResp, fmt.Errorf("failed to send broadcast: %w", err)
 	}
@@ -408,7 +408,7 @@ func SubmitVAAToContract(
 	}
 
 	logger.Info("done sending broadcast", zap.String("msgId", v2p.V.MessageID()), zap.String("contract", v2p.ContractAddress), zap.Uint8("vaaType", uint8(v2p.VType)), zap.Int64("gasUsed", txResp.TxResponse.GasUsed), zap.Stringer("elapsedTime", time.Since(start)))
-	logger.Debug("in SubmitVAAToContract, done sending broadcast", zap.String("resp", wormchainConn.BroadcastTxResponseToString(txResp)))
+	logger.Debug("in SubmitVAAToContract, done sending broadcast", zap.String("resp", deltachainConn.BroadcastTxResponseToString(txResp)))
 
 	return txResp, nil
 }

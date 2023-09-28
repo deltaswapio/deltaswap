@@ -93,8 +93,8 @@ var AdminCmd = &cobra.Command{
 }
 
 var AdminClientSignWormchainAddress = &cobra.Command{
-	Use:   "sign-wormchain-address [/path/to/guardianKey] [wormchain-validator-address]",
-	Short: "Sign a wormchain validator address.  Only sign the address that you control the key for and will be for your validator.",
+	Use:   "sign-deltachain-address [/path/to/guardianKey] [deltachain-validator-address]",
+	Short: "Sign a deltachain validator address.  Only sign the address that you control the key for and will be for your validator.",
 	RunE:  runSignWormchainValidatorAddress,
 	Args:  cobra.ExactArgs(2),
 }
@@ -221,23 +221,23 @@ func getPublicRPCServiceClient(ctx context.Context, addr string) (*grpc.ClientCo
 
 func runSignWormchainValidatorAddress(cmd *cobra.Command, args []string) error {
 	guardianKeyPath := args[0]
-	wormchainAddress := args[1]
-	if !strings.HasPrefix(wormchainAddress, "wormhole") || strings.HasPrefix(wormchainAddress, "wormholeval") {
+	deltachainAddress := args[1]
+	if !strings.HasPrefix(deltachainAddress, "wormhole") || strings.HasPrefix(deltachainAddress, "wormholeval") {
 		return fmt.Errorf("must provide a bech32 address that has 'wormhole' prefix")
 	}
 	gk, err := loadGuardianKey(guardianKeyPath)
 	if err != nil {
 		return fmt.Errorf("failed to load guardian key: %w", err)
 	}
-	addr, err := types.GetFromBech32(wormchainAddress, "wormhole")
+	addr, err := types.GetFromBech32(deltachainAddress, "wormhole")
 	if err != nil {
-		return fmt.Errorf("failed to decode wormchain address: %w", err)
+		return fmt.Errorf("failed to decode deltachain address: %w", err)
 	}
 	// Hash and sign address
 	addrHash := crypto.Keccak256Hash(sdk.SignedWormchainAddressPrefix, addr)
 	sig, err := crypto.Sign(addrHash[:], gk)
 	if err != nil {
-		return fmt.Errorf("failed to sign wormchain address: %w", err)
+		return fmt.Errorf("failed to sign deltachain address: %w", err)
 	}
 	fmt.Println(hex.EncodeToString(sig))
 	return nil

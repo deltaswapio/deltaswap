@@ -91,7 +91,7 @@ func GuardianOptionNoAccountant() *GuardianOption {
 
 // GuardianOptionAccountant configures the Accountant module.
 // Dependencies: db
-func GuardianOptionAccountant(contract string, websocket string, enforcing bool, wormchainConn *wormconn.ClientConn) *GuardianOption {
+func GuardianOptionAccountant(contract string, websocket string, enforcing bool, deltachainConn *wormconn.ClientConn) *GuardianOption {
 	return &GuardianOption{
 		name:         "accountant",
 		dependencies: []string{"db"},
@@ -108,8 +108,8 @@ func GuardianOptionAccountant(contract string, websocket string, enforcing bool,
 			if websocket == "" {
 				return errors.New("acct: if accountantContract is specified, accountantWS is required")
 			}
-			if wormchainConn == nil {
-				return errors.New("acct: if accountantContract is specified, the wormchain sending connection must be enabled before.")
+			if deltachainConn == nil {
+				return errors.New("acct: if accountantContract is specified, the deltachain sending connection must be enabled before.")
 			}
 			if enforcing {
 				logger.Info("acct: accountant is enabled and will be enforced", zap.String("component", "gacct"))
@@ -124,7 +124,7 @@ func GuardianOptionAccountant(contract string, websocket string, enforcing bool,
 				g.obsvReqC.writeC,
 				contract,
 				websocket,
-				wormchainConn,
+				deltachainConn,
 				enforcing,
 				g.gk,
 				g.gst,
@@ -155,8 +155,8 @@ func GuardianOptionGovernor(governorEnabled bool) *GuardianOption {
 
 // GuardianOptionGatewayRelayer configures the Gateway Relayer module. If the gateway relayer smart contract is configured, we will instantiate
 // the GatewayRelayer and signed VAAs will be passed to it for processing when they are published. It will forward payload three transfers destined
-// for the specified contract on wormchain to that contract.
-func GuardianOptionGatewayRelayer(gatewayRelayerContract string, wormchainConn *wormconn.ClientConn) *GuardianOption {
+// for the specified contract on deltachain to that contract.
+func GuardianOptionGatewayRelayer(gatewayRelayerContract string, deltachainConn *wormconn.ClientConn) *GuardianOption {
 	return &GuardianOption{
 		name: "gateway-relayer",
 		f: func(ctx context.Context, logger *zap.Logger, g *G) error {
@@ -164,7 +164,7 @@ func GuardianOptionGatewayRelayer(gatewayRelayerContract string, wormchainConn *
 				ctx,
 				logger,
 				gatewayRelayerContract,
-				wormchainConn,
+				deltachainConn,
 				g.env,
 			)
 

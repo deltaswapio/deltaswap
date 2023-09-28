@@ -2,7 +2,7 @@ package keeper
 
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/wormhole-foundation/wormchain/x/ibc-composability-mw/types"
+	"github.com/wormhole-foundation/deltachain/x/ibc-composability-mw/types"
 )
 
 // InitGenesis

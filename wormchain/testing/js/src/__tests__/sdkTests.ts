@@ -9,7 +9,7 @@ import {
   toAccAddress,
   toBase64,
   toValAddress,
-} from "@wormhole-foundation/wormchain-sdk";
+} from "@wormhole-foundation/deltachain-sdk";
 import {
   GUARDIAN_VALIDATOR_BASE64_VALADDR,
   GUARDIAN_VALIDATOR_VALADDR,

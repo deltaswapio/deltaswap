@@ -4,7 +4,7 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/require"
-	"github.com/wormhole-foundation/wormchain/x/wormhole/types"
+	"github.com/wormhole-foundation/deltachain/x/wormhole/types"
 )
 
 func TestGenesisState_Validate(t *testing.T) {

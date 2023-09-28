@@ -12,7 +12,7 @@ import { SequenceCounter } from "../wormhole/sequence_counter";
 import { ConsensusGuardianSetIndex } from "../wormhole/consensus_guardian_set_index";
 import { GuardianValidator } from "../wormhole/guardian_validator";
 
-export const protobufPackage = "wormhole_foundation.wormchain.wormhole";
+export const protobufPackage = "wormhole_foundation.deltachain.wormhole";
 
 export interface QueryGetGuardianSetRequest {
   index: number;
@@ -1859,7 +1859,7 @@ export class QueryClientImpl implements Query {
   ): Promise<QueryGetGuardianSetResponse> {
     const data = QueryGetGuardianSetRequest.encode(request).finish();
     const promise = this.rpc.request(
-      "wormhole_foundation.wormchain.wormhole.Query",
+      "wormhole_foundation.deltachain.wormhole.Query",
       "GuardianSet",
       data
     );
@@ -1873,7 +1873,7 @@ export class QueryClientImpl implements Query {
   ): Promise<QueryAllGuardianSetResponse> {
     const data = QueryAllGuardianSetRequest.encode(request).finish();
     const promise = this.rpc.request(
-      "wormhole_foundation.wormchain.wormhole.Query",
+      "wormhole_foundation.deltachain.wormhole.Query",
       "GuardianSetAll",
       data
     );
@@ -1885,7 +1885,7 @@ export class QueryClientImpl implements Query {
   Config(request: QueryGetConfigRequest): Promise<QueryGetConfigResponse> {
     const data = QueryGetConfigRequest.encode(request).finish();
     const promise = this.rpc.request(
-      "wormhole_foundation.wormchain.wormhole.Query",
+      "wormhole_foundation.deltachain.wormhole.Query",
       "Config",
       data
     );
@@ -1899,7 +1899,7 @@ export class QueryClientImpl implements Query {
   ): Promise<QueryGetReplayProtectionResponse> {
     const data = QueryGetReplayProtectionRequest.encode(request).finish();
     const promise = this.rpc.request(
-      "wormhole_foundation.wormchain.wormhole.Query",
+      "wormhole_foundation.deltachain.wormhole.Query",
       "ReplayProtection",
       data
     );
@@ -1913,7 +1913,7 @@ export class QueryClientImpl implements Query {
   ): Promise<QueryAllReplayProtectionResponse> {
     const data = QueryAllReplayProtectionRequest.encode(request).finish();
     const promise = this.rpc.request(
-      "wormhole_foundation.wormchain.wormhole.Query",
+      "wormhole_foundation.deltachain.wormhole.Query",
       "ReplayProtectionAll",
       data
     );
@@ -1927,7 +1927,7 @@ export class QueryClientImpl implements Query {
   ): Promise<QueryGetSequenceCounterResponse> {
     const data = QueryGetSequenceCounterRequest.encode(request).finish();
     const promise = this.rpc.request(
-      "wormhole_foundation.wormchain.wormhole.Query",
+      "wormhole_foundation.deltachain.wormhole.Query",
       "SequenceCounter",
       data
     );
@@ -1941,7 +1941,7 @@ export class QueryClientImpl implements Query {
   ): Promise<QueryAllSequenceCounterResponse> {
     const data = QueryAllSequenceCounterRequest.encode(request).finish();
     const promise = this.rpc.request(
-      "wormhole_foundation.wormchain.wormhole.Query",
+      "wormhole_foundation.deltachain.wormhole.Query",
       "SequenceCounterAll",
       data
     );
@@ -1957,7 +1957,7 @@ export class QueryClientImpl implements Query {
       request
     ).finish();
     const promise = this.rpc.request(
-      "wormhole_foundation.wormchain.wormhole.Query",
+      "wormhole_foundation.deltachain.wormhole.Query",
       "ConsensusGuardianSetIndex",
       data
     );
@@ -1971,7 +1971,7 @@ export class QueryClientImpl implements Query {
   ): Promise<QueryGetGuardianValidatorResponse> {
     const data = QueryGetGuardianValidatorRequest.encode(request).finish();
     const promise = this.rpc.request(
-      "wormhole_foundation.wormchain.wormhole.Query",
+      "wormhole_foundation.deltachain.wormhole.Query",
       "GuardianValidator",
       data
     );
@@ -1985,7 +1985,7 @@ export class QueryClientImpl implements Query {
   ): Promise<QueryAllGuardianValidatorResponse> {
     const data = QueryAllGuardianValidatorRequest.encode(request).finish();
     const promise = this.rpc.request(
-      "wormhole_foundation.wormchain.wormhole.Query",
+      "wormhole_foundation.deltachain.wormhole.Query",
       "GuardianValidatorAll",
       data
     );
@@ -1999,7 +1999,7 @@ export class QueryClientImpl implements Query {
   ): Promise<QueryLatestGuardianSetIndexResponse> {
     const data = QueryLatestGuardianSetIndexRequest.encode(request).finish();
     const promise = this.rpc.request(
-      "wormhole_foundation.wormchain.wormhole.Query",
+      "wormhole_foundation.deltachain.wormhole.Query",
       "LatestGuardianSetIndex",
       data
     );

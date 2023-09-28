@@ -1,5 +1,5 @@
 import { expect, jest, test } from "@jest/globals";
-import { getAddress, getWallet } from "@wormhole-foundation/wormchain-sdk";
+import { getAddress, getWallet } from "@wormhole-foundation/deltachain-sdk";
 import { TEST_WALLET_MNEMONIC_1, TEST_WALLET_MNEMONIC_2 } from "../consts";
 import { getBalance, sendTokens } from "../utils/walletHelpers";
 

@@ -193,7 +193,7 @@ func (sb SignatureBytes) MarshalJSON() ([]byte, error) {
 // submitObservationsToContract makes a call to the smart contract to submit a batch of observation requests.
 // It should be called from a go routine because it can block.
 func (acct *Accountant) submitObservationsToContract(msgs []*common.MessagePublication, gsIndex uint32, guardianIndex uint32) {
-	txResp, err := SubmitObservationsToContract(acct.ctx, acct.logger, acct.gk, gsIndex, guardianIndex, acct.wormchainConn, acct.contract, msgs)
+	txResp, err := SubmitObservationsToContract(acct.ctx, acct.logger, acct.gk, gsIndex, guardianIndex, acct.deltachainConn, acct.contract, msgs)
 	if err != nil {
 		// This means the whole batch failed. They will all get retried the next audit cycle.
 		acct.logger.Error("failed to submit any observations in batch", zap.Int("numMsgs", len(msgs)), zap.Error(err))
@@ -209,7 +209,7 @@ func (acct *Accountant) submitObservationsToContract(msgs []*common.MessagePubli
 	responses, err := GetObservationResponses(txResp)
 	if err != nil {
 		// This means the whole batch failed. They will all get retried the next audit cycle.
-		acct.logger.Error("failed to get responses from batch", zap.Error(err), zap.String("txResp", acct.wormchainConn.BroadcastTxResponseToString(txResp)))
+		acct.logger.Error("failed to get responses from batch", zap.Error(err), zap.String("txResp", acct.deltachainConn.BroadcastTxResponseToString(txResp)))
 		for idx, msg := range msgs {
 			acct.logger.Error("need to retry observation", zap.Int("idx", idx), zap.String("msgId", msg.MessageIDString()))
 		}
@@ -295,7 +295,7 @@ func SubmitObservationsToContract(
 	gk *ecdsa.PrivateKey,
 	gsIndex uint32,
 	guardianIndex uint32,
-	wormchainConn AccountantWormchainConn,
+	deltachainConn AccountantWormchainConn,
 	contract string,
 	msgs []*common.MessagePublication,
 ) (*sdktx.BroadcastTxResponse, error) {
@@ -356,7 +356,7 @@ func SubmitObservationsToContract(
 	}
 
 	subMsg := wasmdtypes.MsgExecuteContract{
-		Sender:   wormchainConn.SenderAddress(),
+		Sender:   deltachainConn.SenderAddress(),
 		Contract: contract,
 		Msg:      msgBytes,
 		Funds:    sdktypes.Coins{},
@@ -369,7 +369,7 @@ func SubmitObservationsToContract(
 	)
 
 	start := time.Now()
-	txResp, err := wormchainConn.SignAndBroadcastTx(ctx, &subMsg)
+	txResp, err := deltachainConn.SignAndBroadcastTx(ctx, &subMsg)
 	if err != nil {
 		return txResp, fmt.Errorf("failed to send broadcast: %w", err)
 	}
@@ -395,7 +395,7 @@ func SubmitObservationsToContract(
 	}
 
 	logger.Info("done sending broadcast", zap.Int("numObs", len(obs)), zap.Int64("gasUsed", txResp.TxResponse.GasUsed), zap.Stringer("elapsedTime", time.Since(start)))
-	logger.Debug("in SubmitObservationsToContract, done sending broadcast", zap.String("resp", wormchainConn.BroadcastTxResponseToString(txResp)))
+	logger.Debug("in SubmitObservationsToContract, done sending broadcast", zap.String("resp", deltachainConn.BroadcastTxResponseToString(txResp)))
 	return txResp, nil
 }
 

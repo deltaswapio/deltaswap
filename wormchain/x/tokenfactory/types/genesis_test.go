@@ -5,7 +5,7 @@ import (
 
 	"github.com/stretchr/testify/require"
 
-	"github.com/wormhole-foundation/wormchain/x/tokenfactory/types"
+	"github.com/wormhole-foundation/deltachain/x/tokenfactory/types"
 )
 
 func TestGenesisState_Validate(t *testing.T) {

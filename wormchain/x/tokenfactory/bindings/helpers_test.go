@@ -15,8 +15,8 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
 	"github.com/CosmWasm/wasmd/x/wasm/keeper"
-	"github.com/wormhole-foundation/wormchain/app"
-	"github.com/wormhole-foundation/wormchain/app/apptesting"
+	"github.com/wormhole-foundation/deltachain/app"
+	"github.com/wormhole-foundation/deltachain/app/apptesting"
 )
 
 func CreateTestInput(t *testing.T) (*app.App, sdk.Context) {

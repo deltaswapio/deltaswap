@@ -1145,7 +1145,7 @@
       "sequenceCounterList": []
     }
   },
-  "chain_id": "wormchain",
+  "chain_id": "deltachain",
   "consensus_params": {
     "block": {
       "max_bytes": "22020096",

@@ -239,7 +239,7 @@ pub fn submit_update_chain_to_channel_map(
     // Must be a version 1 VAA
     ensure!(header.version == 1, "unsupported VAA version");
 
-    // call into wormchain to verify the VAA
+    // call into deltachain to verify the VAA
     deps.querier
         .query::<Empty>(&WormholeQuery::VerifyVaa { vaa: vaa.clone() }.into())
         .context("failed to verify vaa")?;
@@ -259,7 +259,7 @@ pub fn submit_update_chain_to_channel_map(
     let govpacket: GovernancePacket =
         serde_wormhole::from_slice(body.payload).context("failed to parse governance packet")?;
 
-    // validate the governance VAA is directed to wormchain
+    // validate the governance VAA is directed to deltachain
     ensure!(
         govpacket.chain == Chain::Wormchain || govpacket.chain == Chain::Any,
         "this governance VAA is for another chain"
@@ -285,7 +285,7 @@ pub fn submit_update_chain_to_channel_map(
         } => {
             ensure!(
                 chain_id != Chain::Wormchain,
-                "the ibc-translator contract should not maintain channel mappings to wormchain"
+                "the ibc-translator contract should not maintain channel mappings to deltachain"
             );
 
             let channel_id_str =

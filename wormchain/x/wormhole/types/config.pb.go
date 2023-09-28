@@ -92,7 +92,7 @@ func (m *Config) GetChainId() uint32 {
 }
 
 func init() {
-	proto.RegisterType((*Config)(nil), "wormhole_foundation.wormchain.wormhole.Config")
+	proto.RegisterType((*Config)(nil), "wormhole_foundation.deltachain.wormhole.Config")
 }
 
 func init() { proto.RegisterFile("wormhole/config.proto", fileDescriptor_14d08d38823c924a) }

@@ -3,7 +3,7 @@ package keeper_test
 import (
 	"fmt"
 
-	"github.com/wormhole-foundation/wormchain/x/tokenfactory/types"
+	"github.com/wormhole-foundation/deltachain/x/tokenfactory/types"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	//banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"

@@ -10,8 +10,8 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
-	keepertest "github.com/wormhole-foundation/wormchain/testutil/keeper"
-	"github.com/wormhole-foundation/wormchain/x/wormhole/types"
+	keepertest "github.com/wormhole-foundation/deltachain/testutil/keeper"
+	"github.com/wormhole-foundation/deltachain/x/wormhole/types"
 )
 
 // Prevent strconv unused error

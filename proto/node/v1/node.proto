@@ -89,10 +89,10 @@ message GovernanceMessage {
 
     // Wormchain
 
-    WormchainStoreCode wormchain_store_code = 14;
-    WormchainInstantiateContract wormchain_instantiate_contract = 15;
-    WormchainMigrateContract wormchain_migrate_contract = 16;
-    WormchainWasmInstantiateAllowlist wormchain_wasm_instantiate_allowlist = 23;
+    WormchainStoreCode deltachain_store_code = 14;
+    WormchainInstantiateContract deltachain_instantiate_contract = 15;
+    WormchainMigrateContract deltachain_migrate_contract = 16;
+    WormchainWasmInstantiateAllowlist deltachain_wasm_instantiate_allowlist = 23;
 
     // Gateway
     GatewayScheduleUpgrade gateway_schedule_upgrade = 24;

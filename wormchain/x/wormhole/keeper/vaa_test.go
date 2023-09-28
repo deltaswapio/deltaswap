@@ -12,9 +12,9 @@ import (
 	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	keepertest "github.com/wormhole-foundation/wormchain/testutil/keeper"
-	"github.com/wormhole-foundation/wormchain/x/wormhole/keeper"
-	"github.com/wormhole-foundation/wormchain/x/wormhole/types"
+	keepertest "github.com/wormhole-foundation/deltachain/testutil/keeper"
+	"github.com/wormhole-foundation/deltachain/x/wormhole/keeper"
+	"github.com/wormhole-foundation/deltachain/x/wormhole/types"
 	"github.com/wormhole-foundation/wormhole/sdk/vaa"
 )
 

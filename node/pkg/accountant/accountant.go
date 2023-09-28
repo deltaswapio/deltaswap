@@ -1,4 +1,4 @@
-// The accountant package manages the interface to the accountant smart contract on wormchain. It is passed all VAAs before
+// The accountant package manages the interface to the accountant smart contract on deltachain. It is passed all VAAs before
 // they are signed and published. It determines if the VAA is for a token bridge transfer, and if it is, it submits an observation
 // request to the accountant contract. When that happens, the VAA is queued up until the accountant contract responds indicating
 // that the VAA has been approved. If the VAA is approved, this module will forward the VAA back to the processor loop to be signed
@@ -72,7 +72,7 @@ type (
 	}
 )
 
-// Accountant is the object that manages the interface to the wormchain accountant smart contract.
+// Accountant is the object that manages the interface to the deltachain accountant smart contract.
 type Accountant struct {
 	ctx                  context.Context
 	logger               *zap.Logger
@@ -80,7 +80,7 @@ type Accountant struct {
 	obsvReqWriteC        chan<- *gossipv1.ObservationRequest
 	contract             string
 	wsUrl                string
-	wormchainConn        AccountantWormchainConn
+	deltachainConn       AccountantWormchainConn
 	enforceFlag          bool
 	gk                   *ecdsa.PrivateKey
 	gst                  *common.GuardianSetState
@@ -102,9 +102,9 @@ func NewAccountant(
 	logger *zap.Logger,
 	db db.AccountantDB,
 	obsvReqWriteC chan<- *gossipv1.ObservationRequest,
-	contract string, // the address of the smart contract on wormchain
-	wsUrl string, // the URL of the wormchain websocket interface
-	wormchainConn AccountantWormchainConn, // used for communicating with the smart contract
+	contract string, // the address of the smart contract on deltachain
+	wsUrl string, // the URL of the deltachain websocket interface
+	deltachainConn AccountantWormchainConn, // used for communicating with the smart contract
 	enforceFlag bool, // whether or not accountant should be enforced
 	gk *ecdsa.PrivateKey, // the guardian key used for signing observation requests
 	gst *common.GuardianSetState, // used to get the current guardian set index when sending observation requests
@@ -118,7 +118,7 @@ func NewAccountant(
 		obsvReqWriteC:    obsvReqWriteC,
 		contract:         contract,
 		wsUrl:            wsUrl,
-		wormchainConn:    wormchainConn,
+		deltachainConn:   deltachainConn,
 		enforceFlag:      enforceFlag,
 		gk:               gk,
 		gst:              gst,
@@ -191,9 +191,9 @@ func (acct *Accountant) Start(ctx context.Context) error {
 }
 
 func (acct *Accountant) Close() {
-	if acct.wormchainConn != nil {
-		acct.wormchainConn.Close()
-		acct.wormchainConn = nil
+	if acct.deltachainConn != nil {
+		acct.deltachainConn.Close()
+		acct.deltachainConn = nil
 	}
 }
 

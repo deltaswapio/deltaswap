@@ -2,7 +2,7 @@
 set -euo pipefail
 
 if [ -z "${NUM_GUARDIANS}" ]; then
-    echo "Error: NUM_GUARDIANS is unset, cannot create wormchain genesis."
+    echo "Error: NUM_GUARDIANS is unset, cannot create deltachain genesis."
     exit 1
 fi
 
@@ -10,7 +10,7 @@ pwd=$(pwd)
 genesis="$pwd/devnet/base/config/genesis.json"
 
 # TODO
-# create a sequence of the wormchain instances to include
+# create a sequence of the deltachain instances to include
 # loop through the sequence, reading the data from the instance's dir
 # add the genesis account to:
 #   app_state.auth.accounts
@@ -23,7 +23,7 @@ genesis="$pwd/devnet/base/config/genesis.json"
 # TEMP manually add the second validator info to genesis.json
 if [ $NUM_GUARDIANS -ge 2 ]; then
   echo "number of guardians is >= 2, adding second validator to genesis.json."
-  # the validator info for wormchain-1
+  # the validator info for deltachain-1
   guardianKey="iNfYsyqRBdIoEA5y3/4vrgcF0xw="
   validatorAddr="cBxHWxmj9o0/3r8JWRSH+s7y1jY="
 

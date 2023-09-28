@@ -203,7 +203,7 @@ func (c ChainID) String() string {
 	case ChainIDPythNet:
 		return "pythnet"
 	case ChainIDWormchain:
-		return "wormchain"
+		return "deltachain"
 	case ChainIDXpla:
 		return "xpla"
 	case ChainIDBtc:
@@ -271,7 +271,7 @@ func ChainIDFromString(s string) (ChainID, error) {
 		return ChainIDOptimism, nil
 	case "pythnet":
 		return ChainIDPythNet, nil
-	case "wormchain":
+	case "deltachain":
 		return ChainIDWormchain, nil
 	case "xpla":
 		return ChainIDXpla, nil

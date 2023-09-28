@@ -28,10 +28,10 @@ import (
 	tmtypes "github.com/tendermint/tendermint/proto/tendermint/types"
 	dbm "github.com/tendermint/tm-db"
 
-	authzcodec "github.com/wormhole-foundation/wormchain/x/tokenfactory/types/authzcodec"
+	authzcodec "github.com/wormhole-foundation/deltachain/x/tokenfactory/types/authzcodec"
 
 	minttypes "github.com/cosmos/cosmos-sdk/x/mint/types"
-	"github.com/wormhole-foundation/wormchain/app"
+	"github.com/wormhole-foundation/deltachain/app"
 )
 
 type KeeperTestHelper struct {

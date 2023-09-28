@@ -125,7 +125,7 @@ const MAINNET = {
     rpc: undefined,
     key: undefined,
   },
-  wormchain: {
+  deltachain: {
     rpc: undefined,
     key: undefined,
   },
@@ -299,7 +299,7 @@ const TESTNET = {
     rpc: undefined,
     key: undefined,
   },
-  wormchain: {
+  deltachain: {
     rpc: undefined,
     key: undefined,
   },
@@ -442,9 +442,9 @@ const DEVNET = {
     rpc: undefined,
     key: undefined,
   },
-  wormchain: {
+  deltachain: {
     rpc: "http://localhost:1319",
-    chain_id: "wormchain",
+    chain_id: "deltachain",
     key: undefined,
   },
   aptos: {

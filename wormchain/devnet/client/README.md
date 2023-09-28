@@ -1,9 +1,9 @@
-# devnet wormchain client config
+# devnet deltachain client config
 
-This folder contains config for running `wormchaind` against the devnet (Tilt) wormchain instance.
+This folder contains config for running `deltachaind` against the devnet (Tilt) deltachain instance.
 
 ### examples
 
-transfer `utest` from the account used by `wormchain-0` to the account used by `wormchain-1`, to smoke-test wormchain - make sure we can connect to the RPC port, the accounts exist, and wormchain is producing blocks.
+transfer `utest` from the account used by `deltachain-0` to the account used by `deltachain-1`, to smoke-test deltachain - make sure we can connect to the RPC port, the accounts exist, and deltachain is producing blocks.
 
-    ./build/wormchaind --home build tx bank send wormhole1cyyzpxplxdzkeea7kwsydadg87357qna3zg3tq  wormhole1wqwywkce50mg6077huy4j9y8lt80943ks5udzr  1utest --from wormchain-0  --yes --broadcast-mode block --keyring-backend test
+    ./build/deltachaind --home build tx bank send wormhole1cyyzpxplxdzkeea7kwsydadg87357qna3zg3tq  wormhole1wqwywkce50mg6077huy4j9y8lt80943ks5udzr  1utest --from deltachain-0  --yes --broadcast-mode block --keyring-backend test

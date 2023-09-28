@@ -12,10 +12,10 @@ import { MsgInstantiateContract } from "./types/wormhole/tx";
 
 
 const types = [
-  ["/wormhole_foundation.wormchain.wormhole.MsgExecuteGovernanceVAA", MsgExecuteGovernanceVAA],
-  ["/wormhole_foundation.wormchain.wormhole.MsgStoreCode", MsgStoreCode],
-  ["/wormhole_foundation.wormchain.wormhole.MsgRegisterAccountAsGuardian", MsgRegisterAccountAsGuardian],
-  ["/wormhole_foundation.wormchain.wormhole.MsgInstantiateContract", MsgInstantiateContract],
+  ["/wormhole_foundation.deltachain.wormhole.MsgExecuteGovernanceVAA", MsgExecuteGovernanceVAA],
+  ["/wormhole_foundation.deltachain.wormhole.MsgStoreCode", MsgStoreCode],
+  ["/wormhole_foundation.deltachain.wormhole.MsgRegisterAccountAsGuardian", MsgRegisterAccountAsGuardian],
+  ["/wormhole_foundation.deltachain.wormhole.MsgInstantiateContract", MsgInstantiateContract],
   
 ];
 export const MissingWalletError = new Error("wallet is required");
@@ -48,10 +48,10 @@ const txClient = async (wallet: OfflineSigner, { addr: addr }: TxClientOptions =
 
   return {
     signAndBroadcast: (msgs: EncodeObject[], { fee, memo }: SignAndBroadcastOptions = {fee: defaultFee, memo: ""}) => client.signAndBroadcast(address, msgs, fee,memo),
-    msgExecuteGovernanceVAA: (data: MsgExecuteGovernanceVAA): EncodeObject => ({ typeUrl: "/wormhole_foundation.wormchain.wormhole.MsgExecuteGovernanceVAA", value: MsgExecuteGovernanceVAA.fromPartial( data ) }),
-    msgStoreCode: (data: MsgStoreCode): EncodeObject => ({ typeUrl: "/wormhole_foundation.wormchain.wormhole.MsgStoreCode", value: MsgStoreCode.fromPartial( data ) }),
-    msgRegisterAccountAsGuardian: (data: MsgRegisterAccountAsGuardian): EncodeObject => ({ typeUrl: "/wormhole_foundation.wormchain.wormhole.MsgRegisterAccountAsGuardian", value: MsgRegisterAccountAsGuardian.fromPartial( data ) }),
-    msgInstantiateContract: (data: MsgInstantiateContract): EncodeObject => ({ typeUrl: "/wormhole_foundation.wormchain.wormhole.MsgInstantiateContract", value: MsgInstantiateContract.fromPartial( data ) }),
+    msgExecuteGovernanceVAA: (data: MsgExecuteGovernanceVAA): EncodeObject => ({ typeUrl: "/wormhole_foundation.deltachain.wormhole.MsgExecuteGovernanceVAA", value: MsgExecuteGovernanceVAA.fromPartial( data ) }),
+    msgStoreCode: (data: MsgStoreCode): EncodeObject => ({ typeUrl: "/wormhole_foundation.deltachain.wormhole.MsgStoreCode", value: MsgStoreCode.fromPartial( data ) }),
+    msgRegisterAccountAsGuardian: (data: MsgRegisterAccountAsGuardian): EncodeObject => ({ typeUrl: "/wormhole_foundation.deltachain.wormhole.MsgRegisterAccountAsGuardian", value: MsgRegisterAccountAsGuardian.fromPartial( data ) }),
+    msgInstantiateContract: (data: MsgInstantiateContract): EncodeObject => ({ typeUrl: "/wormhole_foundation.deltachain.wormhole.MsgInstantiateContract", value: MsgInstantiateContract.fromPartial( data ) }),
     
   };
 };

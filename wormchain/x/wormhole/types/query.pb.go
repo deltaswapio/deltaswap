@@ -1406,36 +1406,36 @@ func (m *QueryAllWasmInstantiateAllowlistResponse) GetPagination() *query.PageRe
 }
 
 func init() {
-	proto.RegisterType((*QueryAllValidatorAllowlist)(nil), "wormhole_foundation.wormchain.wormhole.QueryAllValidatorAllowlist")
-	proto.RegisterType((*QueryAllValidatorAllowlistResponse)(nil), "wormhole_foundation.wormchain.wormhole.QueryAllValidatorAllowlistResponse")
-	proto.RegisterType((*QueryValidatorAllowlist)(nil), "wormhole_foundation.wormchain.wormhole.QueryValidatorAllowlist")
-	proto.RegisterType((*QueryValidatorAllowlistResponse)(nil), "wormhole_foundation.wormchain.wormhole.QueryValidatorAllowlistResponse")
-	proto.RegisterType((*QueryGetGuardianSetRequest)(nil), "wormhole_foundation.wormchain.wormhole.QueryGetGuardianSetRequest")
-	proto.RegisterType((*QueryGetGuardianSetResponse)(nil), "wormhole_foundation.wormchain.wormhole.QueryGetGuardianSetResponse")
-	proto.RegisterType((*QueryAllGuardianSetRequest)(nil), "wormhole_foundation.wormchain.wormhole.QueryAllGuardianSetRequest")
-	proto.RegisterType((*QueryAllGuardianSetResponse)(nil), "wormhole_foundation.wormchain.wormhole.QueryAllGuardianSetResponse")
-	proto.RegisterType((*QueryGetConfigRequest)(nil), "wormhole_foundation.wormchain.wormhole.QueryGetConfigRequest")
-	proto.RegisterType((*QueryGetConfigResponse)(nil), "wormhole_foundation.wormchain.wormhole.QueryGetConfigResponse")
-	proto.RegisterType((*QueryGetReplayProtectionRequest)(nil), "wormhole_foundation.wormchain.wormhole.QueryGetReplayProtectionRequest")
-	proto.RegisterType((*QueryGetReplayProtectionResponse)(nil), "wormhole_foundation.wormchain.wormhole.QueryGetReplayProtectionResponse")
-	proto.RegisterType((*QueryAllReplayProtectionRequest)(nil), "wormhole_foundation.wormchain.wormhole.QueryAllReplayProtectionRequest")
-	proto.RegisterType((*QueryAllReplayProtectionResponse)(nil), "wormhole_foundation.wormchain.wormhole.QueryAllReplayProtectionResponse")
-	proto.RegisterType((*QueryGetSequenceCounterRequest)(nil), "wormhole_foundation.wormchain.wormhole.QueryGetSequenceCounterRequest")
-	proto.RegisterType((*QueryGetSequenceCounterResponse)(nil), "wormhole_foundation.wormchain.wormhole.QueryGetSequenceCounterResponse")
-	proto.RegisterType((*QueryAllSequenceCounterRequest)(nil), "wormhole_foundation.wormchain.wormhole.QueryAllSequenceCounterRequest")
-	proto.RegisterType((*QueryAllSequenceCounterResponse)(nil), "wormhole_foundation.wormchain.wormhole.QueryAllSequenceCounterResponse")
-	proto.RegisterType((*QueryGetConsensusGuardianSetIndexRequest)(nil), "wormhole_foundation.wormchain.wormhole.QueryGetConsensusGuardianSetIndexRequest")
-	proto.RegisterType((*QueryGetConsensusGuardianSetIndexResponse)(nil), "wormhole_foundation.wormchain.wormhole.QueryGetConsensusGuardianSetIndexResponse")
-	proto.RegisterType((*QueryGetGuardianValidatorRequest)(nil), "wormhole_foundation.wormchain.wormhole.QueryGetGuardianValidatorRequest")
-	proto.RegisterType((*QueryGetGuardianValidatorResponse)(nil), "wormhole_foundation.wormchain.wormhole.QueryGetGuardianValidatorResponse")
-	proto.RegisterType((*QueryAllGuardianValidatorRequest)(nil), "wormhole_foundation.wormchain.wormhole.QueryAllGuardianValidatorRequest")
-	proto.RegisterType((*QueryAllGuardianValidatorResponse)(nil), "wormhole_foundation.wormchain.wormhole.QueryAllGuardianValidatorResponse")
-	proto.RegisterType((*QueryLatestGuardianSetIndexRequest)(nil), "wormhole_foundation.wormchain.wormhole.QueryLatestGuardianSetIndexRequest")
-	proto.RegisterType((*QueryLatestGuardianSetIndexResponse)(nil), "wormhole_foundation.wormchain.wormhole.QueryLatestGuardianSetIndexResponse")
-	proto.RegisterType((*QueryIbcComposabilityMwContractRequest)(nil), "wormhole_foundation.wormchain.wormhole.QueryIbcComposabilityMwContractRequest")
-	proto.RegisterType((*QueryIbcComposabilityMwContractResponse)(nil), "wormhole_foundation.wormchain.wormhole.QueryIbcComposabilityMwContractResponse")
-	proto.RegisterType((*QueryAllWasmInstantiateAllowlist)(nil), "wormhole_foundation.wormchain.wormhole.QueryAllWasmInstantiateAllowlist")
-	proto.RegisterType((*QueryAllWasmInstantiateAllowlistResponse)(nil), "wormhole_foundation.wormchain.wormhole.QueryAllWasmInstantiateAllowlistResponse")
+	proto.RegisterType((*QueryAllValidatorAllowlist)(nil), "wormhole_foundation.deltachain.wormhole.QueryAllValidatorAllowlist")
+	proto.RegisterType((*QueryAllValidatorAllowlistResponse)(nil), "wormhole_foundation.deltachain.wormhole.QueryAllValidatorAllowlistResponse")
+	proto.RegisterType((*QueryValidatorAllowlist)(nil), "wormhole_foundation.deltachain.wormhole.QueryValidatorAllowlist")
+	proto.RegisterType((*QueryValidatorAllowlistResponse)(nil), "wormhole_foundation.deltachain.wormhole.QueryValidatorAllowlistResponse")
+	proto.RegisterType((*QueryGetGuardianSetRequest)(nil), "wormhole_foundation.deltachain.wormhole.QueryGetGuardianSetRequest")
+	proto.RegisterType((*QueryGetGuardianSetResponse)(nil), "wormhole_foundation.deltachain.wormhole.QueryGetGuardianSetResponse")
+	proto.RegisterType((*QueryAllGuardianSetRequest)(nil), "wormhole_foundation.deltachain.wormhole.QueryAllGuardianSetRequest")
+	proto.RegisterType((*QueryAllGuardianSetResponse)(nil), "wormhole_foundation.deltachain.wormhole.QueryAllGuardianSetResponse")
+	proto.RegisterType((*QueryGetConfigRequest)(nil), "wormhole_foundation.deltachain.wormhole.QueryGetConfigRequest")
+	proto.RegisterType((*QueryGetConfigResponse)(nil), "wormhole_foundation.deltachain.wormhole.QueryGetConfigResponse")
+	proto.RegisterType((*QueryGetReplayProtectionRequest)(nil), "wormhole_foundation.deltachain.wormhole.QueryGetReplayProtectionRequest")
+	proto.RegisterType((*QueryGetReplayProtectionResponse)(nil), "wormhole_foundation.deltachain.wormhole.QueryGetReplayProtectionResponse")
+	proto.RegisterType((*QueryAllReplayProtectionRequest)(nil), "wormhole_foundation.deltachain.wormhole.QueryAllReplayProtectionRequest")
+	proto.RegisterType((*QueryAllReplayProtectionResponse)(nil), "wormhole_foundation.deltachain.wormhole.QueryAllReplayProtectionResponse")
+	proto.RegisterType((*QueryGetSequenceCounterRequest)(nil), "wormhole_foundation.deltachain.wormhole.QueryGetSequenceCounterRequest")
+	proto.RegisterType((*QueryGetSequenceCounterResponse)(nil), "wormhole_foundation.deltachain.wormhole.QueryGetSequenceCounterResponse")
+	proto.RegisterType((*QueryAllSequenceCounterRequest)(nil), "wormhole_foundation.deltachain.wormhole.QueryAllSequenceCounterRequest")
+	proto.RegisterType((*QueryAllSequenceCounterResponse)(nil), "wormhole_foundation.deltachain.wormhole.QueryAllSequenceCounterResponse")
+	proto.RegisterType((*QueryGetConsensusGuardianSetIndexRequest)(nil), "wormhole_foundation.deltachain.wormhole.QueryGetConsensusGuardianSetIndexRequest")
+	proto.RegisterType((*QueryGetConsensusGuardianSetIndexResponse)(nil), "wormhole_foundation.deltachain.wormhole.QueryGetConsensusGuardianSetIndexResponse")
+	proto.RegisterType((*QueryGetGuardianValidatorRequest)(nil), "wormhole_foundation.deltachain.wormhole.QueryGetGuardianValidatorRequest")
+	proto.RegisterType((*QueryGetGuardianValidatorResponse)(nil), "wormhole_foundation.deltachain.wormhole.QueryGetGuardianValidatorResponse")
+	proto.RegisterType((*QueryAllGuardianValidatorRequest)(nil), "wormhole_foundation.deltachain.wormhole.QueryAllGuardianValidatorRequest")
+	proto.RegisterType((*QueryAllGuardianValidatorResponse)(nil), "wormhole_foundation.deltachain.wormhole.QueryAllGuardianValidatorResponse")
+	proto.RegisterType((*QueryLatestGuardianSetIndexRequest)(nil), "wormhole_foundation.deltachain.wormhole.QueryLatestGuardianSetIndexRequest")
+	proto.RegisterType((*QueryLatestGuardianSetIndexResponse)(nil), "wormhole_foundation.deltachain.wormhole.QueryLatestGuardianSetIndexResponse")
+	proto.RegisterType((*QueryIbcComposabilityMwContractRequest)(nil), "wormhole_foundation.deltachain.wormhole.QueryIbcComposabilityMwContractRequest")
+	proto.RegisterType((*QueryIbcComposabilityMwContractResponse)(nil), "wormhole_foundation.deltachain.wormhole.QueryIbcComposabilityMwContractResponse")
+	proto.RegisterType((*QueryAllWasmInstantiateAllowlist)(nil), "wormhole_foundation.deltachain.wormhole.QueryAllWasmInstantiateAllowlist")
+	proto.RegisterType((*QueryAllWasmInstantiateAllowlistResponse)(nil), "wormhole_foundation.deltachain.wormhole.QueryAllWasmInstantiateAllowlistResponse")
 }
 
 func init() { proto.RegisterFile("wormhole/query.proto", fileDescriptor_273185ecc792fa38) }
@@ -1585,7 +1585,7 @@ func NewQueryClient(cc grpc1.ClientConn) QueryClient {
 
 func (c *queryClient) GuardianSet(ctx context.Context, in *QueryGetGuardianSetRequest, opts ...grpc.CallOption) (*QueryGetGuardianSetResponse, error) {
 	out := new(QueryGetGuardianSetResponse)
-	err := c.cc.Invoke(ctx, "/wormhole_foundation.wormchain.wormhole.Query/GuardianSet", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/wormhole_foundation.deltachain.wormhole.Query/GuardianSet", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1594,7 +1594,7 @@ func (c *queryClient) GuardianSet(ctx context.Context, in *QueryGetGuardianSetRe
 
 func (c *queryClient) GuardianSetAll(ctx context.Context, in *QueryAllGuardianSetRequest, opts ...grpc.CallOption) (*QueryAllGuardianSetResponse, error) {
 	out := new(QueryAllGuardianSetResponse)
-	err := c.cc.Invoke(ctx, "/wormhole_foundation.wormchain.wormhole.Query/GuardianSetAll", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/wormhole_foundation.deltachain.wormhole.Query/GuardianSetAll", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1603,7 +1603,7 @@ func (c *queryClient) GuardianSetAll(ctx context.Context, in *QueryAllGuardianSe
 
 func (c *queryClient) Config(ctx context.Context, in *QueryGetConfigRequest, opts ...grpc.CallOption) (*QueryGetConfigResponse, error) {
 	out := new(QueryGetConfigResponse)
-	err := c.cc.Invoke(ctx, "/wormhole_foundation.wormchain.wormhole.Query/Config", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/wormhole_foundation.deltachain.wormhole.Query/Config", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1612,7 +1612,7 @@ func (c *queryClient) Config(ctx context.Context, in *QueryGetConfigRequest, opt
 
 func (c *queryClient) ReplayProtection(ctx context.Context, in *QueryGetReplayProtectionRequest, opts ...grpc.CallOption) (*QueryGetReplayProtectionResponse, error) {
 	out := new(QueryGetReplayProtectionResponse)
-	err := c.cc.Invoke(ctx, "/wormhole_foundation.wormchain.wormhole.Query/ReplayProtection", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/wormhole_foundation.deltachain.wormhole.Query/ReplayProtection", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1621,7 +1621,7 @@ func (c *queryClient) ReplayProtection(ctx context.Context, in *QueryGetReplayPr
 
 func (c *queryClient) ReplayProtectionAll(ctx context.Context, in *QueryAllReplayProtectionRequest, opts ...grpc.CallOption) (*QueryAllReplayProtectionResponse, error) {
 	out := new(QueryAllReplayProtectionResponse)
-	err := c.cc.Invoke(ctx, "/wormhole_foundation.wormchain.wormhole.Query/ReplayProtectionAll", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/wormhole_foundation.deltachain.wormhole.Query/ReplayProtectionAll", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1630,7 +1630,7 @@ func (c *queryClient) ReplayProtectionAll(ctx context.Context, in *QueryAllRepla
 
 func (c *queryClient) SequenceCounter(ctx context.Context, in *QueryGetSequenceCounterRequest, opts ...grpc.CallOption) (*QueryGetSequenceCounterResponse, error) {
 	out := new(QueryGetSequenceCounterResponse)
-	err := c.cc.Invoke(ctx, "/wormhole_foundation.wormchain.wormhole.Query/SequenceCounter", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/wormhole_foundation.deltachain.wormhole.Query/SequenceCounter", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1639,7 +1639,7 @@ func (c *queryClient) SequenceCounter(ctx context.Context, in *QueryGetSequenceC
 
 func (c *queryClient) SequenceCounterAll(ctx context.Context, in *QueryAllSequenceCounterRequest, opts ...grpc.CallOption) (*QueryAllSequenceCounterResponse, error) {
 	out := new(QueryAllSequenceCounterResponse)
-	err := c.cc.Invoke(ctx, "/wormhole_foundation.wormchain.wormhole.Query/SequenceCounterAll", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/wormhole_foundation.deltachain.wormhole.Query/SequenceCounterAll", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1648,7 +1648,7 @@ func (c *queryClient) SequenceCounterAll(ctx context.Context, in *QueryAllSequen
 
 func (c *queryClient) ConsensusGuardianSetIndex(ctx context.Context, in *QueryGetConsensusGuardianSetIndexRequest, opts ...grpc.CallOption) (*QueryGetConsensusGuardianSetIndexResponse, error) {
 	out := new(QueryGetConsensusGuardianSetIndexResponse)
-	err := c.cc.Invoke(ctx, "/wormhole_foundation.wormchain.wormhole.Query/ConsensusGuardianSetIndex", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/wormhole_foundation.deltachain.wormhole.Query/ConsensusGuardianSetIndex", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1657,7 +1657,7 @@ func (c *queryClient) ConsensusGuardianSetIndex(ctx context.Context, in *QueryGe
 
 func (c *queryClient) GuardianValidator(ctx context.Context, in *QueryGetGuardianValidatorRequest, opts ...grpc.CallOption) (*QueryGetGuardianValidatorResponse, error) {
 	out := new(QueryGetGuardianValidatorResponse)
-	err := c.cc.Invoke(ctx, "/wormhole_foundation.wormchain.wormhole.Query/GuardianValidator", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/wormhole_foundation.deltachain.wormhole.Query/GuardianValidator", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1666,7 +1666,7 @@ func (c *queryClient) GuardianValidator(ctx context.Context, in *QueryGetGuardia
 
 func (c *queryClient) GuardianValidatorAll(ctx context.Context, in *QueryAllGuardianValidatorRequest, opts ...grpc.CallOption) (*QueryAllGuardianValidatorResponse, error) {
 	out := new(QueryAllGuardianValidatorResponse)
-	err := c.cc.Invoke(ctx, "/wormhole_foundation.wormchain.wormhole.Query/GuardianValidatorAll", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/wormhole_foundation.deltachain.wormhole.Query/GuardianValidatorAll", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1675,7 +1675,7 @@ func (c *queryClient) GuardianValidatorAll(ctx context.Context, in *QueryAllGuar
 
 func (c *queryClient) LatestGuardianSetIndex(ctx context.Context, in *QueryLatestGuardianSetIndexRequest, opts ...grpc.CallOption) (*QueryLatestGuardianSetIndexResponse, error) {
 	out := new(QueryLatestGuardianSetIndexResponse)
-	err := c.cc.Invoke(ctx, "/wormhole_foundation.wormchain.wormhole.Query/LatestGuardianSetIndex", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/wormhole_foundation.deltachain.wormhole.Query/LatestGuardianSetIndex", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1684,7 +1684,7 @@ func (c *queryClient) LatestGuardianSetIndex(ctx context.Context, in *QueryLates
 
 func (c *queryClient) AllowlistAll(ctx context.Context, in *QueryAllValidatorAllowlist, opts ...grpc.CallOption) (*QueryAllValidatorAllowlistResponse, error) {
 	out := new(QueryAllValidatorAllowlistResponse)
-	err := c.cc.Invoke(ctx, "/wormhole_foundation.wormchain.wormhole.Query/AllowlistAll", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/wormhole_foundation.deltachain.wormhole.Query/AllowlistAll", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1693,7 +1693,7 @@ func (c *queryClient) AllowlistAll(ctx context.Context, in *QueryAllValidatorAll
 
 func (c *queryClient) Allowlist(ctx context.Context, in *QueryValidatorAllowlist, opts ...grpc.CallOption) (*QueryValidatorAllowlistResponse, error) {
 	out := new(QueryValidatorAllowlistResponse)
-	err := c.cc.Invoke(ctx, "/wormhole_foundation.wormchain.wormhole.Query/Allowlist", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/wormhole_foundation.deltachain.wormhole.Query/Allowlist", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1702,7 +1702,7 @@ func (c *queryClient) Allowlist(ctx context.Context, in *QueryValidatorAllowlist
 
 func (c *queryClient) IbcComposabilityMwContract(ctx context.Context, in *QueryIbcComposabilityMwContractRequest, opts ...grpc.CallOption) (*QueryIbcComposabilityMwContractResponse, error) {
 	out := new(QueryIbcComposabilityMwContractResponse)
-	err := c.cc.Invoke(ctx, "/wormhole_foundation.wormchain.wormhole.Query/IbcComposabilityMwContract", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/wormhole_foundation.deltachain.wormhole.Query/IbcComposabilityMwContract", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1711,7 +1711,7 @@ func (c *queryClient) IbcComposabilityMwContract(ctx context.Context, in *QueryI
 
 func (c *queryClient) WasmInstantiateAllowlistAll(ctx context.Context, in *QueryAllWasmInstantiateAllowlist, opts ...grpc.CallOption) (*QueryAllWasmInstantiateAllowlistResponse, error) {
 	out := new(QueryAllWasmInstantiateAllowlistResponse)
-	err := c.cc.Invoke(ctx, "/wormhole_foundation.wormchain.wormhole.Query/WasmInstantiateAllowlistAll", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/wormhole_foundation.deltachain.wormhole.Query/WasmInstantiateAllowlistAll", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1812,7 +1812,7 @@ func _Query_GuardianSet_Handler(srv interface{}, ctx context.Context, dec func(i
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/wormhole_foundation.wormchain.wormhole.Query/GuardianSet",
+		FullMethod: "/wormhole_foundation.deltachain.wormhole.Query/GuardianSet",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(QueryServer).GuardianSet(ctx, req.(*QueryGetGuardianSetRequest))
@@ -1830,7 +1830,7 @@ func _Query_GuardianSetAll_Handler(srv interface{}, ctx context.Context, dec fun
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/wormhole_foundation.wormchain.wormhole.Query/GuardianSetAll",
+		FullMethod: "/wormhole_foundation.deltachain.wormhole.Query/GuardianSetAll",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(QueryServer).GuardianSetAll(ctx, req.(*QueryAllGuardianSetRequest))
@@ -1848,7 +1848,7 @@ func _Query_Config_Handler(srv interface{}, ctx context.Context, dec func(interf
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/wormhole_foundation.wormchain.wormhole.Query/Config",
+		FullMethod: "/wormhole_foundation.deltachain.wormhole.Query/Config",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(QueryServer).Config(ctx, req.(*QueryGetConfigRequest))
@@ -1866,7 +1866,7 @@ func _Query_ReplayProtection_Handler(srv interface{}, ctx context.Context, dec f
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/wormhole_foundation.wormchain.wormhole.Query/ReplayProtection",
+		FullMethod: "/wormhole_foundation.deltachain.wormhole.Query/ReplayProtection",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(QueryServer).ReplayProtection(ctx, req.(*QueryGetReplayProtectionRequest))
@@ -1884,7 +1884,7 @@ func _Query_ReplayProtectionAll_Handler(srv interface{}, ctx context.Context, de
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/wormhole_foundation.wormchain.wormhole.Query/ReplayProtectionAll",
+		FullMethod: "/wormhole_foundation.deltachain.wormhole.Query/ReplayProtectionAll",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(QueryServer).ReplayProtectionAll(ctx, req.(*QueryAllReplayProtectionRequest))
@@ -1902,7 +1902,7 @@ func _Query_SequenceCounter_Handler(srv interface{}, ctx context.Context, dec fu
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/wormhole_foundation.wormchain.wormhole.Query/SequenceCounter",
+		FullMethod: "/wormhole_foundation.deltachain.wormhole.Query/SequenceCounter",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(QueryServer).SequenceCounter(ctx, req.(*QueryGetSequenceCounterRequest))
@@ -1920,7 +1920,7 @@ func _Query_SequenceCounterAll_Handler(srv interface{}, ctx context.Context, dec
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/wormhole_foundation.wormchain.wormhole.Query/SequenceCounterAll",
+		FullMethod: "/wormhole_foundation.deltachain.wormhole.Query/SequenceCounterAll",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(QueryServer).SequenceCounterAll(ctx, req.(*QueryAllSequenceCounterRequest))
@@ -1938,7 +1938,7 @@ func _Query_ConsensusGuardianSetIndex_Handler(srv interface{}, ctx context.Conte
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/wormhole_foundation.wormchain.wormhole.Query/ConsensusGuardianSetIndex",
+		FullMethod: "/wormhole_foundation.deltachain.wormhole.Query/ConsensusGuardianSetIndex",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(QueryServer).ConsensusGuardianSetIndex(ctx, req.(*QueryGetConsensusGuardianSetIndexRequest))
@@ -1956,7 +1956,7 @@ func _Query_GuardianValidator_Handler(srv interface{}, ctx context.Context, dec 
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/wormhole_foundation.wormchain.wormhole.Query/GuardianValidator",
+		FullMethod: "/wormhole_foundation.deltachain.wormhole.Query/GuardianValidator",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(QueryServer).GuardianValidator(ctx, req.(*QueryGetGuardianValidatorRequest))
@@ -1974,7 +1974,7 @@ func _Query_GuardianValidatorAll_Handler(srv interface{}, ctx context.Context, d
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/wormhole_foundation.wormchain.wormhole.Query/GuardianValidatorAll",
+		FullMethod: "/wormhole_foundation.deltachain.wormhole.Query/GuardianValidatorAll",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(QueryServer).GuardianValidatorAll(ctx, req.(*QueryAllGuardianValidatorRequest))
@@ -1992,7 +1992,7 @@ func _Query_LatestGuardianSetIndex_Handler(srv interface{}, ctx context.Context,
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/wormhole_foundation.wormchain.wormhole.Query/LatestGuardianSetIndex",
+		FullMethod: "/wormhole_foundation.deltachain.wormhole.Query/LatestGuardianSetIndex",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(QueryServer).LatestGuardianSetIndex(ctx, req.(*QueryLatestGuardianSetIndexRequest))
@@ -2010,7 +2010,7 @@ func _Query_AllowlistAll_Handler(srv interface{}, ctx context.Context, dec func(
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/wormhole_foundation.wormchain.wormhole.Query/AllowlistAll",
+		FullMethod: "/wormhole_foundation.deltachain.wormhole.Query/AllowlistAll",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(QueryServer).AllowlistAll(ctx, req.(*QueryAllValidatorAllowlist))
@@ -2028,7 +2028,7 @@ func _Query_Allowlist_Handler(srv interface{}, ctx context.Context, dec func(int
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/wormhole_foundation.wormchain.wormhole.Query/Allowlist",
+		FullMethod: "/wormhole_foundation.deltachain.wormhole.Query/Allowlist",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(QueryServer).Allowlist(ctx, req.(*QueryValidatorAllowlist))
@@ -2046,7 +2046,7 @@ func _Query_IbcComposabilityMwContract_Handler(srv interface{}, ctx context.Cont
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/wormhole_foundation.wormchain.wormhole.Query/IbcComposabilityMwContract",
+		FullMethod: "/wormhole_foundation.deltachain.wormhole.Query/IbcComposabilityMwContract",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(QueryServer).IbcComposabilityMwContract(ctx, req.(*QueryIbcComposabilityMwContractRequest))
@@ -2064,7 +2064,7 @@ func _Query_WasmInstantiateAllowlistAll_Handler(srv interface{}, ctx context.Con
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/wormhole_foundation.wormchain.wormhole.Query/WasmInstantiateAllowlistAll",
+		FullMethod: "/wormhole_foundation.deltachain.wormhole.Query/WasmInstantiateAllowlistAll",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(QueryServer).WasmInstantiateAllowlistAll(ctx, req.(*QueryAllWasmInstantiateAllowlist))
@@ -2073,7 +2073,7 @@ func _Query_WasmInstantiateAllowlistAll_Handler(srv interface{}, ctx context.Con
 }
 
 var _Query_serviceDesc = grpc.ServiceDesc{
-	ServiceName: "wormhole_foundation.wormchain.wormhole.Query",
+	ServiceName: "wormhole_foundation.deltachain.wormhole.Query",
 	HandlerType: (*QueryServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{

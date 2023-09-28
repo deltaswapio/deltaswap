@@ -6,7 +6,7 @@ set -euo pipefail
 file="./scripts/devnet-consts.json"
 paths=(
     ./terra2/tools/
-    ./wormchain/contracts/tools/
+    ./deltachain/contracts/tools/
 )
 
 for dest in "${paths[@]}"; do

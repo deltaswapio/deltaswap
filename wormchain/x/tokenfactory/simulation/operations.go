@@ -10,8 +10,8 @@ import (
 	simtypes "github.com/cosmos/cosmos-sdk/types/simulation"
 	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
 	"github.com/cosmos/cosmos-sdk/x/simulation"
-	"github.com/wormhole-foundation/wormchain/app/params"
-	"github.com/wormhole-foundation/wormchain/x/tokenfactory/types"
+	"github.com/wormhole-foundation/deltachain/app/params"
+	"github.com/wormhole-foundation/deltachain/x/tokenfactory/types"
 )
 
 // Simulation operation weights constants

@@ -133,7 +133,7 @@ func (m *GenesisState) GetIbcComposabilityMwContract() IbcComposabilityMwContrac
 }
 
 func init() {
-	proto.RegisterType((*GenesisState)(nil), "wormhole_foundation.wormchain.wormhole.GenesisState")
+	proto.RegisterType((*GenesisState)(nil), "wormhole_foundation.deltachain.wormhole.GenesisState")
 }
 
 func init() { proto.RegisterFile("wormhole/genesis.proto", fileDescriptor_9a7ced3fe0304831) }

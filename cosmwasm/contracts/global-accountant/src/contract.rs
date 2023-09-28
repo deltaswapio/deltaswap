@@ -330,7 +330,7 @@ fn handle_vaa(
         bail!(ContractError::DuplicateMessage);
     }
 
-    // We may also accept governance messages from wormchain in the future
+    // We may also accept governance messages from deltachain in the future
     let mut evt = if body.emitter_chain == Chain::Solana
         && body.emitter_address == wormhole_sdk::GOVERNANCE_EMITTER
     {

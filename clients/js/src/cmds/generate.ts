@@ -321,7 +321,7 @@ function parseAddress(chain: ChainName, address: string): string {
     }
 
     return sha3_256(Buffer.from(address)); // address is hash of fully qualified type
-  } else if (chain === "wormchain") {
+  } else if (chain === "deltachain") {
     return "0x" + tryNativeToHexString(address, chain);
   } else if (chain === "btc") {
     throw Error("btc is not supported yet");

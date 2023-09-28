@@ -7,7 +7,7 @@ const fs = require("fs");
 const path = require("path");
 
 const CERTUS_DIRECTORY =
-  "../vue/src/store/generated/wormhole-foundation/wormchain/";
+  "../vue/src/store/generated/wormhole-foundation/deltachain/";
 const COSMOS_DIRECTORY = "../vue/src/store/generated/cosmos/cosmos-sdk/";
 const WASMD_DIRECTORY = "../vue/src/store/generated/CosmWasm/wasmd/";
 const MODULE_DIRECTORY = "../ts-sdk/src/modules/";

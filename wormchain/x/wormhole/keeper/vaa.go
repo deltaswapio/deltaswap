@@ -5,7 +5,7 @@ import (
 	"encoding/binary"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/wormhole-foundation/wormchain/x/wormhole/types"
+	"github.com/wormhole-foundation/deltachain/x/wormhole/types"
 	"github.com/wormhole-foundation/wormhole/sdk/vaa"
 )
 
@@ -103,7 +103,7 @@ func (k Keeper) VerifyVAA(ctx sdk.Context, v *vaa.VAA) error {
 // - Check signatures
 // - Replay protection
 // - Check the source chain and address is governance
-// - Check the governance payload is for wormchain and the specified module
+// - Check the governance payload is for deltachain and the specified module
 // - return the parsed action and governance payload
 func (k Keeper) VerifyGovernanceVAA(ctx sdk.Context, v *vaa.VAA, module [32]byte) (action byte, payload []byte, err error) {
 	if err = k.VerifyVAA(ctx, v); err != nil {

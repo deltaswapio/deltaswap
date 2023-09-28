@@ -48,12 +48,12 @@ async function main() {
     const WORMCHAIN_ID = 3104
 
     let host = devnetConsts.chains[3104].tendermintUrlLocal
-    if (os.hostname().includes("wormchain-deploy")) {
+    if (os.hostname().includes("deltachain-deploy")) {
         // running in tilt devnet
         host = devnetConsts.chains[3104].tendermintUrlTilt
     }
     const denom = devnetConsts.chains[WORMCHAIN_ID].addresses.native.denom
-    const mnemonic = devnetConsts.chains[WORMCHAIN_ID].accounts.wormchainNodeOfGuardian0.mnemonic
+    const mnemonic = devnetConsts.chains[WORMCHAIN_ID].accounts.deltachainNodeOfGuardian0.mnemonic
     const addressPrefix = "wormhole"
     const signerPk = devnetConsts.devnetGuardians[0].private
     const accountingAddress = devnetConsts.chains[WORMCHAIN_ID].contracts.accountingNativeAddress
@@ -65,13 +65,13 @@ async function main() {
 
     // there is no danger here, just several Cosmos chains in devnet, so check for config issues
     let id = await cwc.getChainId()
-    if (id !== "wormchain") {
+    if (id !== "deltachain") {
         throw new Error(`Wormchain CosmWasmClient connection produced an unexpected chainID: ${id}`)
     }
 
     const signers = await w.getAccounts()
     const signer = signers[0].address
-    console.log("wormchain wallet pubkey: ", signer)
+    console.log("deltachain wallet pubkey: ", signer)
 
     const nativeBalance = await cwc.getBalance(signer, denom)
     console.log("nativeBalance ", nativeBalance.amount)

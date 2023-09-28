@@ -59,7 +59,7 @@ spec:
       restartPolicy: Never
       containers:
         - name: accountant-ci-tests
-          image: wormchain-deploy
+          image: deltachain-deploy
           command:
             - /bin/sh
             - -c

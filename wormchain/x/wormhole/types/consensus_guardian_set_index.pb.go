@@ -67,7 +67,7 @@ func (m *ConsensusGuardianSetIndex) GetIndex() uint32 {
 }
 
 func init() {
-	proto.RegisterType((*ConsensusGuardianSetIndex)(nil), "wormhole_foundation.wormchain.wormhole.ConsensusGuardianSetIndex")
+	proto.RegisterType((*ConsensusGuardianSetIndex)(nil), "wormhole_foundation.deltachain.wormhole.ConsensusGuardianSetIndex")
 }
 
 func init() {

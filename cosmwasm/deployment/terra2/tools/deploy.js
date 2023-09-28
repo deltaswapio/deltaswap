@@ -286,7 +286,7 @@ for (const [contract, registrations] of Object.entries(
   }
 }
 
-// submit wormchain channel ID whitelist to the wormhole_ibc contract
+// submit deltachain channel ID whitelist to the wormhole_ibc contract
 const ibc_whitelist_tx = await wallet.createAndSignTx({
   msgs: [
     new MsgExecuteContract(

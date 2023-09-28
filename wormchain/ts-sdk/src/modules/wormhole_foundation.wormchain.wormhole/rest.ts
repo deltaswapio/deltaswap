@@ -439,11 +439,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
    * @tags Query
    * @name QueryConfig
    * @summary Queries a config by index.
-   * @request GET:/wormhole_foundation/wormchain/wormhole/config
+   * @request GET:/wormhole_foundation/deltachain/wormhole/config
    */
   queryConfig = (params: RequestParams = {}) =>
     this.request<WormholeQueryGetConfigResponse, RpcStatus>({
-      path: `/wormhole_foundation/wormchain/wormhole/config`,
+      path: `/wormhole_foundation/deltachain/wormhole/config`,
       method: "GET",
       format: "json",
       ...params,
@@ -455,11 +455,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
    * @tags Query
    * @name QueryConsensusGuardianSetIndex
    * @summary Queries a ConsensusGuardianSetIndex by index.
-   * @request GET:/wormhole_foundation/wormchain/wormhole/consensus_guardian_set_index
+   * @request GET:/wormhole_foundation/deltachain/wormhole/consensus_guardian_set_index
    */
   queryConsensusGuardianSetIndex = (params: RequestParams = {}) =>
     this.request<WormholeQueryGetConsensusGuardianSetIndexResponse, RpcStatus>({
-      path: `/wormhole_foundation/wormchain/wormhole/consensus_guardian_set_index`,
+      path: `/wormhole_foundation/deltachain/wormhole/consensus_guardian_set_index`,
       method: "GET",
       format: "json",
       ...params,
@@ -471,7 +471,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
    * @tags Query
    * @name QueryGuardianSetAll
    * @summary Queries a list of guardianSet items.
-   * @request GET:/wormhole_foundation/wormchain/wormhole/guardianSet
+   * @request GET:/wormhole_foundation/deltachain/wormhole/guardianSet
    */
   queryGuardianSetAll = (
     query?: {
@@ -484,7 +484,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     params: RequestParams = {},
   ) =>
     this.request<WormholeQueryAllGuardianSetResponse, RpcStatus>({
-      path: `/wormhole_foundation/wormchain/wormhole/guardianSet`,
+      path: `/wormhole_foundation/deltachain/wormhole/guardianSet`,
       method: "GET",
       query: query,
       format: "json",
@@ -497,11 +497,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
    * @tags Query
    * @name QueryGuardianSet
    * @summary Queries a guardianSet by index.
-   * @request GET:/wormhole_foundation/wormchain/wormhole/guardianSet/{index}
+   * @request GET:/wormhole_foundation/deltachain/wormhole/guardianSet/{index}
    */
   queryGuardianSet = (index: number, params: RequestParams = {}) =>
     this.request<WormholeQueryGetGuardianSetResponse, RpcStatus>({
-      path: `/wormhole_foundation/wormchain/wormhole/guardianSet/${index}`,
+      path: `/wormhole_foundation/deltachain/wormhole/guardianSet/${index}`,
       method: "GET",
       format: "json",
       ...params,
@@ -513,7 +513,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
    * @tags Query
    * @name QueryGuardianValidatorAll
    * @summary Queries a list of GuardianValidator items.
-   * @request GET:/wormhole_foundation/wormchain/wormhole/guardian_validator
+   * @request GET:/wormhole_foundation/deltachain/wormhole/guardian_validator
    */
   queryGuardianValidatorAll = (
     query?: {
@@ -526,7 +526,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     params: RequestParams = {},
   ) =>
     this.request<WormholeQueryAllGuardianValidatorResponse, RpcStatus>({
-      path: `/wormhole_foundation/wormchain/wormhole/guardian_validator`,
+      path: `/wormhole_foundation/deltachain/wormhole/guardian_validator`,
       method: "GET",
       query: query,
       format: "json",
@@ -539,11 +539,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
    * @tags Query
    * @name QueryGuardianValidator
    * @summary Queries a GuardianValidator by index.
-   * @request GET:/wormhole_foundation/wormchain/wormhole/guardian_validator/{guardianKey}
+   * @request GET:/wormhole_foundation/deltachain/wormhole/guardian_validator/{guardianKey}
    */
   queryGuardianValidator = (guardianKey: string, params: RequestParams = {}) =>
     this.request<WormholeQueryGetGuardianValidatorResponse, RpcStatus>({
-      path: `/wormhole_foundation/wormchain/wormhole/guardian_validator/${guardianKey}`,
+      path: `/wormhole_foundation/deltachain/wormhole/guardian_validator/${guardianKey}`,
       method: "GET",
       format: "json",
       ...params,
@@ -555,11 +555,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
    * @tags Query
    * @name QueryLatestGuardianSetIndex
    * @summary Queries a list of LatestGuardianSetIndex items.
-   * @request GET:/wormhole_foundation/wormchain/wormhole/latest_guardian_set_index
+   * @request GET:/wormhole_foundation/deltachain/wormhole/latest_guardian_set_index
    */
   queryLatestGuardianSetIndex = (params: RequestParams = {}) =>
     this.request<WormholeQueryLatestGuardianSetIndexResponse, RpcStatus>({
-      path: `/wormhole_foundation/wormchain/wormhole/latest_guardian_set_index`,
+      path: `/wormhole_foundation/deltachain/wormhole/latest_guardian_set_index`,
       method: "GET",
       format: "json",
       ...params,
@@ -571,7 +571,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
    * @tags Query
    * @name QueryReplayProtectionAll
    * @summary Queries a list of replayProtection items.
-   * @request GET:/wormhole_foundation/wormchain/wormhole/replayProtection
+   * @request GET:/wormhole_foundation/deltachain/wormhole/replayProtection
    */
   queryReplayProtectionAll = (
     query?: {
@@ -584,7 +584,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     params: RequestParams = {},
   ) =>
     this.request<WormholeQueryAllReplayProtectionResponse, RpcStatus>({
-      path: `/wormhole_foundation/wormchain/wormhole/replayProtection`,
+      path: `/wormhole_foundation/deltachain/wormhole/replayProtection`,
       method: "GET",
       query: query,
       format: "json",
@@ -597,11 +597,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
    * @tags Query
    * @name QueryReplayProtection
    * @summary Queries a replayProtection by index.
-   * @request GET:/wormhole_foundation/wormchain/wormhole/replayProtection/{index}
+   * @request GET:/wormhole_foundation/deltachain/wormhole/replayProtection/{index}
    */
   queryReplayProtection = (index: string, params: RequestParams = {}) =>
     this.request<WormholeQueryGetReplayProtectionResponse, RpcStatus>({
-      path: `/wormhole_foundation/wormchain/wormhole/replayProtection/${index}`,
+      path: `/wormhole_foundation/deltachain/wormhole/replayProtection/${index}`,
       method: "GET",
       format: "json",
       ...params,
@@ -613,7 +613,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
    * @tags Query
    * @name QuerySequenceCounterAll
    * @summary Queries a list of sequenceCounter items.
-   * @request GET:/wormhole_foundation/wormchain/wormhole/sequenceCounter
+   * @request GET:/wormhole_foundation/deltachain/wormhole/sequenceCounter
    */
   querySequenceCounterAll = (
     query?: {
@@ -626,7 +626,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     params: RequestParams = {},
   ) =>
     this.request<WormholeQueryAllSequenceCounterResponse, RpcStatus>({
-      path: `/wormhole_foundation/wormchain/wormhole/sequenceCounter`,
+      path: `/wormhole_foundation/deltachain/wormhole/sequenceCounter`,
       method: "GET",
       query: query,
       format: "json",
@@ -639,11 +639,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
    * @tags Query
    * @name QuerySequenceCounter
    * @summary Queries a sequenceCounter by index.
-   * @request GET:/wormhole_foundation/wormchain/wormhole/sequenceCounter/{index}
+   * @request GET:/wormhole_foundation/deltachain/wormhole/sequenceCounter/{index}
    */
   querySequenceCounter = (index: string, params: RequestParams = {}) =>
     this.request<WormholeQueryGetSequenceCounterResponse, RpcStatus>({
-      path: `/wormhole_foundation/wormchain/wormhole/sequenceCounter/${index}`,
+      path: `/wormhole_foundation/deltachain/wormhole/sequenceCounter/${index}`,
       method: "GET",
       format: "json",
       ...params,

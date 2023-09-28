@@ -25,11 +25,11 @@ import (
 	abci "github.com/tendermint/tendermint/abci/types"
 
 	simtypes "github.com/cosmos/cosmos-sdk/types/simulation"
-	simulation "github.com/wormhole-foundation/wormchain/x/tokenfactory/simulation"
+	simulation "github.com/wormhole-foundation/deltachain/x/tokenfactory/simulation"
 
-	"github.com/wormhole-foundation/wormchain/x/tokenfactory/client/cli"
-	"github.com/wormhole-foundation/wormchain/x/tokenfactory/keeper"
-	"github.com/wormhole-foundation/wormchain/x/tokenfactory/types"
+	"github.com/wormhole-foundation/deltachain/x/tokenfactory/client/cli"
+	"github.com/wormhole-foundation/deltachain/x/tokenfactory/keeper"
+	"github.com/wormhole-foundation/deltachain/x/tokenfactory/types"
 )
 
 var (

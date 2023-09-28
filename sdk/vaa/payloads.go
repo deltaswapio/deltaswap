@@ -141,17 +141,17 @@ type (
 		Reason        string
 	}
 
-	// BodyWormchainStoreCode is a governance message to upload a new cosmwasm contract to wormchain
+	// BodyWormchainStoreCode is a governance message to upload a new cosmwasm contract to deltachain
 	BodyWormchainStoreCode struct {
 		WasmHash [32]byte
 	}
 
-	// BodyWormchainInstantiateContract is a governance message to instantiate a cosmwasm contract on wormchain
+	// BodyWormchainInstantiateContract is a governance message to instantiate a cosmwasm contract on deltachain
 	BodyWormchainInstantiateContract struct {
 		InstantiationParamsHash [32]byte
 	}
 
-	// BodyWormchainInstantiateContract is a governance message to migrate a cosmwasm contract on wormchain
+	// BodyWormchainInstantiateContract is a governance message to migrate a cosmwasm contract on deltachain
 	BodyWormchainMigrateContract struct {
 		MigrationParamsHash [32]byte
 	}

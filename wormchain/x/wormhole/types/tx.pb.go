@@ -1010,24 +1010,24 @@ func (m *MsgExecuteGatewayGovernanceVaa) GetVaa() []byte {
 }
 
 func init() {
-	proto.RegisterType((*EmptyResponse)(nil), "wormhole_foundation.wormchain.wormhole.EmptyResponse")
-	proto.RegisterType((*MsgCreateAllowlistEntryRequest)(nil), "wormhole_foundation.wormchain.wormhole.MsgCreateAllowlistEntryRequest")
-	proto.RegisterType((*MsgDeleteAllowlistEntryRequest)(nil), "wormhole_foundation.wormchain.wormhole.MsgDeleteAllowlistEntryRequest")
-	proto.RegisterType((*MsgAllowlistResponse)(nil), "wormhole_foundation.wormchain.wormhole.MsgAllowlistResponse")
-	proto.RegisterType((*MsgExecuteGovernanceVAA)(nil), "wormhole_foundation.wormchain.wormhole.MsgExecuteGovernanceVAA")
-	proto.RegisterType((*MsgExecuteGovernanceVAAResponse)(nil), "wormhole_foundation.wormchain.wormhole.MsgExecuteGovernanceVAAResponse")
-	proto.RegisterType((*MsgRegisterAccountAsGuardian)(nil), "wormhole_foundation.wormchain.wormhole.MsgRegisterAccountAsGuardian")
-	proto.RegisterType((*MsgRegisterAccountAsGuardianResponse)(nil), "wormhole_foundation.wormchain.wormhole.MsgRegisterAccountAsGuardianResponse")
-	proto.RegisterType((*MsgStoreCode)(nil), "wormhole_foundation.wormchain.wormhole.MsgStoreCode")
-	proto.RegisterType((*MsgStoreCodeResponse)(nil), "wormhole_foundation.wormchain.wormhole.MsgStoreCodeResponse")
-	proto.RegisterType((*MsgInstantiateContract)(nil), "wormhole_foundation.wormchain.wormhole.MsgInstantiateContract")
-	proto.RegisterType((*MsgInstantiateContractResponse)(nil), "wormhole_foundation.wormchain.wormhole.MsgInstantiateContractResponse")
-	proto.RegisterType((*MsgAddWasmInstantiateAllowlist)(nil), "wormhole_foundation.wormchain.wormhole.MsgAddWasmInstantiateAllowlist")
-	proto.RegisterType((*MsgDeleteWasmInstantiateAllowlist)(nil), "wormhole_foundation.wormchain.wormhole.MsgDeleteWasmInstantiateAllowlist")
-	proto.RegisterType((*MsgWasmInstantiateAllowlistResponse)(nil), "wormhole_foundation.wormchain.wormhole.MsgWasmInstantiateAllowlistResponse")
-	proto.RegisterType((*MsgMigrateContract)(nil), "wormhole_foundation.wormchain.wormhole.MsgMigrateContract")
-	proto.RegisterType((*MsgMigrateContractResponse)(nil), "wormhole_foundation.wormchain.wormhole.MsgMigrateContractResponse")
-	proto.RegisterType((*MsgExecuteGatewayGovernanceVaa)(nil), "wormhole_foundation.wormchain.wormhole.MsgExecuteGatewayGovernanceVaa")
+	proto.RegisterType((*EmptyResponse)(nil), "wormhole_foundation.deltachain.wormhole.EmptyResponse")
+	proto.RegisterType((*MsgCreateAllowlistEntryRequest)(nil), "wormhole_foundation.deltachain.wormhole.MsgCreateAllowlistEntryRequest")
+	proto.RegisterType((*MsgDeleteAllowlistEntryRequest)(nil), "wormhole_foundation.deltachain.wormhole.MsgDeleteAllowlistEntryRequest")
+	proto.RegisterType((*MsgAllowlistResponse)(nil), "wormhole_foundation.deltachain.wormhole.MsgAllowlistResponse")
+	proto.RegisterType((*MsgExecuteGovernanceVAA)(nil), "wormhole_foundation.deltachain.wormhole.MsgExecuteGovernanceVAA")
+	proto.RegisterType((*MsgExecuteGovernanceVAAResponse)(nil), "wormhole_foundation.deltachain.wormhole.MsgExecuteGovernanceVAAResponse")
+	proto.RegisterType((*MsgRegisterAccountAsGuardian)(nil), "wormhole_foundation.deltachain.wormhole.MsgRegisterAccountAsGuardian")
+	proto.RegisterType((*MsgRegisterAccountAsGuardianResponse)(nil), "wormhole_foundation.deltachain.wormhole.MsgRegisterAccountAsGuardianResponse")
+	proto.RegisterType((*MsgStoreCode)(nil), "wormhole_foundation.deltachain.wormhole.MsgStoreCode")
+	proto.RegisterType((*MsgStoreCodeResponse)(nil), "wormhole_foundation.deltachain.wormhole.MsgStoreCodeResponse")
+	proto.RegisterType((*MsgInstantiateContract)(nil), "wormhole_foundation.deltachain.wormhole.MsgInstantiateContract")
+	proto.RegisterType((*MsgInstantiateContractResponse)(nil), "wormhole_foundation.deltachain.wormhole.MsgInstantiateContractResponse")
+	proto.RegisterType((*MsgAddWasmInstantiateAllowlist)(nil), "wormhole_foundation.deltachain.wormhole.MsgAddWasmInstantiateAllowlist")
+	proto.RegisterType((*MsgDeleteWasmInstantiateAllowlist)(nil), "wormhole_foundation.deltachain.wormhole.MsgDeleteWasmInstantiateAllowlist")
+	proto.RegisterType((*MsgWasmInstantiateAllowlistResponse)(nil), "wormhole_foundation.deltachain.wormhole.MsgWasmInstantiateAllowlistResponse")
+	proto.RegisterType((*MsgMigrateContract)(nil), "wormhole_foundation.deltachain.wormhole.MsgMigrateContract")
+	proto.RegisterType((*MsgMigrateContractResponse)(nil), "wormhole_foundation.deltachain.wormhole.MsgMigrateContractResponse")
+	proto.RegisterType((*MsgExecuteGatewayGovernanceVaa)(nil), "wormhole_foundation.deltachain.wormhole.MsgExecuteGatewayGovernanceVaa")
 }
 
 func init() { proto.RegisterFile("wormhole/tx.proto", fileDescriptor_55f7aa067b0c517b) }
@@ -1125,7 +1125,7 @@ func NewMsgClient(cc grpc1.ClientConn) MsgClient {
 
 func (c *msgClient) ExecuteGovernanceVAA(ctx context.Context, in *MsgExecuteGovernanceVAA, opts ...grpc.CallOption) (*MsgExecuteGovernanceVAAResponse, error) {
 	out := new(MsgExecuteGovernanceVAAResponse)
-	err := c.cc.Invoke(ctx, "/wormhole_foundation.wormchain.wormhole.Msg/ExecuteGovernanceVAA", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/wormhole_foundation.deltachain.wormhole.Msg/ExecuteGovernanceVAA", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1134,7 +1134,7 @@ func (c *msgClient) ExecuteGovernanceVAA(ctx context.Context, in *MsgExecuteGove
 
 func (c *msgClient) RegisterAccountAsGuardian(ctx context.Context, in *MsgRegisterAccountAsGuardian, opts ...grpc.CallOption) (*MsgRegisterAccountAsGuardianResponse, error) {
 	out := new(MsgRegisterAccountAsGuardianResponse)
-	err := c.cc.Invoke(ctx, "/wormhole_foundation.wormchain.wormhole.Msg/RegisterAccountAsGuardian", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/wormhole_foundation.deltachain.wormhole.Msg/RegisterAccountAsGuardian", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1143,7 +1143,7 @@ func (c *msgClient) RegisterAccountAsGuardian(ctx context.Context, in *MsgRegist
 
 func (c *msgClient) CreateAllowlistEntry(ctx context.Context, in *MsgCreateAllowlistEntryRequest, opts ...grpc.CallOption) (*MsgAllowlistResponse, error) {
 	out := new(MsgAllowlistResponse)
-	err := c.cc.Invoke(ctx, "/wormhole_foundation.wormchain.wormhole.Msg/CreateAllowlistEntry", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/wormhole_foundation.deltachain.wormhole.Msg/CreateAllowlistEntry", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1152,7 +1152,7 @@ func (c *msgClient) CreateAllowlistEntry(ctx context.Context, in *MsgCreateAllow
 
 func (c *msgClient) DeleteAllowlistEntry(ctx context.Context, in *MsgDeleteAllowlistEntryRequest, opts ...grpc.CallOption) (*MsgAllowlistResponse, error) {
 	out := new(MsgAllowlistResponse)
-	err := c.cc.Invoke(ctx, "/wormhole_foundation.wormchain.wormhole.Msg/DeleteAllowlistEntry", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/wormhole_foundation.deltachain.wormhole.Msg/DeleteAllowlistEntry", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1161,7 +1161,7 @@ func (c *msgClient) DeleteAllowlistEntry(ctx context.Context, in *MsgDeleteAllow
 
 func (c *msgClient) StoreCode(ctx context.Context, in *MsgStoreCode, opts ...grpc.CallOption) (*MsgStoreCodeResponse, error) {
 	out := new(MsgStoreCodeResponse)
-	err := c.cc.Invoke(ctx, "/wormhole_foundation.wormchain.wormhole.Msg/StoreCode", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/wormhole_foundation.deltachain.wormhole.Msg/StoreCode", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1170,7 +1170,7 @@ func (c *msgClient) StoreCode(ctx context.Context, in *MsgStoreCode, opts ...grp
 
 func (c *msgClient) InstantiateContract(ctx context.Context, in *MsgInstantiateContract, opts ...grpc.CallOption) (*MsgInstantiateContractResponse, error) {
 	out := new(MsgInstantiateContractResponse)
-	err := c.cc.Invoke(ctx, "/wormhole_foundation.wormchain.wormhole.Msg/InstantiateContract", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/wormhole_foundation.deltachain.wormhole.Msg/InstantiateContract", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1179,7 +1179,7 @@ func (c *msgClient) InstantiateContract(ctx context.Context, in *MsgInstantiateC
 
 func (c *msgClient) AddWasmInstantiateAllowlist(ctx context.Context, in *MsgAddWasmInstantiateAllowlist, opts ...grpc.CallOption) (*MsgWasmInstantiateAllowlistResponse, error) {
 	out := new(MsgWasmInstantiateAllowlistResponse)
-	err := c.cc.Invoke(ctx, "/wormhole_foundation.wormchain.wormhole.Msg/AddWasmInstantiateAllowlist", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/wormhole_foundation.deltachain.wormhole.Msg/AddWasmInstantiateAllowlist", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1188,7 +1188,7 @@ func (c *msgClient) AddWasmInstantiateAllowlist(ctx context.Context, in *MsgAddW
 
 func (c *msgClient) DeleteWasmInstantiateAllowlist(ctx context.Context, in *MsgDeleteWasmInstantiateAllowlist, opts ...grpc.CallOption) (*MsgWasmInstantiateAllowlistResponse, error) {
 	out := new(MsgWasmInstantiateAllowlistResponse)
-	err := c.cc.Invoke(ctx, "/wormhole_foundation.wormchain.wormhole.Msg/DeleteWasmInstantiateAllowlist", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/wormhole_foundation.deltachain.wormhole.Msg/DeleteWasmInstantiateAllowlist", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1197,7 +1197,7 @@ func (c *msgClient) DeleteWasmInstantiateAllowlist(ctx context.Context, in *MsgD
 
 func (c *msgClient) MigrateContract(ctx context.Context, in *MsgMigrateContract, opts ...grpc.CallOption) (*MsgMigrateContractResponse, error) {
 	out := new(MsgMigrateContractResponse)
-	err := c.cc.Invoke(ctx, "/wormhole_foundation.wormchain.wormhole.Msg/MigrateContract", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/wormhole_foundation.deltachain.wormhole.Msg/MigrateContract", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1206,7 +1206,7 @@ func (c *msgClient) MigrateContract(ctx context.Context, in *MsgMigrateContract,
 
 func (c *msgClient) ExecuteGatewayGovernanceVaa(ctx context.Context, in *MsgExecuteGatewayGovernanceVaa, opts ...grpc.CallOption) (*EmptyResponse, error) {
 	out := new(EmptyResponse)
-	err := c.cc.Invoke(ctx, "/wormhole_foundation.wormchain.wormhole.Msg/ExecuteGatewayGovernanceVaa", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/wormhole_foundation.deltachain.wormhole.Msg/ExecuteGatewayGovernanceVaa", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1278,7 +1278,7 @@ func _Msg_ExecuteGovernanceVAA_Handler(srv interface{}, ctx context.Context, dec
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/wormhole_foundation.wormchain.wormhole.Msg/ExecuteGovernanceVAA",
+		FullMethod: "/wormhole_foundation.deltachain.wormhole.Msg/ExecuteGovernanceVAA",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(MsgServer).ExecuteGovernanceVAA(ctx, req.(*MsgExecuteGovernanceVAA))
@@ -1296,7 +1296,7 @@ func _Msg_RegisterAccountAsGuardian_Handler(srv interface{}, ctx context.Context
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/wormhole_foundation.wormchain.wormhole.Msg/RegisterAccountAsGuardian",
+		FullMethod: "/wormhole_foundation.deltachain.wormhole.Msg/RegisterAccountAsGuardian",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(MsgServer).RegisterAccountAsGuardian(ctx, req.(*MsgRegisterAccountAsGuardian))
@@ -1314,7 +1314,7 @@ func _Msg_CreateAllowlistEntry_Handler(srv interface{}, ctx context.Context, dec
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/wormhole_foundation.wormchain.wormhole.Msg/CreateAllowlistEntry",
+		FullMethod: "/wormhole_foundation.deltachain.wormhole.Msg/CreateAllowlistEntry",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(MsgServer).CreateAllowlistEntry(ctx, req.(*MsgCreateAllowlistEntryRequest))
@@ -1332,7 +1332,7 @@ func _Msg_DeleteAllowlistEntry_Handler(srv interface{}, ctx context.Context, dec
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/wormhole_foundation.wormchain.wormhole.Msg/DeleteAllowlistEntry",
+		FullMethod: "/wormhole_foundation.deltachain.wormhole.Msg/DeleteAllowlistEntry",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(MsgServer).DeleteAllowlistEntry(ctx, req.(*MsgDeleteAllowlistEntryRequest))
@@ -1350,7 +1350,7 @@ func _Msg_StoreCode_Handler(srv interface{}, ctx context.Context, dec func(inter
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/wormhole_foundation.wormchain.wormhole.Msg/StoreCode",
+		FullMethod: "/wormhole_foundation.deltachain.wormhole.Msg/StoreCode",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(MsgServer).StoreCode(ctx, req.(*MsgStoreCode))
@@ -1368,7 +1368,7 @@ func _Msg_InstantiateContract_Handler(srv interface{}, ctx context.Context, dec 
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/wormhole_foundation.wormchain.wormhole.Msg/InstantiateContract",
+		FullMethod: "/wormhole_foundation.deltachain.wormhole.Msg/InstantiateContract",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(MsgServer).InstantiateContract(ctx, req.(*MsgInstantiateContract))
@@ -1386,7 +1386,7 @@ func _Msg_AddWasmInstantiateAllowlist_Handler(srv interface{}, ctx context.Conte
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/wormhole_foundation.wormchain.wormhole.Msg/AddWasmInstantiateAllowlist",
+		FullMethod: "/wormhole_foundation.deltachain.wormhole.Msg/AddWasmInstantiateAllowlist",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(MsgServer).AddWasmInstantiateAllowlist(ctx, req.(*MsgAddWasmInstantiateAllowlist))
@@ -1404,7 +1404,7 @@ func _Msg_DeleteWasmInstantiateAllowlist_Handler(srv interface{}, ctx context.Co
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/wormhole_foundation.wormchain.wormhole.Msg/DeleteWasmInstantiateAllowlist",
+		FullMethod: "/wormhole_foundation.deltachain.wormhole.Msg/DeleteWasmInstantiateAllowlist",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(MsgServer).DeleteWasmInstantiateAllowlist(ctx, req.(*MsgDeleteWasmInstantiateAllowlist))
@@ -1422,7 +1422,7 @@ func _Msg_MigrateContract_Handler(srv interface{}, ctx context.Context, dec func
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/wormhole_foundation.wormchain.wormhole.Msg/MigrateContract",
+		FullMethod: "/wormhole_foundation.deltachain.wormhole.Msg/MigrateContract",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(MsgServer).MigrateContract(ctx, req.(*MsgMigrateContract))
@@ -1440,7 +1440,7 @@ func _Msg_ExecuteGatewayGovernanceVaa_Handler(srv interface{}, ctx context.Conte
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/wormhole_foundation.wormchain.wormhole.Msg/ExecuteGatewayGovernanceVaa",
+		FullMethod: "/wormhole_foundation.deltachain.wormhole.Msg/ExecuteGatewayGovernanceVaa",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(MsgServer).ExecuteGatewayGovernanceVaa(ctx, req.(*MsgExecuteGatewayGovernanceVaa))
@@ -1449,7 +1449,7 @@ func _Msg_ExecuteGatewayGovernanceVaa_Handler(srv interface{}, ctx context.Conte
 }
 
 var _Msg_serviceDesc = grpc.ServiceDesc{
-	ServiceName: "wormhole_foundation.wormchain.wormhole.Msg",
+	ServiceName: "wormhole_foundation.deltachain.wormhole.Msg",
 	HandlerType: (*MsgServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{

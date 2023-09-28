@@ -67,7 +67,7 @@ func (m *ReplayProtection) GetIndex() string {
 }
 
 func init() {
-	proto.RegisterType((*ReplayProtection)(nil), "wormhole_foundation.wormchain.wormhole.ReplayProtection")
+	proto.RegisterType((*ReplayProtection)(nil), "wormhole_foundation.deltachain.wormhole.ReplayProtection")
 }
 
 func init() { proto.RegisterFile("wormhole/replay_protection.proto", fileDescriptor_da495f697a0fb01c) }

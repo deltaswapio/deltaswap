@@ -35,7 +35,7 @@ spec:
             - rly
             - transact
             - link-then-start
-            - terra-wormchain
+            - terra-deltachain
             - --debug-addr
             - 0.0.0.0:7597
             - --src-port

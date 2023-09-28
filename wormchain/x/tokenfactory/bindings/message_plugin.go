@@ -10,9 +10,9 @@ import (
 	bankkeeper "github.com/cosmos/cosmos-sdk/x/bank/keeper"
 	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
 
-	bindingstypes "github.com/wormhole-foundation/wormchain/x/tokenfactory/bindings/types"
-	tokenfactorykeeper "github.com/wormhole-foundation/wormchain/x/tokenfactory/keeper"
-	tokenfactorytypes "github.com/wormhole-foundation/wormchain/x/tokenfactory/types"
+	bindingstypes "github.com/wormhole-foundation/deltachain/x/tokenfactory/bindings/types"
+	tokenfactorykeeper "github.com/wormhole-foundation/deltachain/x/tokenfactory/keeper"
+	tokenfactorytypes "github.com/wormhole-foundation/deltachain/x/tokenfactory/types"
 )
 
 // CustomMessageDecorator returns decorator for custom CosmWasm bindings messages

@@ -5,8 +5,8 @@ import (
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
-	//"github.com/wormhole-foundation/wormchain/x/tokenfactory/testhelpers"
-	"github.com/wormhole-foundation/wormchain/x/tokenfactory/types"
+	//"github.com/wormhole-foundation/deltachain/x/tokenfactory/testhelpers"
+	"github.com/wormhole-foundation/deltachain/x/tokenfactory/types"
 )
 
 func (suite *KeeperTestSuite) TestMsgCreateDenom() {

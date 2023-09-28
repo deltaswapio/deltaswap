@@ -1,7 +1,7 @@
 package ibc_composability_mw
 
 import (
-	"github.com/wormhole-foundation/wormchain/x/ibc-composability-mw/keeper"
+	"github.com/wormhole-foundation/deltachain/x/ibc-composability-mw/keeper"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	capabilitytypes "github.com/cosmos/cosmos-sdk/x/capability/types"

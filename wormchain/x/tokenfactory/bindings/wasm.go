@@ -6,14 +6,14 @@ import (
 	wasmkeeper "github.com/CosmWasm/wasmd/x/wasm/keeper"
 
 	bankkeeper "github.com/cosmos/cosmos-sdk/x/bank/keeper"
-	tokenfactorykeeper "github.com/wormhole-foundation/wormchain/x/tokenfactory/keeper"
+	tokenfactorykeeper "github.com/wormhole-foundation/deltachain/x/tokenfactory/keeper"
 )
 
 func RegisterCustomPlugins(
 	bank *bankkeeper.BaseKeeper,
 	tokenFactory *tokenfactorykeeper.Keeper,
 ) []wasmkeeper.Option {
-	// Disabling tokenfactory custom querier because wormchain custom querier exists
+	// Disabling tokenfactory custom querier because deltachain custom querier exists
 	//wasmQueryPlugin := NewQueryPlugin(bank, tokenFactory)
 
 	//queryPluginOpt := wasmkeeper.WithQueryPlugins(&wasmkeeper.QueryPlugins{

@@ -17,7 +17,7 @@
 /solana/ @kcsongor @a5-pickle
 /sui/ @kcsongor @a5-pickle @gator-boi
 /terra/ @kcsongor @a5-pickle
-/wormchain/ @nik-suri
+/deltachain/ @nik-suri
 
 # Utilities
 
@@ -34,8 +34,8 @@
 /sdk/vaa/ @bruce-riley
 /spydk/ @evan-gray
 /testing/ @a5-pickle @evan-gray
-/wormchain/contracts/tools/ @evan-gray @kev1n-peters @panoel
-/wormchain/ts-sdk/ @evan-gray @kev1n-peters @panoel
+/deltachain/contracts/tools/ @evan-gray @kev1n-peters @panoel
+/deltachain/ts-sdk/ @evan-gray @kev1n-peters @panoel
 /deployments @evan-gray @kev1n-peters @panoel @bruce-riley
 
 # Phylaxd node

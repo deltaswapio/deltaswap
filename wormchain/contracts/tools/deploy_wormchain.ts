@@ -12,8 +12,8 @@ import { fromBase64, toUtf8, fromBech32 } from "@cosmjs/encoding";
 import {
   getWallet,
   getWormchainSigningClient,
-} from "@wormhole-foundation/wormchain-sdk";
-import { ZERO_FEE } from "@wormhole-foundation/wormchain-sdk/lib/core/consts";
+} from "@wormhole-foundation/deltachain-sdk";
+import { ZERO_FEE } from "@wormhole-foundation/deltachain-sdk/lib/core/consts";
 import "dotenv/config";
 import * as fs from "fs";
 import { readdirSync } from "fs";
@@ -42,7 +42,7 @@ const readFileAsync = util.promisify(fs.readFile);
 type ContractName = string;
 const artifacts: ContractName[] = [
   "global_accountant.wasm",
-  "wormchain_ibc_receiver.wasm",
+  "deltachain_ibc_receiver.wasm",
 ];
 
 const ARTIFACTS_PATH = "../artifacts/";
@@ -58,7 +58,7 @@ try {
   );
   if (missing_artifacts.length) {
     console.log(
-      "Error during wormchain deployment. The following files are expected to be in the artifacts folder:"
+      "Error during deltachain deployment. The following files are expected to be in the artifacts folder:"
     );
     missing_artifacts.forEach((file) => console.log(`  - ${file}`));
     console.log(
@@ -80,20 +80,20 @@ async function main() {
   /* Set up cosmos client & wallet */
 
   let host = devnetConsts.chains[3104].tendermintUrlLocal;
-  if (os.hostname().includes("wormchain-deploy")) {
+  if (os.hostname().includes("deltachain-deploy")) {
     // running in tilt devnet
     host = devnetConsts.chains[3104].tendermintUrlTilt;
   }
 
   const mnemonic =
-    devnetConsts.chains[3104].accounts.wormchainNodeOfGuardian0.mnemonic;
+    devnetConsts.chains[3104].accounts.deltachainNodeOfGuardian0.mnemonic;
 
   const wallet = await getWallet(mnemonic);
   const client = await getWormchainSigningClient(host, wallet);
 
   // there are several Cosmos chains in devnet, so check the config is as expected
   let id = await client.getChainId();
-  if (id !== "wormchain") {
+  if (id !== "deltachain") {
     throw new Error(
       `Wormchain CosmWasmClient connection produced an unexpected chainID: ${id}`
     );
@@ -101,7 +101,7 @@ async function main() {
 
   const signers = await wallet.getAccounts();
   const signer = signers[0].address;
-  console.log("wormchain contract deployer is: ", signer);
+  console.log("deltachain contract deployer is: ", signer);
 
   /* Deploy artifacts */
 
@@ -244,7 +244,7 @@ async function main() {
   addresses["global_accountant.wasm"] = await instantiate(
     codeIds["global_accountant.wasm"],
     instantiateMsg,
-    "wormchainAccounting"
+    "deltachainAccounting"
   );
   console.log("instantiated accounting: ", addresses["global_accountant.wasm"]);
 
@@ -269,21 +269,21 @@ async function main() {
   });
   console.log(`sent accounting chain registrations, tx: `, res.transactionHash);
 
-  const wormchainIbcReceiverInstantiateMsg = {};
-  addresses["wormchain_ibc_receiver.wasm"] = await instantiate(
-    codeIds["wormchain_ibc_receiver.wasm"],
-    wormchainIbcReceiverInstantiateMsg,
-    "wormchainIbcReceiver"
+  const deltachainIbcReceiverInstantiateMsg = {};
+  addresses["deltachain_ibc_receiver.wasm"] = await instantiate(
+    codeIds["deltachain_ibc_receiver.wasm"],
+    deltachainIbcReceiverInstantiateMsg,
+    "deltachainIbcReceiver"
   );
   console.log(
-    "instantiated wormchain ibc receiver contract: ",
-    addresses["wormchain_ibc_receiver.wasm"]
+    "instantiated deltachain ibc receiver contract: ",
+    addresses["deltachain_ibc_receiver.wasm"]
   );
 
   // Generated VAA using
-  // `phylaxd template ibc-receiver-update-channel-chain --channel-id channel-0 --chain-id 32 --target-chain-id 3104 > wormchain.prototxt`
-  // `phylaxd admin governance-vaa-verify wormchain.prototxt`
-  let wormchainIbcReceiverWhitelistVaa: VAA<Other> = {
+  // `phylaxd template ibc-receiver-update-channel-chain --channel-id channel-0 --chain-id 32 --target-chain-id 3104 > deltachain.prototxt`
+  // `phylaxd admin governance-vaa-verify deltachain.prototxt`
+  let deltachainIbcReceiverWhitelistVaa: VAA<Other> = {
     version: 1,
     guardianSetIndex: 0,
     signatures: [],
@@ -298,16 +298,16 @@ async function main() {
       hex: `0000000000000000000000000000000000000000004962635265636569766572010c20000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000006368616e6e656c2d300020`,
     },
   };
-  wormchainIbcReceiverWhitelistVaa.signatures = sign(
+  deltachainIbcReceiverWhitelistVaa.signatures = sign(
     VAA_SIGNERS,
-    wormchainIbcReceiverWhitelistVaa as unknown as VAA<Payload>
+    deltachainIbcReceiverWhitelistVaa as unknown as VAA<Payload>
   );
-  const wormchainIbcReceiverUpdateWhitelistMsg = {
+  const deltachainIbcReceiverUpdateWhitelistMsg = {
     submit_update_channel_chain: {
       vaas: [
         Buffer.from(
           serialiseVAA(
-            wormchainIbcReceiverWhitelistVaa as unknown as VAA<Payload>
+            deltachainIbcReceiverWhitelistVaa as unknown as VAA<Payload>
           ),
           "hex"
         ).toString("base64"),
@@ -316,8 +316,8 @@ async function main() {
   };
   const executeMsg = client.wasm.msgExecuteContract({
     sender: signer,
-    contract: addresses["wormchain_ibc_receiver.wasm"],
-    msg: toUtf8(JSON.stringify(wormchainIbcReceiverUpdateWhitelistMsg)),
+    contract: addresses["deltachain_ibc_receiver.wasm"],
+    msg: toUtf8(JSON.stringify(deltachainIbcReceiverUpdateWhitelistMsg)),
     funds: [],
   });
   const updateIbcWhitelistRes = await client.signAndBroadcast(
@@ -329,7 +329,7 @@ async function main() {
     }
   );
   console.log(
-    "updated wormchain_ibc_receiver whitelist: ",
+    "updated deltachain_ibc_receiver whitelist: ",
     updateIbcWhitelistRes.transactionHash,
     updateIbcWhitelistRes.code
   );

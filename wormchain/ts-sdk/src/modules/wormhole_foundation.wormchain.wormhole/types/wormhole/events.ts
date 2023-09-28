@@ -3,7 +3,7 @@
 import * as Long from "long";
 import { util, configure, Writer, Reader } from "protobufjs/minimal";
 
-export const protobufPackage = "wormhole_foundation.wormchain.wormhole";
+export const protobufPackage = "wormhole_foundation.deltachain.wormhole";
 
 export interface EventGuardianSetUpdate {
   old_index: number;

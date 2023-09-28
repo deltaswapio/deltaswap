@@ -2,8 +2,8 @@
   "type": "cosmos",
   "value": {
     "key": "default",
-    "chain-id": "wormchain",
-    "rpc-addr": "http://wormchain:26657",
+    "chain-id": "deltachain",
+    "rpc-addr": "http://deltachain:26657",
     "account-prefix": "wormhole",
     "keyring-backend": "test",
     "gas-adjustment": 1.2,

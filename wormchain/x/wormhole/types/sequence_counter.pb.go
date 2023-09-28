@@ -75,7 +75,7 @@ func (m *SequenceCounter) GetSequence() uint64 {
 }
 
 func init() {
-	proto.RegisterType((*SequenceCounter)(nil), "wormhole_foundation.wormchain.wormhole.SequenceCounter")
+	proto.RegisterType((*SequenceCounter)(nil), "wormhole_foundation.deltachain.wormhole.SequenceCounter")
 }
 
 func init() { proto.RegisterFile("wormhole/sequence_counter.proto", fileDescriptor_adec725923edb1a5) }

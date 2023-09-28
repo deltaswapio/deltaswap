@@ -11,9 +11,9 @@ import (
 	wasmvmtypes "github.com/CosmWasm/wasmvm/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
-	"github.com/wormhole-foundation/wormchain/app"
-	bindings "github.com/wormhole-foundation/wormchain/x/tokenfactory/bindings/types"
-	//"github.com/wormhole-foundation/wormchain/x/tokenfactory/types"
+	"github.com/wormhole-foundation/deltachain/app"
+	bindings "github.com/wormhole-foundation/deltachain/x/tokenfactory/bindings/types"
+	//"github.com/wormhole-foundation/deltachain/x/tokenfactory/types"
 )
 
 func TestCreateDenomMsg(t *testing.T) {

@@ -14,7 +14,7 @@ make
 ```
 
 This command creates a `build` directory and in particular, the
-`build/wormchaind` binary, which can be used to run and interact with the
+`build/deltachaind` binary, which can be used to run and interact with the
 blockchain.
 
 You can start a local development instance by running
@@ -26,7 +26,7 @@ make run
 Or equivalently
 
 ```shell
-./build/wormchaind --home build
+./build/deltachaind --home build
 ```
 
 If you want to reset the blockchain, just run
@@ -43,7 +43,7 @@ Golang tests
 
     make test
 
-Client tests, run against the chain. Wormchain must be running via `make run` or `tilt up -- --wormchain`
+Client tests, run against the chain. Wormchain must be running via `make run` or `tilt up -- --deltachain`
 
     cd ./ts-sdk
     npm ci
@@ -57,7 +57,7 @@ Client tests, run against the chain. Wormchain must be running via `make run` or
 You can interact with the blockchain by using the go binary:
 
 ```shell
-./build/wormchaind tx --from tiltGuardian --home build
+./build/deltachaind tx --from tiltGuardian --home build
 ```
 
 Note the flags `--from tiltGuardian --home build`. These have to be passed
@@ -86,4 +86,4 @@ Scaffold a query:
 ignite scaffold query latest_guardian_set_index --response LatestGuardianSetIndex --module wormhole
 ```
 
-(then modify "wormchain/x/wormhole/types/query.pb.go" to change the response type)
+(then modify "deltachain/x/wormhole/types/query.pb.go" to change the response type)

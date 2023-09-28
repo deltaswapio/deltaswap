@@ -7,9 +7,9 @@ import (
 	upgradetypes "github.com/cosmos/cosmos-sdk/x/upgrade/types"
 
 	packetforwardtypes "github.com/strangelove-ventures/packet-forward-middleware/v4/router/types"
-	ibccomposabilitytypes "github.com/wormhole-foundation/wormchain/x/ibc-composability-mw/types"
-	ibchookstypes "github.com/wormhole-foundation/wormchain/x/ibc-hooks/types"
-	tokenfactorytypes "github.com/wormhole-foundation/wormchain/x/tokenfactory/types"
+	ibccomposabilitytypes "github.com/wormhole-foundation/deltachain/x/ibc-composability-mw/types"
+	ibchookstypes "github.com/wormhole-foundation/deltachain/x/ibc-hooks/types"
+	tokenfactorytypes "github.com/wormhole-foundation/deltachain/x/tokenfactory/types"
 )
 
 var V2_23_0_Upgrade = Upgrade{

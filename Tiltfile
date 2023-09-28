@@ -68,7 +68,7 @@ config.define_bool("ci_tests", False, "Enable tests runner component")
 config.define_bool("phylaxd_debug", False, "Enable dlv endpoint for phylaxd")
 config.define_bool("node_metrics", False, "Enable Prometheus & Grafana for Guardian metrics")
 config.define_bool("phylaxd_governor", False, "Enable chain governor in phylaxd")
-config.define_bool("wormchain", False, "Enable a wormchain node")
+config.define_bool("deltachain", False, "Enable a deltachain node")
 config.define_bool("ibc_relayer", False, "Enable IBC relayer between cosmos chains")
 config.define_bool("redis", False, "Enable a redis instance")
 config.define_bool("generic_relayer", False, "Enable the generic relayer off-chain component")
@@ -88,7 +88,7 @@ solana = cfg.get("solana", ci)
 pythnet = cfg.get("pythnet", False)
 terra_classic = cfg.get("terra_classic", ci)
 terra2 = cfg.get("terra2", ci)
-wormchain = cfg.get("wormchain", ci)
+deltachain = cfg.get("deltachain", ci)
 ci_tests = cfg.get("ci_tests", ci)
 phylaxd_debug = cfg.get("phylaxd_debug", False)
 node_metrics = cfg.get("node_metrics", False)
@@ -266,42 +266,42 @@ def build_node_yaml():
                     "wormhole.test.near"
                 ]
 
-            if wormchain:
+            if deltachain:
                 container["command"] += [
-                    "--wormchainURL",
-                    "wormchain:9090",
+                    "--deltachainURL",
+                    "deltachain:9090",
 
                     "--accountantContract",
                     "wormhole14hj2tavq8fpesdwxxcu44rty3hh90vhujrvcmstl4zr3txmfvw9srrg465",
                     "--accountantKeyPath",
-                    "/tmp/mounted-keys/wormchain/accountantKey",
+                    "/tmp/mounted-keys/deltachain/accountantKey",
                     "--accountantKeyPassPhrase",
                     "test0000",
                     "--accountantWS",
-                    "http://wormchain:26657",
+                    "http://deltachain:26657",
                     "--accountantCheckEnabled",
                     "true",
 
                     "--ibcContract",
                     "wormhole1nc5tatafv6eyq7llkr2gv50ff9e22mnf70qgjlv737ktmt4eswrq0kdhcj",
                     "--ibcWS",
-                    "ws://wormchain:26657/websocket",
+                    "ws://deltachain:26657/websocket",
                     "--ibcLCD",
-                    "http://wormchain:1317",
+                    "http://deltachain:1317",
 
                     "--gatewayRelayerContract",
                     "wormhole17p9rzwnnfxcjp32un9ug7yhhzgtkhvl9jfksztgw5uh69wac2pgshdnj3k",
                     "--gatewayRelayerKeyPath",
-                    "/tmp/mounted-keys/wormchain/gwrelayerKey",
+                    "/tmp/mounted-keys/deltachain/gwrelayerKey",
                     "--gatewayRelayerKeyPassPhrase",
                     "test0000",
 
                     "--gatewayContract",
                     "wormhole17p9rzwnnfxcjp32un9ug7yhhzgtkhvl9jfksztgw5uh69wac2pgshdnj3k",
                     "--gatewayWS",
-                    "ws://wormchain:26657/websocket",
+                    "ws://deltachain:26657/websocket",
                     "--gatewayLCD",
-                    "http://wormchain:1317"
+                    "http://deltachain:1317"
                 ]
 
     return encode_yaml_stream(node_yaml_with_replicas)
@@ -323,8 +323,8 @@ if algorand:
     guardian_resource_deps = guardian_resource_deps + ["algorand"]
 if aptos:
     guardian_resource_deps = guardian_resource_deps + ["aptos"]
-if wormchain:
-    guardian_resource_deps = guardian_resource_deps + ["wormchain", "wormchain-deploy"]
+if deltachain:
+    guardian_resource_deps = guardian_resource_deps + ["deltachain", "deltachain-deploy"]
 if sui:
     guardian_resource_deps = guardian_resource_deps + ["sui"]
 
@@ -582,7 +582,7 @@ if ci_tests:
         "accountant-ci-tests",
         labels = ["ci"],
         trigger_mode = trigger_mode,
-        resource_deps = [], # uses devnet-consts.json, but wormchain/contracts/tools/test_accountant.sh handles waiting for guardian, not having deps gets the build earlier
+        resource_deps = [], # uses devnet-consts.json, but deltachain/contracts/tools/test_accountant.sh handles waiting for guardian, not having deps gets the build earlier
     )
 
 if terra_classic:
@@ -624,7 +624,7 @@ if terra_classic:
         trigger_mode = trigger_mode,
     )
 
-if terra2 or wormchain:
+if terra2 or deltachain:
     docker_build(
         ref = "cosmwasm_artifacts",
         context = ".",
@@ -754,44 +754,44 @@ if near:
         trigger_mode = trigger_mode,
     )
 
-if wormchain:
+if deltachain:
     docker_build(
-        ref = "wormchaind-image",
+        ref = "deltachaind-image",
         context = ".",
-        dockerfile = "./wormchain/Dockerfile",
+        dockerfile = "./deltachain/Dockerfile",
         build_args = {"num_guardians": str(num_guardians)},
         only = [],
-        ignore = ["./wormchain/testing", "./wormchain/ts-sdk", "./wormchain/design", "./wormchain/vue", "./wormchain/build/wormchaind"],
+        ignore = ["./deltachain/testing", "./deltachain/ts-sdk", "./deltachain/design", "./deltachain/vue", "./deltachain/build/deltachaind"],
     )
 
     docker_build(
         ref = "vue-export",
         context = ".",
-        dockerfile = "./wormchain/Dockerfile.proto",
+        dockerfile = "./deltachain/Dockerfile.proto",
         target = "vue-export",
     )
 
     docker_build(
-        ref = "wormchain-deploy",
-        context = "./wormchain",
-        dockerfile = "./wormchain/Dockerfile.deploy",
+        ref = "deltachain-deploy",
+        context = "./deltachain",
+        dockerfile = "./deltachain/Dockerfile.deploy",
     )
 
-    def build_wormchain_yaml(yaml_path, num_instances):
-        wormchain_yaml = read_yaml_stream(yaml_path)
+    def build_deltachain_yaml(yaml_path, num_instances):
+        deltachain_yaml = read_yaml_stream(yaml_path)
 
         # set the number of replicas in the StatefulSet to be num_guardians
-        wormchain_set = set_replicas_in_statefulset(wormchain_yaml, "wormchain", num_instances)
+        deltachain_set = set_replicas_in_statefulset(deltachain_yaml, "deltachain", num_instances)
 
-        # add a Service for each wormchain instance
+        # add a Service for each deltachain instance
         services = []
-        for obj in wormchain_set:
-            if obj["kind"] == "Service" and obj["metadata"]["name"] == "wormchain-0":
+        for obj in deltachain_set:
+            if obj["kind"] == "Service" and obj["metadata"]["name"] == "deltachain-0":
 
                 # make a Service for each replica so we can resolve it by name from other pods.
-                # copy wormchain-0's Service then set the name and selector for the instance.
+                # copy deltachain-0's Service then set the name and selector for the instance.
                 for instance_num in list(range(1, num_instances)):
-                    instance_name = 'wormchain-%s' % (instance_num)
+                    instance_name = 'deltachain-%s' % (instance_num)
 
                     # Copy the Service's properties to a new dict, by value, three levels deep.
                     # tl;dr - if the value is a dict, use a comprehension to copy it immutably.
@@ -807,30 +807,30 @@ if wormchain:
 
                     services.append(service)
 
-        return encode_yaml_stream(wormchain_set + services)
+        return encode_yaml_stream(deltachain_set + services)
 
-    wormchain_path = "devnet/wormchain.yaml"
+    deltachain_path = "devnet/deltachain.yaml"
     if num_guardians >= 2:
-        # update wormchain's k8s config to spin up multiple instances
-        k8s_yaml_with_ns(build_wormchain_yaml(wormchain_path, num_guardians))
+        # update deltachain's k8s config to spin up multiple instances
+        k8s_yaml_with_ns(build_deltachain_yaml(deltachain_path, num_guardians))
     else:
-        k8s_yaml_with_ns(wormchain_path)
+        k8s_yaml_with_ns(deltachain_path)
 
     k8s_resource(
-        "wormchain",
+        "deltachain",
         port_forwards = [
             port_forward(1319, container_port = 1317, name = "REST [:1319]", host = webHost),
             port_forward(9090, container_port = 9090, name = "GRPC", host = webHost),
             port_forward(26659, container_port = 26657, name = "TENDERMINT [:26659]", host = webHost)
         ],
-        labels = ["wormchain"],
+        labels = ["deltachain"],
         trigger_mode = trigger_mode,
     )
 
     k8s_resource(
-        "wormchain-deploy",
-        resource_deps = ["wormchain"],
-        labels = ["wormchain"],
+        "deltachain-deploy",
+        resource_deps = ["deltachain"],
+        labels = ["deltachain"],
         trigger_mode = trigger_mode,
     )
 
@@ -838,7 +838,7 @@ if ibc_relayer:
     docker_build(
         ref = "ibc-relayer-image",
         context = ".",
-        dockerfile = "./wormchain/ibc-relayer/Dockerfile",
+        dockerfile = "./deltachain/ibc-relayer/Dockerfile",
         only = []
     )
 
@@ -849,7 +849,7 @@ if ibc_relayer:
         port_forwards = [
             port_forward(7597, name = "HTTPDEBUG [:7597]", host = webHost),
         ],
-        resource_deps = ["wormchain-deploy", "terra2-terrad"],
+        resource_deps = ["deltachain-deploy", "terra2-terrad"],
         labels = ["ibc-relayer"],
         trigger_mode = trigger_mode,
     )

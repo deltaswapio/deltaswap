@@ -3,7 +3,7 @@
 import { Reader, util, configure, Writer } from "protobufjs/minimal";
 import * as Long from "long";
 
-export const protobufPackage = "wormhole_foundation.wormchain.wormhole";
+export const protobufPackage = "wormhole_foundation.deltachain.wormhole";
 
 export interface MsgExecuteGovernanceVAA {
   vaa: Uint8Array;
@@ -728,7 +728,7 @@ export class MsgClientImpl implements Msg {
   ): Promise<MsgExecuteGovernanceVAAResponse> {
     const data = MsgExecuteGovernanceVAA.encode(request).finish();
     const promise = this.rpc.request(
-      "wormhole_foundation.wormchain.wormhole.Msg",
+      "wormhole_foundation.deltachain.wormhole.Msg",
       "ExecuteGovernanceVAA",
       data
     );
@@ -742,7 +742,7 @@ export class MsgClientImpl implements Msg {
   ): Promise<MsgRegisterAccountAsGuardianResponse> {
     const data = MsgRegisterAccountAsGuardian.encode(request).finish();
     const promise = this.rpc.request(
-      "wormhole_foundation.wormchain.wormhole.Msg",
+      "wormhole_foundation.deltachain.wormhole.Msg",
       "RegisterAccountAsGuardian",
       data
     );
@@ -754,7 +754,7 @@ export class MsgClientImpl implements Msg {
   StoreCode(request: MsgStoreCode): Promise<MsgStoreCodeResponse> {
     const data = MsgStoreCode.encode(request).finish();
     const promise = this.rpc.request(
-      "wormhole_foundation.wormchain.wormhole.Msg",
+      "wormhole_foundation.deltachain.wormhole.Msg",
       "StoreCode",
       data
     );
@@ -768,7 +768,7 @@ export class MsgClientImpl implements Msg {
   ): Promise<MsgInstantiateContractResponse> {
     const data = MsgInstantiateContract.encode(request).finish();
     const promise = this.rpc.request(
-      "wormhole_foundation.wormchain.wormhole.Msg",
+      "wormhole_foundation.deltachain.wormhole.Msg",
       "InstantiateContract",
       data
     );

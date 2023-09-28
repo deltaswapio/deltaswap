@@ -62,7 +62,7 @@ fn any_target() {
 }
 
 #[test]
-fn wormchain_target() {
+fn deltachain_target() {
     let (wh, mut contract) = proper_instantiate();
 
     let mut body = create_vaa_body();

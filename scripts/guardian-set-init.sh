@@ -87,7 +87,7 @@ nearTokenBridge=$(jq --raw-output '.chains."15".contracts.tokenBridgeEmitterAddr
 terra2TokenBridge=$(jq --raw-output '.chains."18".contracts.tokenBridgeEmitterAddress' $addressesJson)
 suiTokenBridge=$(jq --raw-output '.chains."21".contracts.tokenBridgeEmitterAddress' $addressesJson)
 aptosTokenBridge=$(jq --raw-output '.chains."22".contracts.tokenBridgeEmitterAddress' $addressesJson)
-wormchainTokenBridge=$(jq --raw-output '.chains."3104".contracts.tokenBridgeEmitterAddress' $addressesJson)
+deltachainTokenBridge=$(jq --raw-output '.chains."3104".contracts.tokenBridgeEmitterAddress' $addressesJson)
 
 solNFTBridge=$(jq --raw-output '.chains."1".contracts.nftBridgeEmitterAddress' $addressesJson)
 ethNFTBridge=$(jq --raw-output '.chains."2".contracts.nftBridgeEmitterAddress' $addressesJson)
@@ -106,7 +106,7 @@ nearTokenBridgeVAA=$(worm generate registration -m TokenBridge -c near -a ${near
 terra2TokenBridgeVAA=$(worm generate registration -m TokenBridge -c terra2 -a ${terra2TokenBridge} -g ${guardiansPrivateCSV})
 suiTokenBridgeVAA=$(worm generate registration -m TokenBridge -c sui -a ${suiTokenBridge} -g ${guardiansPrivateCSV})
 aptosTokenBridgeVAA=$(worm generate registration -m TokenBridge -c aptos -a ${aptosTokenBridge} -g ${guardiansPrivateCSV})
-wormchainTokenBridgeVAA=$(worm generate registration -m TokenBridge -c wormchain -a ${wormchainTokenBridge} -g ${guardiansPrivateCSV})
+deltachainTokenBridgeVAA=$(worm generate registration -m TokenBridge -c deltachain -a ${deltachainTokenBridge} -g ${guardiansPrivateCSV})
 
 
 # 5) create nft bridge registration VAAs
@@ -130,7 +130,7 @@ terra2TokenBridge="REGISTER_TERRA2_TOKEN_BRIDGE_VAA"
 nearTokenBridge="REGISTER_NEAR_TOKEN_BRIDGE_VAA"
 suiTokenBridge="REGISTER_SUI_TOKEN_BRIDGE_VAA"
 aptosTokenBridge="REGISTER_APTOS_TOKEN_BRIDGE_VAA"
-wormchainTokenBridge="REGISTER_WORMCHAIN_TOKEN_BRIDGE_VAA"
+deltachainTokenBridge="REGISTER_WORMCHAIN_TOKEN_BRIDGE_VAA"
 
 solNFTBridge="REGISTER_SOL_NFT_BRIDGE_VAA"
 ethNFTBridge="REGISTER_ETH_NFT_BRIDGE_VAA"
@@ -189,9 +189,9 @@ upsert_env_file $envFile $aptosTokenBridge $aptosTokenBridgeVAA
 upsert_env_file $ethFile $aptosNFTBridge $aptosNFTBridgeVAA
 upsert_env_file $envFile $aptosNFTBridge $aptosNFTBridgeVAA
 
-# wormchain token bridge
-upsert_env_file $ethFile $wormchainTokenBridge $wormchainTokenBridgeVAA
-upsert_env_file $envFile $wormchainTokenBridge $wormchainTokenBridgeVAA
+# deltachain token bridge
+upsert_env_file $ethFile $deltachainTokenBridge $deltachainTokenBridgeVAA
+upsert_env_file $envFile $deltachainTokenBridge $deltachainTokenBridgeVAA
 
 # 7) copy the local .env file to the solana & terra dirs, if the script is running on the host machine
 # chain dirs will not exist if running in docker for Tilt, only if running locally. check before copying.
@@ -210,7 +210,7 @@ paths=(
     ./cosmwasm/deployment/terra2/tools/.env
     ./sui/.env
     ./aptos/.env
-    ./wormchain/contracts/tools/.env
+    ./deltachain/contracts/tools/.env
 )
 
 for envDest in "${paths[@]}"; do

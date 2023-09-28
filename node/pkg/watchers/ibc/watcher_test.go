@@ -216,9 +216,9 @@ func TestParseIbcAllChannelChainsQueryResults(t *testing.T) {
 }
 
 func TestConvertingWsUrlToHttpUrl(t *testing.T) {
-	assert.Equal(t, "http://wormchain:26657", convertWsUrlToHttpUrl("ws://wormchain:26657/websocket"))
-	assert.Equal(t, "http://wormchain:26657", convertWsUrlToHttpUrl("ws://wormchain:26657"))
-	assert.Equal(t, "http://wormchain:26657", convertWsUrlToHttpUrl("wormchain:26657"))
+	assert.Equal(t, "http://deltachain:26657", convertWsUrlToHttpUrl("ws://deltachain:26657/websocket"))
+	assert.Equal(t, "http://deltachain:26657", convertWsUrlToHttpUrl("ws://deltachain:26657"))
+	assert.Equal(t, "http://deltachain:26657", convertWsUrlToHttpUrl("deltachain:26657"))
 }
 
 func TestParseAbciInfoResults(t *testing.T) {
@@ -229,7 +229,7 @@ func TestParseAbciInfoResults(t *testing.T) {
   "id": -1,
   "result": {
     "response": {
-      "data": "wormchain",
+      "data": "deltachain",
       "version": "v0.0.1",
       "last_block_height": "2037",
       "last_block_app_hash": "7lVJBWOpP+owbc0Gohn4htF6s2J2DrbjhdL9m79lAjU="

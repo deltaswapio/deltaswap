@@ -2,7 +2,7 @@ use serde::{Deserialize, Serialize};
 
 use crate::Chain;
 
-/// Represents a governance action targeted at the wormchain ibc receiver contract.
+/// Represents a governance action targeted at the deltachain ibc receiver contract.
 #[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub enum Action {
     #[serde(rename = "1")]
@@ -18,7 +18,7 @@ pub enum Action {
 // MODULE = "IbcReceiver"
 pub const MODULE: [u8; 32] = *b"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00IbcReceiver";
 
-/// Represents the payload for a governance VAA targeted at the wormchain ibc receiver contract.
+/// Represents the payload for a governance VAA targeted at the deltachain ibc receiver contract.
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct GovernancePacket {
     /// Describes the chain on which the governance action should be carried out.

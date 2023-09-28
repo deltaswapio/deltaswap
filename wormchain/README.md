@@ -4,10 +4,10 @@
 
 ## Building
 
-Build and install wormchain.  You will need golang version 1.16+ installed.
+Build and install deltachain.  You will need golang version 1.16+ installed.
 
 ```
-make build/wormchaind
+make build/deltachaind
 ```
 
 ## Develop
@@ -16,7 +16,7 @@ See [development.md](./development.md)
 
 ## How to run the tests
 
-    run "tilt up -- --wormchain"
+    run "tilt up -- --deltachain"
     cd ./ts-sdk
     npm ci
     npm run build
@@ -34,10 +34,10 @@ See [development.md](./development.md)
 
 ## Allowlists
 
-Accounts on wormchain are allowlisted.  To be able to submit a tx on wormchain, you must have an account that is either:
-* A validator on wormchain that is part of a current or future guardian set, or
-* An account that is allowlisted by a current validator on wormchain.
+Accounts on deltachain are allowlisted.  To be able to submit a tx on deltachain, you must have an account that is either:
+* A validator on deltachain that is part of a current or future guardian set, or
+* An account that is allowlisted by a current validator on deltachain.
 
 To create or delete an allowlist entry, you use a validator account.  Allowlist entries can become stale,
 meaning the owning validators are no longer part of the validator set.  Any validator can delete or replace stale entries.
-To manage allowlists, use the `wormchaind` client.
+To manage allowlists, use the `deltachaind` client.

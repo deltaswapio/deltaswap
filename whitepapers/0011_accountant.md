@@ -40,7 +40,7 @@ The core of the issue is the differing trust assumptions and security program ma
 
 ## Overview
 
-The `global-accountant` contract on wormchain acts as an [Integrity Checker](0010_integrity_checkers.md).  Guardians submit [pre-observations](0010_integrity_checker.md#pre-observations) to it and only finalize their observations if the `global-accountant` gives the go-ahead.
+The `global-accountant` contract on deltachain acts as an [Integrity Checker](0010_integrity_checkers.md).  Guardians submit [pre-observations](0010_integrity_checker.md#pre-observations) to it and only finalize their observations if the `global-accountant` gives the go-ahead.
 
 `global-accountant`keeps track of the tokens locked and minted on each connected blockchain.
 
@@ -79,7 +79,7 @@ pub enum WormholeQuery {
 }
 ```
 
-#### Submitting observations to wormchain
+#### Submitting observations to deltachain
 
 When a guardian observes a token transfer message from the registered tokenbridge on a particular chain, it submits the observation directly to the accountant.  The contract keeps track of pending token transfers and emits an event once it has received a quorum of observations.  If a quorum of guardians submit their observations within a single tendermint block then the token transfer only needs to wait for one round of tendermint consensus and one round of guardian consensus.
 
@@ -110,7 +110,7 @@ Guardians are expected to periodically run this query and re-observe transaction
 
 #### Contract Upgrades
 
-Upgrading the contract is performed with a migrate contract governance action from the guardian network. Once quorum+1 guardians (13) have signed the migrate contract governance VAA, the [wormchain client migrate command](https://github.com/wormhole-foundation/wormhole/blob/a846036b6ebff3af6f12ff375f5c3801ada20291/wormchain/x/wormhole/client/cli/tx_wasmd.go#L148) can be ran by anyone with an authorized wallet to submit the valid governance vaa and updated wasm contract to wormchain.
+Upgrading the contract is performed with a migrate contract governance action from the guardian network. Once quorum+1 guardians (13) have signed the migrate contract governance VAA, the [deltachain client migrate command](https://github.com/wormhole-foundation/wormhole/blob/a846036b6ebff3af6f12ff375f5c3801ada20291/deltachain/x/wormhole/client/cli/tx_wasmd.go#L148) can be ran by anyone with an authorized wallet to submit the valid governance vaa and updated wasm contract to deltachain.
 
 ### Account Management
 
@@ -168,8 +168,8 @@ Whenever a guardian observes an error (either via an observation response or via
 
 ## Deployment Plan
 
-- Deploy wormchain and have a quorum of guardians bring their nodes online.
-- Deploy the accountant contract to wormchain and backfill it with all the tokenbridge transfer VAAs that have been emitted since inception.
+- Deploy deltachain and have a quorum of guardians bring their nodes online.
+- Deploy the accountant contract to deltachain and backfill it with all the tokenbridge transfer VAAs that have been emitted since inception.
 - Enable the accountant in log-only mode.  In this mode, each guardian will submit its observations to the accountant but will not wait for the transfer to commit before signing the VAA.  This allows time to shake out any remaining implementation issues without impacting the network.
 - After confidence is achieved the accountant is running correctly in log-only mode, switch to enforcing mode.  In this mode, guardians will not sign VAAs for token transfers until the transfer is committed by the accountant.  As long as at least a quorum of guardians submit their observations to the accountant, only a super-minority (1/3) is needed to turn on enforcing-mode for it to be effective.
 
@@ -179,11 +179,11 @@ Whenever a guardian observes an error (either via an observation response or via
 
 Since the Global Accountant is implemented as an Integrity Checker, it inherits the threat model of Integrity Checkers. Therefore, it is only able to block messages and not create or modify messages.
 
-### Susceptibility to wormchain downtime
+### Susceptibility to deltachain downtime
 
-Once all token transfers are gated on approval from the accountant, the uptime of the guardian network for those transfers becomes dependent on the uptime of wormchain itself.  Any downtime for wormchain would halt all token transfers until the network is back online (or 2/3+ of the guardians choose to disable the accountant).
+Once all token transfers are gated on approval from the accountant, the uptime of the guardian network for those transfers becomes dependent on the uptime of deltachain itself.  Any downtime for deltachain would halt all token transfers until the network is back online (or 2/3+ of the guardians choose to disable the accountant).
 
-In practice, cosmos chains are stable and wormchain is not particularly complex.  However, once the accountant is live, attacking wormchain could shut down all token transfers for the bridge.
+In practice, cosmos chains are stable and deltachain is not particularly complex.  However, once the accountant is live, attacking deltachain could shut down all token transfers for the bridge.
 
 ### Token Bridge messages cannot reach quorum if 7 or more, but less than 13 Guardians decide to disable Accountant
 

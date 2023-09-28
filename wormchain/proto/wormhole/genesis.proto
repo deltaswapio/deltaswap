@@ -1,5 +1,5 @@
 syntax = "proto3";
-package wormhole_foundation.wormchain.wormhole;
+package wormhole_foundation.deltachain.wormhole;
 
 import "wormhole/guardian.proto";
 import "wormhole/config.proto";
@@ -9,7 +9,7 @@ import "wormhole/consensus_guardian_set_index.proto";
 // this line is used by starport scaffolding # genesis/proto/import
 import "gogoproto/gogo.proto";
 
-option go_package = "github.com/wormhole-foundation/wormchain/x/wormhole/types";
+option go_package = "github.com/wormhole-foundation/deltachain/x/wormhole/types";
 
 // GenesisState defines the wormhole module's genesis state.
 message GenesisState {

@@ -218,7 +218,7 @@ impl FromStr for Chain {
             "Sei" | "sei" | "SEI" => Ok(Chain::Sei),
             "Rootstock" | "rootstock" | "ROOTSTOCK" => Ok(Chain::Rootstock),
             "Sepolia" | "sepolia" | "SEPOLIA" => Ok(Chain::Sepolia),
-            "Wormchain" | "wormchain" | "WORMCHAIN" => Ok(Chain::Wormchain),
+            "Wormchain" | "deltachain" | "WORMCHAIN" => Ok(Chain::Wormchain),
             _ => {
                 let mut parts = s.split(&['(', ')']);
                 let _ = parts

@@ -1,13 +1,13 @@
 {
-  "name": "@wormhole-foundation/wormchain-contract-tools",
+  "name": "@wormhole-foundation/deltachain-contract-tools",
   "version": "0.0.1",
-  "description": "scripts for working with wormchain contracts",
-  "main": "deploy_wormchain.ts",
+  "description": "scripts for working with deltachain contracts",
+  "main": "deploy_deltachain.ts",
   "scripts": {
-    "deploy-wormchain": "ts-node deploy_wormchain.ts",
+    "deploy-deltachain": "ts-node deploy_deltachain.ts",
     "test-accountant": "jest test_accountant.ts --verbose",
-    "test-wormchain": "ts-node test_wormchain.ts",
-    "deploy-and-test": "npm run deploy-wormchain && npm run test-wormchain"
+    "test-deltachain": "ts-node test_deltachain.ts",
+    "deploy-and-test": "npm run deploy-deltachain && npm run test-deltachain"
   },
   "keywords": [],
   "author": "",
@@ -15,7 +15,7 @@
     "@certusone/wormhole-sdk": "0.9.9",
     "@cosmjs/cosmwasm-stargate": "0.29.5",
     "@improbable-eng/grpc-web-node-http-transport": "0.15.0",
-    "@wormhole-foundation/wormchain-sdk": "file:../../ts-sdk",
+    "@wormhole-foundation/deltachain-sdk": "file:../../ts-sdk",
     "cosmwasm": "1.1.1",
     "dotenv": "16.0.3",
     "elliptic": "6.5.4",

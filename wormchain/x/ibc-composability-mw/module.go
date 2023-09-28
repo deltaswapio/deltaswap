@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 	"math/rand"
 
-	"github.com/wormhole-foundation/wormchain/x/ibc-composability-mw/keeper"
-	"github.com/wormhole-foundation/wormchain/x/ibc-composability-mw/types"
+	"github.com/wormhole-foundation/deltachain/x/ibc-composability-mw/keeper"
+	"github.com/wormhole-foundation/deltachain/x/ibc-composability-mw/types"
 
 	"github.com/gorilla/mux"
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"

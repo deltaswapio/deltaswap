@@ -9,9 +9,9 @@ import (
 	"github.com/cosmos/cosmos-sdk/types/module"
 	simtypes "github.com/cosmos/cosmos-sdk/types/simulation"
 	"github.com/cosmos/cosmos-sdk/x/simulation"
-	"github.com/wormhole-foundation/wormchain/testutil/sample"
-	wormholesimulation "github.com/wormhole-foundation/wormchain/x/wormhole/simulation"
-	"github.com/wormhole-foundation/wormchain/x/wormhole/types"
+	"github.com/wormhole-foundation/deltachain/testutil/sample"
+	wormholesimulation "github.com/wormhole-foundation/deltachain/x/wormhole/simulation"
+	"github.com/wormhole-foundation/deltachain/x/wormhole/types"
 )
 
 // avoid unused import issue

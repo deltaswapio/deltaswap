@@ -63,7 +63,7 @@ fn handle_vaa(deps: DepsMut<WormholeQuery>, vaa: Binary) -> anyhow::Result<Event
     // Must be a version 1 VAA
     ensure!(header.version == 1, "unsupported VAA version");
 
-    // call into wormchain to verify the VAA
+    // call into deltachain to verify the VAA
     deps.querier
         .query::<Empty>(&WormholeQuery::VerifyVaa { vaa: vaa.clone() }.into())
         .context(ContractError::VerifyQuorum)?;
@@ -83,7 +83,7 @@ fn handle_vaa(deps: DepsMut<WormholeQuery>, vaa: Binary) -> anyhow::Result<Event
     let govpacket: GovernancePacket =
         serde_wormhole::from_slice(body.payload).context("failed to parse governance packet")?;
 
-    // validate the governance VAA is directed to wormchain
+    // validate the governance VAA is directed to deltachain
     ensure!(
         govpacket.chain == Chain::Wormchain,
         "this governance VAA is for another chain"
@@ -107,7 +107,7 @@ fn handle_vaa(deps: DepsMut<WormholeQuery>, vaa: Binary) -> anyhow::Result<Event
             channel_id,
             chain_id,
         } => {
-            ensure!(chain_id != Chain::Wormchain, "the wormchain-ibc-receiver contract should not maintain channel mappings to wormchain");
+            ensure!(chain_id != Chain::Wormchain, "the deltachain-ibc-receiver contract should not maintain channel mappings to deltachain");
 
             let channel_id_str =
                 str::from_utf8(&channel_id).context("failed to parse channel-id as utf-8")?;

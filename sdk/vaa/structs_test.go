@@ -57,7 +57,7 @@ func TestChainIDFromString(t *testing.T) {
 		{input: "btc", output: ChainIDBtc},
 		{input: "base", output: ChainIDBase},
 		{input: "sei", output: ChainIDSei},
-		{input: "wormchain", output: ChainIDWormchain},
+		{input: "deltachain", output: ChainIDWormchain},
 		{input: "sepolia", output: ChainIDSepolia},
 
 		{input: "Solana", output: ChainIDSolana},
@@ -259,7 +259,7 @@ func TestChainId_String(t *testing.T) {
 		{input: 29, output: "btc"},
 		{input: 30, output: "base"},
 		{input: 32, output: "sei"},
-		{input: 3104, output: "wormchain"},
+		{input: 3104, output: "deltachain"},
 		{input: 10002, output: "sepolia"},
 		{input: 10000, output: "unknown chain ID: 10000"},
 	}

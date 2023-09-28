@@ -255,10 +255,10 @@ func (m *EventConsensusSetUpdate) GetNewIndex() uint32 {
 }
 
 func init() {
-	proto.RegisterType((*EventGuardianSetUpdate)(nil), "wormhole_foundation.wormchain.wormhole.EventGuardianSetUpdate")
-	proto.RegisterType((*EventPostedMessage)(nil), "wormhole_foundation.wormchain.wormhole.EventPostedMessage")
-	proto.RegisterType((*EventGuardianRegistered)(nil), "wormhole_foundation.wormchain.wormhole.EventGuardianRegistered")
-	proto.RegisterType((*EventConsensusSetUpdate)(nil), "wormhole_foundation.wormchain.wormhole.EventConsensusSetUpdate")
+	proto.RegisterType((*EventGuardianSetUpdate)(nil), "wormhole_foundation.deltachain.wormhole.EventGuardianSetUpdate")
+	proto.RegisterType((*EventPostedMessage)(nil), "wormhole_foundation.deltachain.wormhole.EventPostedMessage")
+	proto.RegisterType((*EventGuardianRegistered)(nil), "wormhole_foundation.deltachain.wormhole.EventGuardianRegistered")
+	proto.RegisterType((*EventConsensusSetUpdate)(nil), "wormhole_foundation.deltachain.wormhole.EventConsensusSetUpdate")
 }
 
 func init() { proto.RegisterFile("wormhole/events.proto", fileDescriptor_486bfc4df1202b88) }

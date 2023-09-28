@@ -180,7 +180,7 @@ async function executeSubmit(
     await submitSui(parsedVaa.payload, buf, network, rpc);
   } else if (chain === "aptos") {
     await execute_aptos(parsedVaa.payload, buf, network, contractAddress, rpc);
-  } else if (chain === "wormchain") {
+  } else if (chain === "deltachain") {
     throw Error("Wormchain is not supported yet");
   } else if (chain === "btc") {
     throw Error("btc is not supported yet");

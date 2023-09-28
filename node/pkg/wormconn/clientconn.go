@@ -10,7 +10,7 @@ import (
 	sdktx "github.com/cosmos/cosmos-sdk/types/tx"
 
 	"github.com/btcsuite/btcutil/bech32"
-	wormchain "github.com/wormhole-foundation/wormchain/app"
+	deltachain "github.com/wormhole-foundation/deltachain/app"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
@@ -44,7 +44,7 @@ func NewConn(ctx context.Context, target string, privateKey cryptotypes.PrivKey,
 		return nil, err
 	}
 
-	encCfg := MakeEncodingConfig(wormchain.ModuleBasics)
+	encCfg := MakeEncodingConfig(deltachain.ModuleBasics)
 
 	senderAddress, err := generateSenderAddress(privateKey)
 	if err != nil {

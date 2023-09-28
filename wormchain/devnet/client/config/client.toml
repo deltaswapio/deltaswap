@@ -5,7 +5,7 @@
 ###############################################################################
 
 # The network chain ID
-chain-id = "wormchain"
+chain-id = "deltachain"
 # The keyring's backend, where the keys are stored (os|file|kwallet|pass|test|memory)
 keyring-backend = "test"
 # CLI output format (text|json)

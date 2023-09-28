@@ -84,7 +84,7 @@ var (
 	currentSlotHeight = promauto.NewGaugeVec(
 		prometheus.GaugeOpts{
 			Name: "wormhole_ibc_current_height",
-			Help: "Current slot height on an IBC connected chain (the block height on wormchain)",
+			Help: "Current slot height on an IBC connected chain (the block height on deltachain)",
 		}, []string{"chain_name"})
 	invalidChainIdMismatches = promauto.NewCounterVec(
 		prometheus.CounterOpts{
@@ -94,7 +94,7 @@ var (
 )
 
 type (
-	// Watcher is responsible for monitoring the IBC contract on wormchain and publishing wormhole messages for all chains connected via IBC.
+	// Watcher is responsible for monitoring the IBC contract on deltachain and publishing wormhole messages for all chains connected via IBC.
 	Watcher struct {
 		wsUrl           string
 		lcdUrl          string
@@ -197,7 +197,7 @@ type abciInfoResults struct {
 	}
 }
 
-// Run is the runnable for monitoring the IBC contract on wormchain.
+// Run is the runnable for monitoring the IBC contract on deltachain.
 func (w *Watcher) Run(ctx context.Context) error {
 	w.logger = supervisor.Logger(ctx)
 
@@ -264,7 +264,7 @@ func (w *Watcher) Run(ctx context.Context) error {
 		return w.handleEvents(ctx, c)
 	})
 
-	// Start a routine to periodically query the wormchain block height.
+	// Start a routine to periodically query the deltachain block height.
 	common.RunWithScissors(ctx, errC, "ibc_block_height", func(ctx context.Context) error {
 		return w.handleQueryBlockHeight(ctx, blockHeightUrl)
 	})
@@ -347,7 +347,7 @@ func (w *Watcher) handleEvents(ctx context.Context, c *websocket.Conn) error {
 	}
 }
 
-// convertWsUrlToHttpUrl takes a string like "ws://wormchain:26657/websocket" and converts it to "http://wormchain:26657". This is
+// convertWsUrlToHttpUrl takes a string like "ws://deltachain:26657/websocket" and converts it to "http://deltachain:26657". This is
 // used to query for the abci_info. That query doesn't work on the LCD. We have to do it on the websocket port, using an http URL.
 func convertWsUrlToHttpUrl(url string) string {
 	//
@@ -356,7 +356,7 @@ func convertWsUrlToHttpUrl(url string) string {
 	return "http://" + url
 }
 
-// handleQueryBlockHeight gets the latest block height from wormchain each interval and updates the status on all the connected chains.
+// handleQueryBlockHeight gets the latest block height from deltachain each interval and updates the status on all the connected chains.
 func (w *Watcher) handleQueryBlockHeight(ctx context.Context, queryUrl string) error {
 	t := time.NewTicker(5 * time.Second)
 	client := &http.Client{
@@ -391,7 +391,7 @@ func (w *Watcher) handleQueryBlockHeight(ctx context.Context, queryUrl string) e
 				continue
 			}
 
-			w.logger.Debug("current block height", zap.Int64("height", blockHeight), zap.String("wormchainVersion", abciInfo.Result.Response.Version))
+			w.logger.Debug("current block height", zap.Int64("height", blockHeight), zap.String("deltachainVersion", abciInfo.Result.Response.Version))
 
 			for _, ce := range w.chainMap {
 				currentSlotHeight.WithLabelValues(ce.chainName).Set(float64(blockHeight))
@@ -410,7 +410,7 @@ func (w *Watcher) handleQueryBlockHeight(ctx context.Context, queryUrl string) e
 }
 
 // handleObservationRequests listens for observation requests for a single chain and processes them by reading the requested transaction
-// from wormchain and publishing the associated message. This function is instantiated for each connected chain.
+// from deltachain and publishing the associated message. This function is instantiated for each connected chain.
 func (w *Watcher) handleObservationRequests(ctx context.Context, ce *chainEntry) error {
 	for {
 		select {
@@ -654,7 +654,7 @@ func (w *Watcher) processIbcReceivePublishEvent(evt *ibcReceivePublishEvent, obs
 }
 
 // getChainIdFromChannelID returns the chain ID associated with the specified IBC channel. It uses a cache to avoid constantly querying
-// wormchain. This works because once an IBC channel is closed its ID will never be reused. This also means that there could be multiple
+// deltachain. This works because once an IBC channel is closed its ID will never be reused. This also means that there could be multiple
 // IBC channels for the same chain ID.
 // See the IBC spec for details: https://github.com/cosmos/ibc/tree/main/spec/core/ics-004-channel-and-packet-semantics#closing-handshake
 func (w *Watcher) getChainIdFromChannelID(channelID string) (vaa.ChainID, error) {

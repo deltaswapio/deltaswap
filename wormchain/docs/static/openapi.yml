@@ -32511,7 +32511,7 @@ paths:
           format: uint64
       tags:
         - Query
-  /wormhole_foundation/wormchain/wormhole/config:
+  /wormhole_foundation/deltachain/wormhole/config:
     get:
       summary: Queries a config by index.
       operationId: WormholeFoundationWormchainWormholeConfig
@@ -32556,7 +32556,7 @@ paths:
                   additionalProperties: {}
       tags:
         - Query
-  /wormhole_foundation/wormchain/wormhole/consensus_guardian_set_index:
+  /wormhole_foundation/deltachain/wormhole/consensus_guardian_set_index:
     get:
       summary: Queries a ConsensusGuardianSetIndex by index.
       operationId: WormholeFoundationWormchainWormholeConsensusGuardianSetIndex
@@ -32592,7 +32592,7 @@ paths:
                   additionalProperties: {}
       tags:
         - Query
-  /wormhole_foundation/wormchain/wormhole/guardianSet:
+  /wormhole_foundation/deltachain/wormhole/guardianSet:
     get:
       summary: Queries a list of guardianSet items.
       operationId: WormholeFoundationWormchainWormholeGuardianSetAll
@@ -32722,7 +32722,7 @@ paths:
           type: boolean
       tags:
         - Query
-  '/wormhole_foundation/wormchain/wormhole/guardianSet/{index}':
+  '/wormhole_foundation/deltachain/wormhole/guardianSet/{index}':
     get:
       summary: Queries a guardianSet by index.
       operationId: WormholeFoundationWormchainWormholeGuardianSet
@@ -32772,7 +32772,7 @@ paths:
           format: int64
       tags:
         - Query
-  /wormhole_foundation/wormchain/wormhole/guardian_validator:
+  /wormhole_foundation/deltachain/wormhole/guardian_validator:
     get:
       summary: Queries a list of GuardianValidator items.
       operationId: WormholeFoundationWormchainWormholeGuardianValidatorAll
@@ -32897,7 +32897,7 @@ paths:
           type: boolean
       tags:
         - Query
-  '/wormhole_foundation/wormchain/wormhole/guardian_validator/{guardianKey}':
+  '/wormhole_foundation/deltachain/wormhole/guardian_validator/{guardianKey}':
     get:
       summary: Queries a GuardianValidator by index.
       operationId: WormholeFoundationWormchainWormholeGuardianValidator
@@ -32942,7 +32942,7 @@ paths:
           format: byte
       tags:
         - Query
-  /wormhole_foundation/wormchain/wormhole/latest_guardian_set_index:
+  /wormhole_foundation/deltachain/wormhole/latest_guardian_set_index:
     get:
       summary: Queries a list of LatestGuardianSetIndex items.
       operationId: WormholeFoundationWormchainWormholeLatestGuardianSetIndex
@@ -32975,7 +32975,7 @@ paths:
                   additionalProperties: {}
       tags:
         - Query
-  /wormhole_foundation/wormchain/wormhole/replayProtection:
+  /wormhole_foundation/deltachain/wormhole/replayProtection:
     get:
       summary: Queries a list of replayProtection items.
       operationId: WormholeFoundationWormchainWormholeReplayProtectionAll
@@ -33096,7 +33096,7 @@ paths:
           type: boolean
       tags:
         - Query
-  '/wormhole_foundation/wormchain/wormhole/replayProtection/{index}':
+  '/wormhole_foundation/deltachain/wormhole/replayProtection/{index}':
     get:
       summary: Queries a replayProtection by index.
       operationId: WormholeFoundationWormchainWormholeReplayProtection
@@ -33136,7 +33136,7 @@ paths:
           type: string
       tags:
         - Query
-  /wormhole_foundation/wormchain/wormhole/sequenceCounter:
+  /wormhole_foundation/deltachain/wormhole/sequenceCounter:
     get:
       summary: Queries a list of sequenceCounter items.
       operationId: WormholeFoundationWormchainWormholeSequenceCounterAll
@@ -33260,7 +33260,7 @@ paths:
           type: boolean
       tags:
         - Query
-  '/wormhole_foundation/wormchain/wormhole/sequenceCounter/{index}':
+  '/wormhole_foundation/deltachain/wormhole/sequenceCounter/{index}':
     get:
       summary: Queries a sequenceCounter by index.
       operationId: WormholeFoundationWormchainWormholeSequenceCounter
@@ -55209,7 +55209,7 @@ definitions:
     description: |-
       Version defines the versioning scheme used to negotiate the IBC verison in
       the connection handshake.
-  wormhole_foundation.wormchain.wormhole.Config:
+  wormhole_foundation.deltachain.wormhole.Config:
     type: object
     properties:
       guardian_set_expiration:
@@ -55224,19 +55224,19 @@ definitions:
       chain_id:
         type: integer
         format: int64
-  wormhole_foundation.wormchain.wormhole.ConsensusGuardianSetIndex:
+  wormhole_foundation.deltachain.wormhole.ConsensusGuardianSetIndex:
     type: object
     properties:
       index:
         type: integer
         format: int64
-  wormhole_foundation.wormchain.wormhole.GuardianKey:
+  wormhole_foundation.deltachain.wormhole.GuardianKey:
     type: object
     properties:
       key:
         type: string
         format: byte
-  wormhole_foundation.wormchain.wormhole.GuardianSet:
+  wormhole_foundation.deltachain.wormhole.GuardianSet:
     type: object
     properties:
       index:
@@ -55250,7 +55250,7 @@ definitions:
       expirationTime:
         type: string
         format: uint64
-  wormhole_foundation.wormchain.wormhole.GuardianValidator:
+  wormhole_foundation.deltachain.wormhole.GuardianValidator:
     type: object
     properties:
       guardianKey:
@@ -55259,9 +55259,9 @@ definitions:
       validatorAddr:
         type: string
         format: byte
-  wormhole_foundation.wormchain.wormhole.MsgExecuteGovernanceVAAResponse:
+  wormhole_foundation.deltachain.wormhole.MsgExecuteGovernanceVAAResponse:
     type: object
-  wormhole_foundation.wormchain.wormhole.MsgInstantiateContractResponse:
+  wormhole_foundation.deltachain.wormhole.MsgInstantiateContractResponse:
     type: object
     properties:
       address:
@@ -55271,16 +55271,16 @@ definitions:
         type: string
         format: byte
         title: Data contains base64-encoded bytes to returned from the contract
-  wormhole_foundation.wormchain.wormhole.MsgRegisterAccountAsGuardianResponse:
+  wormhole_foundation.deltachain.wormhole.MsgRegisterAccountAsGuardianResponse:
     type: object
-  wormhole_foundation.wormchain.wormhole.MsgStoreCodeResponse:
+  wormhole_foundation.deltachain.wormhole.MsgStoreCodeResponse:
     type: object
     properties:
       code_id:
         type: string
         format: uint64
         title: CodeID is the reference to the stored WASM code
-  wormhole_foundation.wormchain.wormhole.QueryAllGuardianSetResponse:
+  wormhole_foundation.deltachain.wormhole.QueryAllGuardianSetResponse:
     type: object
     properties:
       GuardianSet:
@@ -55324,7 +55324,7 @@ definitions:
                    repeated Bar results = 1;
                    PageResponse page = 2;
            }
-  wormhole_foundation.wormchain.wormhole.QueryAllGuardianValidatorResponse:
+  wormhole_foundation.deltachain.wormhole.QueryAllGuardianValidatorResponse:
     type: object
     properties:
       guardianValidator:
@@ -55363,7 +55363,7 @@ definitions:
                    repeated Bar results = 1;
                    PageResponse page = 2;
            }
-  wormhole_foundation.wormchain.wormhole.QueryAllReplayProtectionResponse:
+  wormhole_foundation.deltachain.wormhole.QueryAllReplayProtectionResponse:
     type: object
     properties:
       replayProtection:
@@ -55398,7 +55398,7 @@ definitions:
                    repeated Bar results = 1;
                    PageResponse page = 2;
            }
-  wormhole_foundation.wormchain.wormhole.QueryAllSequenceCounterResponse:
+  wormhole_foundation.deltachain.wormhole.QueryAllSequenceCounterResponse:
     type: object
     properties:
       sequenceCounter:
@@ -55436,7 +55436,7 @@ definitions:
                    repeated Bar results = 1;
                    PageResponse page = 2;
            }
-  wormhole_foundation.wormchain.wormhole.QueryGetConfigResponse:
+  wormhole_foundation.deltachain.wormhole.QueryGetConfigResponse:
     type: object
     properties:
       Config:
@@ -55454,7 +55454,7 @@ definitions:
           chain_id:
             type: integer
             format: int64
-  wormhole_foundation.wormchain.wormhole.QueryGetConsensusGuardianSetIndexResponse:
+  wormhole_foundation.deltachain.wormhole.QueryGetConsensusGuardianSetIndexResponse:
     type: object
     properties:
       ConsensusGuardianSetIndex:
@@ -55463,7 +55463,7 @@ definitions:
           index:
             type: integer
             format: int64
-  wormhole_foundation.wormchain.wormhole.QueryGetGuardianSetResponse:
+  wormhole_foundation.deltachain.wormhole.QueryGetGuardianSetResponse:
     type: object
     properties:
       GuardianSet:
@@ -55480,7 +55480,7 @@ definitions:
           expirationTime:
             type: string
             format: uint64
-  wormhole_foundation.wormchain.wormhole.QueryGetGuardianValidatorResponse:
+  wormhole_foundation.deltachain.wormhole.QueryGetGuardianValidatorResponse:
     type: object
     properties:
       guardianValidator:
@@ -55492,7 +55492,7 @@ definitions:
           validatorAddr:
             type: string
             format: byte
-  wormhole_foundation.wormchain.wormhole.QueryGetReplayProtectionResponse:
+  wormhole_foundation.deltachain.wormhole.QueryGetReplayProtectionResponse:
     type: object
     properties:
       replayProtection:
@@ -55500,7 +55500,7 @@ definitions:
         properties:
           index:
             type: string
-  wormhole_foundation.wormchain.wormhole.QueryGetSequenceCounterResponse:
+  wormhole_foundation.deltachain.wormhole.QueryGetSequenceCounterResponse:
     type: object
     properties:
       sequenceCounter:
@@ -55511,18 +55511,18 @@ definitions:
           sequence:
             type: string
             format: uint64
-  wormhole_foundation.wormchain.wormhole.QueryLatestGuardianSetIndexResponse:
+  wormhole_foundation.deltachain.wormhole.QueryLatestGuardianSetIndexResponse:
     type: object
     properties:
       latestGuardianSetIndex:
         type: integer
         format: int64
-  wormhole_foundation.wormchain.wormhole.ReplayProtection:
+  wormhole_foundation.deltachain.wormhole.ReplayProtection:
     type: object
     properties:
       index:
         type: string
-  wormhole_foundation.wormchain.wormhole.SequenceCounter:
+  wormhole_foundation.deltachain.wormhole.SequenceCounter:
     type: object
     properties:
       index:

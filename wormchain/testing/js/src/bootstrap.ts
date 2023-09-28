@@ -3,13 +3,13 @@ import { DeliverTxResponse, StdFee } from "@cosmjs/stargate";
 import axios from "axios";
 import pkg from "protobufjs";
 const { Field, Type } = pkg;
-import * as sdk from "@wormhole-foundation/wormchain-sdk";
+import * as sdk from "@wormhole-foundation/deltachain-sdk";
 import {
   fromAccAddress,
   fromValAddress,
   toBase64,
   toValAddress,
-} from "@wormhole-foundation/wormchain-sdk";
+} from "@wormhole-foundation/deltachain-sdk";
 import {
   DEVNET_GUARDIAN2_PRIVATE_KEY,
   DEVNET_GUARDIAN2_PUBLIC_KEY,
@@ -46,7 +46,7 @@ let err: string | null = null;
 //TODO figure out the valAddr of test wallet 2
 async function fullBootstrapProcess() {
   try {
-    console.log("Starting wormchain bootstrap test process");
+    console.log("Starting deltachain bootstrap test process");
 
     //construct the clients we will use for the test
     const queryClient = getWormholeQueryClient(NODE_URL, true);

@@ -343,12 +343,12 @@ func (m *IbcComposabilityMwContract) GetContractAddress() string {
 }
 
 func init() {
-	proto.RegisterType((*GuardianKey)(nil), "wormhole_foundation.wormchain.wormhole.GuardianKey")
-	proto.RegisterType((*GuardianValidator)(nil), "wormhole_foundation.wormchain.wormhole.GuardianValidator")
-	proto.RegisterType((*GuardianSet)(nil), "wormhole_foundation.wormchain.wormhole.GuardianSet")
-	proto.RegisterType((*ValidatorAllowedAddress)(nil), "wormhole_foundation.wormchain.wormhole.ValidatorAllowedAddress")
-	proto.RegisterType((*WasmInstantiateAllowedContractCodeId)(nil), "wormhole_foundation.wormchain.wormhole.WasmInstantiateAllowedContractCodeId")
-	proto.RegisterType((*IbcComposabilityMwContract)(nil), "wormhole_foundation.wormchain.wormhole.IbcComposabilityMwContract")
+	proto.RegisterType((*GuardianKey)(nil), "wormhole_foundation.deltachain.wormhole.GuardianKey")
+	proto.RegisterType((*GuardianValidator)(nil), "wormhole_foundation.deltachain.wormhole.GuardianValidator")
+	proto.RegisterType((*GuardianSet)(nil), "wormhole_foundation.deltachain.wormhole.GuardianSet")
+	proto.RegisterType((*ValidatorAllowedAddress)(nil), "wormhole_foundation.deltachain.wormhole.ValidatorAllowedAddress")
+	proto.RegisterType((*WasmInstantiateAllowedContractCodeId)(nil), "wormhole_foundation.deltachain.wormhole.WasmInstantiateAllowedContractCodeId")
+	proto.RegisterType((*IbcComposabilityMwContract)(nil), "wormhole_foundation.deltachain.wormhole.IbcComposabilityMwContract")
 }
 
 func init() { proto.RegisterFile("wormhole/guardian.proto", fileDescriptor_95afcf26fc23dcb3) }

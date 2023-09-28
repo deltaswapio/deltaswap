@@ -283,7 +283,7 @@ func (acct *Accountant) queryMissingObservations() ([]MissingObservation, error)
 
 	query := fmt.Sprintf(`{"missing_observations":{"guardian_set": %d, "index": %d}}`, gs.Index, guardianIndex)
 	acct.logger.Debug("submitting missing_observations query", zap.String("query", query))
-	respBytes, err := acct.wormchainConn.SubmitQuery(acct.ctx, acct.contract, []byte(query))
+	respBytes, err := acct.deltachainConn.SubmitQuery(acct.ctx, acct.contract, []byte(query))
 	if err != nil {
 		return nil, fmt.Errorf("missing_observations query failed: %w, %s", err, query)
 	}
@@ -304,7 +304,7 @@ type queryConn interface {
 
 // queryBatchTransferStatus queries the status of the specified transfers and returns a map keyed by transfer key (as a string) to the status.
 func (acct *Accountant) queryBatchTransferStatus(keys []TransferKey) (map[string]*TransferStatus, error) {
-	return queryBatchTransferStatusWithConn(acct.ctx, acct.logger, acct.wormchainConn, acct.contract, keys)
+	return queryBatchTransferStatusWithConn(acct.ctx, acct.logger, acct.deltachainConn, acct.contract, keys)
 }
 
 // queryBatchTransferStatus is a free function that queries the status of the specified transfers and returns a map keyed by transfer key (as a string)

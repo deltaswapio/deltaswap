@@ -7,15 +7,15 @@ RUN apt install -y jq
 
 WORKDIR /app
 
-COPY ./wormchain/go.mod .
-COPY ./wormchain/go.sum .
+COPY ./deltachain/go.mod .
+COPY ./deltachain/go.sum .
 COPY ./sdk /sdk
 RUN go mod download
 
 # copy over c bindings (libwasmvm.x86_64.so, etc)
 RUN cp -r /go/pkg/mod/github.com/!cosm!wasm/wasmvm@v1.1.1/internal/api/* /usr/lib
 
-COPY ./wormchain .
+COPY ./deltachain .
 
 EXPOSE 26657
 EXPOSE 26656
@@ -27,7 +27,7 @@ EXPOSE 4500
 RUN unset GOPATH
 
 # create the dir for the default "home" config
-RUN mkdir -p /root/.wormchain
+RUN mkdir -p /root/.deltachain
 
 ARG num_guardians
 ENV NUM_GUARDIANS=$num_guardians
@@ -35,7 +35,7 @@ ENV NUM_GUARDIANS=$num_guardians
 RUN /bin/bash /app/devnet/create-genesis.sh
 
 RUN make client
-RUN chmod +x /app/build/wormchaind
+RUN chmod +x /app/build/deltachaind
 
 
-ENTRYPOINT ["/bin/bash","-c","/app/build/wormchaind start"]
+ENTRYPOINT ["/bin/bash","-c","/app/build/deltachaind start"]

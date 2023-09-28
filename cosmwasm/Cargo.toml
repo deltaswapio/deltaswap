@@ -11,7 +11,7 @@ members = [
     "packages/wormhole-bindings",
     "packages/cw_transcode",
     "contracts/wormhole-ibc",
-    "contracts/wormchain-ibc-receiver",
+    "contracts/deltachain-ibc-receiver",
     "contracts/ibc-translator"
 ]
 
@@ -40,5 +40,5 @@ global-accountant = { path = "contracts/global-accountant" }
 wormhole-bindings = { path = "packages/wormhole-bindings" }
 wormhole-cosmwasm = { path = "contracts/wormhole" }
 wormhole-sdk = { path = "../sdk/rust/core" }
-wormchain-ibc-receiver = { path = "contracts/wormchain-ibc-receiver" }
+deltachain-ibc-receiver = { path = "contracts/deltachain-ibc-receiver" }
 wormhole-ibc = { path = "contracts/wormhole-ibc" }

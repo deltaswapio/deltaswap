@@ -170,8 +170,8 @@ func (m *GovernanceWormholeMessageProposal) GetPayload() []byte {
 }
 
 func init() {
-	proto.RegisterType((*GuardianSetUpdateProposal)(nil), "wormhole_foundation.wormchain.wormhole.GuardianSetUpdateProposal")
-	proto.RegisterType((*GovernanceWormholeMessageProposal)(nil), "wormhole_foundation.wormchain.wormhole.GovernanceWormholeMessageProposal")
+	proto.RegisterType((*GuardianSetUpdateProposal)(nil), "wormhole_foundation.deltachain.wormhole.GuardianSetUpdateProposal")
+	proto.RegisterType((*GovernanceWormholeMessageProposal)(nil), "wormhole_foundation.deltachain.wormhole.GovernanceWormholeMessageProposal")
 }
 
 func init() { proto.RegisterFile("wormhole/governance.proto", fileDescriptor_ceebda8f8c3f5f74) }

@@ -84,7 +84,7 @@ func Test_shouldPublishToTokenBridge(t *testing.T) {
 	tests := []Test{
 		{label: "unknown chain", chain: vaa.ChainIDUnset, address: addr("0000000000000000000000003ee18b2214aff97000d974cf647e7c347e8fa585"), payload: []byte{}, result: false},
 		{label: "unknown emitter", chain: vaa.ChainIDEthereum, address: addr("0000000000000000000000000000000000000000000000000000000000000000"), payload: []byte{}, result: false},
-		{label: "wormchain", chain: vaa.ChainIDWormchain, address: addr("aeb534c45c3049d380b9d9b966f9895f53abd4301bfaff407fa09dea8ae7a924"), payload: []byte{}, result: false},
+		{label: "deltachain", chain: vaa.ChainIDWormchain, address: addr("aeb534c45c3049d380b9d9b966f9895f53abd4301bfaff407fa09dea8ae7a924"), payload: []byte{}, result: false},
 		{label: "empty payload", chain: vaa.ChainIDEthereum, address: addr("0000000000000000000000003ee18b2214aff97000d974cf647e7c347e8fa585"), payload: []byte{}, result: false},
 		{label: "not an attest", chain: vaa.ChainIDEthereum, address: addr("0000000000000000000000003ee18b2214aff97000d974cf647e7c347e8fa585"), payload: []byte{0x1}, result: false},
 		{label: "should publish", chain: vaa.ChainIDEthereum, address: addr("0000000000000000000000003ee18b2214aff97000d974cf647e7c347e8fa585"), payload: []byte{0x2}, result: true},

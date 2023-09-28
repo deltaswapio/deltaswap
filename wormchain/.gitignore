@@ -6,12 +6,12 @@ release/
 testing/js/node_modules
 !build
 build/wormhole-chaind
-build/wormchaind
+build/deltachaind
 build/data
-devnet/wormchain-*/data
-devnet/wormchain-*/config/*.toml
-devnet/wormchain-*/config/addrbook.json
-devnet/wormchain-*/config/genesis.json
+devnet/deltachain-*/data
+devnet/deltachain-*/config/*.toml
+devnet/deltachain-*/config/addrbook.json
+devnet/deltachain-*/config/genesis.json
 ts-sdk/node_modules
 ts-sdk/lib
 contracts/artifacts

@@ -31,7 +31,7 @@ export const CHAINS = {
   base: 30,
   sei: 32,
   rootstock: 33,
-  wormchain: 3104,
+  deltachain: 3104,
   cosmoshub: 4000,
   evmos: 4001,
   kujira: 4002,
@@ -81,7 +81,7 @@ export const CosmWasmChainNames = [
   "injective",
   "xpla",
   "sei",
-  "wormchain",
+  "deltachain",
   "osmosis",
   "evmos",
   "cosmoshub",
@@ -272,7 +272,7 @@ const MAINNET = {
     token_bridge: undefined,
     nft_bridge: undefined,
   },
-  wormchain: {
+  deltachain: {
     core: "wormhole1ufs3tlq4umljk0qfe8k5ya0x6hpavn897u2cnf9k0en9jr7qarqqaqfk2j",
     token_bridge:
       "wormhole1466nf3zuxpya8q9emxukd7vftaf6h4psr0a07srl5zw74zh84yjq4lyjmh",
@@ -467,7 +467,7 @@ const TESTNET = {
     token_bridge: undefined,
     nft_bridge: undefined,
   },
-  wormchain: {
+  deltachain: {
     core: "wormhole16jzpxp0e8550c9aht6q9svcux30vtyyyyxv5w2l2djjra46580wsazcjwp",
     token_bridge:
       "wormhole1aaf9r6s7nxhysuegqrxv0wpm27ypyv4886medd3mrkrw6t4yfcnst3qpex",
@@ -660,7 +660,7 @@ const DEVNET = {
     token_bridge: undefined,
     nft_bridge: undefined,
   },
-  wormchain: {
+  deltachain: {
     core: "wormhole17p9rzwnnfxcjp32un9ug7yhhzgtkhvl9jfksztgw5uh69wac2pgshdnj3k",
     token_bridge:
       "wormhole1ghd753shjuwexxywmgs4xz7x2q732vcnkm6h2pyv9s6ah3hylvrqtm7t3h",
@@ -758,7 +758,7 @@ export const CHAIN_ID_BTC = CHAINS["btc"];
 export const CHAIN_ID_BASE = CHAINS["base"];
 export const CHAIN_ID_SEI = CHAINS["sei"];
 export const CHAIN_ID_ROOTSTOCK = CHAINS["rootstock"];
-export const CHAIN_ID_WORMCHAIN = CHAINS["wormchain"];
+export const CHAIN_ID_WORMCHAIN = CHAINS["deltachain"];
 export const CHAIN_ID_GATEWAY = CHAIN_ID_WORMCHAIN;
 export const CHAIN_ID_COSMOSHUB = CHAINS["cosmoshub"];
 export const CHAIN_ID_EVMOS = CHAINS["evmos"];

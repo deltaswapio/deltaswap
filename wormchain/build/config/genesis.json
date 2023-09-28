@@ -1,6 +1,6 @@
 {
   "genesis_time": "2022-09-27T22:08:43.044644477Z",
-  "chain_id": "wormchain",
+  "chain_id": "deltachain",
   "initial_height": "1",
   "consensus_params": {
     "block": {

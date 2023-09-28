@@ -462,19 +462,19 @@ type GovernanceMessage_BridgeContractUpgrade struct {
 }
 
 type GovernanceMessage_WormchainStoreCode struct {
-	WormchainStoreCode *WormchainStoreCode `protobuf:"bytes,14,opt,name=wormchain_store_code,json=wormchainStoreCode,proto3,oneof"`
+	WormchainStoreCode *WormchainStoreCode `protobuf:"bytes,14,opt,name=deltachain_store_code,json=deltachainStoreCode,proto3,oneof"`
 }
 
 type GovernanceMessage_WormchainInstantiateContract struct {
-	WormchainInstantiateContract *WormchainInstantiateContract `protobuf:"bytes,15,opt,name=wormchain_instantiate_contract,json=wormchainInstantiateContract,proto3,oneof"`
+	WormchainInstantiateContract *WormchainInstantiateContract `protobuf:"bytes,15,opt,name=deltachain_instantiate_contract,json=deltachainInstantiateContract,proto3,oneof"`
 }
 
 type GovernanceMessage_WormchainMigrateContract struct {
-	WormchainMigrateContract *WormchainMigrateContract `protobuf:"bytes,16,opt,name=wormchain_migrate_contract,json=wormchainMigrateContract,proto3,oneof"`
+	WormchainMigrateContract *WormchainMigrateContract `protobuf:"bytes,16,opt,name=deltachain_migrate_contract,json=deltachainMigrateContract,proto3,oneof"`
 }
 
 type GovernanceMessage_WormchainWasmInstantiateAllowlist struct {
-	WormchainWasmInstantiateAllowlist *WormchainWasmInstantiateAllowlist `protobuf:"bytes,23,opt,name=wormchain_wasm_instantiate_allowlist,json=wormchainWasmInstantiateAllowlist,proto3,oneof"`
+	WormchainWasmInstantiateAllowlist *WormchainWasmInstantiateAllowlist `protobuf:"bytes,23,opt,name=deltachain_wasm_instantiate_allowlist,json=deltachainWasmInstantiateAllowlist,proto3,oneof"`
 }
 
 type GovernanceMessage_GatewayScheduleUpgrade struct {
@@ -3320,10 +3320,10 @@ var file_node_v1_node_proto_depIdxs = []int32{
 	10, // 2: node.v1.GovernanceMessage.contract_upgrade:type_name -> node.v1.ContractUpgrade
 	8,  // 3: node.v1.GovernanceMessage.bridge_register_chain:type_name -> node.v1.BridgeRegisterChain
 	11, // 4: node.v1.GovernanceMessage.bridge_contract_upgrade:type_name -> node.v1.BridgeUpgradeContract
-	12, // 5: node.v1.GovernanceMessage.wormchain_store_code:type_name -> node.v1.WormchainStoreCode
-	13, // 6: node.v1.GovernanceMessage.wormchain_instantiate_contract:type_name -> node.v1.WormchainInstantiateContract
-	14, // 7: node.v1.GovernanceMessage.wormchain_migrate_contract:type_name -> node.v1.WormchainMigrateContract
-	15, // 8: node.v1.GovernanceMessage.wormchain_wasm_instantiate_allowlist:type_name -> node.v1.WormchainWasmInstantiateAllowlist
+	12, // 5: node.v1.GovernanceMessage.deltachain_store_code:type_name -> node.v1.WormchainStoreCode
+	13, // 6: node.v1.GovernanceMessage.deltachain_instantiate_contract:type_name -> node.v1.WormchainInstantiateContract
+	14, // 7: node.v1.GovernanceMessage.deltachain_migrate_contract:type_name -> node.v1.WormchainMigrateContract
+	15, // 8: node.v1.GovernanceMessage.deltachain_wasm_instantiate_allowlist:type_name -> node.v1.WormchainWasmInstantiateAllowlist
 	17, // 9: node.v1.GovernanceMessage.gateway_schedule_upgrade:type_name -> node.v1.GatewayScheduleUpgrade
 	18, // 10: node.v1.GovernanceMessage.gateway_cancel_upgrade:type_name -> node.v1.GatewayCancelUpgrade
 	16, // 11: node.v1.GovernanceMessage.gateway_ibc_composability_mw_set_contract:type_name -> node.v1.GatewayIbcComposabilityMwSetContract

@@ -255,7 +255,7 @@ Options:
         "avalanche", "oasis", "algorand", "aurora", "fantom", "karura", "acala",
             "klaytn", "celo", "near", "moonbeam", "neon", "terra2", "injective",
          "osmosis", "sui", "aptos", "arbitrum", "optimism", "gnosis", "pythnet",
-                           "xpla", "btc", "base", "sei", "wormchain", "sepolia"]
+                           "xpla", "btc", "base", "sei", "deltachain", "sepolia"]
   -n, --network           Network
                             [required] [choices: "mainnet", "testnet", "devnet"]
   -a, --contract-address  Contract to submit VAA to (override config)   [string]
@@ -310,13 +310,13 @@ Options:
         "avalanche", "oasis", "algorand", "aurora", "fantom", "karura", "acala",
             "klaytn", "celo", "near", "moonbeam", "neon", "terra2", "injective",
          "osmosis", "sui", "aptos", "arbitrum", "optimism", "gnosis", "pythnet",
-                           "xpla", "btc", "base", "sei", "wormchain", "sepolia"]
+                           "xpla", "btc", "base", "sei", "deltachain", "sepolia"]
       --dst-chain   destination chain
            [required] [choices: "solana", "ethereum", "terra", "bsc", "polygon",
         "avalanche", "oasis", "algorand", "aurora", "fantom", "karura", "acala",
             "klaytn", "celo", "near", "moonbeam", "neon", "terra2", "injective",
          "osmosis", "sui", "aptos", "arbitrum", "optimism", "gnosis", "pythnet",
-                           "xpla", "btc", "base", "sei", "wormchain", "sepolia"]
+                           "xpla", "btc", "base", "sei", "deltachain", "sepolia"]
       --dst-addr    destination address                      [string] [required]
       --token-addr  token address               [string] [default: native token]
       --amount      token amount                             [string] [required]
@@ -348,7 +348,7 @@ Positionals:
         "avalanche", "oasis", "algorand", "aurora", "fantom", "karura", "acala",
             "klaytn", "celo", "near", "moonbeam", "neon", "terra2", "injective",
          "osmosis", "sui", "aptos", "arbitrum", "optimism", "gnosis", "pythnet",
-                           "xpla", "btc", "base", "sei", "wormchain", "sepolia"]
+                           "xpla", "btc", "base", "sei", "deltachain", "sepolia"]
   tx           Source transaction hash                                  [string]
   block-start  Starting Block Range, i.e. -2048                         [string]
   block-end    Ending Block Range, i.e. latest                          [string]

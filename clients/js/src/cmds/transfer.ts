@@ -134,7 +134,7 @@ export const handler = async (
     await transferSui(dstChain, dstAddr, tokenAddr, amount, network, rpc);
   } else if (srcChain === "aptos") {
     await transferAptos(dstChain, dstAddr, tokenAddr, amount, network, rpc);
-  } else if (srcChain === "wormchain") {
+  } else if (srcChain === "deltachain") {
     throw Error("Wormchain is not supported yet");
   } else if (srcChain === "btc") {
     throw Error("btc is not supported yet");

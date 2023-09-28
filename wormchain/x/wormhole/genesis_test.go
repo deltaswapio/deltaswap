@@ -4,9 +4,9 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/require"
-	keepertest "github.com/wormhole-foundation/wormchain/testutil/keeper"
-	"github.com/wormhole-foundation/wormchain/x/wormhole"
-	"github.com/wormhole-foundation/wormchain/x/wormhole/types"
+	keepertest "github.com/wormhole-foundation/deltachain/testutil/keeper"
+	"github.com/wormhole-foundation/deltachain/x/wormhole"
+	"github.com/wormhole-foundation/deltachain/x/wormhole/types"
 )
 
 func TestGenesis(t *testing.T) {

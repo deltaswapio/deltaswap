@@ -113,18 +113,18 @@ fn handle_vaa(deps: DepsMut, env: Env, vaa: Binary) -> anyhow::Result<Event> {
             channel_id,
             chain_id,
         } => {
-            // validate that the chain_id for the channel is wormchain
-            // we should only be whitelisting IBC connections to wormchain
+            // validate that the chain_id for the channel is deltachain
+            // we should only be whitelisting IBC connections to deltachain
             ensure!(
                 chain_id == Chain::Wormchain,
-                "whitelisted ibc channel not for wormchain"
+                "whitelisted ibc channel not for deltachain"
             );
 
             let channel_id_str = String::from_utf8(channel_id.to_vec())
                 .context("failed to parse channel-id as utf-8")?;
             let channel_id_trimmed = channel_id_str.trim_start_matches(char::from(0));
 
-            // update the whitelisted wormchain channel id
+            // update the whitelisted deltachain channel id
             WORMCHAIN_CHANNEL_ID
                 .save(deps.storage, &channel_id_trimmed.to_string())
                 .context("failed to save channel chain")?;
@@ -143,7 +143,7 @@ fn post_message_ibc(
 ) -> anyhow::Result<Response> {
     let channel_id = WORMCHAIN_CHANNEL_ID
         .load(deps.storage)
-        .context("failed to load whitelisted wormchain channel id")?;
+        .context("failed to load whitelisted deltachain channel id")?;
 
     // compute the packet timeout
     let packet_timeout = env.block.time.plus_seconds(PACKET_LIFETIME).into();
