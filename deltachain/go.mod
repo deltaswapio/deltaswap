@@ -7,6 +7,7 @@ require (
 	github.com/CosmWasm/wasmvm v1.1.1
 	github.com/cosmos/cosmos-sdk v0.45.11
 	github.com/cosmos/ibc-go/v4 v4.2.2
+	github.com/deltaswapio/deltaswap/sdk v0.0.0-20220926172624-4b38dc650bb0
 	github.com/ethereum/go-ethereum v1.10.21
 	github.com/gogo/protobuf v1.3.3
 	github.com/golang/protobuf v1.5.2
@@ -23,7 +24,6 @@ require (
 	github.com/tendermint/spm v0.1.9
 	github.com/tendermint/tendermint v0.34.24
 	github.com/tendermint/tm-db v0.6.7
-	github.com/deltaswapio/deltaswap/sdk v0.0.0-20220926172624-4b38dc650bb0
 	golang.org/x/crypto v0.2.0
 	google.golang.org/genproto v0.0.0-20221114212237-e4508ebdbee1
 	google.golang.org/grpc v1.50.1
@@ -140,7 +140,7 @@ replace (
 	github.com/99designs/keyring => github.com/cosmos/keyring v1.1.7-0.20210622111912-ef00f8ac3d76
 	github.com/CosmWasm/wasmd v0.30.0 => github.com/wormhole-foundation/wasmd v0.30.0-wormchain-2
 	github.com/cosmos/cosmos-sdk => github.com/deltaswapio/cosmos-sdk v0.45.9-wormhole-2
-	github.com/gogo/protobuf => github.com/regen-network/protobuf v1.3.3-alpha.regen.1
 	github.com/deltaswapio/deltaswap/sdk => ../sdk
+	github.com/gogo/protobuf => github.com/regen-network/protobuf v1.3.3-alpha.regen.1
 	google.golang.org/grpc => google.golang.org/grpc v1.33.2
 )
