@@ -160,7 +160,7 @@ To Solana as CPI instruction:
 
 ### Observation Requests
 
-    kubectl exec -it guardian-0 -- /guardiand admin send-observation-request --socket /tmp/admin.sock 1 4636d8f7593c78a5092bed13dec765cc705752653db5eb1498168c92345cd389
+    kubectl exec -it guardian-0 -- /phylaxd admin send-observation-request --socket /tmp/admin.sock 1 4636d8f7593c78a5092bed13dec765cc705752653db5eb1498168c92345cd389
 
 ### IntelliJ Protobuf Autocompletion
 
@@ -187,8 +187,8 @@ Get yourself a working shell:
 
     kubectl exec -c goal-kmd algorand-0 -it shell-demo -- /bin/bash
 
-### guardiand debugging
+### phylaxd debugging
 
-Use the `--guardiand_debug` Tilt argument to run guardiand within a dlv session. The session will be exposed just like
+Use the `--phylaxd_debug` Tilt argument to run phylaxd within a dlv session. The session will be exposed just like
 any other Tilt services. You can then connect any IDE that supports Go debugging, like IntelliJ (add a "Go Remote"
 target and specify the host and port your Tilt instance runs on).

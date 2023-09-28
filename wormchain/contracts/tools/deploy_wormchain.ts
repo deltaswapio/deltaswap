@@ -281,8 +281,8 @@ async function main() {
   );
 
   // Generated VAA using
-  // `guardiand template ibc-receiver-update-channel-chain --channel-id channel-0 --chain-id 32 --target-chain-id 3104 > wormchain.prototxt`
-  // `guardiand admin governance-vaa-verify wormchain.prototxt`
+  // `phylaxd template ibc-receiver-update-channel-chain --channel-id channel-0 --chain-id 32 --target-chain-id 3104 > wormchain.prototxt`
+  // `phylaxd admin governance-vaa-verify wormchain.prototxt`
   let wormchainIbcReceiverWhitelistVaa: VAA<Other> = {
     version: 1,
     guardianSetIndex: 0,

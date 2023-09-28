@@ -2,7 +2,7 @@
 
 ## Why Wormhole Chain?
 
-At the time of writing, the Wormhole Guardian Network is a decentralized network of 19 validators operating in a Proof-of-Authority consensus mechanism. They validate using the guardiand program from the Wormhole core repository, and perform governance off-chain. There are currently no features to the Wormhole Guardian Network except the core function of observing and signing VAAs.
+At the time of writing, the Wormhole Guardian Network is a decentralized network of 19 validators operating in a Proof-of-Authority consensus mechanism. They validate using the phylaxd program from the Wormhole core repository, and perform governance off-chain. There are currently no features to the Wormhole Guardian Network except the core function of observing and signing VAAs.
 
 The roadmap is that as Wormhole grows and matures, it will add more advanced features, such as Accounting, Wormhole Pipes, Cross-Chain Queries, and more. It will also move its governance, VAA generation, and validator on-boarding to a formalized process, and change its governance structure from PoA to another mechanism (possibly a modified Proof of Stake mechanism).
 

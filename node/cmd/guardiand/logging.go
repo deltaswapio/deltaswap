@@ -1,4 +1,4 @@
-package guardiand
+package phylaxd
 
 import (
 	"unicode"

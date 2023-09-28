@@ -1,4 +1,4 @@
-package guardiand
+package phylaxd
 
 import (
 	"bufio"
@@ -686,7 +686,7 @@ func runSignExistingVaasFromCSV(cmd *cobra.Command, args []string) {
 
 // This exposes keccak256 as a command line utility, mostly for validating goverance messages
 // that use this hash.  There isn't any common utility that computes this since this is nonstandard outside of evm.
-// It is used similar to other hashing utilities, e.g. `cat <file> | guardiand admin keccak256`.
+// It is used similar to other hashing utilities, e.g. `cat <file> | phylaxd admin keccak256`.
 func runKeccak256Hash(cmd *cobra.Command, args []string) {
 	reader := bufio.NewReader(os.Stdin)
 	hash := sha3.NewLegacyKeccak256()

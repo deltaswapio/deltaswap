@@ -3,7 +3,7 @@ Below are admin controls surfaced to the Guardians for the Governor plugin. For
 a background on the feature and its objectives, see [the whitepaper](../whitepapers/0007_governor.md).
 
 ## Default Behavior / Limits
-The Chain Governor feature is disabled by default. Guardians can enable it by passing the following flag to the `guardiand` command when starting it up:
+The Chain Governor feature is disabled by default. Guardians can enable it by passing the following flag to the `phylaxd` command when starting it up:
 
 ```bash
 --chainGovernorEnabled=true
@@ -16,13 +16,13 @@ To observe the default chain limits, see `node/pkg/governor/mainnet_chains.go`. 
 To list the governor status for each chain, Guardians can run the `governor-status` admin command as follows:
 
 ```bash
-guardiand admin governor-status --socket /path/to/admin.sock
+phylaxd admin governor-status --socket /path/to/admin.sock
 ```
 
 When running in the local Tilt-based development environment, the command may be invoked as follows:
 
 ```bash
-kubectl exec guardian-0 -- /guardiand admin governor-status --socket /tmp/admin.sock
+kubectl exec guardian-0 -- /phylaxd admin governor-status --socket /tmp/admin.sock
 ```
 
 The following data will be shown:
@@ -53,7 +53,7 @@ chain: ethereum, dailyLimit: 100000, total: 0, numPending: 0
 To manually release a pending VAA (identified by emitted chain ID / address and sequence number), Guardians can run the `governor-release-pending-vaa` admin command as follows:
 
 ```bash
-guardiand admin governor-release-pending-vaa "emitted_chain_ID/address/sequence_number" --socket /path/to/admin.sock
+phylaxd admin governor-release-pending-vaa "emitted_chain_ID/address/sequence_number" --socket /path/to/admin.sock
 ```
 
 NOTE: VAAs that are published this way will not affect the rolling 24hr limit.
@@ -67,7 +67,7 @@ When a VAA is released, it will be placed in a holding area until the next pendi
 To manually remove a pending VAA (identified by emitted chain ID / address and sequence number), Guardians can run the `governor-drop-pending-vaa` admin command as follows:
 
 ```bash
-guardiand admin governor-drop-pending-vaa "emitted_chain_ID/address/sequence_number" --socket /path/to/admin.sock
+phylaxd admin governor-drop-pending-vaa "emitted_chain_ID/address/sequence_number" --socket /path/to/admin.sock
 ```
 **Warning:** *Dropping a VAA should only be used in the context of confirmed fraud that directly affects the security of the Wormhole network.  A super minority of Guardians are required to effectively censor a VAA.*
 
@@ -75,7 +75,7 @@ guardiand admin governor-drop-pending-vaa "emitted_chain_ID/address/sequence_num
 To reset the release timer for a specified VAA to `maxEnqueuedTimeInHours` from the current time, Guardians can run the `governor-reset-release-timer` admin command as follows:
 
 ```bash
-guardiand admin governor-reset-release-timer "emitted_chain_ID/address/sequence_number" --socket /path/to/admin.sock
+phylaxd admin governor-reset-release-timer "emitted_chain_ID/address/sequence_number" --socket /path/to/admin.sock
 ```
 
 **Warning:** *Resetting a VAA should only be used in the context of needing more time to confirm fraud that directly affects the security of the Wormhole network.  A super minority of Guardians are required to reset the timer for a given VAA.*

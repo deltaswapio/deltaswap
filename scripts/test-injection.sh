@@ -10,13 +10,13 @@ containerPath=/tmp/new-guardianset.prototxt
 sock=/tmp/admin.sock
 
 # Create a guardian set update VAA, pipe stdout to a local file.
-kubectl exec -n wormhole guardian-${node} -c guardiand -- /guardiand template guardian-set-update --num=1 --idx=${idx} > ${localPath}
+kubectl exec -n wormhole guardian-${node} -c phylaxd -- /phylaxd template guardian-set-update --num=1 --idx=${idx} > ${localPath}
 
 # Copy the local VAA prototext to a pod's file system.
-kubectl cp ${localPath} wormhole/guardian-${node}:${containerPath} -c guardiand
+kubectl cp ${localPath} wormhole/guardian-${node}:${containerPath} -c phylaxd
 
 # Verify the contents of the VAA prototext file and print the result. The digest incorporates the current time and is NOT deterministic.
-kubectl exec -n wormhole guardian-${node} -c guardiand -- /guardiand admin governance-vaa-verify $containerPath
+kubectl exec -n wormhole guardian-${node} -c phylaxd -- /phylaxd admin governance-vaa-verify $containerPath
 
 # Submit to node
-kubectl exec -n wormhole guardian-${node} -c guardiand -- /guardiand admin governance-vaa-inject --socket $sock $containerPath
+kubectl exec -n wormhole guardian-${node} -c phylaxd -- /phylaxd admin governance-vaa-inject --socket $sock $containerPath

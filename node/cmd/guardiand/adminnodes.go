@@ -1,4 +1,4 @@
-package guardiand
+package phylaxd
 
 import (
 	"context"
@@ -16,7 +16,7 @@ import (
 )
 
 // How to test in container:
-//    kubectl exec guardian-0 -- /guardiand admin list-nodes --socket /tmp/admin.sock
+//    kubectl exec guardian-0 -- /phylaxd admin list-nodes --socket /tmp/admin.sock
 
 var (
 	showDetails bool

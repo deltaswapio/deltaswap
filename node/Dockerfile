@@ -25,7 +25,7 @@ ARG GO_BUILD_ARGS=-race
 RUN --mount=type=cache,target=/root/.cache --mount=type=cache,target=/go \
   export CGO_ENABLED=1 && \
   cd node && \
-  go build ${GO_BUILD_ARGS} -gcflags="all=-N -l" --ldflags '-extldflags "-Wl,--allow-multiple-definition" -X "github.com/certusone/wormhole/node/cmd/guardiand.Build=dev"' -mod=readonly -o /guardiand github.com/certusone/wormhole/node && \
+  go build ${GO_BUILD_ARGS} -gcflags="all=-N -l" --ldflags '-extldflags "-Wl,--allow-multiple-definition" -X "github.com/certusone/wormhole/node/cmd/phylaxd.Build=dev"' -mod=readonly -o /phylaxd github.com/certusone/wormhole/node && \
   go get github.com/CosmWasm/wasmvm@v1.1.1 && \
   cp /go/pkg/mod/github.com/!cosm!wasm/wasmvm@v1.1.1/internal/api/libwasmvm.x86_64.so /usr/lib/
 
@@ -33,7 +33,7 @@ RUN --mount=type=cache,target=/root/.cache --mount=type=cache,target=/go \
 # from ~1GB to ~150MB.
 FROM scratch as export
 
-# guardiand can't (easily) be statically linked due to the C dependencies, so we
+# phylaxd can't (easily) be statically linked due to the C dependencies, so we
 # have to copy all the dynamic libraries
 COPY --from=build /lib/* /lib/
 COPY --from=build /lib64/* /lib64/
@@ -43,6 +43,6 @@ COPY --from=build /usr/lib/libwasmvm.x86_64.so /usr/lib/
 COPY --from=build /bin/bash /bin/dash /bin/sh /bin/
 
 # finally copy the guardian executable
-COPY --from=build /guardiand .
+COPY --from=build /phylaxd .
 
-ENTRYPOINT ["/guardiand"]
+ENTRYPOINT ["/phylaxd"]

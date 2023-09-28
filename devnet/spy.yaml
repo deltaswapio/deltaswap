@@ -35,15 +35,15 @@ spec:
       terminationGracePeriodSeconds: 0
       containers:
         - name: spy
-          image: guardiand-image
+          image: phylaxd-image
           command:
-            - /guardiand
+            - /phylaxd
             - spy
             - --nodeKey
             - /tmp/node.key
             - --spyRPC
             - "[::]:7072"
-            # Hardcoded devnet bootstrap (generated from deterministic key in guardiand)
+            # Hardcoded devnet bootstrap (generated from deterministic key in phylaxd)
             - --bootstrap
             - /dns4/guardian-0.guardian/udp/8999/quic/p2p/12D3KooWL3XJ9EMCyZvmmGXL2LMiVBtrVa2BuESsJiXkSj7333Jw
             - --logLevel=warn

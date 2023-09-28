@@ -276,7 +276,7 @@ func (e *Watcher) Run(ctx context.Context) error {
 
 	logger := supervisor.Logger(ctx)
 
-	// guardiand v2.16.0 shipped hardcoding "ws://" for the websocket url. This makes
+	// phylaxd v2.16.0 shipped hardcoding "ws://" for the websocket url. This makes
 	// the flag value the same as all of the other uses of rpc websocket values.
 	err := e.fixSuiWsURL(logger)
 	if err != nil {

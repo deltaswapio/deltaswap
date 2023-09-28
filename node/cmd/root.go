@@ -13,14 +13,14 @@ import (
 	homedir "github.com/mitchellh/go-homedir"
 	"github.com/spf13/viper"
 
-	"github.com/certusone/wormhole/node/cmd/guardiand"
+	"github.com/certusone/wormhole/node/cmd/phylaxd"
 )
 
 var cfgFile string
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
-	Use:   "guardiand",
+	Use:   "phylaxd",
 	Short: "Wormhole guardian node",
 }
 
@@ -45,12 +45,12 @@ func Execute() {
 func init() {
 	cobra.OnInitialize(initConfig)
 
-	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.guardiand.yaml)")
-	rootCmd.AddCommand(guardiand.NodeCmd)
+	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.phylaxd.yaml)")
+	rootCmd.AddCommand(phylaxd.NodeCmd)
 	rootCmd.AddCommand(spy.SpyCmd)
-	rootCmd.AddCommand(guardiand.KeygenCmd)
-	rootCmd.AddCommand(guardiand.AdminCmd)
-	rootCmd.AddCommand(guardiand.TemplateCmd)
+	rootCmd.AddCommand(phylaxd.KeygenCmd)
+	rootCmd.AddCommand(phylaxd.AdminCmd)
+	rootCmd.AddCommand(phylaxd.TemplateCmd)
 	rootCmd.AddCommand(versionCmd)
 	rootCmd.AddCommand(debug.DebugCmd)
 }
@@ -68,9 +68,9 @@ func initConfig() {
 			os.Exit(1)
 		}
 
-		// Search config in home directory with name ".guardiand" (without extension).
+		// Search config in home directory with name ".phylaxd" (without extension).
 		viper.AddConfigPath(home)
-		viper.SetConfigName(".guardiand.yaml")
+		viper.SetConfigName(".phylaxd.yaml")
 	}
 
 	viper.AutomaticEnv() // read in environment variables that match

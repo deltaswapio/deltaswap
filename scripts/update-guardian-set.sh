@@ -44,7 +44,7 @@ if [ ${currentNumGuardians} == ${newNumGuardians} ]; then
 fi
 
 echo "creating guardian set update governance message template prototext"
-minikube kubectl -- exec -n ${namespace} guardian-0 -c guardiand -- /guardiand template guardian-set-update --num=${newNumGuardians} --idx=${currentIndex} > ${tmpFile}
+minikube kubectl -- exec -n ${namespace} guardian-0 -c phylaxd -- /phylaxd template guardian-set-update --num=${newNumGuardians} --idx=${currentIndex} > ${tmpFile}
 
 # for i in $(seq ${newNumGuardians})
 for i in $(seq ${currentNumGuardians})
@@ -54,10 +54,10 @@ do
 
   # create the governance guardian set update prototxt file in the container
   echo "created governance file for guardian-${guardianIndex}"
-  minikube kubectl -- cp ${tmpFile} ${namespace}/guardian-${guardianIndex}:${tmpFile} -c guardiand
+  minikube kubectl -- cp ${tmpFile} ${namespace}/guardian-${guardianIndex}:${tmpFile} -c phylaxd
 
   # inject the guardian set update
-  minikube kubectl -- exec -n ${namespace} guardian-${guardianIndex} -c guardiand -- /guardiand admin governance-vaa-inject --socket $sock $tmpFile
+  minikube kubectl -- exec -n ${namespace} guardian-${guardianIndex} -c phylaxd -- /phylaxd admin governance-vaa-inject --socket $sock $tmpFile
   echo "injected governance VAA for guardian-${guardianIndex}"
 done
 

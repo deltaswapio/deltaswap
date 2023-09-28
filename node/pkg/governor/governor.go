@@ -21,7 +21,7 @@
 //
 // The set of chains to be monitored is specified in chains.go, which can be edited by hand.
 //
-// To enable the chain governor, you must specified the --chainGovernorEnabled guardiand command line argument.
+// To enable the chain governor, you must specified the --chainGovernorEnabled phylaxd command line argument.
 
 package governor
 

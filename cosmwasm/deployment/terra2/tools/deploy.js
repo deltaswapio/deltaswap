@@ -10,8 +10,8 @@ import { Bech32, toHex } from "@cosmjs/encoding";
 import { zeroPad } from "ethers/lib/utils.js";
 
 // Generated using
-// `guardiand template ibc-receiver-update-channel-chain --channel-id channel-0 --chain-id 3104 --target-chain-id 32 > terra2.prototxt`
-// `guardiand admin governance-vaa-verify terra2.prototxt`
+// `phylaxd template ibc-receiver-update-channel-chain --channel-id channel-0 --chain-id 3104 --target-chain-id 32 > terra2.prototxt`
+// `phylaxd admin governance-vaa-verify terra2.prototxt`
 const WORMHOLE_IBC_WHITELIST_VAA =
   "0100000000010025e55ab23c8d0a7fddd4686f41801792cdce1ff7335a2b9436192bd552fa0f9b5c18016057b0d4b3f24c759eafe3e5fedd7fce76fe6f21cec815ffbaf4ec3ad801000000009b9a6b2d0001000000000000000000000000000000000000000000000000000000000000000460efd4405060ac0c200000000000000000000000000000000000000000004962635265636569766572010020000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000006368616e6e656c2d300c20";
 

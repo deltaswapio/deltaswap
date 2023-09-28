@@ -51,7 +51,7 @@ config.define_string("webHost", False, "Public hostname for port forwards")
 
 # When running Tilt on a server, this can be used to set the public hostname Tilt runs on
 # for service links in the UI to work.
-config.define_string("guardiand_loglevel", False, "Log level for guardiand (debug, info, warn, error, dpanic, panic, fatal)")
+config.define_string("phylaxd_loglevel", False, "Log level for phylaxd (debug, info, warn, error, dpanic, panic, fatal)")
 
 # Components
 config.define_bool("near", False, "Enable Near component")
@@ -65,9 +65,9 @@ config.define_bool("pythnet", False, "Enable PythNet component")
 config.define_bool("terra_classic", False, "Enable Terra Classic component")
 config.define_bool("terra2", False, "Enable Terra 2 component")
 config.define_bool("ci_tests", False, "Enable tests runner component")
-config.define_bool("guardiand_debug", False, "Enable dlv endpoint for guardiand")
+config.define_bool("phylaxd_debug", False, "Enable dlv endpoint for phylaxd")
 config.define_bool("node_metrics", False, "Enable Prometheus & Grafana for Guardian metrics")
-config.define_bool("guardiand_governor", False, "Enable chain governor in guardiand")
+config.define_bool("phylaxd_governor", False, "Enable chain governor in phylaxd")
 config.define_bool("wormchain", False, "Enable a wormchain node")
 config.define_bool("ibc_relayer", False, "Enable IBC relayer between cosmos chains")
 config.define_bool("redis", False, "Enable a redis instance")
@@ -90,18 +90,18 @@ terra_classic = cfg.get("terra_classic", ci)
 terra2 = cfg.get("terra2", ci)
 wormchain = cfg.get("wormchain", ci)
 ci_tests = cfg.get("ci_tests", ci)
-guardiand_debug = cfg.get("guardiand_debug", False)
+phylaxd_debug = cfg.get("phylaxd_debug", False)
 node_metrics = cfg.get("node_metrics", False)
-guardiand_governor = cfg.get("guardiand_governor", False)
+phylaxd_governor = cfg.get("phylaxd_governor", False)
 ibc_relayer = cfg.get("ibc_relayer", ci)
 btc = cfg.get("btc", False)
 redis = cfg.get('redis', ci)
 generic_relayer = cfg.get("generic_relayer", ci)
 
 if ci:
-    guardiand_loglevel = cfg.get("guardiand_loglevel", "warn")
+    phylaxd_loglevel = cfg.get("phylaxd_loglevel", "warn")
 else:
-    guardiand_loglevel = cfg.get("guardiand_loglevel", "info")
+    phylaxd_loglevel = cfg.get("phylaxd_loglevel", "info")
 
 
 if cfg.get("manual", False):
@@ -133,7 +133,7 @@ docker_build(
 # node
 
 docker_build(
-    ref = "guardiand-image",
+    ref = "phylaxd-image",
     context = ".",
     dockerfile = "node/Dockerfile",
     target = "build",
@@ -161,12 +161,12 @@ def build_node_yaml():
     for obj in node_yaml_with_replicas:
         if obj["kind"] == "StatefulSet" and obj["metadata"]["name"] == "guardian":
             container = obj["spec"]["template"]["spec"]["containers"][0]
-            if container["name"] != "guardiand":
-                fail("container 0 is not guardiand")
+            if container["name"] != "phylaxd":
+                fail("container 0 is not phylaxd")
 
-            container["command"] += ["--logLevel="+guardiand_loglevel]
+            container["command"] += ["--logLevel="+phylaxd_loglevel]
 
-            if guardiand_debug:
+            if phylaxd_debug:
                 container["command"] = command_with_dlv(container["command"])
                 print(container["command"])
 
@@ -253,7 +253,7 @@ def build_node_yaml():
                     "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
                 ]
 
-            if guardiand_governor:
+            if phylaxd_governor:
                 container["command"] += [
                     "--chainGovernorEnabled"
                 ]

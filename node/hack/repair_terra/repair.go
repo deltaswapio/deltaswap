@@ -54,7 +54,7 @@ type Emitter struct {
 }
 
 var (
-	adminRPC  = flag.String("adminRPC", "/run/guardiand/admin.socket", "Admin RPC address")
+	adminRPC  = flag.String("adminRPC", "/run/phylaxd/admin.socket", "Admin RPC address")
 	chain     = flag.String("chain", "terra", "CosmWasm Chain name")
 	dryRun    = flag.Bool("dryRun", true, "Dry run")
 	sleepTime = flag.Int("sleepTime", 1, "Time to sleep between http requests")

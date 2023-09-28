@@ -67,7 +67,7 @@ var coreContractMap = map[vaa.ChainID]string{
 }
 
 var (
-	adminRPC     = flag.String("adminRPC", "/run/guardiand/admin.socket", "Admin RPC address")
+	adminRPC     = flag.String("adminRPC", "/run/phylaxd/admin.socket", "Admin RPC address")
 	etherscanKey = flag.String("etherscanKey", "", "Etherscan API Key")
 	chain        = flag.String("chain", "ethereum", "Eth Chain name")
 	dryRun       = flag.Bool("dryRun", true, "Dry run")

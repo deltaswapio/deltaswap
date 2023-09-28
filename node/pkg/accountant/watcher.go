@@ -46,7 +46,7 @@ func (acct *Accountant) watcher(ctx context.Context) error {
 	query := fmt.Sprintf("execute._contract_address='%s'", acct.contract)
 	events, err := tmConn.Subscribe(
 		ctx,
-		"guardiand",
+		"phylaxd",
 		query,
 		64, // channel capacity
 	)
@@ -54,7 +54,7 @@ func (acct *Accountant) watcher(ctx context.Context) error {
 		return fmt.Errorf("failed to subscribe to accountant events: %w", err)
 	}
 	defer func() {
-		if err := tmConn.UnsubscribeAll(ctx, "guardiand"); err != nil {
+		if err := tmConn.UnsubscribeAll(ctx, "phylaxd"); err != nil {
 			acct.logger.Error("acctwatch: failed to unsubscribe from events", zap.Error(err))
 		}
 	}()

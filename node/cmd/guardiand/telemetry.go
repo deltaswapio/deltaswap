@@ -1,4 +1,4 @@
-package guardiand
+package phylaxd
 
 // Hardcoded telemetry GCP service account. Does not grant any access except for writing logs.
 //

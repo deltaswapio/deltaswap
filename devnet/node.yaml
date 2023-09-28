@@ -58,15 +58,15 @@ spec:
               - key: gwrelayerKey1
                 path: gwrelayerKey1
       containers:
-        - name: guardiand
-          image: guardiand-image
+        - name: phylaxd
+          image: phylaxd-image
           volumeMounts:
             - mountPath: /run/node
               name: node-rundir
             - mountPath: /tmp/mounted-keys/wormchain
               name: node-wormchain-key
           command:
-            - /guardiand
+            - /phylaxd
             - node
             - --ethRPC
             - ws://eth-devnet:8545

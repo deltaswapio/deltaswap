@@ -409,7 +409,7 @@ func CmdGenerateGuardianSetUpdatea() *cobra.Command {
 func CmdTestSignAddress() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "test-sign-address",
-		Short: "Test method sign the validator address to use for registering as a guardian.  Use guardiand for production, not this method.  Read guardian key as hex in $GUARDIAN_KEY env variable. use --from to indicate address to sign.",
+		Short: "Test method sign the validator address to use for registering as a guardian.  Use phylaxd for production, not this method.  Read guardian key as hex in $GUARDIAN_KEY env variable. use --from to indicate address to sign.",
 		Args:  cobra.ExactArgs(0),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			clientCtx, err := client.GetClientTxContext(cmd)

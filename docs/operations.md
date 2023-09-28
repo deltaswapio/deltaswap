@@ -94,10 +94,10 @@ since only very few nodes support the light client protocol.
 Running a full node typically requires ~500G of SSD storage, 8G of RAM and 4-8 CPU threads (depending on clock
 frequency). Light clients have much lower hardware requirements.
 
-## Building guardiand
+## Building phylaxd
 
 For security reasons, we do not provide a pre-built binary. You need to check out the repo and build the
-guardiand binary from source. A Git repo is much harder to tamper with than release binaries.
+phylaxd binary from source. A Git repo is much harder to tamper with than release binaries.
 
 To build the Wormhole node, you need [Go](https://golang.org/dl/) >= 1.19.0
 
@@ -114,7 +114,7 @@ Then, compile the release binary as an unprivileged build user:
 make node
 ```
 
-You'll end up with a `guardiand` binary in `build/`.
+You'll end up with a `phylaxd` binary in `build/`.
 
 Consider these recommendations, not a tutorial to be followed blindly. You'll want to integrate this with your
 existing build pipeline. If you need Dockerfile examples, you can take a look at our devnet deployment.
@@ -128,17 +128,17 @@ to disk. Please create a GitHub issue if this extra capability represents an ope
 
 ## Key Generation
 
-To generate a guardian key, install guardiand first. If you generate the key on a separate machine, you may want to
-compile guardiand only without installing it:
+To generate a guardian key, install phylaxd first. If you generate the key on a separate machine, you may want to
+compile phylaxd only without installing it:
 
     make node
-    sudo setcap cap_ipc_lock=+ep ./build/bin/guardiand
+    sudo setcap cap_ipc_lock=+ep ./build/bin/phylaxd
 
-Otherwise, use the same guardiand binary that you compiled using the regular instructions above.
+Otherwise, use the same phylaxd binary that you compiled using the regular instructions above.
 
 Generate a new key using the `keygen` subcommand:
 
-    guardiand keygen --desc "Testnet key foo" /path/to/your.key
+    phylaxd keygen --desc "Testnet key foo" /path/to/your.key
 
 The key file includes a human-readable part which includes the public key hashes and the description.
 
@@ -147,11 +147,11 @@ The key file includes a human-readable part which includes the public key hashes
 We strongly recommend a separate user and systemd services for the Wormhole services.
 
 See the separate [wormhole-networks](https://github.com/certusone/wormhole-networks) repository for examples
-on how to set up the guardiand unit for a specific network.
+on how to set up the phylaxd unit for a specific network.
 
 You need to open port 8999/udp in your firewall for the P2P network. Nothing else has to be exposed externally.
 
-journalctl can show guardiand's colored output using the `-a` flag for binary output, i.e.: `journalctl -a -f -u guardiand`.
+journalctl can show phylaxd's colored output using the `-a` flag for binary output, i.e.: `journalctl -a -f -u phylaxd`.
 
 ### Kubernetes
 
@@ -196,13 +196,13 @@ message for a given transaction.
 
 Guardian nodes are **strongly encouraged** to expose a public API endpoint to improve the protocol's robustness.
 
-guardiand comes with a built-in REST and grpc-web server which can be enabled using the `--publicWeb` flag:
+phylaxd comes with a built-in REST and grpc-web server which can be enabled using the `--publicWeb` flag:
 
 ```
 --publicWeb=[::]:443
 ```
 
-For usage with web wallets, TLS needs to be supported. guardiand has built-in Let's Encrypt support:
+For usage with web wallets, TLS needs to be supported. phylaxd has built-in Let's Encrypt support:
 
 ```
 --tlsHostname=wormhole-v2-mainnet-api.example.com
@@ -212,7 +212,7 @@ For usage with web wallets, TLS needs to be supported. guardiand has built-in Le
 Alternatively, you can use a managed reverse proxy like CloudFlare to terminate TLS.
 
 It is safe to expose the publicWeb port on signing nodes. For better resiliency against denial of service attacks,
-future guardiand releases will include listen-only mode such that multiple guardiand instances without guardian keys
+future phylaxd releases will include listen-only mode such that multiple phylaxd instances without guardian keys
 can be operated behind a load balancer.
 
 ### Binding to privileged ports
@@ -220,9 +220,9 @@ can be operated behind a load balancer.
 If you want to bind `--publicWeb` to a port <1024, you need to assign the CAP_NET_BIND_SERVICE capability.
 This can be accomplished by either adding the capability to the binary (like in non-systemd environments):
 
-     sudo setcap cap_net_bind_service=+ep guardiand
+     sudo setcap cap_net_bind_service=+ep phylaxd
 
-...or by extending the capability set in `guardiand.service`:
+...or by extending the capability set in `phylaxd.service`:
 
     AmbientCapabilities=CAP_IPC_LOCK CAP_NET_BIND_SERVICE
     CapabilityBoundingSet=CAP_IPC_LOCK CAP_NET_BIND_SERVICE
@@ -257,7 +257,7 @@ may include support for remote signing using a signer like [SignOS](https://cert
 
 ## Run the Guardian Spy
 
-The spy connects to the wormhole guardian peer to peer network and listens for new VAAs. It publishes those via a socket and websocket that applications can subscribe to. If you want to run the spy built from source, change `ghcr.io/wormhole-foundation/guardiand:latest` to `guardian` after building the `guardian` image.
+The spy connects to the wormhole guardian peer to peer network and listens for new VAAs. It publishes those via a socket and websocket that applications can subscribe to. If you want to run the spy built from source, change `ghcr.io/wormhole-foundation/phylaxd:latest` to `guardian` after building the `guardian` image.
 
 Start the spy against the testnet wormhole guardian:
 
@@ -265,8 +265,8 @@ Start the spy against the testnet wormhole guardian:
 docker run \
     --platform=linux/amd64 \
     -p 7073:7073 \
-    --entrypoint /guardiand \
-    ghcr.io/wormhole-foundation/guardiand:latest \
+    --entrypoint /phylaxd \
+    ghcr.io/wormhole-foundation/phylaxd:latest \
 spy --nodeKey /node.key --spyRPC "[::]:7073" --network /wormhole/testnet/2/1 --bootstrap /dns4/wormhole-testnet-v2-bootstrap.certus.one/udp/8999/quic/p2p/12D3KooWAkB9ynDur1Jtoa97LBUp8RXdhzS5uHgAfdTquJbrbN7i
 ```
 
@@ -276,7 +276,7 @@ To run the spy against mainnet:
 docker run \
     --platform=linux/amd64 \
     -p 7073:7073 \
-    --entrypoint /guardiand \
-    ghcr.io/wormhole-foundation/guardiand:latest \
+    --entrypoint /phylaxd \
+    ghcr.io/wormhole-foundation/phylaxd:latest \
 spy --nodeKey /node.key --spyRPC "[::]:7073" --network /wormhole/mainnet/2 --bootstrap /dns4/wormhole-mainnet-v2-bootstrap.certus.one/udp/8999/quic/p2p/12D3KooWQp644DK27fd3d4Km3jr7gHiuJJ5ZGmy8hH4py7fP4FP7,/dns4/wormhole-v2-mainnet-bootstrap.xlabs.xyz/udp/8999/quic/p2p/12D3KooWNQ9tVrcb64tw6bNs2CaNrUGPM7yRrKvBBheQ5yCyPHKC
 ```

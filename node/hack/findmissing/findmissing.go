@@ -14,7 +14,7 @@ import (
 )
 
 var (
-	adminRPC       = flag.String("adminRPC", "/run/guardiand/admin.socket", "Admin RPC address")
+	adminRPC       = flag.String("adminRPC", "/run/phylaxd/admin.socket", "Admin RPC address")
 	shouldBackfill = flag.Bool("backfill", true, "Backfill missing sequences")
 	onlyChain      = flag.String("only", "", "Only check this chain")
 )

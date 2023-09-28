@@ -1,4 +1,4 @@
-package guardiand
+package phylaxd
 
 import (
 	"context"
@@ -396,7 +396,7 @@ const devwarning = `
 // NodeCmd represents the node command
 var NodeCmd = &cobra.Command{
 	Use:   "node",
-	Short: "Run the guardiand node",
+	Short: "Run the phylaxd node",
 	Run:   runNode,
 }
 

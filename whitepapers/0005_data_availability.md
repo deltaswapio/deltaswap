@@ -58,13 +58,13 @@ Instead of submitting signed VAAs to Solana, guardians instead broadcast them on
 
 Guardians that failed to observe the message (and therefore cannot reconstruct the VAA) will verify the broadcasted signed VAA and persist it as if they had observed it.
 
-A public API endpoint is added to guardiand, exposing an API which allows clients to retrieve the signed VAA for any (chain, emitter, sequence) tuple. Guardians can use this API to serve a public, load-balanced public service for web wallets and other clients to use.
+A public API endpoint is added to phylaxd, exposing an API which allows clients to retrieve the signed VAA for any (chain, emitter, sequence) tuple. Guardians can use this API to serve a public, load-balanced public service for web wallets and other clients to use.
 
 Clients will rely on public API endpoints operated by different guardian node operators or third party service providers when polling for signed VAA messsages.
 
 ## Detailed Design
 
-The current guardiand implementation never broadcasts the full, signed VAA on the gossip network - only signatures. Guardians then use their own message observations and the aggregated set of signatures to assemble a valid signed VAA locally. Once more than 2/3 of signatures are present, the VAA is valid and can be submitted to the target chain. Nodes that haven't observed the message due to issues with the connected chain nodes are unable to construct a full VAA and will eventually drop the aggregated set of signatures.
+The current phylaxd implementation never broadcasts the full, signed VAA on the gossip network - only signatures. Guardians then use their own message observations and the aggregated set of signatures to assemble a valid signed VAA locally. Once more than 2/3 of signatures are present, the VAA is valid and can be submitted to the target chain. Nodes that haven't observed the message due to issues with the connected chain nodes are unable to construct a full VAA and will eventually drop the aggregated set of signatures.
 
 Depending on the order of receipt and network topology, the aggregated set of signatures seen when the 2/3+ threshold is crossed is different from each node, but each node's VAA digest will be identical.
 
@@ -78,13 +78,13 @@ We can't rely on gossip to provide atomic or reliable broadcast - messages may b
 
 Each individual API endpoint may in turn be backed by multiple nodes operated behind a load balancer operated by each API endpoint's service provider.
 
-To facilitate this, a new "non-voting" mode will be added to guardiand to allow operators to run read-only nodes that listen to the gossip network and locally persist any signed VAA they receive.
+To facilitate this, a new "non-voting" mode will be added to phylaxd to allow operators to run read-only nodes that listen to the gossip network and locally persist any signed VAA they receive.
 
 We use the (chain, emitter, sequence) tuple as global identifier. The digest is not suitable as a global identifier, since it is not known at message publication time. Instead, all contracts make the sequence number available to the caller when publishing a message, which the caller then surfaces to the client. Chain and emitter address are static.
 
 This design deprecates existing usage of the digest as primary global identifier for messages in log messages and other user- and operator-facing interfaces, aiding troubleshooting. This a presentation layer change only - the digest continues to be used for replay protection and signature verification.
 
-The guardiand submission state machine will be refactored to maintain aggregation state for observed VAAs in the local key-value store, rather than in-memory. This has the nice side effect of removing the timeout for observed-but-incomplete VAAs, allowing them to be completed asynchronously when missing nodes are brought back up and use chain replay to catch up on missed blocks.
+The phylaxd submission state machine will be refactored to maintain aggregation state for observed VAAs in the local key-value store, rather than in-memory. This has the nice side effect of removing the timeout for observed-but-incomplete VAAs, allowing them to be completed asynchronously when missing nodes are brought back up and use chain replay to catch up on missed blocks.
 
 ### Contracts
 
@@ -114,7 +114,7 @@ libp2p supports a WebRTC transport, which would - in theory - allow web wallets 
 
 - libp2p is very complex and it's not clear how well such an approach would scale. Debugging any scalability (or other) issue likely requires in-depth libp2p debugging, which we have no experience with. In comparison, the challenges that come with a traditional RPC scale-out approach are much better understood.
 
-- The only available reference implementation is written in Node.js, which is [incompatible](https://github.com/libp2p/js-libp2p/issues/287) with our libp2p QUIC transport. We would either have to join the main IPFS gossip network to take advantage of existing WebRTC-capable nodes, which would be a performance and security concern, or add support for a compatible transport to guardiand and run separate bridge nodes.
+- The only available reference implementation is written in Node.js, which is [incompatible](https://github.com/libp2p/js-libp2p/issues/287) with our libp2p QUIC transport. We would either have to join the main IPFS gossip network to take advantage of existing WebRTC-capable nodes, which would be a performance and security concern, or add support for a compatible transport to phylaxd and run separate bridge nodes.
 
 - Clients would have to publish messages to the gossip network, and a complex spam prevention mechanism would be needed.
 

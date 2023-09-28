@@ -44,10 +44,10 @@ EOF
 exit 1
 }
 
-# Check if guardiand command exists. It's needed for generating the protoxt and
+# Check if phylaxd command exists. It's needed for generating the protoxt and
 # computing the digest.
-if ! command -v guardiand >/dev/null 2>&1; then
-  echo "ERROR: guardiand binary not found" >&2
+if ! command -v phylaxd >/dev/null 2>&1; then
+  echo "ERROR: phylaxd binary not found" >&2
   exit 1
 fi
 
@@ -85,7 +85,7 @@ shift $((OPTIND - 1))
 [ -z "$module" ] && usage
 
 ### The script constructs the governance proposal in two different steps. First,
-### the governance prototxt (for VAA injection by the guardiand tool), then the voting/verification instructions.
+### the governance prototxt (for VAA injection by the phylaxd tool), then the voting/verification instructions.
 gov_msg_file=""
 instructions_file=""
 if [ "$multi_mode" = true ]; then
@@ -218,25 +218,25 @@ function create_governance() {
   case "$module" in
   bridge|core)
     echo "\
-guardiand template contract-upgrade \\
+phylaxd template contract-upgrade \\
   --chain-id $chain \\
   --new-address $address"
     ;;
   token_bridge)
     echo "\
-guardiand template token-bridge-upgrade-contract \\
+phylaxd template token-bridge-upgrade-contract \\
   --chain-id $chain --module \"TokenBridge\" \\
   --new-address $address"
     ;;
   nft_bridge)
     echo "\
-guardiand template token-bridge-upgrade-contract \\
+phylaxd template token-bridge-upgrade-contract \\
   --chain-id $chain --module \"NFTBridge\" \\
   --new-address $address"
     ;;
   wormhole_relayer)
     echo "\
-guardiand template token-bridge-upgrade-contract \\
+phylaxd template token-bridge-upgrade-contract \\
   --chain-id $chain --module \"WormholeRelayer\" \\
   --new-address $address"
     ;;
@@ -347,9 +347,9 @@ echo "$rest" >> "$gov_msg_file"
 ################################################################################
 # Compute expected digests
 
-# just use the 'guardiand' command, which spits out a bunch of text to
+# just use the 'phylaxd' command, which spits out a bunch of text to
 # stderr. We grab that output and pick out the VAA hashes
-verify=$(guardiand admin governance-vaa-verify "$gov_msg_file" 2>&1)
+verify=$(phylaxd admin governance-vaa-verify "$gov_msg_file" 2>&1)
 digest=$(echo "$verify" | grep "VAA with digest" | cut -d' ' -f6 | sed 's/://g')
 
 # massage the digest into the same format that the inject command prints it
@@ -372,7 +372,7 @@ cat <<-EOD
 
 	EOF
 
-	guardiand admin governance-vaa-inject --socket /path/to/admin.sock governance-$gov_id.prototxt
+	phylaxd admin governance-vaa-inject --socket /path/to/admin.sock governance-$gov_id.prototxt
 	\`\`\`
 
 	Expected digest(s):
