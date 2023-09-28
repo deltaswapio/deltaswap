@@ -22,8 +22,8 @@ type (
 	VAA struct {
 		// Version of the VAA schema
 		Version uint8
-		// GuardianSetIndex is the index of the guardian set that signed this VAA
-		GuardianSetIndex uint32
+		// PhylaxSetIndex is the index of the guardian set that signed this VAA
+		PhylaxSetIndex uint32
 		// SignatureData is the signature of the guardian set
 		Signatures []*Signature
 
@@ -46,8 +46,8 @@ type (
 	BatchVAA struct {
 		// Version of the VAA schema
 		Version uint8
-		// GuardianSetIndex is the index of the guardian set that signed this VAA
-		GuardianSetIndex uint32
+		// PhylaxSetIndex is the index of the guardian set that signed this VAA
+		PhylaxSetIndex uint32
 		// SignatureData is the signature of the guardian set
 		Signatures []*Signature
 
@@ -389,7 +389,7 @@ const (
 	// Minimum VAA size is derrived from the following assumptions:
 	//  HEADER
 	//  - Supported VAA Version (1 byte)
-	//  - Guardian Set Index (4 bytes)
+	//  - Phylax Set Index (4 bytes)
 	//  - Length of Signatures (1 byte) <== assume no signatures
 	//  - Actual Signatures (0 bytes)
 	//  BODY
@@ -482,7 +482,7 @@ func Unmarshal(data []byte) (*VAA, error) {
 
 	reader := bytes.NewReader(data[1:])
 
-	if err := binary.Read(reader, binary.BigEndian, &v.GuardianSetIndex); err != nil {
+	if err := binary.Read(reader, binary.BigEndian, &v.PhylaxSetIndex); err != nil {
 		return nil, fmt.Errorf("failed to read guardian set index: %w", err)
 	}
 
@@ -526,7 +526,7 @@ func UnmarshalBatch(data []byte) (*BatchVAA, error) {
 
 	reader := bytes.NewReader(data[1:])
 
-	if err := binary.Read(reader, binary.BigEndian, &v.GuardianSetIndex); err != nil {
+	if err := binary.Read(reader, binary.BigEndian, &v.PhylaxSetIndex); err != nil {
 		return nil, fmt.Errorf("failed to read guardian set index: %w", err)
 	}
 
@@ -800,7 +800,7 @@ func (v *BatchVAA) VerifySignatures(addresses []common.Address) bool {
 func (v *BatchVAA) Marshal() ([]byte, error) {
 	buf := new(bytes.Buffer)
 	MustWrite(buf, binary.BigEndian, v.Version)
-	MustWrite(buf, binary.BigEndian, v.GuardianSetIndex)
+	MustWrite(buf, binary.BigEndian, v.PhylaxSetIndex)
 
 	// Write signatures
 	MustWrite(buf, binary.BigEndian, uint8(len(v.Signatures)))
@@ -874,7 +874,7 @@ func (v *VAA) Verify(addresses []common.Address) error {
 func (v *VAA) Marshal() ([]byte, error) {
 	buf := new(bytes.Buffer)
 	MustWrite(buf, binary.BigEndian, v.Version)
-	MustWrite(buf, binary.BigEndian, v.GuardianSetIndex)
+	MustWrite(buf, binary.BigEndian, v.PhylaxSetIndex)
 
 	// Write signatures
 	MustWrite(buf, binary.BigEndian, uint8(len(v.Signatures)))

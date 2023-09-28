@@ -4,24 +4,24 @@ import { Writer, Reader } from "protobufjs/minimal";
 
 export const protobufPackage = "wormhole_foundation.deltachain.wormhole";
 
-export interface GuardianKey {
+export interface PhylaxKey {
   key: Uint8Array;
 }
 
-const baseGuardianKey: object = {};
+const basePhylaxKey: object = {};
 
-export const GuardianKey = {
-  encode(message: GuardianKey, writer: Writer = Writer.create()): Writer {
+export const PhylaxKey = {
+  encode(message: PhylaxKey, writer: Writer = Writer.create()): Writer {
     if (message.key.length !== 0) {
       writer.uint32(10).bytes(message.key);
     }
     return writer;
   },
 
-  decode(input: Reader | Uint8Array, length?: number): GuardianKey {
+  decode(input: Reader | Uint8Array, length?: number): PhylaxKey {
     const reader = input instanceof Uint8Array ? new Reader(input) : input;
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = { ...baseGuardianKey } as GuardianKey;
+    const message = { ...basePhylaxKey } as PhylaxKey;
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -36,15 +36,15 @@ export const GuardianKey = {
     return message;
   },
 
-  fromJSON(object: any): GuardianKey {
-    const message = { ...baseGuardianKey } as GuardianKey;
+  fromJSON(object: any): PhylaxKey {
+    const message = { ...basePhylaxKey } as PhylaxKey;
     if (object.key !== undefined && object.key !== null) {
       message.key = bytesFromBase64(object.key);
     }
     return message;
   },
 
-  toJSON(message: GuardianKey): unknown {
+  toJSON(message: PhylaxKey): unknown {
     const obj: any = {};
     message.key !== undefined &&
       (obj.key = base64FromBytes(
@@ -53,8 +53,8 @@ export const GuardianKey = {
     return obj;
   },
 
-  fromPartial(object: DeepPartial<GuardianKey>): GuardianKey {
-    const message = { ...baseGuardianKey } as GuardianKey;
+  fromPartial(object: DeepPartial<PhylaxKey>): PhylaxKey {
+    const message = { ...basePhylaxKey } as PhylaxKey;
     if (object.key !== undefined && object.key !== null) {
       message.key = object.key;
     } else {

@@ -16,14 +16,14 @@ import (
 	"github.com/deltaswapio/deltachain/x/wormhole/types"
 )
 
-func networkWithGuardianSetObjects(t *testing.T, n int) (*network.Network, []types.GuardianSet) {
+func networkWithPhylaxSetObjects(t *testing.T, n int) (*network.Network, []types.PhylaxSet) {
 	t.Helper()
 	cfg := network.DefaultConfig()
 	state := types.GenesisState{}
 	require.NoError(t, cfg.Codec.UnmarshalJSON(cfg.GenesisState[types.ModuleName], &state))
 
 	for i := 0; i < n; i++ {
-		state.GuardianSetList = append(state.GuardianSetList, types.GuardianSet{
+		state.PhylaxSetList = append(state.PhylaxSetList, types.PhylaxSet{
 			Index: uint32(i),
 			Keys:  [][]byte{},
 		})
@@ -31,11 +31,11 @@ func networkWithGuardianSetObjects(t *testing.T, n int) (*network.Network, []typ
 	buf, err := cfg.Codec.MarshalJSON(&state)
 	require.NoError(t, err)
 	cfg.GenesisState[types.ModuleName] = buf
-	return network.New(t, cfg), state.GuardianSetList
+	return network.New(t, cfg), state.PhylaxSetList
 }
 
-func TestShowGuardianSet(t *testing.T) {
-	net, objs := networkWithGuardianSetObjects(t, 2)
+func TestShowPhylaxSet(t *testing.T) {
+	net, objs := networkWithPhylaxSetObjects(t, 2)
 
 	ctx := net.Validators[0].ClientCtx
 	common := []string{
@@ -46,7 +46,7 @@ func TestShowGuardianSet(t *testing.T) {
 		id   string
 		args []string
 		err  error
-		obj  types.GuardianSet
+		obj  types.PhylaxSet
 	}{
 		{
 			desc: "found",
@@ -65,24 +65,24 @@ func TestShowGuardianSet(t *testing.T) {
 		t.Run(tc.desc, func(t *testing.T) {
 			args := []string{tc.id}
 			args = append(args, tc.args...)
-			out, err := clitestutil.ExecTestCLICmd(ctx, cli.CmdShowGuardianSet(), args)
+			out, err := clitestutil.ExecTestCLICmd(ctx, cli.CmdShowPhylaxSet(), args)
 			if tc.err != nil {
 				stat, ok := status.FromError(tc.err)
 				require.True(t, ok)
 				require.ErrorIs(t, stat.Err(), tc.err)
 			} else {
 				require.NoError(t, err)
-				var resp types.QueryGetGuardianSetResponse
+				var resp types.QueryGetPhylaxSetResponse
 				require.NoError(t, net.Config.Codec.UnmarshalJSON(out.Bytes(), &resp))
-				require.NotNil(t, resp.GuardianSet)
-				require.Equal(t, tc.obj, resp.GuardianSet)
+				require.NotNil(t, resp.PhylaxSet)
+				require.Equal(t, tc.obj, resp.PhylaxSet)
 			}
 		})
 	}
 }
 
-func TestListGuardianSet(t *testing.T) {
-	net, objs := networkWithGuardianSetObjects(t, 5)
+func TestListPhylaxSet(t *testing.T) {
+	net, objs := networkWithPhylaxSetObjects(t, 5)
 
 	ctx := net.Validators[0].ClientCtx
 	request := func(next []byte, offset, limit uint64, total bool) []string {
@@ -104,12 +104,12 @@ func TestListGuardianSet(t *testing.T) {
 		step := 2
 		for i := 0; i < len(objs); i += step {
 			args := request(nil, uint64(i), uint64(step), false)
-			out, err := clitestutil.ExecTestCLICmd(ctx, cli.CmdListGuardianSet(), args)
+			out, err := clitestutil.ExecTestCLICmd(ctx, cli.CmdListPhylaxSet(), args)
 			require.NoError(t, err)
-			var resp types.QueryAllGuardianSetResponse
+			var resp types.QueryAllPhylaxSetResponse
 			require.NoError(t, net.Config.Codec.UnmarshalJSON(out.Bytes(), &resp))
-			require.LessOrEqual(t, len(resp.GuardianSet), step)
-			require.Subset(t, objs, resp.GuardianSet)
+			require.LessOrEqual(t, len(resp.PhylaxSet), step)
+			require.Subset(t, objs, resp.PhylaxSet)
 		}
 	})
 	t.Run("ByKey", func(t *testing.T) {
@@ -117,23 +117,23 @@ func TestListGuardianSet(t *testing.T) {
 		var next []byte
 		for i := 0; i < len(objs); i += step {
 			args := request(next, 0, uint64(step), false)
-			out, err := clitestutil.ExecTestCLICmd(ctx, cli.CmdListGuardianSet(), args)
+			out, err := clitestutil.ExecTestCLICmd(ctx, cli.CmdListPhylaxSet(), args)
 			require.NoError(t, err)
-			var resp types.QueryAllGuardianSetResponse
+			var resp types.QueryAllPhylaxSetResponse
 			require.NoError(t, net.Config.Codec.UnmarshalJSON(out.Bytes(), &resp))
-			require.LessOrEqual(t, len(resp.GuardianSet), step)
-			require.Subset(t, objs, resp.GuardianSet)
+			require.LessOrEqual(t, len(resp.PhylaxSet), step)
+			require.Subset(t, objs, resp.PhylaxSet)
 			next = resp.Pagination.NextKey
 		}
 	})
 	t.Run("Total", func(t *testing.T) {
 		args := request(nil, 0, uint64(len(objs)), true)
-		out, err := clitestutil.ExecTestCLICmd(ctx, cli.CmdListGuardianSet(), args)
+		out, err := clitestutil.ExecTestCLICmd(ctx, cli.CmdListPhylaxSet(), args)
 		require.NoError(t, err)
-		var resp types.QueryAllGuardianSetResponse
+		var resp types.QueryAllPhylaxSetResponse
 		require.NoError(t, net.Config.Codec.UnmarshalJSON(out.Bytes(), &resp))
 		require.NoError(t, err)
 		require.Equal(t, len(objs), int(resp.Pagination.Total))
-		require.Equal(t, objs, resp.GuardianSet)
+		require.Equal(t, objs, resp.PhylaxSet)
 	})
 }

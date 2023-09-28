@@ -28,7 +28,7 @@ var (
 			Name: "wormhole_observations_received_total",
 			Help: "Total number of raw VAA observations received from gossip",
 		})
-	observationsReceivedByGuardianAddressTotal = promauto.NewCounterVec(
+	observationsReceivedByPhylaxAddressTotal = promauto.NewCounterVec(
 		prometheus.CounterOpts{
 			Name: "wormhole_observations_signed_by_guardian_total",
 			Help: "Total number of signed and verified VAA observations grouped by guardian address",
@@ -101,7 +101,7 @@ func (p *Processor) handleObservation(ctx context.Context, obs *node_common.MsgW
 
 	observationsReceivedTotal.Inc()
 
-	// Verify the Guardian's signature. This verifies that m.Signature matches m.Hash and recovers
+	// Verify the Phylax's signature. This verifies that m.Signature matches m.Hash and recovers
 	// the public key that was used to sign the payload.
 	pk, err := crypto.Ecrecover(m.Hash, m.Signature)
 	if err != nil {
@@ -144,7 +144,7 @@ func (p *Processor) handleObservation(ctx context.Context, obs *node_common.MsgW
 	//
 	// During an update, vaaState.signatures can contain signatures from *both* guardian sets.
 	//
-	var gs *node_common.GuardianSet
+	var gs *node_common.PhylaxSet
 	if s != nil && s.gs != nil {
 		gs = s.gs
 	} else {
@@ -181,7 +181,7 @@ func (p *Processor) handleObservation(ctx context.Context, obs *node_common.MsgW
 	// byzantine, but now we know who we're dealing with.
 
 	// We can now count events by guardian without worry about cardinality explosions:
-	observationsReceivedByGuardianAddressTotal.WithLabelValues(their_addr.Hex()).Inc()
+	observationsReceivedByPhylaxAddressTotal.WithLabelValues(their_addr.Hex()).Inc()
 
 	// []byte isn't hashable in a map. Paying a small extra cost for encoding for easier debugging.
 	if s == nil {

@@ -4,15 +4,15 @@ import { Writer, Reader } from "protobufjs/minimal";
 
 export const protobufPackage = "wormhole_foundation.deltachain.wormhole";
 
-export interface GuardianValidator {
+export interface PhylaxValidator {
   guardianKey: Uint8Array;
   validatorAddr: Uint8Array;
 }
 
-const baseGuardianValidator: object = {};
+const basePhylaxValidator: object = {};
 
-export const GuardianValidator = {
-  encode(message: GuardianValidator, writer: Writer = Writer.create()): Writer {
+export const PhylaxValidator = {
+  encode(message: PhylaxValidator, writer: Writer = Writer.create()): Writer {
     if (message.guardianKey.length !== 0) {
       writer.uint32(10).bytes(message.guardianKey);
     }
@@ -22,10 +22,10 @@ export const GuardianValidator = {
     return writer;
   },
 
-  decode(input: Reader | Uint8Array, length?: number): GuardianValidator {
+  decode(input: Reader | Uint8Array, length?: number): PhylaxValidator {
     const reader = input instanceof Uint8Array ? new Reader(input) : input;
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = { ...baseGuardianValidator } as GuardianValidator;
+    const message = { ...basePhylaxValidator } as PhylaxValidator;
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -43,8 +43,8 @@ export const GuardianValidator = {
     return message;
   },
 
-  fromJSON(object: any): GuardianValidator {
-    const message = { ...baseGuardianValidator } as GuardianValidator;
+  fromJSON(object: any): PhylaxValidator {
+    const message = { ...basePhylaxValidator } as PhylaxValidator;
     if (object.guardianKey !== undefined && object.guardianKey !== null) {
       message.guardianKey = bytesFromBase64(object.guardianKey);
     }
@@ -54,7 +54,7 @@ export const GuardianValidator = {
     return message;
   },
 
-  toJSON(message: GuardianValidator): unknown {
+  toJSON(message: PhylaxValidator): unknown {
     const obj: any = {};
     message.guardianKey !== undefined &&
       (obj.guardianKey = base64FromBytes(
@@ -71,8 +71,8 @@ export const GuardianValidator = {
     return obj;
   },
 
-  fromPartial(object: DeepPartial<GuardianValidator>): GuardianValidator {
-    const message = { ...baseGuardianValidator } as GuardianValidator;
+  fromPartial(object: DeepPartial<PhylaxValidator>): PhylaxValidator {
+    const message = { ...basePhylaxValidator } as PhylaxValidator;
     if (object.guardianKey !== undefined && object.guardianKey !== null) {
       message.guardianKey = object.guardianKey;
     } else {

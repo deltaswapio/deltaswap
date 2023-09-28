@@ -54,7 +54,7 @@ func main() {
 	)
 
 	logger.Info("Loading guardian key", zap.String("guardianKeyPath", guardianKeyPath))
-	gk, err := loadGuardianKey(guardianKeyPath)
+	gk, err := loadPhylaxKey(guardianKeyPath)
 	if err != nil {
 		logger.Fatal("failed to load guardian key", zap.Error(err))
 	}
@@ -450,11 +450,11 @@ func submit(
 }
 
 const (
-	GuardianKeyArmoredBlock = "WORMHOLE GUARDIAN PRIVATE KEY"
+	PhylaxKeyArmoredBlock = "WORMHOLE GUARDIAN PRIVATE KEY"
 )
 
-// loadGuardianKey loads a serialized guardian key from disk.
-func loadGuardianKey(filename string) (*ecdsa.PrivateKey, error) {
+// loadPhylaxKey loads a serialized guardian key from disk.
+func loadPhylaxKey(filename string) (*ecdsa.PrivateKey, error) {
 	f, err := os.Open(filename)
 	if err != nil {
 		return nil, fmt.Errorf("failed to open file: %w", err)
@@ -465,7 +465,7 @@ func loadGuardianKey(filename string) (*ecdsa.PrivateKey, error) {
 		return nil, fmt.Errorf("failed to read armored file: %w", err)
 	}
 
-	if p.Type != GuardianKeyArmoredBlock {
+	if p.Type != PhylaxKeyArmoredBlock {
 		return nil, fmt.Errorf("invalid block type: %s", p.Type)
 	}
 
@@ -474,7 +474,7 @@ func loadGuardianKey(filename string) (*ecdsa.PrivateKey, error) {
 		return nil, fmt.Errorf("failed to read file: %w", err)
 	}
 
-	var m nodev1.GuardianKey
+	var m nodev1.PhylaxKey
 	err = proto.Unmarshal(b, &m)
 	if err != nil {
 		return nil, fmt.Errorf("failed to deserialize protobuf: %w", err)

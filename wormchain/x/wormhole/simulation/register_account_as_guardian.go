@@ -10,18 +10,18 @@ import (
 	"github.com/deltaswapio/deltachain/x/wormhole/types"
 )
 
-func SimulateMsgRegisterAccountAsGuardian(
+func SimulateMsgRegisterAccountAsPhylax(
 	k keeper.Keeper,
 ) simtypes.Operation {
 	return func(r *rand.Rand, app *baseapp.BaseApp, ctx sdk.Context, accs []simtypes.Account, chainID string,
 	) (simtypes.OperationMsg, []simtypes.FutureOperation, error) {
 		simAccount, _ := simtypes.RandomAcc(r, accs)
-		msg := &types.MsgRegisterAccountAsGuardian{
+		msg := &types.MsgRegisterAccountAsPhylax{
 			Signer: simAccount.Address.String(),
 		}
 
-		// TODO: Handling the RegisterAccountAsGuardian simulation
+		// TODO: Handling the RegisterAccountAsPhylax simulation
 
-		return simtypes.NoOpMsg(types.ModuleName, msg.Type(), "RegisterAccountAsGuardian simulation not implemented"), nil, nil
+		return simtypes.NoOpMsg(types.ModuleName, msg.Type(), "RegisterAccountAsPhylax simulation not implemented"), nil, nil
 	}
 }

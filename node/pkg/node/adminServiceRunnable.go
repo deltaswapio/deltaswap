@@ -31,7 +31,7 @@ func adminServiceRunnable(
 	signedInC chan<- *gossipv1.SignedVAAWithQuorum,
 	obsvReqSendC chan<- *gossipv1.ObservationRequest,
 	db *db.Database,
-	gst *common.GuardianSetState,
+	gst *common.PhylaxSetState,
 	gov *governor.ChainGovernor,
 	gk *ecdsa.PrivateKey,
 	ethRpc *string,

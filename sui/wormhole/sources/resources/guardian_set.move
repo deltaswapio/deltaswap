@@ -1,17 +1,17 @@
 // SPDX-License-Identifier: Apache 2
 
-/// This module implements a container that keeps track of a list of Guardian
-/// public keys and which Guardian set index this list of Guardians represents.
+/// This module implements a container that keeps track of a list of Phylax
+/// public keys and which Phylax set index this list of Phylaxs represents.
 /// Each guardian set is unique and there should be no two sets that have the
-/// same Guardian set index (which requirement is handled in `wormhole::state`).
+/// same Phylax set index (which requirement is handled in `wormhole::state`).
 ///
-/// If the current Guardian set is not the latest one, its `expiration_time` is
-/// configured, which defines how long the past Guardian set can be active.
+/// If the current Phylax set is not the latest one, its `expiration_time` is
+/// configured, which defines how long the past Phylax set can be active.
 module wormhole::guardian_set {
     use std::vector::{Self};
     use sui::clock::{Self, Clock};
 
-    use wormhole::guardian::{Self, Guardian};
+    use wormhole::guardian::{Self, Phylax};
 
     // Needs `set_expiration`.
     friend wormhole::state;
@@ -19,21 +19,21 @@ module wormhole::guardian_set {
     /// Found duplicate public key.
     const E_DUPLICATE_GUARDIAN: u64 = 0;
 
-    /// Container for the list of Guardian public keys, its index value and at
-    /// what point in time the Guardian set is configured to expire.
-    struct GuardianSet has store {
-        /// A.K.A. Guardian set index.
+    /// Container for the list of Phylax public keys, its index value and at
+    /// what point in time the Phylax set is configured to expire.
+    struct PhylaxSet has store {
+        /// A.K.A. Phylax set index.
         index: u32,
 
-        /// List of Guardians. This order should not change.
-        guardians: vector<Guardian>,
+        /// List of Phylaxs. This order should not change.
+        guardians: vector<Phylax>,
 
-        /// At what point in time the Guardian set is no longer active (in ms).
+        /// At what point in time the Phylax set is no longer active (in ms).
         expiration_timestamp_ms: u64,
     }
 
-    /// Create new `GuardianSet`.
-    public fun new(index: u32, guardians: vector<Guardian>): GuardianSet {
+    /// Create new `PhylaxSet`.
+    public fun new(index: u32, guardians: vector<Phylax>): PhylaxSet {
         // Ensure that there are no duplicate guardians.
         let (i, n) = (0, vector::length(&guardians));
         while (i < n - 1) {
@@ -47,61 +47,61 @@ module wormhole::guardian_set {
             i = i + 1;
         };
 
-        GuardianSet { index, guardians, expiration_timestamp_ms: 0 }
+        PhylaxSet { index, guardians, expiration_timestamp_ms: 0 }
     }
 
-    /// Retrieve the Guardian set index.
-    public fun index(self: &GuardianSet): u32 {
+    /// Retrieve the Phylax set index.
+    public fun index(self: &PhylaxSet): u32 {
         self.index
     }
 
-    /// Retrieve the Guardian set index as `u64` (for convenience when used to
+    /// Retrieve the Phylax set index as `u64` (for convenience when used to
     /// compare to indices for iterations, which are natively `u64`).
-    public fun index_as_u64(self: &GuardianSet): u64 {
+    public fun index_as_u64(self: &PhylaxSet): u64 {
         (self.index as u64)
     }
 
-    /// Retrieve list of Guardians.
-    public fun guardians(self: &GuardianSet): &vector<Guardian> {
+    /// Retrieve list of Phylaxs.
+    public fun guardians(self: &PhylaxSet): &vector<Phylax> {
         &self.guardians
     }
 
-    /// Retrieve specific Guardian by index (in the array representing the set).
-    public fun guardian_at(self: &GuardianSet, index: u64): &Guardian {
+    /// Retrieve specific Phylax by index (in the array representing the set).
+    public fun guardian_at(self: &PhylaxSet, index: u64): &Phylax {
         vector::borrow(&self.guardians, index)
     }
 
-    /// Retrieve when the Guardian set is no longer active.
-    public fun expiration_timestamp_ms(self: &GuardianSet): u64 {
+    /// Retrieve when the Phylax set is no longer active.
+    public fun expiration_timestamp_ms(self: &PhylaxSet): u64 {
         self.expiration_timestamp_ms
     }
 
-    /// Retrieve whether this Guardian set is still active by checking the
+    /// Retrieve whether this Phylax set is still active by checking the
     /// current time.
-    public fun is_active(self: &GuardianSet, clock: &Clock): bool {
+    public fun is_active(self: &PhylaxSet, clock: &Clock): bool {
         (
             self.expiration_timestamp_ms == 0 ||
             self.expiration_timestamp_ms > clock::timestamp_ms(clock)
         )
     }
 
-    /// Retrieve how many guardians exist in the Guardian set.
-    public fun num_guardians(self: &GuardianSet): u64 {
+    /// Retrieve how many guardians exist in the Phylax set.
+    public fun num_guardians(self: &PhylaxSet): u64 {
         vector::length(&self.guardians)
     }
 
     /// Returns the minimum number of signatures required for a VAA to be valid.
-    public fun quorum(self: &GuardianSet): u64 {
+    public fun quorum(self: &PhylaxSet): u64 {
         (num_guardians(self) * 2) / 3 + 1
     }
 
-    /// Configure this Guardian set to expire from some amount of time based on
+    /// Configure this Phylax set to expire from some amount of time based on
     /// what time it is right now.
     ///
     /// NOTE: `time_to_live` is in units of seconds while `Clock` uses
     /// milliseconds.
     public(friend) fun set_expiration(
-        self: &mut GuardianSet,
+        self: &mut PhylaxSet,
         seconds_to_live: u32,
         the_clock: &Clock
     ) {
@@ -110,10 +110,10 @@ module wormhole::guardian_set {
     }
 
     #[test_only]
-    public fun destroy(set: GuardianSet) {
+    public fun destroy(set: PhylaxSet) {
         use wormhole::guardian::{Self};
 
-        let GuardianSet {
+        let PhylaxSet {
             index: _,
             guardians,
             expiration_timestamp_ms: _

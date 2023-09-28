@@ -36,9 +36,9 @@ const elliptic = require("elliptic");
 export class TestLib {
   zeroBytes: string;
 
-  singleGuardianKey: string[] = ["beFA429d57cD18b7F8A4d91A2da9AB4AF05d0FBe"];
+  singlePhylaxKey: string[] = ["beFA429d57cD18b7F8A4d91A2da9AB4AF05d0FBe"];
 
-  singleGuardianPrivKey: string[] = [
+  singlePhylaxPrivKey: string[] = [
     "cfb12303a19cde580bb4dd771639b0d26bc68353645571a8cff516ab2ee113a0",
   ];
 
@@ -130,7 +130,7 @@ export class TestLib {
     return c.charCodeAt(0);
   }
 
-  genGuardianSetUpgrade(
+  genPhylaxSetUpgrade(
     signers: any,
     guardianSet: number,
     targetSet: number,

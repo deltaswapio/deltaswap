@@ -49,7 +49,7 @@ const GOVERNANCE_KEY: [u8; 64] = [
 ];
 
 struct Context {
-    /// Guardian secret keys.
+    /// Phylax secret keys.
     guardian_keys: Vec<SecretKey>,
 
     /// Address of the core bridge contract.

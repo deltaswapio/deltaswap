@@ -105,7 +105,7 @@ mod helpers {
     pub fn generate_keys(count: u8) -> (Vec<[u8; 20]>, Vec<SecretKey>) {
         let mut rng = rand::thread_rng();
 
-        // Generate Guardian Keys
+        // Generate Phylax Keys
         let secret_keys: Vec<SecretKey> = std::iter::repeat_with(|| SecretKey::random(&mut rng))
             .take(count as usize)
             .collect();

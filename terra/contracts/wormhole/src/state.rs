@@ -19,7 +19,7 @@ pub static SEQUENCE_KEY: &[u8] = b"sequence";
 pub static WRAPPED_ASSET_KEY: &[u8] = b"wrapped_asset";
 pub static WRAPPED_ASSET_ADDRESS_KEY: &[u8] = b"wrapped_asset_address";
 
-// Guardian set information
+// Phylax set information
 #[derive(Serialize, Deserialize, Clone, Debug, PartialEq, JsonSchema)]
 pub struct ConfigInfo {
     // Current active guardian set
@@ -149,9 +149,9 @@ impl ParsedVAA {
     }
 }
 
-// Guardian address
+// Phylax address
 #[derive(Serialize, Deserialize, Clone, Debug, PartialEq, Eq, JsonSchema)]
-pub struct GuardianAddress {
+pub struct PhylaxAddress {
     pub bytes: Binary, // 20-byte addresses
 }
 
@@ -160,23 +160,23 @@ use crate::contract::FEE_DENOMINATION;
 use hex;
 
 #[cfg(test)]
-impl GuardianAddress {
-    pub fn from(string: &str) -> GuardianAddress {
-        GuardianAddress {
+impl PhylaxAddress {
+    pub fn from(string: &str) -> PhylaxAddress {
+        PhylaxAddress {
             bytes: hex::decode(string).expect("Decoding failed").into(),
         }
     }
 }
 
-// Guardian set information
+// Phylax set information
 #[derive(Serialize, Deserialize, Clone, Debug, PartialEq, Eq, JsonSchema)]
-pub struct GuardianSetInfo {
-    pub addresses: Vec<GuardianAddress>,
+pub struct PhylaxSetInfo {
+    pub addresses: Vec<PhylaxAddress>,
     // List of guardian addresses
-    pub expiration_time: u64, // Guardian set expiration time
+    pub expiration_time: u64, // Phylax set expiration time
 }
 
-impl GuardianSetInfo {
+impl PhylaxSetInfo {
     pub fn quorum(&self) -> usize {
         // allow quorum of 0 for testing purposes...
         if self.addresses.is_empty() {
@@ -204,12 +204,12 @@ pub fn config_read(storage: &dyn Storage) -> ReadonlySingleton<ConfigInfo> {
 pub fn guardian_set_set(
     storage: &mut dyn Storage,
     index: u32,
-    data: &GuardianSetInfo,
+    data: &PhylaxSetInfo,
 ) -> StdResult<()> {
     bucket(storage, GUARDIAN_SET_KEY).save(&index.to_be_bytes(), data)
 }
 
-pub fn guardian_set_get(storage: &dyn Storage, index: u32) -> StdResult<GuardianSetInfo> {
+pub fn guardian_set_get(storage: &dyn Storage, index: u32) -> StdResult<PhylaxSetInfo> {
     bucket_read(storage, GUARDIAN_SET_KEY).load(&index.to_be_bytes())
 }
 
@@ -278,9 +278,9 @@ pub struct ContractUpgrade {
 }
 
 // action 2
-pub struct GuardianSetUpgrade {
+pub struct PhylaxSetUpgrade {
     pub new_guardian_set_index: u32,
-    pub new_guardian_set: GuardianSetInfo,
+    pub new_guardian_set: PhylaxSetInfo,
 }
 
 impl ContractUpgrade {
@@ -290,7 +290,7 @@ impl ContractUpgrade {
     }
 }
 
-impl GuardianSetUpgrade {
+impl PhylaxSetUpgrade {
     pub fn deserialize(data: &[u8]) -> StdResult<Self> {
         const ADDRESS_LEN: usize = 20;
 
@@ -306,17 +306,17 @@ impl GuardianSetUpgrade {
                 return ContractError::InvalidVAA.std_err();
             }
 
-            addresses.push(GuardianAddress {
+            addresses.push(PhylaxAddress {
                 bytes: data[pos..pos + ADDRESS_LEN].to_vec().into(),
             });
         }
 
-        let new_guardian_set = GuardianSetInfo {
+        let new_guardian_set = PhylaxSetInfo {
             addresses,
             expiration_time: 0,
         };
 
-        Ok(GuardianSetUpgrade {
+        Ok(PhylaxSetUpgrade {
             new_guardian_set_index,
             new_guardian_set,
         })

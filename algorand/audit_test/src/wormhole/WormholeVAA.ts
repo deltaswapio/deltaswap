@@ -46,7 +46,7 @@ export function generateInitVAA(signers: WormholeSigner[], coreId: AppId): Unsig
 	}
 
 	const payload: GovernancePayload = {
-		type: GovenanceMessageType.UpdateGuardians,
+		type: GovenanceMessageType.UpdatePhylaxs,
 		targetChainId: CHAIN_ID_ALGORAND,
 		oldGSIndex: 0,
 		newGSIndex: 1,
@@ -75,9 +75,9 @@ export function generateGovernanceVAA(signers: WormholeSigner[], gsIndex: number
 	}
 
 	switch (payload.type) {
-		case GovenanceMessageType.UpdateGuardians: {
-			const newGuardianTmplSig = new WormholeTmplSig(payload.newGSIndex, EMITTER_GUARDIAN, coreId)
-			template.extraTmplSigs.push(newGuardianTmplSig)
+		case GovenanceMessageType.UpdatePhylaxs: {
+			const newPhylaxTmplSig = new WormholeTmplSig(payload.newGSIndex, EMITTER_GUARDIAN, coreId)
+			template.extraTmplSigs.push(newPhylaxTmplSig)
 			break
 		}
 	}

@@ -9,7 +9,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-func CmdShowConsensusGuardianSetIndex() *cobra.Command {
+func CmdShowConsensusPhylaxSetIndex() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "show-consensus-guardian-set-index",
 		Short: "shows consensus-guardian-set-index",
@@ -19,9 +19,9 @@ func CmdShowConsensusGuardianSetIndex() *cobra.Command {
 
 			queryClient := types.NewQueryClient(clientCtx)
 
-			params := &types.QueryGetConsensusGuardianSetIndexRequest{}
+			params := &types.QueryGetConsensusPhylaxSetIndexRequest{}
 
-			res, err := queryClient.ConsensusGuardianSetIndex(context.Background(), params)
+			res, err := queryClient.ConsensusPhylaxSetIndex(context.Background(), params)
 			if err != nil {
 				return err
 			}

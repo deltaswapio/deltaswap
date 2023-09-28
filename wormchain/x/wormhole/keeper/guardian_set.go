@@ -9,41 +9,41 @@ import (
 	"github.com/deltaswapio/deltachain/x/wormhole/types"
 )
 
-func (k Keeper) GetLatestGuardianSetIndex(ctx sdk.Context) uint32 {
-	return k.GetGuardianSetCount(ctx) - 1
+func (k Keeper) GetLatestPhylaxSetIndex(ctx sdk.Context) uint32 {
+	return k.GetPhylaxSetCount(ctx) - 1
 }
 
-func (k Keeper) UpdateGuardianSet(ctx sdk.Context, newGuardianSet types.GuardianSet) error {
+func (k Keeper) UpdatePhylaxSet(ctx sdk.Context, newPhylaxSet types.PhylaxSet) error {
 	config, ok := k.GetConfig(ctx)
 	if !ok {
 		return types.ErrNoConfig
 	}
 
-	oldSet, exists := k.GetGuardianSet(ctx, k.GetLatestGuardianSetIndex(ctx))
+	oldSet, exists := k.GetPhylaxSet(ctx, k.GetLatestPhylaxSetIndex(ctx))
 	if !exists {
-		return types.ErrGuardianSetNotFound
+		return types.ErrPhylaxSetNotFound
 	}
 
-	if oldSet.Index+1 != newGuardianSet.Index {
-		return types.ErrGuardianSetNotSequential
+	if oldSet.Index+1 != newPhylaxSet.Index {
+		return types.ErrPhylaxSetNotSequential
 	}
 
-	if newGuardianSet.ExpirationTime != 0 {
-		return types.ErrNewGuardianSetHasExpiry
+	if newPhylaxSet.ExpirationTime != 0 {
+		return types.ErrNewPhylaxSetHasExpiry
 	}
 
 	// Create new set
-	_, err := k.AppendGuardianSet(ctx, newGuardianSet)
+	_, err := k.AppendPhylaxSet(ctx, newPhylaxSet)
 	if err != nil {
 		return err
 	}
 
 	// Expire old set
-	oldSet.ExpirationTime = uint64(ctx.BlockTime().Unix()) + config.GuardianSetExpiration
-	k.setGuardianSet(ctx, oldSet)
+	oldSet.ExpirationTime = uint64(ctx.BlockTime().Unix()) + config.PhylaxSetExpiration
+	k.setPhylaxSet(ctx, oldSet)
 
 	// Emit event
-	err = ctx.EventManager().EmitTypedEvent(&types.EventGuardianSetUpdate{
+	err = ctx.EventManager().EmitTypedEvent(&types.EventPhylaxSetUpdate{
 		OldIndex: oldSet.Index,
 		NewIndex: oldSet.Index + 1,
 	})
@@ -51,55 +51,55 @@ func (k Keeper) UpdateGuardianSet(ctx sdk.Context, newGuardianSet types.Guardian
 		return err
 	}
 
-	return k.TrySwitchToNewConsensusGuardianSet(ctx)
+	return k.TrySwitchToNewConsensusPhylaxSet(ctx)
 }
 
-func (k Keeper) TrySwitchToNewConsensusGuardianSet(ctx sdk.Context) error {
-	latestGuardianSetIndex := k.GetLatestGuardianSetIndex(ctx)
-	consensusGuardianSetIndex, found := k.GetConsensusGuardianSetIndex(ctx)
+func (k Keeper) TrySwitchToNewConsensusPhylaxSet(ctx sdk.Context) error {
+	latestPhylaxSetIndex := k.GetLatestPhylaxSetIndex(ctx)
+	consensusPhylaxSetIndex, found := k.GetConsensusPhylaxSetIndex(ctx)
 	if !found {
 		return types.ErrConsensusSetUndefined
 	}
 
 	// nothing to do if the latest set is already the consensus set
-	if latestGuardianSetIndex == consensusGuardianSetIndex.Index {
+	if latestPhylaxSetIndex == consensusPhylaxSetIndex.Index {
 		return nil
 	}
 
-	latestGuardianSet, found := k.GetGuardianSet(ctx, latestGuardianSetIndex)
+	latestPhylaxSet, found := k.GetPhylaxSet(ctx, latestPhylaxSetIndex)
 	if !found {
-		return types.ErrGuardianSetNotFound
+		return types.ErrPhylaxSetNotFound
 	}
 
 	// make sure each guardian has a registered validator
-	for _, key := range latestGuardianSet.Keys {
-		_, found := k.GetGuardianValidator(ctx, key)
+	for _, key := range latestPhylaxSet.Keys {
+		_, found := k.GetPhylaxValidator(ctx, key)
 		// if one of them doesn't, we don't attempt to switch
 		if !found {
 			return nil
 		}
 	}
 
-	oldConsensusGuardianSetIndex := consensusGuardianSetIndex.Index
-	newConsensusGuardianSetIndex := latestGuardianSetIndex
+	oldConsensusPhylaxSetIndex := consensusPhylaxSetIndex.Index
+	newConsensusPhylaxSetIndex := latestPhylaxSetIndex
 
-	// everyone's registered, set consensus set to the latest one. Guardian set upgrade complete.
-	k.SetConsensusGuardianSetIndex(ctx, types.ConsensusGuardianSetIndex{
-		Index: newConsensusGuardianSetIndex,
+	// everyone's registered, set consensus set to the latest one. Phylax set upgrade complete.
+	k.SetConsensusPhylaxSetIndex(ctx, types.ConsensusPhylaxSetIndex{
+		Index: newConsensusPhylaxSetIndex,
 	})
 
 	err := ctx.EventManager().EmitTypedEvent(&types.EventConsensusSetUpdate{
-		OldIndex: oldConsensusGuardianSetIndex,
-		NewIndex: newConsensusGuardianSetIndex,
+		OldIndex: oldConsensusPhylaxSetIndex,
+		NewIndex: newConsensusPhylaxSetIndex,
 	})
 
 	return err
 }
 
-// GetGuardianSetCount get the total number of guardianSet
-func (k Keeper) GetGuardianSetCount(ctx sdk.Context) uint32 {
+// GetPhylaxSetCount get the total number of guardianSet
+func (k Keeper) GetPhylaxSetCount(ctx sdk.Context) uint32 {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), []byte{})
-	byteKey := types.KeyPrefix(types.GuardianSetCountKey)
+	byteKey := types.KeyPrefix(types.PhylaxSetCountKey)
 	bz := store.Get(byteKey)
 
 	// Count doesn't exist: no element
@@ -111,44 +111,44 @@ func (k Keeper) GetGuardianSetCount(ctx sdk.Context) uint32 {
 	return binary.BigEndian.Uint32(bz)
 }
 
-// setGuardianSetCount set the total number of guardianSet
-func (k Keeper) setGuardianSetCount(ctx sdk.Context, count uint32) {
+// setPhylaxSetCount set the total number of guardianSet
+func (k Keeper) setPhylaxSetCount(ctx sdk.Context, count uint32) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), []byte{})
-	byteKey := types.KeyPrefix(types.GuardianSetCountKey)
+	byteKey := types.KeyPrefix(types.PhylaxSetCountKey)
 	bz := make([]byte, 8)
 	binary.BigEndian.PutUint32(bz, count)
 	store.Set(byteKey, bz)
 }
 
-// AppendGuardianSet appends a guardianSet in the store with a new id and update the count
-func (k Keeper) AppendGuardianSet(
+// AppendPhylaxSet appends a guardianSet in the store with a new id and update the count
+func (k Keeper) AppendPhylaxSet(
 	ctx sdk.Context,
-	guardianSet types.GuardianSet,
+	guardianSet types.PhylaxSet,
 ) (uint32, error) {
 	// Create the guardianSet
-	count := k.GetGuardianSetCount(ctx)
+	count := k.GetPhylaxSetCount(ctx)
 
 	if guardianSet.Index != count {
-		return 0, types.ErrGuardianSetNotSequential
+		return 0, types.ErrPhylaxSetNotSequential
 	}
 
-	k.setGuardianSet(ctx, guardianSet)
-	k.setGuardianSetCount(ctx, count+1)
+	k.setPhylaxSet(ctx, guardianSet)
+	k.setPhylaxSetCount(ctx, count+1)
 
 	return count, nil
 }
 
-// SetGuardianSet set a specific guardianSet in the store
-func (k Keeper) setGuardianSet(ctx sdk.Context, guardianSet types.GuardianSet) {
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.GuardianSetKey))
+// SetPhylaxSet set a specific guardianSet in the store
+func (k Keeper) setPhylaxSet(ctx sdk.Context, guardianSet types.PhylaxSet) {
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.PhylaxSetKey))
 	b := k.cdc.MustMarshal(&guardianSet)
-	store.Set(GetGuardianSetIDBytes(guardianSet.Index), b)
+	store.Set(GetPhylaxSetIDBytes(guardianSet.Index), b)
 }
 
-// GetGuardianSet returns a guardianSet from its id
-func (k Keeper) GetGuardianSet(ctx sdk.Context, id uint32) (val types.GuardianSet, found bool) {
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.GuardianSetKey))
-	b := store.Get(GetGuardianSetIDBytes(id))
+// GetPhylaxSet returns a guardianSet from its id
+func (k Keeper) GetPhylaxSet(ctx sdk.Context, id uint32) (val types.PhylaxSet, found bool) {
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.PhylaxSetKey))
+	b := store.Get(GetPhylaxSetIDBytes(id))
 	if b == nil {
 		return val, false
 	}
@@ -161,57 +161,57 @@ func (k Keeper) GetGuardianSet(ctx sdk.Context, id uint32) (val types.GuardianSe
 //
 // Note that this function is linear in the size of the consensus guardian set,
 // and it's eecuted on each endblocker when assigning voting power to validators.
-func (k Keeper) IsConsensusGuardian(ctx sdk.Context, addr sdk.ValAddress) (bool, error) {
+func (k Keeper) IsConsensusPhylax(ctx sdk.Context, addr sdk.ValAddress) (bool, error) {
 	// If there are no guardian sets, return true
 	// This is useful for testing, but the code path is never encountered when
 	// the chain is bootstrapped with a non-empty guardian set at gensis.
-	guardianSetCount := k.GetGuardianSetCount(ctx)
+	guardianSetCount := k.GetPhylaxSetCount(ctx)
 	if guardianSetCount == 0 {
 		return true, nil
 	}
 
-	consensusGuardianSetIndex, found := k.GetConsensusGuardianSetIndex(ctx)
+	consensusPhylaxSetIndex, found := k.GetConsensusPhylaxSetIndex(ctx)
 	if !found {
 		return false, types.ErrConsensusSetUndefined
 	}
 
-	consensusGuardianSet, found := k.GetGuardianSet(ctx, consensusGuardianSetIndex.Index)
+	consensusPhylaxSet, found := k.GetPhylaxSet(ctx, consensusPhylaxSetIndex.Index)
 
 	if !found {
-		return false, types.ErrGuardianSetNotFound
+		return false, types.ErrPhylaxSetNotFound
 	}
 
 	// If the consensus guardian set is empty, return true.
 	// This is useful for testing, but the code path is never encountered when
 	// the chain is bootstrapped with a non-empty guardian set at gensis.
-	if len(consensusGuardianSet.Keys) == 0 {
+	if len(consensusPhylaxSet.Keys) == 0 {
 		return true, nil
 	}
 
-	isConsensusGuardian := false
-	for _, key := range consensusGuardianSet.Keys {
-		validator, found := k.GetGuardianValidator(ctx, key)
+	isConsensusPhylax := false
+	for _, key := range consensusPhylaxSet.Keys {
+		validator, found := k.GetPhylaxValidator(ctx, key)
 		if !found {
 			continue
 		}
 		if bytes.Equal(validator.ValidatorAddr, addr.Bytes()) {
-			isConsensusGuardian = true
+			isConsensusPhylax = true
 			break
 		}
 	}
 
-	return isConsensusGuardian, nil
+	return isConsensusPhylax, nil
 }
 
-// GetAllGuardianSet returns all guardianSet
-func (k Keeper) GetAllGuardianSet(ctx sdk.Context) (list []types.GuardianSet) {
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.GuardianSetKey))
+// GetAllPhylaxSet returns all guardianSet
+func (k Keeper) GetAllPhylaxSet(ctx sdk.Context) (list []types.PhylaxSet) {
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.PhylaxSetKey))
 	iterator := sdk.KVStorePrefixIterator(store, []byte{})
 
 	defer iterator.Close()
 
 	for ; iterator.Valid(); iterator.Next() {
-		var val types.GuardianSet
+		var val types.PhylaxSet
 		k.cdc.MustUnmarshal(iterator.Value(), &val)
 		list = append(list, val)
 	}
@@ -219,14 +219,14 @@ func (k Keeper) GetAllGuardianSet(ctx sdk.Context) (list []types.GuardianSet) {
 	return
 }
 
-// GetGuardianSetIDBytes returns the byte representation of the ID
-func GetGuardianSetIDBytes(id uint32) []byte {
+// GetPhylaxSetIDBytes returns the byte representation of the ID
+func GetPhylaxSetIDBytes(id uint32) []byte {
 	bz := make([]byte, 4)
 	binary.BigEndian.PutUint32(bz, id)
 	return bz
 }
 
-// GetGuardianSetIDFromBytes returns ID in uint32 format from a byte array
-func GetGuardianSetIDFromBytes(bz []byte) uint32 {
+// GetPhylaxSetIDFromBytes returns ID in uint32 format from a byte array
+func GetPhylaxSetIDFromBytes(bz []byte) uint32 {
 	return binary.BigEndian.Uint32(bz)
 }

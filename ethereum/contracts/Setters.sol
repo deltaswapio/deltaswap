@@ -6,15 +6,15 @@ pragma solidity ^0.8.0;
 import "./State.sol";
 
 contract Setters is State {
-    function updateGuardianSetIndex(uint32 newIndex) internal {
+    function updatePhylaxSetIndex(uint32 newIndex) internal {
         _state.guardianSetIndex = newIndex;
     }
 
-    function expireGuardianSet(uint32 index) internal {
+    function expirePhylaxSet(uint32 index) internal {
         _state.guardianSets[index].expirationTime = uint32(block.timestamp) + 86400;
     }
 
-    function storeGuardianSet(Structs.GuardianSet memory set, uint32 index) internal {
+    function storePhylaxSet(Structs.PhylaxSet memory set, uint32 index) internal {
         uint setLength = set.keys.length;
         for (uint i = 0; i < setLength; i++) {
             require(set.keys[i] != address(0), "Invalid key");

@@ -7,39 +7,39 @@ import (
 )
 
 const (
-	ProposalTypeGuardianSetUpdate         string = "GuardianSetUpdate"
+	ProposalTypePhylaxSetUpdate           string = "PhylaxSetUpdate"
 	ProposalTypeGovernanceWormholeMessage string = "GovernanceWormholeMessage"
 )
 
 func init() {
-	gov.RegisterProposalType(ProposalTypeGuardianSetUpdate)
-	gov.RegisterProposalTypeCodec(&GuardianSetUpdateProposal{}, "wormhole/GuardianSetUpdate")
+	gov.RegisterProposalType(ProposalTypePhylaxSetUpdate)
+	gov.RegisterProposalTypeCodec(&PhylaxSetUpdateProposal{}, "wormhole/PhylaxSetUpdate")
 	gov.RegisterProposalType(ProposalTypeGovernanceWormholeMessage)
 	gov.RegisterProposalTypeCodec(&GovernanceWormholeMessageProposal{}, "wormhole/GovernanceWormholeMessage")
 }
 
-func NewGuardianSetUpdateProposal(title, description string, guardianSet GuardianSet) *GuardianSetUpdateProposal {
-	return &GuardianSetUpdateProposal{
-		Title:          title,
-		Description:    description,
-		NewGuardianSet: guardianSet,
+func NewPhylaxSetUpdateProposal(title, description string, guardianSet PhylaxSet) *PhylaxSetUpdateProposal {
+	return &PhylaxSetUpdateProposal{
+		Title:        title,
+		Description:  description,
+		NewPhylaxSet: guardianSet,
 	}
 }
 
-func (sup *GuardianSetUpdateProposal) ProposalRoute() string { return RouterKey }
-func (sup *GuardianSetUpdateProposal) ProposalType() string  { return ProposalTypeGuardianSetUpdate }
-func (sup *GuardianSetUpdateProposal) ValidateBasic() error {
-	if err := sup.NewGuardianSet.ValidateBasic(); err != nil {
+func (sup *PhylaxSetUpdateProposal) ProposalRoute() string { return RouterKey }
+func (sup *PhylaxSetUpdateProposal) ProposalType() string  { return ProposalTypePhylaxSetUpdate }
+func (sup *PhylaxSetUpdateProposal) ValidateBasic() error {
+	if err := sup.NewPhylaxSet.ValidateBasic(); err != nil {
 		return err
 	}
 	return gov.ValidateAbstract(sup)
 }
 
-func (sup *GuardianSetUpdateProposal) String() string {
-	return fmt.Sprintf(`Guardian Set Upgrade Proposal: 
+func (sup *PhylaxSetUpdateProposal) String() string {
+	return fmt.Sprintf(`Phylax Set Upgrade Proposal: 
   Title:       %s
   Description: %s
-  GuardianSet: %s`, sup.Title, sup.Description, sup.NewGuardianSet.String())
+  PhylaxSet: %s`, sup.Title, sup.Description, sup.NewPhylaxSet.String())
 }
 
 func NewGovernanceWormholeMessageProposal(title, description string, action uint8, targetChain uint16, module []byte, payload []byte) *GovernanceWormholeMessageProposal {

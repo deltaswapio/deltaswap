@@ -202,7 +202,7 @@ def getCoreContracts(   genTeal, approve_name, clear_name,
             return Seq([
 
                 # All governance must be done with the most recent guardian set
-                set.store(App.globalGet(Bytes("currentGuardianSetIndex"))),
+                set.store(App.globalGet(Bytes("currentPhylaxSetIndex"))),
                 If(set.load() != Int(0), Seq([
                         idx.store(Extract(Txn.application_args[1], Int(1), Int(4))),
                         MagicAssert(Btoi(idx.load()) == set.load()),
@@ -243,7 +243,7 @@ def getCoreContracts(   genTeal, approve_name, clear_name,
 
                         MagicAssert(Or(tchain.load() == Bytes("base16", "0008"), tchain.load() == Bytes("base16", "0000"))),
 
-                        # move off to point at the NewGuardianSetIndex and grab it
+                        # move off to point at the NewPhylaxSetIndex and grab it
                         off.store(off.load() + Int(3)),
                         v.store(Extract(Txn.application_args[1], off.load(), Int(4))),
                         idx.store(Btoi(v.load())),
@@ -258,7 +258,7 @@ def getCoreContracts(   genTeal, approve_name, clear_name,
                         )),
 
                         # Write this away till the next time
-                        App.globalPut(Bytes("currentGuardianSetIndex"), idx.load()),
+                        App.globalPut(Bytes("currentPhylaxSetIndex"), idx.load()),
 
                         # Write everything out to the auxilliary storage
                         off.store(off.load() + Int(4)),
@@ -557,7 +557,7 @@ def getCoreContracts(   genTeal, approve_name, clear_name,
         on_create = Seq( [
             App.globalPut(Bytes("MessageFee"), Int(0)),
             App.globalPut(Bytes("vphash"), Bytes("")),
-            App.globalPut(Bytes("currentGuardianSetIndex"), Int(0)),
+            App.globalPut(Bytes("currentPhylaxSetIndex"), Int(0)),
             App.globalPut(Bytes("validUpdateApproveHash"), Bytes("")),
             Return(Int(1))
         ])

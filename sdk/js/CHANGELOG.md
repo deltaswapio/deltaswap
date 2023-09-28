@@ -178,7 +178,7 @@ VAA (Verified Wormhole Message) deserializers
 
 Optional Confirmation arguments for account retrieval and wherever they are relevant
 
-Mock objects to be used in local integration tests (e.g. MockGuardians)
+Mock objects to be used in local integration tests (e.g. MockPhylaxs)
 
 ### Changed
 

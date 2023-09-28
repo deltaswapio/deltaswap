@@ -8,21 +8,21 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestMsgRegisterAccountAsGuardian_ValidateBasic(t *testing.T) {
+func TestMsgRegisterAccountAsPhylax_ValidateBasic(t *testing.T) {
 	tests := []struct {
 		name string
-		msg  MsgRegisterAccountAsGuardian
+		msg  MsgRegisterAccountAsPhylax
 		err  error
 	}{
 		{
 			name: "invalid address",
-			msg: MsgRegisterAccountAsGuardian{
+			msg: MsgRegisterAccountAsPhylax{
 				Signer: "invalid_address",
 			},
 			err: sdkerrors.ErrInvalidAddress,
 		}, {
 			name: "valid address",
-			msg: MsgRegisterAccountAsGuardian{
+			msg: MsgRegisterAccountAsPhylax{
 				Signer: sample.AccAddress(),
 			},
 		},

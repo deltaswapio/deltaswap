@@ -24,22 +24,22 @@ var _ = math.Inf
 // proto package needs to be updated.
 const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
-type GuardianKey struct {
+type PhylaxKey struct {
 	Key []byte `protobuf:"bytes,1,opt,name=key,proto3" json:"key,omitempty"`
 }
 
-func (m *GuardianKey) Reset()         { *m = GuardianKey{} }
-func (m *GuardianKey) String() string { return proto.CompactTextString(m) }
-func (*GuardianKey) ProtoMessage()    {}
-func (*GuardianKey) Descriptor() ([]byte, []int) {
+func (m *PhylaxKey) Reset()         { *m = PhylaxKey{} }
+func (m *PhylaxKey) String() string { return proto.CompactTextString(m) }
+func (*PhylaxKey) ProtoMessage()    {}
+func (*PhylaxKey) Descriptor() ([]byte, []int) {
 	return fileDescriptor_95afcf26fc23dcb3, []int{0}
 }
-func (m *GuardianKey) XXX_Unmarshal(b []byte) error {
+func (m *PhylaxKey) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *GuardianKey) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *PhylaxKey) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_GuardianKey.Marshal(b, m, deterministic)
+		return xxx_messageInfo_PhylaxKey.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -49,42 +49,42 @@ func (m *GuardianKey) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) 
 		return b[:n], nil
 	}
 }
-func (m *GuardianKey) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_GuardianKey.Merge(m, src)
+func (m *PhylaxKey) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_PhylaxKey.Merge(m, src)
 }
-func (m *GuardianKey) XXX_Size() int {
+func (m *PhylaxKey) XXX_Size() int {
 	return m.Size()
 }
-func (m *GuardianKey) XXX_DiscardUnknown() {
-	xxx_messageInfo_GuardianKey.DiscardUnknown(m)
+func (m *PhylaxKey) XXX_DiscardUnknown() {
+	xxx_messageInfo_PhylaxKey.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_GuardianKey proto.InternalMessageInfo
+var xxx_messageInfo_PhylaxKey proto.InternalMessageInfo
 
-func (m *GuardianKey) GetKey() []byte {
+func (m *PhylaxKey) GetKey() []byte {
 	if m != nil {
 		return m.Key
 	}
 	return nil
 }
 
-type GuardianValidator struct {
-	GuardianKey   []byte `protobuf:"bytes,1,opt,name=guardianKey,proto3" json:"guardianKey,omitempty"`
+type PhylaxValidator struct {
+	PhylaxKey   []byte `protobuf:"bytes,1,opt,name=guardianKey,proto3" json:"guardianKey,omitempty"`
 	ValidatorAddr []byte `protobuf:"bytes,2,opt,name=validatorAddr,proto3" json:"validatorAddr,omitempty"`
 }
 
-func (m *GuardianValidator) Reset()         { *m = GuardianValidator{} }
-func (m *GuardianValidator) String() string { return proto.CompactTextString(m) }
-func (*GuardianValidator) ProtoMessage()    {}
-func (*GuardianValidator) Descriptor() ([]byte, []int) {
+func (m *PhylaxValidator) Reset()         { *m = PhylaxValidator{} }
+func (m *PhylaxValidator) String() string { return proto.CompactTextString(m) }
+func (*PhylaxValidator) ProtoMessage()    {}
+func (*PhylaxValidator) Descriptor() ([]byte, []int) {
 	return fileDescriptor_95afcf26fc23dcb3, []int{1}
 }
-func (m *GuardianValidator) XXX_Unmarshal(b []byte) error {
+func (m *PhylaxValidator) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *GuardianValidator) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *PhylaxValidator) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_GuardianValidator.Marshal(b, m, deterministic)
+		return xxx_messageInfo_PhylaxValidator.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -94,50 +94,50 @@ func (m *GuardianValidator) XXX_Marshal(b []byte, deterministic bool) ([]byte, e
 		return b[:n], nil
 	}
 }
-func (m *GuardianValidator) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_GuardianValidator.Merge(m, src)
+func (m *PhylaxValidator) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_PhylaxValidator.Merge(m, src)
 }
-func (m *GuardianValidator) XXX_Size() int {
+func (m *PhylaxValidator) XXX_Size() int {
 	return m.Size()
 }
-func (m *GuardianValidator) XXX_DiscardUnknown() {
-	xxx_messageInfo_GuardianValidator.DiscardUnknown(m)
+func (m *PhylaxValidator) XXX_DiscardUnknown() {
+	xxx_messageInfo_PhylaxValidator.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_GuardianValidator proto.InternalMessageInfo
+var xxx_messageInfo_PhylaxValidator proto.InternalMessageInfo
 
-func (m *GuardianValidator) GetGuardianKey() []byte {
+func (m *PhylaxValidator) GetPhylaxKey() []byte {
 	if m != nil {
-		return m.GuardianKey
+		return m.PhylaxKey
 	}
 	return nil
 }
 
-func (m *GuardianValidator) GetValidatorAddr() []byte {
+func (m *PhylaxValidator) GetValidatorAddr() []byte {
 	if m != nil {
 		return m.ValidatorAddr
 	}
 	return nil
 }
 
-type GuardianSet struct {
+type PhylaxSet struct {
 	Index          uint32   `protobuf:"varint,1,opt,name=index,proto3" json:"index,omitempty"`
 	Keys           [][]byte `protobuf:"bytes,2,rep,name=keys,proto3" json:"keys,omitempty"`
 	ExpirationTime uint64   `protobuf:"varint,3,opt,name=expirationTime,proto3" json:"expirationTime,omitempty"`
 }
 
-func (m *GuardianSet) Reset()         { *m = GuardianSet{} }
-func (m *GuardianSet) String() string { return proto.CompactTextString(m) }
-func (*GuardianSet) ProtoMessage()    {}
-func (*GuardianSet) Descriptor() ([]byte, []int) {
+func (m *PhylaxSet) Reset()         { *m = PhylaxSet{} }
+func (m *PhylaxSet) String() string { return proto.CompactTextString(m) }
+func (*PhylaxSet) ProtoMessage()    {}
+func (*PhylaxSet) Descriptor() ([]byte, []int) {
 	return fileDescriptor_95afcf26fc23dcb3, []int{2}
 }
-func (m *GuardianSet) XXX_Unmarshal(b []byte) error {
+func (m *PhylaxSet) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *GuardianSet) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *PhylaxSet) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_GuardianSet.Marshal(b, m, deterministic)
+		return xxx_messageInfo_PhylaxSet.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -147,33 +147,33 @@ func (m *GuardianSet) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) 
 		return b[:n], nil
 	}
 }
-func (m *GuardianSet) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_GuardianSet.Merge(m, src)
+func (m *PhylaxSet) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_PhylaxSet.Merge(m, src)
 }
-func (m *GuardianSet) XXX_Size() int {
+func (m *PhylaxSet) XXX_Size() int {
 	return m.Size()
 }
-func (m *GuardianSet) XXX_DiscardUnknown() {
-	xxx_messageInfo_GuardianSet.DiscardUnknown(m)
+func (m *PhylaxSet) XXX_DiscardUnknown() {
+	xxx_messageInfo_PhylaxSet.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_GuardianSet proto.InternalMessageInfo
+var xxx_messageInfo_PhylaxSet proto.InternalMessageInfo
 
-func (m *GuardianSet) GetIndex() uint32 {
+func (m *PhylaxSet) GetIndex() uint32 {
 	if m != nil {
 		return m.Index
 	}
 	return 0
 }
 
-func (m *GuardianSet) GetKeys() [][]byte {
+func (m *PhylaxSet) GetKeys() [][]byte {
 	if m != nil {
 		return m.Keys
 	}
 	return nil
 }
 
-func (m *GuardianSet) GetExpirationTime() uint64 {
+func (m *PhylaxSet) GetExpirationTime() uint64 {
 	if m != nil {
 		return m.ExpirationTime
 	}
@@ -343,9 +343,9 @@ func (m *IbcComposabilityMwContract) GetContractAddress() string {
 }
 
 func init() {
-	proto.RegisterType((*GuardianKey)(nil), "wormhole_foundation.deltachain.wormhole.GuardianKey")
-	proto.RegisterType((*GuardianValidator)(nil), "wormhole_foundation.deltachain.wormhole.GuardianValidator")
-	proto.RegisterType((*GuardianSet)(nil), "wormhole_foundation.deltachain.wormhole.GuardianSet")
+	proto.RegisterType((*PhylaxKey)(nil), "wormhole_foundation.deltachain.wormhole.PhylaxKey")
+	proto.RegisterType((*PhylaxValidator)(nil), "wormhole_foundation.deltachain.wormhole.PhylaxValidator")
+	proto.RegisterType((*PhylaxSet)(nil), "wormhole_foundation.deltachain.wormhole.PhylaxSet")
 	proto.RegisterType((*ValidatorAllowedAddress)(nil), "wormhole_foundation.deltachain.wormhole.ValidatorAllowedAddress")
 	proto.RegisterType((*WasmInstantiateAllowedContractCodeId)(nil), "wormhole_foundation.deltachain.wormhole.WasmInstantiateAllowedContractCodeId")
 	proto.RegisterType((*IbcComposabilityMwContract)(nil), "wormhole_foundation.deltachain.wormhole.IbcComposabilityMwContract")
@@ -384,14 +384,14 @@ var fileDescriptor_95afcf26fc23dcb3 = []byte{
 	0xdd, 0x7b, 0xf1, 0x37, 0x00, 0x00, 0xff, 0xff, 0xb7, 0x97, 0xbd, 0x09, 0xd4, 0x02, 0x00, 0x00,
 }
 
-func (this *GuardianSet) Equal(that interface{}) bool {
+func (this *PhylaxSet) Equal(that interface{}) bool {
 	if that == nil {
 		return this == nil
 	}
 
-	that1, ok := that.(*GuardianSet)
+	that1, ok := that.(*PhylaxSet)
 	if !ok {
-		that2, ok := that.(GuardianSet)
+		that2, ok := that.(PhylaxSet)
 		if ok {
 			that1 = &that2
 		} else {
@@ -419,7 +419,7 @@ func (this *GuardianSet) Equal(that interface{}) bool {
 	}
 	return true
 }
-func (m *GuardianKey) Marshal() (dAtA []byte, err error) {
+func (m *PhylaxKey) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -429,12 +429,12 @@ func (m *GuardianKey) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *GuardianKey) MarshalTo(dAtA []byte) (int, error) {
+func (m *PhylaxKey) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *GuardianKey) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *PhylaxKey) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -442,14 +442,14 @@ func (m *GuardianKey) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	if len(m.Key) > 0 {
 		i -= len(m.Key)
 		copy(dAtA[i:], m.Key)
-		i = encodeVarintGuardian(dAtA, i, uint64(len(m.Key)))
+		i = encodeVarintPhylax(dAtA, i, uint64(len(m.Key)))
 		i--
 		dAtA[i] = 0xa
 	}
 	return len(dAtA) - i, nil
 }
 
-func (m *GuardianValidator) Marshal() (dAtA []byte, err error) {
+func (m *PhylaxValidator) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -459,12 +459,12 @@ func (m *GuardianValidator) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *GuardianValidator) MarshalTo(dAtA []byte) (int, error) {
+func (m *PhylaxValidator) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *GuardianValidator) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *PhylaxValidator) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -472,21 +472,21 @@ func (m *GuardianValidator) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	if len(m.ValidatorAddr) > 0 {
 		i -= len(m.ValidatorAddr)
 		copy(dAtA[i:], m.ValidatorAddr)
-		i = encodeVarintGuardian(dAtA, i, uint64(len(m.ValidatorAddr)))
+		i = encodeVarintPhylax(dAtA, i, uint64(len(m.ValidatorAddr)))
 		i--
 		dAtA[i] = 0x12
 	}
-	if len(m.GuardianKey) > 0 {
-		i -= len(m.GuardianKey)
-		copy(dAtA[i:], m.GuardianKey)
-		i = encodeVarintGuardian(dAtA, i, uint64(len(m.GuardianKey)))
+	if len(m.PhylaxKey) > 0 {
+		i -= len(m.PhylaxKey)
+		copy(dAtA[i:], m.PhylaxKey)
+		i = encodeVarintPhylax(dAtA, i, uint64(len(m.PhylaxKey)))
 		i--
 		dAtA[i] = 0xa
 	}
 	return len(dAtA) - i, nil
 }
 
-func (m *GuardianSet) Marshal() (dAtA []byte, err error) {
+func (m *PhylaxSet) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -496,18 +496,18 @@ func (m *GuardianSet) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *GuardianSet) MarshalTo(dAtA []byte) (int, error) {
+func (m *PhylaxSet) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *GuardianSet) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *PhylaxSet) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
 	_ = l
 	if m.ExpirationTime != 0 {
-		i = encodeVarintGuardian(dAtA, i, uint64(m.ExpirationTime))
+		i = encodeVarintPhylax(dAtA, i, uint64(m.ExpirationTime))
 		i--
 		dAtA[i] = 0x18
 	}
@@ -515,13 +515,13 @@ func (m *GuardianSet) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 		for iNdEx := len(m.Keys) - 1; iNdEx >= 0; iNdEx-- {
 			i -= len(m.Keys[iNdEx])
 			copy(dAtA[i:], m.Keys[iNdEx])
-			i = encodeVarintGuardian(dAtA, i, uint64(len(m.Keys[iNdEx])))
+			i = encodeVarintPhylax(dAtA, i, uint64(len(m.Keys[iNdEx])))
 			i--
 			dAtA[i] = 0x12
 		}
 	}
 	if m.Index != 0 {
-		i = encodeVarintGuardian(dAtA, i, uint64(m.Index))
+		i = encodeVarintPhylax(dAtA, i, uint64(m.Index))
 		i--
 		dAtA[i] = 0x8
 	}
@@ -551,21 +551,21 @@ func (m *ValidatorAllowedAddress) MarshalToSizedBuffer(dAtA []byte) (int, error)
 	if len(m.Name) > 0 {
 		i -= len(m.Name)
 		copy(dAtA[i:], m.Name)
-		i = encodeVarintGuardian(dAtA, i, uint64(len(m.Name)))
+		i = encodeVarintPhylax(dAtA, i, uint64(len(m.Name)))
 		i--
 		dAtA[i] = 0x1a
 	}
 	if len(m.AllowedAddress) > 0 {
 		i -= len(m.AllowedAddress)
 		copy(dAtA[i:], m.AllowedAddress)
-		i = encodeVarintGuardian(dAtA, i, uint64(len(m.AllowedAddress)))
+		i = encodeVarintPhylax(dAtA, i, uint64(len(m.AllowedAddress)))
 		i--
 		dAtA[i] = 0x12
 	}
 	if len(m.ValidatorAddress) > 0 {
 		i -= len(m.ValidatorAddress)
 		copy(dAtA[i:], m.ValidatorAddress)
-		i = encodeVarintGuardian(dAtA, i, uint64(len(m.ValidatorAddress)))
+		i = encodeVarintPhylax(dAtA, i, uint64(len(m.ValidatorAddress)))
 		i--
 		dAtA[i] = 0xa
 	}
@@ -593,14 +593,14 @@ func (m *WasmInstantiateAllowedContractCodeId) MarshalToSizedBuffer(dAtA []byte)
 	var l int
 	_ = l
 	if m.CodeId != 0 {
-		i = encodeVarintGuardian(dAtA, i, uint64(m.CodeId))
+		i = encodeVarintPhylax(dAtA, i, uint64(m.CodeId))
 		i--
 		dAtA[i] = 0x10
 	}
 	if len(m.ContractAddress) > 0 {
 		i -= len(m.ContractAddress)
 		copy(dAtA[i:], m.ContractAddress)
-		i = encodeVarintGuardian(dAtA, i, uint64(len(m.ContractAddress)))
+		i = encodeVarintPhylax(dAtA, i, uint64(len(m.ContractAddress)))
 		i--
 		dAtA[i] = 0xa
 	}
@@ -630,15 +630,15 @@ func (m *IbcComposabilityMwContract) MarshalToSizedBuffer(dAtA []byte) (int, err
 	if len(m.ContractAddress) > 0 {
 		i -= len(m.ContractAddress)
 		copy(dAtA[i:], m.ContractAddress)
-		i = encodeVarintGuardian(dAtA, i, uint64(len(m.ContractAddress)))
+		i = encodeVarintPhylax(dAtA, i, uint64(len(m.ContractAddress)))
 		i--
 		dAtA[i] = 0xa
 	}
 	return len(dAtA) - i, nil
 }
 
-func encodeVarintGuardian(dAtA []byte, offset int, v uint64) int {
-	offset -= sovGuardian(v)
+func encodeVarintPhylax(dAtA []byte, offset int, v uint64) int {
+	offset -= sovPhylax(v)
 	base := offset
 	for v >= 1<<7 {
 		dAtA[offset] = uint8(v&0x7f | 0x80)
@@ -648,7 +648,7 @@ func encodeVarintGuardian(dAtA []byte, offset int, v uint64) int {
 	dAtA[offset] = uint8(v)
 	return base
 }
-func (m *GuardianKey) Size() (n int) {
+func (m *PhylaxKey) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -656,45 +656,45 @@ func (m *GuardianKey) Size() (n int) {
 	_ = l
 	l = len(m.Key)
 	if l > 0 {
-		n += 1 + l + sovGuardian(uint64(l))
+		n += 1 + l + sovPhylax(uint64(l))
 	}
 	return n
 }
 
-func (m *GuardianValidator) Size() (n int) {
+func (m *PhylaxValidator) Size() (n int) {
 	if m == nil {
 		return 0
 	}
 	var l int
 	_ = l
-	l = len(m.GuardianKey)
+	l = len(m.PhylaxKey)
 	if l > 0 {
-		n += 1 + l + sovGuardian(uint64(l))
+		n += 1 + l + sovPhylax(uint64(l))
 	}
 	l = len(m.ValidatorAddr)
 	if l > 0 {
-		n += 1 + l + sovGuardian(uint64(l))
+		n += 1 + l + sovPhylax(uint64(l))
 	}
 	return n
 }
 
-func (m *GuardianSet) Size() (n int) {
+func (m *PhylaxSet) Size() (n int) {
 	if m == nil {
 		return 0
 	}
 	var l int
 	_ = l
 	if m.Index != 0 {
-		n += 1 + sovGuardian(uint64(m.Index))
+		n += 1 + sovPhylax(uint64(m.Index))
 	}
 	if len(m.Keys) > 0 {
 		for _, b := range m.Keys {
 			l = len(b)
-			n += 1 + l + sovGuardian(uint64(l))
+			n += 1 + l + sovPhylax(uint64(l))
 		}
 	}
 	if m.ExpirationTime != 0 {
-		n += 1 + sovGuardian(uint64(m.ExpirationTime))
+		n += 1 + sovPhylax(uint64(m.ExpirationTime))
 	}
 	return n
 }
@@ -707,15 +707,15 @@ func (m *ValidatorAllowedAddress) Size() (n int) {
 	_ = l
 	l = len(m.ValidatorAddress)
 	if l > 0 {
-		n += 1 + l + sovGuardian(uint64(l))
+		n += 1 + l + sovPhylax(uint64(l))
 	}
 	l = len(m.AllowedAddress)
 	if l > 0 {
-		n += 1 + l + sovGuardian(uint64(l))
+		n += 1 + l + sovPhylax(uint64(l))
 	}
 	l = len(m.Name)
 	if l > 0 {
-		n += 1 + l + sovGuardian(uint64(l))
+		n += 1 + l + sovPhylax(uint64(l))
 	}
 	return n
 }
@@ -728,10 +728,10 @@ func (m *WasmInstantiateAllowedContractCodeId) Size() (n int) {
 	_ = l
 	l = len(m.ContractAddress)
 	if l > 0 {
-		n += 1 + l + sovGuardian(uint64(l))
+		n += 1 + l + sovPhylax(uint64(l))
 	}
 	if m.CodeId != 0 {
-		n += 1 + sovGuardian(uint64(m.CodeId))
+		n += 1 + sovPhylax(uint64(m.CodeId))
 	}
 	return n
 }
@@ -744,18 +744,18 @@ func (m *IbcComposabilityMwContract) Size() (n int) {
 	_ = l
 	l = len(m.ContractAddress)
 	if l > 0 {
-		n += 1 + l + sovGuardian(uint64(l))
+		n += 1 + l + sovPhylax(uint64(l))
 	}
 	return n
 }
 
-func sovGuardian(x uint64) (n int) {
+func sovPhylax(x uint64) (n int) {
 	return (math_bits.Len64(x|1) + 6) / 7
 }
-func sozGuardian(x uint64) (n int) {
-	return sovGuardian(uint64((x << 1) ^ uint64((int64(x) >> 63))))
+func sozPhylax(x uint64) (n int) {
+	return sovPhylax(uint64((x << 1) ^ uint64((int64(x) >> 63))))
 }
-func (m *GuardianKey) Unmarshal(dAtA []byte) error {
+func (m *PhylaxKey) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -763,7 +763,7 @@ func (m *GuardianKey) Unmarshal(dAtA []byte) error {
 		var wire uint64
 		for shift := uint(0); ; shift += 7 {
 			if shift >= 64 {
-				return ErrIntOverflowGuardian
+				return ErrIntOverflowPhylax
 			}
 			if iNdEx >= l {
 				return io.ErrUnexpectedEOF
@@ -778,10 +778,10 @@ func (m *GuardianKey) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: GuardianKey: wiretype end group for non-group")
+			return fmt.Errorf("proto: PhylaxKey: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: GuardianKey: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: PhylaxKey: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -791,7 +791,7 @@ func (m *GuardianKey) Unmarshal(dAtA []byte) error {
 			var byteLen int
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
-					return ErrIntOverflowGuardian
+					return ErrIntOverflowPhylax
 				}
 				if iNdEx >= l {
 					return io.ErrUnexpectedEOF
@@ -804,11 +804,11 @@ func (m *GuardianKey) Unmarshal(dAtA []byte) error {
 				}
 			}
 			if byteLen < 0 {
-				return ErrInvalidLengthGuardian
+				return ErrInvalidLengthPhylax
 			}
 			postIndex := iNdEx + byteLen
 			if postIndex < 0 {
-				return ErrInvalidLengthGuardian
+				return ErrInvalidLengthPhylax
 			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
@@ -820,12 +820,12 @@ func (m *GuardianKey) Unmarshal(dAtA []byte) error {
 			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
-			skippy, err := skipGuardian(dAtA[iNdEx:])
+			skippy, err := skipPhylax(dAtA[iNdEx:])
 			if err != nil {
 				return err
 			}
 			if (skippy < 0) || (iNdEx+skippy) < 0 {
-				return ErrInvalidLengthGuardian
+				return ErrInvalidLengthPhylax
 			}
 			if (iNdEx + skippy) > l {
 				return io.ErrUnexpectedEOF
@@ -839,7 +839,7 @@ func (m *GuardianKey) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *GuardianValidator) Unmarshal(dAtA []byte) error {
+func (m *PhylaxValidator) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -847,7 +847,7 @@ func (m *GuardianValidator) Unmarshal(dAtA []byte) error {
 		var wire uint64
 		for shift := uint(0); ; shift += 7 {
 			if shift >= 64 {
-				return ErrIntOverflowGuardian
+				return ErrIntOverflowPhylax
 			}
 			if iNdEx >= l {
 				return io.ErrUnexpectedEOF
@@ -862,20 +862,20 @@ func (m *GuardianValidator) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: GuardianValidator: wiretype end group for non-group")
+			return fmt.Errorf("proto: PhylaxValidator: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: GuardianValidator: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: PhylaxValidator: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field GuardianKey", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field PhylaxKey", wireType)
 			}
 			var byteLen int
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
-					return ErrIntOverflowGuardian
+					return ErrIntOverflowPhylax
 				}
 				if iNdEx >= l {
 					return io.ErrUnexpectedEOF
@@ -888,18 +888,18 @@ func (m *GuardianValidator) Unmarshal(dAtA []byte) error {
 				}
 			}
 			if byteLen < 0 {
-				return ErrInvalidLengthGuardian
+				return ErrInvalidLengthPhylax
 			}
 			postIndex := iNdEx + byteLen
 			if postIndex < 0 {
-				return ErrInvalidLengthGuardian
+				return ErrInvalidLengthPhylax
 			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.GuardianKey = append(m.GuardianKey[:0], dAtA[iNdEx:postIndex]...)
-			if m.GuardianKey == nil {
-				m.GuardianKey = []byte{}
+			m.PhylaxKey = append(m.PhylaxKey[:0], dAtA[iNdEx:postIndex]...)
+			if m.PhylaxKey == nil {
+				m.PhylaxKey = []byte{}
 			}
 			iNdEx = postIndex
 		case 2:
@@ -909,7 +909,7 @@ func (m *GuardianValidator) Unmarshal(dAtA []byte) error {
 			var byteLen int
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
-					return ErrIntOverflowGuardian
+					return ErrIntOverflowPhylax
 				}
 				if iNdEx >= l {
 					return io.ErrUnexpectedEOF
@@ -922,11 +922,11 @@ func (m *GuardianValidator) Unmarshal(dAtA []byte) error {
 				}
 			}
 			if byteLen < 0 {
-				return ErrInvalidLengthGuardian
+				return ErrInvalidLengthPhylax
 			}
 			postIndex := iNdEx + byteLen
 			if postIndex < 0 {
-				return ErrInvalidLengthGuardian
+				return ErrInvalidLengthPhylax
 			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
@@ -938,12 +938,12 @@ func (m *GuardianValidator) Unmarshal(dAtA []byte) error {
 			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
-			skippy, err := skipGuardian(dAtA[iNdEx:])
+			skippy, err := skipPhylax(dAtA[iNdEx:])
 			if err != nil {
 				return err
 			}
 			if (skippy < 0) || (iNdEx+skippy) < 0 {
-				return ErrInvalidLengthGuardian
+				return ErrInvalidLengthPhylax
 			}
 			if (iNdEx + skippy) > l {
 				return io.ErrUnexpectedEOF
@@ -957,7 +957,7 @@ func (m *GuardianValidator) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *GuardianSet) Unmarshal(dAtA []byte) error {
+func (m *PhylaxSet) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -965,7 +965,7 @@ func (m *GuardianSet) Unmarshal(dAtA []byte) error {
 		var wire uint64
 		for shift := uint(0); ; shift += 7 {
 			if shift >= 64 {
-				return ErrIntOverflowGuardian
+				return ErrIntOverflowPhylax
 			}
 			if iNdEx >= l {
 				return io.ErrUnexpectedEOF
@@ -980,10 +980,10 @@ func (m *GuardianSet) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: GuardianSet: wiretype end group for non-group")
+			return fmt.Errorf("proto: PhylaxSet: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: GuardianSet: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: PhylaxSet: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -993,7 +993,7 @@ func (m *GuardianSet) Unmarshal(dAtA []byte) error {
 			m.Index = 0
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
-					return ErrIntOverflowGuardian
+					return ErrIntOverflowPhylax
 				}
 				if iNdEx >= l {
 					return io.ErrUnexpectedEOF
@@ -1012,7 +1012,7 @@ func (m *GuardianSet) Unmarshal(dAtA []byte) error {
 			var byteLen int
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
-					return ErrIntOverflowGuardian
+					return ErrIntOverflowPhylax
 				}
 				if iNdEx >= l {
 					return io.ErrUnexpectedEOF
@@ -1025,11 +1025,11 @@ func (m *GuardianSet) Unmarshal(dAtA []byte) error {
 				}
 			}
 			if byteLen < 0 {
-				return ErrInvalidLengthGuardian
+				return ErrInvalidLengthPhylax
 			}
 			postIndex := iNdEx + byteLen
 			if postIndex < 0 {
-				return ErrInvalidLengthGuardian
+				return ErrInvalidLengthPhylax
 			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
@@ -1044,7 +1044,7 @@ func (m *GuardianSet) Unmarshal(dAtA []byte) error {
 			m.ExpirationTime = 0
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
-					return ErrIntOverflowGuardian
+					return ErrIntOverflowPhylax
 				}
 				if iNdEx >= l {
 					return io.ErrUnexpectedEOF
@@ -1058,12 +1058,12 @@ func (m *GuardianSet) Unmarshal(dAtA []byte) error {
 			}
 		default:
 			iNdEx = preIndex
-			skippy, err := skipGuardian(dAtA[iNdEx:])
+			skippy, err := skipPhylax(dAtA[iNdEx:])
 			if err != nil {
 				return err
 			}
 			if (skippy < 0) || (iNdEx+skippy) < 0 {
-				return ErrInvalidLengthGuardian
+				return ErrInvalidLengthPhylax
 			}
 			if (iNdEx + skippy) > l {
 				return io.ErrUnexpectedEOF
@@ -1085,7 +1085,7 @@ func (m *ValidatorAllowedAddress) Unmarshal(dAtA []byte) error {
 		var wire uint64
 		for shift := uint(0); ; shift += 7 {
 			if shift >= 64 {
-				return ErrIntOverflowGuardian
+				return ErrIntOverflowPhylax
 			}
 			if iNdEx >= l {
 				return io.ErrUnexpectedEOF
@@ -1113,7 +1113,7 @@ func (m *ValidatorAllowedAddress) Unmarshal(dAtA []byte) error {
 			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
-					return ErrIntOverflowGuardian
+					return ErrIntOverflowPhylax
 				}
 				if iNdEx >= l {
 					return io.ErrUnexpectedEOF
@@ -1127,11 +1127,11 @@ func (m *ValidatorAllowedAddress) Unmarshal(dAtA []byte) error {
 			}
 			intStringLen := int(stringLen)
 			if intStringLen < 0 {
-				return ErrInvalidLengthGuardian
+				return ErrInvalidLengthPhylax
 			}
 			postIndex := iNdEx + intStringLen
 			if postIndex < 0 {
-				return ErrInvalidLengthGuardian
+				return ErrInvalidLengthPhylax
 			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
@@ -1145,7 +1145,7 @@ func (m *ValidatorAllowedAddress) Unmarshal(dAtA []byte) error {
 			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
-					return ErrIntOverflowGuardian
+					return ErrIntOverflowPhylax
 				}
 				if iNdEx >= l {
 					return io.ErrUnexpectedEOF
@@ -1159,11 +1159,11 @@ func (m *ValidatorAllowedAddress) Unmarshal(dAtA []byte) error {
 			}
 			intStringLen := int(stringLen)
 			if intStringLen < 0 {
-				return ErrInvalidLengthGuardian
+				return ErrInvalidLengthPhylax
 			}
 			postIndex := iNdEx + intStringLen
 			if postIndex < 0 {
-				return ErrInvalidLengthGuardian
+				return ErrInvalidLengthPhylax
 			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
@@ -1177,7 +1177,7 @@ func (m *ValidatorAllowedAddress) Unmarshal(dAtA []byte) error {
 			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
-					return ErrIntOverflowGuardian
+					return ErrIntOverflowPhylax
 				}
 				if iNdEx >= l {
 					return io.ErrUnexpectedEOF
@@ -1191,11 +1191,11 @@ func (m *ValidatorAllowedAddress) Unmarshal(dAtA []byte) error {
 			}
 			intStringLen := int(stringLen)
 			if intStringLen < 0 {
-				return ErrInvalidLengthGuardian
+				return ErrInvalidLengthPhylax
 			}
 			postIndex := iNdEx + intStringLen
 			if postIndex < 0 {
-				return ErrInvalidLengthGuardian
+				return ErrInvalidLengthPhylax
 			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
@@ -1204,12 +1204,12 @@ func (m *ValidatorAllowedAddress) Unmarshal(dAtA []byte) error {
 			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
-			skippy, err := skipGuardian(dAtA[iNdEx:])
+			skippy, err := skipPhylax(dAtA[iNdEx:])
 			if err != nil {
 				return err
 			}
 			if (skippy < 0) || (iNdEx+skippy) < 0 {
-				return ErrInvalidLengthGuardian
+				return ErrInvalidLengthPhylax
 			}
 			if (iNdEx + skippy) > l {
 				return io.ErrUnexpectedEOF
@@ -1231,7 +1231,7 @@ func (m *WasmInstantiateAllowedContractCodeId) Unmarshal(dAtA []byte) error {
 		var wire uint64
 		for shift := uint(0); ; shift += 7 {
 			if shift >= 64 {
-				return ErrIntOverflowGuardian
+				return ErrIntOverflowPhylax
 			}
 			if iNdEx >= l {
 				return io.ErrUnexpectedEOF
@@ -1259,7 +1259,7 @@ func (m *WasmInstantiateAllowedContractCodeId) Unmarshal(dAtA []byte) error {
 			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
-					return ErrIntOverflowGuardian
+					return ErrIntOverflowPhylax
 				}
 				if iNdEx >= l {
 					return io.ErrUnexpectedEOF
@@ -1273,11 +1273,11 @@ func (m *WasmInstantiateAllowedContractCodeId) Unmarshal(dAtA []byte) error {
 			}
 			intStringLen := int(stringLen)
 			if intStringLen < 0 {
-				return ErrInvalidLengthGuardian
+				return ErrInvalidLengthPhylax
 			}
 			postIndex := iNdEx + intStringLen
 			if postIndex < 0 {
-				return ErrInvalidLengthGuardian
+				return ErrInvalidLengthPhylax
 			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
@@ -1291,7 +1291,7 @@ func (m *WasmInstantiateAllowedContractCodeId) Unmarshal(dAtA []byte) error {
 			m.CodeId = 0
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
-					return ErrIntOverflowGuardian
+					return ErrIntOverflowPhylax
 				}
 				if iNdEx >= l {
 					return io.ErrUnexpectedEOF
@@ -1305,12 +1305,12 @@ func (m *WasmInstantiateAllowedContractCodeId) Unmarshal(dAtA []byte) error {
 			}
 		default:
 			iNdEx = preIndex
-			skippy, err := skipGuardian(dAtA[iNdEx:])
+			skippy, err := skipPhylax(dAtA[iNdEx:])
 			if err != nil {
 				return err
 			}
 			if (skippy < 0) || (iNdEx+skippy) < 0 {
-				return ErrInvalidLengthGuardian
+				return ErrInvalidLengthPhylax
 			}
 			if (iNdEx + skippy) > l {
 				return io.ErrUnexpectedEOF
@@ -1332,7 +1332,7 @@ func (m *IbcComposabilityMwContract) Unmarshal(dAtA []byte) error {
 		var wire uint64
 		for shift := uint(0); ; shift += 7 {
 			if shift >= 64 {
-				return ErrIntOverflowGuardian
+				return ErrIntOverflowPhylax
 			}
 			if iNdEx >= l {
 				return io.ErrUnexpectedEOF
@@ -1360,7 +1360,7 @@ func (m *IbcComposabilityMwContract) Unmarshal(dAtA []byte) error {
 			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
-					return ErrIntOverflowGuardian
+					return ErrIntOverflowPhylax
 				}
 				if iNdEx >= l {
 					return io.ErrUnexpectedEOF
@@ -1374,11 +1374,11 @@ func (m *IbcComposabilityMwContract) Unmarshal(dAtA []byte) error {
 			}
 			intStringLen := int(stringLen)
 			if intStringLen < 0 {
-				return ErrInvalidLengthGuardian
+				return ErrInvalidLengthPhylax
 			}
 			postIndex := iNdEx + intStringLen
 			if postIndex < 0 {
-				return ErrInvalidLengthGuardian
+				return ErrInvalidLengthPhylax
 			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
@@ -1387,12 +1387,12 @@ func (m *IbcComposabilityMwContract) Unmarshal(dAtA []byte) error {
 			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
-			skippy, err := skipGuardian(dAtA[iNdEx:])
+			skippy, err := skipPhylax(dAtA[iNdEx:])
 			if err != nil {
 				return err
 			}
 			if (skippy < 0) || (iNdEx+skippy) < 0 {
-				return ErrInvalidLengthGuardian
+				return ErrInvalidLengthPhylax
 			}
 			if (iNdEx + skippy) > l {
 				return io.ErrUnexpectedEOF
@@ -1406,7 +1406,7 @@ func (m *IbcComposabilityMwContract) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func skipGuardian(dAtA []byte) (n int, err error) {
+func skipPhylax(dAtA []byte) (n int, err error) {
 	l := len(dAtA)
 	iNdEx := 0
 	depth := 0
@@ -1414,7 +1414,7 @@ func skipGuardian(dAtA []byte) (n int, err error) {
 		var wire uint64
 		for shift := uint(0); ; shift += 7 {
 			if shift >= 64 {
-				return 0, ErrIntOverflowGuardian
+				return 0, ErrIntOverflowPhylax
 			}
 			if iNdEx >= l {
 				return 0, io.ErrUnexpectedEOF
@@ -1431,7 +1431,7 @@ func skipGuardian(dAtA []byte) (n int, err error) {
 		case 0:
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
-					return 0, ErrIntOverflowGuardian
+					return 0, ErrIntOverflowPhylax
 				}
 				if iNdEx >= l {
 					return 0, io.ErrUnexpectedEOF
@@ -1447,7 +1447,7 @@ func skipGuardian(dAtA []byte) (n int, err error) {
 			var length int
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
-					return 0, ErrIntOverflowGuardian
+					return 0, ErrIntOverflowPhylax
 				}
 				if iNdEx >= l {
 					return 0, io.ErrUnexpectedEOF
@@ -1460,14 +1460,14 @@ func skipGuardian(dAtA []byte) (n int, err error) {
 				}
 			}
 			if length < 0 {
-				return 0, ErrInvalidLengthGuardian
+				return 0, ErrInvalidLengthPhylax
 			}
 			iNdEx += length
 		case 3:
 			depth++
 		case 4:
 			if depth == 0 {
-				return 0, ErrUnexpectedEndOfGroupGuardian
+				return 0, ErrUnexpectedEndOfGroupPhylax
 			}
 			depth--
 		case 5:
@@ -1476,7 +1476,7 @@ func skipGuardian(dAtA []byte) (n int, err error) {
 			return 0, fmt.Errorf("proto: illegal wireType %d", wireType)
 		}
 		if iNdEx < 0 {
-			return 0, ErrInvalidLengthGuardian
+			return 0, ErrInvalidLengthPhylax
 		}
 		if depth == 0 {
 			return iNdEx, nil
@@ -1486,7 +1486,7 @@ func skipGuardian(dAtA []byte) (n int, err error) {
 }
 
 var (
-	ErrInvalidLengthGuardian        = fmt.Errorf("proto: negative length found during unmarshaling")
-	ErrIntOverflowGuardian          = fmt.Errorf("proto: integer overflow")
-	ErrUnexpectedEndOfGroupGuardian = fmt.Errorf("proto: unexpected end of group")
+	ErrInvalidLengthPhylax        = fmt.Errorf("proto: negative length found during unmarshaling")
+	ErrIntOverflowPhylax          = fmt.Errorf("proto: integer overflow")
+	ErrUnexpectedEndOfGroupPhylax = fmt.Errorf("proto: unexpected end of group")
 )

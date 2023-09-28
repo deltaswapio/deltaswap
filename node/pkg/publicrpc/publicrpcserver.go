@@ -20,14 +20,14 @@ type PublicrpcServer struct {
 	publicrpcv1.UnsafePublicRPCServiceServer
 	logger *zap.Logger
 	db     *db.Database
-	gst    *common.GuardianSetState
+	gst    *common.PhylaxSetState
 	gov    *governor.ChainGovernor
 }
 
 func NewPublicrpcServer(
 	logger *zap.Logger,
 	db *db.Database,
-	gst *common.GuardianSetState,
+	gst *common.PhylaxSetState,
 	gov *governor.ChainGovernor,
 ) *PublicrpcServer {
 	return &PublicrpcServer{
@@ -53,9 +53,9 @@ func (s *PublicrpcServer) GetLastHeartbeats(ctx context.Context, req *publicrpcv
 	for addr, v := range s.gst.GetAll() {
 		for peerId, hb := range v {
 			resp.Entries = append(resp.Entries, &publicrpcv1.GetLastHeartbeatsResponse_Entry{
-				VerifiedGuardianAddr: addr.Hex(),
-				P2PNodeAddr:          peerId.Pretty(),
-				RawHeartbeat:         hb,
+				VerifiedPhylaxAddr: addr.Hex(),
+				P2PNodeAddr:        peerId.Pretty(),
+				RawHeartbeat:       hb,
 			})
 		}
 	}
@@ -110,21 +110,21 @@ func (s *PublicrpcServer) GetSignedBatchVAA(ctx context.Context, req *publicrpcv
 	return nil, status.Error(codes.Unimplemented, "not yet implemented")
 }
 
-func (s *PublicrpcServer) GetCurrentGuardianSet(ctx context.Context, req *publicrpcv1.GetCurrentGuardianSetRequest) (*publicrpcv1.GetCurrentGuardianSetResponse, error) {
+func (s *PublicrpcServer) GetCurrentPhylaxSet(ctx context.Context, req *publicrpcv1.GetCurrentPhylaxSetRequest) (*publicrpcv1.GetCurrentPhylaxSetResponse, error) {
 	gs := s.gst.Get()
 	if gs == nil {
 		return nil, status.Error(codes.Unavailable, "guardian set not fetched from chain yet")
 	}
 
-	resp := &publicrpcv1.GetCurrentGuardianSetResponse{
-		GuardianSet: &publicrpcv1.GuardianSet{
+	resp := &publicrpcv1.GetCurrentPhylaxSetResponse{
+		PhylaxSet: &publicrpcv1.PhylaxSet{
 			Index:     gs.Index,
 			Addresses: make([]string, len(gs.Keys)),
 		},
 	}
 
 	for i, v := range gs.Keys {
-		resp.GuardianSet.Addresses[i] = v.Hex()
+		resp.PhylaxSet.Addresses[i] = v.Hex()
 	}
 
 	return resp, nil

@@ -5,16 +5,16 @@ import { util, configure, Writer, Reader } from "protobufjs/minimal";
 
 export const protobufPackage = "wormhole_foundation.deltachain.wormhole";
 
-export interface GuardianSet {
+export interface PhylaxSet {
   index: number;
   keys: Uint8Array[];
   expirationTime: number;
 }
 
-const baseGuardianSet: object = { index: 0, expirationTime: 0 };
+const basePhylaxSet: object = { index: 0, expirationTime: 0 };
 
-export const GuardianSet = {
-  encode(message: GuardianSet, writer: Writer = Writer.create()): Writer {
+export const PhylaxSet = {
+  encode(message: PhylaxSet, writer: Writer = Writer.create()): Writer {
     if (message.index !== 0) {
       writer.uint32(8).uint32(message.index);
     }
@@ -27,10 +27,10 @@ export const GuardianSet = {
     return writer;
   },
 
-  decode(input: Reader | Uint8Array, length?: number): GuardianSet {
+  decode(input: Reader | Uint8Array, length?: number): PhylaxSet {
     const reader = input instanceof Uint8Array ? new Reader(input) : input;
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = { ...baseGuardianSet } as GuardianSet;
+    const message = { ...basePhylaxSet } as PhylaxSet;
     message.keys = [];
     while (reader.pos < end) {
       const tag = reader.uint32();
@@ -52,8 +52,8 @@ export const GuardianSet = {
     return message;
   },
 
-  fromJSON(object: any): GuardianSet {
-    const message = { ...baseGuardianSet } as GuardianSet;
+  fromJSON(object: any): PhylaxSet {
+    const message = { ...basePhylaxSet } as PhylaxSet;
     message.keys = [];
     if (object.index !== undefined && object.index !== null) {
       message.index = Number(object.index);
@@ -73,7 +73,7 @@ export const GuardianSet = {
     return message;
   },
 
-  toJSON(message: GuardianSet): unknown {
+  toJSON(message: PhylaxSet): unknown {
     const obj: any = {};
     message.index !== undefined && (obj.index = message.index);
     if (message.keys) {
@@ -88,8 +88,8 @@ export const GuardianSet = {
     return obj;
   },
 
-  fromPartial(object: DeepPartial<GuardianSet>): GuardianSet {
-    const message = { ...baseGuardianSet } as GuardianSet;
+  fromPartial(object: DeepPartial<PhylaxSet>): PhylaxSet {
+    const message = { ...basePhylaxSet } as PhylaxSet;
     message.keys = [];
     if (object.index !== undefined && object.index !== null) {
       message.index = object.index;

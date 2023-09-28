@@ -13,20 +13,20 @@ import (
 	"github.com/deltaswapio/deltachain/x/wormhole/types"
 )
 
-func TestConsensusGuardianSetIndexQuery(t *testing.T) {
+func TestConsensusPhylaxSetIndexQuery(t *testing.T) {
 	keeper, ctx := keepertest.WormholeKeeper(t)
 	wctx := sdk.WrapSDKContext(ctx)
-	item := createTestConsensusGuardianSetIndex(keeper, ctx)
+	item := createTestConsensusPhylaxSetIndex(keeper, ctx)
 	for _, tc := range []struct {
 		desc     string
-		request  *types.QueryGetConsensusGuardianSetIndexRequest
-		response *types.QueryGetConsensusGuardianSetIndexResponse
+		request  *types.QueryGetConsensusPhylaxSetIndexRequest
+		response *types.QueryGetConsensusPhylaxSetIndexResponse
 		err      error
 	}{
 		{
 			desc:     "First",
-			request:  &types.QueryGetConsensusGuardianSetIndexRequest{},
-			response: &types.QueryGetConsensusGuardianSetIndexResponse{ConsensusGuardianSetIndex: item},
+			request:  &types.QueryGetConsensusPhylaxSetIndexRequest{},
+			response: &types.QueryGetConsensusPhylaxSetIndexResponse{ConsensusPhylaxSetIndex: item},
 		},
 		{
 			desc: "InvalidRequest",
@@ -34,7 +34,7 @@ func TestConsensusGuardianSetIndexQuery(t *testing.T) {
 		},
 	} {
 		t.Run(tc.desc, func(t *testing.T) {
-			response, err := keeper.ConsensusGuardianSetIndex(wctx, tc.request)
+			response, err := keeper.ConsensusPhylaxSetIndex(wctx, tc.request)
 			if tc.err != nil {
 				require.ErrorIs(t, err, tc.err)
 			} else {

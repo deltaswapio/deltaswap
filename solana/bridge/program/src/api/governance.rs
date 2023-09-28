@@ -19,17 +19,17 @@ use crate::{
             Claim,
         },
         Bridge,
-        GuardianSet,
-        GuardianSetDerivationData,
+        PhylaxSet,
+        PhylaxSetDerivationData,
     },
     error::Error::{
         InvalidFeeRecipient,
         InvalidGovernanceKey,
         InvalidGovernanceWithdrawal,
-        InvalidGuardianSetUpgrade,
+        InvalidPhylaxSetUpgrade,
     },
     types::{
-        GovernancePayloadGuardianSetChange,
+        GovernancePayloadPhylaxSetChange,
         GovernancePayloadSetMessageFee,
         GovernancePayloadTransferFees,
         GovernancePayloadUpgrade,
@@ -61,7 +61,7 @@ pub struct UpgradeContract<'b> {
     /// Bridge config
     pub bridge: Mut<Bridge<'b, { AccountState::Initialized }>>,
 
-    /// GuardianSet change VAA
+    /// PhylaxSet change VAA
     pub vaa: PayloadMessage<'b, GovernancePayloadUpgrade>,
 
     /// An Uninitialized Claim account to consume the VAA.
@@ -118,56 +118,56 @@ pub fn upgrade_contract(
 }
 
 #[derive(FromAccounts)]
-pub struct UpgradeGuardianSet<'b> {
+pub struct UpgradePhylaxSet<'b> {
     /// Payer for account creation (vaa-claim)
     pub payer: Mut<Signer<Info<'b>>>,
 
     /// Bridge config
     pub bridge: Mut<Bridge<'b, { AccountState::Initialized }>>,
 
-    /// GuardianSet change VAA
-    pub vaa: PayloadMessage<'b, GovernancePayloadGuardianSetChange>,
+    /// PhylaxSet change VAA
+    pub vaa: PayloadMessage<'b, GovernancePayloadPhylaxSetChange>,
 
     /// An Uninitialized Claim account to consume the VAA.
     pub claim: Mut<Claim<'b>>,
 
     /// Old guardian set
-    pub guardian_set_old: Mut<GuardianSet<'b, { AccountState::Initialized }>>,
+    pub guardian_set_old: Mut<PhylaxSet<'b, { AccountState::Initialized }>>,
 
     /// New guardian set
-    pub guardian_set_new: Mut<GuardianSet<'b, { AccountState::Uninitialized }>>,
+    pub guardian_set_new: Mut<PhylaxSet<'b, { AccountState::Uninitialized }>>,
 }
 
 #[derive(BorshDeserialize, BorshSerialize, Default)]
-pub struct UpgradeGuardianSetData {}
+pub struct UpgradePhylaxSetData {}
 
 pub fn upgrade_guardian_set(
     ctx: &ExecutionContext,
-    accs: &mut UpgradeGuardianSet,
-    _data: UpgradeGuardianSetData,
+    accs: &mut UpgradePhylaxSet,
+    _data: UpgradePhylaxSetData,
 ) -> Result<()> {
     verify_governance(&accs.vaa)?;
     claim::consume(ctx, accs.payer.key, &mut accs.claim, &accs.vaa)?;
 
     // Enforce single increments when upgrading.
     if accs.guardian_set_old.index != accs.vaa.new_guardian_set_index - 1 {
-        return Err(InvalidGuardianSetUpgrade.into());
+        return Err(InvalidPhylaxSetUpgrade.into());
     }
 
     // Confirm that the version the bridge has active is the previous version.
     if accs.bridge.guardian_set_index != accs.vaa.new_guardian_set_index - 1 {
-        return Err(InvalidGuardianSetUpgrade.into());
+        return Err(InvalidPhylaxSetUpgrade.into());
     }
 
     accs.guardian_set_old.verify_derivation(
         ctx.program_id,
-        &GuardianSetDerivationData {
+        &PhylaxSetDerivationData {
             index: accs.vaa.new_guardian_set_index - 1,
         },
     )?;
     accs.guardian_set_new.verify_derivation(
         ctx.program_id,
-        &GuardianSetDerivationData {
+        &PhylaxSetDerivationData {
             index: accs.vaa.new_guardian_set_index,
         },
     )?;
@@ -184,7 +184,7 @@ pub fn upgrade_guardian_set(
     // Create new guardian set
     // This is done after populating it to properly allocate space according to key vec length.
     accs.guardian_set_new.create(
-        &GuardianSetDerivationData {
+        &PhylaxSetDerivationData {
             index: accs.guardian_set_new.index,
         },
         ctx,

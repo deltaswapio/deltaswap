@@ -9,30 +9,30 @@ import "../contracts/Structs.sol";
 import "forge-std/Test.sol";
 
 contract ExportedMessages is Messages, Setters {
-    function storeGuardianSetPub(Structs.GuardianSet memory set, uint32 index) public {
-        return super.storeGuardianSet(set, index);
+    function storePhylaxSetPub(Structs.PhylaxSet memory set, uint32 index) public {
+        return super.storePhylaxSet(set, index);
     }
 }
 
 contract TestMessages is Test {
-  address constant testGuardianPub = 0xbeFA429d57cD18b7F8A4d91A2da9AB4AF05d0FBe;
+  address constant testPhylaxPub = 0xbeFA429d57cD18b7F8A4d91A2da9AB4AF05d0FBe;
 
-  // A valid VM with one signature from the testGuardianPublic key
+  // A valid VM with one signature from the testPhylaxPublic key
   bytes validVM = hex"01000000000100867b55fec41778414f0683e80a430b766b78801b7070f9198ded5e62f48ac7a44b379a6cf9920e42dbd06c5ebf5ec07a934a00a572aefc201e9f91c33ba766d900000003e800000001000b0000000000000000000000000000000000000000000000000000000000000eee00000000000005390faaaa";
 
-  uint256 constant testGuardian = 93941733246223705020089879371323733820373732307041878556247502674739205313440;
+  uint256 constant testPhylax = 93941733246223705020089879371323733820373732307041878556247502674739205313440;
 
   ExportedMessages messages;
 
-  Structs.GuardianSet guardianSet;
+  Structs.PhylaxSet guardianSet;
 
   function setUp() public {
     messages = new ExportedMessages();
 
     // initialize guardian set with one guardian
     address[] memory keys = new address[](1);
-    keys[0] = vm.addr(testGuardian);
-    guardianSet = Structs.GuardianSet(keys, 0);
+    keys[0] = vm.addr(testPhylax);
+    guardianSet = Structs.PhylaxSet(keys, 0);
     require(messages.quorum(guardianSet.keys.length) == 1, "Quorum should be 1");
   }
 
@@ -54,14 +54,14 @@ contract TestMessages is Test {
     assertEq(messages.quorum(20), 14);
   }
 
-  function testQuorumCanAlwaysBeReached(uint256 numGuardians) public {
-    vm.assume(numGuardians > 0);
+  function testQuorumCanAlwaysBeReached(uint256 numPhylaxs) public {
+    vm.assume(numPhylaxs > 0);
 
-    if (numGuardians >= 256) {
+    if (numPhylaxs >= 256) {
       vm.expectRevert("too many guardians");
     }
     // test that quorums is never greater than the number of guardians
-    assert(messages.quorum(numGuardians) <= numGuardians);
+    assert(messages.quorum(numPhylaxs) <= numPhylaxs);
   }
 
   // This test ensures that submitting more signatures than expected will
@@ -73,8 +73,8 @@ contract TestMessages is Test {
 
     // First generate a legitimate signature.
     Structs.Signature memory goodSignature = Structs.Signature(message, 0, 0, 0);
-    (goodSignature.v, goodSignature.r, goodSignature.s) = vm.sign(testGuardian, message);
-    assertEq(ecrecover(message, goodSignature.v, goodSignature.r, goodSignature.s), vm.addr(testGuardian));
+    (goodSignature.v, goodSignature.r, goodSignature.s) = vm.sign(testPhylax, message);
+    assertEq(ecrecover(message, goodSignature.v, goodSignature.r, goodSignature.s), vm.addr(testPhylax));
 
     // Reuse legitimate signature above for the next signature. This will
     // bypass the "invalid signature" revert.
@@ -116,8 +116,8 @@ contract TestMessages is Test {
 
     // Generate legitimate signature.
     Structs.Signature memory goodSignature;
-    (goodSignature.v, goodSignature.r, goodSignature.s) = vm.sign(testGuardian, message);
-    assertEq(ecrecover(message, goodSignature.v, goodSignature.r, goodSignature.s), vm.addr(testGuardian));
+    (goodSignature.v, goodSignature.r, goodSignature.s) = vm.sign(testPhylax, message);
+    assertEq(ecrecover(message, goodSignature.v, goodSignature.r, goodSignature.s), vm.addr(testPhylax));
     goodSignature.guardianIndex = 0;
 
     // Attempt to verify signatures.
@@ -132,16 +132,16 @@ contract TestMessages is Test {
   // This test checks the possibility of getting a unsigned message verified through verifyVM
   function testHashMismatchedVMIsNotVerified() public {
     // Set the initial guardian set
-    address[] memory initialGuardians = new address[](1);
-    initialGuardians[0] = testGuardianPub;
+    address[] memory initialPhylaxs = new address[](1);
+    initialPhylaxs[0] = testPhylaxPub;
 
     // Create a guardian set
-    Structs.GuardianSet memory initialGuardianSet = Structs.GuardianSet({
-      keys: initialGuardians,
+    Structs.PhylaxSet memory initialPhylaxSet = Structs.PhylaxSet({
+      keys: initialPhylaxs,
       expirationTime: 0
     });
 
-    messages.storeGuardianSetPub(initialGuardianSet, uint32(0));
+    messages.storePhylaxSetPub(initialPhylaxSet, uint32(0));
 
     // Confirm that the test VM is valid
     (Structs.VM memory parsedValidVm, bool valid, string memory reason) = messages.parseAndVerifyVM(validVM);

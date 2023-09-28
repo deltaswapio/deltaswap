@@ -4,15 +4,15 @@ import { Writer, Reader } from "protobufjs/minimal";
 
 export const protobufPackage = "wormhole_foundation.deltachain.wormhole";
 
-export interface ConsensusGuardianSetIndex {
+export interface ConsensusPhylaxSetIndex {
   index: number;
 }
 
-const baseConsensusGuardianSetIndex: object = { index: 0 };
+const baseConsensusPhylaxSetIndex: object = { index: 0 };
 
-export const ConsensusGuardianSetIndex = {
+export const ConsensusPhylaxSetIndex = {
   encode(
-    message: ConsensusGuardianSetIndex,
+    message: ConsensusPhylaxSetIndex,
     writer: Writer = Writer.create()
   ): Writer {
     if (message.index !== 0) {
@@ -24,12 +24,12 @@ export const ConsensusGuardianSetIndex = {
   decode(
     input: Reader | Uint8Array,
     length?: number
-  ): ConsensusGuardianSetIndex {
+  ): ConsensusPhylaxSetIndex {
     const reader = input instanceof Uint8Array ? new Reader(input) : input;
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = {
-      ...baseConsensusGuardianSetIndex,
-    } as ConsensusGuardianSetIndex;
+      ...baseConsensusPhylaxSetIndex,
+    } as ConsensusPhylaxSetIndex;
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -44,10 +44,10 @@ export const ConsensusGuardianSetIndex = {
     return message;
   },
 
-  fromJSON(object: any): ConsensusGuardianSetIndex {
+  fromJSON(object: any): ConsensusPhylaxSetIndex {
     const message = {
-      ...baseConsensusGuardianSetIndex,
-    } as ConsensusGuardianSetIndex;
+      ...baseConsensusPhylaxSetIndex,
+    } as ConsensusPhylaxSetIndex;
     if (object.index !== undefined && object.index !== null) {
       message.index = Number(object.index);
     } else {
@@ -56,18 +56,18 @@ export const ConsensusGuardianSetIndex = {
     return message;
   },
 
-  toJSON(message: ConsensusGuardianSetIndex): unknown {
+  toJSON(message: ConsensusPhylaxSetIndex): unknown {
     const obj: any = {};
     message.index !== undefined && (obj.index = message.index);
     return obj;
   },
 
   fromPartial(
-    object: DeepPartial<ConsensusGuardianSetIndex>
-  ): ConsensusGuardianSetIndex {
+    object: DeepPartial<ConsensusPhylaxSetIndex>
+  ): ConsensusPhylaxSetIndex {
     const message = {
-      ...baseConsensusGuardianSetIndex,
-    } as ConsensusGuardianSetIndex;
+      ...baseConsensusPhylaxSetIndex,
+    } as ConsensusPhylaxSetIndex;
     if (object.index !== undefined && object.index !== null) {
       message.index = object.index;
     } else {

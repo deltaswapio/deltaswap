@@ -158,7 +158,7 @@ abstract contract WormholeSimulator {
 }
 
 /**
- * @title A Wormhole Guardian Simulator
+ * @title A Wormhole Phylax Simulator
  * @notice This contract simulates signing Wormhole messages emitted in a forge test.
  * This particular version doesn't sign any message but just exists to keep a standard interface for tests.
  * @dev This contract is meant to be used with the MockWormhole contract that validates any VM as long
@@ -200,7 +200,7 @@ contract FakeWormholeSimulator is WormholeSimulator {
 
         signedMessage = abi.encodePacked(
             vm_.version,
-            wormhole.getCurrentGuardianSetIndex(),
+            wormhole.getCurrentPhylaxSetIndex(),
             // length of signature array
             uint8(1),
             // guardian index
@@ -217,7 +217,7 @@ contract FakeWormholeSimulator is WormholeSimulator {
 }
 
 /**
- * @title A Wormhole Guardian Simulator
+ * @title A Wormhole Phylax Simulator
  * @notice This contract simulates signing Wormhole messages emitted in a forge test.
  * It overrides the Wormhole guardian set to allow for signing messages with a single
  * private key on any EVM where Wormhole core contracts are deployed.
@@ -233,29 +233,29 @@ contract SigningWormholeSimulator is WormholeSimulator {
     IWormhole public wormhole;
 
     // Save the guardian PK to sign messages with
-    uint256 private devnetGuardianPK;
+    uint256 private devnetPhylaxPK;
 
     /**
      * @param wormhole_ address of the Wormhole core contract for the mainnet chain being forked
-     * @param devnetGuardian private key of the devnet Guardian
+     * @param devnetPhylax private key of the devnet Phylax
      */
-    constructor(IWormhole wormhole_, uint256 devnetGuardian) {
+    constructor(IWormhole wormhole_, uint256 devnetPhylax) {
         wormhole = wormhole_;
-        devnetGuardianPK = devnetGuardian;
-        overrideToDevnetGuardian(vm.addr(devnetGuardian));
+        devnetPhylaxPK = devnetPhylax;
+        overrideToDevnetPhylax(vm.addr(devnetPhylax));
     }
 
-    function overrideToDevnetGuardian(address devnetGuardian) internal {
+    function overrideToDevnetPhylax(address devnetPhylax) internal {
         {
-            // Get slot for Guardian Set at the current index
-            uint32 guardianSetIndex = wormhole.getCurrentGuardianSetIndex();
+            // Get slot for Phylax Set at the current index
+            uint32 guardianSetIndex = wormhole.getCurrentPhylaxSetIndex();
             bytes32 guardianSetSlot = keccak256(abi.encode(guardianSetIndex, 2));
 
             // Overwrite all but first guardian set to zero address. This isn't
             // necessary, but just in case we inadvertently access these slots
             // for any reason.
-            uint256 numGuardians = uint256(vm.load(address(wormhole), guardianSetSlot));
-            for (uint256 i = 1; i < numGuardians;) {
+            uint256 numPhylaxs = uint256(vm.load(address(wormhole), guardianSetSlot));
+            for (uint256 i = 1; i < numPhylaxs;) {
                 vm.store(
                     address(wormhole),
                     bytes32(uint256(keccak256(abi.encodePacked(guardianSetSlot))) + i),
@@ -271,7 +271,7 @@ contract SigningWormholeSimulator is WormholeSimulator {
             vm.store(
                 address(wormhole),
                 bytes32(uint256(keccak256(abi.encodePacked(guardianSetSlot))) + 0), // just explicit w/ index 0
-                bytes32(uint256(uint160(devnetGuardian)))
+                bytes32(uint256(uint160(devnetPhylax)))
             );
 
             // Change the length to 1 guardian
@@ -282,9 +282,9 @@ contract SigningWormholeSimulator is WormholeSimulator {
             );
 
             // Confirm guardian set override
-            address[] memory guardians = wormhole.getGuardianSet(guardianSetIndex).keys;
+            address[] memory guardians = wormhole.getPhylaxSet(guardianSetIndex).keys;
             require(guardians.length == 1, "guardians.length != 1");
-            require(guardians[0] == devnetGuardian, "incorrect guardian set override");
+            require(guardians[0] == devnetPhylax, "incorrect guardian set override");
         }
     }
 
@@ -332,12 +332,12 @@ contract SigningWormholeSimulator is WormholeSimulator {
 
         // Sign the hash with the devnet guardian private key
         IWormhole.Signature[] memory sigs = new IWormhole.Signature[](1);
-        (sigs[0].v, sigs[0].r, sigs[0].s) = vm.sign(devnetGuardianPK, vm_.hash);
+        (sigs[0].v, sigs[0].r, sigs[0].s) = vm.sign(devnetPhylaxPK, vm_.hash);
         sigs[0].guardianIndex = 0;
 
         signedMessage = abi.encodePacked(
             vm_.version,
-            wormhole.getCurrentGuardianSetIndex(),
+            wormhole.getCurrentPhylaxSetIndex(),
             uint8(sigs.length),
             sigs[0].guardianIndex,
             sigs[0].r,

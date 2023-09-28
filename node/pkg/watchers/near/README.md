@@ -8,7 +8,7 @@ There are multiple supervised runners:
 * *BlockPoll*: Polls the NEAR RPC API for finalized blocks and generates transactionProcessingJobs for every single transaction
 * *ChunkFetcher*: Fetches chunks for each block in parallel
 * *TxProcessor*: Processes `transactionProcessingJob`, going through all receipt outcomes, searching for Wormhole messages, and checking that they have been finalized. If there are Wormhole messages in any receipts from this transaction but those receipts are not in finalized blocks, the `transactionProcessingJob` will be put in the back of the queue.
-* *ObsvReqProcessor*: Process observation requests. An observation request is a way of kindly asking the Guardian to go back in time and look at a particular transaction and try to identify wormhole events in it. Observation requests are received from other Guardians or injected through the admin API. Eventhough they are signed, they should not be trusted.
+* *ObsvReqProcessor*: Process observation requests. An observation request is a way of kindly asking the Phylax to go back in time and look at a particular transaction and try to identify wormhole events in it. Observation requests are received from other Phylaxs or injected through the admin API. Eventhough they are signed, they should not be trusted.
 
 
 * chunkProcessingQueue gets new chunk hashes.
@@ -40,7 +40,7 @@ There is a RPC API EXPERIMENTAL_changes_in_block which would tell you if the blo
 	* startup_error: Watcher was unable to start up.
 	* block_poll_error: Generic error when polling for new blocks
 	* chunk_processing_failed
-	* tx_proc_queue_full: The transaction processing queue is full but there are new transaction. This means that the Guardian is not able to catch up with block production on NEAR. This is a critical error that needs to be investigated. `chunk_id` is the ID of the chunk from which all or some transactions have been dropped.
+	* tx_proc_queue_full: The transaction processing queue is full but there are new transaction. This means that the Phylax is not able to catch up with block production on NEAR. This is a critical error that needs to be investigated. `chunk_id` is the ID of the chunk from which all or some transactions have been dropped.
 	* obsv_req_received: Observation request received
 	* info_process_tx: Transaction processing is being attempted. This is done for all transactions on NEAR, so we only log this with debugging level. Log fields: `tx_hash`.
 	* wormhole_event: A Wormhole event is being processed

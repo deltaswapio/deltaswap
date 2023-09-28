@@ -56,7 +56,7 @@ func TestKeeperCalculateQuorum(t *testing.T) {
 
 	tests := []struct {
 		label            string
-		guardianSet      types.GuardianSet
+		guardianSet      types.PhylaxSet
 		guardianSetIndex uint32
 		quorum           int
 		willError        bool
@@ -64,26 +64,26 @@ func TestKeeperCalculateQuorum(t *testing.T) {
 	}{
 
 		{label: "HappyPath",
-			guardianSet:      types.GuardianSet{Index: 0, Keys: addrsBytes, ExpirationTime: 0},
+			guardianSet:      types.PhylaxSet{Index: 0, Keys: addrsBytes, ExpirationTime: 0},
 			guardianSetIndex: 0,
 			quorum:           1,
 			willError:        false},
-		{label: "GuardianSetNotFound",
-			guardianSet:      types.GuardianSet{Index: 0, Keys: addrsBytes, ExpirationTime: 0},
+		{label: "PhylaxSetNotFound",
+			guardianSet:      types.PhylaxSet{Index: 0, Keys: addrsBytes, ExpirationTime: 0},
 			guardianSetIndex: 1,
 			willError:        true,
-			err:              types.ErrGuardianSetNotFound},
-		{label: "GuardianSetExpired",
-			guardianSet:      types.GuardianSet{Index: 0, Keys: addrsBytes, ExpirationTime: 100},
+			err:              types.ErrPhylaxSetNotFound},
+		{label: "PhylaxSetExpired",
+			guardianSet:      types.PhylaxSet{Index: 0, Keys: addrsBytes, ExpirationTime: 100},
 			guardianSetIndex: 0,
 			willError:        true,
-			err:              types.ErrGuardianSetExpired},
+			err:              types.ErrPhylaxSetExpired},
 	}
 
 	for _, tc := range tests {
 		t.Run(tc.label, func(t *testing.T) {
 			keeper, ctx := keepertest.WormholeKeeper(t)
-			keeper.AppendGuardianSet(ctx, tc.guardianSet)
+			keeper.AppendPhylaxSet(ctx, tc.guardianSet)
 			quorum, _, err := keeper.CalculateQuorum(ctx, tc.guardianSetIndex)
 
 			if tc.willError == true {
@@ -126,7 +126,7 @@ func TestVerifyMessageSignature(t *testing.T) {
 
 	tests := []struct {
 		label       string
-		guardianSet types.GuardianSet
+		guardianSet types.PhylaxSet
 		signer      *ecdsa.PrivateKey
 		setSigIndex bool
 		sigIndex    uint8
@@ -135,18 +135,18 @@ func TestVerifyMessageSignature(t *testing.T) {
 	}{
 
 		{label: "ValidSigner",
-			guardianSet: types.GuardianSet{Index: 0, Keys: addrsBytes, ExpirationTime: 0},
+			guardianSet: types.PhylaxSet{Index: 0, Keys: addrsBytes, ExpirationTime: 0},
 			signer:      privKey1,
 			willError:   false},
 		{label: "IndexOutOfBounds",
-			guardianSet: types.GuardianSet{Index: 0, Keys: addrsBytes, ExpirationTime: 0},
+			guardianSet: types.PhylaxSet{Index: 0, Keys: addrsBytes, ExpirationTime: 0},
 			signer:      privKey1,
 			setSigIndex: true,
 			sigIndex:    1,
 			willError:   true,
-			err:         types.ErrGuardianIndexOutOfBounds},
+			err:         types.ErrPhylaxIndexOutOfBounds},
 		{label: "InvalidSigner",
-			guardianSet: types.GuardianSet{Index: 0, Keys: addrsBytes, ExpirationTime: 0},
+			guardianSet: types.PhylaxSet{Index: 0, Keys: addrsBytes, ExpirationTime: 0},
 			signer:      privKey2,
 			willError:   true,
 			err:         types.ErrSignaturesInvalid},
@@ -155,7 +155,7 @@ func TestVerifyMessageSignature(t *testing.T) {
 	for _, tc := range tests {
 		t.Run(tc.label, func(t *testing.T) {
 			keeper, ctx := keepertest.WormholeKeeper(t)
-			keeper.AppendGuardianSet(ctx, tc.guardianSet)
+			keeper.AppendPhylaxSet(ctx, tc.guardianSet)
 
 			// build the signature
 			signature := sign(digest, tc.signer, 0)
@@ -178,12 +178,12 @@ func TestVerifyMessageSignature(t *testing.T) {
 
 func TestVerifyVaaSignature(t *testing.T) {
 	v := &vaa.VAA{
-		Version:          1,
-		GuardianSetIndex: 0,
-		Timestamp:        time.Now(),
-		Nonce:            1,
-		Sequence:         1,
-		Payload:          []byte{97, 97, 97, 97, 97, 97},
+		Version:        1,
+		PhylaxSetIndex: 0,
+		Timestamp:      time.Now(),
+		Nonce:          1,
+		Sequence:       1,
+		Payload:        []byte{97, 97, 97, 97, 97, 97},
 	}
 	digest := v.SigningDigest()
 	privKey1, _ := ecdsa.GenerateKey(crypto.S256(), rand.Reader)
@@ -196,7 +196,7 @@ func TestVerifyVaaSignature(t *testing.T) {
 
 	tests := []struct {
 		label       string
-		guardianSet types.GuardianSet
+		guardianSet types.PhylaxSet
 		signer      *ecdsa.PrivateKey
 		setSigIndex bool
 		sigIndex    uint8
@@ -205,11 +205,11 @@ func TestVerifyVaaSignature(t *testing.T) {
 	}{
 
 		{label: "ValidSigner",
-			guardianSet: types.GuardianSet{Index: 0, Keys: addrsBytes, ExpirationTime: 0},
+			guardianSet: types.PhylaxSet{Index: 0, Keys: addrsBytes, ExpirationTime: 0},
 			signer:      privKey1,
 			willError:   false},
 		{label: "IndexOutOfBounds",
-			guardianSet: types.GuardianSet{Index: 0, Keys: addrsBytes, ExpirationTime: 0},
+			guardianSet: types.PhylaxSet{Index: 0, Keys: addrsBytes, ExpirationTime: 0},
 			signer:      privKey1,
 			setSigIndex: true,
 			sigIndex:    1,
@@ -217,7 +217,7 @@ func TestVerifyVaaSignature(t *testing.T) {
 			// this out of bounds issue will trigger invalid signature from sdk.
 			err: types.ErrSignaturesInvalid},
 		{label: "InvalidSigner",
-			guardianSet: types.GuardianSet{Index: 0, Keys: addrsBytes, ExpirationTime: 0},
+			guardianSet: types.PhylaxSet{Index: 0, Keys: addrsBytes, ExpirationTime: 0},
 			signer:      privKey2,
 			willError:   true,
 			err:         types.ErrSignaturesInvalid},
@@ -226,7 +226,7 @@ func TestVerifyVaaSignature(t *testing.T) {
 	for _, tc := range tests {
 		t.Run(tc.label, func(t *testing.T) {
 			keeper, ctx := keepertest.WormholeKeeper(t)
-			keeper.AppendGuardianSet(ctx, tc.guardianSet)
+			keeper.AppendPhylaxSet(ctx, tc.guardianSet)
 
 			// build the signature
 			signature := sign(digest, tc.signer, 0)
@@ -259,7 +259,7 @@ func signVaa(vaaToSign vaa.VAA, signers []*ecdsa.PrivateKey) vaa.VAA {
 func generateVaa(index uint32, signers []*ecdsa.PrivateKey, emitterChain vaa.ChainID, payload []byte) vaa.VAA {
 	v := vaa.VAA{
 		Version:          uint8(1),
-		GuardianSetIndex: index,
+		PhylaxSetIndex:   index,
 		Signatures:       nil,
 		Timestamp:        time.Unix(0, 0),
 		Nonce:            uint32(1),
@@ -293,21 +293,21 @@ func TestVerifyVAA(t *testing.T) {
 
 	tests := []struct {
 		label       string
-		guardianSet types.GuardianSet
+		guardianSet types.PhylaxSet
 		signers     []*ecdsa.PrivateKey
 		willError   bool
 	}{
 
 		{label: "ValidSigner",
-			guardianSet: types.GuardianSet{Index: 0, Keys: addrsBytes, ExpirationTime: 0},
+			guardianSet: types.PhylaxSet{Index: 0, Keys: addrsBytes, ExpirationTime: 0},
 			signers:     []*ecdsa.PrivateKey{privKey1},
 			willError:   false},
 		{label: "InvalidSigner",
-			guardianSet: types.GuardianSet{Index: 0, Keys: addrsBytes, ExpirationTime: 0},
+			guardianSet: types.PhylaxSet{Index: 0, Keys: addrsBytes, ExpirationTime: 0},
 			signers:     []*ecdsa.PrivateKey{privKey2},
 			willError:   true},
-		{label: "InvalidGuardianSetIndex",
-			guardianSet: types.GuardianSet{Index: 1, Keys: addrsBytes, ExpirationTime: 0},
+		{label: "InvalidPhylaxSetIndex",
+			guardianSet: types.PhylaxSet{Index: 1, Keys: addrsBytes, ExpirationTime: 0},
 			signers:     []*ecdsa.PrivateKey{privKey1},
 			willError:   true},
 	}
@@ -317,7 +317,7 @@ func TestVerifyVAA(t *testing.T) {
 			keeper, ctx := keepertest.WormholeKeeper(t)
 			vaa := generateVaa(tc.guardianSet.Index, tc.signers, vaa.ChainIDSolana, payload)
 
-			keeper.AppendGuardianSet(ctx, tc.guardianSet)
+			keeper.AppendPhylaxSet(ctx, tc.guardianSet)
 			err := keeper.VerifyVAA(ctx, &vaa)
 
 			if tc.willError == true {
@@ -331,8 +331,8 @@ func TestVerifyVAA(t *testing.T) {
 
 func TestVerifyVAA2(t *testing.T) {
 	keeper, ctx := keepertest.WormholeKeeper(t)
-	guardians, privateKeys := createNGuardianValidator(keeper, ctx, 25)
-	set := createNewGuardianSet(keeper, ctx, guardians)
+	guardians, privateKeys := createNPhylaxValidator(keeper, ctx, 25)
+	set := createNewPhylaxSet(keeper, ctx, guardians)
 
 	// check verify works
 	payload := []byte{97, 97, 97, 97, 97, 97}
@@ -354,13 +354,13 @@ func TestVerifyVAA2(t *testing.T) {
 
 func TestVerifyVAAGovernance(t *testing.T) {
 	keeper, ctx := keepertest.WormholeKeeper(t)
-	guardians, privateKeys := createNGuardianValidator(keeper, ctx, 25)
-	set := createNewGuardianSet(keeper, ctx, guardians)
+	guardians, privateKeys := createNPhylaxValidator(keeper, ctx, 25)
+	set := createNewPhylaxSet(keeper, ctx, guardians)
 	config := types.Config{
-		GovernanceEmitter:     vaa.GovernanceEmitter[:],
-		GovernanceChain:       uint32(vaa.GovernanceChain),
-		ChainId:               uint32(vaa.ChainIDWormchain),
-		GuardianSetExpiration: 86400,
+		GovernanceEmitter:   vaa.GovernanceEmitter[:],
+		GovernanceChain:     uint32(vaa.GovernanceChain),
+		ChainId:             uint32(vaa.ChainIDWormchain),
+		PhylaxSetExpiration: 86400,
 	}
 	keeper.SetConfig(ctx, config)
 

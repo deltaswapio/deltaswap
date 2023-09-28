@@ -27,7 +27,7 @@ def boot_vaa(gen_test, portal_core, client, core_id):
     seq = int(random.random() * (2**31))
     portal_core.client = client
     portal_core.coreid = core_id
-    return bytes.fromhex(gen_test.genGuardianSetUpgrade(gen_test.guardianPrivKeys, portal_core.getGovSet(), portal_core.getGovSet(), seq, seq))
+    return bytes.fromhex(gen_test.genPhylaxSetUpgrade(gen_test.guardianPrivKeys, portal_core.getGovSet(), portal_core.getGovSet(), seq, seq))
 
 @pytest.fixture(scope='function')
 def core_tmpl_lsig(portal_core, boot_vaa, core_id):
@@ -104,7 +104,7 @@ def tests_allow_init(client, creator, portal_core, suggested_params, vaa_verify_
     portal_core.seed_amt = SEED_AMOUNT
     seq_addr = portal_core.optin(client, creator, core_id, int(parsed_vaa["sequence"] / max_bits), parsed_vaa["chainRaw"].hex() + parsed_vaa["emitter"].hex())
     guardian_addr = portal_core.optin(client, creator, core_id, parsed_vaa["index"], b"guardian".hex())
-    newguardian_addr = portal_core.optin(client, creator, core_id, parsed_vaa["NewGuardianSetIndex"], b"guardian".hex())
+    newguardian_addr = portal_core.optin(client, creator, core_id, parsed_vaa["NewPhylaxSetIndex"], b"guardian".hex())
 
 
 
@@ -149,13 +149,13 @@ def tests_reject_another_init(client, creator, portal_core, suggested_params, va
     seq = int(random.random() * (2**31))
     portal_core.client = client
     portal_core.coreid = core_id
-    boot_vaa = bytes.fromhex(gen_test.genGuardianSetUpgrade(gen_test.guardianPrivKeys, portal_core.getGovSet(), portal_core.getGovSet(), seq, seq))
+    boot_vaa = bytes.fromhex(gen_test.genPhylaxSetUpgrade(gen_test.guardianPrivKeys, portal_core.getGovSet(), portal_core.getGovSet(), seq, seq))
 
     parsed_vaa = portal_core.parseVAA(boot_vaa)
     portal_core.seed_amt = SEED_AMOUNT
     seq_addr = portal_core.optin(client, creator, core_id, int(parsed_vaa["sequence"] / max_bits), parsed_vaa["chainRaw"].hex() + parsed_vaa["emitter"].hex())
     guardian_addr = portal_core.optin(client, creator, core_id, parsed_vaa["index"], b"guardian".hex())
-    newguardian_addr = portal_core.optin(client, creator, core_id, parsed_vaa["NewGuardianSetIndex"], b"guardian".hex())
+    newguardian_addr = portal_core.optin(client, creator, core_id, parsed_vaa["NewPhylaxSetIndex"], b"guardian".hex())
 
 
 

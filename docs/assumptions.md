@@ -68,7 +68,7 @@ Wormhole threat model. The assumption is that the incentive to execute such an a
 the legal/liability risks an attacker would incur, and that the costs to sustain the attack would be greater than simply
 attacking the connected chains directly.
 
-## Guardian incentive alignment
+## Phylax incentive alignment
 
 Wormhole is a decentralized PoA bridge. Its game-theoretical security relies on hand-picked operators whose incentives
 strongly align with the Solana ecosystem - large token holders, ecosystem projects, top validators and similar, who

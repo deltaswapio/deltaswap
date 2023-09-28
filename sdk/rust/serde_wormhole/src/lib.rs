@@ -279,15 +279,15 @@ mod tests {
     }
 
     #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
-    struct GuardianAddress<'a> {
+    struct PhylaxAddress<'a> {
         #[serde(borrow, with = "serde_bytes")]
         bytes: Cow<'a, [u8]>,
     }
 
     #[derive(Debug, Serialize, Deserialize, PartialEq, Eq)]
-    struct GuardianSetInfo<'a> {
+    struct PhylaxSetInfo<'a> {
         #[serde(borrow)]
-        addresses: Cow<'a, [GuardianAddress<'a>]>,
+        addresses: Cow<'a, [PhylaxAddress<'a>]>,
     }
 
     #[derive(Debug, Serialize, Deserialize, PartialEq, Eq)]
@@ -296,10 +296,10 @@ mod tests {
     }
 
     #[derive(Debug, Serialize, Deserialize, PartialEq, Eq)]
-    struct GuardianSetUpgrade<'a> {
+    struct PhylaxSetUpgrade<'a> {
         new_guardian_set_index: u32,
         #[serde(borrow)]
-        new_guardian_set: GuardianSetInfo<'a>,
+        new_guardian_set: PhylaxSetInfo<'a>,
     }
 
     #[derive(Debug, Serialize, Deserialize, PartialEq, Eq)]
@@ -312,7 +312,7 @@ mod tests {
     #[repr(u8)]
     enum Action {
         ContractUpgrade = 1,
-        GuardianSetUpgrade = 2,
+        PhylaxSetUpgrade = 2,
         SetFee = 3,
     }
 

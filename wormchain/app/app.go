@@ -138,7 +138,7 @@ func getGovProposalHandlers() []govclient.ProposalHandler {
 		distrclient.ProposalHandler,
 		upgradeclient.ProposalHandler,
 		upgradeclient.CancelProposalHandler,
-		wormholeclient.GuardianSetUpdateProposalHandler,
+		wormholeclient.PhylaxSetUpdateProposalHandler,
 		wormholeclient.WormholeGovernanceMessageProposalHandler,
 		// this line is used by starport scaffolding # stargate/app/govProposalHandler
 	)

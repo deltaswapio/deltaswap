@@ -240,22 +240,22 @@ func (m *QueryValidatorAllowlistResponse) GetPagination() *query.PageResponse {
 	return nil
 }
 
-type QueryGetGuardianSetRequest struct {
+type QueryGetPhylaxSetRequest struct {
 	Index uint32 `protobuf:"varint,1,opt,name=index,proto3" json:"index,omitempty"`
 }
 
-func (m *QueryGetGuardianSetRequest) Reset()         { *m = QueryGetGuardianSetRequest{} }
-func (m *QueryGetGuardianSetRequest) String() string { return proto.CompactTextString(m) }
-func (*QueryGetGuardianSetRequest) ProtoMessage()    {}
-func (*QueryGetGuardianSetRequest) Descriptor() ([]byte, []int) {
+func (m *QueryGetPhylaxSetRequest) Reset()         { *m = QueryGetPhylaxSetRequest{} }
+func (m *QueryGetPhylaxSetRequest) String() string { return proto.CompactTextString(m) }
+func (*QueryGetPhylaxSetRequest) ProtoMessage()    {}
+func (*QueryGetPhylaxSetRequest) Descriptor() ([]byte, []int) {
 	return fileDescriptor_273185ecc792fa38, []int{4}
 }
-func (m *QueryGetGuardianSetRequest) XXX_Unmarshal(b []byte) error {
+func (m *QueryGetPhylaxSetRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *QueryGetGuardianSetRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *QueryGetPhylaxSetRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_QueryGetGuardianSetRequest.Marshal(b, m, deterministic)
+		return xxx_messageInfo_QueryGetPhylaxSetRequest.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -265,41 +265,41 @@ func (m *QueryGetGuardianSetRequest) XXX_Marshal(b []byte, deterministic bool) (
 		return b[:n], nil
 	}
 }
-func (m *QueryGetGuardianSetRequest) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_QueryGetGuardianSetRequest.Merge(m, src)
+func (m *QueryGetPhylaxSetRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryGetPhylaxSetRequest.Merge(m, src)
 }
-func (m *QueryGetGuardianSetRequest) XXX_Size() int {
+func (m *QueryGetPhylaxSetRequest) XXX_Size() int {
 	return m.Size()
 }
-func (m *QueryGetGuardianSetRequest) XXX_DiscardUnknown() {
-	xxx_messageInfo_QueryGetGuardianSetRequest.DiscardUnknown(m)
+func (m *QueryGetPhylaxSetRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryGetPhylaxSetRequest.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_QueryGetGuardianSetRequest proto.InternalMessageInfo
+var xxx_messageInfo_QueryGetPhylaxSetRequest proto.InternalMessageInfo
 
-func (m *QueryGetGuardianSetRequest) GetIndex() uint32 {
+func (m *QueryGetPhylaxSetRequest) GetIndex() uint32 {
 	if m != nil {
 		return m.Index
 	}
 	return 0
 }
 
-type QueryGetGuardianSetResponse struct {
-	GuardianSet GuardianSet `protobuf:"bytes,1,opt,name=GuardianSet,proto3" json:"GuardianSet"`
+type QueryGetPhylaxSetResponse struct {
+	PhylaxSet PhylaxSet `protobuf:"bytes,1,opt,name=PhylaxSet,proto3" json:"PhylaxSet"`
 }
 
-func (m *QueryGetGuardianSetResponse) Reset()         { *m = QueryGetGuardianSetResponse{} }
-func (m *QueryGetGuardianSetResponse) String() string { return proto.CompactTextString(m) }
-func (*QueryGetGuardianSetResponse) ProtoMessage()    {}
-func (*QueryGetGuardianSetResponse) Descriptor() ([]byte, []int) {
+func (m *QueryGetPhylaxSetResponse) Reset()         { *m = QueryGetPhylaxSetResponse{} }
+func (m *QueryGetPhylaxSetResponse) String() string { return proto.CompactTextString(m) }
+func (*QueryGetPhylaxSetResponse) ProtoMessage()    {}
+func (*QueryGetPhylaxSetResponse) Descriptor() ([]byte, []int) {
 	return fileDescriptor_273185ecc792fa38, []int{5}
 }
-func (m *QueryGetGuardianSetResponse) XXX_Unmarshal(b []byte) error {
+func (m *QueryGetPhylaxSetResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *QueryGetGuardianSetResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *QueryGetPhylaxSetResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_QueryGetGuardianSetResponse.Marshal(b, m, deterministic)
+		return xxx_messageInfo_QueryGetPhylaxSetResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -309,41 +309,41 @@ func (m *QueryGetGuardianSetResponse) XXX_Marshal(b []byte, deterministic bool) 
 		return b[:n], nil
 	}
 }
-func (m *QueryGetGuardianSetResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_QueryGetGuardianSetResponse.Merge(m, src)
+func (m *QueryGetPhylaxSetResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryGetPhylaxSetResponse.Merge(m, src)
 }
-func (m *QueryGetGuardianSetResponse) XXX_Size() int {
+func (m *QueryGetPhylaxSetResponse) XXX_Size() int {
 	return m.Size()
 }
-func (m *QueryGetGuardianSetResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_QueryGetGuardianSetResponse.DiscardUnknown(m)
+func (m *QueryGetPhylaxSetResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryGetPhylaxSetResponse.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_QueryGetGuardianSetResponse proto.InternalMessageInfo
+var xxx_messageInfo_QueryGetPhylaxSetResponse proto.InternalMessageInfo
 
-func (m *QueryGetGuardianSetResponse) GetGuardianSet() GuardianSet {
+func (m *QueryGetPhylaxSetResponse) GetPhylaxSet() PhylaxSet {
 	if m != nil {
-		return m.GuardianSet
+		return m.PhylaxSet
 	}
-	return GuardianSet{}
+	return PhylaxSet{}
 }
 
-type QueryAllGuardianSetRequest struct {
+type QueryAllPhylaxSetRequest struct {
 	Pagination *query.PageRequest `protobuf:"bytes,1,opt,name=pagination,proto3" json:"pagination,omitempty"`
 }
 
-func (m *QueryAllGuardianSetRequest) Reset()         { *m = QueryAllGuardianSetRequest{} }
-func (m *QueryAllGuardianSetRequest) String() string { return proto.CompactTextString(m) }
-func (*QueryAllGuardianSetRequest) ProtoMessage()    {}
-func (*QueryAllGuardianSetRequest) Descriptor() ([]byte, []int) {
+func (m *QueryAllPhylaxSetRequest) Reset()         { *m = QueryAllPhylaxSetRequest{} }
+func (m *QueryAllPhylaxSetRequest) String() string { return proto.CompactTextString(m) }
+func (*QueryAllPhylaxSetRequest) ProtoMessage()    {}
+func (*QueryAllPhylaxSetRequest) Descriptor() ([]byte, []int) {
 	return fileDescriptor_273185ecc792fa38, []int{6}
 }
-func (m *QueryAllGuardianSetRequest) XXX_Unmarshal(b []byte) error {
+func (m *QueryAllPhylaxSetRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *QueryAllGuardianSetRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *QueryAllPhylaxSetRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_QueryAllGuardianSetRequest.Marshal(b, m, deterministic)
+		return xxx_messageInfo_QueryAllPhylaxSetRequest.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -353,42 +353,42 @@ func (m *QueryAllGuardianSetRequest) XXX_Marshal(b []byte, deterministic bool) (
 		return b[:n], nil
 	}
 }
-func (m *QueryAllGuardianSetRequest) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_QueryAllGuardianSetRequest.Merge(m, src)
+func (m *QueryAllPhylaxSetRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryAllPhylaxSetRequest.Merge(m, src)
 }
-func (m *QueryAllGuardianSetRequest) XXX_Size() int {
+func (m *QueryAllPhylaxSetRequest) XXX_Size() int {
 	return m.Size()
 }
-func (m *QueryAllGuardianSetRequest) XXX_DiscardUnknown() {
-	xxx_messageInfo_QueryAllGuardianSetRequest.DiscardUnknown(m)
+func (m *QueryAllPhylaxSetRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryAllPhylaxSetRequest.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_QueryAllGuardianSetRequest proto.InternalMessageInfo
+var xxx_messageInfo_QueryAllPhylaxSetRequest proto.InternalMessageInfo
 
-func (m *QueryAllGuardianSetRequest) GetPagination() *query.PageRequest {
+func (m *QueryAllPhylaxSetRequest) GetPagination() *query.PageRequest {
 	if m != nil {
 		return m.Pagination
 	}
 	return nil
 }
 
-type QueryAllGuardianSetResponse struct {
-	GuardianSet []GuardianSet       `protobuf:"bytes,1,rep,name=GuardianSet,proto3" json:"GuardianSet"`
+type QueryAllPhylaxSetResponse struct {
+	PhylaxSet []PhylaxSet       `protobuf:"bytes,1,rep,name=PhylaxSet,proto3" json:"PhylaxSet"`
 	Pagination  *query.PageResponse `protobuf:"bytes,2,opt,name=pagination,proto3" json:"pagination,omitempty"`
 }
 
-func (m *QueryAllGuardianSetResponse) Reset()         { *m = QueryAllGuardianSetResponse{} }
-func (m *QueryAllGuardianSetResponse) String() string { return proto.CompactTextString(m) }
-func (*QueryAllGuardianSetResponse) ProtoMessage()    {}
-func (*QueryAllGuardianSetResponse) Descriptor() ([]byte, []int) {
+func (m *QueryAllPhylaxSetResponse) Reset()         { *m = QueryAllPhylaxSetResponse{} }
+func (m *QueryAllPhylaxSetResponse) String() string { return proto.CompactTextString(m) }
+func (*QueryAllPhylaxSetResponse) ProtoMessage()    {}
+func (*QueryAllPhylaxSetResponse) Descriptor() ([]byte, []int) {
 	return fileDescriptor_273185ecc792fa38, []int{7}
 }
-func (m *QueryAllGuardianSetResponse) XXX_Unmarshal(b []byte) error {
+func (m *QueryAllPhylaxSetResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *QueryAllGuardianSetResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *QueryAllPhylaxSetResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_QueryAllGuardianSetResponse.Marshal(b, m, deterministic)
+		return xxx_messageInfo_QueryAllPhylaxSetResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -398,26 +398,26 @@ func (m *QueryAllGuardianSetResponse) XXX_Marshal(b []byte, deterministic bool) 
 		return b[:n], nil
 	}
 }
-func (m *QueryAllGuardianSetResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_QueryAllGuardianSetResponse.Merge(m, src)
+func (m *QueryAllPhylaxSetResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryAllPhylaxSetResponse.Merge(m, src)
 }
-func (m *QueryAllGuardianSetResponse) XXX_Size() int {
+func (m *QueryAllPhylaxSetResponse) XXX_Size() int {
 	return m.Size()
 }
-func (m *QueryAllGuardianSetResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_QueryAllGuardianSetResponse.DiscardUnknown(m)
+func (m *QueryAllPhylaxSetResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryAllPhylaxSetResponse.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_QueryAllGuardianSetResponse proto.InternalMessageInfo
+var xxx_messageInfo_QueryAllPhylaxSetResponse proto.InternalMessageInfo
 
-func (m *QueryAllGuardianSetResponse) GetGuardianSet() []GuardianSet {
+func (m *QueryAllPhylaxSetResponse) GetPhylaxSet() []PhylaxSet {
 	if m != nil {
-		return m.GuardianSet
+		return m.PhylaxSet
 	}
 	return nil
 }
 
-func (m *QueryAllGuardianSetResponse) GetPagination() *query.PageResponse {
+func (m *QueryAllPhylaxSetResponse) GetPagination() *query.PageResponse {
 	if m != nil {
 		return m.Pagination
 	}
@@ -872,23 +872,23 @@ func (m *QueryAllSequenceCounterResponse) GetPagination() *query.PageResponse {
 	return nil
 }
 
-type QueryGetConsensusGuardianSetIndexRequest struct {
+type QueryGetConsensusPhylaxSetIndexRequest struct {
 }
 
-func (m *QueryGetConsensusGuardianSetIndexRequest) Reset() {
-	*m = QueryGetConsensusGuardianSetIndexRequest{}
+func (m *QueryGetConsensusPhylaxSetIndexRequest) Reset() {
+	*m = QueryGetConsensusPhylaxSetIndexRequest{}
 }
-func (m *QueryGetConsensusGuardianSetIndexRequest) String() string { return proto.CompactTextString(m) }
-func (*QueryGetConsensusGuardianSetIndexRequest) ProtoMessage()    {}
-func (*QueryGetConsensusGuardianSetIndexRequest) Descriptor() ([]byte, []int) {
+func (m *QueryGetConsensusPhylaxSetIndexRequest) String() string { return proto.CompactTextString(m) }
+func (*QueryGetConsensusPhylaxSetIndexRequest) ProtoMessage()    {}
+func (*QueryGetConsensusPhylaxSetIndexRequest) Descriptor() ([]byte, []int) {
 	return fileDescriptor_273185ecc792fa38, []int{18}
 }
-func (m *QueryGetConsensusGuardianSetIndexRequest) XXX_Unmarshal(b []byte) error {
+func (m *QueryGetConsensusPhylaxSetIndexRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *QueryGetConsensusGuardianSetIndexRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *QueryGetConsensusPhylaxSetIndexRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_QueryGetConsensusGuardianSetIndexRequest.Marshal(b, m, deterministic)
+		return xxx_messageInfo_QueryGetConsensusPhylaxSetIndexRequest.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -898,38 +898,38 @@ func (m *QueryGetConsensusGuardianSetIndexRequest) XXX_Marshal(b []byte, determi
 		return b[:n], nil
 	}
 }
-func (m *QueryGetConsensusGuardianSetIndexRequest) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_QueryGetConsensusGuardianSetIndexRequest.Merge(m, src)
+func (m *QueryGetConsensusPhylaxSetIndexRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryGetConsensusPhylaxSetIndexRequest.Merge(m, src)
 }
-func (m *QueryGetConsensusGuardianSetIndexRequest) XXX_Size() int {
+func (m *QueryGetConsensusPhylaxSetIndexRequest) XXX_Size() int {
 	return m.Size()
 }
-func (m *QueryGetConsensusGuardianSetIndexRequest) XXX_DiscardUnknown() {
-	xxx_messageInfo_QueryGetConsensusGuardianSetIndexRequest.DiscardUnknown(m)
+func (m *QueryGetConsensusPhylaxSetIndexRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryGetConsensusPhylaxSetIndexRequest.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_QueryGetConsensusGuardianSetIndexRequest proto.InternalMessageInfo
+var xxx_messageInfo_QueryGetConsensusPhylaxSetIndexRequest proto.InternalMessageInfo
 
-type QueryGetConsensusGuardianSetIndexResponse struct {
-	ConsensusGuardianSetIndex ConsensusGuardianSetIndex `protobuf:"bytes,1,opt,name=ConsensusGuardianSetIndex,proto3" json:"ConsensusGuardianSetIndex"`
+type QueryGetConsensusPhylaxSetIndexResponse struct {
+	ConsensusPhylaxSetIndex ConsensusPhylaxSetIndex `protobuf:"bytes,1,opt,name=ConsensusPhylaxSetIndex,proto3" json:"ConsensusPhylaxSetIndex"`
 }
 
-func (m *QueryGetConsensusGuardianSetIndexResponse) Reset() {
-	*m = QueryGetConsensusGuardianSetIndexResponse{}
+func (m *QueryGetConsensusPhylaxSetIndexResponse) Reset() {
+	*m = QueryGetConsensusPhylaxSetIndexResponse{}
 }
-func (m *QueryGetConsensusGuardianSetIndexResponse) String() string {
+func (m *QueryGetConsensusPhylaxSetIndexResponse) String() string {
 	return proto.CompactTextString(m)
 }
-func (*QueryGetConsensusGuardianSetIndexResponse) ProtoMessage() {}
-func (*QueryGetConsensusGuardianSetIndexResponse) Descriptor() ([]byte, []int) {
+func (*QueryGetConsensusPhylaxSetIndexResponse) ProtoMessage() {}
+func (*QueryGetConsensusPhylaxSetIndexResponse) Descriptor() ([]byte, []int) {
 	return fileDescriptor_273185ecc792fa38, []int{19}
 }
-func (m *QueryGetConsensusGuardianSetIndexResponse) XXX_Unmarshal(b []byte) error {
+func (m *QueryGetConsensusPhylaxSetIndexResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *QueryGetConsensusGuardianSetIndexResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *QueryGetConsensusPhylaxSetIndexResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_QueryGetConsensusGuardianSetIndexResponse.Marshal(b, m, deterministic)
+		return xxx_messageInfo_QueryGetConsensusPhylaxSetIndexResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -939,41 +939,41 @@ func (m *QueryGetConsensusGuardianSetIndexResponse) XXX_Marshal(b []byte, determ
 		return b[:n], nil
 	}
 }
-func (m *QueryGetConsensusGuardianSetIndexResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_QueryGetConsensusGuardianSetIndexResponse.Merge(m, src)
+func (m *QueryGetConsensusPhylaxSetIndexResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryGetConsensusPhylaxSetIndexResponse.Merge(m, src)
 }
-func (m *QueryGetConsensusGuardianSetIndexResponse) XXX_Size() int {
+func (m *QueryGetConsensusPhylaxSetIndexResponse) XXX_Size() int {
 	return m.Size()
 }
-func (m *QueryGetConsensusGuardianSetIndexResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_QueryGetConsensusGuardianSetIndexResponse.DiscardUnknown(m)
+func (m *QueryGetConsensusPhylaxSetIndexResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryGetConsensusPhylaxSetIndexResponse.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_QueryGetConsensusGuardianSetIndexResponse proto.InternalMessageInfo
+var xxx_messageInfo_QueryGetConsensusPhylaxSetIndexResponse proto.InternalMessageInfo
 
-func (m *QueryGetConsensusGuardianSetIndexResponse) GetConsensusGuardianSetIndex() ConsensusGuardianSetIndex {
+func (m *QueryGetConsensusPhylaxSetIndexResponse) GetConsensusPhylaxSetIndex() ConsensusPhylaxSetIndex {
 	if m != nil {
-		return m.ConsensusGuardianSetIndex
+		return m.ConsensusPhylaxSetIndex
 	}
-	return ConsensusGuardianSetIndex{}
+	return ConsensusPhylaxSetIndex{}
 }
 
-type QueryGetGuardianValidatorRequest struct {
-	GuardianKey []byte `protobuf:"bytes,1,opt,name=guardianKey,proto3" json:"guardianKey,omitempty"`
+type QueryGetPhylaxValidatorRequest struct {
+	PhylaxKey []byte `protobuf:"bytes,1,opt,name=guardianKey,proto3" json:"guardianKey,omitempty"`
 }
 
-func (m *QueryGetGuardianValidatorRequest) Reset()         { *m = QueryGetGuardianValidatorRequest{} }
-func (m *QueryGetGuardianValidatorRequest) String() string { return proto.CompactTextString(m) }
-func (*QueryGetGuardianValidatorRequest) ProtoMessage()    {}
-func (*QueryGetGuardianValidatorRequest) Descriptor() ([]byte, []int) {
+func (m *QueryGetPhylaxValidatorRequest) Reset()         { *m = QueryGetPhylaxValidatorRequest{} }
+func (m *QueryGetPhylaxValidatorRequest) String() string { return proto.CompactTextString(m) }
+func (*QueryGetPhylaxValidatorRequest) ProtoMessage()    {}
+func (*QueryGetPhylaxValidatorRequest) Descriptor() ([]byte, []int) {
 	return fileDescriptor_273185ecc792fa38, []int{20}
 }
-func (m *QueryGetGuardianValidatorRequest) XXX_Unmarshal(b []byte) error {
+func (m *QueryGetPhylaxValidatorRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *QueryGetGuardianValidatorRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *QueryGetPhylaxValidatorRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_QueryGetGuardianValidatorRequest.Marshal(b, m, deterministic)
+		return xxx_messageInfo_QueryGetPhylaxValidatorRequest.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -983,41 +983,41 @@ func (m *QueryGetGuardianValidatorRequest) XXX_Marshal(b []byte, deterministic b
 		return b[:n], nil
 	}
 }
-func (m *QueryGetGuardianValidatorRequest) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_QueryGetGuardianValidatorRequest.Merge(m, src)
+func (m *QueryGetPhylaxValidatorRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryGetPhylaxValidatorRequest.Merge(m, src)
 }
-func (m *QueryGetGuardianValidatorRequest) XXX_Size() int {
+func (m *QueryGetPhylaxValidatorRequest) XXX_Size() int {
 	return m.Size()
 }
-func (m *QueryGetGuardianValidatorRequest) XXX_DiscardUnknown() {
-	xxx_messageInfo_QueryGetGuardianValidatorRequest.DiscardUnknown(m)
+func (m *QueryGetPhylaxValidatorRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryGetPhylaxValidatorRequest.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_QueryGetGuardianValidatorRequest proto.InternalMessageInfo
+var xxx_messageInfo_QueryGetPhylaxValidatorRequest proto.InternalMessageInfo
 
-func (m *QueryGetGuardianValidatorRequest) GetGuardianKey() []byte {
+func (m *QueryGetPhylaxValidatorRequest) GetPhylaxKey() []byte {
 	if m != nil {
-		return m.GuardianKey
+		return m.PhylaxKey
 	}
 	return nil
 }
 
-type QueryGetGuardianValidatorResponse struct {
-	GuardianValidator GuardianValidator `protobuf:"bytes,1,opt,name=guardianValidator,proto3" json:"guardianValidator"`
+type QueryGetPhylaxValidatorResponse struct {
+	PhylaxValidator PhylaxValidator `protobuf:"bytes,1,opt,name=guardianValidator,proto3" json:"guardianValidator"`
 }
 
-func (m *QueryGetGuardianValidatorResponse) Reset()         { *m = QueryGetGuardianValidatorResponse{} }
-func (m *QueryGetGuardianValidatorResponse) String() string { return proto.CompactTextString(m) }
-func (*QueryGetGuardianValidatorResponse) ProtoMessage()    {}
-func (*QueryGetGuardianValidatorResponse) Descriptor() ([]byte, []int) {
+func (m *QueryGetPhylaxValidatorResponse) Reset()         { *m = QueryGetPhylaxValidatorResponse{} }
+func (m *QueryGetPhylaxValidatorResponse) String() string { return proto.CompactTextString(m) }
+func (*QueryGetPhylaxValidatorResponse) ProtoMessage()    {}
+func (*QueryGetPhylaxValidatorResponse) Descriptor() ([]byte, []int) {
 	return fileDescriptor_273185ecc792fa38, []int{21}
 }
-func (m *QueryGetGuardianValidatorResponse) XXX_Unmarshal(b []byte) error {
+func (m *QueryGetPhylaxValidatorResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *QueryGetGuardianValidatorResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *QueryGetPhylaxValidatorResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_QueryGetGuardianValidatorResponse.Marshal(b, m, deterministic)
+		return xxx_messageInfo_QueryGetPhylaxValidatorResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -1027,41 +1027,41 @@ func (m *QueryGetGuardianValidatorResponse) XXX_Marshal(b []byte, deterministic 
 		return b[:n], nil
 	}
 }
-func (m *QueryGetGuardianValidatorResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_QueryGetGuardianValidatorResponse.Merge(m, src)
+func (m *QueryGetPhylaxValidatorResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryGetPhylaxValidatorResponse.Merge(m, src)
 }
-func (m *QueryGetGuardianValidatorResponse) XXX_Size() int {
+func (m *QueryGetPhylaxValidatorResponse) XXX_Size() int {
 	return m.Size()
 }
-func (m *QueryGetGuardianValidatorResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_QueryGetGuardianValidatorResponse.DiscardUnknown(m)
+func (m *QueryGetPhylaxValidatorResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryGetPhylaxValidatorResponse.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_QueryGetGuardianValidatorResponse proto.InternalMessageInfo
+var xxx_messageInfo_QueryGetPhylaxValidatorResponse proto.InternalMessageInfo
 
-func (m *QueryGetGuardianValidatorResponse) GetGuardianValidator() GuardianValidator {
+func (m *QueryGetPhylaxValidatorResponse) GetPhylaxValidator() PhylaxValidator {
 	if m != nil {
-		return m.GuardianValidator
+		return m.PhylaxValidator
 	}
-	return GuardianValidator{}
+	return PhylaxValidator{}
 }
 
-type QueryAllGuardianValidatorRequest struct {
+type QueryAllPhylaxValidatorRequest struct {
 	Pagination *query.PageRequest `protobuf:"bytes,1,opt,name=pagination,proto3" json:"pagination,omitempty"`
 }
 
-func (m *QueryAllGuardianValidatorRequest) Reset()         { *m = QueryAllGuardianValidatorRequest{} }
-func (m *QueryAllGuardianValidatorRequest) String() string { return proto.CompactTextString(m) }
-func (*QueryAllGuardianValidatorRequest) ProtoMessage()    {}
-func (*QueryAllGuardianValidatorRequest) Descriptor() ([]byte, []int) {
+func (m *QueryAllPhylaxValidatorRequest) Reset()         { *m = QueryAllPhylaxValidatorRequest{} }
+func (m *QueryAllPhylaxValidatorRequest) String() string { return proto.CompactTextString(m) }
+func (*QueryAllPhylaxValidatorRequest) ProtoMessage()    {}
+func (*QueryAllPhylaxValidatorRequest) Descriptor() ([]byte, []int) {
 	return fileDescriptor_273185ecc792fa38, []int{22}
 }
-func (m *QueryAllGuardianValidatorRequest) XXX_Unmarshal(b []byte) error {
+func (m *QueryAllPhylaxValidatorRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *QueryAllGuardianValidatorRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *QueryAllPhylaxValidatorRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_QueryAllGuardianValidatorRequest.Marshal(b, m, deterministic)
+		return xxx_messageInfo_QueryAllPhylaxValidatorRequest.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -1071,42 +1071,42 @@ func (m *QueryAllGuardianValidatorRequest) XXX_Marshal(b []byte, deterministic b
 		return b[:n], nil
 	}
 }
-func (m *QueryAllGuardianValidatorRequest) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_QueryAllGuardianValidatorRequest.Merge(m, src)
+func (m *QueryAllPhylaxValidatorRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryAllPhylaxValidatorRequest.Merge(m, src)
 }
-func (m *QueryAllGuardianValidatorRequest) XXX_Size() int {
+func (m *QueryAllPhylaxValidatorRequest) XXX_Size() int {
 	return m.Size()
 }
-func (m *QueryAllGuardianValidatorRequest) XXX_DiscardUnknown() {
-	xxx_messageInfo_QueryAllGuardianValidatorRequest.DiscardUnknown(m)
+func (m *QueryAllPhylaxValidatorRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryAllPhylaxValidatorRequest.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_QueryAllGuardianValidatorRequest proto.InternalMessageInfo
+var xxx_messageInfo_QueryAllPhylaxValidatorRequest proto.InternalMessageInfo
 
-func (m *QueryAllGuardianValidatorRequest) GetPagination() *query.PageRequest {
+func (m *QueryAllPhylaxValidatorRequest) GetPagination() *query.PageRequest {
 	if m != nil {
 		return m.Pagination
 	}
 	return nil
 }
 
-type QueryAllGuardianValidatorResponse struct {
-	GuardianValidator []GuardianValidator `protobuf:"bytes,1,rep,name=guardianValidator,proto3" json:"guardianValidator"`
+type QueryAllPhylaxValidatorResponse struct {
+	PhylaxValidator []PhylaxValidator `protobuf:"bytes,1,rep,name=guardianValidator,proto3" json:"guardianValidator"`
 	Pagination        *query.PageResponse `protobuf:"bytes,2,opt,name=pagination,proto3" json:"pagination,omitempty"`
 }
 
-func (m *QueryAllGuardianValidatorResponse) Reset()         { *m = QueryAllGuardianValidatorResponse{} }
-func (m *QueryAllGuardianValidatorResponse) String() string { return proto.CompactTextString(m) }
-func (*QueryAllGuardianValidatorResponse) ProtoMessage()    {}
-func (*QueryAllGuardianValidatorResponse) Descriptor() ([]byte, []int) {
+func (m *QueryAllPhylaxValidatorResponse) Reset()         { *m = QueryAllPhylaxValidatorResponse{} }
+func (m *QueryAllPhylaxValidatorResponse) String() string { return proto.CompactTextString(m) }
+func (*QueryAllPhylaxValidatorResponse) ProtoMessage()    {}
+func (*QueryAllPhylaxValidatorResponse) Descriptor() ([]byte, []int) {
 	return fileDescriptor_273185ecc792fa38, []int{23}
 }
-func (m *QueryAllGuardianValidatorResponse) XXX_Unmarshal(b []byte) error {
+func (m *QueryAllPhylaxValidatorResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *QueryAllGuardianValidatorResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *QueryAllPhylaxValidatorResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_QueryAllGuardianValidatorResponse.Marshal(b, m, deterministic)
+		return xxx_messageInfo_QueryAllPhylaxValidatorResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -1116,47 +1116,47 @@ func (m *QueryAllGuardianValidatorResponse) XXX_Marshal(b []byte, deterministic 
 		return b[:n], nil
 	}
 }
-func (m *QueryAllGuardianValidatorResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_QueryAllGuardianValidatorResponse.Merge(m, src)
+func (m *QueryAllPhylaxValidatorResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryAllPhylaxValidatorResponse.Merge(m, src)
 }
-func (m *QueryAllGuardianValidatorResponse) XXX_Size() int {
+func (m *QueryAllPhylaxValidatorResponse) XXX_Size() int {
 	return m.Size()
 }
-func (m *QueryAllGuardianValidatorResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_QueryAllGuardianValidatorResponse.DiscardUnknown(m)
+func (m *QueryAllPhylaxValidatorResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryAllPhylaxValidatorResponse.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_QueryAllGuardianValidatorResponse proto.InternalMessageInfo
+var xxx_messageInfo_QueryAllPhylaxValidatorResponse proto.InternalMessageInfo
 
-func (m *QueryAllGuardianValidatorResponse) GetGuardianValidator() []GuardianValidator {
+func (m *QueryAllPhylaxValidatorResponse) GetPhylaxValidator() []PhylaxValidator {
 	if m != nil {
-		return m.GuardianValidator
+		return m.PhylaxValidator
 	}
 	return nil
 }
 
-func (m *QueryAllGuardianValidatorResponse) GetPagination() *query.PageResponse {
+func (m *QueryAllPhylaxValidatorResponse) GetPagination() *query.PageResponse {
 	if m != nil {
 		return m.Pagination
 	}
 	return nil
 }
 
-type QueryLatestGuardianSetIndexRequest struct {
+type QueryLatestPhylaxSetIndexRequest struct {
 }
 
-func (m *QueryLatestGuardianSetIndexRequest) Reset()         { *m = QueryLatestGuardianSetIndexRequest{} }
-func (m *QueryLatestGuardianSetIndexRequest) String() string { return proto.CompactTextString(m) }
-func (*QueryLatestGuardianSetIndexRequest) ProtoMessage()    {}
-func (*QueryLatestGuardianSetIndexRequest) Descriptor() ([]byte, []int) {
+func (m *QueryLatestPhylaxSetIndexRequest) Reset()         { *m = QueryLatestPhylaxSetIndexRequest{} }
+func (m *QueryLatestPhylaxSetIndexRequest) String() string { return proto.CompactTextString(m) }
+func (*QueryLatestPhylaxSetIndexRequest) ProtoMessage()    {}
+func (*QueryLatestPhylaxSetIndexRequest) Descriptor() ([]byte, []int) {
 	return fileDescriptor_273185ecc792fa38, []int{24}
 }
-func (m *QueryLatestGuardianSetIndexRequest) XXX_Unmarshal(b []byte) error {
+func (m *QueryLatestPhylaxSetIndexRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *QueryLatestGuardianSetIndexRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *QueryLatestPhylaxSetIndexRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_QueryLatestGuardianSetIndexRequest.Marshal(b, m, deterministic)
+		return xxx_messageInfo_QueryLatestPhylaxSetIndexRequest.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -1166,34 +1166,34 @@ func (m *QueryLatestGuardianSetIndexRequest) XXX_Marshal(b []byte, deterministic
 		return b[:n], nil
 	}
 }
-func (m *QueryLatestGuardianSetIndexRequest) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_QueryLatestGuardianSetIndexRequest.Merge(m, src)
+func (m *QueryLatestPhylaxSetIndexRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryLatestPhylaxSetIndexRequest.Merge(m, src)
 }
-func (m *QueryLatestGuardianSetIndexRequest) XXX_Size() int {
+func (m *QueryLatestPhylaxSetIndexRequest) XXX_Size() int {
 	return m.Size()
 }
-func (m *QueryLatestGuardianSetIndexRequest) XXX_DiscardUnknown() {
-	xxx_messageInfo_QueryLatestGuardianSetIndexRequest.DiscardUnknown(m)
+func (m *QueryLatestPhylaxSetIndexRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryLatestPhylaxSetIndexRequest.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_QueryLatestGuardianSetIndexRequest proto.InternalMessageInfo
+var xxx_messageInfo_QueryLatestPhylaxSetIndexRequest proto.InternalMessageInfo
 
-type QueryLatestGuardianSetIndexResponse struct {
-	LatestGuardianSetIndex uint32 `protobuf:"varint,1,opt,name=latestGuardianSetIndex,proto3" json:"latestGuardianSetIndex,omitempty"`
+type QueryLatestPhylaxSetIndexResponse struct {
+	LatestPhylaxSetIndex uint32 `protobuf:"varint,1,opt,name=latestPhylaxSetIndex,proto3" json:"latestPhylaxSetIndex,omitempty"`
 }
 
-func (m *QueryLatestGuardianSetIndexResponse) Reset()         { *m = QueryLatestGuardianSetIndexResponse{} }
-func (m *QueryLatestGuardianSetIndexResponse) String() string { return proto.CompactTextString(m) }
-func (*QueryLatestGuardianSetIndexResponse) ProtoMessage()    {}
-func (*QueryLatestGuardianSetIndexResponse) Descriptor() ([]byte, []int) {
+func (m *QueryLatestPhylaxSetIndexResponse) Reset()         { *m = QueryLatestPhylaxSetIndexResponse{} }
+func (m *QueryLatestPhylaxSetIndexResponse) String() string { return proto.CompactTextString(m) }
+func (*QueryLatestPhylaxSetIndexResponse) ProtoMessage()    {}
+func (*QueryLatestPhylaxSetIndexResponse) Descriptor() ([]byte, []int) {
 	return fileDescriptor_273185ecc792fa38, []int{25}
 }
-func (m *QueryLatestGuardianSetIndexResponse) XXX_Unmarshal(b []byte) error {
+func (m *QueryLatestPhylaxSetIndexResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *QueryLatestGuardianSetIndexResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *QueryLatestPhylaxSetIndexResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_QueryLatestGuardianSetIndexResponse.Marshal(b, m, deterministic)
+		return xxx_messageInfo_QueryLatestPhylaxSetIndexResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -1203,21 +1203,21 @@ func (m *QueryLatestGuardianSetIndexResponse) XXX_Marshal(b []byte, deterministi
 		return b[:n], nil
 	}
 }
-func (m *QueryLatestGuardianSetIndexResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_QueryLatestGuardianSetIndexResponse.Merge(m, src)
+func (m *QueryLatestPhylaxSetIndexResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryLatestPhylaxSetIndexResponse.Merge(m, src)
 }
-func (m *QueryLatestGuardianSetIndexResponse) XXX_Size() int {
+func (m *QueryLatestPhylaxSetIndexResponse) XXX_Size() int {
 	return m.Size()
 }
-func (m *QueryLatestGuardianSetIndexResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_QueryLatestGuardianSetIndexResponse.DiscardUnknown(m)
+func (m *QueryLatestPhylaxSetIndexResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryLatestPhylaxSetIndexResponse.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_QueryLatestGuardianSetIndexResponse proto.InternalMessageInfo
+var xxx_messageInfo_QueryLatestPhylaxSetIndexResponse proto.InternalMessageInfo
 
-func (m *QueryLatestGuardianSetIndexResponse) GetLatestGuardianSetIndex() uint32 {
+func (m *QueryLatestPhylaxSetIndexResponse) GetLatestPhylaxSetIndex() uint32 {
 	if m != nil {
-		return m.LatestGuardianSetIndex
+		return m.LatestPhylaxSetIndex
 	}
 	return 0
 }
@@ -1410,10 +1410,10 @@ func init() {
 	proto.RegisterType((*QueryAllValidatorAllowlistResponse)(nil), "wormhole_foundation.deltachain.wormhole.QueryAllValidatorAllowlistResponse")
 	proto.RegisterType((*QueryValidatorAllowlist)(nil), "wormhole_foundation.deltachain.wormhole.QueryValidatorAllowlist")
 	proto.RegisterType((*QueryValidatorAllowlistResponse)(nil), "wormhole_foundation.deltachain.wormhole.QueryValidatorAllowlistResponse")
-	proto.RegisterType((*QueryGetGuardianSetRequest)(nil), "wormhole_foundation.deltachain.wormhole.QueryGetGuardianSetRequest")
-	proto.RegisterType((*QueryGetGuardianSetResponse)(nil), "wormhole_foundation.deltachain.wormhole.QueryGetGuardianSetResponse")
-	proto.RegisterType((*QueryAllGuardianSetRequest)(nil), "wormhole_foundation.deltachain.wormhole.QueryAllGuardianSetRequest")
-	proto.RegisterType((*QueryAllGuardianSetResponse)(nil), "wormhole_foundation.deltachain.wormhole.QueryAllGuardianSetResponse")
+	proto.RegisterType((*QueryGetPhylaxSetRequest)(nil), "wormhole_foundation.deltachain.wormhole.QueryGetPhylaxSetRequest")
+	proto.RegisterType((*QueryGetPhylaxSetResponse)(nil), "wormhole_foundation.deltachain.wormhole.QueryGetPhylaxSetResponse")
+	proto.RegisterType((*QueryAllPhylaxSetRequest)(nil), "wormhole_foundation.deltachain.wormhole.QueryAllPhylaxSetRequest")
+	proto.RegisterType((*QueryAllPhylaxSetResponse)(nil), "wormhole_foundation.deltachain.wormhole.QueryAllPhylaxSetResponse")
 	proto.RegisterType((*QueryGetConfigRequest)(nil), "wormhole_foundation.deltachain.wormhole.QueryGetConfigRequest")
 	proto.RegisterType((*QueryGetConfigResponse)(nil), "wormhole_foundation.deltachain.wormhole.QueryGetConfigResponse")
 	proto.RegisterType((*QueryGetReplayProtectionRequest)(nil), "wormhole_foundation.deltachain.wormhole.QueryGetReplayProtectionRequest")
@@ -1424,14 +1424,14 @@ func init() {
 	proto.RegisterType((*QueryGetSequenceCounterResponse)(nil), "wormhole_foundation.deltachain.wormhole.QueryGetSequenceCounterResponse")
 	proto.RegisterType((*QueryAllSequenceCounterRequest)(nil), "wormhole_foundation.deltachain.wormhole.QueryAllSequenceCounterRequest")
 	proto.RegisterType((*QueryAllSequenceCounterResponse)(nil), "wormhole_foundation.deltachain.wormhole.QueryAllSequenceCounterResponse")
-	proto.RegisterType((*QueryGetConsensusGuardianSetIndexRequest)(nil), "wormhole_foundation.deltachain.wormhole.QueryGetConsensusGuardianSetIndexRequest")
-	proto.RegisterType((*QueryGetConsensusGuardianSetIndexResponse)(nil), "wormhole_foundation.deltachain.wormhole.QueryGetConsensusGuardianSetIndexResponse")
-	proto.RegisterType((*QueryGetGuardianValidatorRequest)(nil), "wormhole_foundation.deltachain.wormhole.QueryGetGuardianValidatorRequest")
-	proto.RegisterType((*QueryGetGuardianValidatorResponse)(nil), "wormhole_foundation.deltachain.wormhole.QueryGetGuardianValidatorResponse")
-	proto.RegisterType((*QueryAllGuardianValidatorRequest)(nil), "wormhole_foundation.deltachain.wormhole.QueryAllGuardianValidatorRequest")
-	proto.RegisterType((*QueryAllGuardianValidatorResponse)(nil), "wormhole_foundation.deltachain.wormhole.QueryAllGuardianValidatorResponse")
-	proto.RegisterType((*QueryLatestGuardianSetIndexRequest)(nil), "wormhole_foundation.deltachain.wormhole.QueryLatestGuardianSetIndexRequest")
-	proto.RegisterType((*QueryLatestGuardianSetIndexResponse)(nil), "wormhole_foundation.deltachain.wormhole.QueryLatestGuardianSetIndexResponse")
+	proto.RegisterType((*QueryGetConsensusPhylaxSetIndexRequest)(nil), "wormhole_foundation.deltachain.wormhole.QueryGetConsensusPhylaxSetIndexRequest")
+	proto.RegisterType((*QueryGetConsensusPhylaxSetIndexResponse)(nil), "wormhole_foundation.deltachain.wormhole.QueryGetConsensusPhylaxSetIndexResponse")
+	proto.RegisterType((*QueryGetPhylaxValidatorRequest)(nil), "wormhole_foundation.deltachain.wormhole.QueryGetPhylaxValidatorRequest")
+	proto.RegisterType((*QueryGetPhylaxValidatorResponse)(nil), "wormhole_foundation.deltachain.wormhole.QueryGetPhylaxValidatorResponse")
+	proto.RegisterType((*QueryAllPhylaxValidatorRequest)(nil), "wormhole_foundation.deltachain.wormhole.QueryAllPhylaxValidatorRequest")
+	proto.RegisterType((*QueryAllPhylaxValidatorResponse)(nil), "wormhole_foundation.deltachain.wormhole.QueryAllPhylaxValidatorResponse")
+	proto.RegisterType((*QueryLatestPhylaxSetIndexRequest)(nil), "wormhole_foundation.deltachain.wormhole.QueryLatestPhylaxSetIndexRequest")
+	proto.RegisterType((*QueryLatestPhylaxSetIndexResponse)(nil), "wormhole_foundation.deltachain.wormhole.QueryLatestPhylaxSetIndexResponse")
 	proto.RegisterType((*QueryIbcComposabilityMwContractRequest)(nil), "wormhole_foundation.deltachain.wormhole.QueryIbcComposabilityMwContractRequest")
 	proto.RegisterType((*QueryIbcComposabilityMwContractResponse)(nil), "wormhole_foundation.deltachain.wormhole.QueryIbcComposabilityMwContractResponse")
 	proto.RegisterType((*QueryAllWasmInstantiateAllowlist)(nil), "wormhole_foundation.deltachain.wormhole.QueryAllWasmInstantiateAllowlist")
@@ -1548,9 +1548,9 @@ const _ = grpc.SupportPackageIsVersion4
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type QueryClient interface {
 	// Queries a guardianSet by index.
-	GuardianSet(ctx context.Context, in *QueryGetGuardianSetRequest, opts ...grpc.CallOption) (*QueryGetGuardianSetResponse, error)
+	PhylaxSet(ctx context.Context, in *QueryGetPhylaxSetRequest, opts ...grpc.CallOption) (*QueryGetPhylaxSetResponse, error)
 	// Queries a list of guardianSet items.
-	GuardianSetAll(ctx context.Context, in *QueryAllGuardianSetRequest, opts ...grpc.CallOption) (*QueryAllGuardianSetResponse, error)
+	PhylaxSetAll(ctx context.Context, in *QueryAllPhylaxSetRequest, opts ...grpc.CallOption) (*QueryAllPhylaxSetResponse, error)
 	// Queries a config by index.
 	Config(ctx context.Context, in *QueryGetConfigRequest, opts ...grpc.CallOption) (*QueryGetConfigResponse, error)
 	// Queries a replayProtection by index.
@@ -1561,14 +1561,14 @@ type QueryClient interface {
 	SequenceCounter(ctx context.Context, in *QueryGetSequenceCounterRequest, opts ...grpc.CallOption) (*QueryGetSequenceCounterResponse, error)
 	// Queries a list of sequenceCounter items.
 	SequenceCounterAll(ctx context.Context, in *QueryAllSequenceCounterRequest, opts ...grpc.CallOption) (*QueryAllSequenceCounterResponse, error)
-	// Queries a ConsensusGuardianSetIndex by index.
-	ConsensusGuardianSetIndex(ctx context.Context, in *QueryGetConsensusGuardianSetIndexRequest, opts ...grpc.CallOption) (*QueryGetConsensusGuardianSetIndexResponse, error)
-	// Queries a GuardianValidator by index.
-	GuardianValidator(ctx context.Context, in *QueryGetGuardianValidatorRequest, opts ...grpc.CallOption) (*QueryGetGuardianValidatorResponse, error)
-	// Queries a list of GuardianValidator items.
-	GuardianValidatorAll(ctx context.Context, in *QueryAllGuardianValidatorRequest, opts ...grpc.CallOption) (*QueryAllGuardianValidatorResponse, error)
-	// Queries a list of LatestGuardianSetIndex items.
-	LatestGuardianSetIndex(ctx context.Context, in *QueryLatestGuardianSetIndexRequest, opts ...grpc.CallOption) (*QueryLatestGuardianSetIndexResponse, error)
+	// Queries a ConsensusPhylaxSetIndex by index.
+	ConsensusPhylaxSetIndex(ctx context.Context, in *QueryGetConsensusPhylaxSetIndexRequest, opts ...grpc.CallOption) (*QueryGetConsensusPhylaxSetIndexResponse, error)
+	// Queries a PhylaxValidator by index.
+	PhylaxValidator(ctx context.Context, in *QueryGetPhylaxValidatorRequest, opts ...grpc.CallOption) (*QueryGetPhylaxValidatorResponse, error)
+	// Queries a list of PhylaxValidator items.
+	PhylaxValidatorAll(ctx context.Context, in *QueryAllPhylaxValidatorRequest, opts ...grpc.CallOption) (*QueryAllPhylaxValidatorResponse, error)
+	// Queries a list of LatestPhylaxSetIndex items.
+	LatestPhylaxSetIndex(ctx context.Context, in *QueryLatestPhylaxSetIndexRequest, opts ...grpc.CallOption) (*QueryLatestPhylaxSetIndexResponse, error)
 	AllowlistAll(ctx context.Context, in *QueryAllValidatorAllowlist, opts ...grpc.CallOption) (*QueryAllValidatorAllowlistResponse, error)
 	Allowlist(ctx context.Context, in *QueryValidatorAllowlist, opts ...grpc.CallOption) (*QueryValidatorAllowlistResponse, error)
 	IbcComposabilityMwContract(ctx context.Context, in *QueryIbcComposabilityMwContractRequest, opts ...grpc.CallOption) (*QueryIbcComposabilityMwContractResponse, error)
@@ -1583,18 +1583,18 @@ func NewQueryClient(cc grpc1.ClientConn) QueryClient {
 	return &queryClient{cc}
 }
 
-func (c *queryClient) GuardianSet(ctx context.Context, in *QueryGetGuardianSetRequest, opts ...grpc.CallOption) (*QueryGetGuardianSetResponse, error) {
-	out := new(QueryGetGuardianSetResponse)
-	err := c.cc.Invoke(ctx, "/wormhole_foundation.deltachain.wormhole.Query/GuardianSet", in, out, opts...)
+func (c *queryClient) PhylaxSet(ctx context.Context, in *QueryGetPhylaxSetRequest, opts ...grpc.CallOption) (*QueryGetPhylaxSetResponse, error) {
+	out := new(QueryGetPhylaxSetResponse)
+	err := c.cc.Invoke(ctx, "/wormhole_foundation.deltachain.wormhole.Query/PhylaxSet", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *queryClient) GuardianSetAll(ctx context.Context, in *QueryAllGuardianSetRequest, opts ...grpc.CallOption) (*QueryAllGuardianSetResponse, error) {
-	out := new(QueryAllGuardianSetResponse)
-	err := c.cc.Invoke(ctx, "/wormhole_foundation.deltachain.wormhole.Query/GuardianSetAll", in, out, opts...)
+func (c *queryClient) PhylaxSetAll(ctx context.Context, in *QueryAllPhylaxSetRequest, opts ...grpc.CallOption) (*QueryAllPhylaxSetResponse, error) {
+	out := new(QueryAllPhylaxSetResponse)
+	err := c.cc.Invoke(ctx, "/wormhole_foundation.deltachain.wormhole.Query/PhylaxSetAll", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1646,36 +1646,36 @@ func (c *queryClient) SequenceCounterAll(ctx context.Context, in *QueryAllSequen
 	return out, nil
 }
 
-func (c *queryClient) ConsensusGuardianSetIndex(ctx context.Context, in *QueryGetConsensusGuardianSetIndexRequest, opts ...grpc.CallOption) (*QueryGetConsensusGuardianSetIndexResponse, error) {
-	out := new(QueryGetConsensusGuardianSetIndexResponse)
-	err := c.cc.Invoke(ctx, "/wormhole_foundation.deltachain.wormhole.Query/ConsensusGuardianSetIndex", in, out, opts...)
+func (c *queryClient) ConsensusPhylaxSetIndex(ctx context.Context, in *QueryGetConsensusPhylaxSetIndexRequest, opts ...grpc.CallOption) (*QueryGetConsensusPhylaxSetIndexResponse, error) {
+	out := new(QueryGetConsensusPhylaxSetIndexResponse)
+	err := c.cc.Invoke(ctx, "/wormhole_foundation.deltachain.wormhole.Query/ConsensusPhylaxSetIndex", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *queryClient) GuardianValidator(ctx context.Context, in *QueryGetGuardianValidatorRequest, opts ...grpc.CallOption) (*QueryGetGuardianValidatorResponse, error) {
-	out := new(QueryGetGuardianValidatorResponse)
-	err := c.cc.Invoke(ctx, "/wormhole_foundation.deltachain.wormhole.Query/GuardianValidator", in, out, opts...)
+func (c *queryClient) PhylaxValidator(ctx context.Context, in *QueryGetPhylaxValidatorRequest, opts ...grpc.CallOption) (*QueryGetPhylaxValidatorResponse, error) {
+	out := new(QueryGetPhylaxValidatorResponse)
+	err := c.cc.Invoke(ctx, "/wormhole_foundation.deltachain.wormhole.Query/PhylaxValidator", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *queryClient) GuardianValidatorAll(ctx context.Context, in *QueryAllGuardianValidatorRequest, opts ...grpc.CallOption) (*QueryAllGuardianValidatorResponse, error) {
-	out := new(QueryAllGuardianValidatorResponse)
-	err := c.cc.Invoke(ctx, "/wormhole_foundation.deltachain.wormhole.Query/GuardianValidatorAll", in, out, opts...)
+func (c *queryClient) PhylaxValidatorAll(ctx context.Context, in *QueryAllPhylaxValidatorRequest, opts ...grpc.CallOption) (*QueryAllPhylaxValidatorResponse, error) {
+	out := new(QueryAllPhylaxValidatorResponse)
+	err := c.cc.Invoke(ctx, "/wormhole_foundation.deltachain.wormhole.Query/PhylaxValidatorAll", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *queryClient) LatestGuardianSetIndex(ctx context.Context, in *QueryLatestGuardianSetIndexRequest, opts ...grpc.CallOption) (*QueryLatestGuardianSetIndexResponse, error) {
-	out := new(QueryLatestGuardianSetIndexResponse)
-	err := c.cc.Invoke(ctx, "/wormhole_foundation.deltachain.wormhole.Query/LatestGuardianSetIndex", in, out, opts...)
+func (c *queryClient) LatestPhylaxSetIndex(ctx context.Context, in *QueryLatestPhylaxSetIndexRequest, opts ...grpc.CallOption) (*QueryLatestPhylaxSetIndexResponse, error) {
+	out := new(QueryLatestPhylaxSetIndexResponse)
+	err := c.cc.Invoke(ctx, "/wormhole_foundation.deltachain.wormhole.Query/LatestPhylaxSetIndex", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1721,9 +1721,9 @@ func (c *queryClient) WasmInstantiateAllowlistAll(ctx context.Context, in *Query
 // QueryServer is the server API for Query service.
 type QueryServer interface {
 	// Queries a guardianSet by index.
-	GuardianSet(context.Context, *QueryGetGuardianSetRequest) (*QueryGetGuardianSetResponse, error)
+	PhylaxSet(context.Context, *QueryGetPhylaxSetRequest) (*QueryGetPhylaxSetResponse, error)
 	// Queries a list of guardianSet items.
-	GuardianSetAll(context.Context, *QueryAllGuardianSetRequest) (*QueryAllGuardianSetResponse, error)
+	PhylaxSetAll(context.Context, *QueryAllPhylaxSetRequest) (*QueryAllPhylaxSetResponse, error)
 	// Queries a config by index.
 	Config(context.Context, *QueryGetConfigRequest) (*QueryGetConfigResponse, error)
 	// Queries a replayProtection by index.
@@ -1734,14 +1734,14 @@ type QueryServer interface {
 	SequenceCounter(context.Context, *QueryGetSequenceCounterRequest) (*QueryGetSequenceCounterResponse, error)
 	// Queries a list of sequenceCounter items.
 	SequenceCounterAll(context.Context, *QueryAllSequenceCounterRequest) (*QueryAllSequenceCounterResponse, error)
-	// Queries a ConsensusGuardianSetIndex by index.
-	ConsensusGuardianSetIndex(context.Context, *QueryGetConsensusGuardianSetIndexRequest) (*QueryGetConsensusGuardianSetIndexResponse, error)
-	// Queries a GuardianValidator by index.
-	GuardianValidator(context.Context, *QueryGetGuardianValidatorRequest) (*QueryGetGuardianValidatorResponse, error)
-	// Queries a list of GuardianValidator items.
-	GuardianValidatorAll(context.Context, *QueryAllGuardianValidatorRequest) (*QueryAllGuardianValidatorResponse, error)
-	// Queries a list of LatestGuardianSetIndex items.
-	LatestGuardianSetIndex(context.Context, *QueryLatestGuardianSetIndexRequest) (*QueryLatestGuardianSetIndexResponse, error)
+	// Queries a ConsensusPhylaxSetIndex by index.
+	ConsensusPhylaxSetIndex(context.Context, *QueryGetConsensusPhylaxSetIndexRequest) (*QueryGetConsensusPhylaxSetIndexResponse, error)
+	// Queries a PhylaxValidator by index.
+	PhylaxValidator(context.Context, *QueryGetPhylaxValidatorRequest) (*QueryGetPhylaxValidatorResponse, error)
+	// Queries a list of PhylaxValidator items.
+	PhylaxValidatorAll(context.Context, *QueryAllPhylaxValidatorRequest) (*QueryAllPhylaxValidatorResponse, error)
+	// Queries a list of LatestPhylaxSetIndex items.
+	LatestPhylaxSetIndex(context.Context, *QueryLatestPhylaxSetIndexRequest) (*QueryLatestPhylaxSetIndexResponse, error)
 	AllowlistAll(context.Context, *QueryAllValidatorAllowlist) (*QueryAllValidatorAllowlistResponse, error)
 	Allowlist(context.Context, *QueryValidatorAllowlist) (*QueryValidatorAllowlistResponse, error)
 	IbcComposabilityMwContract(context.Context, *QueryIbcComposabilityMwContractRequest) (*QueryIbcComposabilityMwContractResponse, error)
@@ -1752,11 +1752,11 @@ type QueryServer interface {
 type UnimplementedQueryServer struct {
 }
 
-func (*UnimplementedQueryServer) GuardianSet(ctx context.Context, req *QueryGetGuardianSetRequest) (*QueryGetGuardianSetResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GuardianSet not implemented")
+func (*UnimplementedQueryServer) PhylaxSet(ctx context.Context, req *QueryGetPhylaxSetRequest) (*QueryGetPhylaxSetResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method PhylaxSet not implemented")
 }
-func (*UnimplementedQueryServer) GuardianSetAll(ctx context.Context, req *QueryAllGuardianSetRequest) (*QueryAllGuardianSetResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GuardianSetAll not implemented")
+func (*UnimplementedQueryServer) PhylaxSetAll(ctx context.Context, req *QueryAllPhylaxSetRequest) (*QueryAllPhylaxSetResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method PhylaxSetAll not implemented")
 }
 func (*UnimplementedQueryServer) Config(ctx context.Context, req *QueryGetConfigRequest) (*QueryGetConfigResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Config not implemented")
@@ -1773,17 +1773,17 @@ func (*UnimplementedQueryServer) SequenceCounter(ctx context.Context, req *Query
 func (*UnimplementedQueryServer) SequenceCounterAll(ctx context.Context, req *QueryAllSequenceCounterRequest) (*QueryAllSequenceCounterResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SequenceCounterAll not implemented")
 }
-func (*UnimplementedQueryServer) ConsensusGuardianSetIndex(ctx context.Context, req *QueryGetConsensusGuardianSetIndexRequest) (*QueryGetConsensusGuardianSetIndexResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ConsensusGuardianSetIndex not implemented")
+func (*UnimplementedQueryServer) ConsensusPhylaxSetIndex(ctx context.Context, req *QueryGetConsensusPhylaxSetIndexRequest) (*QueryGetConsensusPhylaxSetIndexResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ConsensusPhylaxSetIndex not implemented")
 }
-func (*UnimplementedQueryServer) GuardianValidator(ctx context.Context, req *QueryGetGuardianValidatorRequest) (*QueryGetGuardianValidatorResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GuardianValidator not implemented")
+func (*UnimplementedQueryServer) PhylaxValidator(ctx context.Context, req *QueryGetPhylaxValidatorRequest) (*QueryGetPhylaxValidatorResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method PhylaxValidator not implemented")
 }
-func (*UnimplementedQueryServer) GuardianValidatorAll(ctx context.Context, req *QueryAllGuardianValidatorRequest) (*QueryAllGuardianValidatorResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GuardianValidatorAll not implemented")
+func (*UnimplementedQueryServer) PhylaxValidatorAll(ctx context.Context, req *QueryAllPhylaxValidatorRequest) (*QueryAllPhylaxValidatorResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method PhylaxValidatorAll not implemented")
 }
-func (*UnimplementedQueryServer) LatestGuardianSetIndex(ctx context.Context, req *QueryLatestGuardianSetIndexRequest) (*QueryLatestGuardianSetIndexResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method LatestGuardianSetIndex not implemented")
+func (*UnimplementedQueryServer) LatestPhylaxSetIndex(ctx context.Context, req *QueryLatestPhylaxSetIndexRequest) (*QueryLatestPhylaxSetIndexResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method LatestPhylaxSetIndex not implemented")
 }
 func (*UnimplementedQueryServer) AllowlistAll(ctx context.Context, req *QueryAllValidatorAllowlist) (*QueryAllValidatorAllowlistResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AllowlistAll not implemented")
@@ -1802,38 +1802,38 @@ func RegisterQueryServer(s grpc1.Server, srv QueryServer) {
 	s.RegisterService(&_Query_serviceDesc, srv)
 }
 
-func _Query_GuardianSet_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(QueryGetGuardianSetRequest)
+func _Query_PhylaxSet_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryGetPhylaxSetRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(QueryServer).GuardianSet(ctx, in)
+		return srv.(QueryServer).PhylaxSet(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/wormhole_foundation.deltachain.wormhole.Query/GuardianSet",
+		FullMethod: "/wormhole_foundation.deltachain.wormhole.Query/PhylaxSet",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(QueryServer).GuardianSet(ctx, req.(*QueryGetGuardianSetRequest))
+		return srv.(QueryServer).PhylaxSet(ctx, req.(*QueryGetPhylaxSetRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Query_GuardianSetAll_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(QueryAllGuardianSetRequest)
+func _Query_PhylaxSetAll_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryAllPhylaxSetRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(QueryServer).GuardianSetAll(ctx, in)
+		return srv.(QueryServer).PhylaxSetAll(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/wormhole_foundation.deltachain.wormhole.Query/GuardianSetAll",
+		FullMethod: "/wormhole_foundation.deltachain.wormhole.Query/PhylaxSetAll",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(QueryServer).GuardianSetAll(ctx, req.(*QueryAllGuardianSetRequest))
+		return srv.(QueryServer).PhylaxSetAll(ctx, req.(*QueryAllPhylaxSetRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1928,74 +1928,74 @@ func _Query_SequenceCounterAll_Handler(srv interface{}, ctx context.Context, dec
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Query_ConsensusGuardianSetIndex_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(QueryGetConsensusGuardianSetIndexRequest)
+func _Query_ConsensusPhylaxSetIndex_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryGetConsensusPhylaxSetIndexRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(QueryServer).ConsensusGuardianSetIndex(ctx, in)
+		return srv.(QueryServer).ConsensusPhylaxSetIndex(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/wormhole_foundation.deltachain.wormhole.Query/ConsensusGuardianSetIndex",
+		FullMethod: "/wormhole_foundation.deltachain.wormhole.Query/ConsensusPhylaxSetIndex",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(QueryServer).ConsensusGuardianSetIndex(ctx, req.(*QueryGetConsensusGuardianSetIndexRequest))
+		return srv.(QueryServer).ConsensusPhylaxSetIndex(ctx, req.(*QueryGetConsensusPhylaxSetIndexRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Query_GuardianValidator_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(QueryGetGuardianValidatorRequest)
+func _Query_PhylaxValidator_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryGetPhylaxValidatorRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(QueryServer).GuardianValidator(ctx, in)
+		return srv.(QueryServer).PhylaxValidator(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/wormhole_foundation.deltachain.wormhole.Query/GuardianValidator",
+		FullMethod: "/wormhole_foundation.deltachain.wormhole.Query/PhylaxValidator",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(QueryServer).GuardianValidator(ctx, req.(*QueryGetGuardianValidatorRequest))
+		return srv.(QueryServer).PhylaxValidator(ctx, req.(*QueryGetPhylaxValidatorRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Query_GuardianValidatorAll_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(QueryAllGuardianValidatorRequest)
+func _Query_PhylaxValidatorAll_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryAllPhylaxValidatorRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(QueryServer).GuardianValidatorAll(ctx, in)
+		return srv.(QueryServer).PhylaxValidatorAll(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/wormhole_foundation.deltachain.wormhole.Query/GuardianValidatorAll",
+		FullMethod: "/wormhole_foundation.deltachain.wormhole.Query/PhylaxValidatorAll",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(QueryServer).GuardianValidatorAll(ctx, req.(*QueryAllGuardianValidatorRequest))
+		return srv.(QueryServer).PhylaxValidatorAll(ctx, req.(*QueryAllPhylaxValidatorRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Query_LatestGuardianSetIndex_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(QueryLatestGuardianSetIndexRequest)
+func _Query_LatestPhylaxSetIndex_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryLatestPhylaxSetIndexRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(QueryServer).LatestGuardianSetIndex(ctx, in)
+		return srv.(QueryServer).LatestPhylaxSetIndex(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/wormhole_foundation.deltachain.wormhole.Query/LatestGuardianSetIndex",
+		FullMethod: "/wormhole_foundation.deltachain.wormhole.Query/LatestPhylaxSetIndex",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(QueryServer).LatestGuardianSetIndex(ctx, req.(*QueryLatestGuardianSetIndexRequest))
+		return srv.(QueryServer).LatestPhylaxSetIndex(ctx, req.(*QueryLatestPhylaxSetIndexRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -2077,12 +2077,12 @@ var _Query_serviceDesc = grpc.ServiceDesc{
 	HandlerType: (*QueryServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "GuardianSet",
-			Handler:    _Query_GuardianSet_Handler,
+			MethodName: "PhylaxSet",
+			Handler:    _Query_PhylaxSet_Handler,
 		},
 		{
-			MethodName: "GuardianSetAll",
-			Handler:    _Query_GuardianSetAll_Handler,
+			MethodName: "PhylaxSetAll",
+			Handler:    _Query_PhylaxSetAll_Handler,
 		},
 		{
 			MethodName: "Config",
@@ -2105,20 +2105,20 @@ var _Query_serviceDesc = grpc.ServiceDesc{
 			Handler:    _Query_SequenceCounterAll_Handler,
 		},
 		{
-			MethodName: "ConsensusGuardianSetIndex",
-			Handler:    _Query_ConsensusGuardianSetIndex_Handler,
+			MethodName: "ConsensusPhylaxSetIndex",
+			Handler:    _Query_ConsensusPhylaxSetIndex_Handler,
 		},
 		{
-			MethodName: "GuardianValidator",
-			Handler:    _Query_GuardianValidator_Handler,
+			MethodName: "PhylaxValidator",
+			Handler:    _Query_PhylaxValidator_Handler,
 		},
 		{
-			MethodName: "GuardianValidatorAll",
-			Handler:    _Query_GuardianValidatorAll_Handler,
+			MethodName: "PhylaxValidatorAll",
+			Handler:    _Query_PhylaxValidatorAll_Handler,
 		},
 		{
-			MethodName: "LatestGuardianSetIndex",
-			Handler:    _Query_LatestGuardianSetIndex_Handler,
+			MethodName: "LatestPhylaxSetIndex",
+			Handler:    _Query_LatestPhylaxSetIndex_Handler,
 		},
 		{
 			MethodName: "AllowlistAll",
@@ -2323,7 +2323,7 @@ func (m *QueryValidatorAllowlistResponse) MarshalToSizedBuffer(dAtA []byte) (int
 	return len(dAtA) - i, nil
 }
 
-func (m *QueryGetGuardianSetRequest) Marshal() (dAtA []byte, err error) {
+func (m *QueryGetPhylaxSetRequest) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -2333,12 +2333,12 @@ func (m *QueryGetGuardianSetRequest) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *QueryGetGuardianSetRequest) MarshalTo(dAtA []byte) (int, error) {
+func (m *QueryGetPhylaxSetRequest) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *QueryGetGuardianSetRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *QueryGetPhylaxSetRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -2351,7 +2351,7 @@ func (m *QueryGetGuardianSetRequest) MarshalToSizedBuffer(dAtA []byte) (int, err
 	return len(dAtA) - i, nil
 }
 
-func (m *QueryGetGuardianSetResponse) Marshal() (dAtA []byte, err error) {
+func (m *QueryGetPhylaxSetResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -2361,18 +2361,18 @@ func (m *QueryGetGuardianSetResponse) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *QueryGetGuardianSetResponse) MarshalTo(dAtA []byte) (int, error) {
+func (m *QueryGetPhylaxSetResponse) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *QueryGetGuardianSetResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *QueryGetPhylaxSetResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
 	_ = l
 	{
-		size, err := m.GuardianSet.MarshalToSizedBuffer(dAtA[:i])
+		size, err := m.PhylaxSet.MarshalToSizedBuffer(dAtA[:i])
 		if err != nil {
 			return 0, err
 		}
@@ -2384,7 +2384,7 @@ func (m *QueryGetGuardianSetResponse) MarshalToSizedBuffer(dAtA []byte) (int, er
 	return len(dAtA) - i, nil
 }
 
-func (m *QueryAllGuardianSetRequest) Marshal() (dAtA []byte, err error) {
+func (m *QueryAllPhylaxSetRequest) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -2394,12 +2394,12 @@ func (m *QueryAllGuardianSetRequest) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *QueryAllGuardianSetRequest) MarshalTo(dAtA []byte) (int, error) {
+func (m *QueryAllPhylaxSetRequest) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *QueryAllGuardianSetRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *QueryAllPhylaxSetRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -2419,7 +2419,7 @@ func (m *QueryAllGuardianSetRequest) MarshalToSizedBuffer(dAtA []byte) (int, err
 	return len(dAtA) - i, nil
 }
 
-func (m *QueryAllGuardianSetResponse) Marshal() (dAtA []byte, err error) {
+func (m *QueryAllPhylaxSetResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -2429,12 +2429,12 @@ func (m *QueryAllGuardianSetResponse) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *QueryAllGuardianSetResponse) MarshalTo(dAtA []byte) (int, error) {
+func (m *QueryAllPhylaxSetResponse) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *QueryAllGuardianSetResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *QueryAllPhylaxSetResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -2451,10 +2451,10 @@ func (m *QueryAllGuardianSetResponse) MarshalToSizedBuffer(dAtA []byte) (int, er
 		i--
 		dAtA[i] = 0x12
 	}
-	if len(m.GuardianSet) > 0 {
-		for iNdEx := len(m.GuardianSet) - 1; iNdEx >= 0; iNdEx-- {
+	if len(m.PhylaxSet) > 0 {
+		for iNdEx := len(m.PhylaxSet) - 1; iNdEx >= 0; iNdEx-- {
 			{
-				size, err := m.GuardianSet[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				size, err := m.PhylaxSet[iNdEx].MarshalToSizedBuffer(dAtA[:i])
 				if err != nil {
 					return 0, err
 				}
@@ -2818,7 +2818,7 @@ func (m *QueryAllSequenceCounterResponse) MarshalToSizedBuffer(dAtA []byte) (int
 	return len(dAtA) - i, nil
 }
 
-func (m *QueryGetConsensusGuardianSetIndexRequest) Marshal() (dAtA []byte, err error) {
+func (m *QueryGetConsensusPhylaxSetIndexRequest) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -2828,12 +2828,12 @@ func (m *QueryGetConsensusGuardianSetIndexRequest) Marshal() (dAtA []byte, err e
 	return dAtA[:n], nil
 }
 
-func (m *QueryGetConsensusGuardianSetIndexRequest) MarshalTo(dAtA []byte) (int, error) {
+func (m *QueryGetConsensusPhylaxSetIndexRequest) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *QueryGetConsensusGuardianSetIndexRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *QueryGetConsensusPhylaxSetIndexRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -2841,7 +2841,7 @@ func (m *QueryGetConsensusGuardianSetIndexRequest) MarshalToSizedBuffer(dAtA []b
 	return len(dAtA) - i, nil
 }
 
-func (m *QueryGetConsensusGuardianSetIndexResponse) Marshal() (dAtA []byte, err error) {
+func (m *QueryGetConsensusPhylaxSetIndexResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -2851,18 +2851,18 @@ func (m *QueryGetConsensusGuardianSetIndexResponse) Marshal() (dAtA []byte, err 
 	return dAtA[:n], nil
 }
 
-func (m *QueryGetConsensusGuardianSetIndexResponse) MarshalTo(dAtA []byte) (int, error) {
+func (m *QueryGetConsensusPhylaxSetIndexResponse) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *QueryGetConsensusGuardianSetIndexResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *QueryGetConsensusPhylaxSetIndexResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
 	_ = l
 	{
-		size, err := m.ConsensusGuardianSetIndex.MarshalToSizedBuffer(dAtA[:i])
+		size, err := m.ConsensusPhylaxSetIndex.MarshalToSizedBuffer(dAtA[:i])
 		if err != nil {
 			return 0, err
 		}
@@ -2874,7 +2874,7 @@ func (m *QueryGetConsensusGuardianSetIndexResponse) MarshalToSizedBuffer(dAtA []
 	return len(dAtA) - i, nil
 }
 
-func (m *QueryGetGuardianValidatorRequest) Marshal() (dAtA []byte, err error) {
+func (m *QueryGetPhylaxValidatorRequest) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -2884,27 +2884,27 @@ func (m *QueryGetGuardianValidatorRequest) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *QueryGetGuardianValidatorRequest) MarshalTo(dAtA []byte) (int, error) {
+func (m *QueryGetPhylaxValidatorRequest) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *QueryGetGuardianValidatorRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *QueryGetPhylaxValidatorRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
 	_ = l
-	if len(m.GuardianKey) > 0 {
-		i -= len(m.GuardianKey)
-		copy(dAtA[i:], m.GuardianKey)
-		i = encodeVarintQuery(dAtA, i, uint64(len(m.GuardianKey)))
+	if len(m.PhylaxKey) > 0 {
+		i -= len(m.PhylaxKey)
+		copy(dAtA[i:], m.PhylaxKey)
+		i = encodeVarintQuery(dAtA, i, uint64(len(m.PhylaxKey)))
 		i--
 		dAtA[i] = 0xa
 	}
 	return len(dAtA) - i, nil
 }
 
-func (m *QueryGetGuardianValidatorResponse) Marshal() (dAtA []byte, err error) {
+func (m *QueryGetPhylaxValidatorResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -2914,18 +2914,18 @@ func (m *QueryGetGuardianValidatorResponse) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *QueryGetGuardianValidatorResponse) MarshalTo(dAtA []byte) (int, error) {
+func (m *QueryGetPhylaxValidatorResponse) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *QueryGetGuardianValidatorResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *QueryGetPhylaxValidatorResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
 	_ = l
 	{
-		size, err := m.GuardianValidator.MarshalToSizedBuffer(dAtA[:i])
+		size, err := m.PhylaxValidator.MarshalToSizedBuffer(dAtA[:i])
 		if err != nil {
 			return 0, err
 		}
@@ -2937,7 +2937,7 @@ func (m *QueryGetGuardianValidatorResponse) MarshalToSizedBuffer(dAtA []byte) (i
 	return len(dAtA) - i, nil
 }
 
-func (m *QueryAllGuardianValidatorRequest) Marshal() (dAtA []byte, err error) {
+func (m *QueryAllPhylaxValidatorRequest) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -2947,12 +2947,12 @@ func (m *QueryAllGuardianValidatorRequest) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *QueryAllGuardianValidatorRequest) MarshalTo(dAtA []byte) (int, error) {
+func (m *QueryAllPhylaxValidatorRequest) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *QueryAllGuardianValidatorRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *QueryAllPhylaxValidatorRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -2972,7 +2972,7 @@ func (m *QueryAllGuardianValidatorRequest) MarshalToSizedBuffer(dAtA []byte) (in
 	return len(dAtA) - i, nil
 }
 
-func (m *QueryAllGuardianValidatorResponse) Marshal() (dAtA []byte, err error) {
+func (m *QueryAllPhylaxValidatorResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -2982,12 +2982,12 @@ func (m *QueryAllGuardianValidatorResponse) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *QueryAllGuardianValidatorResponse) MarshalTo(dAtA []byte) (int, error) {
+func (m *QueryAllPhylaxValidatorResponse) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *QueryAllGuardianValidatorResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *QueryAllPhylaxValidatorResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -3004,10 +3004,10 @@ func (m *QueryAllGuardianValidatorResponse) MarshalToSizedBuffer(dAtA []byte) (i
 		i--
 		dAtA[i] = 0x12
 	}
-	if len(m.GuardianValidator) > 0 {
-		for iNdEx := len(m.GuardianValidator) - 1; iNdEx >= 0; iNdEx-- {
+	if len(m.PhylaxValidator) > 0 {
+		for iNdEx := len(m.PhylaxValidator) - 1; iNdEx >= 0; iNdEx-- {
 			{
-				size, err := m.GuardianValidator[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				size, err := m.PhylaxValidator[iNdEx].MarshalToSizedBuffer(dAtA[:i])
 				if err != nil {
 					return 0, err
 				}
@@ -3021,7 +3021,7 @@ func (m *QueryAllGuardianValidatorResponse) MarshalToSizedBuffer(dAtA []byte) (i
 	return len(dAtA) - i, nil
 }
 
-func (m *QueryLatestGuardianSetIndexRequest) Marshal() (dAtA []byte, err error) {
+func (m *QueryLatestPhylaxSetIndexRequest) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -3031,12 +3031,12 @@ func (m *QueryLatestGuardianSetIndexRequest) Marshal() (dAtA []byte, err error) 
 	return dAtA[:n], nil
 }
 
-func (m *QueryLatestGuardianSetIndexRequest) MarshalTo(dAtA []byte) (int, error) {
+func (m *QueryLatestPhylaxSetIndexRequest) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *QueryLatestGuardianSetIndexRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *QueryLatestPhylaxSetIndexRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -3044,7 +3044,7 @@ func (m *QueryLatestGuardianSetIndexRequest) MarshalToSizedBuffer(dAtA []byte) (
 	return len(dAtA) - i, nil
 }
 
-func (m *QueryLatestGuardianSetIndexResponse) Marshal() (dAtA []byte, err error) {
+func (m *QueryLatestPhylaxSetIndexResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -3054,18 +3054,18 @@ func (m *QueryLatestGuardianSetIndexResponse) Marshal() (dAtA []byte, err error)
 	return dAtA[:n], nil
 }
 
-func (m *QueryLatestGuardianSetIndexResponse) MarshalTo(dAtA []byte) (int, error) {
+func (m *QueryLatestPhylaxSetIndexResponse) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *QueryLatestGuardianSetIndexResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *QueryLatestPhylaxSetIndexResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
 	_ = l
-	if m.LatestGuardianSetIndex != 0 {
-		i = encodeVarintQuery(dAtA, i, uint64(m.LatestGuardianSetIndex))
+	if m.LatestPhylaxSetIndex != 0 {
+		i = encodeVarintQuery(dAtA, i, uint64(m.LatestPhylaxSetIndex))
 		i--
 		dAtA[i] = 0x8
 	}
@@ -3292,7 +3292,7 @@ func (m *QueryValidatorAllowlistResponse) Size() (n int) {
 	return n
 }
 
-func (m *QueryGetGuardianSetRequest) Size() (n int) {
+func (m *QueryGetPhylaxSetRequest) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -3304,18 +3304,18 @@ func (m *QueryGetGuardianSetRequest) Size() (n int) {
 	return n
 }
 
-func (m *QueryGetGuardianSetResponse) Size() (n int) {
+func (m *QueryGetPhylaxSetResponse) Size() (n int) {
 	if m == nil {
 		return 0
 	}
 	var l int
 	_ = l
-	l = m.GuardianSet.Size()
+	l = m.PhylaxSet.Size()
 	n += 1 + l + sovQuery(uint64(l))
 	return n
 }
 
-func (m *QueryAllGuardianSetRequest) Size() (n int) {
+func (m *QueryAllPhylaxSetRequest) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -3328,14 +3328,14 @@ func (m *QueryAllGuardianSetRequest) Size() (n int) {
 	return n
 }
 
-func (m *QueryAllGuardianSetResponse) Size() (n int) {
+func (m *QueryAllPhylaxSetResponse) Size() (n int) {
 	if m == nil {
 		return 0
 	}
 	var l int
 	_ = l
-	if len(m.GuardianSet) > 0 {
-		for _, e := range m.GuardianSet {
+	if len(m.PhylaxSet) > 0 {
+		for _, e := range m.PhylaxSet {
 			l = e.Size()
 			n += 1 + l + sovQuery(uint64(l))
 		}
@@ -3479,7 +3479,7 @@ func (m *QueryAllSequenceCounterResponse) Size() (n int) {
 	return n
 }
 
-func (m *QueryGetConsensusGuardianSetIndexRequest) Size() (n int) {
+func (m *QueryGetConsensusPhylaxSetIndexRequest) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -3488,42 +3488,42 @@ func (m *QueryGetConsensusGuardianSetIndexRequest) Size() (n int) {
 	return n
 }
 
-func (m *QueryGetConsensusGuardianSetIndexResponse) Size() (n int) {
+func (m *QueryGetConsensusPhylaxSetIndexResponse) Size() (n int) {
 	if m == nil {
 		return 0
 	}
 	var l int
 	_ = l
-	l = m.ConsensusGuardianSetIndex.Size()
+	l = m.ConsensusPhylaxSetIndex.Size()
 	n += 1 + l + sovQuery(uint64(l))
 	return n
 }
 
-func (m *QueryGetGuardianValidatorRequest) Size() (n int) {
+func (m *QueryGetPhylaxValidatorRequest) Size() (n int) {
 	if m == nil {
 		return 0
 	}
 	var l int
 	_ = l
-	l = len(m.GuardianKey)
+	l = len(m.PhylaxKey)
 	if l > 0 {
 		n += 1 + l + sovQuery(uint64(l))
 	}
 	return n
 }
 
-func (m *QueryGetGuardianValidatorResponse) Size() (n int) {
+func (m *QueryGetPhylaxValidatorResponse) Size() (n int) {
 	if m == nil {
 		return 0
 	}
 	var l int
 	_ = l
-	l = m.GuardianValidator.Size()
+	l = m.PhylaxValidator.Size()
 	n += 1 + l + sovQuery(uint64(l))
 	return n
 }
 
-func (m *QueryAllGuardianValidatorRequest) Size() (n int) {
+func (m *QueryAllPhylaxValidatorRequest) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -3536,14 +3536,14 @@ func (m *QueryAllGuardianValidatorRequest) Size() (n int) {
 	return n
 }
 
-func (m *QueryAllGuardianValidatorResponse) Size() (n int) {
+func (m *QueryAllPhylaxValidatorResponse) Size() (n int) {
 	if m == nil {
 		return 0
 	}
 	var l int
 	_ = l
-	if len(m.GuardianValidator) > 0 {
-		for _, e := range m.GuardianValidator {
+	if len(m.PhylaxValidator) > 0 {
+		for _, e := range m.PhylaxValidator {
 			l = e.Size()
 			n += 1 + l + sovQuery(uint64(l))
 		}
@@ -3555,7 +3555,7 @@ func (m *QueryAllGuardianValidatorResponse) Size() (n int) {
 	return n
 }
 
-func (m *QueryLatestGuardianSetIndexRequest) Size() (n int) {
+func (m *QueryLatestPhylaxSetIndexRequest) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -3564,14 +3564,14 @@ func (m *QueryLatestGuardianSetIndexRequest) Size() (n int) {
 	return n
 }
 
-func (m *QueryLatestGuardianSetIndexResponse) Size() (n int) {
+func (m *QueryLatestPhylaxSetIndexResponse) Size() (n int) {
 	if m == nil {
 		return 0
 	}
 	var l int
 	_ = l
-	if m.LatestGuardianSetIndex != 0 {
-		n += 1 + sovQuery(uint64(m.LatestGuardianSetIndex))
+	if m.LatestPhylaxSetIndex != 0 {
+		n += 1 + sovQuery(uint64(m.LatestPhylaxSetIndex))
 	}
 	return n
 }
@@ -4112,7 +4112,7 @@ func (m *QueryValidatorAllowlistResponse) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *QueryGetGuardianSetRequest) Unmarshal(dAtA []byte) error {
+func (m *QueryGetPhylaxSetRequest) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -4135,10 +4135,10 @@ func (m *QueryGetGuardianSetRequest) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: QueryGetGuardianSetRequest: wiretype end group for non-group")
+			return fmt.Errorf("proto: QueryGetPhylaxSetRequest: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: QueryGetGuardianSetRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: QueryGetPhylaxSetRequest: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -4181,7 +4181,7 @@ func (m *QueryGetGuardianSetRequest) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *QueryGetGuardianSetResponse) Unmarshal(dAtA []byte) error {
+func (m *QueryGetPhylaxSetResponse) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -4204,15 +4204,15 @@ func (m *QueryGetGuardianSetResponse) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: QueryGetGuardianSetResponse: wiretype end group for non-group")
+			return fmt.Errorf("proto: QueryGetPhylaxSetResponse: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: QueryGetGuardianSetResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: QueryGetPhylaxSetResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field GuardianSet", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field PhylaxSet", wireType)
 			}
 			var msglen int
 			for shift := uint(0); ; shift += 7 {
@@ -4239,7 +4239,7 @@ func (m *QueryGetGuardianSetResponse) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			if err := m.GuardianSet.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+			if err := m.PhylaxSet.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex
@@ -4264,7 +4264,7 @@ func (m *QueryGetGuardianSetResponse) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *QueryAllGuardianSetRequest) Unmarshal(dAtA []byte) error {
+func (m *QueryAllPhylaxSetRequest) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -4287,10 +4287,10 @@ func (m *QueryAllGuardianSetRequest) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: QueryAllGuardianSetRequest: wiretype end group for non-group")
+			return fmt.Errorf("proto: QueryAllPhylaxSetRequest: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: QueryAllGuardianSetRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: QueryAllPhylaxSetRequest: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -4350,7 +4350,7 @@ func (m *QueryAllGuardianSetRequest) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *QueryAllGuardianSetResponse) Unmarshal(dAtA []byte) error {
+func (m *QueryAllPhylaxSetResponse) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -4373,15 +4373,15 @@ func (m *QueryAllGuardianSetResponse) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: QueryAllGuardianSetResponse: wiretype end group for non-group")
+			return fmt.Errorf("proto: QueryAllPhylaxSetResponse: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: QueryAllGuardianSetResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: QueryAllPhylaxSetResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field GuardianSet", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field PhylaxSet", wireType)
 			}
 			var msglen int
 			for shift := uint(0); ; shift += 7 {
@@ -4408,8 +4408,8 @@ func (m *QueryAllGuardianSetResponse) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.GuardianSet = append(m.GuardianSet, GuardianSet{})
-			if err := m.GuardianSet[len(m.GuardianSet)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+			m.PhylaxSet = append(m.PhylaxSet, PhylaxSet{})
+			if err := m.PhylaxSet[len(m.PhylaxSet)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex
@@ -5345,7 +5345,7 @@ func (m *QueryAllSequenceCounterResponse) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *QueryGetConsensusGuardianSetIndexRequest) Unmarshal(dAtA []byte) error {
+func (m *QueryGetConsensusPhylaxSetIndexRequest) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -5368,10 +5368,10 @@ func (m *QueryGetConsensusGuardianSetIndexRequest) Unmarshal(dAtA []byte) error 
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: QueryGetConsensusGuardianSetIndexRequest: wiretype end group for non-group")
+			return fmt.Errorf("proto: QueryGetConsensusPhylaxSetIndexRequest: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: QueryGetConsensusGuardianSetIndexRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: QueryGetConsensusPhylaxSetIndexRequest: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		default:
@@ -5395,7 +5395,7 @@ func (m *QueryGetConsensusGuardianSetIndexRequest) Unmarshal(dAtA []byte) error 
 	}
 	return nil
 }
-func (m *QueryGetConsensusGuardianSetIndexResponse) Unmarshal(dAtA []byte) error {
+func (m *QueryGetConsensusPhylaxSetIndexResponse) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -5418,15 +5418,15 @@ func (m *QueryGetConsensusGuardianSetIndexResponse) Unmarshal(dAtA []byte) error
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: QueryGetConsensusGuardianSetIndexResponse: wiretype end group for non-group")
+			return fmt.Errorf("proto: QueryGetConsensusPhylaxSetIndexResponse: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: QueryGetConsensusGuardianSetIndexResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: QueryGetConsensusPhylaxSetIndexResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field ConsensusGuardianSetIndex", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field ConsensusPhylaxSetIndex", wireType)
 			}
 			var msglen int
 			for shift := uint(0); ; shift += 7 {
@@ -5453,7 +5453,7 @@ func (m *QueryGetConsensusGuardianSetIndexResponse) Unmarshal(dAtA []byte) error
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			if err := m.ConsensusGuardianSetIndex.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+			if err := m.ConsensusPhylaxSetIndex.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex
@@ -5478,7 +5478,7 @@ func (m *QueryGetConsensusGuardianSetIndexResponse) Unmarshal(dAtA []byte) error
 	}
 	return nil
 }
-func (m *QueryGetGuardianValidatorRequest) Unmarshal(dAtA []byte) error {
+func (m *QueryGetPhylaxValidatorRequest) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -5501,15 +5501,15 @@ func (m *QueryGetGuardianValidatorRequest) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: QueryGetGuardianValidatorRequest: wiretype end group for non-group")
+			return fmt.Errorf("proto: QueryGetPhylaxValidatorRequest: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: QueryGetGuardianValidatorRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: QueryGetPhylaxValidatorRequest: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field GuardianKey", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field PhylaxKey", wireType)
 			}
 			var byteLen int
 			for shift := uint(0); ; shift += 7 {
@@ -5536,9 +5536,9 @@ func (m *QueryGetGuardianValidatorRequest) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.GuardianKey = append(m.GuardianKey[:0], dAtA[iNdEx:postIndex]...)
-			if m.GuardianKey == nil {
-				m.GuardianKey = []byte{}
+			m.PhylaxKey = append(m.PhylaxKey[:0], dAtA[iNdEx:postIndex]...)
+			if m.PhylaxKey == nil {
+				m.PhylaxKey = []byte{}
 			}
 			iNdEx = postIndex
 		default:
@@ -5562,7 +5562,7 @@ func (m *QueryGetGuardianValidatorRequest) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *QueryGetGuardianValidatorResponse) Unmarshal(dAtA []byte) error {
+func (m *QueryGetPhylaxValidatorResponse) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -5585,15 +5585,15 @@ func (m *QueryGetGuardianValidatorResponse) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: QueryGetGuardianValidatorResponse: wiretype end group for non-group")
+			return fmt.Errorf("proto: QueryGetPhylaxValidatorResponse: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: QueryGetGuardianValidatorResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: QueryGetPhylaxValidatorResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field GuardianValidator", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field PhylaxValidator", wireType)
 			}
 			var msglen int
 			for shift := uint(0); ; shift += 7 {
@@ -5620,7 +5620,7 @@ func (m *QueryGetGuardianValidatorResponse) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			if err := m.GuardianValidator.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+			if err := m.PhylaxValidator.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex
@@ -5645,7 +5645,7 @@ func (m *QueryGetGuardianValidatorResponse) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *QueryAllGuardianValidatorRequest) Unmarshal(dAtA []byte) error {
+func (m *QueryAllPhylaxValidatorRequest) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -5668,10 +5668,10 @@ func (m *QueryAllGuardianValidatorRequest) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: QueryAllGuardianValidatorRequest: wiretype end group for non-group")
+			return fmt.Errorf("proto: QueryAllPhylaxValidatorRequest: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: QueryAllGuardianValidatorRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: QueryAllPhylaxValidatorRequest: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -5731,7 +5731,7 @@ func (m *QueryAllGuardianValidatorRequest) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *QueryAllGuardianValidatorResponse) Unmarshal(dAtA []byte) error {
+func (m *QueryAllPhylaxValidatorResponse) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -5754,15 +5754,15 @@ func (m *QueryAllGuardianValidatorResponse) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: QueryAllGuardianValidatorResponse: wiretype end group for non-group")
+			return fmt.Errorf("proto: QueryAllPhylaxValidatorResponse: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: QueryAllGuardianValidatorResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: QueryAllPhylaxValidatorResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field GuardianValidator", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field PhylaxValidator", wireType)
 			}
 			var msglen int
 			for shift := uint(0); ; shift += 7 {
@@ -5789,8 +5789,8 @@ func (m *QueryAllGuardianValidatorResponse) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.GuardianValidator = append(m.GuardianValidator, GuardianValidator{})
-			if err := m.GuardianValidator[len(m.GuardianValidator)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+			m.PhylaxValidator = append(m.PhylaxValidator, PhylaxValidator{})
+			if err := m.PhylaxValidator[len(m.PhylaxValidator)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex
@@ -5851,7 +5851,7 @@ func (m *QueryAllGuardianValidatorResponse) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *QueryLatestGuardianSetIndexRequest) Unmarshal(dAtA []byte) error {
+func (m *QueryLatestPhylaxSetIndexRequest) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -5874,10 +5874,10 @@ func (m *QueryLatestGuardianSetIndexRequest) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: QueryLatestGuardianSetIndexRequest: wiretype end group for non-group")
+			return fmt.Errorf("proto: QueryLatestPhylaxSetIndexRequest: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: QueryLatestGuardianSetIndexRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: QueryLatestPhylaxSetIndexRequest: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		default:
@@ -5901,7 +5901,7 @@ func (m *QueryLatestGuardianSetIndexRequest) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *QueryLatestGuardianSetIndexResponse) Unmarshal(dAtA []byte) error {
+func (m *QueryLatestPhylaxSetIndexResponse) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -5924,17 +5924,17 @@ func (m *QueryLatestGuardianSetIndexResponse) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: QueryLatestGuardianSetIndexResponse: wiretype end group for non-group")
+			return fmt.Errorf("proto: QueryLatestPhylaxSetIndexResponse: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: QueryLatestGuardianSetIndexResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: QueryLatestPhylaxSetIndexResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
 			if wireType != 0 {
-				return fmt.Errorf("proto: wrong wireType = %d for field LatestGuardianSetIndex", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field LatestPhylaxSetIndex", wireType)
 			}
-			m.LatestGuardianSetIndex = 0
+			m.LatestPhylaxSetIndex = 0
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowQuery
@@ -5944,7 +5944,7 @@ func (m *QueryLatestGuardianSetIndexResponse) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				m.LatestGuardianSetIndex |= uint32(b&0x7F) << shift
+				m.LatestPhylaxSetIndex |= uint32(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}

@@ -5,14 +5,14 @@ import "wormhole/guardian.proto";
 import "gogoproto/gogo.proto";
 option go_package = "github.com/deltaswapio/deltachain/x/wormhole/types";
 
-// GuardianSetUpdateProposal defines a guardian set update governance proposal
-message GuardianSetUpdateProposal {
+// PhylaxSetUpdateProposal defines a guardian set update governance proposal
+message PhylaxSetUpdateProposal {
   option (gogoproto.equal)            = true;
   option (gogoproto.goproto_stringer) = false;
 
   string title       = 1;
   string description = 2;
-  GuardianSet newGuardianSet = 3 [(gogoproto.nullable) = false];
+  PhylaxSet newPhylaxSet = 3 [(gogoproto.nullable) = false];
 }
 
 // GovernanceWormholeMessageProposal defines a governance proposal to emit a generic message in the governance message

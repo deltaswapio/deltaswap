@@ -5,7 +5,7 @@ import {
   isCI,
   waitForRelay,
   PRIVATE_KEY,
-  getGuardianRPC,
+  getPhylaxRPC,
   GUARDIAN_KEYS,
   GUARDIAN_SET_INDEX,
   GOVERNANCE_EMITTER_ADDRESS,
@@ -23,7 +23,7 @@ import {
   ChainName,
   Network,
 } from "../../../";
-import { GovernanceEmitter, MockGuardians } from "../../../src/mock";
+import { GovernanceEmitter, MockPhylaxs } from "../../../src/mock";
 import { Implementation__factory } from "../../ethers-contracts";
 import { deliver } from "../relayer";
 import { NodeHttpTransport } from "@improbable-eng/grpc-web-node-http-transport";
@@ -111,7 +111,7 @@ const optionalParamsTarget = {
 };
 
 // for signing wormhole messages
-const guardians = new MockGuardians(GUARDIAN_SET_INDEX, GUARDIAN_KEYS);
+const guardians = new MockPhylaxs(GUARDIAN_SET_INDEX, GUARDIAN_KEYS);
 
 // for generating governance wormhole messages
 const governance = new GovernanceEmitter(GOVERNANCE_EMITTER_ADDRESS);
@@ -274,7 +274,7 @@ describe("Wormhole Relayer Tests", () => {
       { wormholeRelayerAddresses, ...optionalParams }
     )) as relayer.DeliveryInfo;
 
-    const rpc = getGuardianRPC(network, ci);
+    const rpc = getPhylaxRPC(network, ci);
     const emitterAddress = Buffer.from(
       tryNativeToUint8Array(source.wormholeRelayerAddress, "ethereum")
     );
@@ -290,7 +290,7 @@ describe("Wormhole Relayer Tests", () => {
     const deliveryRx = await deliver(
       deliveryVaa.vaaBytes,
       target.wallet,
-      getGuardianRPC(network, ci),
+      getPhylaxRPC(network, ci),
       network,
       {
         newExecutionInfo: Buffer.from(
@@ -457,7 +457,7 @@ describe("Wormhole Relayer Tests", () => {
       REASONABLE_GAS_LIMIT,
       0,
       await source.wormholeRelayer.getDefaultDeliveryProvider(),
-      [getGuardianRPC(network, ci)],
+      [getPhylaxRPC(network, ci)],
       {
         value: value,
         gasLimit: REASONABLE_GAS_LIMIT,

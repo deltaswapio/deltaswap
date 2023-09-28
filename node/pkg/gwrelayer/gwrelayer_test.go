@@ -94,7 +94,7 @@ func Test_shouldPublishToTokenBridge(t *testing.T) {
 		t.Run(string(tc.label), func(t *testing.T) {
 			v := &vaa.VAA{
 				Version:          uint8(1),
-				GuardianSetIndex: uint32(1),
+				PhylaxSetIndex:   uint32(1),
 				Signatures:       []*vaa.Signature{},
 				Timestamp:        time.Unix(0, 0),
 				Nonce:            uint32(1),

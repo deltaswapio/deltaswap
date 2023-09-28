@@ -42,7 +42,7 @@ export async function execute_algorand(
 
       target_contract = contracts.core;
       switch (payload.type) {
-        case "GuardianSetUpgrade":
+        case "PhylaxSetUpgrade":
           console.log("Submitting new guardian set");
           break;
         case "ContractUpgrade":

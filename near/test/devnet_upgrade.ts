@@ -104,7 +104,7 @@ async function testDeploy() {
 
   let ts = new TestLib();
   let seq = 1;
-  let vaa = ts.genCoreUpdate(ts.singleGuardianPrivKey, 0, 0, seq, CHAIN_ID_NEAR, h);
+  let vaa = ts.genCoreUpdate(ts.singlePhylaxPrivKey, 0, 0, seq, CHAIN_ID_NEAR, h);
 
   let wormholeAccount = new nearAPI.Account(
     near.connection,
@@ -137,7 +137,7 @@ async function testDeploy() {
 
   h = hash(tokenContract);
   seq = seq + 1
-  vaa = ts.genTokenUpdate(ts.singleGuardianPrivKey, 0, 0, seq, CHAIN_ID_NEAR, h);
+  vaa = ts.genTokenUpdate(ts.singlePhylaxPrivKey, 0, 0, seq, CHAIN_ID_NEAR, h);
 
   console.log("submitting vaa");
   result = await userAccount.functionCall({

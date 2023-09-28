@@ -68,8 +68,8 @@ func createWasmMigratePayload(code_id uint64, contract string, json_msg string) 
 }
 
 type Testbench struct {
-	guardians       []types.GuardianValidator
-	set             types.GuardianSet
+	guardians       []types.PhylaxValidator
+	set             types.PhylaxSet
 	privateKeys     []*ecdsa.PrivateKey
 	signer          sdk.AccAddress
 	context         context.Context
@@ -78,18 +78,18 @@ type Testbench struct {
 	contractAddress string
 }
 
-func setupAccountantAndGuardianSet(t *testing.T, ctx sdk.Context, k *keeper.Keeper) *Testbench {
+func setupAccountantAndPhylaxSet(t *testing.T, ctx sdk.Context, k *keeper.Keeper) *Testbench {
 	signer_bz := [20]byte{}
 	signer := sdk.AccAddress(signer_bz[:])
 
-	guardians, privateKeys := createNGuardianValidator(k, ctx, 10)
+	guardians, privateKeys := createNPhylaxValidator(k, ctx, 10)
 	k.SetConfig(ctx, types.Config{
-		GovernanceEmitter:     vaa.GovernanceEmitter[:],
-		GovernanceChain:       uint32(vaa.GovernanceChain),
-		ChainId:               uint32(vaa.ChainIDWormchain),
-		GuardianSetExpiration: 86400,
+		GovernanceEmitter:   vaa.GovernanceEmitter[:],
+		GovernanceChain:     uint32(vaa.GovernanceChain),
+		ChainId:             uint32(vaa.ChainIDWormchain),
+		PhylaxSetExpiration: 86400,
 	})
-	set := createNewGuardianSet(k, ctx, guardians)
+	set := createNewPhylaxSet(k, ctx, guardians)
 	context := sdk.WrapSDKContext(ctx)
 	msgServer := keeper.NewMsgServerImpl(*k)
 
@@ -133,18 +133,18 @@ func setupAccountantAndGuardianSet(t *testing.T, ctx sdk.Context, k *keeper.Keep
 
 func TestWasmdStoreCode(t *testing.T) {
 	k, ctx := keepertest.WormholeKeeper(t)
-	guardians, privateKeys := createNGuardianValidator(k, ctx, 10)
+	guardians, privateKeys := createNPhylaxValidator(k, ctx, 10)
 	_ = privateKeys
 	k.SetConfig(ctx, types.Config{
-		GovernanceEmitter:     vaa.GovernanceEmitter[:],
-		GovernanceChain:       uint32(vaa.GovernanceChain),
-		ChainId:               uint32(vaa.ChainIDWormchain),
-		GuardianSetExpiration: 86400,
+		GovernanceEmitter:   vaa.GovernanceEmitter[:],
+		GovernanceChain:     uint32(vaa.GovernanceChain),
+		ChainId:             uint32(vaa.ChainIDWormchain),
+		PhylaxSetExpiration: 86400,
 	})
 	signer_bz := [20]byte{}
 	signer := sdk.AccAddress(signer_bz[:])
 
-	set := createNewGuardianSet(k, ctx, guardians)
+	set := createNewPhylaxSet(k, ctx, guardians)
 
 	context := sdk.WrapSDKContext(ctx)
 	msgServer := keeper.NewMsgServerImpl(*k)
@@ -202,18 +202,18 @@ func TestWasmdStoreCode(t *testing.T) {
 
 func TestWasmdInstantiateContract(t *testing.T) {
 	k, ctx := keepertest.WormholeKeeper(t)
-	guardians, privateKeys := createNGuardianValidator(k, ctx, 10)
+	guardians, privateKeys := createNPhylaxValidator(k, ctx, 10)
 	_ = privateKeys
 	k.SetConfig(ctx, types.Config{
-		GovernanceEmitter:     vaa.GovernanceEmitter[:],
-		GovernanceChain:       uint32(vaa.GovernanceChain),
-		ChainId:               uint32(vaa.ChainIDWormchain),
-		GuardianSetExpiration: 86400,
+		GovernanceEmitter:   vaa.GovernanceEmitter[:],
+		GovernanceChain:     uint32(vaa.GovernanceChain),
+		ChainId:             uint32(vaa.ChainIDWormchain),
+		PhylaxSetExpiration: 86400,
 	})
 	signer_bz := [20]byte{}
 	signer := sdk.AccAddress(signer_bz[:])
 
-	set := createNewGuardianSet(k, ctx, guardians)
+	set := createNewPhylaxSet(k, ctx, guardians)
 
 	context := sdk.WrapSDKContext(ctx)
 	msgServer := keeper.NewMsgServerImpl(*k)
@@ -327,7 +327,7 @@ func TestWasmdInstantiateContract(t *testing.T) {
 
 func TestWasmdMigrateContract(t *testing.T) {
 	k, ctx := keepertest.WormholeKeeper(t)
-	tb := setupAccountantAndGuardianSet(t, ctx, k)
+	tb := setupAccountantAndPhylaxSet(t, ctx, k)
 
 	// First we need to (1) upload some codes and (2) instantiate.
 	// (1) upload
@@ -478,7 +478,7 @@ func TestWasmdAccountantContractModify(t *testing.T) {
 	k, wasmd, permissionedWasmd, ctx := keepertest.WormholeKeeperAndWasmd(t)
 	_ = permissionedWasmd
 
-	tb := setupAccountantAndGuardianSet(t, ctx, k)
+	tb := setupAccountantAndPhylaxSet(t, ctx, k)
 
 	contract_addr, err := sdk.AccAddressFromBech32(tb.contractAddress)
 	require.NoError(t, err)
@@ -533,7 +533,7 @@ func TestWasmdAccountantContractSubmitObservation(t *testing.T) {
 	k, _, permissionedWasmd, ctx := keepertest.WormholeKeeperAndWasmd(t)
 	_ = permissionedWasmd
 
-	tb := setupAccountantAndGuardianSet(t, ctx, k)
+	tb := setupAccountantAndPhylaxSet(t, ctx, k)
 
 	contract_addr, err := sdk.AccAddressFromBech32(tb.contractAddress)
 	require.NoError(t, err)

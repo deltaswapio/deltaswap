@@ -5,12 +5,12 @@ import "contracts/Setters.sol";
 
 contract MySetters is Setters {
 
-    function updateGuardianSetIndex_external(uint32 newIndex) external {
-        updateGuardianSetIndex(newIndex);
+    function updatePhylaxSetIndex_external(uint32 newIndex) external {
+        updatePhylaxSetIndex(newIndex);
     }
 
-    function expireGuardianSet_external(uint32 index) external {
-        expireGuardianSet(index);
+    function expirePhylaxSet_external(uint32 index) external {
+        expirePhylaxSet(index);
     }
 
     function setInitialized_external(address implementation) external {

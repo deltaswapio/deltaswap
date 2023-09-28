@@ -88,7 +88,7 @@ type (
 		// The current primary chain is Ethereum (a mostly arbitrary decision because it
 		// has the best API - we might want to switch the primary chain to Solana once
 		// the governance mechanism lives there),
-		setC chan<- *common.GuardianSet
+		setC chan<- *common.PhylaxSet
 
 		// Incoming re-observation requests from the network. Pre-filtered to only
 		// include requests for our chainID.
@@ -98,7 +98,7 @@ type (
 		pendingMu sync.Mutex
 
 		// 0 is a valid guardian set, so we need a nil value here
-		currentGuardianSet *uint32
+		currentPhylaxSet *uint32
 
 		// waitForConfirmations indicates if we should wait for the number of confirmations specified by the consistencyLevel in the message.
 		// On many of the chains, we already wait for finalized blocks so there is no point in waiting any additional blocks after finality.
@@ -141,7 +141,7 @@ func NewEthWatcher(
 	networkName string,
 	chainID vaa.ChainID,
 	msgC chan<- *common.MessagePublication,
-	setC chan<- *common.GuardianSet,
+	setC chan<- *common.PhylaxSet,
 	obsvReqC <-chan *gossipv1.ObservationRequest,
 	unsafeDevMode bool,
 ) *Watcher {
@@ -358,7 +358,7 @@ func (w *Watcher) Run(parentCtx context.Context) error {
 	defer messageSub.Unsubscribe()
 
 	// Fetch initial guardian set
-	if err := w.fetchAndUpdateGuardianSet(logger, ctx, w.ethConn); err != nil {
+	if err := w.fetchAndUpdatePhylaxSet(logger, ctx, w.ethConn); err != nil {
 		return fmt.Errorf("failed to request guardian set: %v", err)
 	}
 
@@ -371,7 +371,7 @@ func (w *Watcher) Run(parentCtx context.Context) error {
 			case <-ctx.Done():
 				return nil
 			case <-t.C:
-				if err := w.fetchAndUpdateGuardianSet(logger, ctx, w.ethConn); err != nil {
+				if err := w.fetchAndUpdatePhylaxSet(logger, ctx, w.ethConn); err != nil {
 					errC <- fmt.Errorf("failed to request guardian set: %v", err)
 					return nil
 				}
@@ -803,7 +803,7 @@ func (w *Watcher) Run(parentCtx context.Context) error {
 	}
 }
 
-func (w *Watcher) fetchAndUpdateGuardianSet(
+func (w *Watcher) fetchAndUpdatePhylaxSet(
 	logger *zap.Logger,
 	ctx context.Context,
 	ethConn connectors.Connector,
@@ -812,7 +812,7 @@ func (w *Watcher) fetchAndUpdateGuardianSet(
 	logger.Debug("fetching guardian set")
 	timeout, cancel := context.WithTimeout(ctx, 15*time.Second)
 	defer cancel()
-	idx, gs, err := fetchCurrentGuardianSet(timeout, ethConn)
+	idx, gs, err := fetchCurrentPhylaxSet(timeout, ethConn)
 	if err != nil {
 		ethConnectionErrors.WithLabelValues(w.networkName, "guardian_set_fetch_error").Inc()
 		p2p.DefaultRegistry.AddErrorCount(w.chainID, 1)
@@ -821,7 +821,7 @@ func (w *Watcher) fetchAndUpdateGuardianSet(
 
 	queryLatency.WithLabelValues(w.networkName, "get_guardian_set").Observe(time.Since(msm).Seconds())
 
-	if w.currentGuardianSet != nil && *(w.currentGuardianSet) == idx {
+	if w.currentPhylaxSet != nil && *(w.currentPhylaxSet) == idx {
 		return nil
 	}
 
@@ -829,10 +829,10 @@ func (w *Watcher) fetchAndUpdateGuardianSet(
 		zap.Any("value", gs), zap.Uint32("index", idx),
 		zap.String("eth_network", w.networkName))
 
-	w.currentGuardianSet = &idx
+	w.currentPhylaxSet = &idx
 
 	if w.setC != nil {
-		w.setC <- &common.GuardianSet{
+		w.setC <- &common.PhylaxSet{
 			Keys:  gs.Keys,
 			Index: idx,
 		}
@@ -842,13 +842,13 @@ func (w *Watcher) fetchAndUpdateGuardianSet(
 }
 
 // Fetch the current guardian set ID and guardian set from the chain.
-func fetchCurrentGuardianSet(ctx context.Context, ethConn connectors.Connector) (uint32, *ethabi.StructsGuardianSet, error) {
-	currentIndex, err := ethConn.GetCurrentGuardianSetIndex(ctx)
+func fetchCurrentPhylaxSet(ctx context.Context, ethConn connectors.Connector) (uint32, *ethabi.StructsPhylaxSet, error) {
+	currentIndex, err := ethConn.GetCurrentPhylaxSetIndex(ctx)
 	if err != nil {
 		return 0, nil, fmt.Errorf("error requesting current guardian set index: %w", err)
 	}
 
-	gs, err := ethConn.GetGuardianSet(ctx, currentIndex)
+	gs, err := ethConn.GetPhylaxSet(ctx, currentIndex)
 	if err != nil {
 		return 0, nil, fmt.Errorf("error requesting current guardian set value: %w", err)
 	}

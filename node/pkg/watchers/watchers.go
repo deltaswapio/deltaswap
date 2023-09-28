@@ -20,7 +20,7 @@ type WatcherConfig interface {
 	Create(
 		msgC chan<- *common.MessagePublication,
 		obsvReqC <-chan *gossipv1.ObservationRequest,
-		setC chan<- *common.GuardianSet,
+		setC chan<- *common.PhylaxSet,
 		env common.Environment,
 	) (interfaces.L1Finalizer, supervisor.Runnable, error)
 }

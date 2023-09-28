@@ -365,7 +365,7 @@ class PortalCore:
 
     def getGovSet(self):
         s = self.client.application_info(self.coreid)["params"]["global-state"]
-        k = base64.b64encode(b"currentGuardianSetIndex").decode('utf-8')
+        k = base64.b64encode(b"currentPhylaxSetIndex").decode('utf-8')
         for x in s:
             if x["key"] == k:
                 return x["value"]["uint"]
@@ -602,14 +602,14 @@ class PortalCore:
         else:
             return grp[-1].get_txid()
 
-    def bootGuardians(self, vaa, client, sender, coreid):
+    def bootPhylaxs(self, vaa, client, sender, coreid):
         p = self.parseVAA(vaa)
-        if "NewGuardianSetIndex" not in p:
+        if "NewPhylaxSetIndex" not in p:
             raise Exception("invalid guardian VAA")
 
         seq_addr = self.optin(client, sender, coreid, int(p["sequence"] / max_bits), p["chainRaw"].hex() + p["emitter"].hex())
         guardian_addr = self.optin(client, sender, coreid, p["index"], b"guardian".hex())
-        newguardian_addr = self.optin(client, sender, coreid, p["NewGuardianSetIndex"], b"guardian".hex())
+        newguardian_addr = self.optin(client, sender, coreid, p["NewPhylaxSetIndex"], b"guardian".hex())
 
         # wormhole is not a cheap protocol... we need to buy ourselves
         # some extra CPU cycles by having an early txn do nothing.
@@ -842,7 +842,7 @@ class PortalCore:
 
         # If this happens to be setting up a new guardian set, we probably need it as well...
         if p["Meta"] == "CoreGovernance" and p["action"] == 2:
-            newguardian_addr = self.optin(client, sender, self.coreid, p["NewGuardianSetIndex"], b"guardian".hex())
+            newguardian_addr = self.optin(client, sender, self.coreid, p["NewPhylaxSetIndex"], b"guardian".hex())
             accts.append(newguardian_addr)
 
         # When we attest for a new token, we need some place to store the info... later we will need to 
@@ -1117,7 +1117,7 @@ class PortalCore:
             ret["targetChain"] = int.from_bytes(vaa[off:(off + 2)], "big")
             off += 2
             if ret["action"] == 2:
-                ret["NewGuardianSetIndex"] = int.from_bytes(vaa[off:(off + 4)], "big")
+                ret["NewPhylaxSetIndex"] = int.from_bytes(vaa[off:(off + 4)], "big")
             else:
                 ret["Contract"] = vaa[off:(off + 32)].hex()
 
@@ -1291,9 +1291,9 @@ class PortalCore:
                             print("guardianPrivKeys: " + str(self.gt.guardianPrivKeys))
 
                             seq = int(random.random() * (2**31))
-                            bootVAA = self.gt.genGuardianSetUpgrade(self.gt.guardianPrivKeys, self.args.guardianSet, self.args.guardianSet, seq, seq)
+                            bootVAA = self.gt.genPhylaxSetUpgrade(self.gt.guardianPrivKeys, self.args.guardianSet, self.args.guardianSet, seq, seq)
                             print("dev vaa: " + bootVAA)
-                            self.bootGuardians(bytes.fromhex(bootVAA), self.client, self.foundation, self.coreid)
+                            self.bootPhylaxs(bytes.fromhex(bootVAA), self.client, self.foundation, self.coreid)
                 seq = int(random.random() * (2**31))
                 regChain = self.gt.genRegisterChain(self.gt.guardianPrivKeys, self.args.guardianSet, seq, seq, 8, decode_address(get_application_address(self.tokenid)).hex())
                 print("ALGO_TOKEN_BRIDGE_VAA=" + regChain)
@@ -1462,9 +1462,9 @@ class PortalCore:
         parser.add_argument('--fund', action='store_true', help='Generate some accounts and fund them')
         parser.add_argument('--testnet', action='store_true', help='Connect to testnet')
         parser.add_argument('--mainnet', action='store_true', help='Connect to mainnet')
-        parser.add_argument('--bootGuardian', type=str, help='Submit the supplied VAA', default="")
+        parser.add_argument('--bootPhylax', type=str, help='Submit the supplied VAA', default="")
         parser.add_argument('--rpc', type=str, help='RPC address', default="")
-        parser.add_argument('--guardianKeys', type=str, help='GuardianKeys', default="")
+        parser.add_argument('--guardianKeys', type=str, help='PhylaxKeys', default="")
         parser.add_argument('--guardianPrivKeys', type=str, help='guardianPrivKeys', default="")
         parser.add_argument('--approve', type=str, help='compiled approve contract', default="")
         parser.add_argument('--clear', type=str, help='compiled clear contract', default="")
@@ -1608,10 +1608,10 @@ class PortalCore:
             pprint.pprint(self.parseVAA(vaa))
             self.submitVAA(vaa, self.client, self.foundation, int(self.args.appid))
 
-        if args.bootGuardian != "":
-            vaa = bytes.fromhex(args.bootGuardian)
+        if args.bootPhylax != "":
+            vaa = bytes.fromhex(args.bootPhylax)
             pprint.pprint(self.parseVAA(vaa))
-            response = self.bootGuardians(vaa, self.client, self.foundation, self.coreid)
+            response = self.bootPhylaxs(vaa, self.client, self.foundation, self.coreid)
             pprint.pprint(response.__dict__)
 
         if args.fundDevAccounts:

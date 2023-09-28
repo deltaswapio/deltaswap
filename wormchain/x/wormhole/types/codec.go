@@ -10,7 +10,7 @@ import (
 
 func RegisterCodec(cdc *codec.LegacyAmino) {
 	cdc.RegisterConcrete(&MsgExecuteGovernanceVAA{}, "wormhole/ExecuteGovernanceVAA", nil)
-	cdc.RegisterConcrete(&MsgRegisterAccountAsGuardian{}, "wormhole/RegisterAccountAsGuardian", nil)
+	cdc.RegisterConcrete(&MsgRegisterAccountAsPhylax{}, "wormhole/RegisterAccountAsPhylax", nil)
 	cdc.RegisterConcrete(&MsgStoreCode{}, "wormhole/StoreCode", nil)
 	cdc.RegisterConcrete(&MsgInstantiateContract{}, "wormhole/InstantiateContract", nil)
 	cdc.RegisterConcrete(&MsgMigrateContract{}, "wormhole/MigrateContract", nil)
@@ -34,9 +34,9 @@ func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 	)
 	registry.RegisterImplementations((*gov.Content)(nil),
 		&GovernanceWormholeMessageProposal{},
-		&GuardianSetUpdateProposal{})
+		&PhylaxSetUpdateProposal{})
 	registry.RegisterImplementations((*sdk.Msg)(nil),
-		&MsgRegisterAccountAsGuardian{},
+		&MsgRegisterAccountAsPhylax{},
 	)
 	// this line is used by starport scaffolding # 3
 

@@ -24,17 +24,17 @@ func GetQueryCmd(queryRoute string) *cobra.Command {
 		RunE:                       client.ValidateCmd,
 	}
 
-	cmd.AddCommand(CmdListGuardianSet())
-	cmd.AddCommand(CmdShowGuardianSet())
+	cmd.AddCommand(CmdListPhylaxSet())
+	cmd.AddCommand(CmdShowPhylaxSet())
 	cmd.AddCommand(CmdShowConfig())
 	cmd.AddCommand(CmdListReplayProtection())
 	cmd.AddCommand(CmdShowReplayProtection())
 	cmd.AddCommand(CmdListSequenceCounter())
 	cmd.AddCommand(CmdShowSequenceCounter())
-	cmd.AddCommand(CmdShowConsensusGuardianSetIndex())
-	cmd.AddCommand(CmdListGuardianValidator())
-	cmd.AddCommand(CmdShowGuardianValidator())
-	cmd.AddCommand(CmdLatestGuardianSetIndex())
+	cmd.AddCommand(CmdShowConsensusPhylaxSetIndex())
+	cmd.AddCommand(CmdListPhylaxValidator())
+	cmd.AddCommand(CmdShowPhylaxValidator())
+	cmd.AddCommand(CmdLatestPhylaxSetIndex())
 	cmd.AddCommand(CmdListAllowlists())
 	cmd.AddCommand(CmdShowAllowlist())
 	cmd.AddCommand(CmdShowIbcComposabilityMwContract())

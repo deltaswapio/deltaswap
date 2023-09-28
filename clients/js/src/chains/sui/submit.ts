@@ -51,7 +51,7 @@ export const submit = async (
       switch (payload.type) {
         case "ContractUpgrade":
           throw new Error("ContractUpgrade not supported on Sui");
-        case "GuardianSetUpgrade": {
+        case "PhylaxSetUpgrade": {
           console.log("Submitting new guardian set");
           const tx = new TransactionBlock();
           setMaxGasBudgetDevnet(network, tx);

@@ -7,21 +7,21 @@ pub enum ContractError {
     #[error("InvalidVersion")]
     InvalidVersion,
 
-    /// Guardian set with this index does not exist
-    #[error("InvalidGuardianSetIndex")]
-    InvalidGuardianSetIndex,
+    /// Phylax set with this index does not exist
+    #[error("InvalidPhylaxSetIndex")]
+    InvalidPhylaxSetIndex,
 
-    /// Guardian set expiration date is zero or in the past
-    #[error("GuardianSetExpired")]
-    GuardianSetExpired,
+    /// Phylax set expiration date is zero or in the past
+    #[error("PhylaxSetExpired")]
+    PhylaxSetExpired,
 
     /// Not enough signers on the VAA
     #[error("NoQuorum")]
     NoQuorum,
 
     /// Wrong guardian index order, order must be ascending
-    #[error("WrongGuardianIndexOrder")]
-    WrongGuardianIndexOrder,
+    #[error("WrongPhylaxIndexOrder")]
+    WrongPhylaxIndexOrder,
 
     /// Some problem with signature decoding from bytes
     #[error("CannotDecodeSignature")]
@@ -32,16 +32,16 @@ pub enum ContractError {
     CannotRecoverKey,
 
     /// Recovered pubkey from signature does not match guardian address
-    #[error("GuardianSignatureError")]
-    GuardianSignatureError,
+    #[error("PhylaxSignatureError")]
+    PhylaxSignatureError,
 
     /// VAA action code not recognized
     #[error("InvalidVAAAction")]
     InvalidVAAAction,
 
     /// VAA guardian set is not current
-    #[error("NotCurrentGuardianSet")]
-    NotCurrentGuardianSet,
+    #[error("NotCurrentPhylaxSet")]
+    NotCurrentPhylaxSet,
 
     /// Only 128-bit amounts are supported
     #[error("AmountTooHigh")]
@@ -63,9 +63,9 @@ pub enum ContractError {
     #[error("AssetAlreadyRegistered")]
     AssetAlreadyRegistered,
 
-    /// Guardian set must increase in steps of 1
-    #[error("GuardianSetIndexIncreaseError")]
-    GuardianSetIndexIncreaseError,
+    /// Phylax set must increase in steps of 1
+    #[error("PhylaxSetIndexIncreaseError")]
+    PhylaxSetIndexIncreaseError,
 
     /// VAA was already executed
     #[error("VaaAlreadyExecuted")]

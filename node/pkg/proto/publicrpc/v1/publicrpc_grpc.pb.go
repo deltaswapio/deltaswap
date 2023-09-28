@@ -24,7 +24,7 @@ type PublicRPCServiceClient interface {
 	GetLastHeartbeats(ctx context.Context, in *GetLastHeartbeatsRequest, opts ...grpc.CallOption) (*GetLastHeartbeatsResponse, error)
 	GetSignedVAA(ctx context.Context, in *GetSignedVAARequest, opts ...grpc.CallOption) (*GetSignedVAAResponse, error)
 	GetSignedBatchVAA(ctx context.Context, in *GetSignedBatchVAARequest, opts ...grpc.CallOption) (*GetSignedBatchVAAResponse, error)
-	GetCurrentGuardianSet(ctx context.Context, in *GetCurrentGuardianSetRequest, opts ...grpc.CallOption) (*GetCurrentGuardianSetResponse, error)
+	GetCurrentPhylaxSet(ctx context.Context, in *GetCurrentPhylaxSetRequest, opts ...grpc.CallOption) (*GetCurrentPhylaxSetResponse, error)
 	GovernorGetAvailableNotionalByChain(ctx context.Context, in *GovernorGetAvailableNotionalByChainRequest, opts ...grpc.CallOption) (*GovernorGetAvailableNotionalByChainResponse, error)
 	GovernorGetEnqueuedVAAs(ctx context.Context, in *GovernorGetEnqueuedVAAsRequest, opts ...grpc.CallOption) (*GovernorGetEnqueuedVAAsResponse, error)
 	GovernorIsVAAEnqueued(ctx context.Context, in *GovernorIsVAAEnqueuedRequest, opts ...grpc.CallOption) (*GovernorIsVAAEnqueuedResponse, error)
@@ -66,9 +66,9 @@ func (c *publicRPCServiceClient) GetSignedBatchVAA(ctx context.Context, in *GetS
 	return out, nil
 }
 
-func (c *publicRPCServiceClient) GetCurrentGuardianSet(ctx context.Context, in *GetCurrentGuardianSetRequest, opts ...grpc.CallOption) (*GetCurrentGuardianSetResponse, error) {
-	out := new(GetCurrentGuardianSetResponse)
-	err := c.cc.Invoke(ctx, "/publicrpc.v1.PublicRPCService/GetCurrentGuardianSet", in, out, opts...)
+func (c *publicRPCServiceClient) GetCurrentPhylaxSet(ctx context.Context, in *GetCurrentPhylaxSetRequest, opts ...grpc.CallOption) (*GetCurrentPhylaxSetResponse, error) {
+	out := new(GetCurrentPhylaxSetResponse)
+	err := c.cc.Invoke(ctx, "/publicrpc.v1.PublicRPCService/GetCurrentPhylaxSet", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -121,7 +121,7 @@ type PublicRPCServiceServer interface {
 	GetLastHeartbeats(context.Context, *GetLastHeartbeatsRequest) (*GetLastHeartbeatsResponse, error)
 	GetSignedVAA(context.Context, *GetSignedVAARequest) (*GetSignedVAAResponse, error)
 	GetSignedBatchVAA(context.Context, *GetSignedBatchVAARequest) (*GetSignedBatchVAAResponse, error)
-	GetCurrentGuardianSet(context.Context, *GetCurrentGuardianSetRequest) (*GetCurrentGuardianSetResponse, error)
+	GetCurrentPhylaxSet(context.Context, *GetCurrentPhylaxSetRequest) (*GetCurrentPhylaxSetResponse, error)
 	GovernorGetAvailableNotionalByChain(context.Context, *GovernorGetAvailableNotionalByChainRequest) (*GovernorGetAvailableNotionalByChainResponse, error)
 	GovernorGetEnqueuedVAAs(context.Context, *GovernorGetEnqueuedVAAsRequest) (*GovernorGetEnqueuedVAAsResponse, error)
 	GovernorIsVAAEnqueued(context.Context, *GovernorIsVAAEnqueuedRequest) (*GovernorIsVAAEnqueuedResponse, error)
@@ -142,8 +142,8 @@ func (UnimplementedPublicRPCServiceServer) GetSignedVAA(context.Context, *GetSig
 func (UnimplementedPublicRPCServiceServer) GetSignedBatchVAA(context.Context, *GetSignedBatchVAARequest) (*GetSignedBatchVAAResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetSignedBatchVAA not implemented")
 }
-func (UnimplementedPublicRPCServiceServer) GetCurrentGuardianSet(context.Context, *GetCurrentGuardianSetRequest) (*GetCurrentGuardianSetResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetCurrentGuardianSet not implemented")
+func (UnimplementedPublicRPCServiceServer) GetCurrentPhylaxSet(context.Context, *GetCurrentPhylaxSetRequest) (*GetCurrentPhylaxSetResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetCurrentPhylaxSet not implemented")
 }
 func (UnimplementedPublicRPCServiceServer) GovernorGetAvailableNotionalByChain(context.Context, *GovernorGetAvailableNotionalByChainRequest) (*GovernorGetAvailableNotionalByChainResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GovernorGetAvailableNotionalByChain not implemented")
@@ -224,20 +224,20 @@ func _PublicRPCService_GetSignedBatchVAA_Handler(srv interface{}, ctx context.Co
 	return interceptor(ctx, in, info, handler)
 }
 
-func _PublicRPCService_GetCurrentGuardianSet_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetCurrentGuardianSetRequest)
+func _PublicRPCService_GetCurrentPhylaxSet_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetCurrentPhylaxSetRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(PublicRPCServiceServer).GetCurrentGuardianSet(ctx, in)
+		return srv.(PublicRPCServiceServer).GetCurrentPhylaxSet(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/publicrpc.v1.PublicRPCService/GetCurrentGuardianSet",
+		FullMethod: "/publicrpc.v1.PublicRPCService/GetCurrentPhylaxSet",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(PublicRPCServiceServer).GetCurrentGuardianSet(ctx, req.(*GetCurrentGuardianSetRequest))
+		return srv.(PublicRPCServiceServer).GetCurrentPhylaxSet(ctx, req.(*GetCurrentPhylaxSetRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -334,8 +334,8 @@ var PublicRPCService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _PublicRPCService_GetSignedBatchVAA_Handler,
 		},
 		{
-			MethodName: "GetCurrentGuardianSet",
-			Handler:    _PublicRPCService_GetCurrentGuardianSet_Handler,
+			MethodName: "GetCurrentPhylaxSet",
+			Handler:    _PublicRPCService_GetCurrentPhylaxSet_Handler,
 		},
 		{
 			MethodName: "GovernorGetAvailableNotionalByChain",

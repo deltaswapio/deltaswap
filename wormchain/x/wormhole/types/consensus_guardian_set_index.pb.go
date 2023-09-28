@@ -22,22 +22,22 @@ var _ = math.Inf
 // proto package needs to be updated.
 const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
-type ConsensusGuardianSetIndex struct {
+type ConsensusPhylaxSetIndex struct {
 	Index uint32 `protobuf:"varint,1,opt,name=index,proto3" json:"index,omitempty"`
 }
 
-func (m *ConsensusGuardianSetIndex) Reset()         { *m = ConsensusGuardianSetIndex{} }
-func (m *ConsensusGuardianSetIndex) String() string { return proto.CompactTextString(m) }
-func (*ConsensusGuardianSetIndex) ProtoMessage()    {}
-func (*ConsensusGuardianSetIndex) Descriptor() ([]byte, []int) {
+func (m *ConsensusPhylaxSetIndex) Reset()         { *m = ConsensusPhylaxSetIndex{} }
+func (m *ConsensusPhylaxSetIndex) String() string { return proto.CompactTextString(m) }
+func (*ConsensusPhylaxSetIndex) ProtoMessage()    {}
+func (*ConsensusPhylaxSetIndex) Descriptor() ([]byte, []int) {
 	return fileDescriptor_18e45d0c16ad5fce, []int{0}
 }
-func (m *ConsensusGuardianSetIndex) XXX_Unmarshal(b []byte) error {
+func (m *ConsensusPhylaxSetIndex) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *ConsensusGuardianSetIndex) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *ConsensusPhylaxSetIndex) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_ConsensusGuardianSetIndex.Marshal(b, m, deterministic)
+		return xxx_messageInfo_ConsensusPhylaxSetIndex.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -47,19 +47,19 @@ func (m *ConsensusGuardianSetIndex) XXX_Marshal(b []byte, deterministic bool) ([
 		return b[:n], nil
 	}
 }
-func (m *ConsensusGuardianSetIndex) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_ConsensusGuardianSetIndex.Merge(m, src)
+func (m *ConsensusPhylaxSetIndex) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ConsensusPhylaxSetIndex.Merge(m, src)
 }
-func (m *ConsensusGuardianSetIndex) XXX_Size() int {
+func (m *ConsensusPhylaxSetIndex) XXX_Size() int {
 	return m.Size()
 }
-func (m *ConsensusGuardianSetIndex) XXX_DiscardUnknown() {
-	xxx_messageInfo_ConsensusGuardianSetIndex.DiscardUnknown(m)
+func (m *ConsensusPhylaxSetIndex) XXX_DiscardUnknown() {
+	xxx_messageInfo_ConsensusPhylaxSetIndex.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_ConsensusGuardianSetIndex proto.InternalMessageInfo
+var xxx_messageInfo_ConsensusPhylaxSetIndex proto.InternalMessageInfo
 
-func (m *ConsensusGuardianSetIndex) GetIndex() uint32 {
+func (m *ConsensusPhylaxSetIndex) GetIndex() uint32 {
 	if m != nil {
 		return m.Index
 	}
@@ -67,7 +67,7 @@ func (m *ConsensusGuardianSetIndex) GetIndex() uint32 {
 }
 
 func init() {
-	proto.RegisterType((*ConsensusGuardianSetIndex)(nil), "wormhole_foundation.deltachain.wormhole.ConsensusGuardianSetIndex")
+	proto.RegisterType((*ConsensusPhylaxSetIndex)(nil), "wormhole_foundation.deltachain.wormhole.ConsensusPhylaxSetIndex")
 }
 
 func init() {
@@ -90,7 +90,7 @@ var fileDescriptor_18e45d0c16ad5fce = []byte{
 	0x01, 0x01, 0x00, 0x00, 0xff, 0xff, 0x90, 0x7c, 0x1c, 0x4e, 0xe5, 0x00, 0x00, 0x00,
 }
 
-func (m *ConsensusGuardianSetIndex) Marshal() (dAtA []byte, err error) {
+func (m *ConsensusPhylaxSetIndex) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -100,26 +100,26 @@ func (m *ConsensusGuardianSetIndex) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *ConsensusGuardianSetIndex) MarshalTo(dAtA []byte) (int, error) {
+func (m *ConsensusPhylaxSetIndex) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *ConsensusGuardianSetIndex) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *ConsensusPhylaxSetIndex) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
 	_ = l
 	if m.Index != 0 {
-		i = encodeVarintConsensusGuardianSetIndex(dAtA, i, uint64(m.Index))
+		i = encodeVarintConsensusPhylaxSetIndex(dAtA, i, uint64(m.Index))
 		i--
 		dAtA[i] = 0x8
 	}
 	return len(dAtA) - i, nil
 }
 
-func encodeVarintConsensusGuardianSetIndex(dAtA []byte, offset int, v uint64) int {
-	offset -= sovConsensusGuardianSetIndex(v)
+func encodeVarintConsensusPhylaxSetIndex(dAtA []byte, offset int, v uint64) int {
+	offset -= sovConsensusPhylaxSetIndex(v)
 	base := offset
 	for v >= 1<<7 {
 		dAtA[offset] = uint8(v&0x7f | 0x80)
@@ -129,25 +129,25 @@ func encodeVarintConsensusGuardianSetIndex(dAtA []byte, offset int, v uint64) in
 	dAtA[offset] = uint8(v)
 	return base
 }
-func (m *ConsensusGuardianSetIndex) Size() (n int) {
+func (m *ConsensusPhylaxSetIndex) Size() (n int) {
 	if m == nil {
 		return 0
 	}
 	var l int
 	_ = l
 	if m.Index != 0 {
-		n += 1 + sovConsensusGuardianSetIndex(uint64(m.Index))
+		n += 1 + sovConsensusPhylaxSetIndex(uint64(m.Index))
 	}
 	return n
 }
 
-func sovConsensusGuardianSetIndex(x uint64) (n int) {
+func sovConsensusPhylaxSetIndex(x uint64) (n int) {
 	return (math_bits.Len64(x|1) + 6) / 7
 }
-func sozConsensusGuardianSetIndex(x uint64) (n int) {
-	return sovConsensusGuardianSetIndex(uint64((x << 1) ^ uint64((int64(x) >> 63))))
+func sozConsensusPhylaxSetIndex(x uint64) (n int) {
+	return sovConsensusPhylaxSetIndex(uint64((x << 1) ^ uint64((int64(x) >> 63))))
 }
-func (m *ConsensusGuardianSetIndex) Unmarshal(dAtA []byte) error {
+func (m *ConsensusPhylaxSetIndex) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -155,7 +155,7 @@ func (m *ConsensusGuardianSetIndex) Unmarshal(dAtA []byte) error {
 		var wire uint64
 		for shift := uint(0); ; shift += 7 {
 			if shift >= 64 {
-				return ErrIntOverflowConsensusGuardianSetIndex
+				return ErrIntOverflowConsensusPhylaxSetIndex
 			}
 			if iNdEx >= l {
 				return io.ErrUnexpectedEOF
@@ -170,10 +170,10 @@ func (m *ConsensusGuardianSetIndex) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: ConsensusGuardianSetIndex: wiretype end group for non-group")
+			return fmt.Errorf("proto: ConsensusPhylaxSetIndex: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: ConsensusGuardianSetIndex: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: ConsensusPhylaxSetIndex: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -183,7 +183,7 @@ func (m *ConsensusGuardianSetIndex) Unmarshal(dAtA []byte) error {
 			m.Index = 0
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
-					return ErrIntOverflowConsensusGuardianSetIndex
+					return ErrIntOverflowConsensusPhylaxSetIndex
 				}
 				if iNdEx >= l {
 					return io.ErrUnexpectedEOF
@@ -197,12 +197,12 @@ func (m *ConsensusGuardianSetIndex) Unmarshal(dAtA []byte) error {
 			}
 		default:
 			iNdEx = preIndex
-			skippy, err := skipConsensusGuardianSetIndex(dAtA[iNdEx:])
+			skippy, err := skipConsensusPhylaxSetIndex(dAtA[iNdEx:])
 			if err != nil {
 				return err
 			}
 			if (skippy < 0) || (iNdEx+skippy) < 0 {
-				return ErrInvalidLengthConsensusGuardianSetIndex
+				return ErrInvalidLengthConsensusPhylaxSetIndex
 			}
 			if (iNdEx + skippy) > l {
 				return io.ErrUnexpectedEOF
@@ -216,7 +216,7 @@ func (m *ConsensusGuardianSetIndex) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func skipConsensusGuardianSetIndex(dAtA []byte) (n int, err error) {
+func skipConsensusPhylaxSetIndex(dAtA []byte) (n int, err error) {
 	l := len(dAtA)
 	iNdEx := 0
 	depth := 0
@@ -224,7 +224,7 @@ func skipConsensusGuardianSetIndex(dAtA []byte) (n int, err error) {
 		var wire uint64
 		for shift := uint(0); ; shift += 7 {
 			if shift >= 64 {
-				return 0, ErrIntOverflowConsensusGuardianSetIndex
+				return 0, ErrIntOverflowConsensusPhylaxSetIndex
 			}
 			if iNdEx >= l {
 				return 0, io.ErrUnexpectedEOF
@@ -241,7 +241,7 @@ func skipConsensusGuardianSetIndex(dAtA []byte) (n int, err error) {
 		case 0:
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
-					return 0, ErrIntOverflowConsensusGuardianSetIndex
+					return 0, ErrIntOverflowConsensusPhylaxSetIndex
 				}
 				if iNdEx >= l {
 					return 0, io.ErrUnexpectedEOF
@@ -257,7 +257,7 @@ func skipConsensusGuardianSetIndex(dAtA []byte) (n int, err error) {
 			var length int
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
-					return 0, ErrIntOverflowConsensusGuardianSetIndex
+					return 0, ErrIntOverflowConsensusPhylaxSetIndex
 				}
 				if iNdEx >= l {
 					return 0, io.ErrUnexpectedEOF
@@ -270,14 +270,14 @@ func skipConsensusGuardianSetIndex(dAtA []byte) (n int, err error) {
 				}
 			}
 			if length < 0 {
-				return 0, ErrInvalidLengthConsensusGuardianSetIndex
+				return 0, ErrInvalidLengthConsensusPhylaxSetIndex
 			}
 			iNdEx += length
 		case 3:
 			depth++
 		case 4:
 			if depth == 0 {
-				return 0, ErrUnexpectedEndOfGroupConsensusGuardianSetIndex
+				return 0, ErrUnexpectedEndOfGroupConsensusPhylaxSetIndex
 			}
 			depth--
 		case 5:
@@ -286,7 +286,7 @@ func skipConsensusGuardianSetIndex(dAtA []byte) (n int, err error) {
 			return 0, fmt.Errorf("proto: illegal wireType %d", wireType)
 		}
 		if iNdEx < 0 {
-			return 0, ErrInvalidLengthConsensusGuardianSetIndex
+			return 0, ErrInvalidLengthConsensusPhylaxSetIndex
 		}
 		if depth == 0 {
 			return iNdEx, nil
@@ -296,7 +296,7 @@ func skipConsensusGuardianSetIndex(dAtA []byte) (n int, err error) {
 }
 
 var (
-	ErrInvalidLengthConsensusGuardianSetIndex        = fmt.Errorf("proto: negative length found during unmarshaling")
-	ErrIntOverflowConsensusGuardianSetIndex          = fmt.Errorf("proto: integer overflow")
-	ErrUnexpectedEndOfGroupConsensusGuardianSetIndex = fmt.Errorf("proto: unexpected end of group")
+	ErrInvalidLengthConsensusPhylaxSetIndex        = fmt.Errorf("proto: negative length found during unmarshaling")
+	ErrIntOverflowConsensusPhylaxSetIndex          = fmt.Errorf("proto: integer overflow")
+	ErrUnexpectedEndOfGroupConsensusPhylaxSetIndex = fmt.Errorf("proto: unexpected end of group")
 )

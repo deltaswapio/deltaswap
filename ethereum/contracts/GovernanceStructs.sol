@@ -15,7 +15,7 @@ contract GovernanceStructs {
 
     enum GovernanceAction {
         UpgradeContract,
-        UpgradeGuardianset
+        UpgradePhylaxset
     }
 
     struct ContractUpgrade {
@@ -26,13 +26,13 @@ contract GovernanceStructs {
         address newContract;
     }
 
-    struct GuardianSetUpgrade {
+    struct PhylaxSetUpgrade {
         bytes32 module;
         uint8 action;
         uint16 chain;
 
-        Structs.GuardianSet newGuardianSet;
-        uint32 newGuardianSetIndex;
+        Structs.PhylaxSet newPhylaxSet;
+        uint32 newPhylaxSetIndex;
     }
 
     struct SetMessageFee {
@@ -82,7 +82,7 @@ contract GovernanceStructs {
     }
 
     /// @dev Parse a guardianSet upgrade (action 2) with minimal validation
-    function parseGuardianSetUpgrade(bytes memory encodedUpgrade) public pure returns (GuardianSetUpgrade memory gsu) {
+    function parsePhylaxSetUpgrade(bytes memory encodedUpgrade) public pure returns (PhylaxSetUpgrade memory gsu) {
         uint index = 0;
 
         gsu.module = encodedUpgrade.toBytes32(index);
@@ -91,28 +91,28 @@ contract GovernanceStructs {
         gsu.action = encodedUpgrade.toUint8(index);
         index += 1;
 
-        require(gsu.action == 2, "invalid GuardianSetUpgrade");
+        require(gsu.action == 2, "invalid PhylaxSetUpgrade");
 
         gsu.chain = encodedUpgrade.toUint16(index);
         index += 2;
 
-        gsu.newGuardianSetIndex = encodedUpgrade.toUint32(index);
+        gsu.newPhylaxSetIndex = encodedUpgrade.toUint32(index);
         index += 4;
 
         uint8 guardianLength = encodedUpgrade.toUint8(index);
         index += 1;
 
-        gsu.newGuardianSet = Structs.GuardianSet({
+        gsu.newPhylaxSet = Structs.PhylaxSet({
             keys : new address[](guardianLength),
             expirationTime : 0
         });
 
         for(uint i = 0; i < guardianLength; i++) {
-            gsu.newGuardianSet.keys[i] = encodedUpgrade.toAddress(index);
+            gsu.newPhylaxSet.keys[i] = encodedUpgrade.toAddress(index);
             index += 20;
         }
 
-        require(encodedUpgrade.length == index, "invalid GuardianSetUpgrade");
+        require(encodedUpgrade.length == index, "invalid PhylaxSetUpgrade");
     }
 
     /// @dev Parse a setMessageFee (action 3) with minimal validation

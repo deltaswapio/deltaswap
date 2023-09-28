@@ -47,13 +47,13 @@ func runListNodes(cmd *cobra.Command, args []string) {
 		log.Fatalf("failed to list nodes: %v", err)
 	}
 
-	gs, err := c.GetCurrentGuardianSet(ctx, &publicrpcv1.GetCurrentGuardianSetRequest{})
+	gs, err := c.GetCurrentPhylaxSet(ctx, &publicrpcv1.GetCurrentPhylaxSetRequest{})
 	if err != nil {
 		log.Fatalf("failed to list current guardian get: %v", err)
 	}
 
 	log.Printf("current guardian set index: %d (%d guardians)",
-		gs.GuardianSet.Index, len(gs.GuardianSet.Addresses))
+		gs.PhylaxSet.Index, len(gs.PhylaxSet.Addresses))
 
 	nodes := lastHeartbeats.Entries
 
@@ -70,7 +70,7 @@ func runListNodes(cmd *cobra.Command, args []string) {
 
 	headers := []string{
 		"Node key",
-		"Guardian key",
+		"Phylax key",
 		"Node name",
 		"Version",
 		"Last seen",
@@ -162,7 +162,7 @@ func runListNodes(cmd *cobra.Command, args []string) {
 
 		fields := []string{
 			h.P2PNodeAddr,
-			h.RawHeartbeat.GuardianAddr,
+			h.RawHeartbeat.PhylaxAddr,
 			h.RawHeartbeat.NodeName,
 			h.RawHeartbeat.Version,
 			time.Since(last).String(),
@@ -191,10 +191,10 @@ func runListNodes(cmd *cobra.Command, args []string) {
 	w.Flush()
 	fmt.Print("\n")
 
-	for _, addr := range gs.GuardianSet.Addresses {
+	for _, addr := range gs.PhylaxSet.Addresses {
 		var found bool
 		for _, h := range nodes {
-			if h.VerifiedGuardianAddr == addr {
+			if h.VerifiedPhylaxAddr == addr {
 				found = true
 			}
 		}

@@ -12,16 +12,16 @@ import (
 	"github.com/deltaswapio/deltachain/x/wormhole/types"
 )
 
-func createTestConsensusGuardianSetIndex(keeper *keeper.Keeper, ctx sdk.Context) types.ConsensusGuardianSetIndex {
-	item := types.ConsensusGuardianSetIndex{}
-	keeper.SetConsensusGuardianSetIndex(ctx, item)
+func createTestConsensusPhylaxSetIndex(keeper *keeper.Keeper, ctx sdk.Context) types.ConsensusPhylaxSetIndex {
+	item := types.ConsensusPhylaxSetIndex{}
+	keeper.SetConsensusPhylaxSetIndex(ctx, item)
 	return item
 }
 
-func TestConsensusGuardianSetIndexGet(t *testing.T) {
+func TestConsensusPhylaxSetIndexGet(t *testing.T) {
 	keeper, ctx := keepertest.WormholeKeeper(t)
-	item := createTestConsensusGuardianSetIndex(keeper, ctx)
-	rst, found := keeper.GetConsensusGuardianSetIndex(ctx)
+	item := createTestConsensusPhylaxSetIndex(keeper, ctx)
+	rst, found := keeper.GetConsensusPhylaxSetIndex(ctx)
 	require.True(t, found)
 	require.Equal(t,
 		nullify.Fill(&item),
@@ -29,10 +29,10 @@ func TestConsensusGuardianSetIndexGet(t *testing.T) {
 	)
 }
 
-func TestConsensusGuardianSetIndexRemove(t *testing.T) {
+func TestConsensusPhylaxSetIndexRemove(t *testing.T) {
 	keeper, ctx := keepertest.WormholeKeeper(t)
-	createTestConsensusGuardianSetIndex(keeper, ctx)
-	keeper.RemoveConsensusGuardianSetIndex(ctx)
-	_, found := keeper.GetConsensusGuardianSetIndex(ctx)
+	createTestConsensusPhylaxSetIndex(keeper, ctx)
+	keeper.RemoveConsensusPhylaxSetIndex(ctx)
+	_, found := keeper.GetConsensusPhylaxSetIndex(ctx)
 	require.False(t, found)
 }

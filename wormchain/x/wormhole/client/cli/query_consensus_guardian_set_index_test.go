@@ -15,34 +15,34 @@ import (
 	"github.com/deltaswapio/deltachain/x/wormhole/types"
 )
 
-func networkWithConsensusGuardianSetIndexObjects(t *testing.T) (*network.Network, types.ConsensusGuardianSetIndex) {
+func networkWithConsensusPhylaxSetIndexObjects(t *testing.T) (*network.Network, types.ConsensusPhylaxSetIndex) {
 	t.Helper()
 	cfg := network.DefaultConfig()
 	state := types.GenesisState{}
 	require.NoError(t, cfg.Codec.UnmarshalJSON(cfg.GenesisState[types.ModuleName], &state))
 
-	consensusGuardianSetIndex := &types.ConsensusGuardianSetIndex{
+	consensusPhylaxSetIndex := &types.ConsensusPhylaxSetIndex{
 		Index: 0,
 	}
-	nullify.Fill(&consensusGuardianSetIndex)
-	state.ConsensusGuardianSetIndex = consensusGuardianSetIndex
+	nullify.Fill(&consensusPhylaxSetIndex)
+	state.ConsensusPhylaxSetIndex = consensusPhylaxSetIndex
 
-	guardianSetList := []types.GuardianSet{{
+	guardianSetList := []types.PhylaxSet{{
 		Index:          0,
 		Keys:           [][]byte{},
 		ExpirationTime: 0,
 	}}
 	nullify.Fill(&guardianSetList)
-	state.GuardianSetList = guardianSetList
+	state.PhylaxSetList = guardianSetList
 
 	buf, err := cfg.Codec.MarshalJSON(&state)
 	require.NoError(t, err)
 	cfg.GenesisState[types.ModuleName] = buf
-	return network.New(t, cfg), *state.ConsensusGuardianSetIndex
+	return network.New(t, cfg), *state.ConsensusPhylaxSetIndex
 }
 
-func TestShowConsensusGuardianSetIndex(t *testing.T) {
-	net, obj := networkWithConsensusGuardianSetIndexObjects(t)
+func TestShowConsensusPhylaxSetIndex(t *testing.T) {
+	net, obj := networkWithConsensusPhylaxSetIndexObjects(t)
 
 	ctx := net.Validators[0].ClientCtx
 	common := []string{
@@ -52,7 +52,7 @@ func TestShowConsensusGuardianSetIndex(t *testing.T) {
 		desc string
 		args []string
 		err  error
-		obj  types.ConsensusGuardianSetIndex
+		obj  types.ConsensusPhylaxSetIndex
 	}{
 		{
 			desc: "get",
@@ -64,19 +64,19 @@ func TestShowConsensusGuardianSetIndex(t *testing.T) {
 		t.Run(tc.desc, func(t *testing.T) {
 			var args []string
 			args = append(args, tc.args...)
-			out, err := clitestutil.ExecTestCLICmd(ctx, cli.CmdShowConsensusGuardianSetIndex(), args)
+			out, err := clitestutil.ExecTestCLICmd(ctx, cli.CmdShowConsensusPhylaxSetIndex(), args)
 			if tc.err != nil {
 				stat, ok := status.FromError(tc.err)
 				require.True(t, ok)
 				require.ErrorIs(t, stat.Err(), tc.err)
 			} else {
 				require.NoError(t, err)
-				var resp types.QueryGetConsensusGuardianSetIndexResponse
+				var resp types.QueryGetConsensusPhylaxSetIndexResponse
 				require.NoError(t, net.Config.Codec.UnmarshalJSON(out.Bytes(), &resp))
-				require.NotNil(t, resp.ConsensusGuardianSetIndex)
+				require.NotNil(t, resp.ConsensusPhylaxSetIndex)
 				require.Equal(t,
 					nullify.Fill(&tc.obj),
-					nullify.Fill(&resp.ConsensusGuardianSetIndex),
+					nullify.Fill(&resp.ConsensusPhylaxSetIndex),
 				)
 			}
 		})

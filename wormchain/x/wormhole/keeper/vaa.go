@@ -22,19 +22,19 @@ func ParseVAA(data []byte) (*vaa.VAA, error) {
 //
 // The canonical source is the calculation in the contracts (solana/bridge/src/processor.rs and
 // ethereum/contracts/Wormhole.sol), and this needs to match the implementation in the contracts.
-func CalculateQuorum(numGuardians int) int {
-	return (numGuardians*2)/3 + 1
+func CalculateQuorum(numPhylaxs int) int {
+	return (numPhylaxs*2)/3 + 1
 }
 
 // Calculate Quorum retrieves the guardian set for the given index, verifies that it is a valid set, and then calculates the needed quorum.
-func (k Keeper) CalculateQuorum(ctx sdk.Context, guardianSetIndex uint32) (int, *types.GuardianSet, error) {
-	guardianSet, exists := k.GetGuardianSet(ctx, guardianSetIndex)
+func (k Keeper) CalculateQuorum(ctx sdk.Context, guardianSetIndex uint32) (int, *types.PhylaxSet, error) {
+	guardianSet, exists := k.GetPhylaxSet(ctx, guardianSetIndex)
 	if !exists {
-		return 0, nil, types.ErrGuardianSetNotFound
+		return 0, nil, types.ErrPhylaxSetNotFound
 	}
 
 	if 0 < guardianSet.ExpirationTime && guardianSet.ExpirationTime < uint64(ctx.BlockTime().Unix()) {
-		return 0, nil, types.ErrGuardianSetExpired
+		return 0, nil, types.ErrPhylaxSetExpired
 	}
 
 	return CalculateQuorum(len(guardianSet.Keys)), &guardianSet, nil
@@ -50,7 +50,7 @@ func (k Keeper) VerifyMessageSignature(ctx sdk.Context, prefix []byte, data []by
 	// verify signature
 	addresses := guardianSet.KeysAsAddresses()
 	if int(signature.Index) >= len(addresses) {
-		return types.ErrGuardianIndexOutOfBounds
+		return types.ErrPhylaxIndexOutOfBounds
 	}
 
 	ok := vaa.VerifyMessageSignature(prefix, data, signature, addresses[signature.Index])
@@ -82,7 +82,7 @@ func (k Keeper) DeprecatedVerifyVaa(ctx sdk.Context, vaaBody []byte, guardianSet
 
 func (k Keeper) VerifyVAA(ctx sdk.Context, v *vaa.VAA) error {
 	// Calculate quorum and retrieve guardian set
-	quorum, guardianSet, err := k.CalculateQuorum(ctx, v.GuardianSetIndex)
+	quorum, guardianSet, err := k.CalculateQuorum(ctx, v.PhylaxSetIndex)
 	if err != nil {
 		return err
 	}

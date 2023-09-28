@@ -89,11 +89,11 @@ type (
 
 	// TransferStatusPending contains the data returned for a committed transfer.
 	TransferStatusPending struct {
-		Digest           []byte `json:"digest"`
-		TxHash           []byte `json:"tx_hash"`
-		Signatures       string `json:"signatures"`
-		GuardianSetIndex uint32 `json:"guardian_set_index"`
-		EmitterChain     uint16 `json:"emitter_chain"`
+		Digest         []byte `json:"digest"`
+		TxHash         []byte `json:"tx_hash"`
+		Signatures     string `json:"signatures"`
+		PhylaxSetIndex uint32 `json:"guardian_set_index"`
+		EmitterChain   uint16 `json:"emitter_chain"`
 	}
 )
 

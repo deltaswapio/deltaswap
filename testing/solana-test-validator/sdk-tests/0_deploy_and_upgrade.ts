@@ -1,9 +1,9 @@
 import { expect } from "chai";
 import * as web3 from "@solana/web3.js";
 import fs from "fs";
-import { MockGuardians, GovernanceEmitter } from "../../../sdk/js/src/mock";
+import { MockPhylaxs, GovernanceEmitter } from "../../../sdk/js/src/mock";
 import {
-  getGuardianSet,
+  getPhylaxSet,
   getWormholeBridgeData,
   createInitializeInstruction as createWormholeInitializeInstruction,
   deriveUpgradeAuthorityKey,
@@ -51,7 +51,7 @@ describe("Deploy and Upgrade Programs", () => {
   );
 
   // for signing wormhole messages
-  const guardians = new MockGuardians(GUARDIAN_SET_INDEX, GUARDIAN_KEYS);
+  const guardians = new MockPhylaxs(GUARDIAN_SET_INDEX, GUARDIAN_KEYS);
 
   // for generating governance wormhole messages
   const governance = new GovernanceEmitter(
@@ -84,7 +84,7 @@ describe("Deploy and Upgrade Programs", () => {
       // initialize
       const guardianSetExpirationTime = 86400;
       const fee = 100n;
-      const initialGuardians = guardians.getPublicKeys().slice(0, 1);
+      const initialPhylaxs = guardians.getPublicKeys().slice(0, 1);
 
       const initializeTx = await web3.sendAndConfirmTransaction(
         connection,
@@ -94,7 +94,7 @@ describe("Deploy and Upgrade Programs", () => {
             wallet.key(),
             guardianSetExpirationTime,
             fee,
-            initialGuardians
+            initialPhylaxs
           )
         ),
         [wallet.signer()]
@@ -108,7 +108,7 @@ describe("Deploy and Upgrade Programs", () => {
         guardianSetExpirationTime
       );
       expect(info.config.fee).to.equal(fee);
-      const guardianSet = await getGuardianSet(
+      const guardianSet = await getPhylaxSet(
         connection,
         CORE_BRIDGE_ADDRESS,
         0
@@ -117,7 +117,7 @@ describe("Deploy and Upgrade Programs", () => {
       expect(guardianSet.expirationTime).to.equal(0);
       expect(guardianSet.keys).has.length(1);
       expect(
-        Buffer.compare(initialGuardians[0], guardianSet.keys.at(0)!)
+        Buffer.compare(initialPhylaxs[0], guardianSet.keys.at(0)!)
       ).to.equal(0);
     });
 

@@ -3,13 +3,13 @@ use solitaire::*;
 
 use crate::{
     error::Error::{
-        GuardianSetMismatch,
+        PhylaxSetMismatch,
         InstructionAtWrongIndex,
         InvalidHash,
         InvalidSecpInstruction,
     },
-    GuardianSet,
-    GuardianSetDerivationData,
+    PhylaxSet,
+    PhylaxSetDerivationData,
     IsSigned::*,
     SignatureSet,
     MAX_LEN_GUARDIAN_KEYS,
@@ -26,8 +26,8 @@ pub struct VerifySignatures<'b> {
     /// Payer for account creation
     pub payer: Mut<Signer<Info<'b>>>,
 
-    /// Guardian set of the signatures
-    pub guardian_set: GuardianSet<'b, { AccountState::Initialized }>,
+    /// Phylax set of the signatures
+    pub guardian_set: PhylaxSet<'b, { AccountState::Initialized }>,
 
     /// Signature Account
     pub signature_set: Mut<Signer<SignatureSet<'b, { AccountState::MaybeInitialized }>>>,
@@ -36,9 +36,9 @@ pub struct VerifySignatures<'b> {
     pub instruction_acc: Info<'b>,
 }
 
-impl From<&VerifySignatures<'_>> for GuardianSetDerivationData {
+impl From<&VerifySignatures<'_>> for PhylaxSetDerivationData {
     fn from(data: &VerifySignatures<'_>) -> Self {
-        GuardianSetDerivationData {
+        PhylaxSetDerivationData {
             index: data.guardian_set.index,
         }
     }
@@ -186,7 +186,7 @@ pub fn verify_signatures(
     } else {
         // If the account already existed, check that the parameters match
         if accs.signature_set.guardian_set_index != accs.guardian_set.index {
-            return Err(GuardianSetMismatch.into());
+            return Err(PhylaxSetMismatch.into());
         }
 
         if accs.signature_set.hash != msg_hash {

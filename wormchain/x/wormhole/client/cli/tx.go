@@ -21,7 +21,7 @@ func GetTxCmd() *cobra.Command {
 	}
 
 	cmd.AddCommand(CmdExecuteGovernanceVAA())
-	cmd.AddCommand(CmdRegisterAccountAsGuardian())
+	cmd.AddCommand(CmdRegisterAccountAsPhylax())
 	cmd.AddCommand(CmdStoreCode())
 	cmd.AddCommand(CmdInstantiateContract())
 	cmd.AddCommand(CmdMigrateContract())

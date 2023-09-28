@@ -20,7 +20,7 @@ However, while this design worked great for v1 which was bridging only two chain
 
 - The race mechanism would be too expensive at scale and hard to incentivize, since we cannot use preflight and nodes would pay for failed messages, likely unequally. A leader selection mechanism would have to be implemented.
 
-- Guardian nodes are required to maintain sufficient SOL balance in their wallets and need to be compensated and incentivized to actually submit transactions.
+- Phylax nodes are required to maintain sufficient SOL balance in their wallets and need to be compensated and incentivized to actually submit transactions.
 
 - Reproducing the deterministic Solana account address is complex to do client-side.
 
@@ -56,15 +56,15 @@ Our data availability requirements do not actually require messages to be posted
 
 Instead of submitting signed VAAs to Solana, guardians instead broadcast them on the gossip network and persist the signed VAAs locally.
 
-Guardians that failed to observe the message (and therefore cannot reconstruct the VAA) will verify the broadcasted signed VAA and persist it as if they had observed it.
+Phylaxs that failed to observe the message (and therefore cannot reconstruct the VAA) will verify the broadcasted signed VAA and persist it as if they had observed it.
 
-A public API endpoint is added to phylaxd, exposing an API which allows clients to retrieve the signed VAA for any (chain, emitter, sequence) tuple. Guardians can use this API to serve a public, load-balanced public service for web wallets and other clients to use.
+A public API endpoint is added to phylaxd, exposing an API which allows clients to retrieve the signed VAA for any (chain, emitter, sequence) tuple. Phylaxs can use this API to serve a public, load-balanced public service for web wallets and other clients to use.
 
 Clients will rely on public API endpoints operated by different guardian node operators or third party service providers when polling for signed VAA messsages.
 
 ## Detailed Design
 
-The current phylaxd implementation never broadcasts the full, signed VAA on the gossip network - only signatures. Guardians then use their own message observations and the aggregated set of signatures to assemble a valid signed VAA locally. Once more than 2/3 of signatures are present, the VAA is valid and can be submitted to the target chain. Nodes that haven't observed the message due to issues with the connected chain nodes are unable to construct a full VAA and will eventually drop the aggregated set of signatures.
+The current phylaxd implementation never broadcasts the full, signed VAA on the gossip network - only signatures. Phylaxs then use their own message observations and the aggregated set of signatures to assemble a valid signed VAA locally. Once more than 2/3 of signatures are present, the VAA is valid and can be submitted to the target chain. Nodes that haven't observed the message due to issues with the connected chain nodes are unable to construct a full VAA and will eventually drop the aggregated set of signatures.
 
 Depending on the order of receipt and network topology, the aggregated set of signatures seen when the 2/3+ threshold is crossed is different from each node, but each node's VAA digest will be identical.
 

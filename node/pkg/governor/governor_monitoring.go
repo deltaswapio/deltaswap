@@ -510,9 +510,9 @@ func (gov *ChainGovernor) publishConfig(hb *gossipv1.Heartbeat, sendC chan<- []b
 
 	msg := gossipv1.GossipMessage{Message: &gossipv1.GossipMessage_SignedChainGovernorConfig{
 		SignedChainGovernorConfig: &gossipv1.SignedChainGovernorConfig{
-			Config:       b,
-			Signature:    sig,
-			GuardianAddr: ourAddr.Bytes(),
+			Config:     b,
+			Signature:  sig,
+			PhylaxAddr: ourAddr.Bytes(),
 		}}}
 
 	b, err = proto.Marshal(&msg)
@@ -589,9 +589,9 @@ func (gov *ChainGovernor) publishStatus(hb *gossipv1.Heartbeat, sendC chan<- []b
 
 	msg := gossipv1.GossipMessage{Message: &gossipv1.GossipMessage_SignedChainGovernorStatus{
 		SignedChainGovernorStatus: &gossipv1.SignedChainGovernorStatus{
-			Status:       b,
-			Signature:    sig,
-			GuardianAddr: ourAddr.Bytes(),
+			Status:     b,
+			Signature:  sig,
+			PhylaxAddr: ourAddr.Bytes(),
 		}}}
 
 	b, err = proto.Marshal(&msg)

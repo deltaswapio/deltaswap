@@ -28,31 +28,31 @@ func (k msgServer) ExecuteGovernanceVAA(goCtx context.Context, msg *types.MsgExe
 
 	// Execute action
 	switch vaa.GovernanceAction(action) {
-	case vaa.ActionGuardianSetUpdate:
+	case vaa.ActionPhylaxSetUpdate:
 		if len(payload) < 5 {
 			return nil, types.ErrInvalidGovernancePayloadLength
 		}
 		// Update guardian set
 		newIndex := binary.BigEndian.Uint32(payload[:4])
-		numGuardians := int(payload[4])
+		numPhylaxs := int(payload[4])
 
-		if len(payload) != 5+20*numGuardians {
+		if len(payload) != 5+20*numPhylaxs {
 			return nil, types.ErrInvalidGovernancePayloadLength
 		}
 
 		added := make(map[string]bool)
 		var keys [][]byte
-		for i := 0; i < numGuardians; i++ {
+		for i := 0; i < numPhylaxs; i++ {
 			k := payload[5+i*20 : 5+i*20+20]
 			sk := string(k)
 			if _, found := added[sk]; found {
-				return nil, types.ErrDuplicateGuardianAddress
+				return nil, types.ErrDuplicatePhylaxAddress
 			}
 			keys = append(keys, k)
 			added[sk] = true
 		}
 
-		err := k.UpdateGuardianSet(ctx, types.GuardianSet{
+		err := k.UpdatePhylaxSet(ctx, types.PhylaxSet{
 			Keys:  keys,
 			Index: newIndex,
 		})

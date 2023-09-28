@@ -14,7 +14,7 @@
             "type": "uint32"
           }
         ],
-        "internalType": "struct Wormhole.GuardianSet",
+        "internalType": "struct Wormhole.PhylaxSet",
         "name": "initial_guardian_set",
         "type": "tuple"
       },
@@ -38,17 +38,17 @@
       {
         "indexed": false,
         "internalType": "uint32",
-        "name": "oldGuardianIndex",
+        "name": "oldPhylaxIndex",
         "type": "uint32"
       },
       {
         "indexed": false,
         "internalType": "uint32",
-        "name": "newGuardianIndex",
+        "name": "newPhylaxIndex",
         "type": "uint32"
       }
     ],
-    "name": "LogGuardianSetChanged",
+    "name": "LogPhylaxSetChanged",
     "type": "event"
   },
   {
@@ -137,7 +137,7 @@
         "type": "uint32"
       }
     ],
-    "name": "getGuardianSet",
+    "name": "getPhylaxSet",
     "outputs": [
       {
         "components": [
@@ -152,7 +152,7 @@
             "type": "uint32"
           }
         ],
-        "internalType": "struct Wormhole.GuardianSet",
+        "internalType": "struct Wormhole.PhylaxSet",
         "name": "gs",
         "type": "tuple"
       }

@@ -401,7 +401,7 @@ async function testNearSDK() {
   let seq = Math.floor(new Date().getTime() / 1000);
   let usdcvaa = ts.hexStringToUint8Array(
     ts.genAssetMeta(
-      ts.singleGuardianPrivKey,
+      ts.singlePhylaxPrivKey,
       0,
       1,
       seq,
@@ -478,7 +478,7 @@ async function testNearSDK() {
   console.log("Airdropping USDC on myself");
   {
     let trans = ts.genTransfer(
-      ts.singleGuardianPrivKey,
+      ts.singlePhylaxPrivKey,
       0,
       1,
       seq,

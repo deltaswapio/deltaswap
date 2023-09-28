@@ -104,7 +104,7 @@ contract TestUtils is Test, KEVMCheats {
         );
     }
 
-    function payloadSubmitNewGuardianSet(bytes32 module, uint16 chainId, uint32 newGuardianSetIndex, address[] memory keys) internal pure returns (bytes memory payload) {
+    function payloadSubmitNewPhylaxSet(bytes32 module, uint16 chainId, uint32 newPhylaxSetIndex, address[] memory keys) internal pure returns (bytes memory payload) {
         uint8 action = 2;
         uint8 keysLength = uint8(keys.length);
 
@@ -112,7 +112,7 @@ contract TestUtils is Test, KEVMCheats {
             module,
             action,
             chainId,
-            newGuardianSetIndex,
+            newPhylaxSetIndex,
             keysLength
         );
 

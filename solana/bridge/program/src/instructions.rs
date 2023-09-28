@@ -28,8 +28,8 @@ use crate::{
         Claim,
         ClaimDerivationData,
         FeeCollector,
-        GuardianSet,
-        GuardianSetDerivationData,
+        PhylaxSet,
+        PhylaxSetDerivationData,
         PostedVAA,
         PostedVAADerivationData,
         Sequence,
@@ -42,7 +42,7 @@ use crate::{
     SetFeesData,
     TransferFeesData,
     UpgradeContractData,
-    UpgradeGuardianSetData,
+    UpgradePhylaxSetData,
     VerifySignaturesData,
     CHAIN_ID_GOVERANCE,
 };
@@ -55,8 +55,8 @@ pub fn initialize(
     initial_guardians: &[[u8; 20]],
 ) -> solitaire::Result<Instruction> {
     let bridge = Bridge::<'_, { AccountState::Uninitialized }>::key(None, &program_id);
-    let guardian_set = GuardianSet::<'_, { AccountState::Uninitialized }>::key(
-        &GuardianSetDerivationData { index: 0 },
+    let guardian_set = PhylaxSet::<'_, { AccountState::Uninitialized }>::key(
+        &PhylaxSetDerivationData { index: 0 },
         &program_id,
     );
     let fee_collector = FeeCollector::key(None, &program_id);
@@ -177,8 +177,8 @@ pub fn verify_signatures(
     signature_set: Pubkey,
     data: VerifySignaturesData,
 ) -> solitaire::Result<Instruction> {
-    let guardian_set = GuardianSet::<'_, { AccountState::Uninitialized }>::key(
-        &GuardianSetDerivationData {
+    let guardian_set = PhylaxSet::<'_, { AccountState::Uninitialized }>::key(
+        &PhylaxSetDerivationData {
             index: guardian_set_index,
         },
         &program_id,
@@ -207,8 +207,8 @@ pub fn post_vaa(
     vaa: PostVAAData,
 ) -> Instruction {
     let bridge = Bridge::<'_, { AccountState::Uninitialized }>::key(None, &program_id);
-    let guardian_set = GuardianSet::<'_, { AccountState::Uninitialized }>::key(
-        &GuardianSetDerivationData {
+    let guardian_set = PhylaxSet::<'_, { AccountState::Uninitialized }>::key(
+        &PhylaxSetDerivationData {
             index: vaa.guardian_set_index,
         },
         &program_id,
@@ -314,13 +314,13 @@ pub fn upgrade_guardian_set(
         &program_id,
     );
 
-    let guardian_set_old = GuardianSet::<'_, { AccountState::Initialized }>::key(
-        &GuardianSetDerivationData { index: old_index },
+    let guardian_set_old = PhylaxSet::<'_, { AccountState::Initialized }>::key(
+        &PhylaxSetDerivationData { index: old_index },
         &program_id,
     );
 
-    let guardian_set_new = GuardianSet::<'_, { AccountState::Uninitialized }>::key(
-        &GuardianSetDerivationData { index: new_index },
+    let guardian_set_new = PhylaxSet::<'_, { AccountState::Uninitialized }>::key(
+        &PhylaxSetDerivationData { index: new_index },
         &program_id,
     );
 
@@ -338,8 +338,8 @@ pub fn upgrade_guardian_set(
         ],
 
         data: (
-            crate::instruction::Instruction::UpgradeGuardianSet,
-            UpgradeGuardianSetData {},
+            crate::instruction::Instruction::UpgradePhylaxSet,
+            UpgradePhylaxSetData {},
         )
             .try_to_vec()
             .unwrap(),
@@ -424,7 +424,7 @@ pub fn transfer_fees(
 }
 
 // Convert a full VAA structure into the serialization of its unique components, this structure is
-// what is hashed and verified by Guardians.
+// what is hashed and verified by Phylaxs.
 pub fn serialize_vaa(vaa: &PostVAAData) -> Vec<u8> {
     let mut v = Cursor::new(Vec::new());
     v.write_u32::<BigEndian>(vaa.timestamp).unwrap();

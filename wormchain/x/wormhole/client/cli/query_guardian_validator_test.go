@@ -22,50 +22,50 @@ import (
 // Prevent strconv unused error
 var _ = strconv.IntSize
 
-func networkWithGuardianValidatorObjects(t *testing.T, n int) (*network.Network, []types.GuardianValidator) {
+func networkWithPhylaxValidatorObjects(t *testing.T, n int) (*network.Network, []types.PhylaxValidator) {
 	t.Helper()
 	cfg := network.DefaultConfig()
 	state := types.GenesisState{}
 	require.NoError(t, cfg.Codec.UnmarshalJSON(cfg.GenesisState[types.ModuleName], &state))
 
 	for i := 0; i < n; i++ {
-		guardianValidator := types.GuardianValidator{
-			GuardianKey:   []byte(strconv.Itoa(i)),
+		guardianValidator := types.PhylaxValidator{
+			PhylaxKey:     []byte(strconv.Itoa(i)),
 			ValidatorAddr: []byte(strconv.Itoa(i)),
 		}
-		state.GuardianValidatorList = append(state.GuardianValidatorList, guardianValidator)
+		state.PhylaxValidatorList = append(state.PhylaxValidatorList, guardianValidator)
 	}
 	buf, err := cfg.Codec.MarshalJSON(&state)
 	require.NoError(t, err)
 	cfg.GenesisState[types.ModuleName] = buf
-	return network.New(t, cfg), state.GuardianValidatorList
+	return network.New(t, cfg), state.PhylaxValidatorList
 }
 
-func TestShowGuardianValidator(t *testing.T) {
-	net, objs := networkWithGuardianValidatorObjects(t, 2)
+func TestShowPhylaxValidator(t *testing.T) {
+	net, objs := networkWithPhylaxValidatorObjects(t, 2)
 
 	ctx := net.Validators[0].ClientCtx
 	common := []string{
 		fmt.Sprintf("--%s=json", tmcli.OutputFlag),
 	}
 	for _, tc := range []struct {
-		desc          string
-		idGuardianKey string
+		desc        string
+		idPhylaxKey string
 
 		args []string
 		err  error
-		obj  types.GuardianValidator
+		obj  types.PhylaxValidator
 	}{
 		{
-			desc:          "found",
-			idGuardianKey: hex.EncodeToString(objs[0].GuardianKey),
+			desc:        "found",
+			idPhylaxKey: hex.EncodeToString(objs[0].PhylaxKey),
 
 			args: common,
 			obj:  objs[0],
 		},
 		{
-			desc:          "not found",
-			idGuardianKey: "0x100000",
+			desc:        "not found",
+			idPhylaxKey: "0x100000",
 
 			args: common,
 			err:  status.Error(codes.InvalidArgument, "not found"),
@@ -74,30 +74,30 @@ func TestShowGuardianValidator(t *testing.T) {
 		tc := tc
 		t.Run(tc.desc, func(t *testing.T) {
 			args := []string{
-				tc.idGuardianKey,
+				tc.idPhylaxKey,
 			}
 			args = append(args, tc.args...)
-			out, err := clitestutil.ExecTestCLICmd(ctx, cli.CmdShowGuardianValidator(), args)
+			out, err := clitestutil.ExecTestCLICmd(ctx, cli.CmdShowPhylaxValidator(), args)
 			if tc.err != nil {
 				stat, ok := status.FromError(tc.err)
 				require.True(t, ok)
 				require.ErrorIs(t, stat.Err(), tc.err)
 			} else {
 				require.NoError(t, err)
-				var resp types.QueryGetGuardianValidatorResponse
+				var resp types.QueryGetPhylaxValidatorResponse
 				require.NoError(t, net.Config.Codec.UnmarshalJSON(out.Bytes(), &resp))
-				require.NotNil(t, resp.GuardianValidator)
+				require.NotNil(t, resp.PhylaxValidator)
 				require.Equal(t,
 					nullify.Fill(&tc.obj),
-					nullify.Fill(&resp.GuardianValidator),
+					nullify.Fill(&resp.PhylaxValidator),
 				)
 			}
 		})
 	}
 }
 
-func TestListGuardianValidator(t *testing.T) {
-	net, objs := networkWithGuardianValidatorObjects(t, 5)
+func TestListPhylaxValidator(t *testing.T) {
+	net, objs := networkWithPhylaxValidatorObjects(t, 5)
 
 	ctx := net.Validators[0].ClientCtx
 	request := func(next []byte, offset, limit uint64, total bool) []string {
@@ -119,14 +119,14 @@ func TestListGuardianValidator(t *testing.T) {
 		step := 2
 		for i := 0; i < len(objs); i += step {
 			args := request(nil, uint64(i), uint64(step), false)
-			out, err := clitestutil.ExecTestCLICmd(ctx, cli.CmdListGuardianValidator(), args)
+			out, err := clitestutil.ExecTestCLICmd(ctx, cli.CmdListPhylaxValidator(), args)
 			require.NoError(t, err)
-			var resp types.QueryAllGuardianValidatorResponse
+			var resp types.QueryAllPhylaxValidatorResponse
 			require.NoError(t, net.Config.Codec.UnmarshalJSON(out.Bytes(), &resp))
-			require.LessOrEqual(t, len(resp.GuardianValidator), step)
+			require.LessOrEqual(t, len(resp.PhylaxValidator), step)
 			require.Subset(t,
 				nullify.Fill(objs),
-				nullify.Fill(resp.GuardianValidator),
+				nullify.Fill(resp.PhylaxValidator),
 			)
 		}
 	})
@@ -135,14 +135,14 @@ func TestListGuardianValidator(t *testing.T) {
 		var next []byte
 		for i := 0; i < len(objs); i += step {
 			args := request(next, 0, uint64(step), false)
-			out, err := clitestutil.ExecTestCLICmd(ctx, cli.CmdListGuardianValidator(), args)
+			out, err := clitestutil.ExecTestCLICmd(ctx, cli.CmdListPhylaxValidator(), args)
 			require.NoError(t, err)
-			var resp types.QueryAllGuardianValidatorResponse
+			var resp types.QueryAllPhylaxValidatorResponse
 			require.NoError(t, net.Config.Codec.UnmarshalJSON(out.Bytes(), &resp))
-			require.LessOrEqual(t, len(resp.GuardianValidator), step)
+			require.LessOrEqual(t, len(resp.PhylaxValidator), step)
 			require.Subset(t,
 				nullify.Fill(objs),
-				nullify.Fill(resp.GuardianValidator),
+				nullify.Fill(resp.PhylaxValidator),
 			)
 			next = resp.Pagination.NextKey
 		}
@@ -150,15 +150,15 @@ func TestListGuardianValidator(t *testing.T) {
 	// TODO(csongor): this test is failing, figure out why
 	// t.Run("Total", func(t *testing.T) {
 	// 	args := request(nil, 0, uint64(len(objs)), true)
-	// 	out, err := clitestutil.ExecTestCLICmd(ctx, cli.CmdListGuardianValidator(), args)
+	// 	out, err := clitestutil.ExecTestCLICmd(ctx, cli.CmdListPhylaxValidator(), args)
 	// 	require.NoError(t, err)
-	// 	var resp types.QueryAllGuardianValidatorResponse
+	// 	var resp types.QueryAllPhylaxValidatorResponse
 	// 	require.NoError(t, net.Config.Codec.UnmarshalJSON(out.Bytes(), &resp))
 	// 	require.NoError(t, err)
 	// 	require.Equal(t, len(objs), int(resp.Pagination.Total))
 	// 	require.ElementsMatch(t,
 	// 		nullify.Fill(objs),
-	// 		nullify.Fill(resp.GuardianValidator),
+	// 		nullify.Fill(resp.PhylaxValidator),
 	// 	)
 	// })
 }

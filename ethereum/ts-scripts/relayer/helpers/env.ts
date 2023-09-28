@@ -138,7 +138,7 @@ export function loadPrivateKey(): string {
   return privateKey;
 }
 
-export function loadGuardianSetIndex(): number {
+export function loadPhylaxSetIndex(): number {
   const chainFile = fs.readFileSync(
     `./ts-scripts/relayer/config/${env}/chains.json`
   );
@@ -249,19 +249,19 @@ export function loadCreate2Factories(): Deployment[] {
 //potentially from devnet-consts.
 //Also, make sure the signers are correctly ordered by index,
 //As the index gets encoded into the signature.
-export function loadGuardianKeys(): string[] {
+export function loadPhylaxKeys(): string[] {
   const output = [];
   const NUM_GUARDIANS = get_env_var("NUM_GUARDIANS");
   const guardianKey = get_env_var("GUARDIAN_KEY");
   const guardianKey2 = get_env_var("GUARDIAN_KEY2");
 
-  let numGuardians: number = 0;
+  let numPhylaxs: number = 0;
   console.log("NUM_GUARDIANS variable : " + NUM_GUARDIANS);
 
   if (!NUM_GUARDIANS) {
-    numGuardians = 1;
+    numPhylaxs = 1;
   } else {
-    numGuardians = parseInt(NUM_GUARDIANS);
+    numPhylaxs = parseInt(NUM_GUARDIANS);
   }
 
   if (!guardianKey) {
@@ -269,7 +269,7 @@ export function loadGuardianKeys(): string[] {
   }
   output.push(guardianKey);
 
-  if (numGuardians >= 2) {
+  if (numPhylaxs >= 2) {
     if (!guardianKey2) {
       throw Error("Failed to find guardian key 2 for this process!");
     }
@@ -324,7 +324,7 @@ export function getDeliveryProviderAddress(chain: ChainInfo): string {
   return thisChainsProvider;
 }
 
-export function loadGuardianRpc(): string {
+export function loadPhylaxRpc(): string {
   const chainFile = fs.readFileSync(
     `./ts-scripts/relayer/config/${env}/chains.json`
   );

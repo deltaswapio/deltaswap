@@ -74,7 +74,7 @@ class AlgoTests {
         console.log("seq = ", seq);
 
         console.log("XXX upgrading the the guardian set using untrusted account...", seq)
-        let upgradeVAA = testLib.genGuardianSetUpgrade(guardianPrivKeys, 0, 1, seq, seq, guardianKeys)
+        let upgradeVAA = testLib.genPhylaxSetUpgrade(guardianPrivKeys, 0, 1, seq, seq, guardianKeys)
         console.log(upgradeVAA)
         console.log(parseVAA(hexStringToUint8Array(upgradeVAA))) 
 
@@ -97,7 +97,7 @@ class AlgoTests {
         seq = seq + 1
 
         console.log("XXX upgrading again...", seq)
-        upgradeVAA = testLib.genGuardianSetUpgrade(guardianPrivKeys, 1, 2, seq, seq, guardianKeys)
+        upgradeVAA = testLib.genPhylaxSetUpgrade(guardianPrivKeys, 1, 2, seq, seq, guardianKeys)
         console.log(upgradeVAA)
         await submitVAA(hexStringToUint8Array(upgradeVAA), client, player, CORE_ID)
 

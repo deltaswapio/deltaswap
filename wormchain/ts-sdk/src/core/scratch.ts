@@ -32,8 +32,8 @@ import {
   queryClient,
 } from "../modules/wormhole_foundation.deltachain.wormhole";
 import { keccak256 } from "ethers/lib/utils";
-import { MsgRegisterAccountAsGuardian } from "../modules/wormhole_foundation.deltachain.wormhole/types/wormhole/tx";
-import { GuardianKey } from "../modules/wormhole_foundation.deltachain.wormhole/types/wormhole/guardian_key";
+import { MsgRegisterAccountAsPhylax } from "../modules/wormhole_foundation.deltachain.wormhole/types/wormhole/tx";
+import { PhylaxKey } from "../modules/wormhole_foundation.deltachain.wormhole/types/wormhole/guardian_key";
 let elliptic = require("elliptic"); //No TS defs?
 
 //https://tutorials.cosmos.network/academy/4-my-own-chain/cosmjs.html
@@ -126,16 +126,16 @@ export async function executeGovernanceVAA(
   return output;
 }
 
-export async function getGuardianSets() {
+export async function getPhylaxSets() {
   const client = await queryClient({ addr: LCD_URL });
-  const response = client.queryGuardianSetAll();
+  const response = client.queryPhylaxSetAll();
 
   return await unpackHttpReponse(response);
 }
 
-export async function getConsensusGuardianSet() {
+export async function getConsensusPhylaxSet() {
   const client = await queryClient({ addr: LCD_URL });
-  const response = client.queryConsensusGuardianSetIndex();
+  const response = client.queryConsensusPhylaxSetIndex();
 
   return await unpackHttpReponse(response);
 }
@@ -148,9 +148,9 @@ export async function getValidators() {
   return validators;
 }
 
-export async function getGuardianValidatorRegistrations() {
+export async function getPhylaxValidatorRegistrations() {
   const client = await queryClient({ addr: LCD_URL });
-  const response = client.queryGuardianValidatorAll();
+  const response = client.queryPhylaxValidatorAll();
 
   return await unpackHttpReponse(response);
 }
@@ -165,7 +165,7 @@ export async function unpackHttpReponse<T>(
   return content;
 }
 
-export async function registerGuardianValidator(
+export async function registerPhylaxValidator(
   wallet: DirectSecp256k1HdWallet,
   guardianPubkeyBase64: string,
   guardianPrivkeyHex: string,
@@ -181,15 +181,15 @@ export async function registerGuardianValidator(
 
   const signature = key.sign(hash, { canonical: true });
 
-  const args: MsgRegisterAccountAsGuardian = {
+  const args: MsgRegisterAccountAsPhylax = {
     signer: await getAddress(wallet),
-    // guardianPubkey: GuardianKey.fromJSON(guardianPubkeyBase64), //TODO fix this type, it's bad
+    // guardianPubkey: PhylaxKey.fromJSON(guardianPubkeyBase64), //TODO fix this type, it's bad
     signature: signature,
   };
 
   const offline: OfflineSigner = wallet;
   const client = await txClient(offline, { addr: TENDERMINT_URL });
-  const msg = client.msgRegisterAccountAsGuardian(args);
+  const msg = client.msgRegisterAccountAsPhylax(args);
 
   const output = await client.signAndBroadcast([msg]);
 

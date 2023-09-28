@@ -9,13 +9,13 @@ import (
 
 func TestKeyIndex(t *testing.T) {
 	type test struct {
-		guardianSet GuardianSet
+		guardianSet PhylaxSet
 		address     string
 		result      bool
 		keyIndex    int
 	}
 
-	guardianSet := GuardianSet{
+	guardianSet := PhylaxSet{
 		Keys: []common.Address{
 			common.HexToAddress("0x5aaeb6053f3e94c9b9a09f33669435e7ef1beaed"),
 			common.HexToAddress("0x5aaeb6053f3e94c9b9a09f33669435e7ef1beaee"),
@@ -40,7 +40,7 @@ func TestKeyIndex(t *testing.T) {
 }
 
 func TestKeysAsHexStrings(t *testing.T) {
-	gs := GuardianSet{
+	gs := PhylaxSet{
 		Keys: []common.Address{
 			common.HexToAddress("0x5aaeb6053f3e94c9b9a09f33669435e7ef1beaed"),
 			common.HexToAddress("0x5aaeb6053f3e94c9b9a09f33669435e7ef1beaee"),
@@ -56,15 +56,15 @@ func TestKeysAsHexStrings(t *testing.T) {
 	assert.Equal(t, keyStrings, gs.KeysAsHexStrings())
 }
 
-func TestNewGuardianSetState(t *testing.T) {
-	gss := NewGuardianSetState(nil)
+func TestNewPhylaxSetState(t *testing.T) {
+	gss := NewPhylaxSetState(nil)
 	assert.NotNil(t, gss)
 	assert.Nil(t, gss.current)
 	assert.Nil(t, gss.Get())
 }
 
 func TestSet(t *testing.T) {
-	var gs GuardianSet = GuardianSet{
+	var gs PhylaxSet = PhylaxSet{
 		Keys: []common.Address{
 			common.HexToAddress("0x5aaeb6053f3e94c9b9a09f33669435e7ef1beaed"),
 			common.HexToAddress("0x5aaeb6053f3e94c9b9a09f33669435e7ef1beaee"),
@@ -72,14 +72,14 @@ func TestSet(t *testing.T) {
 		Index: 1,
 	}
 
-	gss := NewGuardianSetState(nil)
+	gss := NewPhylaxSetState(nil)
 	assert.Nil(t, gss.current)
 	gss.Set(&gs)
 	assert.Equal(t, gss.current, &gs)
 }
 
 func TestGet(t *testing.T) {
-	var gs GuardianSet = GuardianSet{
+	var gs PhylaxSet = PhylaxSet{
 		Keys: []common.Address{
 			common.HexToAddress("0x5aaeb6053f3e94c9b9a09f33669435e7ef1beaed"),
 			common.HexToAddress("0x5aaeb6053f3e94c9b9a09f33669435e7ef1beaee"),
@@ -87,7 +87,7 @@ func TestGet(t *testing.T) {
 		Index: 1,
 	}
 
-	gss := NewGuardianSetState(nil)
+	gss := NewPhylaxSetState(nil)
 	assert.Nil(t, gss.Get())
 	gss.Set(&gs)
 	assert.Equal(t, gss.Get(), &gs)

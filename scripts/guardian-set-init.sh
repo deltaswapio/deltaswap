@@ -3,8 +3,8 @@
 # First argument is the number of guardians for the initial guardian set.
 set -exuo pipefail
 
-numGuardians=$1
-echo "number of guardians to initialize: ${numGuardians}"
+numPhylaxs=$1
+echo "number of guardians to initialize: ${numPhylaxs}"
 
 addressesJson="./scripts/devnet-consts.json"
 
@@ -50,9 +50,9 @@ fi
 echo "generating guardian set addresses"
 # create an array of strings containing the ECDSA public keys of the devnet guardians in the guardianset:
 # guardiansPublicEth has the leading "0x" that Eth scripts expect.
-guardiansPublicEth=$(jq -c --argjson lastIndex $numGuardians '.devnetGuardians[:$lastIndex] | [.[].public]' $addressesJson)
+guardiansPublicEth=$(jq -c --argjson lastIndex $numPhylaxs '.devnetPhylaxs[:$lastIndex] | [.[].public]' $addressesJson)
 # guardiansPublicHex does not have a leading "0x", just hex strings.
-guardiansPublicHex=$(jq -c --argjson lastIndex $numGuardians '.devnetGuardians[:$lastIndex] | [.[].public[2:]]' $addressesJson)
+guardiansPublicHex=$(jq -c --argjson lastIndex $numPhylaxs '.devnetPhylaxs[:$lastIndex] | [.[].public[2:]]' $addressesJson)
 # also make a CSV string of the hex addresses, so the client scripts that need that format don't have to.
 guardiansPublicHexCSV=$(echo ${guardiansPublicHex} | jq --raw-output -c '. | join(",")')
 
@@ -66,7 +66,7 @@ upsert_env_file $envFile "INIT_SIGNERS_CSV" $guardiansPublicHexCSV
 # 2) guardian private keys - used for generating the initial governance VAAs (register token bridge & nft bridge contracts on each chain).
 echo "generating guardian set keys"
 # create an array of strings containing the private keys of the devnet guardians in the guardianset
-guardiansPrivate=$(jq -c --argjson lastIndex $numGuardians '.devnetGuardians[:$lastIndex] | [.[].private]' $addressesJson)
+guardiansPrivate=$(jq -c --argjson lastIndex $numPhylaxs '.devnetPhylaxs[:$lastIndex] | [.[].private]' $addressesJson)
 # create a CSV string with the private keys of the guardians in the guardianset, that will be used to create registration VAAs
 guardiansPrivateCSV=$(echo ${guardiansPrivate} | jq --raw-output -c '. | join(",")')
 

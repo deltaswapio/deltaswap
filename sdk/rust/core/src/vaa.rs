@@ -15,9 +15,9 @@ use anyhow::Context;
 use serde::{Deserialize, Serialize};
 use sha3::Digest as Sha3Digest;
 
-use crate::{Address, Chain, GuardianAddress};
+use crate::{Address, Chain, PhylaxAddress};
 
-/// Signatures are typical ECDSA signatures prefixed with a Guardian position. These have the
+/// Signatures are typical ECDSA signatures prefixed with a Phylax position. These have the
 /// following byte layout:
 /// ```markdown
 /// 0  .. 64: Signature   (ECDSA)
@@ -123,7 +123,7 @@ pub struct Body<P> {
 /// Digest data for the Body.
 #[derive(Debug, Default, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct Digest {
-    /// Guardians don't hash the VAA body directly, instead they hash the VAA and sign the hash. The
+    /// Phylaxs don't hash the VAA body directly, instead they hash the VAA and sign the hash. The
     /// purpose of this is it means when submitting a VAA on-chain we only have to submit the hash
     /// which reduces gas costs.
     pub hash: [u8; 32],
@@ -213,7 +213,7 @@ impl<P> From<(Header, Body<P>)> for Vaa<P> {
 }
 
 impl Header {
-    pub fn verify(&self, _body: &[u8], _addrs: &[GuardianAddress]) -> anyhow::Result<Digest> {
+    pub fn verify(&self, _body: &[u8], _addrs: &[PhylaxAddress]) -> anyhow::Result<Digest> {
         todo!("VAA body verification")
     }
 }

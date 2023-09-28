@@ -13,12 +13,12 @@ option go_package = "github.com/deltaswapio/deltachain/x/wormhole/types";
 
 // GenesisState defines the wormhole module's genesis state.
 message GenesisState {
-  repeated GuardianSet guardianSetList = 1 [(gogoproto.nullable) = false];
+  repeated PhylaxSet guardianSetList = 1 [(gogoproto.nullable) = false];
   Config config = 2;
   repeated ReplayProtection replayProtectionList = 3 [(gogoproto.nullable) = false];
   repeated SequenceCounter sequenceCounterList = 4 [(gogoproto.nullable) = false];
-  ConsensusGuardianSetIndex consensusGuardianSetIndex = 5;
-  repeated GuardianValidator guardianValidatorList = 6 [(gogoproto.nullable) = false];
+  ConsensusPhylaxSetIndex consensusPhylaxSetIndex = 5;
+  repeated PhylaxValidator guardianValidatorList = 6 [(gogoproto.nullable) = false];
   repeated ValidatorAllowedAddress allowedAddresses = 7 [(gogoproto.nullable) = false];
   repeated WasmInstantiateAllowedContractCodeId wasmInstantiateAllowlist = 8 [(gogoproto.nullable) = false];
   IbcComposabilityMwContract ibcComposabilityMwContract = 9 [(gogoproto.nullable) = false];

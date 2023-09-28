@@ -6,24 +6,24 @@ import (
 	"github.com/deltaswapio/deltachain/x/wormhole/types"
 )
 
-// SetGuardianValidator set a specific guardianValidator in the store from its index
-func (k Keeper) SetGuardianValidator(ctx sdk.Context, guardianValidator types.GuardianValidator) {
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.GuardianValidatorKeyPrefix))
+// SetPhylaxValidator set a specific guardianValidator in the store from its index
+func (k Keeper) SetPhylaxValidator(ctx sdk.Context, guardianValidator types.PhylaxValidator) {
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.PhylaxValidatorKeyPrefix))
 	b := k.cdc.MustMarshal(&guardianValidator)
-	store.Set(types.GuardianValidatorKey(
-		guardianValidator.GuardianKey,
+	store.Set(types.PhylaxValidatorKey(
+		guardianValidator.PhylaxKey,
 	), b)
 }
 
-// GetGuardianValidator returns a guardianValidator from its index
-func (k Keeper) GetGuardianValidator(
+// GetPhylaxValidator returns a guardianValidator from its index
+func (k Keeper) GetPhylaxValidator(
 	ctx sdk.Context,
 	guardianKey []byte,
 
-) (val types.GuardianValidator, found bool) {
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.GuardianValidatorKeyPrefix))
+) (val types.PhylaxValidator, found bool) {
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.PhylaxValidatorKeyPrefix))
 
-	b := store.Get(types.GuardianValidatorKey(
+	b := store.Get(types.PhylaxValidatorKey(
 		guardianKey,
 	))
 	if b == nil {
@@ -34,27 +34,27 @@ func (k Keeper) GetGuardianValidator(
 	return val, true
 }
 
-// RemoveGuardianValidator removes a guardianValidator from the store
-func (k Keeper) RemoveGuardianValidator(
+// RemovePhylaxValidator removes a guardianValidator from the store
+func (k Keeper) RemovePhylaxValidator(
 	ctx sdk.Context,
 	guardianKey []byte,
 
 ) {
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.GuardianValidatorKeyPrefix))
-	store.Delete(types.GuardianValidatorKey(
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.PhylaxValidatorKeyPrefix))
+	store.Delete(types.PhylaxValidatorKey(
 		guardianKey,
 	))
 }
 
-// GetAllGuardianValidator returns all guardianValidator
-func (k Keeper) GetAllGuardianValidator(ctx sdk.Context) (list []types.GuardianValidator) {
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.GuardianValidatorKeyPrefix))
+// GetAllPhylaxValidator returns all guardianValidator
+func (k Keeper) GetAllPhylaxValidator(ctx sdk.Context) (list []types.PhylaxValidator) {
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.PhylaxValidatorKeyPrefix))
 	iterator := sdk.KVStorePrefixIterator(store, []byte{})
 
 	defer iterator.Close()
 
 	for ; iterator.Valid(); iterator.Next() {
-		var val types.GuardianValidator
+		var val types.PhylaxValidator
 		k.cdc.MustUnmarshal(iterator.Value(), &val)
 		list = append(list, val)
 	}

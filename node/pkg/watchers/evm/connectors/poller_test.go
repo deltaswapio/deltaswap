@@ -56,12 +56,12 @@ func (e *mockConnectorForPoller) ContractAddress() ethCommon.Address {
 	return e.address
 }
 
-func (e *mockConnectorForPoller) GetCurrentGuardianSetIndex(ctx context.Context) (uint32, error) {
+func (e *mockConnectorForPoller) GetCurrentPhylaxSetIndex(ctx context.Context) (uint32, error) {
 	return 0, fmt.Errorf("not implemented")
 }
 
-func (e *mockConnectorForPoller) GetGuardianSet(ctx context.Context, index uint32) (ethAbi.StructsGuardianSet, error) {
-	return ethAbi.StructsGuardianSet{}, fmt.Errorf("not implemented")
+func (e *mockConnectorForPoller) GetPhylaxSet(ctx context.Context, index uint32) (ethAbi.StructsPhylaxSet, error) {
+	return ethAbi.StructsPhylaxSet{}, fmt.Errorf("not implemented")
 }
 
 func (e *mockConnectorForPoller) WatchLogMessagePublished(ctx context.Context, errC chan error, sink chan<- *ethAbi.AbiLogMessagePublished) (ethEvent.Subscription, error) {

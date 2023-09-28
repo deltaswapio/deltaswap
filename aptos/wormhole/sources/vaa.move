@@ -8,8 +8,8 @@ module wormhole::vaa {
     use wormhole::cursor;
     use wormhole::guardian_pubkey;
     use wormhole::structs::{
-        Guardian,
-        GuardianSet,
+        Phylax,
+        PhylaxSet,
         Signature,
         create_signature,
         get_guardians,
@@ -160,13 +160,13 @@ module wormhole::vaa {
     /// Verifies the signatures of a VAA.
     /// It's private, because there's no point calling it externally, since VAAs
     /// external to this module have already been verified (by construction).
-    fun verify(vaa: &VAA, guardian_set: &GuardianSet) {
+    fun verify(vaa: &VAA, guardian_set: &PhylaxSet) {
         assert!(state::guardian_set_is_active(guardian_set), E_GUARDIAN_SET_EXPIRED);
 
         let guardians = get_guardians(guardian_set);
         let hash = vaa.hash;
         let sigs_len = vector::length<Signature>(&vaa.signatures);
-        let guardians_len = vector::length<Guardian>(&guardians);
+        let guardians_len = vector::length<Phylax>(&guardians);
 
         assert!(sigs_len >= quorum(guardians_len), E_NO_QUORUM);
 
@@ -184,7 +184,7 @@ module wormhole::vaa {
 
             let address = guardian_pubkey::from_signature(hash, recovery_id, &sig);
 
-            let cur_guardian = vector::borrow<Guardian>(&guardians, (guardian_index as u64));
+            let cur_guardian = vector::borrow<Phylax>(&guardians, (guardian_index as u64));
             let cur_address = get_address(cur_guardian);
 
             assert!(address == cur_address, E_INVALID_SIGNATURE);

@@ -5,7 +5,7 @@
 //!
 //! - Constants containing known network data/addresses.
 //! - Parsers for VAA's and Payloads.
-//! - Data types for Wormhole primitives such as GuardianSets and signatures.
+//! - Data types for Wormhole primitives such as PhylaxSets and signatures.
 //! - Verification Primitives for securely checking payloads.
 
 #![deny(warnings)]
@@ -38,7 +38,7 @@ pub const GOVERNANCE_EMITTER: Address = Address([
 #[derive(
     Serialize, Deserialize, Debug, Default, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash,
 )]
-pub struct GuardianAddress(pub [u8; 20]);
+pub struct PhylaxAddress(pub [u8; 20]);
 
 /// Wormhole specifies addresses as 32 bytes. Addresses that are shorter, for example 20 byte
 /// Ethereum addresses, are left zero padded to 32.
@@ -63,14 +63,14 @@ impl fmt::Display for Address {
 )]
 pub struct Amount(pub [u8; 32]);
 
-/// A `GuardianSet` is a versioned set of keys that can sign Wormhole messages.
+/// A `PhylaxSet` is a versioned set of keys that can sign Wormhole messages.
 #[derive(Serialize, Deserialize, Debug, Default, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
-pub struct GuardianSetInfo {
+pub struct PhylaxSetInfo {
     /// The set of guardians public keys, in Ethereum's compressed format.
-    pub addresses: Vec<GuardianAddress>,
+    pub addresses: Vec<PhylaxAddress>,
 }
 
-impl GuardianSetInfo {
+impl PhylaxSetInfo {
     pub fn quorum(&self) -> usize {
         (self.addresses.len() * 2) / 3 + 1
     }
@@ -109,7 +109,7 @@ mod test {
         ];
 
         for (count, quorum) in tests {
-            let gs = GuardianSetInfo {
+            let gs = PhylaxSetInfo {
                 addresses: vec![Default::default(); count],
             };
 

@@ -1,4 +1,4 @@
-/// Guardian keys are EVM-style 20 byte addresses
+/// Phylax keys are EVM-style 20 byte addresses
 /// That is, they are computed by taking the last 20 bytes of the keccak256
 /// hash of their 64 byte secp256k1 public key.
 module wormhole::guardian_pubkey {

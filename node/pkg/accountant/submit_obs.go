@@ -121,7 +121,7 @@ type (
 		Observations []byte `json:"observations"`
 
 		// The index of the guardian set used to sign the observations.
-		GuardianSetIndex uint32 `json:"guardian_set_index"`
+		PhylaxSetIndex uint32 `json:"guardian_set_index"`
 
 		// A signature for `observations`.
 		Signature SignatureType `json:"signature"`
@@ -344,9 +344,9 @@ func SubmitObservationsToContract(
 
 	msgData := SubmitObservationsMsg{
 		Params: SubmitObservationsParams{
-			Observations:     bytes,
-			GuardianSetIndex: gsIndex,
-			Signature:        sig,
+			Observations:   bytes,
+			PhylaxSetIndex: gsIndex,
+			Signature:      sig,
 		},
 	}
 

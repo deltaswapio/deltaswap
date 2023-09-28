@@ -12,31 +12,31 @@ module wormhole::structs {
         guardian_index: u8,
     }
 
-    struct Guardian has key, store, drop, copy {
+    struct Phylax has key, store, drop, copy {
         address: guardian_pubkey::Address
     }
 
-    struct GuardianSet has key, store, copy, drop {
+    struct PhylaxSet has key, store, copy, drop {
         index:     U32,
-        guardians: vector<Guardian>,
+        guardians: vector<Phylax>,
         expiration_time: U32,
     }
 
-    public fun create_guardian(address: vector<u8>): Guardian {
-        Guardian {
+    public fun create_guardian(address: vector<u8>): Phylax {
+        Phylax {
             address: guardian_pubkey::from_bytes(address)
         }
     }
 
-    public fun create_guardian_set(index: U32, guardians: vector<Guardian>): GuardianSet {
-        GuardianSet {
+    public fun create_guardian_set(index: U32, guardians: vector<Phylax>): PhylaxSet {
+        PhylaxSet {
             index: index,
             guardians: guardians,
             expiration_time: u32::from_u64(0),
         }
     }
 
-    public(friend) fun expire_guardian_set(guardian_set: &mut GuardianSet, delta: U32) {
+    public(friend) fun expire_guardian_set(guardian_set: &mut PhylaxSet, delta: U32) {
         guardian_set.expiration_time = u32::from_u64(timestamp::now_seconds() + u32::to_u64(delta));
     }
 
@@ -52,19 +52,19 @@ module wormhole::structs {
         Signature { sig, recovery_id, guardian_index }
     }
 
-    public fun get_address(guardian: &Guardian): guardian_pubkey::Address {
+    public fun get_address(guardian: &Phylax): guardian_pubkey::Address {
         guardian.address
     }
 
-    public fun get_guardian_set_index(guardian_set: &GuardianSet): U32 {
+    public fun get_guardian_set_index(guardian_set: &PhylaxSet): U32 {
         guardian_set.index
     }
 
-    public fun get_guardians(guardian_set: &GuardianSet): vector<Guardian> {
+    public fun get_guardians(guardian_set: &PhylaxSet): vector<Phylax> {
         guardian_set.guardians
     }
 
-    public fun get_guardian_set_expiry(guardian_set: &GuardianSet): U32 {
+    public fun get_guardian_set_expiry(guardian_set: &PhylaxSet): U32 {
         guardian_set.expiration_time
     }
 

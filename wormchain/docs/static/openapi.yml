@@ -32558,15 +32558,15 @@ paths:
         - Query
   /wormhole_foundation/deltachain/wormhole/consensus_guardian_set_index:
     get:
-      summary: Queries a ConsensusGuardianSetIndex by index.
-      operationId: WormholeFoundationWormchainWormholeConsensusGuardianSetIndex
+      summary: Queries a ConsensusPhylaxSetIndex by index.
+      operationId: WormholeFoundationWormchainWormholeConsensusPhylaxSetIndex
       responses:
         '200':
           description: A successful response.
           schema:
             type: object
             properties:
-              ConsensusGuardianSetIndex:
+              ConsensusPhylaxSetIndex:
                 type: object
                 properties:
                   index:
@@ -32595,14 +32595,14 @@ paths:
   /wormhole_foundation/deltachain/wormhole/guardianSet:
     get:
       summary: Queries a list of guardianSet items.
-      operationId: WormholeFoundationWormchainWormholeGuardianSetAll
+      operationId: WormholeFoundationWormchainWormholePhylaxSetAll
       responses:
         '200':
           description: A successful response.
           schema:
             type: object
             properties:
-              GuardianSet:
+              PhylaxSet:
                 type: array
                 items:
                   type: object
@@ -32725,14 +32725,14 @@ paths:
   '/wormhole_foundation/deltachain/wormhole/guardianSet/{index}':
     get:
       summary: Queries a guardianSet by index.
-      operationId: WormholeFoundationWormchainWormholeGuardianSet
+      operationId: WormholeFoundationWormchainWormholePhylaxSet
       responses:
         '200':
           description: A successful response.
           schema:
             type: object
             properties:
-              GuardianSet:
+              PhylaxSet:
                 type: object
                 properties:
                   index:
@@ -32774,8 +32774,8 @@ paths:
         - Query
   /wormhole_foundation/deltachain/wormhole/guardian_validator:
     get:
-      summary: Queries a list of GuardianValidator items.
-      operationId: WormholeFoundationWormchainWormholeGuardianValidatorAll
+      summary: Queries a list of PhylaxValidator items.
+      operationId: WormholeFoundationWormchainWormholePhylaxValidatorAll
       responses:
         '200':
           description: A successful response.
@@ -32899,8 +32899,8 @@ paths:
         - Query
   '/wormhole_foundation/deltachain/wormhole/guardian_validator/{guardianKey}':
     get:
-      summary: Queries a GuardianValidator by index.
-      operationId: WormholeFoundationWormchainWormholeGuardianValidator
+      summary: Queries a PhylaxValidator by index.
+      operationId: WormholeFoundationWormchainWormholePhylaxValidator
       responses:
         '200':
           description: A successful response.
@@ -32944,15 +32944,15 @@ paths:
         - Query
   /wormhole_foundation/deltachain/wormhole/latest_guardian_set_index:
     get:
-      summary: Queries a list of LatestGuardianSetIndex items.
-      operationId: WormholeFoundationWormchainWormholeLatestGuardianSetIndex
+      summary: Queries a list of LatestPhylaxSetIndex items.
+      operationId: WormholeFoundationWormchainWormholeLatestPhylaxSetIndex
       responses:
         '200':
           description: A successful response.
           schema:
             type: object
             properties:
-              latestGuardianSetIndex:
+              latestPhylaxSetIndex:
                 type: integer
                 format: int64
         default:
@@ -55224,19 +55224,19 @@ definitions:
       chain_id:
         type: integer
         format: int64
-  wormhole_foundation.deltachain.wormhole.ConsensusGuardianSetIndex:
+  wormhole_foundation.deltachain.wormhole.ConsensusPhylaxSetIndex:
     type: object
     properties:
       index:
         type: integer
         format: int64
-  wormhole_foundation.deltachain.wormhole.GuardianKey:
+  wormhole_foundation.deltachain.wormhole.PhylaxKey:
     type: object
     properties:
       key:
         type: string
         format: byte
-  wormhole_foundation.deltachain.wormhole.GuardianSet:
+  wormhole_foundation.deltachain.wormhole.PhylaxSet:
     type: object
     properties:
       index:
@@ -55250,7 +55250,7 @@ definitions:
       expirationTime:
         type: string
         format: uint64
-  wormhole_foundation.deltachain.wormhole.GuardianValidator:
+  wormhole_foundation.deltachain.wormhole.PhylaxValidator:
     type: object
     properties:
       guardianKey:
@@ -55271,7 +55271,7 @@ definitions:
         type: string
         format: byte
         title: Data contains base64-encoded bytes to returned from the contract
-  wormhole_foundation.deltachain.wormhole.MsgRegisterAccountAsGuardianResponse:
+  wormhole_foundation.deltachain.wormhole.MsgRegisterAccountAsPhylaxResponse:
     type: object
   wormhole_foundation.deltachain.wormhole.MsgStoreCodeResponse:
     type: object
@@ -55280,10 +55280,10 @@ definitions:
         type: string
         format: uint64
         title: CodeID is the reference to the stored WASM code
-  wormhole_foundation.deltachain.wormhole.QueryAllGuardianSetResponse:
+  wormhole_foundation.deltachain.wormhole.QueryAllPhylaxSetResponse:
     type: object
     properties:
-      GuardianSet:
+      PhylaxSet:
         type: array
         items:
           type: object
@@ -55324,7 +55324,7 @@ definitions:
                    repeated Bar results = 1;
                    PageResponse page = 2;
            }
-  wormhole_foundation.deltachain.wormhole.QueryAllGuardianValidatorResponse:
+  wormhole_foundation.deltachain.wormhole.QueryAllPhylaxValidatorResponse:
     type: object
     properties:
       guardianValidator:
@@ -55454,19 +55454,19 @@ definitions:
           chain_id:
             type: integer
             format: int64
-  wormhole_foundation.deltachain.wormhole.QueryGetConsensusGuardianSetIndexResponse:
+  wormhole_foundation.deltachain.wormhole.QueryGetConsensusPhylaxSetIndexResponse:
     type: object
     properties:
-      ConsensusGuardianSetIndex:
+      ConsensusPhylaxSetIndex:
         type: object
         properties:
           index:
             type: integer
             format: int64
-  wormhole_foundation.deltachain.wormhole.QueryGetGuardianSetResponse:
+  wormhole_foundation.deltachain.wormhole.QueryGetPhylaxSetResponse:
     type: object
     properties:
-      GuardianSet:
+      PhylaxSet:
         type: object
         properties:
           index:
@@ -55480,7 +55480,7 @@ definitions:
           expirationTime:
             type: string
             format: uint64
-  wormhole_foundation.deltachain.wormhole.QueryGetGuardianValidatorResponse:
+  wormhole_foundation.deltachain.wormhole.QueryGetPhylaxValidatorResponse:
     type: object
     properties:
       guardianValidator:
@@ -55511,10 +55511,10 @@ definitions:
           sequence:
             type: string
             format: uint64
-  wormhole_foundation.deltachain.wormhole.QueryLatestGuardianSetIndexResponse:
+  wormhole_foundation.deltachain.wormhole.QueryLatestPhylaxSetIndexResponse:
     type: object
     properties:
-      latestGuardianSetIndex:
+      latestPhylaxSetIndex:
         type: integer
         format: int64
   wormhole_foundation.deltachain.wormhole.ReplayProtection:

@@ -25,9 +25,9 @@ use bridge::{
         Bridge,
         BridgeData,
         FeeCollector,
-        GuardianSet,
-        GuardianSetData,
-        GuardianSetDerivationData,
+        PhylaxSet,
+        PhylaxSetData,
+        PhylaxSetDerivationData,
         PostedVAA,
         PostedVAAData,
         PostedVAADerivationData,
@@ -36,7 +36,7 @@ use bridge::{
     instructions,
     types::{
         ConsistencyLevel,
-        GovernancePayloadGuardianSetChange,
+        GovernancePayloadPhylaxSetChange,
         GovernancePayloadSetMessageFee,
         GovernancePayloadTransferFees,
         GovernancePayloadUpgrade,
@@ -102,14 +102,14 @@ async fn initialize() -> (Context, BanksClient, Keypair, Pubkey) {
 
     // Verify the initial bridge state is as expected.
     let bridge_key = Bridge::<'_, { AccountState::Uninitialized }>::key(None, &program);
-    let guardian_set_key = GuardianSet::<'_, { AccountState::Uninitialized }>::key(
-        &GuardianSetDerivationData { index: 0 },
+    let guardian_set_key = PhylaxSet::<'_, { AccountState::Uninitialized }>::key(
+        &PhylaxSetDerivationData { index: 0 },
         &program,
     );
 
     // Fetch account states.
     let bridge: BridgeData = common::get_account_data(&mut client, bridge_key).await;
-    let guardian_set: GuardianSetData =
+    let guardian_set: PhylaxSetData =
         common::get_account_data(&mut client, guardian_set_key).await;
 
     // Bridge Config should be as expected.
@@ -117,7 +117,7 @@ async fn initialize() -> (Context, BanksClient, Keypair, Pubkey) {
     assert_eq!(bridge.config.guardian_set_expiration_time, 2_000_000_000);
     assert_eq!(bridge.config.fee, 500);
 
-    // Guardian set account must also be as expected.
+    // Phylax set account must also be as expected.
     assert_eq!(guardian_set.index, 0);
     assert_eq!(guardian_set.keys, context.public);
     assert!(guardian_set.creation_time as u64 > now);
@@ -168,7 +168,7 @@ async fn bridge_messages() {
             emitter.pubkey().to_bytes()
         );
 
-        // Emulate Guardian behaviour, verifying the data and publishing signatures/VAA.
+        // Emulate Phylax behaviour, verifying the data and publishing signatures/VAA.
         let (vaa, body, _body_hash) =
             common::generate_vaa(&emitter, message.clone(), nonce, sequence, 0, 1);
         let vaa_time = vaa.timestamp;
@@ -258,7 +258,7 @@ async fn bridge_messages() {
         emitter.pubkey().to_bytes()
     );
 
-    // Emulate Guardian behaviour, verifying the data and publishing signatures/VAA.
+    // Emulate Phylax behaviour, verifying the data and publishing signatures/VAA.
     let (vaa, body, _body_hash) =
         common::generate_vaa(&emitter, message.clone(), nonce, sequence, 0, 1);
     let vaa_time = vaa.timestamp;
@@ -354,7 +354,7 @@ async fn test_bridge_messages_unreliable() {
             emitter.pubkey().to_bytes()
         );
 
-        // Emulate Guardian behaviour, verifying the data and publishing signatures/VAA.
+        // Emulate Phylax behaviour, verifying the data and publishing signatures/VAA.
         let (vaa, body, _body_hash) =
             common::generate_vaa(&emitter, message.to_vec(), nonce, sequence, 0, 1);
         let signature_set =
@@ -683,7 +683,7 @@ async fn guardian_set_change() {
     let nonce = rand::thread_rng().gen();
     let emitter = Keypair::from_bytes(&GOVERNANCE_KEY).unwrap();
     let sequence = context.seq.next(emitter.pubkey().to_bytes());
-    let message = GovernancePayloadGuardianSetChange {
+    let message = GovernancePayloadPhylaxSetChange {
         new_guardian_set_index: 1,
         new_guardian_set: new_public_keys.clone(),
     }
@@ -749,15 +749,15 @@ async fn guardian_set_change() {
 
     // Derive keys for accounts we want to check.
     let bridge_key = Bridge::<'_, { AccountState::Uninitialized }>::key(None, program);
-    let guardian_set_key = GuardianSet::<'_, { AccountState::Uninitialized }>::key(
-        &GuardianSetDerivationData { index: 1 },
+    let guardian_set_key = PhylaxSet::<'_, { AccountState::Uninitialized }>::key(
+        &PhylaxSetDerivationData { index: 1 },
         program,
     );
 
     // Fetch account states.
     let posted_message: PostedVAAData = common::get_account_data(client, message_key).await;
     let bridge: BridgeData = common::get_account_data(client, bridge_key).await;
-    let guardian_set: GuardianSetData = common::get_account_data(client, guardian_set_key).await;
+    let guardian_set: PhylaxSetData = common::get_account_data(client, guardian_set_key).await;
 
     // Verify on chain Message
     assert_eq!(posted_message.message.vaa_version, 0);
@@ -785,7 +785,7 @@ async fn guardian_set_change() {
     assert_eq!(bridge.config.guardian_set_expiration_time, 2_000_000_000);
     assert_eq!(bridge.config.fee, 500);
 
-    // Verify Created Guardian Set
+    // Verify Created Phylax Set
     assert_eq!(guardian_set.index, 1);
     assert_eq!(guardian_set.keys, new_public_keys);
     assert!(guardian_set.creation_time as u64 > now);
@@ -808,7 +808,7 @@ async fn guardian_set_change() {
     context.public = new_public_keys;
     context.secret = new_secret_keys;
 
-    // Emulate Guardian behaviour, verifying the data and publishing signatures/VAA.
+    // Emulate Phylax behaviour, verifying the data and publishing signatures/VAA.
     let (vaa, body, _body_hash) =
         common::generate_vaa(&emitter, message.clone(), nonce, sequence, 1, 1);
     let signature_set = common::verify_signatures(client, program, payer, body, &context.secret, 1)
@@ -867,7 +867,7 @@ async fn guardian_set_change_fails() {
     // Upgrade the guardian set with a new set of guardians.
     let (new_public_keys, _new_secret_keys) = common::generate_keys(6);
     let nonce = rand::thread_rng().gen();
-    let message = GovernancePayloadGuardianSetChange {
+    let message = GovernancePayloadPhylaxSetChange {
         new_guardian_set_index: 2,
         new_guardian_set: new_public_keys.clone(),
     }

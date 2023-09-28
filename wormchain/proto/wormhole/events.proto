@@ -3,7 +3,7 @@ package wormhole_foundation.deltachain.wormhole;
 
 option go_package = "github.com/deltaswapio/deltachain/x/wormhole/types";
 
-message EventGuardianSetUpdate{
+message EventPhylaxSetUpdate{
   uint32 old_index = 1;
   uint32 new_index = 2;
 }
@@ -16,7 +16,7 @@ message EventPostedMessage{
   bytes payload = 5;
 }
 
-message EventGuardianRegistered{
+message EventPhylaxRegistered{
   bytes guardian_key = 1;
   bytes validator_key = 2;
 }

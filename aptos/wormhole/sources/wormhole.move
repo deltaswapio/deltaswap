@@ -3,7 +3,7 @@ module wormhole::wormhole {
     use aptos_framework::account;
     use aptos_framework::coin::{Self, Coin};
     use aptos_framework::aptos_coin::{AptosCoin};
-    use wormhole::structs::{create_guardian, create_guardian_set, Guardian};
+    use wormhole::structs::{create_guardian, create_guardian_set, Phylax};
     use wormhole::state;
     use deployer::deployer;
     use wormhole::u16;
@@ -65,7 +65,7 @@ module wormhole::wormhole {
         // the deployer signer capability must have been unlocked).
         let signer_cap = deployer::claim_signer_capability(deployer, @wormhole);
         let message_fee = 0;
-        let guardians: vector<Guardian> = vector[];
+        let guardians: vector<Phylax> = vector[];
 
         vector::reverse(&mut initial_guardians);
         while (!vector::is_empty(&initial_guardians)) {
@@ -88,7 +88,7 @@ module wormhole::wormhole {
         chain_id: u64,
         governance_chain_id: u64,
         governance_contract: vector<u8>,
-        initial_guardians: vector<Guardian>,
+        initial_guardians: vector<Phylax>,
         guardian_set_expiry: U32,
         message_fee: u64,
     ) {

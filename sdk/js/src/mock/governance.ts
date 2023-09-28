@@ -68,15 +68,15 @@ export class GovernanceEmitter extends MockEmitter {
     );
   }
 
-  publishWormholeGuardianSetUpgrade(
+  publishWormholePhylaxSetUpgrade(
     timestamp: number,
-    newGuardianSetIndex: number,
+    newPhylaxSetIndex: number,
     publicKeys: Buffer[],
     uptickSequence: boolean = true
   ) {
     const numKeys = publicKeys.length;
     const payload = Buffer.alloc(5 + ETHEREUM_KEY_LENGTH * numKeys);
-    payload.writeUInt32BE(newGuardianSetIndex, 0);
+    payload.writeUInt32BE(newPhylaxSetIndex, 0);
     payload.writeUInt8(numKeys, 4);
     for (let i = 0; i < numKeys; ++i) {
       const publicKey = publicKeys.at(i);

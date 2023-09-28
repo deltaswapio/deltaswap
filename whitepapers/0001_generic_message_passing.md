@@ -93,9 +93,9 @@ VAA struct {
 	// Protocol version of the entire VAA.
 	Version uint8
 
-	// GuardianSetIndex is the index of the guardian set that signed this VAA.
+	// PhylaxSetIndex is the index of the guardian set that signed this VAA.
 	// Signatures are verified against the public keys in the guardian set.
-	GuardianSetIndex uint32
+	PhylaxSetIndex uint32
 
 	// Number of signatures included in this VAA
 	LenSignatures uint8
@@ -105,7 +105,7 @@ VAA struct {
 
     // --------------------------------------------------------------------
 	// OBSERVATION - these fields are *deterministically* set by the
-	// Guardian nodes when making an observation. They uniquely identify
+	// Phylax nodes when making an observation. They uniquely identify
 	// a message and are used for replay protection.
 	//
 	// Any given message MUST NEVER result in two different VAAs.
@@ -167,14 +167,14 @@ Signature [65]byte
 }
 ```
 
-The previous `Payload` method and `BodyTransfer`/`BodyGuardianSetUpdate`/`BodyContractUpgrade` structs with fields
+The previous `Payload` method and `BodyTransfer`/`BodyPhylaxSetUpdate`/`BodyContractUpgrade` structs with fields
 like `TargetChain`, `TargetAddress`, `Asset`and `Amount` will be removed and replaced by top-level `EmitterChain`
 and `EmitterAddress` fields and an unstructured `Payload` blob. To allow for ordering on the receiving end, `Sequence`
 was added which is a message counter tracked per emitter.
 
 Notably, we remove target chain semantics, leaving it as an implementation detail for a higher-level relayer protocol.
 
-Guardian set updates and contract upgrades will still be handled and special-cased at the Wormhole contract layer.
+Phylax set updates and contract upgrades will still be handled and special-cased at the Wormhole contract layer.
 Instead of specifying a VAA payload type like we previously did, Wormhole contracts will instead be initialized with a
 specific well-known `EmitterChain` and `EmitterAddress` tuple which is authorized to execute governance operations.
 Governance operations are executed by calling a dedicated governance method on the contracts.

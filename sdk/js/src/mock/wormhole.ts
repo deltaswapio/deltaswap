@@ -3,18 +3,18 @@ import { ethPrivateToPublic, ethSignWithPrivate } from "./misc";
 
 const SIGNATURE_PAYLOAD_LEN = 66;
 
-interface Guardian {
+interface Phylax {
   index: number;
   key: string;
 }
 
-export class MockGuardians {
+export class MockPhylaxs {
   setIndex: number;
-  signers: Guardian[];
+  signers: Phylax[];
 
   constructor(setIndex: number, keys: string[]) {
     this.setIndex = setIndex;
-    this.signers = keys.map((key, index): Guardian => {
+    this.signers = keys.map((key, index): Phylax => {
       return { index, key };
     });
   }
@@ -23,7 +23,7 @@ export class MockGuardians {
     return this.signers.map((guardian) => ethPrivateToPublic(guardian.key));
   }
 
-  updateGuardianSetIndex(setIndex: number) {
+  updatePhylaxSetIndex(setIndex: number) {
     this.setIndex = setIndex;
   }
 

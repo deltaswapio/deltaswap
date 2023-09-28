@@ -35,17 +35,17 @@ const CHAIN_ID_NEAR: u16 = 15;
 const CHAIN_ID_SOL: u16 = 1;
 
 #[derive(BorshDeserialize, BorshSerialize)]
-pub struct GuardianAddress {
+pub struct PhylaxAddress {
     pub bytes: Vec<u8>,
 }
 
 #[derive(BorshDeserialize, BorshSerialize)]
-pub struct GuardianSetInfo {
-    pub addresses:       Vec<GuardianAddress>,
-    pub expiration_time: u64, // Guardian set expiration time
+pub struct PhylaxSetInfo {
+    pub addresses:       Vec<PhylaxAddress>,
+    pub expiration_time: u64, // Phylax set expiration time
 }
 
-impl GuardianSetInfo {
+impl PhylaxSetInfo {
     pub fn quorum(&self) -> usize {
         ((self.addresses.len() * 10 / 3) * 2) / 10 + 1
     }
@@ -86,7 +86,7 @@ impl WormholeEvent {
 #[near_bindgen]
 #[derive(BorshDeserialize, BorshSerialize)]
 pub struct OldWormhole {
-    guardians:             LookupMap<u32, GuardianSetInfo>,
+    guardians:             LookupMap<u32, PhylaxSetInfo>,
     dups:                  UnorderedSet<Vec<u8>>,
     emitters:              LookupMap<String, u64>,
     guardian_set_expirity: u64,
@@ -100,7 +100,7 @@ pub struct OldWormhole {
 #[near_bindgen]
 #[derive(BorshDeserialize, BorshSerialize)]
 pub struct Wormhole {
-    guardians:             LookupMap<u32, GuardianSetInfo>,
+    guardians:             LookupMap<u32, PhylaxSetInfo>,
     dups:                  UnorderedSet<Vec<u8>>,
     emitters:              LookupMap<String, u64>,
     guardian_set_expirity: u64,
@@ -136,12 +136,12 @@ impl Wormhole {
         let guardian_set = self
             .guardians
             .get(&vaa.guardian_set_index)
-            .expect("InvalidGuardianSetIndex");
+            .expect("InvalidPhylaxSetIndex");
 
         if guardian_set.expiration_time != 0
             && guardian_set.expiration_time < env::block_timestamp()
         {
-            env::panic_str("GuardianSetExpired");
+            env::panic_str("PhylaxSetExpired");
         }
 
         if (vaa.len_signers as usize) < guardian_set.quorum() {
@@ -164,7 +164,7 @@ impl Wormhole {
 
             // We can't go backwards or use the same guardian over again
             if index <= last_index {
-                env::panic_str("WrongGuardianIndexOrder");
+                env::panic_str("WrongPhylaxIndexOrder");
             }
             last_index = index;
 
@@ -188,7 +188,7 @@ impl Wormhole {
                     hex::encode(&key.bytes),
                 ));
 
-                env::panic_str("GuardianSignatureError");
+                env::panic_str("PhylaxSignatureError");
             }
             pos += 1;
         }
@@ -239,7 +239,7 @@ impl Wormhole {
 
         for i in 0..n_guardians {
             let pos = 5 + (i as usize) * ADDRESS_LEN;
-            addresses.push(GuardianAddress {
+            addresses.push(PhylaxAddress {
                 bytes: data[pos..pos + ADDRESS_LEN].to_vec(),
             });
         }
@@ -247,14 +247,14 @@ impl Wormhole {
         let guardian_set = &mut self
             .guardians
             .get(&self.guardian_set_index)
-            .expect("InvalidPreviousGuardianSetIndex");
+            .expect("InvalidPreviousPhylaxSetIndex");
 
         guardian_set.expiration_time = env::block_timestamp() + self.guardian_set_expirity;
 
         self.guardians
             .insert(&self.guardian_set_index, guardian_set);
 
-        let g = GuardianSetInfo {
+        let g = PhylaxSetInfo {
             addresses,
             expiration_time: 0,
         };
@@ -268,7 +268,7 @@ impl Wormhole {
             (Balance::from(env::storage_usage() - storage_used)) * env::storage_byte_cost();
 
         if required_cost > deposit {
-            env::panic_str("DepositUnderflowForGuardianSet");
+            env::panic_str("DepositUnderflowForPhylaxSet");
         }
         deposit -= required_cost;
 
@@ -559,12 +559,12 @@ impl Wormhole {
 
         let addr = addresses
             .iter()
-            .map(|address| GuardianAddress {
+            .map(|address| PhylaxAddress {
                 bytes: hex::decode(address).unwrap(),
             })
-            .collect::<Vec<GuardianAddress>>();
+            .collect::<Vec<PhylaxAddress>>();
 
-        let g = GuardianSetInfo {
+        let g = PhylaxSetInfo {
             addresses:       addr,
             expiration_time: 0,
         };

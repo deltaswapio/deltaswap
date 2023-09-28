@@ -25,12 +25,12 @@ const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
 // GenesisState defines the wormhole module's genesis state.
 type GenesisState struct {
-	GuardianSetList            []GuardianSet                          `protobuf:"bytes,1,rep,name=guardianSetList,proto3" json:"guardianSetList"`
+	PhylaxSetList            []PhylaxSet                          `protobuf:"bytes,1,rep,name=guardianSetList,proto3" json:"guardianSetList"`
 	Config                     *Config                                `protobuf:"bytes,2,opt,name=config,proto3" json:"config,omitempty"`
 	ReplayProtectionList       []ReplayProtection                     `protobuf:"bytes,3,rep,name=replayProtectionList,proto3" json:"replayProtectionList"`
 	SequenceCounterList        []SequenceCounter                      `protobuf:"bytes,4,rep,name=sequenceCounterList,proto3" json:"sequenceCounterList"`
-	ConsensusGuardianSetIndex  *ConsensusGuardianSetIndex             `protobuf:"bytes,5,opt,name=consensusGuardianSetIndex,proto3" json:"consensusGuardianSetIndex,omitempty"`
-	GuardianValidatorList      []GuardianValidator                    `protobuf:"bytes,6,rep,name=guardianValidatorList,proto3" json:"guardianValidatorList"`
+	ConsensusPhylaxSetIndex  *ConsensusPhylaxSetIndex             `protobuf:"bytes,5,opt,name=consensusPhylaxSetIndex,proto3" json:"consensusPhylaxSetIndex,omitempty"`
+	PhylaxValidatorList      []PhylaxValidator                    `protobuf:"bytes,6,rep,name=guardianValidatorList,proto3" json:"guardianValidatorList"`
 	AllowedAddresses           []ValidatorAllowedAddress              `protobuf:"bytes,7,rep,name=allowedAddresses,proto3" json:"allowedAddresses"`
 	WasmInstantiateAllowlist   []WasmInstantiateAllowedContractCodeId `protobuf:"bytes,8,rep,name=wasmInstantiateAllowlist,proto3" json:"wasmInstantiateAllowlist"`
 	IbcComposabilityMwContract IbcComposabilityMwContract             `protobuf:"bytes,9,opt,name=ibcComposabilityMwContract,proto3" json:"ibcComposabilityMwContract"`
@@ -69,9 +69,9 @@ func (m *GenesisState) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_GenesisState proto.InternalMessageInfo
 
-func (m *GenesisState) GetGuardianSetList() []GuardianSet {
+func (m *GenesisState) GetPhylaxSetList() []PhylaxSet {
 	if m != nil {
-		return m.GuardianSetList
+		return m.PhylaxSetList
 	}
 	return nil
 }
@@ -97,16 +97,16 @@ func (m *GenesisState) GetSequenceCounterList() []SequenceCounter {
 	return nil
 }
 
-func (m *GenesisState) GetConsensusGuardianSetIndex() *ConsensusGuardianSetIndex {
+func (m *GenesisState) GetConsensusPhylaxSetIndex() *ConsensusPhylaxSetIndex {
 	if m != nil {
-		return m.ConsensusGuardianSetIndex
+		return m.ConsensusPhylaxSetIndex
 	}
 	return nil
 }
 
-func (m *GenesisState) GetGuardianValidatorList() []GuardianValidator {
+func (m *GenesisState) GetPhylaxValidatorList() []PhylaxValidator {
 	if m != nil {
-		return m.GuardianValidatorList
+		return m.PhylaxValidatorList
 	}
 	return nil
 }
@@ -233,10 +233,10 @@ func (m *GenesisState) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 			dAtA[i] = 0x3a
 		}
 	}
-	if len(m.GuardianValidatorList) > 0 {
-		for iNdEx := len(m.GuardianValidatorList) - 1; iNdEx >= 0; iNdEx-- {
+	if len(m.PhylaxValidatorList) > 0 {
+		for iNdEx := len(m.PhylaxValidatorList) - 1; iNdEx >= 0; iNdEx-- {
 			{
-				size, err := m.GuardianValidatorList[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				size, err := m.PhylaxValidatorList[iNdEx].MarshalToSizedBuffer(dAtA[:i])
 				if err != nil {
 					return 0, err
 				}
@@ -247,9 +247,9 @@ func (m *GenesisState) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 			dAtA[i] = 0x32
 		}
 	}
-	if m.ConsensusGuardianSetIndex != nil {
+	if m.ConsensusPhylaxSetIndex != nil {
 		{
-			size, err := m.ConsensusGuardianSetIndex.MarshalToSizedBuffer(dAtA[:i])
+			size, err := m.ConsensusPhylaxSetIndex.MarshalToSizedBuffer(dAtA[:i])
 			if err != nil {
 				return 0, err
 			}
@@ -299,10 +299,10 @@ func (m *GenesisState) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 		i--
 		dAtA[i] = 0x12
 	}
-	if len(m.GuardianSetList) > 0 {
-		for iNdEx := len(m.GuardianSetList) - 1; iNdEx >= 0; iNdEx-- {
+	if len(m.PhylaxSetList) > 0 {
+		for iNdEx := len(m.PhylaxSetList) - 1; iNdEx >= 0; iNdEx-- {
 			{
-				size, err := m.GuardianSetList[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				size, err := m.PhylaxSetList[iNdEx].MarshalToSizedBuffer(dAtA[:i])
 				if err != nil {
 					return 0, err
 				}
@@ -333,8 +333,8 @@ func (m *GenesisState) Size() (n int) {
 	}
 	var l int
 	_ = l
-	if len(m.GuardianSetList) > 0 {
-		for _, e := range m.GuardianSetList {
+	if len(m.PhylaxSetList) > 0 {
+		for _, e := range m.PhylaxSetList {
 			l = e.Size()
 			n += 1 + l + sovGenesis(uint64(l))
 		}
@@ -355,12 +355,12 @@ func (m *GenesisState) Size() (n int) {
 			n += 1 + l + sovGenesis(uint64(l))
 		}
 	}
-	if m.ConsensusGuardianSetIndex != nil {
-		l = m.ConsensusGuardianSetIndex.Size()
+	if m.ConsensusPhylaxSetIndex != nil {
+		l = m.ConsensusPhylaxSetIndex.Size()
 		n += 1 + l + sovGenesis(uint64(l))
 	}
-	if len(m.GuardianValidatorList) > 0 {
-		for _, e := range m.GuardianValidatorList {
+	if len(m.PhylaxValidatorList) > 0 {
+		for _, e := range m.PhylaxValidatorList {
 			l = e.Size()
 			n += 1 + l + sovGenesis(uint64(l))
 		}
@@ -419,7 +419,7 @@ func (m *GenesisState) Unmarshal(dAtA []byte) error {
 		switch fieldNum {
 		case 1:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field GuardianSetList", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field PhylaxSetList", wireType)
 			}
 			var msglen int
 			for shift := uint(0); ; shift += 7 {
@@ -446,8 +446,8 @@ func (m *GenesisState) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.GuardianSetList = append(m.GuardianSetList, GuardianSet{})
-			if err := m.GuardianSetList[len(m.GuardianSetList)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+			m.PhylaxSetList = append(m.PhylaxSetList, PhylaxSet{})
+			if err := m.PhylaxSetList[len(m.PhylaxSetList)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex
@@ -557,7 +557,7 @@ func (m *GenesisState) Unmarshal(dAtA []byte) error {
 			iNdEx = postIndex
 		case 5:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field ConsensusGuardianSetIndex", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field ConsensusPhylaxSetIndex", wireType)
 			}
 			var msglen int
 			for shift := uint(0); ; shift += 7 {
@@ -584,16 +584,16 @@ func (m *GenesisState) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			if m.ConsensusGuardianSetIndex == nil {
-				m.ConsensusGuardianSetIndex = &ConsensusGuardianSetIndex{}
+			if m.ConsensusPhylaxSetIndex == nil {
+				m.ConsensusPhylaxSetIndex = &ConsensusPhylaxSetIndex{}
 			}
-			if err := m.ConsensusGuardianSetIndex.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+			if err := m.ConsensusPhylaxSetIndex.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex
 		case 6:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field GuardianValidatorList", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field PhylaxValidatorList", wireType)
 			}
 			var msglen int
 			for shift := uint(0); ; shift += 7 {
@@ -620,8 +620,8 @@ func (m *GenesisState) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.GuardianValidatorList = append(m.GuardianValidatorList, GuardianValidator{})
-			if err := m.GuardianValidatorList[len(m.GuardianValidatorList)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+			m.PhylaxValidatorList = append(m.PhylaxValidatorList, PhylaxValidator{})
+			if err := m.PhylaxValidatorList[len(m.PhylaxValidatorList)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex

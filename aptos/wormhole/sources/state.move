@@ -3,7 +3,7 @@ module wormhole::state {
     use std::event::{Self, EventHandle};
     use std::account;
     use std::timestamp;
-    use wormhole::structs::{Self, GuardianSet};
+    use wormhole::structs::{Self, PhylaxSet};
     use wormhole::u16::{U16};
     use wormhole::u32::{Self, U32};
     use wormhole::emitter;
@@ -15,9 +15,9 @@ module wormhole::state {
     friend wormhole::wormhole;
     friend wormhole::vaa;
 
-    struct GuardianSetChanged has store, drop {
-        oldGuardianIndex: U32,
-        newGuardianIndex: U32,
+    struct PhylaxSetChanged has store, drop {
+        oldPhylaxIndex: U32,
+        newPhylaxIndex: U32,
     }
 
     struct WormholeMessage has store, drop {
@@ -33,8 +33,8 @@ module wormhole::state {
         event: EventHandle<WormholeMessage>
     }
 
-    struct GuardianSetChangedHandle has key, store {
-        event: EventHandle<GuardianSetChanged>
+    struct PhylaxSetChangedHandle has key, store {
+        event: EventHandle<PhylaxSetChanged>
     }
 
     struct WormholeState has key {
@@ -48,7 +48,7 @@ module wormhole::state {
         governance_contract: ExternalAddress,
 
         /// Mapping of guardian_set_index => guardian set
-        guardian_sets: Table<u64, GuardianSet>,
+        guardian_sets: Table<u64, PhylaxSet>,
 
         /// Current active guardian set index
         guardian_set_index: U32,
@@ -82,7 +82,7 @@ module wormhole::state {
             chain_id,
             governance_chain_id,
             governance_contract,
-            guardian_sets: table::new<u64, GuardianSet>(),
+            guardian_sets: table::new<u64, PhylaxSet>(),
             guardian_set_index: u32::from_u64(0),
             guardian_set_expiry,
             consumed_governance_actions: set::new<vector<u8>>(),
@@ -98,15 +98,15 @@ module wormhole::state {
         }
     }
 
-    public fun create_guardian_set_changed_handle(e: EventHandle<GuardianSetChanged>): GuardianSetChangedHandle {
-        GuardianSetChangedHandle {
+    public fun create_guardian_set_changed_handle(e: EventHandle<PhylaxSetChanged>): PhylaxSetChangedHandle {
+        PhylaxSetChangedHandle {
             event: e
         }
     }
 
     public(friend) fun init_message_handles(admin: &signer) {
         move_to(admin, create_wormhole_message_handle(account::new_event_handle<WormholeMessage>(admin)));
-        move_to(admin, create_guardian_set_changed_handle(account::new_event_handle<GuardianSetChanged>(admin)));
+        move_to(admin, create_guardian_set_changed_handle(account::new_event_handle<PhylaxSetChanged>(admin)));
     }
 
     public(friend) entry fun publish_event(
@@ -138,25 +138,25 @@ module wormhole::state {
         state.guardian_set_index= new_index;
     }
 
-    public fun get_guardian_set(index: U32): GuardianSet acquires WormholeState {
+    public fun get_guardian_set(index: U32): PhylaxSet acquires WormholeState {
         let state = borrow_global_mut<WormholeState>(@wormhole);
-        *table::borrow<u64, GuardianSet>(&mut state.guardian_sets, u32::to_u64(index))
+        *table::borrow<u64, PhylaxSet>(&mut state.guardian_sets, u32::to_u64(index))
     }
 
     public(friend) fun expire_guardian_set(index: U32) acquires WormholeState {
         let state = borrow_global_mut<WormholeState>(@wormhole);
-        let guardian_set: &mut GuardianSet = table::borrow_mut<u64, GuardianSet>(&mut state.guardian_sets, u32::to_u64(index));
+        let guardian_set: &mut PhylaxSet = table::borrow_mut<u64, PhylaxSet>(&mut state.guardian_sets, u32::to_u64(index));
         let expiry = state.guardian_set_expiry;
         structs::expire_guardian_set(guardian_set, expiry);
     }
 
-    public(friend) fun store_guardian_set(set: GuardianSet) acquires WormholeState {
+    public(friend) fun store_guardian_set(set: PhylaxSet) acquires WormholeState {
         let state = borrow_global_mut<WormholeState>(@wormhole);
         let index: u64 = u32::to_u64(structs::get_guardian_set_index(&set));
         table::add(&mut state.guardian_sets, index, set);
     }
 
-    public fun guardian_set_is_active(guardian_set: &GuardianSet): bool acquires WormholeState {
+    public fun guardian_set_is_active(guardian_set: &PhylaxSet): bool acquires WormholeState {
         let index = structs::get_guardian_set_index(guardian_set);
         let current_index = get_current_guardian_set_index();
         let now = timestamp::now_seconds();
@@ -193,7 +193,7 @@ module wormhole::state {
         state.guardian_set_index
     }
 
-    public fun get_current_guardian_set(): GuardianSet acquires WormholeState {
+    public fun get_current_guardian_set(): PhylaxSet acquires WormholeState {
         let state = borrow_global<WormholeState>(@wormhole);
         let ind = u32::to_u64(state.guardian_set_index);
         *table::borrow(&state.guardian_sets, ind)

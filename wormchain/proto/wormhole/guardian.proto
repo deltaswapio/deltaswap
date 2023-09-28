@@ -5,16 +5,16 @@ option go_package = "github.com/deltaswapio/deltachain/x/wormhole/types";
 
 import "gogoproto/gogo.proto";
 
-message GuardianKey {
+message PhylaxKey {
   bytes key = 1;
 }
 
-message GuardianValidator {
+message PhylaxValidator {
   bytes guardianKey = 1;
   bytes validatorAddr = 2;
 }
 
-message GuardianSet {
+message PhylaxSet {
   option (gogoproto.equal) = true;
   uint32 index = 1;
   repeated bytes keys = 2;

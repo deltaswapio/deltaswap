@@ -1847,7 +1847,7 @@ retsub
 governanceSet_7:
 bytec_1 // "coreid"
 app_global_get
-pushbytes 0x63757272656e74477561726469616e536574496e646578 // "currentGuardianSetIndex"
+pushbytes 0x63757272656e74477561726469616e536574496e646578 // "currentPhylaxSetIndex"
 app_global_get_ex
 store 70
 store 69

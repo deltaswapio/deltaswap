@@ -11,7 +11,7 @@ import (
 
 func TestGenesis(t *testing.T) {
 	genesisState := types.GenesisState{
-		GuardianSetList: []types.GuardianSet{
+		PhylaxSetList: []types.PhylaxSet{
 			{
 				Index: 0,
 			},
@@ -36,15 +36,15 @@ func TestGenesis(t *testing.T) {
 				Index: "1",
 			},
 		},
-		ConsensusGuardianSetIndex: &types.ConsensusGuardianSetIndex{
+		ConsensusPhylaxSetIndex: &types.ConsensusPhylaxSetIndex{
 			Index: 70,
 		},
-		GuardianValidatorList: []types.GuardianValidator{
+		PhylaxValidatorList: []types.PhylaxValidator{
 			{
-				GuardianKey: []byte{0},
+				PhylaxKey: []byte{0},
 			},
 			{
-				GuardianKey: []byte{1},
+				PhylaxKey: []byte{1},
 			},
 		},
 		// this line is used by starport scaffolding # genesis/test/state
@@ -57,14 +57,14 @@ func TestGenesis(t *testing.T) {
 	got := wormhole.ExportGenesis(ctx, *k)
 	require.NotNil(t, got)
 
-	require.Len(t, got.GuardianSetList, len(genesisState.GuardianSetList))
-	require.Subset(t, genesisState.GuardianSetList, got.GuardianSetList)
+	require.Len(t, got.PhylaxSetList, len(genesisState.PhylaxSetList))
+	require.Subset(t, genesisState.PhylaxSetList, got.PhylaxSetList)
 	require.Equal(t, genesisState.Config, got.Config)
 	require.Len(t, got.ReplayProtectionList, len(genesisState.ReplayProtectionList))
 	require.Subset(t, genesisState.ReplayProtectionList, got.ReplayProtectionList)
 	require.Len(t, got.SequenceCounterList, len(genesisState.SequenceCounterList))
 	require.Subset(t, genesisState.SequenceCounterList, got.SequenceCounterList)
-	require.Equal(t, genesisState.ConsensusGuardianSetIndex, got.ConsensusGuardianSetIndex)
-	require.ElementsMatch(t, genesisState.GuardianValidatorList, got.GuardianValidatorList)
+	require.Equal(t, genesisState.ConsensusPhylaxSetIndex, got.ConsensusPhylaxSetIndex)
+	require.ElementsMatch(t, genesisState.PhylaxValidatorList, got.PhylaxValidatorList)
 	// this line is used by starport scaffolding # genesis/test/assert
 }

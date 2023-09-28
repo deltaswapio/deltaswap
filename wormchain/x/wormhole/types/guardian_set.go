@@ -7,7 +7,7 @@ import (
 	"github.com/ethereum/go-ethereum/common"
 )
 
-func (gs GuardianSet) KeysAsAddresses() (addresses []common.Address) {
+func (gs PhylaxSet) KeysAsAddresses() (addresses []common.Address) {
 	for _, key := range gs.Keys {
 		addresses = append(addresses, common.BytesToAddress(key))
 	}
@@ -16,7 +16,7 @@ func (gs GuardianSet) KeysAsAddresses() (addresses []common.Address) {
 }
 
 // TODO(csongor): do we store these ordered? binary search would be better
-func (gs GuardianSet) ContainsKey(key common.Address) (contains bool) {
+func (gs PhylaxSet) ContainsKey(key common.Address) (contains bool) {
 	for _, gKey := range gs.Keys {
 		if bytes.Equal(key.Bytes(), gKey) {
 			contains = true
@@ -26,7 +26,7 @@ func (gs GuardianSet) ContainsKey(key common.Address) (contains bool) {
 	return contains
 }
 
-func (gs GuardianSet) ValidateBasic() error {
+func (gs PhylaxSet) ValidateBasic() error {
 	for i, key := range gs.Keys {
 		if len(key) != 20 {
 			return fmt.Errorf("key [%d]: len %d != 20", i, len(key))

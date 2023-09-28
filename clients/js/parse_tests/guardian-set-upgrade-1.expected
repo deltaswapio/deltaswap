@@ -15,11 +15,11 @@
   "consistencyLevel": 0,
   "payload": {
     "module": "Core",
-    "type": "GuardianSetUpgrade",
+    "type": "PhylaxSetUpgrade",
     "chain": 0,
-    "newGuardianSetIndex": 1,
-    "newGuardianSetLength": 19,
-    "newGuardianSet": [
+    "newPhylaxSetIndex": 1,
+    "newPhylaxSetLength": 19,
+    "newPhylaxSet": [
       "58cc3ae5c097b213ce3c81979e1b9f9570746aa5",
       "ff6cb952589bde862c25ef4392132fb9d4a42157",
       "114de8460193bdf3a2fcf81f86a09765f4762fd1",

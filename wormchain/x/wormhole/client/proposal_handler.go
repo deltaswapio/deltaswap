@@ -6,5 +6,5 @@ import (
 	"github.com/deltaswapio/deltachain/x/wormhole/client/rest"
 )
 
-var GuardianSetUpdateProposalHandler = govclient.NewProposalHandler(cli.NewCmdSubmitGuardianSetUpdateProposal, rest.ProposalGuardianSetUpdateRESTHandler)
+var PhylaxSetUpdateProposalHandler = govclient.NewProposalHandler(cli.NewCmdSubmitPhylaxSetUpdateProposal, rest.ProposalPhylaxSetUpdateRESTHandler)
 var WormholeGovernanceMessageProposalHandler = govclient.NewProposalHandler(cli.NewCmdSubmitWormholeGovernanceMessageProposal, rest.ProposalWormholeGovernanceMessageRESTHandler)

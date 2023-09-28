@@ -368,7 +368,7 @@ test.skip("testnet - injective submit a vaa", async () => {
     // End of NOP
 
     // Attestation on Algorand is complete.  Get the VAA
-    // Guardian part
+    // Phylax part
     const rpc: string[] = ["https://wormhole-v2-testnet-api.certus.one"];
     const emitterAddr = getEmitterAddressAlgorand(BigInt(TokenBridgeID));
     const { vaaBytes } = await getSignedVAAWithRetry(

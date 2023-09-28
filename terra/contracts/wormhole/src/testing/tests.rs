@@ -1,7 +1,7 @@
 use cosmwasm_std::{CanonicalAddr, StdResult};
 
 use crate::byte_utils::ByteUtils;
-use crate::state::{GuardianAddress, GuardianSetInfo, ParsedVAA};
+use crate::state::{PhylaxAddress, PhylaxSetInfo, ParsedVAA};
 
 #[test]
 fn quardian_set_quorum() {
@@ -9,14 +9,14 @@ fn quardian_set_quorum() {
 
     let expected_quorums: Vec<usize> = vec![1, 2, 3, 3, 4, 5, 5, 6, 7, 7, 8, 9, 14, 17, 67];
 
-    let make_guardian_set = |n: usize| -> GuardianSetInfo {
+    let make_guardian_set = |n: usize| -> PhylaxSetInfo {
         let mut addresses = Vec::with_capacity(n);
         for _ in 0..n {
-            addresses.push(GuardianAddress {
+            addresses.push(PhylaxAddress {
                 bytes: Vec::new().into(),
             });
         }
-        GuardianSetInfo {
+        PhylaxSetInfo {
             addresses,
             expiration_time: 0,
         }

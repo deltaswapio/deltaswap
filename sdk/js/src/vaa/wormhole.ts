@@ -2,7 +2,7 @@ import { keccak256 } from "../utils";
 
 export { isBytes } from "ethers/lib/utils";
 
-export interface GuardianSignature {
+export interface PhylaxSignature {
   index: number;
   signature: Buffer;
 }
@@ -10,7 +10,7 @@ export interface GuardianSignature {
 export interface ParsedVaa {
   version: number;
   guardianSetIndex: number;
-  guardianSignatures: GuardianSignature[];
+  guardianSignatures: PhylaxSignature[];
   timestamp: number;
   nonce: number;
   emitterChain: number;
@@ -29,7 +29,7 @@ export function parseVaa(vaa: SignedVaa): ParsedVaa {
   const numSigners = signedVaa[5];
   const sigLength = 66;
 
-  const guardianSignatures: GuardianSignature[] = [];
+  const guardianSignatures: PhylaxSignature[] = [];
   for (let i = 0; i < numSigners; ++i) {
     const start = sigStart + i * sigLength;
     guardianSignatures.push({

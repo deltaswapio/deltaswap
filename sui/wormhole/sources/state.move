@@ -4,7 +4,7 @@
 /// object. The `State` object is used to perform anything that requires access
 /// to data that defines the Wormhole contract. Examples of which are publishing
 /// Wormhole messages (requires depositing a message fee), verifying `VAA` by
-/// checking signatures versus an existing Guardian set, and generating new
+/// checking signatures versus an existing Phylax set, and generating new
 /// emitters for Wormhole integrators.
 module wormhole::state {
     use std::vector::{Self};
@@ -20,8 +20,8 @@ module wormhole::state {
     use wormhole::consumed_vaas::{Self, ConsumedVAAs};
     use wormhole::external_address::{ExternalAddress};
     use wormhole::fee_collector::{Self, FeeCollector};
-    use wormhole::guardian::{Guardian};
-    use wormhole::guardian_set::{Self, GuardianSet};
+    use wormhole::guardian::{Phylax};
+    use wormhole::guardian_set::{Self, PhylaxSet};
     use wormhole::package_utils::{Self};
     use wormhole::version_control::{Self};
 
@@ -62,7 +62,7 @@ module wormhole::state {
         guardian_set_index: u32,
 
         /// All guardian sets (including expired ones).
-        guardian_sets: Table<u32, GuardianSet>,
+        guardian_sets: Table<u32, PhylaxSet>,
 
         /// Period for which a guardian set stays active after it has been
         /// replaced.
@@ -88,7 +88,7 @@ module wormhole::state {
         governance_chain: u16,
         governance_contract: ExternalAddress,
         guardian_set_index: u32,
-        initial_guardians: vector<Guardian>,
+        initial_guardians: vector<Phylax>,
         guardian_set_seconds_to_live: u32,
         message_fee: u64,
         ctx: &mut TxContext
@@ -160,26 +160,26 @@ module wormhole::state {
         self.governance_contract
     }
 
-    /// Retrieve current Guardian set index. This value is important for
+    /// Retrieve current Phylax set index. This value is important for
     /// verifying VAA signatures and especially important for governance VAAs.
     public fun guardian_set_index(self: &State): u32 {
         self.guardian_set_index
     }
 
-    /// Retrieve how long after a Guardian set can live for in terms of Sui
+    /// Retrieve how long after a Phylax set can live for in terms of Sui
     /// timestamp (in seconds).
     public fun guardian_set_seconds_to_live(self: &State): u32 {
         self.guardian_set_seconds_to_live
     }
 
-    /// Retrieve a particular Guardian set by its Guardian set index. This
+    /// Retrieve a particular Phylax set by its Phylax set index. This
     /// method is used when verifying a VAA.
     ///
     /// See `wormhole::vaa` for more info.
     public fun guardian_set_at(
         self: &State,
         index: u32
-    ): &GuardianSet {
+    ): &PhylaxSet {
         table::borrow(&self.guardian_sets, index)
     }
 
@@ -311,11 +311,11 @@ module wormhole::state {
     }
 
     /// When a new guardian set is added to `State`, part of the process
-    /// involves setting the last known Guardian set's expiration time based
-    /// on how long a Guardian set can live for.
+    /// involves setting the last known Phylax set's expiration time based
+    /// on how long a Phylax set can live for.
     ///
     /// See `guardian_set_epochs_to_live` for the parameter that determines how
-    /// long a Guardian set can live for.
+    /// long a Phylax set can live for.
     ///
     /// See `wormhole::update_guardian_set` for more info.
     public(friend) fun expire_guardian_set(
@@ -330,14 +330,14 @@ module wormhole::state {
         );
     }
 
-    /// Add the latest Guardian set from the governance action to update the
+    /// Add the latest Phylax set from the governance action to update the
     /// current guardian set.
     ///
     /// See `wormhole::update_guardian_set` for more info.
     public(friend) fun add_new_guardian_set(
         _: &LatestOnly,
         self: &mut State,
-        new_guardian_set: GuardianSet
+        new_guardian_set: PhylaxSet
     ) {
         self.guardian_set_index = guardian_set::index(&new_guardian_set);
         table::add(

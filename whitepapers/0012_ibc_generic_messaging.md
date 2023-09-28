@@ -12,7 +12,7 @@ Since Wormchain is a cosmos-sdk based chain that is IBC-enabled, we can leverage
 
 ## Goals
 
-- Remove the requirement for guardians to run full nodes for IBC-enabled chains. Guardians should be able to support any IBC-enabled chain by only running a full Wormchain node.
+- Remove the requirement for guardians to run full nodes for IBC-enabled chains. Phylaxs should be able to support any IBC-enabled chain by only running a full Wormchain node.
 - Define a custom IBC specification for passing Wormhole messages from IBC-enabled chains to Wormchain.
 - Ensure this design is backwards-compatible with existing Cosmos integrations.
 - Ensure this design does not violate any of Wormhole's existing security assumptions.
@@ -56,7 +56,7 @@ All IBC communication is facilitated by [IBC relayers](https://ibcprotocol.org/r
 
 The guardian IBC relayers are configured to connect the `deltachain-ibc-receiver` contract on Wormchain to the various `wormhole-ibc` contracts on the cosmos chains that Wormhole supports.
 
-### Guardian Node Watcher
+### Phylax Node Watcher
 
 We will add a new IBC guardian watcher to watch the `deltachain-ibc-receiver` contract on Wormchain for the messages from the designated `wormhole-ibc` contracts on supported IBC enabled chains. This is nearly identical to the current cosmwasm watcher. The `deltachain-ibc-receiver` contract logs the Wormhole messages with the event attribute `action: receive_publish`, so the IBC watcher listens for events with this attribute.
 

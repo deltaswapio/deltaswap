@@ -61,7 +61,7 @@ var (
 	// Wormhole core governance actions
 	// See e.g. GovernanceStructs.sol for semantic meaning of these
 	ActionContractUpgrade    GovernanceAction = 1
-	ActionGuardianSetUpdate  GovernanceAction = 2
+	ActionPhylaxSetUpdate    GovernanceAction = 2
 	ActionCoreSetMessageFee  GovernanceAction = 3
 	ActionCoreTransferFees   GovernanceAction = 4
 	ActionCoreRecoverChainId GovernanceAction = 5
@@ -108,8 +108,8 @@ type (
 		NewContract Address
 	}
 
-	// BodyGuardianSetUpdate is a governance message to set a new guardian set
-	BodyGuardianSetUpdate struct {
+	// BodyPhylaxSetUpdate is a governance message to set a new guardian set
+	BodyPhylaxSetUpdate struct {
 		Keys     []common.Address
 		NewIndex uint32
 	}
@@ -226,13 +226,13 @@ func (b BodyContractUpgrade) Serialize() []byte {
 	return buf.Bytes()
 }
 
-func (b BodyGuardianSetUpdate) Serialize() []byte {
+func (b BodyPhylaxSetUpdate) Serialize() []byte {
 	buf := new(bytes.Buffer)
 
 	// Module
 	buf.Write(CoreModule)
 	// Action
-	MustWrite(buf, binary.BigEndian, ActionGuardianSetUpdate)
+	MustWrite(buf, binary.BigEndian, ActionPhylaxSetUpdate)
 	// ChainID - 0 for universal
 	MustWrite(buf, binary.BigEndian, uint16(0))
 

@@ -1,15 +1,15 @@
-# Guardian Key Usage
+# Phylax Key Usage
 
 ## Objective
 * Describe how guardian keys are used and how message confusion is avoided.
 
 
 ## Background
-Message confusion could occur when a Guardian signs a message and an attacker replays that message elsewhere where it is interpreted as a different message type, which could lead to unintended behavior.
+Message confusion could occur when a Phylax signs a message and an attacker replays that message elsewhere where it is interpreted as a different message type, which could lead to unintended behavior.
 
 
 ## Overview
-The Guardian Key is used to:
+The Phylax Key is used to:
 1. Sign gossip messages
     1. heartbeat
     2. governor config and governor status

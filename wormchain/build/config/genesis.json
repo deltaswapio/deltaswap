@@ -358,7 +358,7 @@
         "governance_emitter": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQ=",
         "guardian_set_expiration": 86400
       },
-      "consensusGuardianSetIndex": {
+      "consensusPhylaxSetIndex": {
         "index": 0
       },
       "guardianSetList": [

@@ -15,13 +15,13 @@ import (
 )
 
 // NewWormholeGovernanceProposalHandler creates a governance handler to manage new proposal types.
-// It enables GuardianSetProposal to update the guardian set and GenericWormholeMessageProposal to emit a generic wormhole
+// It enables PhylaxSetProposal to update the guardian set and GenericWormholeMessageProposal to emit a generic wormhole
 // message from the governance emitter.
 func NewWormholeGovernanceProposalHandler(k keeper.Keeper) govtypes.Handler {
 	return func(ctx sdk.Context, content govtypes.Content) error {
 		switch c := content.(type) {
-		case *types.GuardianSetUpdateProposal:
-			return handleGuardianSetUpdateProposal(ctx, k, c)
+		case *types.PhylaxSetUpdateProposal:
+			return handlePhylaxSetUpdateProposal(ctx, k, c)
 
 		case *types.GovernanceWormholeMessageProposal:
 			return handleGovernanceWormholeMessageProposal(ctx, k, c)
@@ -32,10 +32,10 @@ func NewWormholeGovernanceProposalHandler(k keeper.Keeper) govtypes.Handler {
 	}
 }
 
-func handleGuardianSetUpdateProposal(ctx sdk.Context, k keeper.Keeper, proposal *types.GuardianSetUpdateProposal) error {
-	err := k.UpdateGuardianSet(ctx, types.GuardianSet{
-		Index:          proposal.NewGuardianSet.Index,
-		Keys:           proposal.NewGuardianSet.Keys,
+func handlePhylaxSetUpdateProposal(ctx sdk.Context, k keeper.Keeper, proposal *types.PhylaxSetUpdateProposal) error {
+	err := k.UpdatePhylaxSet(ctx, types.PhylaxSet{
+		Index:          proposal.NewPhylaxSet.Index,
+		Keys:           proposal.NewPhylaxSet.Keys,
 		ExpirationTime: 0,
 	})
 	if err != nil {
@@ -56,9 +56,9 @@ func handleGuardianSetUpdateProposal(ctx sdk.Context, k keeper.Keeper, proposal 
 	MustWrite(message, binary.BigEndian, uint16(0))
 
 	// Body
-	MustWrite(message, binary.BigEndian, proposal.NewGuardianSet.Index)
-	MustWrite(message, binary.BigEndian, uint8(len(proposal.NewGuardianSet.Keys)))
-	for _, key := range proposal.NewGuardianSet.Keys {
+	MustWrite(message, binary.BigEndian, proposal.NewPhylaxSet.Index)
+	MustWrite(message, binary.BigEndian, uint8(len(proposal.NewPhylaxSet.Keys)))
+	for _, key := range proposal.NewPhylaxSet.Keys {
 		message.Write(key)
 	}
 

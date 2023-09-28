@@ -15,7 +15,7 @@ Wormhole is, at its base layer, a very simple protocol. A Wormhole smart contrac
 - _sequence_ - An incrementing sequence which denotes how many messages this _emitterAddress_ has emitted.
 - _payload_ - The arbitrary contents of this message.
 
-Whenever a wormhole contract processes one of these messages, participants in the Wormhole Network ( individually known as **Guardians** ), will observe the transaction and create a **SignedVAA** (Signed Verifiable Action Approval) once the transaction has reached the specified confirmation time on the emitter chain.
+Whenever a wormhole contract processes one of these messages, participants in the Wormhole Network ( individually known as **Phylaxs** ), will observe the transaction and create a **SignedVAA** (Signed Verifiable Action Approval) once the transaction has reached the specified confirmation time on the emitter chain.
 
 The SignedVAA is essentially an affirmation from the Wormhole Network that a transaction has been finalized on the emitter chain, and that any dependent actions on other chains may proceed.
 

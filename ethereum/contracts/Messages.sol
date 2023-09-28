@@ -20,7 +20,7 @@ contract Messages is Getters {
     }
 
    /**
-    * @dev `verifyVM` serves to validate an arbitrary vm against a valid Guardian set
+    * @dev `verifyVM` serves to validate an arbitrary vm against a valid Phylax set
     *  - it aims to make sure the VM is for a known guardianSet
     *  - it aims to ensure the guardianSet is not expired
     *  - it aims to ensure the VM has reached quorum
@@ -32,14 +32,14 @@ contract Messages is Getters {
     }
 
     /**
-    * @dev `verifyVMInternal` serves to validate an arbitrary vm against a valid Guardian set
+    * @dev `verifyVMInternal` serves to validate an arbitrary vm against a valid Phylax set
     * if checkHash is set then the hash field of the vm is verified against the hash of its contents
     * in the case that the vm is securely parsed and the hash field can be trusted, checkHash can be set to false
     * as the check would be redundant
     */
     function verifyVMInternal(Structs.VM memory vm, bool checkHash) internal view returns (bool valid, string memory reason) {
         /// @dev Obtain the current guardianSet for the guardianSetIndex provided
-        Structs.GuardianSet memory guardianSet = getGuardianSet(vm.guardianSetIndex);
+        Structs.PhylaxSet memory guardianSet = getPhylaxSet(vm.guardianSetIndex);
 
         /**
          * Verify that the hash field in the vm matches with the hash of the contents of the vm if checkHash is set
@@ -77,13 +77,13 @@ contract Messages is Getters {
         }
 
         /// @dev Checks if VM guardian set index matches the current index (unless the current set is expired).
-        if(vm.guardianSetIndex != getCurrentGuardianSetIndex() && guardianSet.expirationTime < block.timestamp){
+        if(vm.guardianSetIndex != getCurrentPhylaxSetIndex() && guardianSet.expirationTime < block.timestamp){
             return (false, "guardian set has expired");
         }
 
        /**
         * @dev We're using a fixed point number transformation with 1 decimal to deal with rounding.
-        *   WARNING: This quorum check is critical to assessing whether we have enough Guardian signatures to validate a VM
+        *   WARNING: This quorum check is critical to assessing whether we have enough Phylax signatures to validate a VM
         *   if making any changes to this, obtain additional peer review. If guardianSet key length is 0 and
         *   vm.signatures length is 0, this could compromise the integrity of both vm and signature verification.
         */
@@ -108,7 +108,7 @@ contract Messages is Getters {
      *  - it intentioanlly does not solve for quorum (you should use verifyVM if you need these protections)
      *  - it intentionally returns true when signatures is an empty set (you should use verifyVM if you need these protections)
      */
-    function verifySignatures(bytes32 hash, Structs.Signature[] memory signatures, Structs.GuardianSet memory guardianSet) public pure returns (bool valid, string memory reason) {
+    function verifySignatures(bytes32 hash, Structs.Signature[] memory signatures, Structs.PhylaxSet memory guardianSet) public pure returns (bool valid, string memory reason) {
         uint8 lastIndex = 0;
         uint256 guardianCount = guardianSet.keys.length;
         for (uint i = 0; i < signatures.length; i++) {
@@ -130,7 +130,7 @@ contract Messages is Getters {
             /// semantics of solidity.
             require(sig.guardianIndex < guardianCount, "guardian index out of bounds");
 
-            /// Check to see if the signer of the signature does not match a specific Guardian key at the provided index
+            /// Check to see if the signer of the signature does not match a specific Phylax key at the provided index
             if(signatory != guardianSet.keys[sig.guardianIndex]){
                 return (false, "VM signature invalid");
             }
@@ -210,9 +210,9 @@ contract Messages is Getters {
     /**
      * @dev quorum serves solely to determine the number of signatures required to acheive quorum
      */
-    function quorum(uint numGuardians) public pure virtual returns (uint numSignaturesRequiredForQuorum) {
+    function quorum(uint numPhylaxs) public pure virtual returns (uint numSignaturesRequiredForQuorum) {
         // The max number of guardians is 255
-        require(numGuardians < 256, "too many guardians");
-        return ((numGuardians * 2) / 3) + 1;
+        require(numPhylaxs < 256, "too many guardians");
+        return ((numPhylaxs * 2) / 3) + 1;
     }
 }

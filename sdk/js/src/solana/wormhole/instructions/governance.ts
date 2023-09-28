@@ -17,7 +17,7 @@ import {
   deriveWormholeBridgeDataKey,
   deriveClaimKey,
   deriveFeeCollectorKey,
-  deriveGuardianSetKey,
+  derivePhylaxSetKey,
   derivePostedVaaKey,
   deriveUpgradeAuthorityKey,
 } from "../accounts";
@@ -130,7 +130,7 @@ export function getTransferFeesAccounts(
   };
 }
 
-export function createUpgradeGuardianSetInstruction(
+export function createUpgradePhylaxSetInstruction(
   wormholeProgramId: PublicKeyInitData,
   payer: PublicKeyInitData,
   vaa: SignedVaa | ParsedGovernanceVaa
@@ -138,11 +138,11 @@ export function createUpgradeGuardianSetInstruction(
   const methods =
     createReadOnlyWormholeProgramInterface(
       wormholeProgramId
-    ).methods.upgradeGuardianSet();
+    ).methods.upgradePhylaxSet();
 
   // @ts-ignore
   return methods._ixFn(...methods._args, {
-    accounts: getUpgradeGuardianSetAccounts(
+    accounts: getUpgradePhylaxSetAccounts(
       wormholeProgramId,
       payer,
       vaa
@@ -154,7 +154,7 @@ export function createUpgradeGuardianSetInstruction(
   });
 }
 
-export interface UpgradeGuardianSetAccounts {
+export interface UpgradePhylaxSetAccounts {
   payer: PublicKey;
   bridge: PublicKey;
   vaa: PublicKey;
@@ -164,11 +164,11 @@ export interface UpgradeGuardianSetAccounts {
   systemProgram: PublicKey;
 }
 
-export function getUpgradeGuardianSetAccounts(
+export function getUpgradePhylaxSetAccounts(
   wormholeProgramId: PublicKeyInitData,
   payer: PublicKeyInitData,
   vaa: SignedVaa | ParsedGovernanceVaa
-): UpgradeGuardianSetAccounts {
+): UpgradePhylaxSetAccounts {
   const parsed = isBytes(vaa) ? parseGovernanceVaa(vaa) : vaa;
   return {
     payer: new PublicKey(payer),
@@ -180,11 +180,11 @@ export function getUpgradeGuardianSetAccounts(
       parsed.emitterChain,
       parsed.sequence
     ),
-    guardianSetOld: deriveGuardianSetKey(
+    guardianSetOld: derivePhylaxSetKey(
       wormholeProgramId,
       parsed.guardianSetIndex
     ),
-    guardianSetNew: deriveGuardianSetKey(
+    guardianSetNew: derivePhylaxSetKey(
       wormholeProgramId,
       parsed.guardianSetIndex + 1
     ),

@@ -18,7 +18,7 @@ type WatcherConfig struct {
 	ChainID             vaa.ChainID                     // ChainID
 	MockObservationC    chan *common.MessagePublication // Channel to feed this watcher mock observations that it will then make
 	ObservationDb       ObservationDb                   // If the watcher receives a re-observation request with a TxHash in this map, it will make the corresponding observation in this map.
-	MockSetC            <-chan *common.GuardianSet
+	MockSetC            <-chan *common.PhylaxSet
 	L1FinalizerRequired watchers.NetworkID // (optional)
 	l1Finalizer         interfaces.L1Finalizer
 }
@@ -42,7 +42,7 @@ func (wc *WatcherConfig) SetL1Finalizer(l1finalizer interfaces.L1Finalizer) {
 func (wc *WatcherConfig) Create(
 	msgC chan<- *common.MessagePublication,
 	obsvReqC <-chan *gossipv1.ObservationRequest,
-	setC chan<- *common.GuardianSet,
+	setC chan<- *common.PhylaxSet,
 	env common.Environment,
 ) (interfaces.L1Finalizer, supervisor.Runnable, error) {
 	return MockL1Finalizer{}, NewWatcherRunnable(msgC, obsvReqC, setC, wc), nil

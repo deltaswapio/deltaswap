@@ -21,12 +21,12 @@ As these 3rd party audits are completed and issues are sufficiently addressed, w
 - **[January 2022 - Neodyme](https://github.com/wormhole-foundation/wormhole-audits/blob/main/2022-01-10_neodyme.pdf)**: _Ethereum Contracts_
 - **[January 2022 - Neodyme](https://github.com/wormhole-foundation/wormhole-audits/blob/main/2022-01-10_neodyme.pdf)**: _Solana Contracts_
 - **[January 2022 - Neodyme](https://github.com/wormhole-foundation/wormhole-audits/blob/main/2022-01-10_neodyme.pdf)**: _Terra Contracts_
-- **[January 2022 - Neodyme](https://github.com/wormhole-foundation/wormhole-audits/blob/main/2022-01-10_neodyme.pdf)**: _Guardian_
+- **[January 2022 - Neodyme](https://github.com/wormhole-foundation/wormhole-audits/blob/main/2022-01-10_neodyme.pdf)**: _Phylax_
 - **[January 2022 - Neodyme](https://github.com/wormhole-foundation/wormhole-audits/blob/main/2022-01-10_neodyme.pdf)**: _Solitaire_
 - **[July 2022 - Kudelski](https://github.com/wormhole-foundation/wormhole-audits/blob/main/2022-07-01_kudelski.pdf)**: _Ethereum Contracts_
 - **[July 2022 - Kudelski](https://github.com/wormhole-foundation/wormhole-audits/blob/main/2022-07-01_kudelski.pdf)**: _Solana Contracts_
 - **[July 2022 - Kudelski](https://github.com/wormhole-foundation/wormhole-audits/blob/main/2022-07-01_kudelski.pdf)**: _Terra Contracts_
-- **[July 2022 - Kudelski](https://github.com/wormhole-foundation/wormhole-audits/blob/main/2022-07-01_kudelski.pdf)**: _Guardian_
+- **[July 2022 - Kudelski](https://github.com/wormhole-foundation/wormhole-audits/blob/main/2022-07-01_kudelski.pdf)**: _Phylax_
 - **[August 2022 - Kudelski](https://github.com/wormhole-foundation/wormhole-audits/blob/main/2022-08-16_kudelski.pdf)**: _Algorand Contracts_
 - **[September 2022 - OtterSec](https://github.com/wormhole-foundation/wormhole-audits/blob/main/Wormhole_Near_OtterSec.pdf)**: _NEAR Contracts_
 - **[September 2022 - Trail of Bits](https://github.com/wormhole-foundation/wormhole-audits/blob/main/Wormhole_Audit_Report_TrailOfBits_2022-09.pdf)**: _Solana Contracts_
@@ -37,11 +37,11 @@ As these 3rd party audits are completed and issues are sufficiently addressed, w
 - **[November 2022 - Zellic](https://github.com/wormhole-foundation/wormhole-audits/blob/main/Wormhole_Aptos_Audit_Report_Zellic_2022-11.pdf)**: _Aptos Integration_
 - **[February 2023 - OtterSec](https://github.com/wormhole-foundation/wormhole-audits/blob/main/Wormhole_OtterSec_Aptos_NFT_2023-02.pdf)**: _Aptos NFT Bridge_
 - **[March 2023 - CertiK](https://github.com/wormhole-foundation/wormhole-audits/blob/main/2023-03-08_CertiK_Wormhole_EVM.pdf)**: _EVM Contracts_
-- **[April 2023 - Trail of Bits](https://github.com/wormhole-foundation/wormhole-audits/blob/main/Wormhole_Audit_Report_TrailOfBits_2023-04.pdf)**: _Guardian node: Governor and Watchers_
+- **[April 2023 - Trail of Bits](https://github.com/wormhole-foundation/wormhole-audits/blob/main/Wormhole_Audit_Report_TrailOfBits_2023-04.pdf)**: _Phylax node: Governor and Watchers_
 - **[April 2023 - OtterSec](https://github.com/wormhole-foundation/wormhole-audits/blob/main/Wormhole_OtterSec_Sui_2023-04.pdf)**: _Sui Contracts_
 - **[May 2023 - Runtime Verification](https://github.com/wormhole-foundation/wormhole-audits/blob/main/2023-05_Runtime_Verification_Wormhole_EVM.pdf)**: _Formal Verification of EVM contracts_
 - **Q4 2022 - Certik (DRAFT)**: _Solana Contracts_
-- **Q4 2022 - Certik (DRAFT)**: _Guardian_
+- **Q4 2022 - Certik (DRAFT)**: _Phylax_
 
 
 ## Bug Bounty Program
@@ -49,7 +49,7 @@ As these 3rd party audits are completed and issues are sufficiently addressed, w
 The Wormhole project operates a bug bounty program to financially incentivize independent researchers for finding and responsibly disclosing security issues.
 
 - [Immunefi-Hosted Program](https://immunefi.com/bounty/wormhole/)
-  - **Scopes**: Guardian and Smart Contracts
+  - **Scopes**: Phylax and Smart Contracts
   - **Rewards**: Up to $2,500,000 USDC
   - **KYC**: Required
 
@@ -59,25 +59,25 @@ If there is a duplicate report, either the same reporter or different reporters,
 
 ## Trust Assumptions
 
-Consensus on Wormhole is achieved by two subset groups of Guardians (aka: validators) within the Guardian Set, which have the following abilities:
+Consensus on Wormhole is achieved by two subset groups of Phylaxs (aka: validators) within the Phylax Set, which have the following abilities:
 
-- **Super Majority** (any 2/3+ quorum of Guardians - 13 of 19)
+- **Super Majority** (any 2/3+ quorum of Phylaxs - 13 of 19)
   * Can pass messages
     - Core messaging
     - Token/NFT value movement
   * Can pass governance
     - Set fees
     - Upgrade Contracts
-    - Upgrade Guardian Set
-- **Super Minority** (any 1/3+ quorum of Guardians - 7 of 19)
+    - Upgrade Phylax Set
+- **Super Minority** (any 1/3+ quorum of Phylaxs - 7 of 19)
   * Can censor messages or governance
     - Refusing to sign observed message(s)
     - Refusing to observe the block chain
     - Refusing to run guardian software
 
-There are 19 Guardians in the current Guardian Set, made up of some of the largest and most reputable staking providers in crypto.  This level of operational security diversity is a useful property in preventing wholesale compromise of the Guardian Set due to operational failures of a single or small number of organizations.
+There are 19 Phylaxs in the current Phylax Set, made up of some of the largest and most reputable staking providers in crypto.  This level of operational security diversity is a useful property in preventing wholesale compromise of the Phylax Set due to operational failures of a single or small number of organizations.
 
-The Guardian Set is expected to grow over time to further decentralize the Wormhole Guardian Set and the Wormhole network.
+The Phylax Set is expected to grow over time to further decentralize the Wormhole Phylax Set and the Wormhole network.
 ## White Hat Hacking
 
 The Wormhole project wants to lower the bar for White-hat hackers to find security bugs in Wormhole. Why? The easier this process, the more likely it will be for white-hats to find bugs in Wormhole and responsibly disclose them, helping to secure the network.
@@ -163,7 +163,7 @@ The benefits of such an approach include the following:
 - Allow selective shutdown of only the affected code (while leaving everything else fully functional)
 - No additional attack surface (only less attack surface during existential crisis)
 - No additional gas cost paid by users of Wormhole
-- No additional process or keys to distribute or manage for Guardians
+- No additional process or keys to distribute or manage for Phylaxs
 - For known shutdown cases, a shutdown contract with disabled capabilities can be pre-deployed on chain, making the governance proposal easier to produce and approve.
 - For unknown shutdown cases, a temporary patch can be developed to disable only the affected functionality.
 
@@ -175,16 +175,16 @@ The caveats of such an approach include the following:
 
 ## Security Monitoring
 
-The Wormhole project expects all Guardians develop and maintain their own security monitoring strategies.  This expectation is based on the value of having heterogeneous monitoring strategies across the Guardian set as a function of Wormhole's defense in depth approach, increasing the likelihood of detecting fraudulent activity.
+The Wormhole project expects all Phylaxs develop and maintain their own security monitoring strategies.  This expectation is based on the value of having heterogeneous monitoring strategies across the Phylax set as a function of Wormhole's defense in depth approach, increasing the likelihood of detecting fraudulent activity.
 
-Wormhole Guardians should aim to capture all of the following domains with their monitoring strategies:
+Wormhole Phylaxs should aim to capture all of the following domains with their monitoring strategies:
 
-- Guardian Application, System, and Network Activity
+- Phylax Application, System, and Network Activity
 - Gossip Network Activity
 - Smart Contract Activity/State
 - Transaction/Usage Activity
 - Governor Activity
 
-Guardians are encouraged to share monitoring lessons learned with each other to the extent that it increases the ability to detect fraudulent activity on the network.  However, the end state for Wormhole network monitoring is not a homogeneous monitoring strategy, as levels of diversity within the Guardians is an essential property of the Wormhole network.
+Phylaxs are encouraged to share monitoring lessons learned with each other to the extent that it increases the ability to detect fraudulent activity on the network.  However, the end state for Wormhole network monitoring is not a homogeneous monitoring strategy, as levels of diversity within the Phylaxs is an essential property of the Wormhole network.
 
-Lastly, if a Guardian detects a security event via their monitoring strategy they are empowered to engage the above mentioned incident response pattern.
+Lastly, if a Phylax detects a security event via their monitoring strategy they are empowered to engage the above mentioned incident response pattern.

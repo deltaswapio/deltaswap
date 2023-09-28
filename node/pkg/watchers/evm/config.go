@@ -11,16 +11,16 @@ import (
 )
 
 type WatcherConfig struct {
-	NetworkID              watchers.NetworkID // human readable name
-	ChainID                vaa.ChainID        // ChainID
-	Rpc                    string             // RPC URL
-	Contract               string             // hex representation of the contract address
-	GuardianSetUpdateChain bool               // if `true`, we will retrieve the GuardianSet from this chain and watch this chain for GuardianSet updates
-	WaitForConfirmations   bool               // (optional)
-	RootChainRpc           string             // (optional)
-	RootChainContract      string             // (optional)
-	L1FinalizerRequired    watchers.NetworkID // (optional)
-	l1Finalizer            interfaces.L1Finalizer
+	NetworkID            watchers.NetworkID // human readable name
+	ChainID              vaa.ChainID        // ChainID
+	Rpc                  string             // RPC URL
+	Contract             string             // hex representation of the contract address
+	PhylaxSetUpdateChain bool               // if `true`, we will retrieve the PhylaxSet from this chain and watch this chain for PhylaxSet updates
+	WaitForConfirmations bool               // (optional)
+	RootChainRpc         string             // (optional)
+	RootChainContract    string             // (optional)
+	L1FinalizerRequired  watchers.NetworkID // (optional)
+	l1Finalizer          interfaces.L1Finalizer
 }
 
 func (wc *WatcherConfig) GetNetworkID() watchers.NetworkID {
@@ -42,13 +42,13 @@ func (wc *WatcherConfig) SetL1Finalizer(l1finalizer interfaces.L1Finalizer) {
 func (wc *WatcherConfig) Create(
 	msgC chan<- *common.MessagePublication,
 	obsvReqC <-chan *gossipv1.ObservationRequest,
-	setC chan<- *common.GuardianSet,
+	setC chan<- *common.PhylaxSet,
 	env common.Environment,
 ) (interfaces.L1Finalizer, supervisor.Runnable, error) {
 
-	// only actually use the guardian set channel if wc.GuardianSetUpdateChain == true
-	var setWriteC chan<- *common.GuardianSet = nil
-	if wc.GuardianSetUpdateChain {
+	// only actually use the guardian set channel if wc.PhylaxSetUpdateChain == true
+	var setWriteC chan<- *common.PhylaxSet = nil
+	if wc.PhylaxSetUpdateChain {
 		setWriteC = setC
 	}
 

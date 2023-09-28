@@ -84,7 +84,7 @@ def approve_token_bridge(seed_amt: int, tmpl_sig: TmplSig, devMode: bool):
 
     @Subroutine(TealType.uint64)
     def governanceSet() -> Expr:
-        maybe = App.globalGetEx(App.globalGet(Bytes("coreid")), Bytes("currentGuardianSetIndex"))
+        maybe = App.globalGetEx(App.globalGet(Bytes("coreid")), Bytes("currentPhylaxSetIndex"))
         return Seq(maybe, MagicAssert(maybe.hasValue()), maybe.value())
 
     @Subroutine(TealType.uint64)

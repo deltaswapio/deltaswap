@@ -30,10 +30,10 @@ test("Verify guardian validator", async () => {});
 
 test("Process guardian set upgrade", async () => {});
 
-test("RegisterGuardianValidator", async () => {
+test("RegisterPhylaxValidator", async () => {
   const wallet = await getWallet(TEST_WALLET_MNEMONIC_2);
   const signingClient = await getWormchainSigningClient(TENDERMINT_URL, wallet);
-  const registerMsg = signingClient.core.msgRegisterAccountAsGuardian({
+  const registerMsg = signingClient.core.msgRegisterAccountAsPhylax({
     guardianPubkey: { key: Buffer.from(DEVNET_GUARDIAN_PUBLIC_KEY, "hex") },
     signer: TEST_WALLET_ADDRESS_2,
     signature: signValidatorAddress(

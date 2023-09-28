@@ -242,7 +242,7 @@ async function testNearSDK() {
   let ts = new TestLib();
   let seq = Math.floor(new Date().getTime() / 1000);
   let v = ts.genNFTTransfer(
-    ts.singleGuardianPrivKey,
+    ts.singlePhylaxPrivKey,
     0,
     1,
     seq,

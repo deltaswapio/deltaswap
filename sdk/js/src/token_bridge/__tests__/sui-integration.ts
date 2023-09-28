@@ -45,7 +45,7 @@ import {
   updateWrappedOnSui,
 } from "../..";
 import { MockTokenBridge } from "../../mock/tokenBridge";
-import { MockGuardians } from "../../mock/wormhole";
+import { MockPhylaxs } from "../../mock/wormhole";
 import {
   executeTransactionBlock,
   getEmitterAddressAndSequenceFromResponseSui,
@@ -251,11 +251,11 @@ describe("Sui SDK tests", () => {
       symbol,
       "HELLO"
     );
-    const mockGuardians = new MockGuardians(0, [
+    const mockPhylaxs = new MockPhylaxs(0, [
       "cfb12303a19cde580bb4dd771639b0d26bc68353645571a8cff516ab2ee113a0",
     ]);
     const updatedAttestVAA = new Uint8Array(
-      mockGuardians.addSignatures(updatedAttestPayload, [0])
+      mockPhylaxs.addSignatures(updatedAttestPayload, [0])
     );
 
     // Update wrapped

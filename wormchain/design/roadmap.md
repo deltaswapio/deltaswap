@@ -2,7 +2,7 @@
 
 ## Why Wormhole Chain?
 
-At the time of writing, the Wormhole Guardian Network is a decentralized network of 19 validators operating in a Proof-of-Authority consensus mechanism. They validate using the phylaxd program from the Wormhole core repository, and perform governance off-chain. There are currently no features to the Wormhole Guardian Network except the core function of observing and signing VAAs.
+At the time of writing, the Wormhole Phylax Network is a decentralized network of 19 validators operating in a Proof-of-Authority consensus mechanism. They validate using the phylaxd program from the Wormhole core repository, and perform governance off-chain. There are currently no features to the Wormhole Phylax Network except the core function of observing and signing VAAs.
 
 The roadmap is that as Wormhole grows and matures, it will add more advanced features, such as Accounting, Wormhole Pipes, Cross-Chain Queries, and more. It will also move its governance, VAA generation, and validator on-boarding to a formalized process, and change its governance structure from PoA to another mechanism (possibly a modified Proof of Stake mechanism).
 
@@ -52,7 +52,7 @@ This category contains the critical features which allow Wormhole Chain to produ
 
 ### Proof of Authority Block Production
 
-The 19 Guardians of the current Wormhole Network will also serve as the 19 validators for the Wormhole Chain. Furthermore, new Guardians must be able to register as validators on the Wormhole Chain, so that the Guardian Set Upgrade VAAs can be submitted in a Wormhole Chain transaction to change its validator set, akin to the process on other chains.
+The 19 Phylaxs of the current Wormhole Network will also serve as the 19 validators for the Wormhole Chain. Furthermore, new Phylaxs must be able to register as validators on the Wormhole Chain, so that the Phylax Set Upgrade VAAs can be submitted in a Wormhole Chain transaction to change its validator set, akin to the process on other chains.
 
 ### Core Bridge and Token Bridge
 
@@ -80,4 +80,4 @@ Cross Chain queries are a mechanism by which read-only data can be requested fro
 Wormhole pipes are similar to Cross-Chain queries, but act via a 'Push' model whereby contracts can subscribe to systematically read data from other chains. Subscriptions would be managed via Wormhole Chain.
 
 ### Many others
-Going forward, Wormhole Chain will be an excellent mechanism for both the public to interact with the Guardian network, and for the Guardians to communicate between themselves. As such, Wormhole Chain should become the primary mechanism by which requests are made to the Guardians, and how new oracle features are implemented.
+Going forward, Wormhole Chain will be an excellent mechanism for both the public to interact with the Phylax network, and for the Phylaxs to communicate between themselves. As such, Wormhole Chain should become the primary mechanism by which requests are made to the Phylaxs, and how new oracle features are implemented.

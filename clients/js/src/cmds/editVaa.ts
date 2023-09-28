@@ -96,7 +96,7 @@ export const builder = (y: typeof yargs) =>
     })
     .option("guardian-secret", {
       alias: "gs",
-      describe: "Guardian's secret key",
+      describe: "Phylax's secret key",
       type: "string",
     });
 export const handler = async (
@@ -179,14 +179,14 @@ export const handler = async (
       "/" +
       vaa.sequence.toString();
     const wormscanData = await axios.get(wormscanurl);
-    const guardianSet = await getGuardianSet(network, vaa.guardianSetIndex);
+    const guardianSet = await getPhylaxSet(network, vaa.guardianSetIndex);
     vaa.signatures = await getSigsFromWormscanData(
       wormscanData.data,
       guardianSet
     );
   } else if (argv.wormscanurl) {
     const wormscanData = await axios.get(argv.wormscanurl);
-    const guardianSet = await getGuardianSet(network, vaa.guardianSetIndex);
+    const guardianSet = await getPhylaxSet(network, vaa.guardianSetIndex);
     vaa.signatures = await getSigsFromWormscanData(
       wormscanData.data,
       guardianSet
@@ -230,8 +230,8 @@ export const handler = async (
   console.log(serialiseVAA(vaa as unknown as VAA<Payload>));
 };
 
-// getGuardianSet queries the core contract on Ethereum for the guardian set and returns it.
-const getGuardianSet = async (
+// getPhylaxSet queries the core contract on Ethereum for the guardian set and returns it.
+const getPhylaxSet = async (
   network: Network,
   guardianSetIndex: number
 ): Promise<string[]> => {
@@ -243,7 +243,7 @@ const getGuardianSet = async (
 
   const provider = new ethers.providers.JsonRpcProvider(n.rpc);
   const contract = Implementation__factory.connect(contract_address, provider);
-  const result = await contract.getGuardianSet(guardianSetIndex);
+  const result = await contract.getPhylaxSet(guardianSetIndex);
   return result[0];
 };
 

@@ -12,16 +12,16 @@ use solana_program::{
 use crate::{
     accounts::{
         Bridge,
-        GuardianSet,
-        GuardianSetDerivationData,
+        PhylaxSet,
+        PhylaxSetDerivationData,
         PostedVAA,
         PostedVAADerivationData,
         SignatureSet,
     },
     error::Error::{
-        GuardianSetMismatch,
+        PhylaxSetMismatch,
         PostVAAConsensusFailed,
-        PostVAAGuardianSetExpired,
+        PostVAAPhylaxSetExpired,
         VAAInvalid,
     },
 };
@@ -44,9 +44,9 @@ use std::io::{
     Write,
 };
 
-impl From<&PostVAAData> for GuardianSetDerivationData {
+impl From<&PostVAAData> for PhylaxSetDerivationData {
     fn from(data: &PostVAAData) -> Self {
-        GuardianSetDerivationData {
+        PhylaxSetDerivationData {
             index: data.guardian_set_index,
         }
     }
@@ -55,7 +55,7 @@ impl From<&PostVAAData> for GuardianSetDerivationData {
 #[derive(FromAccounts)]
 pub struct PostVAA<'b> {
     /// Information about the current guardian set.
-    pub guardian_set: GuardianSet<'b, { AccountState::Initialized }>,
+    pub guardian_set: PhylaxSet<'b, { AccountState::Initialized }>,
 
     /// Bridge Info
     pub bridge_info: Bridge<'b, { AccountState::Initialized }>,
@@ -156,18 +156,18 @@ pub fn post_vaa(ctx: &ExecutionContext, accs: &mut PostVAA, vaa: PostVAAData) ->
 /// A guardian set must not have expired.
 #[inline(always)]
 fn check_active<'r>(
-    guardian_set: &GuardianSet<'r, { AccountState::Initialized }>,
+    guardian_set: &PhylaxSet<'r, { AccountState::Initialized }>,
     clock: &Sysvar<'r, Clock>,
 ) -> Result<()> {
     // IMPORTANT - this is a fix for mainnet wormhole
     // The initial guardian set was never expired so we block it here.
     if guardian_set.index == 0 && guardian_set.creation_time == 1628099186 {
-        return Err(PostVAAGuardianSetExpired.into());
+        return Err(PostVAAPhylaxSetExpired.into());
     }
     if guardian_set.expiration_time != 0
         && (guardian_set.expiration_time as i64) < clock.unix_timestamp
     {
-        return Err(PostVAAGuardianSetExpired.into());
+        return Err(PostVAAPhylaxSetExpired.into());
     }
     Ok(())
 }
@@ -195,11 +195,11 @@ static INVALID_SIGNATURES: &[&str; 16] = &[
 /// The signatures in this instruction must be from the right guardian set.
 #[inline(always)]
 fn check_valid_sigs<'r>(
-    guardian_set: &GuardianSet<'r, { AccountState::Initialized }>,
+    guardian_set: &PhylaxSet<'r, { AccountState::Initialized }>,
     signatures: &SignatureSet<'r, { AccountState::Initialized }>,
 ) -> Result<()> {
     if signatures.guardian_set_index != guardian_set.index {
-        return Err(GuardianSetMismatch.into());
+        return Err(PhylaxSetMismatch.into());
     }
 
     // Reject blacklisted signature accounts.

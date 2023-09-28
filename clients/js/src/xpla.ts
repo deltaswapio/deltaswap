@@ -58,7 +58,7 @@ export async function execute_xpla(
         },
       };
       switch (payload.type) {
-        case "GuardianSetUpgrade":
+        case "PhylaxSetUpgrade":
           console.log("Submitting new guardian set");
           break;
         case "ContractUpgrade":

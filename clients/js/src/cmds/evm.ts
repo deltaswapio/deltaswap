@@ -168,7 +168,7 @@ export const builder = function (y: typeof yargs) {
           .option("guardian-address", {
             alias: "g",
             demandOption: true,
-            describe: "Guardians' public addresses (CSV)",
+            describe: "Phylaxs' public addresses (CSV)",
             type: "string",
           })
           .option("guardian-set-index", {

@@ -13,7 +13,7 @@ contract TestSetters is TestUtils {
         setters = new MySetters();
     }
 
-    function testUpdateGuardianSetIndex(uint32 index, bytes32 storageSlot)
+    function testUpdatePhylaxSetIndex(uint32 index, bytes32 storageSlot)
         public
         unchangedStorage(address(setters), storageSlot)
     {
@@ -21,7 +21,7 @@ contract TestSetters is TestUtils {
 
         bytes32 originalSlot = vm.load(address(setters), GUARDIANSETINDEX_STORAGE_INDEX);
 
-        setters.updateGuardianSetIndex_external(index);
+        setters.updatePhylaxSetIndex_external(index);
 
         bytes32 updatedSlot = vm.load(address(setters), GUARDIANSETINDEX_STORAGE_INDEX);
         bytes32 mask = bytes32(0xffffffffffffffffffffffffffffffffffffffffffffffffffffffff00000000);
@@ -30,14 +30,14 @@ contract TestSetters is TestUtils {
         assertEq(updatedSlot, expectedSlot);
     }
 
-    function testUpdateGuardianSetIndex_KEVM(uint32 index, bytes32 storageSlot)
+    function testUpdatePhylaxSetIndex_KEVM(uint32 index, bytes32 storageSlot)
         public
         symbolic(address(setters))
     {
-        testUpdateGuardianSetIndex(index, storageSlot);
+        testUpdatePhylaxSetIndex(index, storageSlot);
     }
 
-    function testExpireGuardianSet(uint32 timestamp, uint32 index, bytes32 storageSlot)
+    function testExpirePhylaxSet(uint32 timestamp, uint32 index, bytes32 storageSlot)
         public
         unchangedStorage(address(setters), storageSlot)
     {
@@ -49,7 +49,7 @@ contract TestSetters is TestUtils {
 
         vm.warp(timestamp);
 
-        setters.expireGuardianSet_external(index);
+        setters.expirePhylaxSet_external(index);
 
         bytes32 updatedSlot = vm.load(address(setters), storageLocation);
         bytes32 mask = bytes32(0xffffffffffffffffffffffffffffffffffffffffffffffffffffffff00000000);
@@ -58,11 +58,11 @@ contract TestSetters is TestUtils {
         assertEq(updatedSlot, expectedSlot);
     }
 
-    function testExpireGuardianSet_KEVM(uint32 timestamp, uint32 index, bytes32 storageSlot)
+    function testExpirePhylaxSet_KEVM(uint32 timestamp, uint32 index, bytes32 storageSlot)
         public
         symbolic(address(setters))
     {
-        testExpireGuardianSet(timestamp, index, storageSlot);
+        testExpirePhylaxSet(timestamp, index, storageSlot);
     }
 
     function testSetInitialized(address newImplementation, bytes32 storageSlot)

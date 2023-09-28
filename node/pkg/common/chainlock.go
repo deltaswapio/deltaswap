@@ -139,7 +139,7 @@ func (msg *MessagePublication) UnmarshalJSON(data []byte) error {
 func (msg *MessagePublication) CreateVAA(gsIndex uint32) *vaa.VAA {
 	return &vaa.VAA{
 		Version:          vaa.SupportedVAAVersion,
-		GuardianSetIndex: gsIndex,
+		PhylaxSetIndex:   gsIndex,
 		Signatures:       nil,
 		Timestamp:        msg.Timestamp,
 		Nonce:            msg.Nonce,

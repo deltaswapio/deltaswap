@@ -1,7 +1,7 @@
-//! GuardianSet represents an account containing information about the current active guardians
+//! PhylaxSet represents an account containing information about the current active guardians
 //! responsible for signing wormhole VAAs.
 
-use crate::types::GuardianPublicKey;
+use crate::types::PhylaxPublicKey;
 use borsh::{
     BorshDeserialize,
     BorshSerialize,
@@ -18,15 +18,15 @@ use solitaire::{
     Owned,
 };
 
-pub type GuardianSet<'b, const State: AccountState> = Data<'b, GuardianSetData, { State }>;
+pub type PhylaxSet<'b, const State: AccountState> = Data<'b, PhylaxSetData, { State }>;
 
 #[derive(Default, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
-pub struct GuardianSetData {
+pub struct PhylaxSetData {
     /// Index representing an incrementing version number for this guardian set.
     pub index: u32,
 
     /// ETH style public keys
-    pub keys: Vec<GuardianPublicKey>,
+    pub keys: Vec<PhylaxPublicKey>,
 
     /// Timestamp representing the time this guardian became active.
     pub creation_time: u32,
@@ -35,30 +35,30 @@ pub struct GuardianSetData {
     pub expiration_time: u32,
 }
 
-/// GuardianSet account PDAs are indexed by their version number.
-pub struct GuardianSetDerivationData {
+/// PhylaxSet account PDAs are indexed by their version number.
+pub struct PhylaxSetDerivationData {
     pub index: u32,
 }
 
-impl<'a, const State: AccountState> Seeded<&GuardianSetDerivationData>
-    for GuardianSet<'a, { State }>
+impl<'a, const State: AccountState> Seeded<&PhylaxSetDerivationData>
+    for PhylaxSet<'a, { State }>
 {
-    fn seeds(data: &GuardianSetDerivationData) -> Vec<Vec<u8>> {
+    fn seeds(data: &PhylaxSetDerivationData) -> Vec<Vec<u8>> {
         vec![
-            "GuardianSet".as_bytes().to_vec(),
+            "PhylaxSet".as_bytes().to_vec(),
             data.index.to_be_bytes().to_vec(),
         ]
     }
 }
 
-impl GuardianSetData {
+impl PhylaxSetData {
     /// Number of guardians in the set
     pub fn num_guardians(&self) -> u8 {
         self.keys.iter().filter(|v| **v != [0u8; 20]).count() as u8
     }
 }
 
-impl Owned for GuardianSetData {
+impl Owned for PhylaxSetData {
     fn owner(&self) -> AccountOwner {
         AccountOwner::This
     }

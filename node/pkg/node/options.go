@@ -30,16 +30,16 @@ import (
 	"go.uber.org/zap/zapcore"
 )
 
-type GuardianOption struct {
+type PhylaxOption struct {
 	name         string
 	dependencies []string                                     // Array of other option's `name`. These options need to be configured before this option. Dependencies are enforced at runtime.
 	f            func(context.Context, *zap.Logger, *G) error // Function that is run by the constructor to initialize this component.
 }
 
-// GuardianOptionP2P configures p2p networking.
+// PhylaxOptionP2P configures p2p networking.
 // Dependencies: Accountant, Governor
-func GuardianOptionP2P(p2pKey libp2p_crypto.PrivKey, networkId string, bootstrapPeers string, nodeName string, disableHeartbeatVerify bool, port uint, ibcFeaturesFunc func() string) *GuardianOption {
-	return &GuardianOption{
+func PhylaxOptionP2P(p2pKey libp2p_crypto.PrivKey, networkId string, bootstrapPeers string, nodeName string, disableHeartbeatVerify bool, port uint, ibcFeaturesFunc func() string) *PhylaxOption {
+	return &PhylaxOption{
 		name:         "p2p",
 		dependencies: []string{"accountant", "governor", "gateway-relayer"},
 		f: func(ctx context.Context, logger *zap.Logger, g *G) error {
@@ -78,10 +78,10 @@ func GuardianOptionP2P(p2pKey libp2p_crypto.PrivKey, networkId string, bootstrap
 		}}
 }
 
-// GuardianOptionNoAccountant disables the accountant. It is a shorthand for GuardianOptionAccountant("", "", false, nil)
+// PhylaxOptionNoAccountant disables the accountant. It is a shorthand for PhylaxOptionAccountant("", "", false, nil)
 // Dependencies: none
-func GuardianOptionNoAccountant() *GuardianOption {
-	return &GuardianOption{
+func PhylaxOptionNoAccountant() *PhylaxOption {
+	return &PhylaxOption{
 		name: "accountant",
 		f: func(ctx context.Context, logger *zap.Logger, g *G) error {
 			logger.Info("acct: accountant is disabled", zap.String("component", "gacct"))
@@ -89,10 +89,10 @@ func GuardianOptionNoAccountant() *GuardianOption {
 		}}
 }
 
-// GuardianOptionAccountant configures the Accountant module.
+// PhylaxOptionAccountant configures the Accountant module.
 // Dependencies: db
-func GuardianOptionAccountant(contract string, websocket string, enforcing bool, deltachainConn *wormconn.ClientConn) *GuardianOption {
-	return &GuardianOption{
+func PhylaxOptionAccountant(contract string, websocket string, enforcing bool, deltachainConn *wormconn.ClientConn) *PhylaxOption {
+	return &PhylaxOption{
 		name:         "accountant",
 		dependencies: []string{"db"},
 		f: func(ctx context.Context, logger *zap.Logger, g *G) error {
@@ -136,10 +136,10 @@ func GuardianOptionAccountant(contract string, websocket string, enforcing bool,
 		}}
 }
 
-// GuardianOptionGovernor enables or disables the governor.
+// PhylaxOptionGovernor enables or disables the governor.
 // Dependencies: db
-func GuardianOptionGovernor(governorEnabled bool) *GuardianOption {
-	return &GuardianOption{
+func PhylaxOptionGovernor(governorEnabled bool) *PhylaxOption {
+	return &PhylaxOption{
 		name:         "governor",
 		dependencies: []string{"db"},
 		f: func(ctx context.Context, logger *zap.Logger, g *G) error {
@@ -153,11 +153,11 @@ func GuardianOptionGovernor(governorEnabled bool) *GuardianOption {
 		}}
 }
 
-// GuardianOptionGatewayRelayer configures the Gateway Relayer module. If the gateway relayer smart contract is configured, we will instantiate
+// PhylaxOptionGatewayRelayer configures the Gateway Relayer module. If the gateway relayer smart contract is configured, we will instantiate
 // the GatewayRelayer and signed VAAs will be passed to it for processing when they are published. It will forward payload three transfers destined
 // for the specified contract on deltachain to that contract.
-func GuardianOptionGatewayRelayer(gatewayRelayerContract string, deltachainConn *wormconn.ClientConn) *GuardianOption {
-	return &GuardianOption{
+func PhylaxOptionGatewayRelayer(gatewayRelayerContract string, deltachainConn *wormconn.ClientConn) *PhylaxOption {
+	return &PhylaxOption{
 		name: "gateway-relayer",
 		f: func(ctx context.Context, logger *zap.Logger, g *G) error {
 			g.gatewayRelayer = gwrelayer.NewGatewayRelayer(
@@ -172,11 +172,11 @@ func GuardianOptionGatewayRelayer(gatewayRelayerContract string, deltachainConn 
 		}}
 }
 
-// GuardianOptionStatusServer configures the status server, including /readyz and /metrics.
+// PhylaxOptionStatusServer configures the status server, including /readyz and /metrics.
 // If g.env == common.UnsafeDevNet || g.env == common.GoTest, pprof will be enabled under /debug/pprof/
 // Dependencies: none
-func GuardianOptionStatusServer(statusAddr string) *GuardianOption {
-	return &GuardianOption{
+func PhylaxOptionStatusServer(statusAddr string) *PhylaxOption {
+	return &PhylaxOption{
 		name: "status-server",
 		f: func(_ context.Context, _ *zap.Logger, g *G) error {
 			if statusAddr != "" {
@@ -234,11 +234,11 @@ type IbcWatcherConfig struct {
 	Contract  string
 }
 
-// GuardianOptionWatchers configues all normal watchers and all IBC watchers. They need to be all configured at the same time because they may depend on each other.
+// PhylaxOptionWatchers configues all normal watchers and all IBC watchers. They need to be all configured at the same time because they may depend on each other.
 // TODO: currently, IBC watchers are partially statically configured in ibc.ChainConfig. It might make sense to refactor this to instead provide this as a parameter here.
 // Dependencies: none
-func GuardianOptionWatchers(watcherConfigs []watchers.WatcherConfig, ibcWatcherConfig *IbcWatcherConfig) *GuardianOption {
-	return &GuardianOption{
+func PhylaxOptionWatchers(watcherConfigs []watchers.WatcherConfig, ibcWatcherConfig *IbcWatcherConfig) *PhylaxOption {
+	return &PhylaxOption{
 		name: "watchers",
 		f: func(ctx context.Context, logger *zap.Logger, g *G) error {
 
@@ -376,10 +376,10 @@ func GuardianOptionWatchers(watcherConfigs []watchers.WatcherConfig, ibcWatcherC
 		}}
 }
 
-// GuardianOptionAdminService enables the admin rpc service on a unix socket.
+// PhylaxOptionAdminService enables the admin rpc service on a unix socket.
 // Dependencies: db, governor
-func GuardianOptionAdminService(socketPath string, ethRpc *string, ethContract *string, rpcMap map[string]string) *GuardianOption {
-	return &GuardianOption{
+func PhylaxOptionAdminService(socketPath string, ethRpc *string, ethContract *string, rpcMap map[string]string) *PhylaxOption {
+	return &PhylaxOption{
 		name:         "admin-service",
 		dependencies: []string{"governor", "db"},
 		f: func(ctx context.Context, logger *zap.Logger, g *G) error {
@@ -406,10 +406,10 @@ func GuardianOptionAdminService(socketPath string, ethRpc *string, ethContract *
 		}}
 }
 
-// GuardianOptionPublicRpcSocket enables the public rpc service on a unix socket
+// PhylaxOptionPublicRpcSocket enables the public rpc service on a unix socket
 // Dependencies: db, governor
-func GuardianOptionPublicRpcSocket(publicGRPCSocketPath string, publicRpcLogDetail common.GrpcLogDetail) *GuardianOption {
-	return &GuardianOption{
+func PhylaxOptionPublicRpcSocket(publicGRPCSocketPath string, publicRpcLogDetail common.GrpcLogDetail) *PhylaxOption {
+	return &PhylaxOption{
 		name:         "publicrpcsocket",
 		dependencies: []string{"db", "governor"},
 		f: func(ctx context.Context, logger *zap.Logger, g *G) error {
@@ -425,10 +425,10 @@ func GuardianOptionPublicRpcSocket(publicGRPCSocketPath string, publicRpcLogDeta
 		}}
 }
 
-// GuardianOptionPublicrpcTcpService enables the public gRPC service on TCP.
+// PhylaxOptionPublicrpcTcpService enables the public gRPC service on TCP.
 // Dependencies: db, governor, publicrpcsocket
-func GuardianOptionPublicrpcTcpService(publicRpc string, publicRpcLogDetail common.GrpcLogDetail) *GuardianOption {
-	return &GuardianOption{
+func PhylaxOptionPublicrpcTcpService(publicRpc string, publicRpcLogDetail common.GrpcLogDetail) *PhylaxOption {
+	return &PhylaxOption{
 		name:         "publicrpc",
 		dependencies: []string{"db", "governor", "publicrpcsocket"},
 		f: func(ctx context.Context, logger *zap.Logger, g *G) error {
@@ -438,10 +438,10 @@ func GuardianOptionPublicrpcTcpService(publicRpc string, publicRpcLogDetail comm
 		}}
 }
 
-// GuardianOptionPublicWeb enables the public rpc service on http, i.e. gRPC-web and JSON-web.
+// PhylaxOptionPublicWeb enables the public rpc service on http, i.e. gRPC-web and JSON-web.
 // Dependencies: db, governor, publicrpcsocket
-func GuardianOptionPublicWeb(listenAddr string, publicGRPCSocketPath string, tlsHostname string, tlsProdEnv bool, tlsCacheDir string) *GuardianOption {
-	return &GuardianOption{
+func PhylaxOptionPublicWeb(listenAddr string, publicGRPCSocketPath string, tlsHostname string, tlsProdEnv bool, tlsCacheDir string) *PhylaxOption {
+	return &PhylaxOption{
 		name:         "publicweb",
 		dependencies: []string{"db", "governor", "publicrpcsocket"},
 		f: func(ctx context.Context, logger *zap.Logger, g *G) error {
@@ -452,10 +452,10 @@ func GuardianOptionPublicWeb(listenAddr string, publicGRPCSocketPath string, tls
 		}}
 }
 
-// GuardianOptionDatabase configures the main database to be used for this guardian node.
+// PhylaxOptionDatabase configures the main database to be used for this guardian node.
 // Dependencies: none
-func GuardianOptionDatabase(db *db.Database) *GuardianOption {
-	return &GuardianOption{
+func PhylaxOptionDatabase(db *db.Database) *PhylaxOption {
+	return &PhylaxOption{
 		name: "db",
 		f: func(ctx context.Context, logger *zap.Logger, g *G) error {
 			g.db = db
@@ -463,10 +463,10 @@ func GuardianOptionDatabase(db *db.Database) *GuardianOption {
 		}}
 }
 
-// GuardianOptionProcessor enables the default processor, which is required to make consensus on messages.
+// PhylaxOptionProcessor enables the default processor, which is required to make consensus on messages.
 // Dependencies: db, governor, accountant
-func GuardianOptionProcessor() *GuardianOption {
-	return &GuardianOption{
+func PhylaxOptionProcessor() *PhylaxOption {
+	return &PhylaxOption{
 		name: "processor",
 		// governor and accountant may be set to nil, but that choice needs to be made before the processor is configured
 		dependencies: []string{"db", "governor", "accountant", "gateway-relayer"},

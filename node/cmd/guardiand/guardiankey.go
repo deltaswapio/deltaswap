@@ -23,7 +23,7 @@ import (
 var keyDescription *string
 
 const (
-	GuardianKeyArmoredBlock = "WORMHOLE GUARDIAN PRIVATE KEY"
+	PhylaxKeyArmoredBlock = "WORMHOLE GUARDIAN PRIVATE KEY"
 )
 
 func init() {
@@ -48,14 +48,14 @@ func runKeygen(cmd *cobra.Command, args []string) {
 		log.Fatalf("failed to generate key: %v", err)
 	}
 
-	err = writeGuardianKey(gk, *keyDescription, args[0], false)
+	err = writePhylaxKey(gk, *keyDescription, args[0], false)
 	if err != nil {
 		log.Fatalf("failed to write key: %v", err)
 	}
 }
 
-// loadGuardianKey loads a serialized guardian key from disk.
-func loadGuardianKey(filename string) (*ecdsa.PrivateKey, error) {
+// loadPhylaxKey loads a serialized guardian key from disk.
+func loadPhylaxKey(filename string) (*ecdsa.PrivateKey, error) {
 	f, err := os.Open(filename)
 	if err != nil {
 		return nil, fmt.Errorf("failed to open file: %w", err)
@@ -66,7 +66,7 @@ func loadGuardianKey(filename string) (*ecdsa.PrivateKey, error) {
 		return nil, fmt.Errorf("failed to read armored file: %w", err)
 	}
 
-	if p.Type != GuardianKeyArmoredBlock {
+	if p.Type != PhylaxKeyArmoredBlock {
 		return nil, fmt.Errorf("invalid block type: %s", p.Type)
 	}
 
@@ -75,7 +75,7 @@ func loadGuardianKey(filename string) (*ecdsa.PrivateKey, error) {
 		return nil, fmt.Errorf("failed to read file: %w", err)
 	}
 
-	var m nodev1.GuardianKey
+	var m nodev1.PhylaxKey
 	err = proto.Unmarshal(b, &m)
 	if err != nil {
 		return nil, fmt.Errorf("failed to deserialize protobuf: %w", err)
@@ -93,13 +93,13 @@ func loadGuardianKey(filename string) (*ecdsa.PrivateKey, error) {
 	return gk, nil
 }
 
-// writeGuardianKey serializes a guardian key and writes it to disk.
-func writeGuardianKey(key *ecdsa.PrivateKey, description string, filename string, unsafe bool) error {
+// writePhylaxKey serializes a guardian key and writes it to disk.
+func writePhylaxKey(key *ecdsa.PrivateKey, description string, filename string, unsafe bool) error {
 	if _, err := os.Stat(filename); !os.IsNotExist(err) {
 		return errors.New("refusing to override existing key")
 	}
 
-	m := &nodev1.GuardianKey{
+	m := &nodev1.PhylaxKey{
 		Data:                   ethcrypto.FromECDSA(key),
 		UnsafeDeterministicKey: unsafe,
 	}
@@ -122,7 +122,7 @@ func writeGuardianKey(key *ecdsa.PrivateKey, description string, filename string
 	if description != "" {
 		headers["Description"] = description
 	}
-	a, err := armor.Encode(f, GuardianKeyArmoredBlock, headers)
+	a, err := armor.Encode(f, PhylaxKeyArmoredBlock, headers)
 	if err != nil {
 		panic(err)
 	}
@@ -137,8 +137,8 @@ func writeGuardianKey(key *ecdsa.PrivateKey, description string, filename string
 	return f.Close()
 }
 
-// generateDevnetGuardianKey returns a deterministic testnet key.
-func generateDevnetGuardianKey() (*ecdsa.PrivateKey, error) {
+// generateDevnetPhylaxKey returns a deterministic testnet key.
+func generateDevnetPhylaxKey() (*ecdsa.PrivateKey, error) {
 	// Figure out our devnet index
 	idx, err := devnet.GetDevnetIndex()
 	if err != nil {

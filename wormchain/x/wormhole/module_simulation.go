@@ -24,9 +24,9 @@ var (
 )
 
 const (
-	opWeightMsgRegisterAccountAsGuardian = "op_weight_msg_create_chain"
+	opWeightMsgRegisterAccountAsPhylax = "op_weight_msg_create_chain"
 	// TODO: Determine the simulation weight value
-	defaultWeightMsgRegisterAccountAsGuardian int = 100
+	defaultWeightMsgRegisterAccountAsPhylax int = 100
 
 	// this line is used by starport scaffolding # simapp/module/const
 )
@@ -61,15 +61,15 @@ func (am AppModule) RegisterStoreDecoder(_ sdk.StoreDecoderRegistry) {}
 func (am AppModule) WeightedOperations(simState module.SimulationState) []simtypes.WeightedOperation {
 	operations := make([]simtypes.WeightedOperation, 0)
 
-	var weightMsgRegisterAccountAsGuardian int
-	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgRegisterAccountAsGuardian, &weightMsgRegisterAccountAsGuardian, nil,
+	var weightMsgRegisterAccountAsPhylax int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgRegisterAccountAsPhylax, &weightMsgRegisterAccountAsPhylax, nil,
 		func(_ *rand.Rand) {
-			weightMsgRegisterAccountAsGuardian = defaultWeightMsgRegisterAccountAsGuardian
+			weightMsgRegisterAccountAsPhylax = defaultWeightMsgRegisterAccountAsPhylax
 		},
 	)
 	operations = append(operations, simulation.NewWeightedOperation(
-		weightMsgRegisterAccountAsGuardian,
-		wormholesimulation.SimulateMsgRegisterAccountAsGuardian(am.keeper),
+		weightMsgRegisterAccountAsPhylax,
+		wormholesimulation.SimulateMsgRegisterAccountAsPhylax(am.keeper),
 	))
 
 	// this line is used by starport scaffolding # simapp/module/operation

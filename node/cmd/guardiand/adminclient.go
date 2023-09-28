@@ -53,7 +53,7 @@ func init() {
 	shouldBackfill = AdminClientFindMissingMessagesCmd.Flags().Bool(
 		"backfill", false, "backfill missing VAAs from public RPC")
 
-	AdminClientInjectGuardianSetUpdateCmd.Flags().AddFlagSet(pf)
+	AdminClientInjectPhylaxSetUpdateCmd.Flags().AddFlagSet(pf)
 	AdminClientFindMissingMessagesCmd.Flags().AddFlagSet(pf)
 	AdminClientListNodes.Flags().AddFlagSet(pf)
 	DumpVAAByMessageID.Flags().AddFlagSet(pf)
@@ -68,7 +68,7 @@ func init() {
 	SignExistingVaaCmd.Flags().AddFlagSet(pf)
 	SignExistingVaasFromCSVCmd.Flags().AddFlagSet(pf)
 
-	AdminCmd.AddCommand(AdminClientInjectGuardianSetUpdateCmd)
+	AdminCmd.AddCommand(AdminClientInjectPhylaxSetUpdateCmd)
 	AdminCmd.AddCommand(AdminClientFindMissingMessagesCmd)
 	AdminCmd.AddCommand(AdminClientGovernanceVAAVerifyCmd)
 	AdminCmd.AddCommand(AdminClientListNodes)
@@ -89,7 +89,7 @@ func init() {
 
 var AdminCmd = &cobra.Command{
 	Use:   "admin",
-	Short: "Guardian node admin commands",
+	Short: "Phylax node admin commands",
 }
 
 var AdminClientSignWormchainAddress = &cobra.Command{
@@ -99,7 +99,7 @@ var AdminClientSignWormchainAddress = &cobra.Command{
 	Args:  cobra.ExactArgs(2),
 }
 
-var AdminClientInjectGuardianSetUpdateCmd = &cobra.Command{
+var AdminClientInjectPhylaxSetUpdateCmd = &cobra.Command{
 	Use:   "governance-vaa-inject [FILENAME]",
 	Short: "Inject and sign a governance VAA from a prototxt file (see docs!)",
 	Run:   runInjectGovernanceVAA,
@@ -225,7 +225,7 @@ func runSignWormchainValidatorAddress(cmd *cobra.Command, args []string) error {
 	if !strings.HasPrefix(deltachainAddress, "wormhole") || strings.HasPrefix(deltachainAddress, "wormholeval") {
 		return fmt.Errorf("must provide a bech32 address that has 'wormhole' prefix")
 	}
-	gk, err := loadGuardianKey(guardianKeyPath)
+	gk, err := loadPhylaxKey(guardianKeyPath)
 	if err != nil {
 		return fmt.Errorf("failed to load guardian key: %w", err)
 	}
@@ -578,9 +578,9 @@ func runSignExistingVaa(cmd *cobra.Command, args []string) {
 	defer conn.Close()
 
 	msg := nodev1.SignExistingVAARequest{
-		Vaa:                 existingVAA,
-		NewGuardianAddrs:    newGsStrings,
-		NewGuardianSetIndex: uint32(newGsIndex),
+		Vaa:               existingVAA,
+		NewPhylaxAddrs:    newGsStrings,
+		NewPhylaxSetIndex: uint32(newGsIndex),
 	}
 	resp, err := c.SignExistingVAA(ctx, &msg)
 	if err != nil {
@@ -664,9 +664,9 @@ func runSignExistingVaasFromCSV(cmd *cobra.Command, args []string) {
 
 		vaaBytes := ethcommon.Hex2Bytes(row[1])
 		msg := nodev1.SignExistingVAARequest{
-			Vaa:                 vaaBytes,
-			NewGuardianAddrs:    newGsStrings,
-			NewGuardianSetIndex: uint32(newGsIndex),
+			Vaa:               vaaBytes,
+			NewPhylaxAddrs:    newGsStrings,
+			NewPhylaxSetIndex: uint32(newGsIndex),
 		}
 		resp, err := c.SignExistingVAA(ctx, &msg)
 		if err != nil {

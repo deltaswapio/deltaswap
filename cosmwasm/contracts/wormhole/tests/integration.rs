@@ -8,7 +8,7 @@ use cosmwasm_storage::to_length_prefixed;
 use cw_wormhole::{
     contract::instantiate,
     msg::InstantiateMsg,
-    state::{ConfigInfo, GuardianAddress, GuardianSetInfo, CONFIG_KEY},
+    state::{ConfigInfo, PhylaxAddress, PhylaxSetInfo, CONFIG_KEY},
 };
 
 static INITIALIZER: &str = "initializer";
@@ -20,12 +20,12 @@ fn get_config_info<S: Storage>(storage: &S) -> ConfigInfo {
     from_slice(&data).expect("invalid data")
 }
 
-fn do_init(guardians: &[GuardianAddress]) -> OwnedDeps<MockStorage, MockApi, MockQuerier> {
+fn do_init(guardians: &[PhylaxAddress]) -> OwnedDeps<MockStorage, MockApi, MockQuerier> {
     let mut deps = mock_dependencies();
     let init_msg = InstantiateMsg {
         gov_chain: 0,
         gov_address: GOV_ADDR.into(),
-        initial_guardian_set: GuardianSetInfo {
+        initial_guardian_set: PhylaxSetInfo {
             addresses: guardians.to_vec(),
             expiration_time: 100,
         },
@@ -56,7 +56,7 @@ fn do_init(guardians: &[GuardianAddress]) -> OwnedDeps<MockStorage, MockApi, Moc
 
 #[test]
 fn init_works() {
-    let guardians = [GuardianAddress {
+    let guardians = [PhylaxAddress {
         bytes: hex::decode("beFA429d57cD18b7F8A4d91A2da9AB4AF05d0FBe")
             .expect("Decoding failed")
             .into(),

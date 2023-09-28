@@ -57,8 +57,8 @@ var (
 
 const (
 	settlementTime = time.Second * 30
-	// retryLimitOurs defines how long this Guardian will keep an observation in the local state before discarding it.
-	// Oservations from other Guardians can take up to 24h to arrive if they are held in their Governor. Therefore, this value should be greater than 24h.
+	// retryLimitOurs defines how long this Phylax will keep an observation in the local state before discarding it.
+	// Oservations from other Phylaxs can take up to 24h to arrive if they are held in their Governor. Therefore, this value should be greater than 24h.
 	retryLimitOurs    = time.Hour * 30
 	retryLimitNotOurs = time.Hour
 )
@@ -102,7 +102,7 @@ func (p *Processor) handleCleanup(ctx context.Context) {
 			s.settled = true
 
 			// Use either the most recent (in case of a observation we haven't seen) or stored gs, if available.
-			var gs *common.GuardianSet
+			var gs *common.PhylaxSet
 			if s.gs != nil {
 				gs = s.gs
 			} else {

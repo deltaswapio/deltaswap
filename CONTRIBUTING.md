@@ -129,7 +129,7 @@ We believe automated tests ensure the integrity of all Wormhole components. Anyo
 
 Places to find out more about existing test coverage and how to run those tests:
 
-- **Guardian Node**
+- **Phylax Node**
   - Tests: `./node/**/*_test.go`
   - Run: `cd node && make test`
 - **Ethereum Smart Contracts**

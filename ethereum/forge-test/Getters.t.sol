@@ -15,7 +15,7 @@ contract TestGetters is TestUtils {
         getters = new Getters();
     }
 
-    function testGetGuardianSetIndex(uint32 index, bytes32 storageSlot)
+    function testGetPhylaxSetIndex(uint32 index, bytes32 storageSlot)
         public
         unchangedStorage(address(getters), storageSlot)
     {
@@ -24,18 +24,18 @@ contract TestGetters is TestUtils {
         bytes32 mask = bytes32(0xffffffffffffffffffffffffffffffffffffffffffffffffffffffff00000000);
         bytes32 updatedStorage = storeWithMask(address(getters), GUARDIANSETINDEX_STORAGE_INDEX, bytes32(uint256(index)), mask);
 
-        assertEq(index, getters.getCurrentGuardianSetIndex());
+        assertEq(index, getters.getCurrentPhylaxSetIndex());
         assertEq(updatedStorage, vm.load(address(getters), GUARDIANSETINDEX_STORAGE_INDEX));
     }
 
-    function testGetGuardianSetIndex_KEVM(uint32 index, bytes32 storageSlot)
+    function testGetPhylaxSetIndex_KEVM(uint32 index, bytes32 storageSlot)
         public
         symbolic(address(getters))
     {
-        testGetGuardianSetIndex(index, storageSlot);
+        testGetPhylaxSetIndex(index, storageSlot);
     }
 
-    function testGetExpireGuardianSet(uint32 timestamp, uint32 index, bytes32 storageSlot)
+    function testGetExpirePhylaxSet(uint32 timestamp, uint32 index, bytes32 storageSlot)
         public
         unchangedStorage(address(getters), storageSlot)
     {
@@ -45,17 +45,17 @@ contract TestGetters is TestUtils {
         bytes32 mask = bytes32(0xffffffffffffffffffffffffffffffffffffffffffffffffffffffff00000000);
         bytes32 updatedStorage = storeWithMask(address(getters), storageLocation, bytes32(uint256(timestamp)), mask);
 
-        uint32 expirationTime = getters.getGuardianSet(index).expirationTime;
+        uint32 expirationTime = getters.getPhylaxSet(index).expirationTime;
 
         assertEq(expirationTime, timestamp);
         assertEq(updatedStorage, vm.load(address(getters), storageLocation));
     }
 
-    function testGetExpireGuardianSet_KEVM(uint32 timestamp, uint32 index, bytes32 storageSlot)
+    function testGetExpirePhylaxSet_KEVM(uint32 timestamp, uint32 index, bytes32 storageSlot)
         public
         symbolic(address(getters))
     {
-        testGetExpireGuardianSet(timestamp, index, storageSlot);
+        testGetExpirePhylaxSet(timestamp, index, storageSlot);
     }
 
     function testGetMessageFee(uint256 newFee, bytes32 storageSlot)

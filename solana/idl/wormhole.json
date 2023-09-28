@@ -51,7 +51,7 @@
                     "type": "u64"
                 },
                 {
-                    "name": "initialGuardians",
+                    "name": "initialPhylaxs",
                     "type": {
                       "vec": {
                         "array": [
@@ -363,7 +363,7 @@
             "args": []
         },
         {
-            "name": "upgradeGuardianSet",
+            "name": "upgradePhylaxSet",
             "accounts": [
                 {
                     "name": "payer",

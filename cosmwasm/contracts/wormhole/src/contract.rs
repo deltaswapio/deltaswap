@@ -10,13 +10,13 @@ use crate::{
     byte_utils::{extend_address_to_32, ByteUtils},
     error::ContractError,
     msg::{
-        ExecuteMsg, GetAddressHexResponse, GetStateResponse, GuardianSetInfoResponse,
+        ExecuteMsg, GetAddressHexResponse, GetStateResponse, PhylaxSetInfoResponse,
         InstantiateMsg, MigrateMsg, QueryMsg,
     },
     state::{
         config, config_read, guardian_set_get, guardian_set_set, sequence_read, sequence_set,
         vaa_archive_add, vaa_archive_check, ConfigInfo, ContractUpgrade, GovernancePacket,
-        GuardianAddress, GuardianSetInfo, GuardianSetUpgrade, ParsedVAA, SetFee, TransferFee,
+        PhylaxAddress, PhylaxSetInfo, PhylaxSetUpgrade, ParsedVAA, SetFee, TransferFee,
     },
 };
 
@@ -174,11 +174,11 @@ fn parse_and_verify_vaa(
 
     // Load and check guardian set
     let guardian_set = guardian_set_get(storage, vaa.guardian_set_index);
-    let guardian_set: GuardianSetInfo =
-        guardian_set.or_else(|_| ContractError::InvalidGuardianSetIndex.std_err())?;
+    let guardian_set: PhylaxSetInfo =
+        guardian_set.or_else(|_| ContractError::InvalidPhylaxSetIndex.std_err())?;
 
     if guardian_set.expiration_time != 0 && guardian_set.expiration_time < block_time {
-        return ContractError::GuardianSetExpired.std_err();
+        return ContractError::PhylaxSetExpired.std_err();
     }
     if (vaa.len_signers as usize) < guardian_set.quorum() {
         return ContractError::NoQuorum.std_err();
@@ -194,7 +194,7 @@ fn parse_and_verify_vaa(
         }
         let index = data.get_u8(pos) as i32;
         if index <= last_index {
-            return ContractError::WrongGuardianIndexOrder.std_err();
+            return ContractError::WrongPhylaxIndexOrder.std_err();
         }
         last_index = index;
 
@@ -217,7 +217,7 @@ fn parse_and_verify_vaa(
             return ContractError::TooManySignatures.std_err();
         }
         if !keys_equal(&verify_key, &guardian_set.addresses[index]) {
-            return ContractError::GuardianSignatureError.std_err();
+            return ContractError::PhylaxSignatureError.std_err();
         }
         pos += ParsedVAA::SIGNATURE_LEN;
     }
@@ -234,13 +234,13 @@ fn vaa_update_guardian_set(deps: DepsMut, env: Env, data: &[u8]) -> StdResult<Re
 
     let mut state = config_read(deps.storage).load()?;
 
-    let GuardianSetUpgrade {
+    let PhylaxSetUpgrade {
         new_guardian_set_index,
         new_guardian_set,
-    } = GuardianSetUpgrade::deserialize(data)?;
+    } = PhylaxSetUpgrade::deserialize(data)?;
 
     if new_guardian_set_index != state.guardian_set_index + 1 {
-        return ContractError::GuardianSetIndexIncreaseError.std_err();
+        return ContractError::PhylaxSetIndexIncreaseError.std_err();
     }
 
     let old_guardian_set_index = state.guardian_set_index;
@@ -333,7 +333,7 @@ fn handle_post_message(
 #[cfg_attr(not(feature = "library"), entry_point)]
 pub fn query(deps: Deps, _env: Env, msg: QueryMsg) -> StdResult<Binary> {
     match msg {
-        QueryMsg::GuardianSetInfo {} => to_binary(&query_guardian_set_info(deps)?),
+        QueryMsg::PhylaxSetInfo {} => to_binary(&query_guardian_set_info(deps)?),
         QueryMsg::VerifyVAA { vaa, block_time } => to_binary(&query_parse_and_verify_vaa(
             deps,
             vaa.as_slice(),
@@ -344,10 +344,10 @@ pub fn query(deps: Deps, _env: Env, msg: QueryMsg) -> StdResult<Binary> {
     }
 }
 
-pub fn query_guardian_set_info(deps: Deps) -> StdResult<GuardianSetInfoResponse> {
+pub fn query_guardian_set_info(deps: Deps) -> StdResult<PhylaxSetInfoResponse> {
     let state = config_read(deps.storage).load()?;
     let guardian_set = guardian_set_get(deps.storage, state.guardian_set_index)?;
-    let res = GuardianSetInfoResponse {
+    let res = PhylaxSetInfoResponse {
         guardian_set_index: state.guardian_set_index,
         addresses: guardian_set.addresses,
     };
@@ -375,7 +375,7 @@ pub fn query_state(deps: Deps) -> StdResult<GetStateResponse> {
     Ok(res)
 }
 
-fn keys_equal(a: &VerifyingKey, b: &GuardianAddress) -> bool {
+fn keys_equal(a: &VerifyingKey, b: &PhylaxAddress) -> bool {
     let mut hasher = Keccak256::new();
 
     let affine_point_option = AffinePoint::from_encoded_point(&EncodedPoint::from(a));
@@ -406,7 +406,7 @@ fn keys_equal(a: &VerifyingKey, b: &GuardianAddress) -> bool {
 mod test {
     use crate::{
         contract::{EncodedPoint, VerifyingKey},
-        state::GuardianAddress,
+        state::PhylaxAddress,
     };
 
     use super::keys_equal;
@@ -417,7 +417,7 @@ mod test {
     const ADDRESS: &str = "54dbb737eac5007103e729e9ab7ce64a6850a310";
 
     fn test_keys_equal(point: Vec<u8>) {
-        let addr = GuardianAddress::from(ADDRESS);
+        let addr = PhylaxAddress::from(ADDRESS);
 
         // get the verifying key for the point
         let encoded_point = EncodedPoint::from_bytes(point).unwrap();

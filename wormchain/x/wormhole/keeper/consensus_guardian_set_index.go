@@ -6,16 +6,16 @@ import (
 	"github.com/deltaswapio/deltachain/x/wormhole/types"
 )
 
-// SetConsensusGuardianSetIndex set consensusGuardianSetIndex in the store
-func (k Keeper) SetConsensusGuardianSetIndex(ctx sdk.Context, consensusGuardianSetIndex types.ConsensusGuardianSetIndex) {
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.ConsensusGuardianSetIndexKey))
-	b := k.cdc.MustMarshal(&consensusGuardianSetIndex)
+// SetConsensusPhylaxSetIndex set consensusPhylaxSetIndex in the store
+func (k Keeper) SetConsensusPhylaxSetIndex(ctx sdk.Context, consensusPhylaxSetIndex types.ConsensusPhylaxSetIndex) {
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.ConsensusPhylaxSetIndexKey))
+	b := k.cdc.MustMarshal(&consensusPhylaxSetIndex)
 	store.Set([]byte{0}, b)
 }
 
-// GetConsensusGuardianSetIndex returns consensusGuardianSetIndex
-func (k Keeper) GetConsensusGuardianSetIndex(ctx sdk.Context) (val types.ConsensusGuardianSetIndex, found bool) {
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.ConsensusGuardianSetIndexKey))
+// GetConsensusPhylaxSetIndex returns consensusPhylaxSetIndex
+func (k Keeper) GetConsensusPhylaxSetIndex(ctx sdk.Context) (val types.ConsensusPhylaxSetIndex, found bool) {
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.ConsensusPhylaxSetIndexKey))
 
 	b := store.Get([]byte{0})
 	if b == nil {
@@ -26,8 +26,8 @@ func (k Keeper) GetConsensusGuardianSetIndex(ctx sdk.Context) (val types.Consens
 	return val, true
 }
 
-// RemoveConsensusGuardianSetIndex removes consensusGuardianSetIndex from the store
-func (k Keeper) RemoveConsensusGuardianSetIndex(ctx sdk.Context) {
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.ConsensusGuardianSetIndexKey))
+// RemoveConsensusPhylaxSetIndex removes consensusPhylaxSetIndex from the store
+func (k Keeper) RemoveConsensusPhylaxSetIndex(ctx sdk.Context) {
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.ConsensusPhylaxSetIndexKey))
 	store.Delete([]byte{0})
 }

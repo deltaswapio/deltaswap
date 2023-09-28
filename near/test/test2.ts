@@ -262,10 +262,10 @@ async function test() {
 
   console.log("Booting guardian set with index 0");
 
-  console.log(ts.singleGuardianKey);
+  console.log(ts.singlePhylaxKey);
 
   await wormholeUseContract.boot_wormhole({
-    args: { gset: 0, addresses: ts.singleGuardianKey },
+    args: { gset: 0, addresses: ts.singlePhylaxKey },
   });
   console.log("Completed without an error... odd.. I am not sucking yet");
 

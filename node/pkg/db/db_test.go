@@ -27,7 +27,7 @@ func getVAA() vaa.VAA {
 
 	return vaa.VAA{
 		Version:          uint8(1),
-		GuardianSetIndex: uint32(1),
+		PhylaxSetIndex:   uint32(1),
 		Signatures:       nil,
 		Timestamp:        time.Unix(0, 0),
 		Nonce:            uint32(1),

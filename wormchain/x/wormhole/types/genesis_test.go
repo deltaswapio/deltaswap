@@ -21,7 +21,7 @@ func TestGenesisState_Validate(t *testing.T) {
 		{
 			desc: "valid genesis state",
 			genState: &types.GenesisState{
-				GuardianSetList: []types.GuardianSet{
+				PhylaxSetList: []types.PhylaxSet{
 					{
 						Index: 0,
 					},
@@ -46,16 +46,16 @@ func TestGenesisState_Validate(t *testing.T) {
 						Index: "1",
 					},
 				},
-				ConsensusGuardianSetIndex: &types.ConsensusGuardianSetIndex{
+				ConsensusPhylaxSetIndex: &types.ConsensusPhylaxSetIndex{
 					Index: 14,
 				},
-				GuardianValidatorList: []types.GuardianValidator{
+				PhylaxValidatorList: []types.PhylaxValidator{
 					{
-						GuardianKey:   []byte{0},
+						PhylaxKey:     []byte{0},
 						ValidatorAddr: []byte{3},
 					},
 					{
-						GuardianKey:   []byte{1},
+						PhylaxKey:     []byte{1},
 						ValidatorAddr: []byte{4},
 					},
 				},
@@ -66,7 +66,7 @@ func TestGenesisState_Validate(t *testing.T) {
 		{
 			desc: "duplicated guardianSet",
 			genState: &types.GenesisState{
-				GuardianSetList: []types.GuardianSet{
+				PhylaxSetList: []types.PhylaxSet{
 					{
 						Index: 0,
 					},
@@ -108,13 +108,13 @@ func TestGenesisState_Validate(t *testing.T) {
 		{
 			desc: "duplicated guardianValidator",
 			genState: &types.GenesisState{
-				GuardianValidatorList: []types.GuardianValidator{
+				PhylaxValidatorList: []types.PhylaxValidator{
 					{
-						GuardianKey:   []byte{0},
+						PhylaxKey:     []byte{0},
 						ValidatorAddr: []byte{10},
 					},
 					{
-						GuardianKey:   []byte{1},
+						PhylaxKey:     []byte{1},
 						ValidatorAddr: []byte{10},
 					},
 				},

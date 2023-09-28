@@ -58,7 +58,7 @@ pub struct UpgradeContract<'b> {
     /// Payer for account creation (vaa-claim)
     pub payer: Mut<Signer<Info<'b>>>,
 
-    /// GuardianSet change VAA
+    /// PhylaxSet change VAA
     pub vaa: PayloadMessage<'b, GovernancePayloadUpgrade>,
     pub claim: Mut<Claim<'b>>,
 

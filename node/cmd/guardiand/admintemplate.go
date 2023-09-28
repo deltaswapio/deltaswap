@@ -22,8 +22,8 @@ import (
 	nodev1 "github.com/certusone/wormhole/node/pkg/proto/node/v1"
 )
 
-var setUpdateNumGuardians *int
-var templateGuardianIndex *int
+var setUpdateNumPhylaxs *int
+var templatePhylaxIndex *int
 var chainID *string
 var address *string
 var module *string
@@ -64,10 +64,10 @@ func init() {
 	moduleFlagSet := pflag.NewFlagSet("module", pflag.ExitOnError)
 	module = moduleFlagSet.String("module", "", "Module name")
 
-	templateGuardianIndex = TemplateCmd.PersistentFlags().Int("idx", 3, "Default current guardian set index")
+	templatePhylaxIndex = TemplateCmd.PersistentFlags().Int("idx", 3, "Default current guardian set index")
 
-	setUpdateNumGuardians = AdminClientGuardianSetTemplateCmd.Flags().Int("num", 1, "Number of devnet guardians in example file")
-	TemplateCmd.AddCommand(AdminClientGuardianSetTemplateCmd)
+	setUpdateNumPhylaxs = AdminClientPhylaxSetTemplateCmd.Flags().Int("num", 1, "Number of devnet guardians in example file")
+	TemplateCmd.AddCommand(AdminClientPhylaxSetTemplateCmd)
 
 	AdminClientContractUpgradeTemplateCmd.Flags().AddFlagSet(governanceFlagSet)
 	TemplateCmd.AddCommand(AdminClientContractUpgradeTemplateCmd)
@@ -163,13 +163,13 @@ func init() {
 
 var TemplateCmd = &cobra.Command{
 	Use:   "template",
-	Short: "Guardian governance VAA template commands ",
+	Short: "Phylax governance VAA template commands ",
 }
 
-var AdminClientGuardianSetTemplateCmd = &cobra.Command{
+var AdminClientPhylaxSetTemplateCmd = &cobra.Command{
 	Use:   "guardian-set-update",
 	Short: "Generate an empty guardian set template",
-	Run:   runGuardianSetTemplate,
+	Run:   runPhylaxSetTemplate,
 }
 
 var AdminClientContractUpgradeTemplateCmd = &cobra.Command{
@@ -274,25 +274,25 @@ var AdminClientWormholeRelayerSetDefaultDeliveryProviderCmd = &cobra.Command{
 	Run:   runWormholeRelayerSetDefaultDeliveryProviderTemplate,
 }
 
-func runGuardianSetTemplate(cmd *cobra.Command, args []string) {
+func runPhylaxSetTemplate(cmd *cobra.Command, args []string) {
 	// Use deterministic devnet addresses as examples in the template, such that this doubles as a test fixture.
-	guardians := make([]*nodev1.GuardianSetUpdate_Guardian, *setUpdateNumGuardians)
-	for i := 0; i < *setUpdateNumGuardians; i++ {
+	guardians := make([]*nodev1.PhylaxSetUpdate_Phylax, *setUpdateNumPhylaxs)
+	for i := 0; i < *setUpdateNumPhylaxs; i++ {
 		k := devnet.InsecureDeterministicEcdsaKeyByIndex(crypto.S256(), uint64(i))
-		guardians[i] = &nodev1.GuardianSetUpdate_Guardian{
+		guardians[i] = &nodev1.PhylaxSetUpdate_Phylax{
 			Pubkey: crypto.PubkeyToAddress(k.PublicKey).Hex(),
 			Name:   fmt.Sprintf("Example validator %d", i),
 		}
 	}
 
 	m := &nodev1.InjectGovernanceVAARequest{
-		CurrentSetIndex: uint32(*templateGuardianIndex),
+		CurrentSetIndex: uint32(*templatePhylaxIndex),
 		Messages: []*nodev1.GovernanceMessage{
 			{
 				Sequence: rand.Uint64(),
 				Nonce:    rand.Uint32(),
-				Payload: &nodev1.GovernanceMessage_GuardianSet{
-					GuardianSet: &nodev1.GuardianSetUpdate{Guardians: guardians},
+				Payload: &nodev1.GovernanceMessage_PhylaxSet{
+					PhylaxSet: &nodev1.PhylaxSetUpdate{Phylaxs: guardians},
 				},
 			},
 		},
@@ -316,7 +316,7 @@ func runContractUpgradeTemplate(cmd *cobra.Command, args []string) {
 	}
 
 	m := &nodev1.InjectGovernanceVAARequest{
-		CurrentSetIndex: uint32(*templateGuardianIndex),
+		CurrentSetIndex: uint32(*templatePhylaxIndex),
 		Messages: []*nodev1.GovernanceMessage{
 			{
 				Sequence: rand.Uint64(),
@@ -348,7 +348,7 @@ func runTokenBridgeRegisterChainTemplate(cmd *cobra.Command, args []string) {
 	}
 
 	m := &nodev1.InjectGovernanceVAARequest{
-		CurrentSetIndex: uint32(*templateGuardianIndex),
+		CurrentSetIndex: uint32(*templatePhylaxIndex),
 		Messages: []*nodev1.GovernanceMessage{
 			{
 				Sequence: rand.Uint64(),
@@ -382,7 +382,7 @@ func runTokenBridgeUpgradeContractTemplate(cmd *cobra.Command, args []string) {
 	}
 
 	m := &nodev1.InjectGovernanceVAARequest{
-		CurrentSetIndex: uint32(*templateGuardianIndex),
+		CurrentSetIndex: uint32(*templatePhylaxIndex),
 		Messages: []*nodev1.GovernanceMessage{
 			{
 				Sequence: rand.Uint64(),
@@ -422,7 +422,7 @@ func runCircleIntegrationUpdateWormholeFinalityTemplate(cmd *cobra.Command, args
 	}
 
 	m := &nodev1.InjectGovernanceVAARequest{
-		CurrentSetIndex: uint32(*templateGuardianIndex),
+		CurrentSetIndex: uint32(*templatePhylaxIndex),
 		Messages: []*nodev1.GovernanceMessage{
 			{
 				Sequence: rand.Uint64(),
@@ -475,7 +475,7 @@ func runCircleIntegrationRegisterEmitterAndDomainTemplate(cmd *cobra.Command, ar
 	}
 
 	m := &nodev1.InjectGovernanceVAARequest{
-		CurrentSetIndex: uint32(*templateGuardianIndex),
+		CurrentSetIndex: uint32(*templatePhylaxIndex),
 		Messages: []*nodev1.GovernanceMessage{
 			{
 				Sequence: rand.Uint64(),
@@ -516,7 +516,7 @@ func runCircleIntegrationUpgradeContractImplementationTemplate(cmd *cobra.Comman
 	}
 
 	m := &nodev1.InjectGovernanceVAARequest{
-		CurrentSetIndex: uint32(*templateGuardianIndex),
+		CurrentSetIndex: uint32(*templatePhylaxIndex),
 		Messages: []*nodev1.GovernanceMessage{
 			{
 				Sequence: rand.Uint64(),
@@ -555,7 +555,7 @@ func runWormchainStoreCodeTemplate(cmd *cobra.Command, args []string) {
 	}
 
 	m := &nodev1.InjectGovernanceVAARequest{
-		CurrentSetIndex: uint32(*templateGuardianIndex),
+		CurrentSetIndex: uint32(*templatePhylaxIndex),
 		Messages: []*nodev1.GovernanceMessage{
 			{
 				Sequence: rand.Uint64(),
@@ -592,7 +592,7 @@ func runWormchainInstantiateContractTemplate(cmd *cobra.Command, args []string) 
 	}
 
 	m := &nodev1.InjectGovernanceVAARequest{
-		CurrentSetIndex: uint32(*templateGuardianIndex),
+		CurrentSetIndex: uint32(*templatePhylaxIndex),
 		Messages: []*nodev1.GovernanceMessage{
 			{
 				Sequence: rand.Uint64(),
@@ -631,7 +631,7 @@ func runWormchainMigrateContractTemplate(cmd *cobra.Command, args []string) {
 	}
 
 	m := &nodev1.InjectGovernanceVAARequest{
-		CurrentSetIndex: uint32(*templateGuardianIndex),
+		CurrentSetIndex: uint32(*templatePhylaxIndex),
 		Messages: []*nodev1.GovernanceMessage{
 			{
 				Sequence: rand.Uint64(),
@@ -675,7 +675,7 @@ func runWormchainWasmInstantiateAllowlistTemplate(action nodev1.WormchainWasmIns
 	}
 
 	m := &nodev1.InjectGovernanceVAARequest{
-		CurrentSetIndex: uint32(*templateGuardianIndex),
+		CurrentSetIndex: uint32(*templatePhylaxIndex),
 		Messages: []*nodev1.GovernanceMessage{
 			{
 				Sequence: rand.Uint64(),
@@ -713,7 +713,7 @@ func runGatewayScheduleUpgradeTemplate(cmd *cobra.Command, args []string) {
 	}
 
 	m := &nodev1.InjectGovernanceVAARequest{
-		CurrentSetIndex: uint32(*templateGuardianIndex),
+		CurrentSetIndex: uint32(*templatePhylaxIndex),
 		Messages: []*nodev1.GovernanceMessage{
 			{
 				Sequence: rand.Uint64(),
@@ -737,7 +737,7 @@ func runGatewayScheduleUpgradeTemplate(cmd *cobra.Command, args []string) {
 
 func runGatewayCancelUpgradeTemplate(cmd *cobra.Command, args []string) {
 	m := &nodev1.InjectGovernanceVAARequest{
-		CurrentSetIndex: uint32(*templateGuardianIndex),
+		CurrentSetIndex: uint32(*templatePhylaxIndex),
 		Messages: []*nodev1.GovernanceMessage{
 			{
 				Sequence: rand.Uint64(),
@@ -760,7 +760,7 @@ func runGatewayIbcComposabilityMwSetContractTemplate(cmd *cobra.Command, args []
 	}
 
 	m := &nodev1.InjectGovernanceVAARequest{
-		CurrentSetIndex: uint32(*templateGuardianIndex),
+		CurrentSetIndex: uint32(*templatePhylaxIndex),
 		Messages: []*nodev1.GovernanceMessage{
 			{
 				Sequence: rand.Uint64(),
@@ -814,7 +814,7 @@ func runIbcUpdateChannelChainTemplate(module nodev1.IbcUpdateChannelChainModule)
 	}
 
 	m := &nodev1.InjectGovernanceVAARequest{
-		CurrentSetIndex: uint32(*templateGuardianIndex),
+		CurrentSetIndex: uint32(*templatePhylaxIndex),
 		Messages: []*nodev1.GovernanceMessage{
 			{
 				Sequence: rand.Uint64(),
@@ -850,7 +850,7 @@ func runWormholeRelayerSetDefaultDeliveryProviderTemplate(cmd *cobra.Command, ar
 	}
 
 	m := &nodev1.InjectGovernanceVAARequest{
-		CurrentSetIndex: uint32(*templateGuardianIndex),
+		CurrentSetIndex: uint32(*templatePhylaxIndex),
 		Messages: []*nodev1.GovernanceMessage{
 			{
 				Sequence: rand.Uint64(),

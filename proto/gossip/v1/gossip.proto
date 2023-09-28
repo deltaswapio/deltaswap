@@ -24,7 +24,7 @@ message SignedHeartbeat {
   // ECDSA signature using the node's guardian public key.
   bytes signature = 2;
 
-  // Guardian address that signed this payload (truncated Eth address).
+  // Phylax address that signed this payload (truncated Eth address).
   // This is already contained in Heartbeat, however, we want to verify
   // the payload before we deserialize it.
   bytes guardian_addr = 3;
@@ -81,7 +81,7 @@ message Heartbeat {
 //
 // Messages without valid signature are dropped unceremoniously.
 message SignedObservation {
-  // Guardian pubkey as truncated eth address.
+  // Phylax pubkey as truncated eth address.
   bytes addr = 1;
   // The observation's deterministic, unique hash.
   bytes hash = 2;
@@ -132,7 +132,7 @@ message ObservationRequest {
 //
 // Messages without valid signature are dropped unceremoniously.
 message SignedBatchObservation {
-  // Guardian pubkey as truncated eth address.
+  // Phylax pubkey as truncated eth address.
   bytes addr = 1;
   // The observation batch's deterministic, unique hash.
   bytes hash = 2;
@@ -170,7 +170,7 @@ message SignedChainGovernorConfig {
   // ECDSA signature using the node's guardian key.
   bytes signature = 2;
 
-  // Guardian address that signed this payload (truncated Eth address).
+  // Phylax address that signed this payload (truncated Eth address).
   bytes guardian_addr = 3;
 }
 
@@ -202,7 +202,7 @@ message SignedChainGovernorStatus {
   // ECDSA signature using the node's guardian key.
   bytes signature = 2;
 
-  // Guardian address that signed this payload (truncated Eth address).
+  // Phylax address that signed this payload (truncated Eth address).
   bytes guardian_addr = 3;
 }
 

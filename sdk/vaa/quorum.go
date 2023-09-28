@@ -4,11 +4,11 @@ package vaa
 //
 // The canonical source is the calculation in the contracts (solana/bridge/src/processor.rs and
 // ethereum/contracts/Wormhole.sol), and this needs to match the implementation in the contracts.
-func CalculateQuorum(numGuardians int) int {
+func CalculateQuorum(numPhylaxs int) int {
 	// A safety check to avoid caller from ever supplying a negative
 	// number, because we're dealing with signed integers
-	if numGuardians < 0 {
-		panic("Invalid numGuardians is less than zero")
+	if numPhylaxs < 0 {
+		panic("Invalid numPhylaxs is less than zero")
 	}
 
 	// The goal here is to acheive a 2/3 quorum, but since we're
@@ -18,5 +18,5 @@ func CalculateQuorum(numGuardians int) int {
 	// For example sake, 5 / 2 == 2, but really that's not an
 	//   effective 2/3 quorum, so we add 1 for safety to get to 3
 	//
-	return ((numGuardians * 2) / 3) + 1
+	return ((numPhylaxs * 2) / 3) + 1
 }

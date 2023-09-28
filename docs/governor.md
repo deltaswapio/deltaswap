@@ -1,9 +1,9 @@
-# Guardian Chain Governor
-Below are admin controls surfaced to the Guardians for the Governor plugin. For
+# Phylax Chain Governor
+Below are admin controls surfaced to the Phylaxs for the Governor plugin. For
 a background on the feature and its objectives, see [the whitepaper](../whitepapers/0007_governor.md).
 
 ## Default Behavior / Limits
-The Chain Governor feature is disabled by default. Guardians can enable it by passing the following flag to the `phylaxd` command when starting it up:
+The Chain Governor feature is disabled by default. Phylaxs can enable it by passing the following flag to the `phylaxd` command when starting it up:
 
 ```bash
 --chainGovernorEnabled=true
@@ -13,7 +13,7 @@ To observe the default chain limits, see `node/pkg/governor/mainnet_chains.go`. 
 
 ### Checking Status
 
-To list the governor status for each chain, Guardians can run the `governor-status` admin command as follows:
+To list the governor status for each chain, Phylaxs can run the `governor-status` admin command as follows:
 
 ```bash
 phylaxd admin governor-status --socket /path/to/admin.sock
@@ -50,7 +50,7 @@ chain: ethereum, dailyLimit: 100000, total: 0, numPending: 0
 
 ### Releasing VAAs
 
-To manually release a pending VAA (identified by emitted chain ID / address and sequence number), Guardians can run the `governor-release-pending-vaa` admin command as follows:
+To manually release a pending VAA (identified by emitted chain ID / address and sequence number), Phylaxs can run the `governor-release-pending-vaa` admin command as follows:
 
 ```bash
 phylaxd admin governor-release-pending-vaa "emitted_chain_ID/address/sequence_number" --socket /path/to/admin.sock
@@ -60,22 +60,22 @@ NOTE: VAAs that are published this way will not affect the rolling 24hr limit.
 
 When a VAA is released, it will be placed in a holding area until the next pending VAA check so there may be some delay for it to actually be published.
 
-**Warning:** *Releasing a VAA manually should rarely if ever occur.  If Guardians believe a VAA is not invalid (i.e. resulting from an exploit), they should abstain from releasing VAAs early.  If a super majority of Guardians either (1) abstain or (2) manually release, the VAA will be signed and published once the time delay is met and super majority agrees to sign and publish.*
+**Warning:** *Releasing a VAA manually should rarely if ever occur.  If Phylaxs believe a VAA is not invalid (i.e. resulting from an exploit), they should abstain from releasing VAAs early.  If a super majority of Phylaxs either (1) abstain or (2) manually release, the VAA will be signed and published once the time delay is met and super majority agrees to sign and publish.*
 
 ### Dropping VAAs
 
-To manually remove a pending VAA (identified by emitted chain ID / address and sequence number), Guardians can run the `governor-drop-pending-vaa` admin command as follows:
+To manually remove a pending VAA (identified by emitted chain ID / address and sequence number), Phylaxs can run the `governor-drop-pending-vaa` admin command as follows:
 
 ```bash
 phylaxd admin governor-drop-pending-vaa "emitted_chain_ID/address/sequence_number" --socket /path/to/admin.sock
 ```
-**Warning:** *Dropping a VAA should only be used in the context of confirmed fraud that directly affects the security of the Wormhole network.  A super minority of Guardians are required to effectively censor a VAA.*
+**Warning:** *Dropping a VAA should only be used in the context of confirmed fraud that directly affects the security of the Wormhole network.  A super minority of Phylaxs are required to effectively censor a VAA.*
 
 ### Resetting Release Timer
-To reset the release timer for a specified VAA to `maxEnqueuedTimeInHours` from the current time, Guardians can run the `governor-reset-release-timer` admin command as follows:
+To reset the release timer for a specified VAA to `maxEnqueuedTimeInHours` from the current time, Phylaxs can run the `governor-reset-release-timer` admin command as follows:
 
 ```bash
 phylaxd admin governor-reset-release-timer "emitted_chain_ID/address/sequence_number" --socket /path/to/admin.sock
 ```
 
-**Warning:** *Resetting a VAA should only be used in the context of needing more time to confirm fraud that directly affects the security of the Wormhole network.  A super minority of Guardians are required to reset the timer for a given VAA.*
+**Warning:** *Resetting a VAA should only be used in the context of needing more time to confirm fraud that directly affects the security of the Wormhole network.  A super minority of Phylaxs are required to reset the timer for a given VAA.*

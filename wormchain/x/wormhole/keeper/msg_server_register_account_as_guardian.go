@@ -13,7 +13,7 @@ import (
 )
 
 // TODO(csongor): high-level overview of what this does
-func (k msgServer) RegisterAccountAsGuardian(goCtx context.Context, msg *types.MsgRegisterAccountAsGuardian) (*types.MsgRegisterAccountAsGuardianResponse, error) {
+func (k msgServer) RegisterAccountAsPhylax(goCtx context.Context, msg *types.MsgRegisterAccountAsPhylax) (*types.MsgRegisterAccountAsPhylaxResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	signer, err := sdk.AccAddressFromBech32(msg.Signer)
@@ -39,38 +39,38 @@ func (k msgServer) RegisterAccountAsGuardian(goCtx context.Context, msg *types.M
 	// next we check if this guardian key is in the most recent guardian set.
 	// we don't allow registration of arbitrary public keys, since that would
 	// enable a DoS vector
-	latestGuardianSetIndex := k.Keeper.GetLatestGuardianSetIndex(ctx)
-	consensusGuardianSetIndex, found := k.GetConsensusGuardianSetIndex(ctx)
+	latestPhylaxSetIndex := k.Keeper.GetLatestPhylaxSetIndex(ctx)
+	consensusPhylaxSetIndex, found := k.GetConsensusPhylaxSetIndex(ctx)
 
-	if found && latestGuardianSetIndex == consensusGuardianSetIndex.Index {
+	if found && latestPhylaxSetIndex == consensusPhylaxSetIndex.Index {
 		return nil, types.ErrConsensusSetNotUpdatable
 	}
 
-	latestGuardianSet, found := k.Keeper.GetGuardianSet(ctx, latestGuardianSetIndex)
+	latestPhylaxSet, found := k.Keeper.GetPhylaxSet(ctx, latestPhylaxSetIndex)
 
 	if !found {
-		return nil, types.ErrGuardianSetNotFound
+		return nil, types.ErrPhylaxSetNotFound
 	}
 
-	if !latestGuardianSet.ContainsKey(guardianKeyAddr) {
-		return nil, types.ErrGuardianNotFound
+	if !latestPhylaxSet.ContainsKey(guardianKeyAddr) {
+		return nil, types.ErrPhylaxNotFound
 	}
 
 	// Check if the tx signer was already registered as a guardian validator.
-	for _, gv := range k.GetAllGuardianValidator(ctx) {
+	for _, gv := range k.GetAllPhylaxValidator(ctx) {
 		if bytes.Equal(gv.ValidatorAddr, signer) {
 			return nil, types.ErrSignerAlreadyRegistered
 		}
 	}
 
 	// register validator in store for guardian
-	k.Keeper.SetGuardianValidator(ctx, types.GuardianValidator{
-		GuardianKey:   guardianKeyAddr.Bytes(),
+	k.Keeper.SetPhylaxValidator(ctx, types.PhylaxValidator{
+		PhylaxKey:     guardianKeyAddr.Bytes(),
 		ValidatorAddr: signer,
 	})
 
-	err = ctx.EventManager().EmitTypedEvent(&types.EventGuardianRegistered{
-		GuardianKey:  guardianKeyAddr.Bytes(),
+	err = ctx.EventManager().EmitTypedEvent(&types.EventPhylaxRegistered{
+		PhylaxKey:    guardianKeyAddr.Bytes(),
 		ValidatorKey: signer,
 	})
 
@@ -78,11 +78,11 @@ func (k msgServer) RegisterAccountAsGuardian(goCtx context.Context, msg *types.M
 		return nil, err
 	}
 
-	err = k.Keeper.TrySwitchToNewConsensusGuardianSet(ctx)
+	err = k.Keeper.TrySwitchToNewConsensusPhylaxSet(ctx)
 
 	if err != nil {
 		return nil, err
 	}
 
-	return &types.MsgRegisterAccountAsGuardianResponse{}, nil
+	return &types.MsgRegisterAccountAsPhylaxResponse{}, nil
 }

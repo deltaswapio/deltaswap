@@ -96,7 +96,7 @@ export enum WormholeInstruction {
   SetFees,
   TransferFees,
   UpgradeContract,
-  UpgradeGuardianSet,
+  UpgradePhylaxSet,
   VerifySignatures,
   PostMessageUnreliable, // sounds useful
 }

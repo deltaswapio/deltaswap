@@ -4,8 +4,8 @@ import {
   ChainInfo,
   getWormholeRelayerAddress,
   getDeliveryProviderAddress,
-  loadGuardianKeys,
-  loadGuardianSetIndex,
+  loadPhylaxKeys,
+  loadPhylaxSetIndex,
 } from "./env";
 const elliptic = require("elliptic");
 
@@ -111,7 +111,7 @@ export function encodeAndSignGovernancePayload(payload: string): string {
 
   const hash = doubleKeccak256(encodedVAABody);
 
-  const signers = loadGuardianKeys();
+  const signers = loadPhylaxKeys();
   let signatures = "";
 
   for (const i in signers) {
@@ -135,7 +135,7 @@ export function encodeAndSignGovernancePayload(payload: string): string {
   const vm = [
     ethers.utils.solidityPack(["uint8"], [1]).substring(2),
     ethers.utils
-      .solidityPack(["uint32"], [loadGuardianSetIndex()])
+      .solidityPack(["uint32"], [loadPhylaxSetIndex()])
       .substring(2), // guardianSetIndex
     ethers.utils.solidityPack(["uint8"], [signers.length]).substring(2), // number of signers
     signatures,

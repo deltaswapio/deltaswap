@@ -10,13 +10,13 @@ import {
   getAccountData,
 } from "../../utils";
 
-export function deriveGuardianSetKey(
+export function derivePhylaxSetKey(
   wormholeProgramId: PublicKeyInitData,
   index: number
 ): PublicKey {
   return deriveAddress(
     [
-      Buffer.from("GuardianSet"),
+      Buffer.from("PhylaxSet"),
       (() => {
         const buf = Buffer.alloc(4);
         buf.writeUInt32BE(index);
@@ -27,18 +27,18 @@ export function deriveGuardianSetKey(
   );
 }
 
-export async function getGuardianSet(
+export async function getPhylaxSet(
   connection: Connection,
   wormholeProgramId: PublicKeyInitData,
   index: number,
   commitment?: Commitment
-): Promise<GuardianSetData> {
+): Promise<PhylaxSetData> {
   return connection
-    .getAccountInfo(deriveGuardianSetKey(wormholeProgramId, index), commitment)
-    .then((info) => GuardianSetData.deserialize(getAccountData(info)));
+    .getAccountInfo(derivePhylaxSetKey(wormholeProgramId, index), commitment)
+    .then((info) => PhylaxSetData.deserialize(getAccountData(info)));
 }
 
-export class GuardianSetData {
+export class PhylaxSetData {
   index: number;
   keys: Buffer[];
   creationTime: number;
@@ -56,7 +56,7 @@ export class GuardianSetData {
     this.expirationTime = expirationTime;
   }
 
-  static deserialize(data: Buffer): GuardianSetData {
+  static deserialize(data: Buffer): PhylaxSetData {
     const index = data.readUInt32LE(0);
     const keysLen = data.readUInt32LE(4);
     const keysEnd = 8 + keysLen * ETHEREUM_KEY_LENGTH;
@@ -68,6 +68,6 @@ export class GuardianSetData {
       const start = 8 + i * ETHEREUM_KEY_LENGTH;
       keys.push(data.subarray(start, start + ETHEREUM_KEY_LENGTH));
     }
-    return new GuardianSetData(index, keys, creationTime, expirationTime);
+    return new PhylaxSetData(index, keys, creationTime, expirationTime);
   }
 }

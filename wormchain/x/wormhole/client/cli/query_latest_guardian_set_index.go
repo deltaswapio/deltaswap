@@ -11,7 +11,7 @@ import (
 
 var _ = strconv.Itoa(0)
 
-func CmdLatestGuardianSetIndex() *cobra.Command {
+func CmdLatestPhylaxSetIndex() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "latest-guardian-set-index",
 		Short: "Query latest_guardian_set_index",
@@ -25,9 +25,9 @@ func CmdLatestGuardianSetIndex() *cobra.Command {
 
 			queryClient := types.NewQueryClient(clientCtx)
 
-			params := &types.QueryLatestGuardianSetIndexRequest{}
+			params := &types.QueryLatestPhylaxSetIndexRequest{}
 
-			res, err := queryClient.LatestGuardianSetIndex(cmd.Context(), params)
+			res, err := queryClient.LatestPhylaxSetIndex(cmd.Context(), params)
 			if err != nil {
 				return err
 			}

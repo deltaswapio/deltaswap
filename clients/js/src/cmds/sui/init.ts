@@ -183,7 +183,7 @@ export const addInitCommands: YargsAddCommandsFn = (y: typeof yargs) =>
         const network = argv.network.toUpperCase();
         assertNetwork(network);
         const packageId = argv["package-id"];
-        const initialGuardian = argv["initial-guardian"];
+        const initialPhylax = argv["initial-guardian"];
         const debug = argv.debug ?? false;
         const governanceChainId = argv["governance-chain-id"];
         const guardianSetIndex = argv["guardian-set-index"];
@@ -194,7 +194,7 @@ export const addInitCommands: YargsAddCommandsFn = (y: typeof yargs) =>
         const res = await initWormhole(
           network,
           packageId,
-          initialGuardian,
+          initialPhylax,
           governanceChainId,
           guardianSetIndex,
           governanceContract,
@@ -300,7 +300,7 @@ export const initTokenBridge = async (
 export const initWormhole = async (
   network: Network,
   coreBridgePackageId: string,
-  initialGuardians: string,
+  initialPhylaxs: string,
   governanceChainId: number,
   guardianSetIndex: number,
   governanceContract: string,
@@ -347,9 +347,9 @@ export const initWormhole = async (
       tx.pure([...Buffer.from(governanceContract, "hex")]),
       tx.pure(guardianSetIndex),
       tx.pure(
-        initialGuardians.split(",").map((g) => [...Buffer.from(g, "hex")])
+        initialPhylaxs.split(",").map((g) => [...Buffer.from(g, "hex")])
       ),
-      tx.pure(24 * 60 * 60), // Guardian set TTL in seconds
+      tx.pure(24 * 60 * 60), // Phylax set TTL in seconds
       tx.pure("0"), // Message fee
     ],
   });

@@ -13,7 +13,7 @@ contract TestMessagesRV is TestUtils {
 
     Messages messages;
 
-    struct GuardianSetParams {
+    struct PhylaxSetParams {
         uint256[] privateKeys;
         uint8 guardianCount;
         uint32 expirationTime;
@@ -23,7 +23,7 @@ contract TestMessagesRV is TestUtils {
         messages = new Messages();
     }
 
-    function paramsAreWellFormed(GuardianSetParams memory params)
+    function paramsAreWellFormed(PhylaxSetParams memory params)
         internal
         pure
         returns (bool)
@@ -32,9 +32,9 @@ contract TestMessagesRV is TestUtils {
                params.guardianCount <= params.privateKeys.length;
     }
 
-    function generateGuardianSet(GuardianSetParams memory params)
+    function generatePhylaxSet(PhylaxSetParams memory params)
         internal pure
-        returns (Structs.GuardianSet memory)
+        returns (Structs.PhylaxSet memory)
     {
         for (uint8 i = 0; i < params.guardianCount; ++i)
             vm.assume(0 < params.privateKeys[i] &&
@@ -46,7 +46,7 @@ contract TestMessagesRV is TestUtils {
             guardians[i] = vm.addr(params.privateKeys[i]);
         }
 
-        return Structs.GuardianSet(guardians, params.expirationTime);
+        return Structs.PhylaxSet(guardians, params.expirationTime);
     }
 
     function generateSignature(
@@ -99,25 +99,25 @@ contract TestMessagesRV is TestUtils {
 
     function testCannotVerifySignaturesWithOutOfBoundsSignature(
         bytes memory encoded,
-        GuardianSetParams memory params,
-        uint8 outOfBoundsGuardian,
+        PhylaxSetParams memory params,
+        uint8 outOfBoundsPhylax,
         uint8 outOfBoundsAmount
     ) public {
         vm.assume(encoded.length > 0);
         vm.assume(paramsAreWellFormed(params));
         vm.assume(params.guardianCount > 0);
-        outOfBoundsGuardian = uint8(bound(outOfBoundsGuardian, 0, params.guardianCount - 1));
+        outOfBoundsPhylax = uint8(bound(outOfBoundsPhylax, 0, params.guardianCount - 1));
         outOfBoundsAmount = uint8(bound(outOfBoundsAmount, 0, MAX_UINT8 - params.guardianCount));
 
         bytes32 message = keccak256(encoded);
-        Structs.GuardianSet memory guardianSet = generateGuardianSet(params);
+        Structs.PhylaxSet memory guardianSet = generatePhylaxSet(params);
         Structs.Signature[] memory sigs = generateSignatures(
             params.privateKeys,
             guardianSet.keys,
             keccak256(encoded)
         );
 
-        sigs[outOfBoundsGuardian].guardianIndex =
+        sigs[outOfBoundsPhylax].guardianIndex =
             params.guardianCount + outOfBoundsAmount;
 
         vm.expectRevert("guardian index out of bounds");
@@ -126,7 +126,7 @@ contract TestMessagesRV is TestUtils {
 
     function testCannotVerifySignaturesWithInvalidSignature1(
         bytes memory encoded,
-        GuardianSetParams memory params,
+        PhylaxSetParams memory params,
         Structs.Signature memory fakeSignature
     ) public {
         vm.assume(encoded.length > 0);
@@ -134,7 +134,7 @@ contract TestMessagesRV is TestUtils {
         vm.assume(fakeSignature.guardianIndex < params.guardianCount);
 
         bytes32 message = keccak256(encoded);
-        Structs.GuardianSet memory guardianSet = generateGuardianSet(params);
+        Structs.PhylaxSet memory guardianSet = generatePhylaxSet(params);
         Structs.Signature[] memory sigs = generateSignatures(
             params.privateKeys,
             guardianSet.keys,
@@ -160,30 +160,30 @@ contract TestMessagesRV is TestUtils {
 
     function testCannotVerifySignaturesWithInvalidSignature2(
         bytes memory encoded,
-        GuardianSetParams memory params,
-        uint8 fakeGuardianIndex,
-        uint256 fakeGuardianPrivateKey
+        PhylaxSetParams memory params,
+        uint8 fakePhylaxIndex,
+        uint256 fakePhylaxPrivateKey
     ) public {
         vm.assume(encoded.length > 0);
         vm.assume(paramsAreWellFormed(params));
-        vm.assume(fakeGuardianIndex < params.guardianCount);
-        vm.assume(0 < fakeGuardianPrivateKey &&
-                      fakeGuardianPrivateKey < SECP256K1_CURVE_ORDER);
-        vm.assume(fakeGuardianPrivateKey != params.privateKeys[fakeGuardianIndex]);
+        vm.assume(fakePhylaxIndex < params.guardianCount);
+        vm.assume(0 < fakePhylaxPrivateKey &&
+                      fakePhylaxPrivateKey < SECP256K1_CURVE_ORDER);
+        vm.assume(fakePhylaxPrivateKey != params.privateKeys[fakePhylaxIndex]);
 
         bytes32 message = keccak256(encoded);
-        Structs.GuardianSet memory guardianSet = generateGuardianSet(params);
+        Structs.PhylaxSet memory guardianSet = generatePhylaxSet(params);
         Structs.Signature[] memory sigs = generateSignatures(
             params.privateKeys,
             guardianSet.keys,
             message
         );
 
-        address fakeGuardian = vm.addr(fakeGuardianPrivateKey);
-        sigs[fakeGuardianIndex] = generateSignature(
-            fakeGuardianIndex,
-            fakeGuardianPrivateKey,
-            fakeGuardian,
+        address fakePhylax = vm.addr(fakePhylaxPrivateKey);
+        sigs[fakePhylaxIndex] = generateSignature(
+            fakePhylaxIndex,
+            fakePhylaxPrivateKey,
+            fakePhylax,
             message
         );
 
@@ -194,13 +194,13 @@ contract TestMessagesRV is TestUtils {
 
     function testVerifySignatures(
         bytes memory encoded,
-        GuardianSetParams memory params
+        PhylaxSetParams memory params
     ) public {
         vm.assume(encoded.length > 0);
         vm.assume(paramsAreWellFormed(params));
 
         bytes32 message = keccak256(encoded);
-        Structs.GuardianSet memory guardianSet = generateGuardianSet(params);
+        Structs.PhylaxSet memory guardianSet = generatePhylaxSet(params);
         Structs.Signature[] memory sigs = generateSignatures(
             params.privateKeys,
             guardianSet.keys,

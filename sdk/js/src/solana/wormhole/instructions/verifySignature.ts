@@ -10,8 +10,8 @@ import {
 } from "@solana/web3.js";
 import { createSecp256k1Instruction } from "../../utils";
 import {
-  getGuardianSet,
-  deriveGuardianSetKey,
+  getPhylaxSet,
+  derivePhylaxSetKey,
   getWormholeBridgeData,
 } from "../accounts";
 import { isBytes, ParsedVaa, parseVaa, SignedVaa } from "../../../vaa";
@@ -55,7 +55,7 @@ export async function createVerifySignaturesInstructions(
     throw new Error("guardianSetIndex != config.guardianSetIndex");
   }
 
-  const guardianSetData = await getGuardianSet(
+  const guardianSetData = await getPhylaxSet(
     connection,
     wormholeProgramId,
     guardianSetIndex,
@@ -161,7 +161,7 @@ export function getVerifySignatureAccounts(
   const parsed = isBytes(vaa) ? parseVaa(vaa) : vaa;
   return {
     payer: new PublicKey(payer),
-    guardianSet: deriveGuardianSetKey(
+    guardianSet: derivePhylaxSetKey(
       wormholeProgramId,
       parsed.guardianSetIndex
     ),

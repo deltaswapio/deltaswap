@@ -1,60 +1,60 @@
 // SPDX-License-Identifier: Apache 2
 
-/// This module implements a custom type representing a Guardian's signature
+/// This module implements a custom type representing a Phylax's signature
 /// with recovery ID of a particular hashed VAA message body. The components of
-/// `GuardianSignature` are used to perform public key recovery using ECDSA.
+/// `PhylaxSignature` are used to perform public key recovery using ECDSA.
 module wormhole::guardian_signature {
     use std::vector::{Self};
 
     use wormhole::bytes32::{Self, Bytes32};
 
-    /// Container for elliptic curve signature parameters and Guardian index.
-    struct GuardianSignature has store, drop {
+    /// Container for elliptic curve signature parameters and Phylax index.
+    struct PhylaxSignature has store, drop {
         r: Bytes32,
         s: Bytes32,
         recovery_id: u8,
         index: u8,
     }
 
-    /// Create new `GuardianSignature`.
+    /// Create new `PhylaxSignature`.
     public fun new(
         r: Bytes32,
         s: Bytes32,
         recovery_id: u8,
         index: u8
-    ): GuardianSignature {
-        GuardianSignature { r, s, recovery_id, index }
+    ): PhylaxSignature {
+        PhylaxSignature { r, s, recovery_id, index }
     }
 
     /// 32-byte signature parameter R.
-    public fun r(self: &GuardianSignature): Bytes32 {
+    public fun r(self: &PhylaxSignature): Bytes32 {
         self.r
     }
 
     /// 32-byte signature parameter S.
-    public fun s(self: &GuardianSignature): Bytes32 {
+    public fun s(self: &PhylaxSignature): Bytes32 {
         self.s
     }
 
     /// Signature recovery ID.
-    public fun recovery_id(self: &GuardianSignature): u8 {
+    public fun recovery_id(self: &PhylaxSignature): u8 {
         self.recovery_id
     }
 
-    /// Guardian index.
-    public fun index(self: &GuardianSignature): u8 {
+    /// Phylax index.
+    public fun index(self: &PhylaxSignature): u8 {
         self.index
     }
 
-    /// Guardian index as u64.
-    public fun index_as_u64(self: &GuardianSignature): u64 {
+    /// Phylax index as u64.
+    public fun index_as_u64(self: &PhylaxSignature): u64 {
         (self.index as u64)
     }
 
     /// Serialize elliptic curve paramters as `vector<u8>` of length == 65 to be
     /// consumed by `ecdsa_k1` for public key recovery.
-    public fun to_rsv(gs: GuardianSignature): vector<u8> {
-        let GuardianSignature { r, s, recovery_id, index: _ } = gs;
+    public fun to_rsv(gs: PhylaxSignature): vector<u8> {
+        let PhylaxSignature { r, s, recovery_id, index: _ } = gs;
         let out = vector::empty();
         vector::append(&mut out, bytes32::to_bytes(r));
         vector::append(&mut out, bytes32::to_bytes(s));

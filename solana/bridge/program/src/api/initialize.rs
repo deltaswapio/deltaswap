@@ -3,10 +3,10 @@ use crate::{
         Bridge,
         BridgeConfig,
         FeeCollector,
-        GuardianSet,
-        GuardianSetDerivationData,
+        PhylaxSet,
+        PhylaxSetDerivationData,
     },
-    error::Error::TooManyGuardians,
+    error::Error::TooManyPhylaxs,
     MAX_LEN_GUARDIAN_KEYS,
 };
 use solana_program::sysvar::clock::Clock;
@@ -23,7 +23,7 @@ pub struct Initialize<'b> {
     pub bridge: Mut<Bridge<'b, { AccountState::Uninitialized }>>,
 
     /// Location the new guardian set will be allocated at.
-    pub guardian_set: Mut<GuardianSet<'b, { AccountState::Uninitialized }>>,
+    pub guardian_set: Mut<PhylaxSet<'b, { AccountState::Uninitialized }>>,
 
     /// Location of the fee collector that users will need to pay.
     pub fee_collector: Mut<FeeCollector<'b>>,
@@ -45,7 +45,7 @@ pub struct InitializeData {
     /// Amount of lamports that needs to be paid to the protocol to post a message
     pub fee: u64,
 
-    /// Initial Guardian Set
+    /// Initial Phylax Set
     pub initial_guardians: Vec<[u8; 20]>,
 }
 
@@ -57,7 +57,7 @@ pub fn initialize(
     let index = 0;
 
     if data.initial_guardians.len() > MAX_LEN_GUARDIAN_KEYS {
-        return Err(TooManyGuardians.into());
+        return Err(TooManyPhylaxs.into());
     }
 
     // Allocate initial guardian set with the provided keys.
@@ -65,9 +65,9 @@ pub fn initialize(
     accs.guardian_set.creation_time = accs.clock.unix_timestamp as u32;
     accs.guardian_set.keys.extend(&data.initial_guardians);
 
-    // Initialize Guardian Set
+    // Initialize Phylax Set
     accs.guardian_set.create(
-        &GuardianSetDerivationData { index },
+        &PhylaxSetDerivationData { index },
         ctx,
         accs.payer.key,
         Exempt,

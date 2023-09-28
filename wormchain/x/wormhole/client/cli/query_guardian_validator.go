@@ -11,7 +11,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-func CmdListGuardianValidator() *cobra.Command {
+func CmdListPhylaxValidator() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "list-guardian-validator",
 		Short: "list all guardian-validator",
@@ -25,11 +25,11 @@ func CmdListGuardianValidator() *cobra.Command {
 
 			queryClient := types.NewQueryClient(clientCtx)
 
-			params := &types.QueryAllGuardianValidatorRequest{
+			params := &types.QueryAllPhylaxValidatorRequest{
 				Pagination: pageReq,
 			}
 
-			res, err := queryClient.GuardianValidatorAll(context.Background(), params)
+			res, err := queryClient.PhylaxValidatorAll(context.Background(), params)
 			if err != nil {
 				return err
 			}
@@ -44,7 +44,7 @@ func CmdListGuardianValidator() *cobra.Command {
 	return cmd
 }
 
-func CmdShowGuardianValidator() *cobra.Command {
+func CmdShowPhylaxValidator() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "show-guardian-validator [guardian-key]",
 		Short: "shows a guardian-validator",
@@ -54,17 +54,17 @@ func CmdShowGuardianValidator() *cobra.Command {
 
 			queryClient := types.NewQueryClient(clientCtx)
 
-			argGuardianKey, err := hex.DecodeString(args[0])
+			argPhylaxKey, err := hex.DecodeString(args[0])
 
 			if err != nil {
 				return err
 			}
 
-			params := &types.QueryGetGuardianValidatorRequest{
-				GuardianKey: argGuardianKey,
+			params := &types.QueryGetPhylaxValidatorRequest{
+				PhylaxKey: argPhylaxKey,
 			}
 
-			res, err := queryClient.GuardianValidator(context.Background(), params)
+			res, err := queryClient.PhylaxValidator(context.Background(), params)
 			if err != nil {
 				return err
 			}

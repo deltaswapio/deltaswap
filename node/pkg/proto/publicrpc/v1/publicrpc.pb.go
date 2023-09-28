@@ -564,14 +564,14 @@ func (x *GetLastHeartbeatsResponse) GetEntries() []*GetLastHeartbeatsResponse_En
 	return nil
 }
 
-type GetCurrentGuardianSetRequest struct {
+type GetCurrentPhylaxSetRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 }
 
-func (x *GetCurrentGuardianSetRequest) Reset() {
-	*x = GetCurrentGuardianSetRequest{}
+func (x *GetCurrentPhylaxSetRequest) Reset() {
+	*x = GetCurrentPhylaxSetRequest{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_publicrpc_v1_publicrpc_proto_msgTypes[8]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -579,13 +579,13 @@ func (x *GetCurrentGuardianSetRequest) Reset() {
 	}
 }
 
-func (x *GetCurrentGuardianSetRequest) String() string {
+func (x *GetCurrentPhylaxSetRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*GetCurrentGuardianSetRequest) ProtoMessage() {}
+func (*GetCurrentPhylaxSetRequest) ProtoMessage() {}
 
-func (x *GetCurrentGuardianSetRequest) ProtoReflect() protoreflect.Message {
+func (x *GetCurrentPhylaxSetRequest) ProtoReflect() protoreflect.Message {
 	mi := &file_publicrpc_v1_publicrpc_proto_msgTypes[8]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -597,21 +597,21 @@ func (x *GetCurrentGuardianSetRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use GetCurrentGuardianSetRequest.ProtoReflect.Descriptor instead.
-func (*GetCurrentGuardianSetRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use GetCurrentPhylaxSetRequest.ProtoReflect.Descriptor instead.
+func (*GetCurrentPhylaxSetRequest) Descriptor() ([]byte, []int) {
 	return file_publicrpc_v1_publicrpc_proto_rawDescGZIP(), []int{8}
 }
 
-type GetCurrentGuardianSetResponse struct {
+type GetCurrentPhylaxSetResponse struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	GuardianSet *GuardianSet `protobuf:"bytes,1,opt,name=guardian_set,json=guardianSet,proto3" json:"guardian_set,omitempty"`
+	PhylaxSet *PhylaxSet `protobuf:"bytes,1,opt,name=guardian_set,json=guardianSet,proto3" json:"guardian_set,omitempty"`
 }
 
-func (x *GetCurrentGuardianSetResponse) Reset() {
-	*x = GetCurrentGuardianSetResponse{}
+func (x *GetCurrentPhylaxSetResponse) Reset() {
+	*x = GetCurrentPhylaxSetResponse{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_publicrpc_v1_publicrpc_proto_msgTypes[9]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -619,13 +619,13 @@ func (x *GetCurrentGuardianSetResponse) Reset() {
 	}
 }
 
-func (x *GetCurrentGuardianSetResponse) String() string {
+func (x *GetCurrentPhylaxSetResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*GetCurrentGuardianSetResponse) ProtoMessage() {}
+func (*GetCurrentPhylaxSetResponse) ProtoMessage() {}
 
-func (x *GetCurrentGuardianSetResponse) ProtoReflect() protoreflect.Message {
+func (x *GetCurrentPhylaxSetResponse) ProtoReflect() protoreflect.Message {
 	mi := &file_publicrpc_v1_publicrpc_proto_msgTypes[9]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -637,31 +637,31 @@ func (x *GetCurrentGuardianSetResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use GetCurrentGuardianSetResponse.ProtoReflect.Descriptor instead.
-func (*GetCurrentGuardianSetResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use GetCurrentPhylaxSetResponse.ProtoReflect.Descriptor instead.
+func (*GetCurrentPhylaxSetResponse) Descriptor() ([]byte, []int) {
 	return file_publicrpc_v1_publicrpc_proto_rawDescGZIP(), []int{9}
 }
 
-func (x *GetCurrentGuardianSetResponse) GetGuardianSet() *GuardianSet {
+func (x *GetCurrentPhylaxSetResponse) GetPhylaxSet() *PhylaxSet {
 	if x != nil {
-		return x.GuardianSet
+		return x.PhylaxSet
 	}
 	return nil
 }
 
-type GuardianSet struct {
+type PhylaxSet struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	// Guardian set index
+	// Phylax set index
 	Index uint32 `protobuf:"varint,1,opt,name=index,proto3" json:"index,omitempty"`
 	// List of guardian addresses as human-readable hex-encoded (leading 0x) addresses.
 	Addresses []string `protobuf:"bytes,2,rep,name=addresses,proto3" json:"addresses,omitempty"`
 }
 
-func (x *GuardianSet) Reset() {
-	*x = GuardianSet{}
+func (x *PhylaxSet) Reset() {
+	*x = PhylaxSet{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_publicrpc_v1_publicrpc_proto_msgTypes[10]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -669,13 +669,13 @@ func (x *GuardianSet) Reset() {
 	}
 }
 
-func (x *GuardianSet) String() string {
+func (x *PhylaxSet) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*GuardianSet) ProtoMessage() {}
+func (*PhylaxSet) ProtoMessage() {}
 
-func (x *GuardianSet) ProtoReflect() protoreflect.Message {
+func (x *PhylaxSet) ProtoReflect() protoreflect.Message {
 	mi := &file_publicrpc_v1_publicrpc_proto_msgTypes[10]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -687,19 +687,19 @@ func (x *GuardianSet) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use GuardianSet.ProtoReflect.Descriptor instead.
-func (*GuardianSet) Descriptor() ([]byte, []int) {
+// Deprecated: Use PhylaxSet.ProtoReflect.Descriptor instead.
+func (*PhylaxSet) Descriptor() ([]byte, []int) {
 	return file_publicrpc_v1_publicrpc_proto_rawDescGZIP(), []int{10}
 }
 
-func (x *GuardianSet) GetIndex() uint32 {
+func (x *PhylaxSet) GetIndex() uint32 {
 	if x != nil {
 		return x.Index
 	}
 	return 0
 }
 
-func (x *GuardianSet) GetAddresses() []string {
+func (x *PhylaxSet) GetAddresses() []string {
 	if x != nil {
 		return x.Addresses
 	}
@@ -1065,9 +1065,9 @@ type GetLastHeartbeatsResponse_Entry struct {
 	unknownFields protoimpl.UnknownFields
 
 	// Verified, hex-encoded (with leading 0x) guardian address. This is the guardian address
-	// which signed this heartbeat. The GuardianAddr field inside the heartbeat
+	// which signed this heartbeat. The PhylaxAddr field inside the heartbeat
 	// is NOT verified - remote nodes can put arbitrary data in it.
-	VerifiedGuardianAddr string `protobuf:"bytes,1,opt,name=verified_guardian_addr,json=verifiedGuardianAddr,proto3" json:"verified_guardian_addr,omitempty"`
+	VerifiedPhylaxAddr string `protobuf:"bytes,1,opt,name=verified_guardian_addr,json=verifiedPhylaxAddr,proto3" json:"verified_guardian_addr,omitempty"`
 	// Base58-encoded libp2p node address that sent this heartbeat, used to
 	// distinguish between multiple nodes running for the same guardian.
 	P2PNodeAddr string `protobuf:"bytes,2,opt,name=p2p_node_addr,json=p2pNodeAddr,proto3" json:"p2p_node_addr,omitempty"`
@@ -1108,9 +1108,9 @@ func (*GetLastHeartbeatsResponse_Entry) Descriptor() ([]byte, []int) {
 	return file_publicrpc_v1_publicrpc_proto_rawDescGZIP(), []int{7, 0}
 }
 
-func (x *GetLastHeartbeatsResponse_Entry) GetVerifiedGuardianAddr() string {
+func (x *GetLastHeartbeatsResponse_Entry) GetVerifiedPhylaxAddr() string {
 	if x != nil {
-		return x.VerifiedGuardianAddr
+		return x.VerifiedPhylaxAddr
 	}
 	return ""
 }
@@ -1660,9 +1660,9 @@ var file_publicrpc_v1_publicrpc_proto_goTypes = []interface{}{
 	(*GetSignedBatchVAAResponse)(nil),                         // 6: publicrpc.v1.GetSignedBatchVAAResponse
 	(*GetLastHeartbeatsRequest)(nil),                          // 7: publicrpc.v1.GetLastHeartbeatsRequest
 	(*GetLastHeartbeatsResponse)(nil),                         // 8: publicrpc.v1.GetLastHeartbeatsResponse
-	(*GetCurrentGuardianSetRequest)(nil),                      // 9: publicrpc.v1.GetCurrentGuardianSetRequest
-	(*GetCurrentGuardianSetResponse)(nil),                     // 10: publicrpc.v1.GetCurrentGuardianSetResponse
-	(*GuardianSet)(nil),                                       // 11: publicrpc.v1.GuardianSet
+	(*GetCurrentPhylaxSetRequest)(nil),                      // 9: publicrpc.v1.GetCurrentPhylaxSetRequest
+	(*GetCurrentPhylaxSetResponse)(nil),                     // 10: publicrpc.v1.GetCurrentPhylaxSetResponse
+	(*PhylaxSet)(nil),                                       // 11: publicrpc.v1.PhylaxSet
 	(*GovernorGetAvailableNotionalByChainRequest)(nil),        // 12: publicrpc.v1.GovernorGetAvailableNotionalByChainRequest
 	(*GovernorGetAvailableNotionalByChainResponse)(nil),       // 13: publicrpc.v1.GovernorGetAvailableNotionalByChainResponse
 	(*GovernorGetEnqueuedVAAsRequest)(nil),                    // 14: publicrpc.v1.GovernorGetEnqueuedVAAsRequest
@@ -1685,7 +1685,7 @@ var file_publicrpc_v1_publicrpc_proto_depIdxs = []int32{
 	2,  // 3: publicrpc.v1.GetSignedBatchVAARequest.batch_id:type_name -> publicrpc.v1.BatchID
 	24, // 4: publicrpc.v1.GetSignedBatchVAAResponse.signed_batch_vaa:type_name -> gossip.v1.SignedBatchVAAWithQuorum
 	20, // 5: publicrpc.v1.GetLastHeartbeatsResponse.entries:type_name -> publicrpc.v1.GetLastHeartbeatsResponse.Entry
-	11, // 6: publicrpc.v1.GetCurrentGuardianSetResponse.guardian_set:type_name -> publicrpc.v1.GuardianSet
+	11, // 6: publicrpc.v1.GetCurrentPhylaxSetResponse.guardian_set:type_name -> publicrpc.v1.PhylaxSet
 	21, // 7: publicrpc.v1.GovernorGetAvailableNotionalByChainResponse.entries:type_name -> publicrpc.v1.GovernorGetAvailableNotionalByChainResponse.Entry
 	22, // 8: publicrpc.v1.GovernorGetEnqueuedVAAsResponse.entries:type_name -> publicrpc.v1.GovernorGetEnqueuedVAAsResponse.Entry
 	1,  // 9: publicrpc.v1.GovernorIsVAAEnqueuedRequest.message_id:type_name -> publicrpc.v1.MessageID
@@ -1694,7 +1694,7 @@ var file_publicrpc_v1_publicrpc_proto_depIdxs = []int32{
 	7,  // 12: publicrpc.v1.PublicRPCService.GetLastHeartbeats:input_type -> publicrpc.v1.GetLastHeartbeatsRequest
 	3,  // 13: publicrpc.v1.PublicRPCService.GetSignedVAA:input_type -> publicrpc.v1.GetSignedVAARequest
 	5,  // 14: publicrpc.v1.PublicRPCService.GetSignedBatchVAA:input_type -> publicrpc.v1.GetSignedBatchVAARequest
-	9,  // 15: publicrpc.v1.PublicRPCService.GetCurrentGuardianSet:input_type -> publicrpc.v1.GetCurrentGuardianSetRequest
+	9,  // 15: publicrpc.v1.PublicRPCService.GetCurrentPhylaxSet:input_type -> publicrpc.v1.GetCurrentPhylaxSetRequest
 	12, // 16: publicrpc.v1.PublicRPCService.GovernorGetAvailableNotionalByChain:input_type -> publicrpc.v1.GovernorGetAvailableNotionalByChainRequest
 	14, // 17: publicrpc.v1.PublicRPCService.GovernorGetEnqueuedVAAs:input_type -> publicrpc.v1.GovernorGetEnqueuedVAAsRequest
 	16, // 18: publicrpc.v1.PublicRPCService.GovernorIsVAAEnqueued:input_type -> publicrpc.v1.GovernorIsVAAEnqueuedRequest
@@ -1702,7 +1702,7 @@ var file_publicrpc_v1_publicrpc_proto_depIdxs = []int32{
 	8,  // 20: publicrpc.v1.PublicRPCService.GetLastHeartbeats:output_type -> publicrpc.v1.GetLastHeartbeatsResponse
 	4,  // 21: publicrpc.v1.PublicRPCService.GetSignedVAA:output_type -> publicrpc.v1.GetSignedVAAResponse
 	6,  // 22: publicrpc.v1.PublicRPCService.GetSignedBatchVAA:output_type -> publicrpc.v1.GetSignedBatchVAAResponse
-	10, // 23: publicrpc.v1.PublicRPCService.GetCurrentGuardianSet:output_type -> publicrpc.v1.GetCurrentGuardianSetResponse
+	10, // 23: publicrpc.v1.PublicRPCService.GetCurrentPhylaxSet:output_type -> publicrpc.v1.GetCurrentPhylaxSetResponse
 	13, // 24: publicrpc.v1.PublicRPCService.GovernorGetAvailableNotionalByChain:output_type -> publicrpc.v1.GovernorGetAvailableNotionalByChainResponse
 	15, // 25: publicrpc.v1.PublicRPCService.GovernorGetEnqueuedVAAs:output_type -> publicrpc.v1.GovernorGetEnqueuedVAAsResponse
 	17, // 26: publicrpc.v1.PublicRPCService.GovernorIsVAAEnqueued:output_type -> publicrpc.v1.GovernorIsVAAEnqueuedResponse
@@ -1817,7 +1817,7 @@ func file_publicrpc_v1_publicrpc_proto_init() {
 			}
 		}
 		file_publicrpc_v1_publicrpc_proto_msgTypes[8].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*GetCurrentGuardianSetRequest); i {
+			switch v := v.(*GetCurrentPhylaxSetRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1829,7 +1829,7 @@ func file_publicrpc_v1_publicrpc_proto_init() {
 			}
 		}
 		file_publicrpc_v1_publicrpc_proto_msgTypes[9].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*GetCurrentGuardianSetResponse); i {
+			switch v := v.(*GetCurrentPhylaxSetResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1841,7 +1841,7 @@ func file_publicrpc_v1_publicrpc_proto_init() {
 			}
 		}
 		file_publicrpc_v1_publicrpc_proto_msgTypes[10].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*GuardianSet); i {
+			switch v := v.(*PhylaxSet); i {
 			case 0:
 				return &v.state
 			case 1:

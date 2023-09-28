@@ -17,7 +17,7 @@ import {
   TOKEN_PROGRAM_ID,
 } from "@solana/spl-token";
 import {
-  MockGuardians,
+  MockPhylaxs,
   GovernanceEmitter,
   MockEthereumNftBridge,
 } from "../../../sdk/js/src/mock";
@@ -86,7 +86,7 @@ describe("NFT Bridge", () => {
   const wallet = new NodeWallet(web3.Keypair.generate());
 
   // for signing wormhole messages
-  const guardians = new MockGuardians(GUARDIAN_SET_INDEX + 1, GUARDIAN_KEYS);
+  const guardians = new MockPhylaxs(GUARDIAN_SET_INDEX + 1, GUARDIAN_KEYS);
 
   const erc721Token = makeErc721Token(
     WETH_ADDRESS,

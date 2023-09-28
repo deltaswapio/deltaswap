@@ -58,10 +58,10 @@ const CHAIN_ID_SOLANA: u16 = 1;
 const CHAIN_ID_ETH: u16 = 2;
 
 struct Context {
-    /// Guardian public keys.
+    /// Phylax public keys.
     guardians: Vec<[u8; 20]>,
 
-    /// Guardian secret keys.
+    /// Phylax secret keys.
     guardian_keys: Vec<SecretKey>,
 
     /// Address of the core bridge contract.

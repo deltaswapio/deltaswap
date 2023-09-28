@@ -5,7 +5,7 @@ import { util, configure, Writer, Reader } from "protobufjs/minimal";
 
 export const protobufPackage = "wormhole_foundation.deltachain.wormhole";
 
-export interface EventGuardianSetUpdate {
+export interface EventPhylaxSetUpdate {
   old_index: number;
   new_index: number;
 }
@@ -18,7 +18,7 @@ export interface EventPostedMessage {
   payload: Uint8Array;
 }
 
-export interface EventGuardianRegistered {
+export interface EventPhylaxRegistered {
   guardian_key: Uint8Array;
   validator_key: Uint8Array;
 }
@@ -28,11 +28,11 @@ export interface EventConsensusSetUpdate {
   new_index: number;
 }
 
-const baseEventGuardianSetUpdate: object = { old_index: 0, new_index: 0 };
+const baseEventPhylaxSetUpdate: object = { old_index: 0, new_index: 0 };
 
-export const EventGuardianSetUpdate = {
+export const EventPhylaxSetUpdate = {
   encode(
-    message: EventGuardianSetUpdate,
+    message: EventPhylaxSetUpdate,
     writer: Writer = Writer.create()
   ): Writer {
     if (message.old_index !== 0) {
@@ -44,10 +44,10 @@ export const EventGuardianSetUpdate = {
     return writer;
   },
 
-  decode(input: Reader | Uint8Array, length?: number): EventGuardianSetUpdate {
+  decode(input: Reader | Uint8Array, length?: number): EventPhylaxSetUpdate {
     const reader = input instanceof Uint8Array ? new Reader(input) : input;
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = { ...baseEventGuardianSetUpdate } as EventGuardianSetUpdate;
+    const message = { ...baseEventPhylaxSetUpdate } as EventPhylaxSetUpdate;
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -65,8 +65,8 @@ export const EventGuardianSetUpdate = {
     return message;
   },
 
-  fromJSON(object: any): EventGuardianSetUpdate {
-    const message = { ...baseEventGuardianSetUpdate } as EventGuardianSetUpdate;
+  fromJSON(object: any): EventPhylaxSetUpdate {
+    const message = { ...baseEventPhylaxSetUpdate } as EventPhylaxSetUpdate;
     if (object.old_index !== undefined && object.old_index !== null) {
       message.old_index = Number(object.old_index);
     } else {
@@ -80,7 +80,7 @@ export const EventGuardianSetUpdate = {
     return message;
   },
 
-  toJSON(message: EventGuardianSetUpdate): unknown {
+  toJSON(message: EventPhylaxSetUpdate): unknown {
     const obj: any = {};
     message.old_index !== undefined && (obj.old_index = message.old_index);
     message.new_index !== undefined && (obj.new_index = message.new_index);
@@ -88,9 +88,9 @@ export const EventGuardianSetUpdate = {
   },
 
   fromPartial(
-    object: DeepPartial<EventGuardianSetUpdate>
-  ): EventGuardianSetUpdate {
-    const message = { ...baseEventGuardianSetUpdate } as EventGuardianSetUpdate;
+    object: DeepPartial<EventPhylaxSetUpdate>
+  ): EventPhylaxSetUpdate {
+    const message = { ...baseEventPhylaxSetUpdate } as EventPhylaxSetUpdate;
     if (object.old_index !== undefined && object.old_index !== null) {
       message.old_index = object.old_index;
     } else {
@@ -233,11 +233,11 @@ export const EventPostedMessage = {
   },
 };
 
-const baseEventGuardianRegistered: object = {};
+const baseEventPhylaxRegistered: object = {};
 
-export const EventGuardianRegistered = {
+export const EventPhylaxRegistered = {
   encode(
-    message: EventGuardianRegistered,
+    message: EventPhylaxRegistered,
     writer: Writer = Writer.create()
   ): Writer {
     if (message.guardian_key.length !== 0) {
@@ -249,12 +249,12 @@ export const EventGuardianRegistered = {
     return writer;
   },
 
-  decode(input: Reader | Uint8Array, length?: number): EventGuardianRegistered {
+  decode(input: Reader | Uint8Array, length?: number): EventPhylaxRegistered {
     const reader = input instanceof Uint8Array ? new Reader(input) : input;
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = {
-      ...baseEventGuardianRegistered,
-    } as EventGuardianRegistered;
+      ...baseEventPhylaxRegistered,
+    } as EventPhylaxRegistered;
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -272,10 +272,10 @@ export const EventGuardianRegistered = {
     return message;
   },
 
-  fromJSON(object: any): EventGuardianRegistered {
+  fromJSON(object: any): EventPhylaxRegistered {
     const message = {
-      ...baseEventGuardianRegistered,
-    } as EventGuardianRegistered;
+      ...baseEventPhylaxRegistered,
+    } as EventPhylaxRegistered;
     if (object.guardian_key !== undefined && object.guardian_key !== null) {
       message.guardian_key = bytesFromBase64(object.guardian_key);
     }
@@ -285,7 +285,7 @@ export const EventGuardianRegistered = {
     return message;
   },
 
-  toJSON(message: EventGuardianRegistered): unknown {
+  toJSON(message: EventPhylaxRegistered): unknown {
     const obj: any = {};
     message.guardian_key !== undefined &&
       (obj.guardian_key = base64FromBytes(
@@ -303,11 +303,11 @@ export const EventGuardianRegistered = {
   },
 
   fromPartial(
-    object: DeepPartial<EventGuardianRegistered>
-  ): EventGuardianRegistered {
+    object: DeepPartial<EventPhylaxRegistered>
+  ): EventPhylaxRegistered {
     const message = {
-      ...baseEventGuardianRegistered,
-    } as EventGuardianRegistered;
+      ...baseEventPhylaxRegistered,
+    } as EventPhylaxRegistered;
     if (object.guardian_key !== undefined && object.guardian_key !== null) {
       message.guardian_key = object.guardian_key;
     } else {

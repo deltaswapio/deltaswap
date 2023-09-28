@@ -9,7 +9,7 @@ import {
 import { createReadOnlyWormholeProgramInterface } from "../program";
 import {
   deriveFeeCollectorKey,
-  deriveGuardianSetKey,
+  derivePhylaxSetKey,
   deriveWormholeBridgeDataKey,
 } from "../accounts";
 import BN from "bn.js";
@@ -19,12 +19,12 @@ export function createInitializeInstruction(
   payer: PublicKeyInitData,
   guardianSetExpirationTime: number,
   fee: bigint,
-  initialGuardians: Buffer[]
+  initialPhylaxs: Buffer[]
 ): TransactionInstruction {
   const methods = createReadOnlyWormholeProgramInterface(
     wormholeProgramId
   ).methods.initialize(guardianSetExpirationTime, new BN(fee.toString()), [
-    ...initialGuardians,
+    ...initialPhylaxs,
   ]);
 
   // @ts-ignore
@@ -53,7 +53,7 @@ export function getInitializeAccounts(
 ): InitializeAccounts {
   return {
     bridge: deriveWormholeBridgeDataKey(wormholeProgramId),
-    guardianSet: deriveGuardianSetKey(wormholeProgramId, 0),
+    guardianSet: derivePhylaxSetKey(wormholeProgramId, 0),
     feeCollector: deriveFeeCollectorKey(wormholeProgramId),
     payer: new PublicKey(payer),
     clock: SYSVAR_CLOCK_PUBKEY,

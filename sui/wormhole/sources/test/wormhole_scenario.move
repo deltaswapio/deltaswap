@@ -3,7 +3,7 @@
 #[test_only]
 /// This module implements ways to initialize Wormhole in a test scenario. This
 /// module includes a default method (`set_up_wormhole`) with only one of the
-/// devnet (Tilt) Guardians. The private key for this Guardian is known (see the
+/// devnet (Tilt) Phylaxs. The private key for this Phylax is known (see the
 /// main Wormhole repository at https://github.com/wormhole-foundation/wormhole
 /// for the key), which allows an integrator to generate his own VAAs and
 /// validate them with this test-only Wormhole instance.

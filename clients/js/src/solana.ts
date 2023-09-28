@@ -13,7 +13,7 @@ import {
   getEndpointRegistration,
 } from "@certusone/wormhole-sdk/lib/esm/solana/tokenBridge";
 import {
-  createUpgradeGuardianSetInstruction,
+  createUpgradePhylaxSetInstruction,
   createUpgradeContractInstruction as createWormholeUpgradeContractInstruction,
 } from "@certusone/wormhole-sdk/lib/esm/solana/wormhole";
 import {
@@ -81,9 +81,9 @@ export async function execute_solana(
         throw Error("core bridge contract is undefined");
       }
       switch (v.payload.type) {
-        case "GuardianSetUpgrade":
+        case "PhylaxSetUpgrade":
           console.log("Submitting new guardian set");
-          ix = createUpgradeGuardianSetInstruction(
+          ix = createUpgradePhylaxSetInstruction(
             bridgeId,
             from.publicKey,
             vaa

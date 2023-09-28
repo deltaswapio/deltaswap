@@ -65,10 +65,10 @@ async function fullBootstrapProcess() {
       [GUARDIAN_VALIDATOR_VALADDR]
     );
 
-    const Guardian1ValidatorAddress: string = getValidatorAddressBase64(
+    const Phylax1ValidatorAddress: string = getValidatorAddressBase64(
       "../../validators/first_validator/config/priv_validator_key.json"
     );
-    const Guardian2ValidatorAddress: string = getValidatorAddressBase64(
+    const Phylax2ValidatorAddress: string = getValidatorAddressBase64(
       "../../validators/second_validator/config/priv_validator_key.json"
     );
 
@@ -79,13 +79,13 @@ async function fullBootstrapProcess() {
     expectEqual(
       "Signers on first block",
       validatorSet.map((sig: any) => sig.validator_address),
-      [Guardian1ValidatorAddress]
+      [Phylax1ValidatorAddress]
     );
 
     //verify that guardian 1 is registered to test wallet 1.
-    let response = await queryClient.core.queryGuardianValidatorAll();
+    let response = await queryClient.core.queryPhylaxValidatorAll();
     const guardianValidators = response.data.guardianValidator || [];
-    const tiltnetGuardian = {
+    const tiltnetPhylax = {
       guardianKey: TILTNET_GUARDIAN_PUBKEY,
       validatorAddr: toBase64(fromValAddress(GUARDIAN_VALIDATOR_VALADDR)),
     };
@@ -95,23 +95,23 @@ async function fullBootstrapProcess() {
         guardianKey: x.guardianKey,
         validatorAddr: x.validatorAddr,
       })),
-      [tiltnetGuardian]
+      [tiltnetPhylax]
     );
 
     //verify that the latest guardian set is 1
-    const response2 = await queryClient.core.queryLatestGuardianSetIndex();
-    let index = response2.data.latestGuardianSetIndex;
+    const response2 = await queryClient.core.queryLatestPhylaxSetIndex();
+    let index = response2.data.latestPhylaxSetIndex;
     expectEqual('Initial "latest" guardian set', index, 0);
 
     //verify that the consensus guardian set is 1
-    const response3 = await queryClient.core.queryConsensusGuardianSetIndex();
-    index = response3.data.ConsensusGuardianSetIndex?.index;
+    const response3 = await queryClient.core.queryConsensusPhylaxSetIndex();
+    index = response3.data.ConsensusPhylaxSetIndex?.index;
     expectEqual("Initial consensus guardian set", index, 0);
 
     //verify that the only guardian public key is guardian public key 1.
-    const response4 = await queryClient.core.queryGuardianSet(0);
+    const response4 = await queryClient.core.queryPhylaxSet(0);
     const guardianSet = response4.data || null;
-    expectEqual("Guardian set 0", guardianSet.GuardianSet?.keys, [
+    expectEqual("Phylax set 0", guardianSet.PhylaxSet?.keys, [
       TILTNET_GUARDIAN_PUBKEY,
     ]);
 
@@ -133,20 +133,20 @@ async function fullBootstrapProcess() {
     ).toString("base64");
 
     //verify only guardian 2 is in guardian set 1.
-    const response7 = await queryClient.core.queryGuardianSet(1);
+    const response7 = await queryClient.core.queryPhylaxSet(1);
     const guardianSet7 = response7.data || null;
-    expectEqual("Guardian set 1", guardianSet7.GuardianSet?.keys, [
+    expectEqual("Phylax set 1", guardianSet7.PhylaxSet?.keys, [
       guardianKey2base64,
     ]);
 
     //verify latest guardian set is 1
-    const response5 = await queryClient.core.queryLatestGuardianSetIndex();
-    let index5 = response5.data.latestGuardianSetIndex || null;
+    const response5 = await queryClient.core.queryLatestPhylaxSetIndex();
+    let index5 = response5.data.latestPhylaxSetIndex || null;
     expectEqual("Latest guardian set after upgrade", index5, 1);
 
     //verify consensus guardian set is 0
-    const response6 = await queryClient.core.queryConsensusGuardianSetIndex();
-    let index6 = response6.data.ConsensusGuardianSetIndex?.index;
+    const response6 = await queryClient.core.queryConsensusPhylaxSetIndex();
+    let index6 = response6.data.ConsensusPhylaxSetIndex?.index;
     expectEqual("Consensus guardian set after upgrade", index6, 0);
 
     //verify guardian 1 is still producing blocks
@@ -155,7 +155,7 @@ async function fullBootstrapProcess() {
     expectEqual(
       "Validators after upgrade",
       validatorSet2.map((sig: any) => sig.validator_address),
-      [Guardian1ValidatorAddress]
+      [Phylax1ValidatorAddress]
     );
 
     //TODO attempt to register guardian2 to validator2, exception because validator2 is not bonded.
@@ -211,12 +211,12 @@ async function fullBootstrapProcess() {
     expectEqual(
       "Signers after second validator bonded",
       validatorSet3.map((sig: any) => sig.validator_address),
-      [Guardian1ValidatorAddress]
+      [Phylax1ValidatorAddress]
     );
 
     //attempt to register guardian2 to validator2
     //TODO what encoding for the guardian key & how to sign the validator address?
-    const registerMsg = signingClient.core.msgRegisterAccountAsGuardian({
+    const registerMsg = signingClient.core.msgRegisterAccountAsPhylax({
       guardianPubkey: { key: Buffer.from(DEVNET_GUARDIAN2_PUBLIC_KEY, "hex") },
       signer: TEST_WALLET_ADDRESS_2,
       signature: signValidatorAddress(
@@ -233,10 +233,10 @@ async function fullBootstrapProcess() {
 
     //confirm validator2 is also now registered as a guardian validator
     let guardianValResponse =
-      await queryClient.core.queryGuardianValidatorAll();
+      await queryClient.core.queryPhylaxValidatorAll();
     const guardianValidators2 =
       guardianValResponse.data.guardianValidator || [];
-    const secondGuardian = {
+    const secondPhylax = {
       guardianKey: Buffer.from(DEVNET_GUARDIAN2_PUBLIC_KEY, "hex").toString(
         "base64"
       ),
@@ -250,12 +250,12 @@ async function fullBootstrapProcess() {
           validatorAddr: x.validatorAddr,
         }))
         .sort(),
-      [secondGuardian, tiltnetGuardian].sort()
+      [secondPhylax, tiltnetPhylax].sort()
     );
 
     //confirm consensus guardian set is now 2
-    const conResponse = await queryClient.core.queryConsensusGuardianSetIndex();
-    index = conResponse.data.ConsensusGuardianSetIndex?.index;
+    const conResponse = await queryClient.core.queryConsensusPhylaxSetIndex();
+    index = conResponse.data.ConsensusPhylaxSetIndex?.index;
     expectEqual("Updated consensus guardian set", index, 1);
 
     //confirm blocks are only signed by validator2
@@ -266,7 +266,7 @@ async function fullBootstrapProcess() {
     expectEqual(
       "Signing validators on final block",
       validatorSet.map((sig: any) => sig.validator_address),
-      [Guardian2ValidatorAddress]
+      [Phylax2ValidatorAddress]
     );
 
     console.log("Successfully completed bootstrap process.");

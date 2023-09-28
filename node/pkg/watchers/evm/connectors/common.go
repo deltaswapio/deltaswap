@@ -25,8 +25,8 @@ type NewBlock struct {
 type Connector interface {
 	NetworkName() string
 	ContractAddress() common.Address
-	GetCurrentGuardianSetIndex(ctx context.Context) (uint32, error)
-	GetGuardianSet(ctx context.Context, index uint32) (ethabi.StructsGuardianSet, error)
+	GetCurrentPhylaxSetIndex(ctx context.Context) (uint32, error)
+	GetPhylaxSet(ctx context.Context, index uint32) (ethabi.StructsPhylaxSet, error)
 	WatchLogMessagePublished(ctx context.Context, errC chan error, sink chan<- *ethabi.AbiLogMessagePublished) (event.Subscription, error)
 	TransactionReceipt(ctx context.Context, txHash common.Hash) (*types.Receipt, error)
 	TimeOfBlockByHash(ctx context.Context, hash common.Hash) (uint64, error)

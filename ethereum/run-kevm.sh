@@ -74,8 +74,8 @@ auto_abstract=
 # List of tests to symbolically execute
 
 tests=(
-    "--test TestSetters.testUpdateGuardianSetIndex_KEVM "
-    "--test TestSetters.testExpireGuardianSet_KEVM "
+    "--test TestSetters.testUpdatePhylaxSetIndex_KEVM "
+    "--test TestSetters.testExpirePhylaxSet_KEVM "
     "--test TestSetters.testSetMessageFee_KEVM "
     "--test TestSetters.testSetGovernanceContract_KEVM "
     "--test TestSetters.testSetInitialized_KEVM "
@@ -85,7 +85,7 @@ tests=(
     "--test TestSetters.testSetNextSequence_KEVM "
     "--test TestSetters.testSetEvmChainId_Success_KEVM "
     "--test TestSetters.testSetEvmChainId_Revert_KEVM "
-    "--test TestGetters.testGetGuardianSetIndex_KEVM "
+    "--test TestGetters.testGetPhylaxSetIndex_KEVM "
     "--test TestGetters.testGetMessageFee_KEVM "
     "--test TestGetters.testGetGovernanceContract_KEVM "
     "--test TestGetters.testIsInitialized_KEVM "

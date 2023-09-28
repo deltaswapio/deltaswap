@@ -13,7 +13,7 @@ import (
 func NewWatcherRunnable(
 	msgC chan<- *common.MessagePublication,
 	obsvReqC <-chan *gossipv1.ObservationRequest,
-	setC chan<- *common.GuardianSet,
+	setC chan<- *common.PhylaxSet,
 	c *WatcherConfig,
 ) supervisor.Runnable {
 	return func(ctx context.Context) error {

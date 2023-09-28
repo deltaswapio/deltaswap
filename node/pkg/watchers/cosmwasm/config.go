@@ -36,7 +36,7 @@ func (wc *WatcherConfig) SetL1Finalizer(l1finalizer interfaces.L1Finalizer) {
 func (wc *WatcherConfig) Create(
 	msgC chan<- *common.MessagePublication,
 	obsvReqC <-chan *gossipv1.ObservationRequest,
-	_ chan<- *common.GuardianSet,
+	_ chan<- *common.PhylaxSet,
 	env common.Environment,
 ) (interfaces.L1Finalizer, supervisor.Runnable, error) {
 	return nil, NewWatcher(wc.Websocket, wc.Lcd, wc.Contract, msgC, obsvReqC, wc.ChainID, env).Run, nil

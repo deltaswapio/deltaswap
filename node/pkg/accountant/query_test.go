@@ -136,11 +136,11 @@ func TestParseBatchTransferStatusPendingResponse(t *testing.T) {
 		Status: &TransferStatus{
 			Pending: &[]TransferStatusPending{
 				TransferStatusPending{
-					Digest:           expectedDigest,
-					TxHash:           expectedTxHash,
-					Signatures:       "1",
-					GuardianSetIndex: 0,
-					EmitterChain:     uint16(vaa.ChainIDEthereum),
+					Digest:         expectedDigest,
+					TxHash:         expectedTxHash,
+					Signatures:     "1",
+					PhylaxSetIndex: 0,
+					EmitterChain:   uint16(vaa.ChainIDEthereum),
 				},
 			},
 		},

@@ -234,7 +234,7 @@ async function initNear() {
   let h = hash(wormholeContract);
   console.log(h);
   let vaa = ts.genCoreUpdate(
-    ts.singleGuardianPrivKey,
+    ts.singlePhylaxPrivKey,
     0,
     0,
     seq,
@@ -281,7 +281,7 @@ async function initNear() {
   h = hash(tokenContract);
   seq = seq + 1;
   vaa = ts.genTokenUpdate(
-    ts.singleGuardianPrivKey,
+    ts.singlePhylaxPrivKey,
     0,
     0,
     seq,

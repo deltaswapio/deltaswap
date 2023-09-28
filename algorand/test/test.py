@@ -546,9 +546,9 @@ class AlgoTest(PortalCore):
         print("coreid = " + str(self.coreid) + " " + get_application_address(self.coreid))
 
         print("bootstrapping the guardian set...")
-        bootVAA = bytes.fromhex(gt.genGuardianSetUpgrade(gt.guardianPrivKeys, 1, 1, seq, seq))
+        bootVAA = bytes.fromhex(gt.genPhylaxSetUpgrade(gt.guardianPrivKeys, 1, 1, seq, seq))
 
-        self.bootGuardians(bootVAA, client, foundation, self.coreid)
+        self.bootPhylaxs(bootVAA, client, foundation, self.coreid)
 
         seq += 1
 
@@ -561,7 +561,7 @@ class AlgoTest(PortalCore):
         pprint.pprint(bal)
 
         print("upgrading the the guardian set using untrusted account...")
-        upgradeVAA = bytes.fromhex(gt.genGuardianSetUpgrade(gt.guardianPrivKeys, 1, 2, seq, seq))
+        upgradeVAA = bytes.fromhex(gt.genPhylaxSetUpgrade(gt.guardianPrivKeys, 1, 2, seq, seq))
         vaaLogs.append(["guardianUpgrade", upgradeVAA.hex()])
         self.submitVAA(upgradeVAA, client, player, self.coreid)
 

@@ -1,7 +1,7 @@
 //@ts-nocheck
 /* eslint-disable */
 import { Reader, Writer } from "protobufjs/minimal";
-import { GuardianSet } from "../wormhole/guardian_set";
+import { PhylaxSet } from "../wormhole/guardian_set";
 import {
   PageRequest,
   PageResponse,
@@ -9,25 +9,25 @@ import {
 import { Config } from "../wormhole/config";
 import { ReplayProtection } from "../wormhole/replay_protection";
 import { SequenceCounter } from "../wormhole/sequence_counter";
-import { ConsensusGuardianSetIndex } from "../wormhole/consensus_guardian_set_index";
-import { GuardianValidator } from "../wormhole/guardian_validator";
+import { ConsensusPhylaxSetIndex } from "../wormhole/consensus_guardian_set_index";
+import { PhylaxValidator } from "../wormhole/guardian_validator";
 
 export const protobufPackage = "wormhole_foundation.deltachain.wormhole";
 
-export interface QueryGetGuardianSetRequest {
+export interface QueryGetPhylaxSetRequest {
   index: number;
 }
 
-export interface QueryGetGuardianSetResponse {
-  GuardianSet: GuardianSet | undefined;
+export interface QueryGetPhylaxSetResponse {
+  PhylaxSet: PhylaxSet | undefined;
 }
 
-export interface QueryAllGuardianSetRequest {
+export interface QueryAllPhylaxSetRequest {
   pagination: PageRequest | undefined;
 }
 
-export interface QueryAllGuardianSetResponse {
-  GuardianSet: GuardianSet[];
+export interface QueryAllPhylaxSetResponse {
+  PhylaxSet: PhylaxSet[];
   pagination: PageResponse | undefined;
 }
 
@@ -71,40 +71,40 @@ export interface QueryAllSequenceCounterResponse {
   pagination: PageResponse | undefined;
 }
 
-export interface QueryGetConsensusGuardianSetIndexRequest {}
+export interface QueryGetConsensusPhylaxSetIndexRequest {}
 
-export interface QueryGetConsensusGuardianSetIndexResponse {
-  ConsensusGuardianSetIndex: ConsensusGuardianSetIndex | undefined;
+export interface QueryGetConsensusPhylaxSetIndexResponse {
+  ConsensusPhylaxSetIndex: ConsensusPhylaxSetIndex | undefined;
 }
 
-export interface QueryGetGuardianValidatorRequest {
+export interface QueryGetPhylaxValidatorRequest {
   guardianKey: Uint8Array;
 }
 
-export interface QueryGetGuardianValidatorResponse {
-  guardianValidator: GuardianValidator | undefined;
+export interface QueryGetPhylaxValidatorResponse {
+  guardianValidator: PhylaxValidator | undefined;
 }
 
-export interface QueryAllGuardianValidatorRequest {
+export interface QueryAllPhylaxValidatorRequest {
   pagination: PageRequest | undefined;
 }
 
-export interface QueryAllGuardianValidatorResponse {
-  guardianValidator: GuardianValidator[];
+export interface QueryAllPhylaxValidatorResponse {
+  guardianValidator: PhylaxValidator[];
   pagination: PageResponse | undefined;
 }
 
-export interface QueryLatestGuardianSetIndexRequest {}
+export interface QueryLatestPhylaxSetIndexRequest {}
 
-export interface QueryLatestGuardianSetIndexResponse {
-  latestGuardianSetIndex: number;
+export interface QueryLatestPhylaxSetIndexResponse {
+  latestPhylaxSetIndex: number;
 }
 
-const baseQueryGetGuardianSetRequest: object = { index: 0 };
+const baseQueryGetPhylaxSetRequest: object = { index: 0 };
 
-export const QueryGetGuardianSetRequest = {
+export const QueryGetPhylaxSetRequest = {
   encode(
-    message: QueryGetGuardianSetRequest,
+    message: QueryGetPhylaxSetRequest,
     writer: Writer = Writer.create()
   ): Writer {
     if (message.index !== 0) {
@@ -116,12 +116,12 @@ export const QueryGetGuardianSetRequest = {
   decode(
     input: Reader | Uint8Array,
     length?: number
-  ): QueryGetGuardianSetRequest {
+  ): QueryGetPhylaxSetRequest {
     const reader = input instanceof Uint8Array ? new Reader(input) : input;
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = {
-      ...baseQueryGetGuardianSetRequest,
-    } as QueryGetGuardianSetRequest;
+      ...baseQueryGetPhylaxSetRequest,
+    } as QueryGetPhylaxSetRequest;
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -136,10 +136,10 @@ export const QueryGetGuardianSetRequest = {
     return message;
   },
 
-  fromJSON(object: any): QueryGetGuardianSetRequest {
+  fromJSON(object: any): QueryGetPhylaxSetRequest {
     const message = {
-      ...baseQueryGetGuardianSetRequest,
-    } as QueryGetGuardianSetRequest;
+      ...baseQueryGetPhylaxSetRequest,
+    } as QueryGetPhylaxSetRequest;
     if (object.index !== undefined && object.index !== null) {
       message.index = Number(object.index);
     } else {
@@ -148,18 +148,18 @@ export const QueryGetGuardianSetRequest = {
     return message;
   },
 
-  toJSON(message: QueryGetGuardianSetRequest): unknown {
+  toJSON(message: QueryGetPhylaxSetRequest): unknown {
     const obj: any = {};
     message.index !== undefined && (obj.index = message.index);
     return obj;
   },
 
   fromPartial(
-    object: DeepPartial<QueryGetGuardianSetRequest>
-  ): QueryGetGuardianSetRequest {
+    object: DeepPartial<QueryGetPhylaxSetRequest>
+  ): QueryGetPhylaxSetRequest {
     const message = {
-      ...baseQueryGetGuardianSetRequest,
-    } as QueryGetGuardianSetRequest;
+      ...baseQueryGetPhylaxSetRequest,
+    } as QueryGetPhylaxSetRequest;
     if (object.index !== undefined && object.index !== null) {
       message.index = object.index;
     } else {
@@ -169,16 +169,16 @@ export const QueryGetGuardianSetRequest = {
   },
 };
 
-const baseQueryGetGuardianSetResponse: object = {};
+const baseQueryGetPhylaxSetResponse: object = {};
 
-export const QueryGetGuardianSetResponse = {
+export const QueryGetPhylaxSetResponse = {
   encode(
-    message: QueryGetGuardianSetResponse,
+    message: QueryGetPhylaxSetResponse,
     writer: Writer = Writer.create()
   ): Writer {
-    if (message.GuardianSet !== undefined) {
-      GuardianSet.encode(
-        message.GuardianSet,
+    if (message.PhylaxSet !== undefined) {
+      PhylaxSet.encode(
+        message.PhylaxSet,
         writer.uint32(10).fork()
       ).ldelim();
     }
@@ -188,17 +188,17 @@ export const QueryGetGuardianSetResponse = {
   decode(
     input: Reader | Uint8Array,
     length?: number
-  ): QueryGetGuardianSetResponse {
+  ): QueryGetPhylaxSetResponse {
     const reader = input instanceof Uint8Array ? new Reader(input) : input;
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = {
-      ...baseQueryGetGuardianSetResponse,
-    } as QueryGetGuardianSetResponse;
+      ...baseQueryGetPhylaxSetResponse,
+    } as QueryGetPhylaxSetResponse;
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.GuardianSet = GuardianSet.decode(reader, reader.uint32());
+          message.PhylaxSet = PhylaxSet.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -208,47 +208,47 @@ export const QueryGetGuardianSetResponse = {
     return message;
   },
 
-  fromJSON(object: any): QueryGetGuardianSetResponse {
+  fromJSON(object: any): QueryGetPhylaxSetResponse {
     const message = {
-      ...baseQueryGetGuardianSetResponse,
-    } as QueryGetGuardianSetResponse;
-    if (object.GuardianSet !== undefined && object.GuardianSet !== null) {
-      message.GuardianSet = GuardianSet.fromJSON(object.GuardianSet);
+      ...baseQueryGetPhylaxSetResponse,
+    } as QueryGetPhylaxSetResponse;
+    if (object.PhylaxSet !== undefined && object.PhylaxSet !== null) {
+      message.PhylaxSet = PhylaxSet.fromJSON(object.PhylaxSet);
     } else {
-      message.GuardianSet = undefined;
+      message.PhylaxSet = undefined;
     }
     return message;
   },
 
-  toJSON(message: QueryGetGuardianSetResponse): unknown {
+  toJSON(message: QueryGetPhylaxSetResponse): unknown {
     const obj: any = {};
-    message.GuardianSet !== undefined &&
-      (obj.GuardianSet = message.GuardianSet
-        ? GuardianSet.toJSON(message.GuardianSet)
+    message.PhylaxSet !== undefined &&
+      (obj.PhylaxSet = message.PhylaxSet
+        ? PhylaxSet.toJSON(message.PhylaxSet)
         : undefined);
     return obj;
   },
 
   fromPartial(
-    object: DeepPartial<QueryGetGuardianSetResponse>
-  ): QueryGetGuardianSetResponse {
+    object: DeepPartial<QueryGetPhylaxSetResponse>
+  ): QueryGetPhylaxSetResponse {
     const message = {
-      ...baseQueryGetGuardianSetResponse,
-    } as QueryGetGuardianSetResponse;
-    if (object.GuardianSet !== undefined && object.GuardianSet !== null) {
-      message.GuardianSet = GuardianSet.fromPartial(object.GuardianSet);
+      ...baseQueryGetPhylaxSetResponse,
+    } as QueryGetPhylaxSetResponse;
+    if (object.PhylaxSet !== undefined && object.PhylaxSet !== null) {
+      message.PhylaxSet = PhylaxSet.fromPartial(object.PhylaxSet);
     } else {
-      message.GuardianSet = undefined;
+      message.PhylaxSet = undefined;
     }
     return message;
   },
 };
 
-const baseQueryAllGuardianSetRequest: object = {};
+const baseQueryAllPhylaxSetRequest: object = {};
 
-export const QueryAllGuardianSetRequest = {
+export const QueryAllPhylaxSetRequest = {
   encode(
-    message: QueryAllGuardianSetRequest,
+    message: QueryAllPhylaxSetRequest,
     writer: Writer = Writer.create()
   ): Writer {
     if (message.pagination !== undefined) {
@@ -260,12 +260,12 @@ export const QueryAllGuardianSetRequest = {
   decode(
     input: Reader | Uint8Array,
     length?: number
-  ): QueryAllGuardianSetRequest {
+  ): QueryAllPhylaxSetRequest {
     const reader = input instanceof Uint8Array ? new Reader(input) : input;
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = {
-      ...baseQueryAllGuardianSetRequest,
-    } as QueryAllGuardianSetRequest;
+      ...baseQueryAllPhylaxSetRequest,
+    } as QueryAllPhylaxSetRequest;
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -280,10 +280,10 @@ export const QueryAllGuardianSetRequest = {
     return message;
   },
 
-  fromJSON(object: any): QueryAllGuardianSetRequest {
+  fromJSON(object: any): QueryAllPhylaxSetRequest {
     const message = {
-      ...baseQueryAllGuardianSetRequest,
-    } as QueryAllGuardianSetRequest;
+      ...baseQueryAllPhylaxSetRequest,
+    } as QueryAllPhylaxSetRequest;
     if (object.pagination !== undefined && object.pagination !== null) {
       message.pagination = PageRequest.fromJSON(object.pagination);
     } else {
@@ -292,7 +292,7 @@ export const QueryAllGuardianSetRequest = {
     return message;
   },
 
-  toJSON(message: QueryAllGuardianSetRequest): unknown {
+  toJSON(message: QueryAllPhylaxSetRequest): unknown {
     const obj: any = {};
     message.pagination !== undefined &&
       (obj.pagination = message.pagination
@@ -302,11 +302,11 @@ export const QueryAllGuardianSetRequest = {
   },
 
   fromPartial(
-    object: DeepPartial<QueryAllGuardianSetRequest>
-  ): QueryAllGuardianSetRequest {
+    object: DeepPartial<QueryAllPhylaxSetRequest>
+  ): QueryAllPhylaxSetRequest {
     const message = {
-      ...baseQueryAllGuardianSetRequest,
-    } as QueryAllGuardianSetRequest;
+      ...baseQueryAllPhylaxSetRequest,
+    } as QueryAllPhylaxSetRequest;
     if (object.pagination !== undefined && object.pagination !== null) {
       message.pagination = PageRequest.fromPartial(object.pagination);
     } else {
@@ -316,15 +316,15 @@ export const QueryAllGuardianSetRequest = {
   },
 };
 
-const baseQueryAllGuardianSetResponse: object = {};
+const baseQueryAllPhylaxSetResponse: object = {};
 
-export const QueryAllGuardianSetResponse = {
+export const QueryAllPhylaxSetResponse = {
   encode(
-    message: QueryAllGuardianSetResponse,
+    message: QueryAllPhylaxSetResponse,
     writer: Writer = Writer.create()
   ): Writer {
-    for (const v of message.GuardianSet) {
-      GuardianSet.encode(v!, writer.uint32(10).fork()).ldelim();
+    for (const v of message.PhylaxSet) {
+      PhylaxSet.encode(v!, writer.uint32(10).fork()).ldelim();
     }
     if (message.pagination !== undefined) {
       PageResponse.encode(
@@ -338,18 +338,18 @@ export const QueryAllGuardianSetResponse = {
   decode(
     input: Reader | Uint8Array,
     length?: number
-  ): QueryAllGuardianSetResponse {
+  ): QueryAllPhylaxSetResponse {
     const reader = input instanceof Uint8Array ? new Reader(input) : input;
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = {
-      ...baseQueryAllGuardianSetResponse,
-    } as QueryAllGuardianSetResponse;
-    message.GuardianSet = [];
+      ...baseQueryAllPhylaxSetResponse,
+    } as QueryAllPhylaxSetResponse;
+    message.PhylaxSet = [];
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.GuardianSet.push(GuardianSet.decode(reader, reader.uint32()));
+          message.PhylaxSet.push(PhylaxSet.decode(reader, reader.uint32()));
           break;
         case 2:
           message.pagination = PageResponse.decode(reader, reader.uint32());
@@ -362,14 +362,14 @@ export const QueryAllGuardianSetResponse = {
     return message;
   },
 
-  fromJSON(object: any): QueryAllGuardianSetResponse {
+  fromJSON(object: any): QueryAllPhylaxSetResponse {
     const message = {
-      ...baseQueryAllGuardianSetResponse,
-    } as QueryAllGuardianSetResponse;
-    message.GuardianSet = [];
-    if (object.GuardianSet !== undefined && object.GuardianSet !== null) {
-      for (const e of object.GuardianSet) {
-        message.GuardianSet.push(GuardianSet.fromJSON(e));
+      ...baseQueryAllPhylaxSetResponse,
+    } as QueryAllPhylaxSetResponse;
+    message.PhylaxSet = [];
+    if (object.PhylaxSet !== undefined && object.PhylaxSet !== null) {
+      for (const e of object.PhylaxSet) {
+        message.PhylaxSet.push(PhylaxSet.fromJSON(e));
       }
     }
     if (object.pagination !== undefined && object.pagination !== null) {
@@ -380,14 +380,14 @@ export const QueryAllGuardianSetResponse = {
     return message;
   },
 
-  toJSON(message: QueryAllGuardianSetResponse): unknown {
+  toJSON(message: QueryAllPhylaxSetResponse): unknown {
     const obj: any = {};
-    if (message.GuardianSet) {
-      obj.GuardianSet = message.GuardianSet.map((e) =>
-        e ? GuardianSet.toJSON(e) : undefined
+    if (message.PhylaxSet) {
+      obj.PhylaxSet = message.PhylaxSet.map((e) =>
+        e ? PhylaxSet.toJSON(e) : undefined
       );
     } else {
-      obj.GuardianSet = [];
+      obj.PhylaxSet = [];
     }
     message.pagination !== undefined &&
       (obj.pagination = message.pagination
@@ -397,15 +397,15 @@ export const QueryAllGuardianSetResponse = {
   },
 
   fromPartial(
-    object: DeepPartial<QueryAllGuardianSetResponse>
-  ): QueryAllGuardianSetResponse {
+    object: DeepPartial<QueryAllPhylaxSetResponse>
+  ): QueryAllPhylaxSetResponse {
     const message = {
-      ...baseQueryAllGuardianSetResponse,
-    } as QueryAllGuardianSetResponse;
-    message.GuardianSet = [];
-    if (object.GuardianSet !== undefined && object.GuardianSet !== null) {
-      for (const e of object.GuardianSet) {
-        message.GuardianSet.push(GuardianSet.fromPartial(e));
+      ...baseQueryAllPhylaxSetResponse,
+    } as QueryAllPhylaxSetResponse;
+    message.PhylaxSet = [];
+    if (object.PhylaxSet !== undefined && object.PhylaxSet !== null) {
+      for (const e of object.PhylaxSet) {
+        message.PhylaxSet.push(PhylaxSet.fromPartial(e));
       }
     }
     if (object.pagination !== undefined && object.pagination !== null) {
@@ -1192,11 +1192,11 @@ export const QueryAllSequenceCounterResponse = {
   },
 };
 
-const baseQueryGetConsensusGuardianSetIndexRequest: object = {};
+const baseQueryGetConsensusPhylaxSetIndexRequest: object = {};
 
-export const QueryGetConsensusGuardianSetIndexRequest = {
+export const QueryGetConsensusPhylaxSetIndexRequest = {
   encode(
-    _: QueryGetConsensusGuardianSetIndexRequest,
+    _: QueryGetConsensusPhylaxSetIndexRequest,
     writer: Writer = Writer.create()
   ): Writer {
     return writer;
@@ -1205,12 +1205,12 @@ export const QueryGetConsensusGuardianSetIndexRequest = {
   decode(
     input: Reader | Uint8Array,
     length?: number
-  ): QueryGetConsensusGuardianSetIndexRequest {
+  ): QueryGetConsensusPhylaxSetIndexRequest {
     const reader = input instanceof Uint8Array ? new Reader(input) : input;
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = {
-      ...baseQueryGetConsensusGuardianSetIndexRequest,
-    } as QueryGetConsensusGuardianSetIndexRequest;
+      ...baseQueryGetConsensusPhylaxSetIndexRequest,
+    } as QueryGetConsensusPhylaxSetIndexRequest;
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -1222,38 +1222,38 @@ export const QueryGetConsensusGuardianSetIndexRequest = {
     return message;
   },
 
-  fromJSON(_: any): QueryGetConsensusGuardianSetIndexRequest {
+  fromJSON(_: any): QueryGetConsensusPhylaxSetIndexRequest {
     const message = {
-      ...baseQueryGetConsensusGuardianSetIndexRequest,
-    } as QueryGetConsensusGuardianSetIndexRequest;
+      ...baseQueryGetConsensusPhylaxSetIndexRequest,
+    } as QueryGetConsensusPhylaxSetIndexRequest;
     return message;
   },
 
-  toJSON(_: QueryGetConsensusGuardianSetIndexRequest): unknown {
+  toJSON(_: QueryGetConsensusPhylaxSetIndexRequest): unknown {
     const obj: any = {};
     return obj;
   },
 
   fromPartial(
-    _: DeepPartial<QueryGetConsensusGuardianSetIndexRequest>
-  ): QueryGetConsensusGuardianSetIndexRequest {
+    _: DeepPartial<QueryGetConsensusPhylaxSetIndexRequest>
+  ): QueryGetConsensusPhylaxSetIndexRequest {
     const message = {
-      ...baseQueryGetConsensusGuardianSetIndexRequest,
-    } as QueryGetConsensusGuardianSetIndexRequest;
+      ...baseQueryGetConsensusPhylaxSetIndexRequest,
+    } as QueryGetConsensusPhylaxSetIndexRequest;
     return message;
   },
 };
 
-const baseQueryGetConsensusGuardianSetIndexResponse: object = {};
+const baseQueryGetConsensusPhylaxSetIndexResponse: object = {};
 
-export const QueryGetConsensusGuardianSetIndexResponse = {
+export const QueryGetConsensusPhylaxSetIndexResponse = {
   encode(
-    message: QueryGetConsensusGuardianSetIndexResponse,
+    message: QueryGetConsensusPhylaxSetIndexResponse,
     writer: Writer = Writer.create()
   ): Writer {
-    if (message.ConsensusGuardianSetIndex !== undefined) {
-      ConsensusGuardianSetIndex.encode(
-        message.ConsensusGuardianSetIndex,
+    if (message.ConsensusPhylaxSetIndex !== undefined) {
+      ConsensusPhylaxSetIndex.encode(
+        message.ConsensusPhylaxSetIndex,
         writer.uint32(10).fork()
       ).ldelim();
     }
@@ -1263,17 +1263,17 @@ export const QueryGetConsensusGuardianSetIndexResponse = {
   decode(
     input: Reader | Uint8Array,
     length?: number
-  ): QueryGetConsensusGuardianSetIndexResponse {
+  ): QueryGetConsensusPhylaxSetIndexResponse {
     const reader = input instanceof Uint8Array ? new Reader(input) : input;
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = {
-      ...baseQueryGetConsensusGuardianSetIndexResponse,
-    } as QueryGetConsensusGuardianSetIndexResponse;
+      ...baseQueryGetConsensusPhylaxSetIndexResponse,
+    } as QueryGetConsensusPhylaxSetIndexResponse;
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.ConsensusGuardianSetIndex = ConsensusGuardianSetIndex.decode(
+          message.ConsensusPhylaxSetIndex = ConsensusPhylaxSetIndex.decode(
             reader,
             reader.uint32()
           );
@@ -1286,57 +1286,57 @@ export const QueryGetConsensusGuardianSetIndexResponse = {
     return message;
   },
 
-  fromJSON(object: any): QueryGetConsensusGuardianSetIndexResponse {
+  fromJSON(object: any): QueryGetConsensusPhylaxSetIndexResponse {
     const message = {
-      ...baseQueryGetConsensusGuardianSetIndexResponse,
-    } as QueryGetConsensusGuardianSetIndexResponse;
+      ...baseQueryGetConsensusPhylaxSetIndexResponse,
+    } as QueryGetConsensusPhylaxSetIndexResponse;
     if (
-      object.ConsensusGuardianSetIndex !== undefined &&
-      object.ConsensusGuardianSetIndex !== null
+      object.ConsensusPhylaxSetIndex !== undefined &&
+      object.ConsensusPhylaxSetIndex !== null
     ) {
-      message.ConsensusGuardianSetIndex = ConsensusGuardianSetIndex.fromJSON(
-        object.ConsensusGuardianSetIndex
+      message.ConsensusPhylaxSetIndex = ConsensusPhylaxSetIndex.fromJSON(
+        object.ConsensusPhylaxSetIndex
       );
     } else {
-      message.ConsensusGuardianSetIndex = undefined;
+      message.ConsensusPhylaxSetIndex = undefined;
     }
     return message;
   },
 
-  toJSON(message: QueryGetConsensusGuardianSetIndexResponse): unknown {
+  toJSON(message: QueryGetConsensusPhylaxSetIndexResponse): unknown {
     const obj: any = {};
-    message.ConsensusGuardianSetIndex !== undefined &&
-      (obj.ConsensusGuardianSetIndex = message.ConsensusGuardianSetIndex
-        ? ConsensusGuardianSetIndex.toJSON(message.ConsensusGuardianSetIndex)
+    message.ConsensusPhylaxSetIndex !== undefined &&
+      (obj.ConsensusPhylaxSetIndex = message.ConsensusPhylaxSetIndex
+        ? ConsensusPhylaxSetIndex.toJSON(message.ConsensusPhylaxSetIndex)
         : undefined);
     return obj;
   },
 
   fromPartial(
-    object: DeepPartial<QueryGetConsensusGuardianSetIndexResponse>
-  ): QueryGetConsensusGuardianSetIndexResponse {
+    object: DeepPartial<QueryGetConsensusPhylaxSetIndexResponse>
+  ): QueryGetConsensusPhylaxSetIndexResponse {
     const message = {
-      ...baseQueryGetConsensusGuardianSetIndexResponse,
-    } as QueryGetConsensusGuardianSetIndexResponse;
+      ...baseQueryGetConsensusPhylaxSetIndexResponse,
+    } as QueryGetConsensusPhylaxSetIndexResponse;
     if (
-      object.ConsensusGuardianSetIndex !== undefined &&
-      object.ConsensusGuardianSetIndex !== null
+      object.ConsensusPhylaxSetIndex !== undefined &&
+      object.ConsensusPhylaxSetIndex !== null
     ) {
-      message.ConsensusGuardianSetIndex = ConsensusGuardianSetIndex.fromPartial(
-        object.ConsensusGuardianSetIndex
+      message.ConsensusPhylaxSetIndex = ConsensusPhylaxSetIndex.fromPartial(
+        object.ConsensusPhylaxSetIndex
       );
     } else {
-      message.ConsensusGuardianSetIndex = undefined;
+      message.ConsensusPhylaxSetIndex = undefined;
     }
     return message;
   },
 };
 
-const baseQueryGetGuardianValidatorRequest: object = {};
+const baseQueryGetPhylaxValidatorRequest: object = {};
 
-export const QueryGetGuardianValidatorRequest = {
+export const QueryGetPhylaxValidatorRequest = {
   encode(
-    message: QueryGetGuardianValidatorRequest,
+    message: QueryGetPhylaxValidatorRequest,
     writer: Writer = Writer.create()
   ): Writer {
     if (message.guardianKey.length !== 0) {
@@ -1348,12 +1348,12 @@ export const QueryGetGuardianValidatorRequest = {
   decode(
     input: Reader | Uint8Array,
     length?: number
-  ): QueryGetGuardianValidatorRequest {
+  ): QueryGetPhylaxValidatorRequest {
     const reader = input instanceof Uint8Array ? new Reader(input) : input;
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = {
-      ...baseQueryGetGuardianValidatorRequest,
-    } as QueryGetGuardianValidatorRequest;
+      ...baseQueryGetPhylaxValidatorRequest,
+    } as QueryGetPhylaxValidatorRequest;
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -1368,17 +1368,17 @@ export const QueryGetGuardianValidatorRequest = {
     return message;
   },
 
-  fromJSON(object: any): QueryGetGuardianValidatorRequest {
+  fromJSON(object: any): QueryGetPhylaxValidatorRequest {
     const message = {
-      ...baseQueryGetGuardianValidatorRequest,
-    } as QueryGetGuardianValidatorRequest;
+      ...baseQueryGetPhylaxValidatorRequest,
+    } as QueryGetPhylaxValidatorRequest;
     if (object.guardianKey !== undefined && object.guardianKey !== null) {
       message.guardianKey = bytesFromBase64(object.guardianKey);
     }
     return message;
   },
 
-  toJSON(message: QueryGetGuardianValidatorRequest): unknown {
+  toJSON(message: QueryGetPhylaxValidatorRequest): unknown {
     const obj: any = {};
     message.guardianKey !== undefined &&
       (obj.guardianKey = base64FromBytes(
@@ -1390,11 +1390,11 @@ export const QueryGetGuardianValidatorRequest = {
   },
 
   fromPartial(
-    object: DeepPartial<QueryGetGuardianValidatorRequest>
-  ): QueryGetGuardianValidatorRequest {
+    object: DeepPartial<QueryGetPhylaxValidatorRequest>
+  ): QueryGetPhylaxValidatorRequest {
     const message = {
-      ...baseQueryGetGuardianValidatorRequest,
-    } as QueryGetGuardianValidatorRequest;
+      ...baseQueryGetPhylaxValidatorRequest,
+    } as QueryGetPhylaxValidatorRequest;
     if (object.guardianKey !== undefined && object.guardianKey !== null) {
       message.guardianKey = object.guardianKey;
     } else {
@@ -1404,15 +1404,15 @@ export const QueryGetGuardianValidatorRequest = {
   },
 };
 
-const baseQueryGetGuardianValidatorResponse: object = {};
+const baseQueryGetPhylaxValidatorResponse: object = {};
 
-export const QueryGetGuardianValidatorResponse = {
+export const QueryGetPhylaxValidatorResponse = {
   encode(
-    message: QueryGetGuardianValidatorResponse,
+    message: QueryGetPhylaxValidatorResponse,
     writer: Writer = Writer.create()
   ): Writer {
     if (message.guardianValidator !== undefined) {
-      GuardianValidator.encode(
+      PhylaxValidator.encode(
         message.guardianValidator,
         writer.uint32(10).fork()
       ).ldelim();
@@ -1423,17 +1423,17 @@ export const QueryGetGuardianValidatorResponse = {
   decode(
     input: Reader | Uint8Array,
     length?: number
-  ): QueryGetGuardianValidatorResponse {
+  ): QueryGetPhylaxValidatorResponse {
     const reader = input instanceof Uint8Array ? new Reader(input) : input;
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = {
-      ...baseQueryGetGuardianValidatorResponse,
-    } as QueryGetGuardianValidatorResponse;
+      ...baseQueryGetPhylaxValidatorResponse,
+    } as QueryGetPhylaxValidatorResponse;
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.guardianValidator = GuardianValidator.decode(
+          message.guardianValidator = PhylaxValidator.decode(
             reader,
             reader.uint32()
           );
@@ -1446,15 +1446,15 @@ export const QueryGetGuardianValidatorResponse = {
     return message;
   },
 
-  fromJSON(object: any): QueryGetGuardianValidatorResponse {
+  fromJSON(object: any): QueryGetPhylaxValidatorResponse {
     const message = {
-      ...baseQueryGetGuardianValidatorResponse,
-    } as QueryGetGuardianValidatorResponse;
+      ...baseQueryGetPhylaxValidatorResponse,
+    } as QueryGetPhylaxValidatorResponse;
     if (
       object.guardianValidator !== undefined &&
       object.guardianValidator !== null
     ) {
-      message.guardianValidator = GuardianValidator.fromJSON(
+      message.guardianValidator = PhylaxValidator.fromJSON(
         object.guardianValidator
       );
     } else {
@@ -1463,26 +1463,26 @@ export const QueryGetGuardianValidatorResponse = {
     return message;
   },
 
-  toJSON(message: QueryGetGuardianValidatorResponse): unknown {
+  toJSON(message: QueryGetPhylaxValidatorResponse): unknown {
     const obj: any = {};
     message.guardianValidator !== undefined &&
       (obj.guardianValidator = message.guardianValidator
-        ? GuardianValidator.toJSON(message.guardianValidator)
+        ? PhylaxValidator.toJSON(message.guardianValidator)
         : undefined);
     return obj;
   },
 
   fromPartial(
-    object: DeepPartial<QueryGetGuardianValidatorResponse>
-  ): QueryGetGuardianValidatorResponse {
+    object: DeepPartial<QueryGetPhylaxValidatorResponse>
+  ): QueryGetPhylaxValidatorResponse {
     const message = {
-      ...baseQueryGetGuardianValidatorResponse,
-    } as QueryGetGuardianValidatorResponse;
+      ...baseQueryGetPhylaxValidatorResponse,
+    } as QueryGetPhylaxValidatorResponse;
     if (
       object.guardianValidator !== undefined &&
       object.guardianValidator !== null
     ) {
-      message.guardianValidator = GuardianValidator.fromPartial(
+      message.guardianValidator = PhylaxValidator.fromPartial(
         object.guardianValidator
       );
     } else {
@@ -1492,11 +1492,11 @@ export const QueryGetGuardianValidatorResponse = {
   },
 };
 
-const baseQueryAllGuardianValidatorRequest: object = {};
+const baseQueryAllPhylaxValidatorRequest: object = {};
 
-export const QueryAllGuardianValidatorRequest = {
+export const QueryAllPhylaxValidatorRequest = {
   encode(
-    message: QueryAllGuardianValidatorRequest,
+    message: QueryAllPhylaxValidatorRequest,
     writer: Writer = Writer.create()
   ): Writer {
     if (message.pagination !== undefined) {
@@ -1508,12 +1508,12 @@ export const QueryAllGuardianValidatorRequest = {
   decode(
     input: Reader | Uint8Array,
     length?: number
-  ): QueryAllGuardianValidatorRequest {
+  ): QueryAllPhylaxValidatorRequest {
     const reader = input instanceof Uint8Array ? new Reader(input) : input;
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = {
-      ...baseQueryAllGuardianValidatorRequest,
-    } as QueryAllGuardianValidatorRequest;
+      ...baseQueryAllPhylaxValidatorRequest,
+    } as QueryAllPhylaxValidatorRequest;
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -1528,10 +1528,10 @@ export const QueryAllGuardianValidatorRequest = {
     return message;
   },
 
-  fromJSON(object: any): QueryAllGuardianValidatorRequest {
+  fromJSON(object: any): QueryAllPhylaxValidatorRequest {
     const message = {
-      ...baseQueryAllGuardianValidatorRequest,
-    } as QueryAllGuardianValidatorRequest;
+      ...baseQueryAllPhylaxValidatorRequest,
+    } as QueryAllPhylaxValidatorRequest;
     if (object.pagination !== undefined && object.pagination !== null) {
       message.pagination = PageRequest.fromJSON(object.pagination);
     } else {
@@ -1540,7 +1540,7 @@ export const QueryAllGuardianValidatorRequest = {
     return message;
   },
 
-  toJSON(message: QueryAllGuardianValidatorRequest): unknown {
+  toJSON(message: QueryAllPhylaxValidatorRequest): unknown {
     const obj: any = {};
     message.pagination !== undefined &&
       (obj.pagination = message.pagination
@@ -1550,11 +1550,11 @@ export const QueryAllGuardianValidatorRequest = {
   },
 
   fromPartial(
-    object: DeepPartial<QueryAllGuardianValidatorRequest>
-  ): QueryAllGuardianValidatorRequest {
+    object: DeepPartial<QueryAllPhylaxValidatorRequest>
+  ): QueryAllPhylaxValidatorRequest {
     const message = {
-      ...baseQueryAllGuardianValidatorRequest,
-    } as QueryAllGuardianValidatorRequest;
+      ...baseQueryAllPhylaxValidatorRequest,
+    } as QueryAllPhylaxValidatorRequest;
     if (object.pagination !== undefined && object.pagination !== null) {
       message.pagination = PageRequest.fromPartial(object.pagination);
     } else {
@@ -1564,15 +1564,15 @@ export const QueryAllGuardianValidatorRequest = {
   },
 };
 
-const baseQueryAllGuardianValidatorResponse: object = {};
+const baseQueryAllPhylaxValidatorResponse: object = {};
 
-export const QueryAllGuardianValidatorResponse = {
+export const QueryAllPhylaxValidatorResponse = {
   encode(
-    message: QueryAllGuardianValidatorResponse,
+    message: QueryAllPhylaxValidatorResponse,
     writer: Writer = Writer.create()
   ): Writer {
     for (const v of message.guardianValidator) {
-      GuardianValidator.encode(v!, writer.uint32(10).fork()).ldelim();
+      PhylaxValidator.encode(v!, writer.uint32(10).fork()).ldelim();
     }
     if (message.pagination !== undefined) {
       PageResponse.encode(
@@ -1586,19 +1586,19 @@ export const QueryAllGuardianValidatorResponse = {
   decode(
     input: Reader | Uint8Array,
     length?: number
-  ): QueryAllGuardianValidatorResponse {
+  ): QueryAllPhylaxValidatorResponse {
     const reader = input instanceof Uint8Array ? new Reader(input) : input;
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = {
-      ...baseQueryAllGuardianValidatorResponse,
-    } as QueryAllGuardianValidatorResponse;
+      ...baseQueryAllPhylaxValidatorResponse,
+    } as QueryAllPhylaxValidatorResponse;
     message.guardianValidator = [];
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
           message.guardianValidator.push(
-            GuardianValidator.decode(reader, reader.uint32())
+            PhylaxValidator.decode(reader, reader.uint32())
           );
           break;
         case 2:
@@ -1612,17 +1612,17 @@ export const QueryAllGuardianValidatorResponse = {
     return message;
   },
 
-  fromJSON(object: any): QueryAllGuardianValidatorResponse {
+  fromJSON(object: any): QueryAllPhylaxValidatorResponse {
     const message = {
-      ...baseQueryAllGuardianValidatorResponse,
-    } as QueryAllGuardianValidatorResponse;
+      ...baseQueryAllPhylaxValidatorResponse,
+    } as QueryAllPhylaxValidatorResponse;
     message.guardianValidator = [];
     if (
       object.guardianValidator !== undefined &&
       object.guardianValidator !== null
     ) {
       for (const e of object.guardianValidator) {
-        message.guardianValidator.push(GuardianValidator.fromJSON(e));
+        message.guardianValidator.push(PhylaxValidator.fromJSON(e));
       }
     }
     if (object.pagination !== undefined && object.pagination !== null) {
@@ -1633,11 +1633,11 @@ export const QueryAllGuardianValidatorResponse = {
     return message;
   },
 
-  toJSON(message: QueryAllGuardianValidatorResponse): unknown {
+  toJSON(message: QueryAllPhylaxValidatorResponse): unknown {
     const obj: any = {};
     if (message.guardianValidator) {
       obj.guardianValidator = message.guardianValidator.map((e) =>
-        e ? GuardianValidator.toJSON(e) : undefined
+        e ? PhylaxValidator.toJSON(e) : undefined
       );
     } else {
       obj.guardianValidator = [];
@@ -1650,18 +1650,18 @@ export const QueryAllGuardianValidatorResponse = {
   },
 
   fromPartial(
-    object: DeepPartial<QueryAllGuardianValidatorResponse>
-  ): QueryAllGuardianValidatorResponse {
+    object: DeepPartial<QueryAllPhylaxValidatorResponse>
+  ): QueryAllPhylaxValidatorResponse {
     const message = {
-      ...baseQueryAllGuardianValidatorResponse,
-    } as QueryAllGuardianValidatorResponse;
+      ...baseQueryAllPhylaxValidatorResponse,
+    } as QueryAllPhylaxValidatorResponse;
     message.guardianValidator = [];
     if (
       object.guardianValidator !== undefined &&
       object.guardianValidator !== null
     ) {
       for (const e of object.guardianValidator) {
-        message.guardianValidator.push(GuardianValidator.fromPartial(e));
+        message.guardianValidator.push(PhylaxValidator.fromPartial(e));
       }
     }
     if (object.pagination !== undefined && object.pagination !== null) {
@@ -1673,11 +1673,11 @@ export const QueryAllGuardianValidatorResponse = {
   },
 };
 
-const baseQueryLatestGuardianSetIndexRequest: object = {};
+const baseQueryLatestPhylaxSetIndexRequest: object = {};
 
-export const QueryLatestGuardianSetIndexRequest = {
+export const QueryLatestPhylaxSetIndexRequest = {
   encode(
-    _: QueryLatestGuardianSetIndexRequest,
+    _: QueryLatestPhylaxSetIndexRequest,
     writer: Writer = Writer.create()
   ): Writer {
     return writer;
@@ -1686,12 +1686,12 @@ export const QueryLatestGuardianSetIndexRequest = {
   decode(
     input: Reader | Uint8Array,
     length?: number
-  ): QueryLatestGuardianSetIndexRequest {
+  ): QueryLatestPhylaxSetIndexRequest {
     const reader = input instanceof Uint8Array ? new Reader(input) : input;
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = {
-      ...baseQueryLatestGuardianSetIndexRequest,
-    } as QueryLatestGuardianSetIndexRequest;
+      ...baseQueryLatestPhylaxSetIndexRequest,
+    } as QueryLatestPhylaxSetIndexRequest;
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -1703,39 +1703,39 @@ export const QueryLatestGuardianSetIndexRequest = {
     return message;
   },
 
-  fromJSON(_: any): QueryLatestGuardianSetIndexRequest {
+  fromJSON(_: any): QueryLatestPhylaxSetIndexRequest {
     const message = {
-      ...baseQueryLatestGuardianSetIndexRequest,
-    } as QueryLatestGuardianSetIndexRequest;
+      ...baseQueryLatestPhylaxSetIndexRequest,
+    } as QueryLatestPhylaxSetIndexRequest;
     return message;
   },
 
-  toJSON(_: QueryLatestGuardianSetIndexRequest): unknown {
+  toJSON(_: QueryLatestPhylaxSetIndexRequest): unknown {
     const obj: any = {};
     return obj;
   },
 
   fromPartial(
-    _: DeepPartial<QueryLatestGuardianSetIndexRequest>
-  ): QueryLatestGuardianSetIndexRequest {
+    _: DeepPartial<QueryLatestPhylaxSetIndexRequest>
+  ): QueryLatestPhylaxSetIndexRequest {
     const message = {
-      ...baseQueryLatestGuardianSetIndexRequest,
-    } as QueryLatestGuardianSetIndexRequest;
+      ...baseQueryLatestPhylaxSetIndexRequest,
+    } as QueryLatestPhylaxSetIndexRequest;
     return message;
   },
 };
 
-const baseQueryLatestGuardianSetIndexResponse: object = {
-  latestGuardianSetIndex: 0,
+const baseQueryLatestPhylaxSetIndexResponse: object = {
+  latestPhylaxSetIndex: 0,
 };
 
-export const QueryLatestGuardianSetIndexResponse = {
+export const QueryLatestPhylaxSetIndexResponse = {
   encode(
-    message: QueryLatestGuardianSetIndexResponse,
+    message: QueryLatestPhylaxSetIndexResponse,
     writer: Writer = Writer.create()
   ): Writer {
-    if (message.latestGuardianSetIndex !== 0) {
-      writer.uint32(8).uint32(message.latestGuardianSetIndex);
+    if (message.latestPhylaxSetIndex !== 0) {
+      writer.uint32(8).uint32(message.latestPhylaxSetIndex);
     }
     return writer;
   },
@@ -1743,17 +1743,17 @@ export const QueryLatestGuardianSetIndexResponse = {
   decode(
     input: Reader | Uint8Array,
     length?: number
-  ): QueryLatestGuardianSetIndexResponse {
+  ): QueryLatestPhylaxSetIndexResponse {
     const reader = input instanceof Uint8Array ? new Reader(input) : input;
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = {
-      ...baseQueryLatestGuardianSetIndexResponse,
-    } as QueryLatestGuardianSetIndexResponse;
+      ...baseQueryLatestPhylaxSetIndexResponse,
+    } as QueryLatestPhylaxSetIndexResponse;
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.latestGuardianSetIndex = reader.uint32();
+          message.latestPhylaxSetIndex = reader.uint32();
           break;
         default:
           reader.skipType(tag & 7);
@@ -1763,41 +1763,41 @@ export const QueryLatestGuardianSetIndexResponse = {
     return message;
   },
 
-  fromJSON(object: any): QueryLatestGuardianSetIndexResponse {
+  fromJSON(object: any): QueryLatestPhylaxSetIndexResponse {
     const message = {
-      ...baseQueryLatestGuardianSetIndexResponse,
-    } as QueryLatestGuardianSetIndexResponse;
+      ...baseQueryLatestPhylaxSetIndexResponse,
+    } as QueryLatestPhylaxSetIndexResponse;
     if (
-      object.latestGuardianSetIndex !== undefined &&
-      object.latestGuardianSetIndex !== null
+      object.latestPhylaxSetIndex !== undefined &&
+      object.latestPhylaxSetIndex !== null
     ) {
-      message.latestGuardianSetIndex = Number(object.latestGuardianSetIndex);
+      message.latestPhylaxSetIndex = Number(object.latestPhylaxSetIndex);
     } else {
-      message.latestGuardianSetIndex = 0;
+      message.latestPhylaxSetIndex = 0;
     }
     return message;
   },
 
-  toJSON(message: QueryLatestGuardianSetIndexResponse): unknown {
+  toJSON(message: QueryLatestPhylaxSetIndexResponse): unknown {
     const obj: any = {};
-    message.latestGuardianSetIndex !== undefined &&
-      (obj.latestGuardianSetIndex = message.latestGuardianSetIndex);
+    message.latestPhylaxSetIndex !== undefined &&
+      (obj.latestPhylaxSetIndex = message.latestPhylaxSetIndex);
     return obj;
   },
 
   fromPartial(
-    object: DeepPartial<QueryLatestGuardianSetIndexResponse>
-  ): QueryLatestGuardianSetIndexResponse {
+    object: DeepPartial<QueryLatestPhylaxSetIndexResponse>
+  ): QueryLatestPhylaxSetIndexResponse {
     const message = {
-      ...baseQueryLatestGuardianSetIndexResponse,
-    } as QueryLatestGuardianSetIndexResponse;
+      ...baseQueryLatestPhylaxSetIndexResponse,
+    } as QueryLatestPhylaxSetIndexResponse;
     if (
-      object.latestGuardianSetIndex !== undefined &&
-      object.latestGuardianSetIndex !== null
+      object.latestPhylaxSetIndex !== undefined &&
+      object.latestPhylaxSetIndex !== null
     ) {
-      message.latestGuardianSetIndex = object.latestGuardianSetIndex;
+      message.latestPhylaxSetIndex = object.latestPhylaxSetIndex;
     } else {
-      message.latestGuardianSetIndex = 0;
+      message.latestPhylaxSetIndex = 0;
     }
     return message;
   },
@@ -1806,13 +1806,13 @@ export const QueryLatestGuardianSetIndexResponse = {
 /** Query defines the gRPC querier service. */
 export interface Query {
   /** Queries a guardianSet by index. */
-  GuardianSet(
-    request: QueryGetGuardianSetRequest
-  ): Promise<QueryGetGuardianSetResponse>;
+  PhylaxSet(
+    request: QueryGetPhylaxSetRequest
+  ): Promise<QueryGetPhylaxSetResponse>;
   /** Queries a list of guardianSet items. */
-  GuardianSetAll(
-    request: QueryAllGuardianSetRequest
-  ): Promise<QueryAllGuardianSetResponse>;
+  PhylaxSetAll(
+    request: QueryAllPhylaxSetRequest
+  ): Promise<QueryAllPhylaxSetResponse>;
   /** Queries a config by index. */
   Config(request: QueryGetConfigRequest): Promise<QueryGetConfigResponse>;
   /** Queries a replayProtection by index. */
@@ -1831,22 +1831,22 @@ export interface Query {
   SequenceCounterAll(
     request: QueryAllSequenceCounterRequest
   ): Promise<QueryAllSequenceCounterResponse>;
-  /** Queries a ConsensusGuardianSetIndex by index. */
-  ConsensusGuardianSetIndex(
-    request: QueryGetConsensusGuardianSetIndexRequest
-  ): Promise<QueryGetConsensusGuardianSetIndexResponse>;
-  /** Queries a GuardianValidator by index. */
-  GuardianValidator(
-    request: QueryGetGuardianValidatorRequest
-  ): Promise<QueryGetGuardianValidatorResponse>;
-  /** Queries a list of GuardianValidator items. */
-  GuardianValidatorAll(
-    request: QueryAllGuardianValidatorRequest
-  ): Promise<QueryAllGuardianValidatorResponse>;
-  /** Queries a list of LatestGuardianSetIndex items. */
-  LatestGuardianSetIndex(
-    request: QueryLatestGuardianSetIndexRequest
-  ): Promise<QueryLatestGuardianSetIndexResponse>;
+  /** Queries a ConsensusPhylaxSetIndex by index. */
+  ConsensusPhylaxSetIndex(
+    request: QueryGetConsensusPhylaxSetIndexRequest
+  ): Promise<QueryGetConsensusPhylaxSetIndexResponse>;
+  /** Queries a PhylaxValidator by index. */
+  PhylaxValidator(
+    request: QueryGetPhylaxValidatorRequest
+  ): Promise<QueryGetPhylaxValidatorResponse>;
+  /** Queries a list of PhylaxValidator items. */
+  PhylaxValidatorAll(
+    request: QueryAllPhylaxValidatorRequest
+  ): Promise<QueryAllPhylaxValidatorResponse>;
+  /** Queries a list of LatestPhylaxSetIndex items. */
+  LatestPhylaxSetIndex(
+    request: QueryLatestPhylaxSetIndexRequest
+  ): Promise<QueryLatestPhylaxSetIndexResponse>;
 }
 
 export class QueryClientImpl implements Query {
@@ -1854,31 +1854,31 @@ export class QueryClientImpl implements Query {
   constructor(rpc: Rpc) {
     this.rpc = rpc;
   }
-  GuardianSet(
-    request: QueryGetGuardianSetRequest
-  ): Promise<QueryGetGuardianSetResponse> {
-    const data = QueryGetGuardianSetRequest.encode(request).finish();
+  PhylaxSet(
+    request: QueryGetPhylaxSetRequest
+  ): Promise<QueryGetPhylaxSetResponse> {
+    const data = QueryGetPhylaxSetRequest.encode(request).finish();
     const promise = this.rpc.request(
       "wormhole_foundation.deltachain.wormhole.Query",
-      "GuardianSet",
+      "PhylaxSet",
       data
     );
     return promise.then((data) =>
-      QueryGetGuardianSetResponse.decode(new Reader(data))
+      QueryGetPhylaxSetResponse.decode(new Reader(data))
     );
   }
 
-  GuardianSetAll(
-    request: QueryAllGuardianSetRequest
-  ): Promise<QueryAllGuardianSetResponse> {
-    const data = QueryAllGuardianSetRequest.encode(request).finish();
+  PhylaxSetAll(
+    request: QueryAllPhylaxSetRequest
+  ): Promise<QueryAllPhylaxSetResponse> {
+    const data = QueryAllPhylaxSetRequest.encode(request).finish();
     const promise = this.rpc.request(
       "wormhole_foundation.deltachain.wormhole.Query",
-      "GuardianSetAll",
+      "PhylaxSetAll",
       data
     );
     return promise.then((data) =>
-      QueryAllGuardianSetResponse.decode(new Reader(data))
+      QueryAllPhylaxSetResponse.decode(new Reader(data))
     );
   }
 
@@ -1950,61 +1950,61 @@ export class QueryClientImpl implements Query {
     );
   }
 
-  ConsensusGuardianSetIndex(
-    request: QueryGetConsensusGuardianSetIndexRequest
-  ): Promise<QueryGetConsensusGuardianSetIndexResponse> {
-    const data = QueryGetConsensusGuardianSetIndexRequest.encode(
+  ConsensusPhylaxSetIndex(
+    request: QueryGetConsensusPhylaxSetIndexRequest
+  ): Promise<QueryGetConsensusPhylaxSetIndexResponse> {
+    const data = QueryGetConsensusPhylaxSetIndexRequest.encode(
       request
     ).finish();
     const promise = this.rpc.request(
       "wormhole_foundation.deltachain.wormhole.Query",
-      "ConsensusGuardianSetIndex",
+      "ConsensusPhylaxSetIndex",
       data
     );
     return promise.then((data) =>
-      QueryGetConsensusGuardianSetIndexResponse.decode(new Reader(data))
+      QueryGetConsensusPhylaxSetIndexResponse.decode(new Reader(data))
     );
   }
 
-  GuardianValidator(
-    request: QueryGetGuardianValidatorRequest
-  ): Promise<QueryGetGuardianValidatorResponse> {
-    const data = QueryGetGuardianValidatorRequest.encode(request).finish();
+  PhylaxValidator(
+    request: QueryGetPhylaxValidatorRequest
+  ): Promise<QueryGetPhylaxValidatorResponse> {
+    const data = QueryGetPhylaxValidatorRequest.encode(request).finish();
     const promise = this.rpc.request(
       "wormhole_foundation.deltachain.wormhole.Query",
-      "GuardianValidator",
+      "PhylaxValidator",
       data
     );
     return promise.then((data) =>
-      QueryGetGuardianValidatorResponse.decode(new Reader(data))
+      QueryGetPhylaxValidatorResponse.decode(new Reader(data))
     );
   }
 
-  GuardianValidatorAll(
-    request: QueryAllGuardianValidatorRequest
-  ): Promise<QueryAllGuardianValidatorResponse> {
-    const data = QueryAllGuardianValidatorRequest.encode(request).finish();
+  PhylaxValidatorAll(
+    request: QueryAllPhylaxValidatorRequest
+  ): Promise<QueryAllPhylaxValidatorResponse> {
+    const data = QueryAllPhylaxValidatorRequest.encode(request).finish();
     const promise = this.rpc.request(
       "wormhole_foundation.deltachain.wormhole.Query",
-      "GuardianValidatorAll",
+      "PhylaxValidatorAll",
       data
     );
     return promise.then((data) =>
-      QueryAllGuardianValidatorResponse.decode(new Reader(data))
+      QueryAllPhylaxValidatorResponse.decode(new Reader(data))
     );
   }
 
-  LatestGuardianSetIndex(
-    request: QueryLatestGuardianSetIndexRequest
-  ): Promise<QueryLatestGuardianSetIndexResponse> {
-    const data = QueryLatestGuardianSetIndexRequest.encode(request).finish();
+  LatestPhylaxSetIndex(
+    request: QueryLatestPhylaxSetIndexRequest
+  ): Promise<QueryLatestPhylaxSetIndexResponse> {
+    const data = QueryLatestPhylaxSetIndexRequest.encode(request).finish();
     const promise = this.rpc.request(
       "wormhole_foundation.deltachain.wormhole.Query",
-      "LatestGuardianSetIndex",
+      "LatestPhylaxSetIndex",
       data
     );
     return promise.then((data) =>
-      QueryLatestGuardianSetIndexResponse.decode(new Reader(data))
+      QueryLatestPhylaxSetIndexResponse.decode(new Reader(data))
     );
   }
 }

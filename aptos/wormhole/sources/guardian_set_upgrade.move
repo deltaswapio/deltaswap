@@ -4,7 +4,7 @@ module wormhole::guardian_set_upgrade {
     use wormhole::vaa::{Self};
     use wormhole::state;
     use wormhole::structs::{
-        Guardian,
+        Phylax,
         create_guardian,
         create_guardian_set
     };
@@ -19,20 +19,20 @@ module wormhole::guardian_set_upgrade {
     const E_INVALID_TARGET: u64 = 0x4;
     const E_NON_INCREMENTAL_GUARDIAN_SETS: u64 = 0x5;
 
-    struct GuardianSetUpgrade has drop {
+    struct PhylaxSetUpgrade has drop {
         new_index: U32,
-        guardians: vector<Guardian>,
+        guardians: vector<Phylax>,
     }
 
-    public fun get_new_index(s: &GuardianSetUpgrade): U32 {
+    public fun get_new_index(s: &PhylaxSetUpgrade): U32 {
         s.new_index
     }
 
-    public fun get_guardians(s: &GuardianSetUpgrade): vector<Guardian> {
+    public fun get_guardians(s: &PhylaxSetUpgrade): vector<Phylax> {
         s.guardians
     }
 
-    public fun submit_vaa(vaa: vector<u8>): GuardianSetUpgrade {
+    public fun submit_vaa(vaa: vector<u8>): PhylaxSetUpgrade {
         let vaa = vaa::parse_and_verify(vaa);
         vaa::assert_governance(&vaa);
         vaa::replay_protect(&vaa);
@@ -46,7 +46,7 @@ module wormhole::guardian_set_upgrade {
         submit_vaa(vaa);
     }
 
-    fun do_upgrade(upgrade: &GuardianSetUpgrade) {
+    fun do_upgrade(upgrade: &PhylaxSetUpgrade) {
         let current_index = state::get_current_guardian_set_index();
 
         assert!(
@@ -60,13 +60,13 @@ module wormhole::guardian_set_upgrade {
     }
 
     #[test_only]
-    public fun do_upgrade_test(new_index: U32, guardians: vector<Guardian>) {
-        do_upgrade(&GuardianSetUpgrade { new_index, guardians })
+    public fun do_upgrade_test(new_index: U32, guardians: vector<Phylax>) {
+        do_upgrade(&PhylaxSetUpgrade { new_index, guardians })
     }
 
-    public fun parse_payload(bytes: vector<u8>): GuardianSetUpgrade {
+    public fun parse_payload(bytes: vector<u8>): PhylaxSetUpgrade {
         let cur = cursor::init(bytes);
-        let guardians = vector::empty<Guardian>();
+        let guardians = vector::empty<Phylax>();
 
         let target_module = deserialize::deserialize_vector(&mut cur, 32);
         let expected_module = x"00000000000000000000000000000000000000000000000000000000436f7265"; // Core
@@ -89,15 +89,15 @@ module wormhole::guardian_set_upgrade {
 
         cursor::destroy_empty(cur);
 
-        GuardianSetUpgrade {
+        PhylaxSetUpgrade {
             new_index:          new_index,
             guardians:          guardians,
         }
     }
 
     #[test_only]
-    public fun split(upgrade: GuardianSetUpgrade): (U32, vector<Guardian>) {
-        let GuardianSetUpgrade { new_index, guardians } = upgrade;
+    public fun split(upgrade: PhylaxSetUpgrade): (U32, vector<Phylax>) {
+        let PhylaxSetUpgrade { new_index, guardians } = upgrade;
         (new_index, guardians)
     }
 }

@@ -1,15 +1,15 @@
 //@ts-nocheck
 /* eslint-disable */
-import { GuardianSet } from "../wormhole/guardian_set";
+import { PhylaxSet } from "../wormhole/guardian_set";
 import { Writer, Reader } from "protobufjs/minimal";
 
 export const protobufPackage = "wormhole_foundation.deltachain.wormhole";
 
-/** GuardianSetUpdateProposal defines a guardian set update governance proposal */
-export interface GuardianSetUpdateProposal {
+/** PhylaxSetUpdateProposal defines a guardian set update governance proposal */
+export interface PhylaxSetUpdateProposal {
   title: string;
   description: string;
-  newGuardianSet: GuardianSet | undefined;
+  newPhylaxSet: PhylaxSet | undefined;
 }
 
 /**
@@ -25,11 +25,11 @@ export interface GovernanceWormholeMessageProposal {
   payload: Uint8Array;
 }
 
-const baseGuardianSetUpdateProposal: object = { title: "", description: "" };
+const basePhylaxSetUpdateProposal: object = { title: "", description: "" };
 
-export const GuardianSetUpdateProposal = {
+export const PhylaxSetUpdateProposal = {
   encode(
-    message: GuardianSetUpdateProposal,
+    message: PhylaxSetUpdateProposal,
     writer: Writer = Writer.create()
   ): Writer {
     if (message.title !== "") {
@@ -38,9 +38,9 @@ export const GuardianSetUpdateProposal = {
     if (message.description !== "") {
       writer.uint32(18).string(message.description);
     }
-    if (message.newGuardianSet !== undefined) {
-      GuardianSet.encode(
-        message.newGuardianSet,
+    if (message.newPhylaxSet !== undefined) {
+      PhylaxSet.encode(
+        message.newPhylaxSet,
         writer.uint32(26).fork()
       ).ldelim();
     }
@@ -50,12 +50,12 @@ export const GuardianSetUpdateProposal = {
   decode(
     input: Reader | Uint8Array,
     length?: number
-  ): GuardianSetUpdateProposal {
+  ): PhylaxSetUpdateProposal {
     const reader = input instanceof Uint8Array ? new Reader(input) : input;
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = {
-      ...baseGuardianSetUpdateProposal,
-    } as GuardianSetUpdateProposal;
+      ...basePhylaxSetUpdateProposal,
+    } as PhylaxSetUpdateProposal;
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -66,7 +66,7 @@ export const GuardianSetUpdateProposal = {
           message.description = reader.string();
           break;
         case 3:
-          message.newGuardianSet = GuardianSet.decode(reader, reader.uint32());
+          message.newPhylaxSet = PhylaxSet.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -76,10 +76,10 @@ export const GuardianSetUpdateProposal = {
     return message;
   },
 
-  fromJSON(object: any): GuardianSetUpdateProposal {
+  fromJSON(object: any): PhylaxSetUpdateProposal {
     const message = {
-      ...baseGuardianSetUpdateProposal,
-    } as GuardianSetUpdateProposal;
+      ...basePhylaxSetUpdateProposal,
+    } as PhylaxSetUpdateProposal;
     if (object.title !== undefined && object.title !== null) {
       message.title = String(object.title);
     } else {
@@ -90,32 +90,32 @@ export const GuardianSetUpdateProposal = {
     } else {
       message.description = "";
     }
-    if (object.newGuardianSet !== undefined && object.newGuardianSet !== null) {
-      message.newGuardianSet = GuardianSet.fromJSON(object.newGuardianSet);
+    if (object.newPhylaxSet !== undefined && object.newPhylaxSet !== null) {
+      message.newPhylaxSet = PhylaxSet.fromJSON(object.newPhylaxSet);
     } else {
-      message.newGuardianSet = undefined;
+      message.newPhylaxSet = undefined;
     }
     return message;
   },
 
-  toJSON(message: GuardianSetUpdateProposal): unknown {
+  toJSON(message: PhylaxSetUpdateProposal): unknown {
     const obj: any = {};
     message.title !== undefined && (obj.title = message.title);
     message.description !== undefined &&
       (obj.description = message.description);
-    message.newGuardianSet !== undefined &&
-      (obj.newGuardianSet = message.newGuardianSet
-        ? GuardianSet.toJSON(message.newGuardianSet)
+    message.newPhylaxSet !== undefined &&
+      (obj.newPhylaxSet = message.newPhylaxSet
+        ? PhylaxSet.toJSON(message.newPhylaxSet)
         : undefined);
     return obj;
   },
 
   fromPartial(
-    object: DeepPartial<GuardianSetUpdateProposal>
-  ): GuardianSetUpdateProposal {
+    object: DeepPartial<PhylaxSetUpdateProposal>
+  ): PhylaxSetUpdateProposal {
     const message = {
-      ...baseGuardianSetUpdateProposal,
-    } as GuardianSetUpdateProposal;
+      ...basePhylaxSetUpdateProposal,
+    } as PhylaxSetUpdateProposal;
     if (object.title !== undefined && object.title !== null) {
       message.title = object.title;
     } else {
@@ -126,10 +126,10 @@ export const GuardianSetUpdateProposal = {
     } else {
       message.description = "";
     }
-    if (object.newGuardianSet !== undefined && object.newGuardianSet !== null) {
-      message.newGuardianSet = GuardianSet.fromPartial(object.newGuardianSet);
+    if (object.newPhylaxSet !== undefined && object.newPhylaxSet !== null) {
+      message.newPhylaxSet = PhylaxSet.fromPartial(object.newPhylaxSet);
     } else {
-      message.newGuardianSet = undefined;
+      message.newPhylaxSet = undefined;
     }
     return message;
   },

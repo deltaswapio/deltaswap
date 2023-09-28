@@ -33,7 +33,7 @@ func getVAA(chainID vaa.ChainID, emitterAddr vaa.Address) *vaa.VAA {
 
 	vaa := &vaa.VAA{
 		Version:          vaa.SupportedVAAVersion,
-		GuardianSetIndex: uint32(1),
+		PhylaxSetIndex:   uint32(1),
 		Signatures:       nil,
 		Timestamp:        time.Unix(0, 0),
 		Nonce:            1,

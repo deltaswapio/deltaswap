@@ -9,7 +9,7 @@ import {
 import { createReadOnlyWormholeProgramInterface } from "../program";
 import {
   deriveWormholeBridgeDataKey,
-  deriveGuardianSetKey,
+  derivePhylaxSetKey,
   derivePostedVaaKey,
 } from "../accounts";
 import { isBytes, ParsedVaa, parseVaa, SignedVaa } from "../../../vaa";
@@ -84,7 +84,7 @@ export function getPostVaaAccounts(
 ): PostVaaAccounts {
   const parsed = isBytes(vaa) ? parseVaa(vaa) : vaa;
   return {
-    guardianSet: deriveGuardianSetKey(
+    guardianSet: derivePhylaxSetKey(
       wormholeProgramId,
       parsed.guardianSetIndex
     ),

@@ -61,19 +61,19 @@ ContractUpgrade struct {
     NewContract [32]byte
 }
 
-// GuardianSetUpgrade is a VAA that instructs an implementation to upgrade the current guardian set
-GuardianSetUpgrade struct {
+// PhylaxSetUpgrade is a VAA that instructs an implementation to upgrade the current guardian set
+PhylaxSetUpgrade struct {
     // Core Wormhole Module
     Module [32]byte = "Core"
-    // Action index (2 for GuardianSet Upgrade)
+    // Action index (2 for PhylaxSet Upgrade)
     Action uint8 = 2
     // This update is chain independent
     Chain uint16 = 0
 
-    // New GuardianSet
-    NewGuardianSetIndex uint32
-    // New GuardianSet
-    NewGuardianSetLen u8
-    NewGuardianSet []Guardian
+    // New PhylaxSet
+    NewPhylaxSetIndex uint32
+    // New PhylaxSet
+    NewPhylaxSetLen u8
+    NewPhylaxSet []Phylax
 }
 ```

@@ -9,14 +9,14 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-func (k Keeper) LatestGuardianSetIndex(goCtx context.Context, req *types.QueryLatestGuardianSetIndexRequest) (*types.QueryLatestGuardianSetIndexResponse, error) {
+func (k Keeper) LatestPhylaxSetIndex(goCtx context.Context, req *types.QueryLatestPhylaxSetIndexRequest) (*types.QueryLatestPhylaxSetIndexResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
 	}
 
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	return &types.QueryLatestGuardianSetIndexResponse{
-		LatestGuardianSetIndex: k.GetLatestGuardianSetIndex(ctx),
+	return &types.QueryLatestPhylaxSetIndexResponse{
+		LatestPhylaxSetIndex: k.GetLatestPhylaxSetIndex(ctx),
 	}, nil
 }

@@ -98,12 +98,12 @@ export interface WormholeConfig {
   chain_id?: number;
 }
 
-export interface WormholeConsensusGuardianSetIndex {
+export interface WormholeConsensusPhylaxSetIndex {
   /** @format int64 */
   index?: number;
 }
 
-export interface WormholeGuardianSet {
+export interface WormholePhylaxSet {
   /** @format int64 */
   index?: number;
   keys?: string[];
@@ -112,7 +112,7 @@ export interface WormholeGuardianSet {
   expirationTime?: string;
 }
 
-export interface WormholeGuardianValidator {
+export interface WormholePhylaxValidator {
   /** @format byte */
   guardianKey?: string;
 
@@ -130,15 +130,15 @@ export interface WormholeMsgInstantiateContractResponse {
   data?: string;
 }
 
-export type WormholeMsgRegisterAccountAsGuardianResponse = object;
+export type WormholeMsgRegisterAccountAsPhylaxResponse = object;
 
 export interface WormholeMsgStoreCodeResponse {
   /** @format uint64 */
   code_id?: string;
 }
 
-export interface WormholeQueryAllGuardianSetResponse {
-  GuardianSet?: WormholeGuardianSet[];
+export interface WormholeQueryAllPhylaxSetResponse {
+  PhylaxSet?: WormholePhylaxSet[];
 
   /**
    * PageResponse is to be embedded in gRPC response messages where the
@@ -152,8 +152,8 @@ export interface WormholeQueryAllGuardianSetResponse {
   pagination?: V1Beta1PageResponse;
 }
 
-export interface WormholeQueryAllGuardianValidatorResponse {
-  guardianValidator?: WormholeGuardianValidator[];
+export interface WormholeQueryAllPhylaxValidatorResponse {
+  guardianValidator?: WormholePhylaxValidator[];
 
   /**
    * PageResponse is to be embedded in gRPC response messages where the
@@ -201,16 +201,16 @@ export interface WormholeQueryGetConfigResponse {
   Config?: WormholeConfig;
 }
 
-export interface WormholeQueryGetConsensusGuardianSetIndexResponse {
-  ConsensusGuardianSetIndex?: WormholeConsensusGuardianSetIndex;
+export interface WormholeQueryGetConsensusPhylaxSetIndexResponse {
+  ConsensusPhylaxSetIndex?: WormholeConsensusPhylaxSetIndex;
 }
 
-export interface WormholeQueryGetGuardianSetResponse {
-  GuardianSet?: WormholeGuardianSet;
+export interface WormholeQueryGetPhylaxSetResponse {
+  PhylaxSet?: WormholePhylaxSet;
 }
 
-export interface WormholeQueryGetGuardianValidatorResponse {
-  guardianValidator?: WormholeGuardianValidator;
+export interface WormholeQueryGetPhylaxValidatorResponse {
+  guardianValidator?: WormholePhylaxValidator;
 }
 
 export interface WormholeQueryGetReplayProtectionResponse {
@@ -221,9 +221,9 @@ export interface WormholeQueryGetSequenceCounterResponse {
   sequenceCounter?: WormholeSequenceCounter;
 }
 
-export interface WormholeQueryLatestGuardianSetIndexResponse {
+export interface WormholeQueryLatestPhylaxSetIndexResponse {
   /** @format int64 */
-  latestGuardianSetIndex?: number;
+  latestPhylaxSetIndex?: number;
 }
 
 export interface WormholeReplayProtection {
@@ -453,12 +453,12 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
    * No description
    *
    * @tags Query
-   * @name QueryConsensusGuardianSetIndex
-   * @summary Queries a ConsensusGuardianSetIndex by index.
+   * @name QueryConsensusPhylaxSetIndex
+   * @summary Queries a ConsensusPhylaxSetIndex by index.
    * @request GET:/wormhole_foundation/deltachain/wormhole/consensus_guardian_set_index
    */
-  queryConsensusGuardianSetIndex = (params: RequestParams = {}) =>
-    this.request<WormholeQueryGetConsensusGuardianSetIndexResponse, RpcStatus>({
+  queryConsensusPhylaxSetIndex = (params: RequestParams = {}) =>
+    this.request<WormholeQueryGetConsensusPhylaxSetIndexResponse, RpcStatus>({
       path: `/wormhole_foundation/deltachain/wormhole/consensus_guardian_set_index`,
       method: "GET",
       format: "json",
@@ -469,11 +469,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
    * No description
    *
    * @tags Query
-   * @name QueryGuardianSetAll
+   * @name QueryPhylaxSetAll
    * @summary Queries a list of guardianSet items.
    * @request GET:/wormhole_foundation/deltachain/wormhole/guardianSet
    */
-  queryGuardianSetAll = (
+  queryPhylaxSetAll = (
     query?: {
       "pagination.key"?: string;
       "pagination.offset"?: string;
@@ -483,7 +483,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     },
     params: RequestParams = {},
   ) =>
-    this.request<WormholeQueryAllGuardianSetResponse, RpcStatus>({
+    this.request<WormholeQueryAllPhylaxSetResponse, RpcStatus>({
       path: `/wormhole_foundation/deltachain/wormhole/guardianSet`,
       method: "GET",
       query: query,
@@ -495,12 +495,12 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
    * No description
    *
    * @tags Query
-   * @name QueryGuardianSet
+   * @name QueryPhylaxSet
    * @summary Queries a guardianSet by index.
    * @request GET:/wormhole_foundation/deltachain/wormhole/guardianSet/{index}
    */
-  queryGuardianSet = (index: number, params: RequestParams = {}) =>
-    this.request<WormholeQueryGetGuardianSetResponse, RpcStatus>({
+  queryPhylaxSet = (index: number, params: RequestParams = {}) =>
+    this.request<WormholeQueryGetPhylaxSetResponse, RpcStatus>({
       path: `/wormhole_foundation/deltachain/wormhole/guardianSet/${index}`,
       method: "GET",
       format: "json",
@@ -511,11 +511,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
    * No description
    *
    * @tags Query
-   * @name QueryGuardianValidatorAll
-   * @summary Queries a list of GuardianValidator items.
+   * @name QueryPhylaxValidatorAll
+   * @summary Queries a list of PhylaxValidator items.
    * @request GET:/wormhole_foundation/deltachain/wormhole/guardian_validator
    */
-  queryGuardianValidatorAll = (
+  queryPhylaxValidatorAll = (
     query?: {
       "pagination.key"?: string;
       "pagination.offset"?: string;
@@ -525,7 +525,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     },
     params: RequestParams = {},
   ) =>
-    this.request<WormholeQueryAllGuardianValidatorResponse, RpcStatus>({
+    this.request<WormholeQueryAllPhylaxValidatorResponse, RpcStatus>({
       path: `/wormhole_foundation/deltachain/wormhole/guardian_validator`,
       method: "GET",
       query: query,
@@ -537,12 +537,12 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
    * No description
    *
    * @tags Query
-   * @name QueryGuardianValidator
-   * @summary Queries a GuardianValidator by index.
+   * @name QueryPhylaxValidator
+   * @summary Queries a PhylaxValidator by index.
    * @request GET:/wormhole_foundation/deltachain/wormhole/guardian_validator/{guardianKey}
    */
-  queryGuardianValidator = (guardianKey: string, params: RequestParams = {}) =>
-    this.request<WormholeQueryGetGuardianValidatorResponse, RpcStatus>({
+  queryPhylaxValidator = (guardianKey: string, params: RequestParams = {}) =>
+    this.request<WormholeQueryGetPhylaxValidatorResponse, RpcStatus>({
       path: `/wormhole_foundation/deltachain/wormhole/guardian_validator/${guardianKey}`,
       method: "GET",
       format: "json",
@@ -553,12 +553,12 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
    * No description
    *
    * @tags Query
-   * @name QueryLatestGuardianSetIndex
-   * @summary Queries a list of LatestGuardianSetIndex items.
+   * @name QueryLatestPhylaxSetIndex
+   * @summary Queries a list of LatestPhylaxSetIndex items.
    * @request GET:/wormhole_foundation/deltachain/wormhole/latest_guardian_set_index
    */
-  queryLatestGuardianSetIndex = (params: RequestParams = {}) =>
-    this.request<WormholeQueryLatestGuardianSetIndexResponse, RpcStatus>({
+  queryLatestPhylaxSetIndex = (params: RequestParams = {}) =>
+    this.request<WormholeQueryLatestPhylaxSetIndexResponse, RpcStatus>({
       path: `/wormhole_foundation/deltachain/wormhole/latest_guardian_set_index`,
       method: "GET",
       format: "json",

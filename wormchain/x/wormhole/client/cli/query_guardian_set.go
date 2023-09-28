@@ -10,10 +10,10 @@ import (
 	"github.com/spf13/cobra"
 )
 
-func CmdListGuardianSet() *cobra.Command {
+func CmdListPhylaxSet() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "list-guardian-set",
-		Short: "list all GuardianSet",
+		Short: "list all PhylaxSet",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			clientCtx := client.GetClientContextFromCmd(cmd)
 
@@ -24,11 +24,11 @@ func CmdListGuardianSet() *cobra.Command {
 
 			queryClient := types.NewQueryClient(clientCtx)
 
-			params := &types.QueryAllGuardianSetRequest{
+			params := &types.QueryAllPhylaxSetRequest{
 				Pagination: pageReq,
 			}
 
-			res, err := queryClient.GuardianSetAll(context.Background(), params)
+			res, err := queryClient.PhylaxSetAll(context.Background(), params)
 			if err != nil {
 				return err
 			}
@@ -43,10 +43,10 @@ func CmdListGuardianSet() *cobra.Command {
 	return cmd
 }
 
-func CmdShowGuardianSet() *cobra.Command {
+func CmdShowPhylaxSet() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "show-guardian-set [id]",
-		Short: "shows a GuardianSet",
+		Short: "shows a PhylaxSet",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			clientCtx := client.GetClientContextFromCmd(cmd)
@@ -58,11 +58,11 @@ func CmdShowGuardianSet() *cobra.Command {
 				return err
 			}
 
-			params := &types.QueryGetGuardianSetRequest{
+			params := &types.QueryGetPhylaxSetRequest{
 				Index: uint32(id),
 			}
 
-			res, err := queryClient.GuardianSet(context.Background(), params)
+			res, err := queryClient.PhylaxSet(context.Background(), params)
 			if err != nil {
 				return err
 			}

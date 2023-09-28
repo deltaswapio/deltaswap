@@ -20,7 +20,7 @@ contract TestShutdown is TestUtils {
     Setup proxiedSetup;
     IMyWormhole proxied;
 
-    uint256 constant testGuardian = 93941733246223705020089879371323733820373732307041878556247502674739205313440;
+    uint256 constant testPhylax = 93941733246223705020089879371323733820373732307041878556247502674739205313440;
     bytes32 constant governanceContract = 0x0000000000000000000000000000000000000000000000000000000000000004;
 
     function setUp() public {
@@ -34,14 +34,14 @@ contract TestShutdown is TestUtils {
 
         address[] memory keys = new address[](1);
         keys[0] = 0xbeFA429d57cD18b7F8A4d91A2da9AB4AF05d0FBe;
-        //keys[0] = vm.addr(testGuardian);
+        //keys[0] = vm.addr(testPhylax);
 
         //proxied setup
         proxiedSetup = Setup(address(proxy));
 
         proxiedSetup.setup({
             implementation: address(impl),
-            initialGuardians: keys,
+            initialPhylaxs: keys,
             chainId: 2,
             governanceChainId: 1,
             governanceContract: governanceContract,
@@ -62,7 +62,7 @@ contract TestShutdown is TestUtils {
             address(shutdn)
         );
         (bytes memory _vm, ) = validVm(
-            0, 0, 0, 1, governanceContract, 0, 0, payload, testGuardian);
+            0, 0, 0, 1, governanceContract, 0, 0, payload, testPhylax);
 
         proxied.submitContractUpgrade(_vm);
     }

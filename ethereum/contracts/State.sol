@@ -6,9 +6,9 @@ pragma solidity ^0.8.0;
 import "./Structs.sol";
 
 contract Events {
-    event LogGuardianSetChanged(
-        uint32 oldGuardianIndex,
-        uint32 newGuardianIndex
+    event LogPhylaxSetChanged(
+        uint32 oldPhylaxIndex,
+        uint32 newPhylaxIndex
     );
 
     event LogMessagePublished(
@@ -23,7 +23,7 @@ contract Storage {
         Structs.Provider provider;
 
         // Mapping of guardian_set_index => guardian set
-        mapping(uint32 => Structs.GuardianSet) guardianSets;
+        mapping(uint32 => Structs.PhylaxSet) guardianSets;
 
         // Current active guardian set index
         uint32 guardianSetIndex;

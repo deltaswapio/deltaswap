@@ -20,8 +20,8 @@ func TestSerializeDeserialize(t *testing.T) {
 		{
 			name: "NormalVAA",
 			vaa: &VAA{
-				Version:          1,
-				GuardianSetIndex: 9,
+				Version:        1,
+				PhylaxSetIndex: 9,
 				Signatures: []*Signature{
 					{
 						Index:     1,
@@ -55,7 +55,7 @@ func TestSerializeDeserialize(t *testing.T) {
 func TestVerifySignature(t *testing.T) {
 	v := &VAA{
 		Version:          8,
-		GuardianSetIndex: 9,
+		PhylaxSetIndex:   9,
 		Timestamp:        time.Unix(2837, 0),
 		Nonce:            5,
 		Sequence:         10,

@@ -14,7 +14,7 @@ func (v *VAA) HandleQuorum(sigs []*vaa.Signature, hash string, p *Processor) {
 	// Deep copy the observation and add signatures
 	signed := &vaa.VAA{
 		Version:          v.Version,
-		GuardianSetIndex: v.GuardianSetIndex,
+		PhylaxSetIndex:   v.PhylaxSetIndex,
 		Signatures:       sigs,
 		Timestamp:        v.Timestamp,
 		Nonce:            v.Nonce,

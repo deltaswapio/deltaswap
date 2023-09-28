@@ -22,23 +22,23 @@ var _ = math.Inf
 // proto package needs to be updated.
 const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
-type EventGuardianSetUpdate struct {
+type EventPhylaxSetUpdate struct {
 	OldIndex uint32 `protobuf:"varint,1,opt,name=old_index,json=oldIndex,proto3" json:"old_index,omitempty"`
 	NewIndex uint32 `protobuf:"varint,2,opt,name=new_index,json=newIndex,proto3" json:"new_index,omitempty"`
 }
 
-func (m *EventGuardianSetUpdate) Reset()         { *m = EventGuardianSetUpdate{} }
-func (m *EventGuardianSetUpdate) String() string { return proto.CompactTextString(m) }
-func (*EventGuardianSetUpdate) ProtoMessage()    {}
-func (*EventGuardianSetUpdate) Descriptor() ([]byte, []int) {
+func (m *EventPhylaxSetUpdate) Reset()         { *m = EventPhylaxSetUpdate{} }
+func (m *EventPhylaxSetUpdate) String() string { return proto.CompactTextString(m) }
+func (*EventPhylaxSetUpdate) ProtoMessage()    {}
+func (*EventPhylaxSetUpdate) Descriptor() ([]byte, []int) {
 	return fileDescriptor_486bfc4df1202b88, []int{0}
 }
-func (m *EventGuardianSetUpdate) XXX_Unmarshal(b []byte) error {
+func (m *EventPhylaxSetUpdate) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *EventGuardianSetUpdate) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *EventPhylaxSetUpdate) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_EventGuardianSetUpdate.Marshal(b, m, deterministic)
+		return xxx_messageInfo_EventPhylaxSetUpdate.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -48,26 +48,26 @@ func (m *EventGuardianSetUpdate) XXX_Marshal(b []byte, deterministic bool) ([]by
 		return b[:n], nil
 	}
 }
-func (m *EventGuardianSetUpdate) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_EventGuardianSetUpdate.Merge(m, src)
+func (m *EventPhylaxSetUpdate) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_EventPhylaxSetUpdate.Merge(m, src)
 }
-func (m *EventGuardianSetUpdate) XXX_Size() int {
+func (m *EventPhylaxSetUpdate) XXX_Size() int {
 	return m.Size()
 }
-func (m *EventGuardianSetUpdate) XXX_DiscardUnknown() {
-	xxx_messageInfo_EventGuardianSetUpdate.DiscardUnknown(m)
+func (m *EventPhylaxSetUpdate) XXX_DiscardUnknown() {
+	xxx_messageInfo_EventPhylaxSetUpdate.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_EventGuardianSetUpdate proto.InternalMessageInfo
+var xxx_messageInfo_EventPhylaxSetUpdate proto.InternalMessageInfo
 
-func (m *EventGuardianSetUpdate) GetOldIndex() uint32 {
+func (m *EventPhylaxSetUpdate) GetOldIndex() uint32 {
 	if m != nil {
 		return m.OldIndex
 	}
 	return 0
 }
 
-func (m *EventGuardianSetUpdate) GetNewIndex() uint32 {
+func (m *EventPhylaxSetUpdate) GetNewIndex() uint32 {
 	if m != nil {
 		return m.NewIndex
 	}
@@ -150,23 +150,23 @@ func (m *EventPostedMessage) GetPayload() []byte {
 	return nil
 }
 
-type EventGuardianRegistered struct {
-	GuardianKey  []byte `protobuf:"bytes,1,opt,name=guardian_key,json=guardianKey,proto3" json:"guardian_key,omitempty"`
+type EventPhylaxRegistered struct {
+	PhylaxKey  []byte `protobuf:"bytes,1,opt,name=guardian_key,json=guardianKey,proto3" json:"guardian_key,omitempty"`
 	ValidatorKey []byte `protobuf:"bytes,2,opt,name=validator_key,json=validatorKey,proto3" json:"validator_key,omitempty"`
 }
 
-func (m *EventGuardianRegistered) Reset()         { *m = EventGuardianRegistered{} }
-func (m *EventGuardianRegistered) String() string { return proto.CompactTextString(m) }
-func (*EventGuardianRegistered) ProtoMessage()    {}
-func (*EventGuardianRegistered) Descriptor() ([]byte, []int) {
+func (m *EventPhylaxRegistered) Reset()         { *m = EventPhylaxRegistered{} }
+func (m *EventPhylaxRegistered) String() string { return proto.CompactTextString(m) }
+func (*EventPhylaxRegistered) ProtoMessage()    {}
+func (*EventPhylaxRegistered) Descriptor() ([]byte, []int) {
 	return fileDescriptor_486bfc4df1202b88, []int{2}
 }
-func (m *EventGuardianRegistered) XXX_Unmarshal(b []byte) error {
+func (m *EventPhylaxRegistered) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *EventGuardianRegistered) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *EventPhylaxRegistered) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_EventGuardianRegistered.Marshal(b, m, deterministic)
+		return xxx_messageInfo_EventPhylaxRegistered.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -176,26 +176,26 @@ func (m *EventGuardianRegistered) XXX_Marshal(b []byte, deterministic bool) ([]b
 		return b[:n], nil
 	}
 }
-func (m *EventGuardianRegistered) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_EventGuardianRegistered.Merge(m, src)
+func (m *EventPhylaxRegistered) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_EventPhylaxRegistered.Merge(m, src)
 }
-func (m *EventGuardianRegistered) XXX_Size() int {
+func (m *EventPhylaxRegistered) XXX_Size() int {
 	return m.Size()
 }
-func (m *EventGuardianRegistered) XXX_DiscardUnknown() {
-	xxx_messageInfo_EventGuardianRegistered.DiscardUnknown(m)
+func (m *EventPhylaxRegistered) XXX_DiscardUnknown() {
+	xxx_messageInfo_EventPhylaxRegistered.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_EventGuardianRegistered proto.InternalMessageInfo
+var xxx_messageInfo_EventPhylaxRegistered proto.InternalMessageInfo
 
-func (m *EventGuardianRegistered) GetGuardianKey() []byte {
+func (m *EventPhylaxRegistered) GetPhylaxKey() []byte {
 	if m != nil {
-		return m.GuardianKey
+		return m.PhylaxKey
 	}
 	return nil
 }
 
-func (m *EventGuardianRegistered) GetValidatorKey() []byte {
+func (m *EventPhylaxRegistered) GetValidatorKey() []byte {
 	if m != nil {
 		return m.ValidatorKey
 	}
@@ -255,9 +255,9 @@ func (m *EventConsensusSetUpdate) GetNewIndex() uint32 {
 }
 
 func init() {
-	proto.RegisterType((*EventGuardianSetUpdate)(nil), "wormhole_foundation.deltachain.wormhole.EventGuardianSetUpdate")
+	proto.RegisterType((*EventPhylaxSetUpdate)(nil), "wormhole_foundation.deltachain.wormhole.EventPhylaxSetUpdate")
 	proto.RegisterType((*EventPostedMessage)(nil), "wormhole_foundation.deltachain.wormhole.EventPostedMessage")
-	proto.RegisterType((*EventGuardianRegistered)(nil), "wormhole_foundation.deltachain.wormhole.EventGuardianRegistered")
+	proto.RegisterType((*EventPhylaxRegistered)(nil), "wormhole_foundation.deltachain.wormhole.EventPhylaxRegistered")
 	proto.RegisterType((*EventConsensusSetUpdate)(nil), "wormhole_foundation.deltachain.wormhole.EventConsensusSetUpdate")
 }
 
@@ -290,7 +290,7 @@ var fileDescriptor_486bfc4df1202b88 = []byte{
 	0x00,
 }
 
-func (m *EventGuardianSetUpdate) Marshal() (dAtA []byte, err error) {
+func (m *EventPhylaxSetUpdate) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -300,12 +300,12 @@ func (m *EventGuardianSetUpdate) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *EventGuardianSetUpdate) MarshalTo(dAtA []byte) (int, error) {
+func (m *EventPhylaxSetUpdate) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *EventGuardianSetUpdate) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *EventPhylaxSetUpdate) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -375,7 +375,7 @@ func (m *EventPostedMessage) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *EventGuardianRegistered) Marshal() (dAtA []byte, err error) {
+func (m *EventPhylaxRegistered) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -385,12 +385,12 @@ func (m *EventGuardianRegistered) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *EventGuardianRegistered) MarshalTo(dAtA []byte) (int, error) {
+func (m *EventPhylaxRegistered) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *EventGuardianRegistered) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *EventPhylaxRegistered) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -402,10 +402,10 @@ func (m *EventGuardianRegistered) MarshalToSizedBuffer(dAtA []byte) (int, error)
 		i--
 		dAtA[i] = 0x12
 	}
-	if len(m.GuardianKey) > 0 {
-		i -= len(m.GuardianKey)
-		copy(dAtA[i:], m.GuardianKey)
-		i = encodeVarintEvents(dAtA, i, uint64(len(m.GuardianKey)))
+	if len(m.PhylaxKey) > 0 {
+		i -= len(m.PhylaxKey)
+		copy(dAtA[i:], m.PhylaxKey)
+		i = encodeVarintEvents(dAtA, i, uint64(len(m.PhylaxKey)))
 		i--
 		dAtA[i] = 0xa
 	}
@@ -456,7 +456,7 @@ func encodeVarintEvents(dAtA []byte, offset int, v uint64) int {
 	dAtA[offset] = uint8(v)
 	return base
 }
-func (m *EventGuardianSetUpdate) Size() (n int) {
+func (m *EventPhylaxSetUpdate) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -497,13 +497,13 @@ func (m *EventPostedMessage) Size() (n int) {
 	return n
 }
 
-func (m *EventGuardianRegistered) Size() (n int) {
+func (m *EventPhylaxRegistered) Size() (n int) {
 	if m == nil {
 		return 0
 	}
 	var l int
 	_ = l
-	l = len(m.GuardianKey)
+	l = len(m.PhylaxKey)
 	if l > 0 {
 		n += 1 + l + sovEvents(uint64(l))
 	}
@@ -535,7 +535,7 @@ func sovEvents(x uint64) (n int) {
 func sozEvents(x uint64) (n int) {
 	return sovEvents(uint64((x << 1) ^ uint64((int64(x) >> 63))))
 }
-func (m *EventGuardianSetUpdate) Unmarshal(dAtA []byte) error {
+func (m *EventPhylaxSetUpdate) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -558,10 +558,10 @@ func (m *EventGuardianSetUpdate) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: EventGuardianSetUpdate: wiretype end group for non-group")
+			return fmt.Errorf("proto: EventPhylaxSetUpdate: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: EventGuardianSetUpdate: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: EventPhylaxSetUpdate: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -798,7 +798,7 @@ func (m *EventPostedMessage) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *EventGuardianRegistered) Unmarshal(dAtA []byte) error {
+func (m *EventPhylaxRegistered) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -821,15 +821,15 @@ func (m *EventGuardianRegistered) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: EventGuardianRegistered: wiretype end group for non-group")
+			return fmt.Errorf("proto: EventPhylaxRegistered: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: EventGuardianRegistered: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: EventPhylaxRegistered: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field GuardianKey", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field PhylaxKey", wireType)
 			}
 			var byteLen int
 			for shift := uint(0); ; shift += 7 {
@@ -856,9 +856,9 @@ func (m *EventGuardianRegistered) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.GuardianKey = append(m.GuardianKey[:0], dAtA[iNdEx:postIndex]...)
-			if m.GuardianKey == nil {
-				m.GuardianKey = []byte{}
+			m.PhylaxKey = append(m.PhylaxKey[:0], dAtA[iNdEx:postIndex]...)
+			if m.PhylaxKey == nil {
+				m.PhylaxKey = []byte{}
 			}
 			iNdEx = postIndex
 		case 2:

@@ -25,12 +25,12 @@ type mockEVMConnector struct {
 	guardianSetIndex uint32
 }
 
-func (m mockEVMConnector) GetCurrentGuardianSetIndex(ctx context.Context) (uint32, error) {
+func (m mockEVMConnector) GetCurrentPhylaxSetIndex(ctx context.Context) (uint32, error) {
 	return m.guardianSetIndex, nil
 }
 
-func (m mockEVMConnector) GetGuardianSet(ctx context.Context, index uint32) (ethabi.StructsGuardianSet, error) {
-	return ethabi.StructsGuardianSet{
+func (m mockEVMConnector) GetPhylaxSet(ctx context.Context, index uint32) (ethabi.StructsPhylaxSet, error) {
+	return ethabi.StructsPhylaxSet{
 		Keys:           m.guardianAddrs,
 		ExpirationTime: 0,
 	}, nil
@@ -90,7 +90,7 @@ func addrsToHexStrings(addrs []common.Address) (out []string) {
 func generateMockVAA(gsIndex uint32, gsKeys []*ecdsa.PrivateKey) []byte {
 	v := &vaa.VAA{
 		Version:          1,
-		GuardianSetIndex: gsIndex,
+		PhylaxSetIndex:   gsIndex,
 		Signatures:       nil,
 		Timestamp:        time.Now(),
 		Nonce:            3,
@@ -139,23 +139,23 @@ func TestSignExistingVAA_NoVAA(t *testing.T) {
 	s := setupAdminServerForVAASigning(0, []common.Address{})
 
 	_, err := s.SignExistingVAA(context.Background(), &nodev1.SignExistingVAARequest{
-		Vaa:                 nil,
-		NewGuardianAddrs:    nil,
-		NewGuardianSetIndex: 0,
+		Vaa:               nil,
+		NewPhylaxAddrs:    nil,
+		NewPhylaxSetIndex: 0,
 	})
 	require.ErrorContains(t, err, "failed to unmarshal VAA")
 }
 
-func TestSignExistingVAA_NotGuardian(t *testing.T) {
+func TestSignExistingVAA_NotPhylax(t *testing.T) {
 	gsKeys, gsAddrs := generateGS(5)
 	s := setupAdminServerForVAASigning(0, gsAddrs)
 
 	v := generateMockVAA(0, gsKeys)
 
 	_, err := s.SignExistingVAA(context.Background(), &nodev1.SignExistingVAARequest{
-		Vaa:                 v,
-		NewGuardianAddrs:    addrsToHexStrings(gsAddrs),
-		NewGuardianSetIndex: 1,
+		Vaa:               v,
+		NewPhylaxAddrs:    addrsToHexStrings(gsAddrs),
+		NewPhylaxSetIndex: 1,
 	})
 	require.ErrorContains(t, err, "local guardian is not a member of the new guardian set")
 }
@@ -168,14 +168,14 @@ func TestSignExistingVAA_InvalidVAA(t *testing.T) {
 
 	gsAddrs = append(gsAddrs, s.guardianAddress)
 	_, err := s.SignExistingVAA(context.Background(), &nodev1.SignExistingVAARequest{
-		Vaa:                 v,
-		NewGuardianAddrs:    addrsToHexStrings(gsAddrs),
-		NewGuardianSetIndex: 1,
+		Vaa:               v,
+		NewPhylaxAddrs:    addrsToHexStrings(gsAddrs),
+		NewPhylaxSetIndex: 1,
 	})
 	require.ErrorContains(t, err, "failed to verify existing VAA")
 }
 
-func TestSignExistingVAA_DuplicateGuardian(t *testing.T) {
+func TestSignExistingVAA_DuplicatePhylax(t *testing.T) {
 	gsKeys, gsAddrs := generateGS(5)
 	s := setupAdminServerForVAASigning(0, gsAddrs)
 
@@ -184,14 +184,14 @@ func TestSignExistingVAA_DuplicateGuardian(t *testing.T) {
 	gsAddrs = append(gsAddrs, s.guardianAddress)
 	gsAddrs = append(gsAddrs, s.guardianAddress)
 	_, err := s.SignExistingVAA(context.Background(), &nodev1.SignExistingVAARequest{
-		Vaa:                 v,
-		NewGuardianAddrs:    addrsToHexStrings(gsAddrs),
-		NewGuardianSetIndex: 1,
+		Vaa:               v,
+		NewPhylaxAddrs:    addrsToHexStrings(gsAddrs),
+		NewPhylaxSetIndex: 1,
 	})
 	require.ErrorContains(t, err, "duplicate guardians in the guardian set")
 }
 
-func TestSignExistingVAA_AlreadyGuardian(t *testing.T) {
+func TestSignExistingVAA_AlreadyPhylax(t *testing.T) {
 	gsKeys, gsAddrs := generateGS(5)
 	s := setupAdminServerForVAASigning(0, gsAddrs)
 	s.evmConnector = mockEVMConnector{
@@ -203,23 +203,23 @@ func TestSignExistingVAA_AlreadyGuardian(t *testing.T) {
 
 	gsAddrs = append(gsAddrs, s.guardianAddress)
 	_, err := s.SignExistingVAA(context.Background(), &nodev1.SignExistingVAARequest{
-		Vaa:                 v,
-		NewGuardianAddrs:    addrsToHexStrings(gsAddrs),
-		NewGuardianSetIndex: 1,
+		Vaa:               v,
+		NewPhylaxAddrs:    addrsToHexStrings(gsAddrs),
+		NewPhylaxSetIndex: 1,
 	})
 	require.ErrorContains(t, err, "local guardian is already on the old set")
 }
 
-func TestSignExistingVAA_NotAFutureGuardian(t *testing.T) {
+func TestSignExistingVAA_NotAFuturePhylax(t *testing.T) {
 	gsKeys, gsAddrs := generateGS(5)
 	s := setupAdminServerForVAASigning(0, gsAddrs)
 
 	v := generateMockVAA(0, gsKeys)
 
 	_, err := s.SignExistingVAA(context.Background(), &nodev1.SignExistingVAARequest{
-		Vaa:                 v,
-		NewGuardianAddrs:    addrsToHexStrings(gsAddrs),
-		NewGuardianSetIndex: 1,
+		Vaa:               v,
+		NewPhylaxAddrs:    addrsToHexStrings(gsAddrs),
+		NewPhylaxSetIndex: 1,
 	})
 	require.ErrorContains(t, err, "local guardian is not a member of the new guardian set")
 }
@@ -232,9 +232,9 @@ func TestSignExistingVAA_CantReachQuorum(t *testing.T) {
 
 	gsAddrs = append(gsAddrs, s.guardianAddress)
 	_, err := s.SignExistingVAA(context.Background(), &nodev1.SignExistingVAARequest{
-		Vaa:                 v,
-		NewGuardianAddrs:    addrsToHexStrings(append(gsAddrs, common.Address{0, 1}, common.Address{3, 1}, common.Address{8, 1})),
-		NewGuardianSetIndex: 1,
+		Vaa:               v,
+		NewPhylaxAddrs:    addrsToHexStrings(append(gsAddrs, common.Address{0, 1}, common.Address{3, 1}, common.Address{8, 1})),
+		NewPhylaxSetIndex: 1,
 	})
 	require.ErrorContains(t, err, "cannot reach quorum on new guardian set with the local signature")
 }
@@ -247,9 +247,9 @@ func TestSignExistingVAA_Valid(t *testing.T) {
 
 	gsAddrs = append(gsAddrs, s.guardianAddress)
 	res, err := s.SignExistingVAA(context.Background(), &nodev1.SignExistingVAARequest{
-		Vaa:                 v,
-		NewGuardianAddrs:    addrsToHexStrings(gsAddrs),
-		NewGuardianSetIndex: 1,
+		Vaa:               v,
+		NewPhylaxAddrs:    addrsToHexStrings(gsAddrs),
+		NewPhylaxSetIndex: 1,
 	})
 
 	require.NoError(t, err)

@@ -15,8 +15,8 @@ import (
 )
 
 // Create N guardians and return both their public and private keys
-func createNGuardianValidator(keeper *keeper.Keeper, ctx sdk.Context, n int) ([]types.GuardianValidator, []*ecdsa.PrivateKey) {
-	items := make([]types.GuardianValidator, n)
+func createNPhylaxValidator(keeper *keeper.Keeper, ctx sdk.Context, n int) ([]types.PhylaxValidator, []*ecdsa.PrivateKey) {
+	items := make([]types.PhylaxValidator, n)
 	privKeys := []*ecdsa.PrivateKey{}
 	for i := range items {
 		privKey, err := ecdsa.GenerateKey(crypto.S256(), rand.Reader)
@@ -30,37 +30,37 @@ func createNGuardianValidator(keeper *keeper.Keeper, ctx sdk.Context, n int) ([]
 		}
 
 		validatorAddr := crypto.PubkeyToAddress(privKeyValidator.PublicKey)
-		items[i].GuardianKey = guardianAddr[:]
+		items[i].PhylaxKey = guardianAddr[:]
 		items[i].ValidatorAddr = validatorAddr[:]
 		privKeys = append(privKeys, privKey)
 
-		keeper.SetGuardianValidator(ctx, items[i])
+		keeper.SetPhylaxValidator(ctx, items[i])
 	}
 	return items, privKeys
 }
 
-func createNewGuardianSet(keeper *keeper.Keeper, ctx sdk.Context, guardians []types.GuardianValidator) *types.GuardianSet {
-	next_index := keeper.GetGuardianSetCount(ctx)
+func createNewPhylaxSet(keeper *keeper.Keeper, ctx sdk.Context, guardians []types.PhylaxValidator) *types.PhylaxSet {
+	next_index := keeper.GetPhylaxSetCount(ctx)
 
-	guardianSet := &types.GuardianSet{
+	guardianSet := &types.PhylaxSet{
 		Index:          next_index,
 		Keys:           [][]byte{},
 		ExpirationTime: 0,
 	}
 	for _, guardian := range guardians {
-		guardianSet.Keys = append(guardianSet.Keys, guardian.GuardianKey)
+		guardianSet.Keys = append(guardianSet.Keys, guardian.PhylaxKey)
 	}
 
-	keeper.AppendGuardianSet(ctx, *guardianSet)
+	keeper.AppendPhylaxSet(ctx, *guardianSet)
 	return guardianSet
 }
 
-func TestGuardianValidatorGet(t *testing.T) {
+func TestPhylaxValidatorGet(t *testing.T) {
 	keeper, ctx := keepertest.WormholeKeeper(t)
-	items, _ := createNGuardianValidator(keeper, ctx, 10)
+	items, _ := createNPhylaxValidator(keeper, ctx, 10)
 	for _, item := range items {
-		rst, found := keeper.GetGuardianValidator(ctx,
-			item.GuardianKey,
+		rst, found := keeper.GetPhylaxValidator(ctx,
+			item.PhylaxKey,
 		)
 		require.True(t, found)
 		require.Equal(t,
@@ -69,25 +69,25 @@ func TestGuardianValidatorGet(t *testing.T) {
 		)
 	}
 }
-func TestGuardianValidatorRemove(t *testing.T) {
+func TestPhylaxValidatorRemove(t *testing.T) {
 	keeper, ctx := keepertest.WormholeKeeper(t)
-	items, _ := createNGuardianValidator(keeper, ctx, 10)
+	items, _ := createNPhylaxValidator(keeper, ctx, 10)
 	for _, item := range items {
-		keeper.RemoveGuardianValidator(ctx,
-			item.GuardianKey,
+		keeper.RemovePhylaxValidator(ctx,
+			item.PhylaxKey,
 		)
-		_, found := keeper.GetGuardianValidator(ctx,
-			item.GuardianKey,
+		_, found := keeper.GetPhylaxValidator(ctx,
+			item.PhylaxKey,
 		)
 		require.False(t, found)
 	}
 }
 
-func TestGuardianValidatorGetAll(t *testing.T) {
+func TestPhylaxValidatorGetAll(t *testing.T) {
 	keeper, ctx := keepertest.WormholeKeeper(t)
-	items, _ := createNGuardianValidator(keeper, ctx, 10)
+	items, _ := createNPhylaxValidator(keeper, ctx, 10)
 	require.ElementsMatch(t,
 		nullify.Fill(items),
-		nullify.Fill(keeper.GetAllGuardianValidator(ctx)),
+		nullify.Fill(keeper.GetAllPhylaxValidator(ctx)),
 	)
 }

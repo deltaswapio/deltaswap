@@ -23,9 +23,9 @@ use crate::{
         Bridge,
         BridgeData,
         FeeCollector,
-        GuardianSet,
-        GuardianSetData,
-        GuardianSetDerivationData,
+        PhylaxSet,
+        PhylaxSetData,
+        PhylaxSetDerivationData,
         PostedVAA,
         PostedVAAData,
         PostedVAADerivationData,
@@ -43,7 +43,7 @@ use crate::{
     },
     types::{
         ConsistencyLevel,
-        GovernancePayloadGuardianSetChange,
+        GovernancePayloadPhylaxSetChange,
         GovernancePayloadTransferFees,
         GovernancePayloadUpgrade,
     },
@@ -144,7 +144,7 @@ pub fn update_guardian_set_ix(program_id: String, payer: String, vaa: Vec<u8>) -
     let program_id = Pubkey::from_str(program_id.as_str()).unwrap();
     let vaa = VAA::deserialize(vaa.as_slice()).unwrap();
     let payload =
-        GovernancePayloadGuardianSetChange::deserialize(&mut vaa.payload.as_slice()).unwrap();
+        GovernancePayloadPhylaxSetChange::deserialize(&mut vaa.payload.as_slice()).unwrap();
     let message_key = PostedVAA::<'_, { AccountState::Uninitialized }>::key(
         &PostedVAADerivationData {
             payload_hash: hash_vaa(&vaa.clone().into()).to_vec(),
@@ -247,7 +247,7 @@ pub fn verify_signatures_ix(
     let payer = Pubkey::from_str(payer.as_str()).unwrap();
     let signature_set = Pubkey::from_str(signature_set.as_str()).unwrap();
 
-    let guardian_set: GuardianSetData = guardian_set.into_serde().unwrap();
+    let guardian_set: PhylaxSetData = guardian_set.into_serde().unwrap();
     let vaa = VAA::deserialize(vaa_data.as_slice()).unwrap();
 
     // Map signatures to guardian set
@@ -340,8 +340,8 @@ pub fn verify_signatures_ix(
 #[wasm_bindgen]
 pub fn guardian_set_address(bridge: String, index: u32) -> Vec<u8> {
     let program_id = Pubkey::from_str(bridge.as_str()).unwrap();
-    let guardian_key = GuardianSet::<'_, { AccountState::Initialized }>::key(
-        &GuardianSetDerivationData { index: index },
+    let guardian_key = PhylaxSet::<'_, { AccountState::Initialized }>::key(
+        &PhylaxSetDerivationData { index: index },
         &program_id,
     );
 
@@ -350,7 +350,7 @@ pub fn guardian_set_address(bridge: String, index: u32) -> Vec<u8> {
 
 #[wasm_bindgen]
 pub fn parse_guardian_set(data: Vec<u8>) -> JsValue {
-    JsValue::from_serde(&GuardianSetData::try_from_slice(data.as_slice()).unwrap()).unwrap()
+    JsValue::from_serde(&PhylaxSetData::try_from_slice(data.as_slice()).unwrap()).unwrap()
 }
 
 #[wasm_bindgen]

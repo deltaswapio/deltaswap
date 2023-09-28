@@ -33,7 +33,7 @@ contract TestGovernance is TestUtils {
     Setup proxiedSetup;
     IMyWormhole proxied;
 
-    uint256 constant testGuardian = 93941733246223705020089879371323733820373732307041878556247502674739205313440;
+    uint256 constant testPhylax = 93941733246223705020089879371323733820373732307041878556247502674739205313440;
 
     event ContractUpgraded(address indexed oldContract, address indexed newContract);
     
@@ -46,7 +46,7 @@ contract TestGovernance is TestUtils {
         proxy = new Wormhole(address(setup), bytes(""));
 
         address[] memory keys = new address[](1);
-        keys[0] = 0xbeFA429d57cD18b7F8A4d91A2da9AB4AF05d0FBe; // vm.addr(testGuardian)
+        keys[0] = 0xbeFA429d57cD18b7F8A4d91A2da9AB4AF05d0FBe; // vm.addr(testPhylax)
 
         //proxied setup
         proxiedSetup = Setup(address(proxy));
@@ -54,7 +54,7 @@ contract TestGovernance is TestUtils {
         vm.chainId(1);
         proxiedSetup.setup({
             implementation: address(impl),
-            initialGuardians: keys,
+            initialPhylaxs: keys,
             chainId: CHAINID,
             governanceChainId: 1,
             governanceContract: governanceContract,
@@ -80,7 +80,7 @@ contract TestGovernance is TestUtils {
 
         bytes memory payload = payloadSubmitContract(MODULE, CHAINID, address(newImpl));
         (bytes memory _vm, bytes32 hash) = validVm(
-            0, timestamp, nonce, 1, governanceContract, sequence, consistencyLevel, payload, testGuardian);
+            0, timestamp, nonce, 1, governanceContract, sequence, consistencyLevel, payload, testPhylax);
 
         vm.assume(storageSlot != hashedLocation(hash, CONSUMED_ACTIONS_SLOT));
 
@@ -109,7 +109,7 @@ contract TestGovernance is TestUtils {
 
         bytes memory payload = payloadSubmitContract(MODULE, CHAINID, address(newImpl));
         (bytes memory _vm, bytes32 hash) = validVm(
-            0, timestamp, nonce, 1, governanceContract, sequence, consistencyLevel, payload, testGuardian);
+            0, timestamp, nonce, 1, governanceContract, sequence, consistencyLevel, payload, testPhylax);
 
         vm.assume(storageSlot != hashedLocation(hash, CONSUMED_ACTIONS_SLOT));
 
@@ -131,7 +131,7 @@ contract TestGovernance is TestUtils {
         vm.chainId(EVMCHAINID);
 
         bytes memory payload = payloadSubmitContract(MODULE, 2, address(newImpl));
-        (bytes memory _vm, bytes32 hash) = validVm(0, 0, 0, 1, governanceContract, 0, 0, payload, testGuardian);
+        (bytes memory _vm, bytes32 hash) = validVm(0, 0, 0, 1, governanceContract, 0, 0, payload, testPhylax);
 
         vm.assume(storageSlot != hashedLocation(hash, CONSUMED_ACTIONS_SLOT));
 
@@ -158,7 +158,7 @@ contract TestGovernance is TestUtils {
         MyImplementation newImpl = new MyImplementation(evmChainId, CHAINID);
         bytes memory payload = payloadSubmitContract(MODULE, CHAINID, address(newImpl));
         (bytes memory _vm, ) = validVm(
-            0, timestamp, nonce, 1, governanceContract, sequence, consistencyLevel, payload, testGuardian);
+            0, timestamp, nonce, 1, governanceContract, sequence, consistencyLevel, payload, testPhylax);
 
         vm.expectRevert("invalid fork");
         proxied.submitContractUpgrade(_vm);
@@ -180,7 +180,7 @@ contract TestGovernance is TestUtils {
         MyImplementation newImpl = new MyImplementation(EVMCHAINID, CHAINID);
         bytes memory payload = payloadSubmitContract(module, CHAINID, address(newImpl));
         (bytes memory _vm, ) = validVm(
-            0, timestamp, nonce, 1, governanceContract, sequence, consistencyLevel, payload, testGuardian);
+            0, timestamp, nonce, 1, governanceContract, sequence, consistencyLevel, payload, testPhylax);
 
         vm.expectRevert("Invalid Module");
         proxied.submitContractUpgrade(_vm);
@@ -202,13 +202,13 @@ contract TestGovernance is TestUtils {
         MyImplementation newImpl = new MyImplementation(EVMCHAINID, CHAINID);
         bytes memory payload = payloadSubmitContract(MODULE, chainId, address(newImpl));
         (bytes memory _vm, ) = validVm(
-            0, timestamp, nonce, 1, governanceContract, sequence, consistencyLevel, payload, testGuardian);
+            0, timestamp, nonce, 1, governanceContract, sequence, consistencyLevel, payload, testPhylax);
         
         vm.expectRevert("Invalid Chain");
         proxied.submitContractUpgrade(_vm);
     }
 
-    function testSubmitContractUpgrade_Revert_InvalidGuardianSetIndex(
+    function testSubmitContractUpgrade_Revert_InvalidPhylaxSetIndex(
         bytes32 storageSlot,
         uint32 guardianSetIndex,
         uint32 timestamp,
@@ -224,11 +224,11 @@ contract TestGovernance is TestUtils {
         MyImplementation newImpl = new MyImplementation(EVMCHAINID, CHAINID);
         bytes memory payload = payloadSubmitContract(MODULE, CHAINID, address(newImpl));
         (bytes memory _vm, ) = validVm(
-            guardianSetIndex, timestamp, nonce, 1, governanceContract, sequence, consistencyLevel, payload, testGuardian);
+            guardianSetIndex, timestamp, nonce, 1, governanceContract, sequence, consistencyLevel, payload, testPhylax);
 
         // Since the current version of the test uses only one guardian set,
         // in practice only the 'else' branch will be taken
-        if (guardianSetIndex < proxied.getCurrentGuardianSetIndex()) {
+        if (guardianSetIndex < proxied.getCurrentPhylaxSetIndex()) {
             vm.expectRevert("not signed by current guardian set");
         } else {
             vm.expectRevert("invalid guardian set");
@@ -253,7 +253,7 @@ contract TestGovernance is TestUtils {
         MyImplementation newImpl = new MyImplementation(EVMCHAINID, CHAINID);
         bytes memory payload = payloadSubmitContract(MODULE, CHAINID, address(newImpl));
         (bytes memory _vm, ) = validVm(
-            0, timestamp, nonce, emitterChainId, governanceContract, sequence, consistencyLevel, payload, testGuardian);
+            0, timestamp, nonce, emitterChainId, governanceContract, sequence, consistencyLevel, payload, testPhylax);
 
         vm.expectRevert("wrong governance chain");
         proxied.submitContractUpgrade(_vm);
@@ -275,7 +275,7 @@ contract TestGovernance is TestUtils {
         MyImplementation newImpl = new MyImplementation(EVMCHAINID, CHAINID);
         bytes memory payload = payloadSubmitContract(MODULE, CHAINID, address(newImpl));
         (bytes memory _vm, ) = validVm(
-            0, timestamp, nonce, 1, emitterAddress, sequence, consistencyLevel, payload, testGuardian);
+            0, timestamp, nonce, 1, emitterAddress, sequence, consistencyLevel, payload, testPhylax);
 
         vm.expectRevert("wrong governance contract");
         proxied.submitContractUpgrade(_vm);
@@ -295,7 +295,7 @@ contract TestGovernance is TestUtils {
         MyImplementation newImpl = new MyImplementation(EVMCHAINID, CHAINID);
         bytes memory payload = payloadSubmitContract(MODULE, CHAINID, address(newImpl));
         (bytes memory _vm, bytes32 hash) = validVm(
-            0, timestamp, nonce, 1, governanceContract, sequence, consistencyLevel, payload, testGuardian);
+            0, timestamp, nonce, 1, governanceContract, sequence, consistencyLevel, payload, testPhylax);
 
         vm.assume(storageSlot != hashedLocation(hash, CONSUMED_ACTIONS_SLOT));
 
@@ -320,7 +320,7 @@ contract TestGovernance is TestUtils {
 
         bytes memory payload = payloadSubmitMessageFee(MODULE, CHAINID, newMessageFee);
         (bytes memory _vm, bytes32 hash) = validVm(
-            0, timestamp, nonce, 1, governanceContract, sequence, consistencyLevel, payload, testGuardian);
+            0, timestamp, nonce, 1, governanceContract, sequence, consistencyLevel, payload, testPhylax);
 
         vm.assume(storageSlot != hashedLocation(hash, CONSUMED_ACTIONS_SLOT));
 
@@ -346,7 +346,7 @@ contract TestGovernance is TestUtils {
 
         bytes memory payload = payloadSubmitMessageFee(module, CHAINID, newMessageFee);
         (bytes memory _vm, ) = validVm(
-            0, timestamp, nonce, 1, governanceContract, sequence, consistencyLevel, payload, testGuardian);
+            0, timestamp, nonce, 1, governanceContract, sequence, consistencyLevel, payload, testPhylax);
 
         vm.expectRevert("Invalid Module");
         proxied.submitSetMessageFee(_vm);
@@ -368,7 +368,7 @@ contract TestGovernance is TestUtils {
 
         bytes memory payload = payloadSubmitMessageFee(MODULE, chainId, newMessageFee);
         (bytes memory _vm, ) = validVm(
-            0, timestamp, nonce, 1, governanceContract, sequence, consistencyLevel, payload, testGuardian);
+            0, timestamp, nonce, 1, governanceContract, sequence, consistencyLevel, payload, testPhylax);
 
         vm.expectRevert("Invalid Chain");
         proxied.submitSetMessageFee(_vm);
@@ -390,13 +390,13 @@ contract TestGovernance is TestUtils {
 
         bytes memory payload = payloadSubmitMessageFee(MODULE, CHAINID, newMessageFee);
         (bytes memory _vm, ) = validVm(
-            0, timestamp, nonce, 1, governanceContract, sequence, consistencyLevel, payload, testGuardian);
+            0, timestamp, nonce, 1, governanceContract, sequence, consistencyLevel, payload, testPhylax);
 
         vm.expectRevert("Invalid Chain");
         proxied.submitSetMessageFee(_vm);
     }
 
-    function testSubmitSetMessageFee_Revert_InvalidGuardianSetIndex(
+    function testSubmitSetMessageFee_Revert_InvalidPhylaxSetIndex(
         bytes32 storageSlot,
         uint32 guardianSetIndex,
         uint32 timestamp,
@@ -412,11 +412,11 @@ contract TestGovernance is TestUtils {
 
         bytes memory payload = payloadSubmitMessageFee(MODULE, CHAINID, newMessageFee);
         (bytes memory _vm, ) = validVm(
-            guardianSetIndex, timestamp, nonce, 1, governanceContract, sequence, consistencyLevel, payload, testGuardian);
+            guardianSetIndex, timestamp, nonce, 1, governanceContract, sequence, consistencyLevel, payload, testPhylax);
 
         // Since the current version of the test uses only one guardian set,
         // in practice only the 'else' branch will be taken
-        if (guardianSetIndex < proxied.getCurrentGuardianSetIndex()) {
+        if (guardianSetIndex < proxied.getCurrentPhylaxSetIndex()) {
             vm.expectRevert("not signed by current guardian set");
         } else {
             vm.expectRevert("invalid guardian set");
@@ -441,7 +441,7 @@ contract TestGovernance is TestUtils {
 
         bytes memory payload = payloadSubmitMessageFee(MODULE, CHAINID, newMessageFee);
         (bytes memory _vm, ) = validVm(
-            0, timestamp, nonce, emitterChainId, governanceContract, sequence, consistencyLevel, payload, testGuardian);
+            0, timestamp, nonce, emitterChainId, governanceContract, sequence, consistencyLevel, payload, testPhylax);
 
         vm.expectRevert("wrong governance chain");
         proxied.submitSetMessageFee(_vm);
@@ -463,7 +463,7 @@ contract TestGovernance is TestUtils {
 
         bytes memory payload = payloadSubmitMessageFee(MODULE, CHAINID, newMessageFee);
         (bytes memory _vm, ) = validVm(
-            0, timestamp, nonce, 1, emitterAddress, sequence, consistencyLevel, payload, testGuardian);
+            0, timestamp, nonce, 1, emitterAddress, sequence, consistencyLevel, payload, testPhylax);
 
         vm.expectRevert("wrong governance contract");
         proxied.submitSetMessageFee(_vm);
@@ -484,7 +484,7 @@ contract TestGovernance is TestUtils {
 
         bytes memory payload = payloadSubmitMessageFee(MODULE, CHAINID, newMessageFee);
         (bytes memory _vm, bytes32 hash) = validVm(
-            0, timestamp, nonce, 1, governanceContract, sequence, consistencyLevel, payload, testGuardian);
+            0, timestamp, nonce, 1, governanceContract, sequence, consistencyLevel, payload, testPhylax);
 
         vm.assume(storageSlot != hashedLocation(hash, CONSUMED_ACTIONS_SLOT));
 
@@ -495,48 +495,48 @@ contract TestGovernance is TestUtils {
     }
 
     //Make a similar test but with chainId = 0
-    function testSubmitNewGuardianSet(
+    function testSubmitNewPhylaxSet(
         bytes32 storageSlot,
         uint32 timestamp,
         uint32 nonce,
         uint64 sequence,
         uint8 consistencyLevel,
-        address[] memory newGuardianSet)
+        address[] memory newPhylaxSet)
         public
         unchangedStorage(address(proxied), storageSlot)
     {
         vm.assume(storageSlot != hashedLocationOffset(0, GUARDIANSETS_SLOT, 1));
 
-        // New GuardianSet array length should be initialized from zero to non-zero
+        // New PhylaxSet array length should be initialized from zero to non-zero
         vm.assume(storageSlot != hashedLocationOffset(1, GUARDIANSETS_SLOT, 0));
 
         vm.assume(storageSlot != GUARDIANSETINDEX_SLOT);
-        vm.assume(0 < newGuardianSet.length);
-        vm.assume(newGuardianSet.length < 20);
+        vm.assume(0 < newPhylaxSet.length);
+        vm.assume(newPhylaxSet.length < 20);
 
-        for(uint8 i = 0; i < newGuardianSet.length; i++) {
-            vm.assume(newGuardianSet[i] != address(0));
-            // New GuardianSet key array elements should be initialized from zero to non-zero
+        for(uint8 i = 0; i < newPhylaxSet.length; i++) {
+            vm.assume(newPhylaxSet[i] != address(0));
+            // New PhylaxSet key array elements should be initialized from zero to non-zero
             vm.assume(storageSlot != arrayElementLocation(hashedLocationOffset(1, GUARDIANSETS_SLOT, 0), i));
         }
 
         vm.chainId(EVMCHAINID);
 
-        bytes memory payload = payloadSubmitNewGuardianSet(MODULE, CHAINID, 1, newGuardianSet);
+        bytes memory payload = payloadSubmitNewPhylaxSet(MODULE, CHAINID, 1, newPhylaxSet);
         (bytes memory _vm, bytes32 hash) = validVm(
-            0, timestamp, nonce, 1, governanceContract, sequence, consistencyLevel, payload, testGuardian);
+            0, timestamp, nonce, 1, governanceContract, sequence, consistencyLevel, payload, testPhylax);
 
         vm.assume(storageSlot != hashedLocation(hash, CONSUMED_ACTIONS_SLOT));
 
-        proxied.submitNewGuardianSet(_vm);
+        proxied.submitNewPhylaxSet(_vm);
 
         assertEq(true, proxied.governanceActionIsConsumed(hash));
-        assertEq(uint32(block.timestamp) + 86400, proxied.getGuardianSet(0).expirationTime);
-        assertEq(newGuardianSet, proxied.getGuardianSet(1).keys);
-        assertEq(1, proxied.getCurrentGuardianSetIndex());
+        assertEq(uint32(block.timestamp) + 86400, proxied.getPhylaxSet(0).expirationTime);
+        assertEq(newPhylaxSet, proxied.getPhylaxSet(1).keys);
+        assertEq(1, proxied.getCurrentPhylaxSetIndex());
     }
 
-    function testSubmitNewGuardianSet_Revert_InvalidModule(
+    function testSubmitNewPhylaxSet_Revert_InvalidModule(
         bytes32 storageSlot,
         uint64 evmChainId,
         uint32 timestamp,
@@ -545,70 +545,70 @@ contract TestGovernance is TestUtils {
         uint8 consistencyLevel,
         bytes32 module,
         uint16 chainId,
-        address[] memory newGuardianSet)
+        address[] memory newPhylaxSet)
         public
         unchangedStorage(address(proxied), storageSlot)
     {
         vm.assume(module != MODULE);
         vm.assume(chainId == 0 || (chainId == CHAINID && evmChainId == EVMCHAINID));
-        vm.assume(newGuardianSet.length < 20);
+        vm.assume(newPhylaxSet.length < 20);
         vm.chainId(evmChainId);
 
-        bytes memory payload = payloadSubmitNewGuardianSet(module,chainId, 1, newGuardianSet);
+        bytes memory payload = payloadSubmitNewPhylaxSet(module,chainId, 1, newPhylaxSet);
         (bytes memory _vm, ) = validVm(
-            0, timestamp, nonce, 1, governanceContract, sequence, consistencyLevel, payload, testGuardian);
+            0, timestamp, nonce, 1, governanceContract, sequence, consistencyLevel, payload, testPhylax);
 
         vm.expectRevert("invalid Module");
-        proxied.submitNewGuardianSet(_vm);
+        proxied.submitNewPhylaxSet(_vm);
     }
 
-    function testSubmitNewGuardianSet_Revert_InvalidChain(
+    function testSubmitNewPhylaxSet_Revert_InvalidChain(
         bytes32 storageSlot,
         uint32 timestamp,
         uint32 nonce,
         uint64 sequence,
         uint8 consistencyLevel,
         uint16 chainId,
-        address[] memory newGuardianSet)
+        address[] memory newPhylaxSet)
         public
         unchangedStorage(address(proxied), storageSlot)
     {
         vm.assume(chainId != CHAINID && chainId != 0);
-        vm.assume(newGuardianSet.length < 20);
+        vm.assume(newPhylaxSet.length < 20);
         vm.chainId(EVMCHAINID);
 
-        bytes memory payload = payloadSubmitNewGuardianSet(MODULE, chainId, 1, newGuardianSet);
+        bytes memory payload = payloadSubmitNewPhylaxSet(MODULE, chainId, 1, newPhylaxSet);
         (bytes memory _vm, ) = validVm(
-            0, timestamp, nonce, 1, governanceContract, sequence, consistencyLevel, payload, testGuardian);
+            0, timestamp, nonce, 1, governanceContract, sequence, consistencyLevel, payload, testPhylax);
 
         vm.expectRevert("invalid Chain");
-        proxied.submitNewGuardianSet(_vm);
+        proxied.submitNewPhylaxSet(_vm);
     }
 
-    function testSubmitNewGuardianSet_Revert_InvalidEvmChain(
+    function testSubmitNewPhylaxSet_Revert_InvalidEvmChain(
         bytes32 storageSlot,
         uint64 evmChainId,
         uint32 timestamp,
         uint32 nonce,
         uint64 sequence,
         uint8 consistencyLevel,
-        address[] memory newGuardianSet)
+        address[] memory newPhylaxSet)
         public
         unchangedStorage(address(proxied), storageSlot)
     {
         vm.assume(evmChainId != EVMCHAINID);
-        vm.assume(newGuardianSet.length < 20);
+        vm.assume(newPhylaxSet.length < 20);
         vm.chainId(evmChainId);
 
-        bytes memory payload = payloadSubmitNewGuardianSet(MODULE, CHAINID, 1, newGuardianSet);
+        bytes memory payload = payloadSubmitNewPhylaxSet(MODULE, CHAINID, 1, newPhylaxSet);
         (bytes memory _vm, ) = validVm(
-            0, timestamp, nonce, 1, governanceContract, sequence, consistencyLevel, payload, testGuardian);
+            0, timestamp, nonce, 1, governanceContract, sequence, consistencyLevel, payload, testPhylax);
 
         vm.expectRevert("invalid Chain");
-        proxied.submitNewGuardianSet(_vm);
+        proxied.submitNewPhylaxSet(_vm);
     }
 
-    function testSubmitNewGuardianSet_Revert_GuardianSetEmpty(
+    function testSubmitNewPhylaxSet_Revert_PhylaxSetEmpty(
         bytes32 storageSlot,
         uint64 evmChainId,
         uint32 timestamp,
@@ -622,17 +622,17 @@ contract TestGovernance is TestUtils {
         vm.assume(chainId == 0 || (chainId == CHAINID && evmChainId == EVMCHAINID));
         vm.chainId(evmChainId);
 
-        address[] memory newGuardianSet = new address[](0); // Empty guardian set
+        address[] memory newPhylaxSet = new address[](0); // Empty guardian set
 
-        bytes memory payload = payloadSubmitNewGuardianSet(MODULE, chainId, 1, newGuardianSet);
+        bytes memory payload = payloadSubmitNewPhylaxSet(MODULE, chainId, 1, newPhylaxSet);
         (bytes memory _vm, ) = validVm(
-            0, timestamp, nonce, 1, governanceContract, sequence, consistencyLevel, payload, testGuardian);
+            0, timestamp, nonce, 1, governanceContract, sequence, consistencyLevel, payload, testPhylax);
 
         vm.expectRevert("new guardian set is empty");
-        proxied.submitNewGuardianSet(_vm);
+        proxied.submitNewPhylaxSet(_vm);
     }
 
-    function testSubmitNewGuardianSet_Revert_WrongIndex(
+    function testSubmitNewPhylaxSet_Revert_WrongIndex(
         bytes32 storageSlot,
         uint64 evmChainId,
         uint32 timestamp,
@@ -640,26 +640,26 @@ contract TestGovernance is TestUtils {
         uint64 sequence,
         uint8 consistencyLevel,
         uint16 chainId,
-        uint32 newGuardianSetIndex,
-        address[] memory newGuardianSet)
+        uint32 newPhylaxSetIndex,
+        address[] memory newPhylaxSet)
         public
         unchangedStorage(address(proxied), storageSlot)
     {
-        vm.assume(newGuardianSetIndex != 1);
+        vm.assume(newPhylaxSetIndex != 1);
         vm.assume(chainId == 0 || (chainId == CHAINID && evmChainId == EVMCHAINID));
-        vm.assume(0 < newGuardianSet.length);
-        vm.assume(newGuardianSet.length < 20);
+        vm.assume(0 < newPhylaxSet.length);
+        vm.assume(newPhylaxSet.length < 20);
         vm.chainId(evmChainId);
 
-        bytes memory payload = payloadSubmitNewGuardianSet(MODULE, chainId, newGuardianSetIndex, newGuardianSet);
+        bytes memory payload = payloadSubmitNewPhylaxSet(MODULE, chainId, newPhylaxSetIndex, newPhylaxSet);
         (bytes memory _vm, ) = validVm(
-            0, timestamp, nonce, 1, governanceContract, sequence, consistencyLevel, payload, testGuardian);
+            0, timestamp, nonce, 1, governanceContract, sequence, consistencyLevel, payload, testPhylax);
 
         vm.expectRevert("index must increase in steps of 1");
-        proxied.submitNewGuardianSet(_vm);
+        proxied.submitNewPhylaxSet(_vm);
     }
 
-    function testSubmitNewGuardianSet_Revert_InvalidGuardianSetIndex(
+    function testSubmitNewPhylaxSet_Revert_InvalidPhylaxSetIndex(
         bytes32 storageSlot,
         uint32 guardianSetIndex,
         uint64 evmChainId,
@@ -668,32 +668,32 @@ contract TestGovernance is TestUtils {
         uint64 sequence,
         uint8 consistencyLevel,
         uint16 chainId,
-        address[] memory newGuardianSet)
+        address[] memory newPhylaxSet)
         public
         unchangedStorage(address(proxied), storageSlot)
     {
         vm.assume(guardianSetIndex != 0);
         vm.assume(chainId == 0 || (chainId == CHAINID && evmChainId == EVMCHAINID));
-        vm.assume(0 < newGuardianSet.length);
-        vm.assume(newGuardianSet.length < 20);
+        vm.assume(0 < newPhylaxSet.length);
+        vm.assume(newPhylaxSet.length < 20);
         vm.chainId(evmChainId);
 
-        bytes memory payload = payloadSubmitNewGuardianSet(MODULE, chainId, 1, newGuardianSet);
+        bytes memory payload = payloadSubmitNewPhylaxSet(MODULE, chainId, 1, newPhylaxSet);
         (bytes memory _vm, ) = validVm(
-            guardianSetIndex, timestamp, nonce, 1, governanceContract, sequence, consistencyLevel, payload, testGuardian);
+            guardianSetIndex, timestamp, nonce, 1, governanceContract, sequence, consistencyLevel, payload, testPhylax);
 
         // Since the current version of the test uses only one guardian set,
         // in practice only the 'else' branch will be taken
-        if (guardianSetIndex < proxied.getCurrentGuardianSetIndex()) {
+        if (guardianSetIndex < proxied.getCurrentPhylaxSetIndex()) {
             vm.expectRevert("not signed by current guardian set");
         } else {
             vm.expectRevert("invalid guardian set");
         }
 
-        proxied.submitNewGuardianSet(_vm);
+        proxied.submitNewPhylaxSet(_vm);
     }
 
-    function testSubmitNewGuardianSet_Revert_WrongGovernanceChain(
+    function testSubmitNewPhylaxSet_Revert_WrongGovernanceChain(
         bytes32 storageSlot,
         uint64 evmChainId,
         uint32 timestamp,
@@ -702,25 +702,25 @@ contract TestGovernance is TestUtils {
         uint64 sequence,
         uint8 consistencyLevel,
         uint16 chainId,
-        address[] memory newGuardianSet)
+        address[] memory newPhylaxSet)
         public
         unchangedStorage(address(proxied), storageSlot)
     {
         vm.assume(emitterChainId != 1);
         vm.assume(chainId == 0 || (chainId == CHAINID && evmChainId == EVMCHAINID));
-        vm.assume(0 < newGuardianSet.length);
-        vm.assume(newGuardianSet.length < 20);
+        vm.assume(0 < newPhylaxSet.length);
+        vm.assume(newPhylaxSet.length < 20);
         vm.chainId(evmChainId);
 
-        bytes memory payload = payloadSubmitNewGuardianSet(MODULE, chainId, 1, newGuardianSet);
+        bytes memory payload = payloadSubmitNewPhylaxSet(MODULE, chainId, 1, newPhylaxSet);
         (bytes memory _vm, ) = validVm(
-            0, timestamp, nonce, emitterChainId, governanceContract, sequence, consistencyLevel, payload, testGuardian);
+            0, timestamp, nonce, emitterChainId, governanceContract, sequence, consistencyLevel, payload, testPhylax);
 
         vm.expectRevert("wrong governance chain");
-        proxied.submitNewGuardianSet(_vm);
+        proxied.submitNewPhylaxSet(_vm);
     }
 
-    function testSubmitNewGuardianSet_Revert_WrongGovernanceContract(
+    function testSubmitNewPhylaxSet_Revert_WrongGovernanceContract(
         bytes32 storageSlot,
         uint64 evmChainId,
         uint32 timestamp,
@@ -729,63 +729,63 @@ contract TestGovernance is TestUtils {
         uint64 sequence,
         uint8 consistencyLevel,
         uint16 chainId,
-        address[] memory newGuardianSet)
+        address[] memory newPhylaxSet)
         public
         unchangedStorage(address(proxied), storageSlot)
     {
         vm.assume(emitterAddress != governanceContract);
         vm.assume(chainId == 0 || (chainId == CHAINID && evmChainId == EVMCHAINID));
-        vm.assume(0 < newGuardianSet.length);
-        vm.assume(newGuardianSet.length < 20);
+        vm.assume(0 < newPhylaxSet.length);
+        vm.assume(newPhylaxSet.length < 20);
         vm.chainId(evmChainId);
 
-        bytes memory payload = payloadSubmitNewGuardianSet(MODULE, chainId, 1, newGuardianSet);
+        bytes memory payload = payloadSubmitNewPhylaxSet(MODULE, chainId, 1, newPhylaxSet);
         (bytes memory _vm, ) = validVm(
-            0, timestamp, nonce, 1, emitterAddress, sequence, consistencyLevel, payload, testGuardian);
+            0, timestamp, nonce, 1, emitterAddress, sequence, consistencyLevel, payload, testPhylax);
 
         vm.expectRevert("wrong governance contract");
-        proxied.submitNewGuardianSet(_vm);
+        proxied.submitNewPhylaxSet(_vm);
     }
 
-    function testSubmitNewGuardianSet_Revert_ReplayAttack(
+    function testSubmitNewPhylaxSet_Revert_ReplayAttack(
         bytes32 storageSlot,
         uint32 timestamp,
         uint32 nonce,
         uint64 sequence,
         uint8 consistencyLevel,
-        address[] memory newGuardianSet)
+        address[] memory newPhylaxSet)
         public
         unchangedStorage(address(proxied), storageSlot)
     {
         vm.assume(storageSlot != hashedLocationOffset(0, GUARDIANSETS_SLOT, 1));
 
-        // New GuardianSet array length should be initialized from zero to non-zero
+        // New PhylaxSet array length should be initialized from zero to non-zero
         vm.assume(storageSlot != hashedLocationOffset(1, GUARDIANSETS_SLOT, 0));
 
         vm.assume(storageSlot != GUARDIANSETINDEX_SLOT);
-        vm.assume(0 < newGuardianSet.length);
-        vm.assume(newGuardianSet.length < 20);
+        vm.assume(0 < newPhylaxSet.length);
+        vm.assume(newPhylaxSet.length < 20);
 
-        for(uint8 i = 0; i < newGuardianSet.length; i++) {
-            vm.assume(newGuardianSet[i] != address(0));
-            // New GuardianSet key array elements should be initialized from zero to non-zero
+        for(uint8 i = 0; i < newPhylaxSet.length; i++) {
+            vm.assume(newPhylaxSet[i] != address(0));
+            // New PhylaxSet key array elements should be initialized from zero to non-zero
             vm.assume(storageSlot != arrayElementLocation(hashedLocationOffset(1, GUARDIANSETS_SLOT, 0), i));
         }
 
         vm.chainId(EVMCHAINID);
 
-        bytes memory payload = payloadSubmitNewGuardianSet(MODULE, CHAINID, 1, newGuardianSet);
+        bytes memory payload = payloadSubmitNewPhylaxSet(MODULE, CHAINID, 1, newPhylaxSet);
         (bytes memory _vm, bytes32 hash) = validVm(
-            0, timestamp, nonce, 1, governanceContract, sequence, consistencyLevel, payload, testGuardian);
+            0, timestamp, nonce, 1, governanceContract, sequence, consistencyLevel, payload, testPhylax);
 
         vm.assume(storageSlot != hashedLocation(hash, CONSUMED_ACTIONS_SLOT));
 
-        proxied.submitNewGuardianSet(_vm);
+        proxied.submitNewPhylaxSet(_vm);
 
         // The error message is not "governance action already consumed" because the guardian set index is updated,
         // and the check for the current guardian set index comes first than the check for action already consumed
         vm.expectRevert("not signed by current guardian set");
-        proxied.submitNewGuardianSet(_vm);
+        proxied.submitNewPhylaxSet(_vm);
     }
 
     function isReservedAddress(address addr) internal view returns (bool) {
@@ -823,7 +823,7 @@ contract TestGovernance is TestUtils {
 
         bytes memory payload = payloadSubmitTransferFees(MODULE, CHAINID, amount, recipient);
         (bytes memory _vm, bytes32 hash) = validVm(
-            0, timestamp, nonce, 1, governanceContract, sequence, consistencyLevel, payload, testGuardian);
+            0, timestamp, nonce, 1, governanceContract, sequence, consistencyLevel, payload, testPhylax);
 
         vm.assume(storageSlot != hashedLocation(hash, CONSUMED_ACTIONS_SLOT));
 
@@ -862,7 +862,7 @@ contract TestGovernance is TestUtils {
         
         bytes32 hash = keccak256(abi.encodePacked(keccak256(body)));
 
-        bytes memory _vm = bytes.concat(validVmHeader(0), validSignature(testGuardian, hash), body);
+        bytes memory _vm = bytes.concat(validVmHeader(0), validSignature(testPhylax, hash), body);
 
         vm.expectRevert("invalid Module");
         proxied.submitTransferFees(_vm);
@@ -886,7 +886,7 @@ contract TestGovernance is TestUtils {
 
         bytes memory payload = payloadSubmitTransferFees(MODULE, chainId, amount, recipient);
         (bytes memory _vm, ) = validVm(
-            0, timestamp, nonce, 1, governanceContract, sequence, consistencyLevel, payload, testGuardian);
+            0, timestamp, nonce, 1, governanceContract, sequence, consistencyLevel, payload, testPhylax);
 
         vm.expectRevert("invalid Chain");
         proxied.submitTransferFees(_vm);
@@ -910,14 +910,14 @@ contract TestGovernance is TestUtils {
 
         bytes memory payload = payloadSubmitTransferFees(MODULE, CHAINID, amount, recipient);
         (bytes memory _vm, ) = validVm(
-            0, timestamp, nonce, 1, governanceContract, sequence, consistencyLevel, payload, testGuardian);
+            0, timestamp, nonce, 1, governanceContract, sequence, consistencyLevel, payload, testPhylax);
 
         vm.expectRevert("invalid Chain");
         proxied.submitTransferFees(_vm);
     }
 
 
-    function testSubmitTransferFees_Revert_InvalidGuardianSet(
+    function testSubmitTransferFees_Revert_InvalidPhylaxSet(
         bytes32 storageSlot,
         uint64 evmChainId,
         uint32 guardianSetIndex,
@@ -938,11 +938,11 @@ contract TestGovernance is TestUtils {
 
         bytes memory payload = payloadSubmitTransferFees(MODULE, chainId, amount, recipient);
         (bytes memory _vm, ) = validVm(
-            guardianSetIndex, timestamp, nonce, 1, governanceContract, sequence, consistencyLevel, payload, testGuardian);
+            guardianSetIndex, timestamp, nonce, 1, governanceContract, sequence, consistencyLevel, payload, testPhylax);
 
         // Since the current version of the test uses only one guardian set,
         // in practice only the 'else' branch will be taken
-        if (guardianSetIndex < proxied.getCurrentGuardianSetIndex()) {
+        if (guardianSetIndex < proxied.getCurrentPhylaxSetIndex()) {
             vm.expectRevert("not signed by current guardian set");
         } else {
             vm.expectRevert("invalid guardian set");
@@ -972,7 +972,7 @@ contract TestGovernance is TestUtils {
 
         bytes memory payload = payloadSubmitTransferFees(MODULE, chainId, amount, recipient);
         (bytes memory _vm, ) = validVm(
-            0, timestamp, nonce, emitterChainId, governanceContract, sequence, consistencyLevel, payload, testGuardian);
+            0, timestamp, nonce, emitterChainId, governanceContract, sequence, consistencyLevel, payload, testPhylax);
 
         vm.expectRevert("wrong governance chain");
         proxied.submitTransferFees(_vm);
@@ -999,7 +999,7 @@ contract TestGovernance is TestUtils {
 
         bytes memory payload = payloadSubmitTransferFees(MODULE, chainId, amount, recipient);
         (bytes memory _vm, ) = validVm(
-            0, timestamp, nonce, 1, emitterAddress, sequence, consistencyLevel, payload, testGuardian);
+            0, timestamp, nonce, 1, emitterAddress, sequence, consistencyLevel, payload, testPhylax);
 
         vm.expectRevert("wrong governance contract");
         proxied.submitTransferFees(_vm);
@@ -1024,7 +1024,7 @@ contract TestGovernance is TestUtils {
 
         bytes memory payload = payloadSubmitTransferFees(MODULE, CHAINID, amount, recipient);
         (bytes memory _vm, bytes32 hash) = validVm(
-            0, timestamp, nonce, 1, governanceContract, sequence, consistencyLevel, payload, testGuardian);
+            0, timestamp, nonce, 1, governanceContract, sequence, consistencyLevel, payload, testPhylax);
 
         vm.assume(storageSlot != hashedLocation(hash, CONSUMED_ACTIONS_SLOT));
 
@@ -1053,7 +1053,7 @@ contract TestGovernance is TestUtils {
 
         bytes memory payload = payloadSubmitRecoverChainId(MODULE, evmChainId, newChainId);
         (bytes memory _vm, bytes32 hash) = validVm(
-            0, timestamp, nonce, 1, governanceContract, sequence, consistencyLevel, payload, testGuardian);
+            0, timestamp, nonce, 1, governanceContract, sequence, consistencyLevel, payload, testPhylax);
 
         vm.assume(storageSlot != hashedLocation(hash, CONSUMED_ACTIONS_SLOT));
 
@@ -1080,7 +1080,7 @@ contract TestGovernance is TestUtils {
 
         bytes memory payload = payloadSubmitRecoverChainId(MODULE, evmChainId, newChainId);
         (bytes memory _vm, ) = validVm(
-            0, timestamp, nonce, 1, governanceContract, sequence, consistencyLevel, payload, testGuardian);
+            0, timestamp, nonce, 1, governanceContract, sequence, consistencyLevel, payload, testPhylax);
 
         vm.expectRevert("not a fork");
         proxied.submitRecoverChainId(_vm);
@@ -1106,7 +1106,7 @@ contract TestGovernance is TestUtils {
         vm.assume(module != MODULE);
         bytes memory payload = payloadSubmitRecoverChainId(module, evmChainId, newChainId);
         (bytes memory _vm, ) = validVm(
-            0, timestamp, nonce, 1, governanceContract, sequence, consistencyLevel, payload, testGuardian);
+            0, timestamp, nonce, 1, governanceContract, sequence, consistencyLevel, payload, testPhylax);
 
         vm.expectRevert("invalid Module");
         proxied.submitRecoverChainId(_vm);
@@ -1131,14 +1131,14 @@ contract TestGovernance is TestUtils {
 
         bytes memory payload = payloadSubmitRecoverChainId(MODULE, evmChainId, newChainId);
         (bytes memory _vm, ) = validVm(
-            0, timestamp, nonce, 1, governanceContract, sequence, consistencyLevel, payload, testGuardian);
+            0, timestamp, nonce, 1, governanceContract, sequence, consistencyLevel, payload, testPhylax);
 
         vm.expectRevert("invalid EVM Chain");
         proxied.submitRecoverChainId(_vm);
     }
 
 
-    function testSubmitRecoverChainId_Revert_InvalidGuardianSetIndex(
+    function testSubmitRecoverChainId_Revert_InvalidPhylaxSetIndex(
         bytes32 storageSlot,
         uint32 guardianSetIndex,
         uint32 timestamp,
@@ -1157,11 +1157,11 @@ contract TestGovernance is TestUtils {
 
         bytes memory payload = payloadSubmitRecoverChainId(MODULE, evmChainId, newChainId);
         (bytes memory _vm, ) = validVm(
-            guardianSetIndex, timestamp, nonce, 1, governanceContract, sequence, consistencyLevel, payload, testGuardian);
+            guardianSetIndex, timestamp, nonce, 1, governanceContract, sequence, consistencyLevel, payload, testPhylax);
 
         // Since the current version of the test uses only one guardian set,
         // in practice only the 'else' branch will be taken
-        if (guardianSetIndex < proxied.getCurrentGuardianSetIndex()) {
+        if (guardianSetIndex < proxied.getCurrentPhylaxSetIndex()) {
             vm.expectRevert("not signed by current guardian set");
         } else {
             vm.expectRevert("invalid guardian set");
@@ -1189,7 +1189,7 @@ contract TestGovernance is TestUtils {
 
         bytes memory payload = payloadSubmitRecoverChainId(MODULE, evmChainId, newChainId);
         (bytes memory _vm, ) = validVm(
-            0, timestamp, nonce, emitterChainId, governanceContract, sequence, consistencyLevel, payload, testGuardian);
+            0, timestamp, nonce, emitterChainId, governanceContract, sequence, consistencyLevel, payload, testPhylax);
 
         vm.expectRevert("wrong governance chain");
         proxied.submitRecoverChainId(_vm);
@@ -1214,7 +1214,7 @@ contract TestGovernance is TestUtils {
 
         bytes memory payload = payloadSubmitRecoverChainId(MODULE, evmChainId, newChainId);
         (bytes memory _vm, ) = validVm(
-            0, timestamp, nonce, 1, emitterAddress, sequence, consistencyLevel, payload, testGuardian);
+            0, timestamp, nonce, 1, emitterAddress, sequence, consistencyLevel, payload, testPhylax);
 
         vm.expectRevert("wrong governance contract");
         proxied.submitRecoverChainId(_vm);
@@ -1239,7 +1239,7 @@ contract TestGovernance is TestUtils {
 
         bytes memory payload = payloadSubmitRecoverChainId(MODULE, evmChainId, newChainId);
         (bytes memory _vm, bytes32 hash) = validVm(
-            0, timestamp, nonce, 1, governanceContract, sequence, consistencyLevel, payload, testGuardian);
+            0, timestamp, nonce, 1, governanceContract, sequence, consistencyLevel, payload, testPhylax);
 
         vm.assume(storageSlot != hashedLocation(hash, CONSUMED_ACTIONS_SLOT));
 

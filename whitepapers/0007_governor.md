@@ -4,7 +4,7 @@
 
 ## Objective
 
-Limit the impact of certain exploits by giving Guardians the option to delay Wormhole messages from registered token bridges if their aggregate notional value is extraordinarily large.
+Limit the impact of certain exploits by giving Phylaxs the option to delay Wormhole messages from registered token bridges if their aggregate notional value is extraordinarily large.
 
 ## Background
 
@@ -13,26 +13,26 @@ A single integrity failure of the core messaging bridge can have disastrous cons
 There are multiple potential failure modes of the bridge:
 * In scope of the Wormhole security program:
   * Bugs in the smart contract
-  * Bugs in the Guardian software
-  * Guardian key compromise
+  * Bugs in the Phylax software
+  * Phylax key compromise
 * Out of scope of the Wormhole security program:
   * Bugs in the blockchain smart contract runtime or rpc nodes
   * Forks
 
-Even if Wormhole's code and operations are flawless, it might still produce "invalid" messages if there is an exploit of the origin chain: "Bugs" in the origin-chain smart contract runtime that produced undesirable Wormhole messages could be patched by the community, effectively leading to a fork that reverts these Wormhole messages. And bugs in the rpc nodes could lead to the Guardians not having an accurate view of the on-chain state.
+Even if Wormhole's code and operations are flawless, it might still produce "invalid" messages if there is an exploit of the origin chain: "Bugs" in the origin-chain smart contract runtime that produced undesirable Wormhole messages could be patched by the community, effectively leading to a fork that reverts these Wormhole messages. And bugs in the rpc nodes could lead to the Phylaxs not having an accurate view of the on-chain state.
 
 If token bridge transfers are unlimited and instantaneous, a bug in a single connected chain could cause the entire token bridge to be drained.
 
 ## Goals
 
-If a Guardian decides to enable this feature:
+If a Phylax decides to enable this feature:
 * Delay Wormhole messages from registered token bridges for 24h, if their notional value is excessively large.
-* This gives the Guardian the opportunity to delete pending messages, if they were created through a software bug and not accurately represent the state of the origin chain.
+* This gives the Phylax the opportunity to delete pending messages, if they were created through a software bug and not accurately represent the state of the origin chain.
 * Protect against sybil attacks, i.e. this feature should work even if an attacker tries to make one large transfer look like organic activity by splitting it into many small transfers.
 
 ## Non-Goals
 
-* Synchronize state between Guardians. Each Guardian may have a slightly different view of the network, including Governor configuration, ordering and completeness of token bridge transfers, etc. The Governor is a local feature that makes decisions based on each Guardian's individual view of the network.
+* Synchronize state between Phylaxs. Each Phylax may have a slightly different view of the network, including Governor configuration, ordering and completeness of token bridge transfers, etc. The Governor is a local feature that makes decisions based on each Phylax's individual view of the network.
 * Prevent quality-of-service degradation attacks where one bad actor causes a majority of transfers to be delayed.
 
 ## High-Level Design
@@ -44,13 +44,13 @@ If a Guardian decides to enable this feature:
 
 Governor divides token-based transactions into two categories: small transactions, and large transactions.
 
-- **Small Transactions:** Transactions smaller than the single-transaction threshold of the chain where the transfer is originating from are considered small transactions.  During any 24h sliding window, the Guardian will sign token bridge transfers in aggregate value up to the 24h threshold with no finality delay.  When small transactions exceed this limit, they will be delayed until sufficient headroom is present in the 24h sliding window. A transaction either fits or is delayed, they are not artifically split into multiple transactions. If a small transaction has been delayed for more than 24h, it will be released immediately and it will not count towards the 24h threshold.
-- **Large Transactions:** Transactions larger than the single-transaction threshold of the chain where the transfer is originating from are considered large transactions.  All large transactions have an imposed 24h finality delay before Wormhole Guardians sign them. These transactions do not affect the 24h threshold counter.
+- **Small Transactions:** Transactions smaller than the single-transaction threshold of the chain where the transfer is originating from are considered small transactions.  During any 24h sliding window, the Phylax will sign token bridge transfers in aggregate value up to the 24h threshold with no finality delay.  When small transactions exceed this limit, they will be delayed until sufficient headroom is present in the 24h sliding window. A transaction either fits or is delayed, they are not artifically split into multiple transactions. If a small transaction has been delayed for more than 24h, it will be released immediately and it will not count towards the 24h threshold.
+- **Large Transactions:** Transactions larger than the single-transaction threshold of the chain where the transfer is originating from are considered large transactions.  All large transactions have an imposed 24h finality delay before Wormhole Phylaxs sign them. These transactions do not affect the 24h threshold counter.
 
 ### Asset pricing
 
 Since the thresholds are denominated in the base currency, the Governor must know the notional value of transfers in this base currency. To determine the price of a token it uses the *maximum* of:
-1. **Hardcoded Floor Price**: This price is hard coded into the governor and is based on a fixed point in time (usually during a Wormhole Guardian release) which polls CoinGecko for a known set of known tokens that are governed.
+1. **Hardcoded Floor Price**: This price is hard coded into the governor and is based on a fixed point in time (usually during a Wormhole Phylax release) which polls CoinGecko for a known set of known tokens that are governed.
 2. **Dynamic Price:** This price is dynamically polled from CoinGecko at 5-10min intervals.
 
 The token configurations are in [manual_tokens.go](https://github.com/wormhole-foundation/wormhole/blob/main/node/pkg/governor/manual_tokens.go) and [generated_mainnet_tokens.go](https://github.com/wormhole-foundation/wormhole/blob/main/node/pkg/governor/generated_mainnet_tokens.go).
@@ -58,13 +58,13 @@ The token configurations are in [manual_tokens.go](https://github.com/wormhole-f
 If CoinGecko was to provide an erroneously low price for a token, the Governor errs on the side of safety by using the hardcoded floor price instead.
 
 ### Visibility
-Each Guardian publishes its Governor configuration and status on the Wormhole gossip network, which anyone can subscribe to via a guardian spy ([instructions](https://github.com/wormhole-foundation/wormhole/blob/main/docs/operations.md)). Some Guardians also make the Governor status available through a public API, which can be visualized on the [Wormhole Dashboard](https://wormhole-foundation.github.io/wormhole-dashboard/). A more feature-rich [Wormhole Explorer](https://github.com/wormhole-foundation/wormhole-explorer) that will aggregate Governor status across all Guardians is work-in-progress.
+Each Phylax publishes its Governor configuration and status on the Wormhole gossip network, which anyone can subscribe to via a guardian spy ([instructions](https://github.com/wormhole-foundation/wormhole/blob/main/docs/operations.md)). Some Phylaxs also make the Governor status available through a public API, which can be visualized on the [Wormhole Dashboard](https://wormhole-foundation.github.io/wormhole-dashboard/). A more feature-rich [Wormhole Explorer](https://github.com/wormhole-foundation/wormhole-explorer) that will aggregate Governor status across all Phylaxs is work-in-progress.
 
 ### Security Considerations
 * The Governor can only reduce the impact of an exploit, but not prevent it.
 * Excessively high transfer activity, even if manufactured and not organic, will cause transactions to be delayed by up to 24h.
 * If CoinGecko reports an unreasonably high price for a token, the 24h threshold will be exhausted sooner.
-* Guardians need to manually respond to erroneous messages within the 24h time window. It is expected that all Guardians operate collateralization monitoring for the protocol, taking into account the Governor queue. All Guardians should have alerting and incident response procedures in case of an undercollateralization.
+* Phylaxs need to manually respond to erroneous messages within the 24h time window. It is expected that all Phylaxs operate collateralization monitoring for the protocol, taking into account the Governor queue. All Phylaxs should have alerting and incident response procedures in case of an undercollateralization.
 * An attacker could utilize liquidity pools and other bridges to launder illicitly minted wrapped assets.
 
 ## Detailed Design
@@ -90,13 +90,13 @@ The above checks will produce 3 possible scenarios:
 - **Governed Message (Large)**: If a message is “large”, `ChainGovernor` will wait for 24hrs before signing the VAA and place the message in a queue.
 - **Governed Message (Small)**: If a message is “small”, `ChainGovernor` will determine if it fits inside the `dailyLimit` for this chain. If it does fit, it will be signed immediately. If it does not fit, it will wait in the queue until it does fit. If it does not fit in 24hrs, it will be released from the queue.
 
-While messages are enqueued, any Guardian has a window of opportunity to determine if a message is fraudulent using their own processes for fraud detection. If Guardians determine a message is fraudulent, they can delete the message from the queue from their own independently managed queue. If a super minority of Guardians (7 of 19) delete a message from their queues, this fraudulent message is effectively censored as it can no longer reach a super-majority quorum.
+While messages are enqueued, any Phylax has a window of opportunity to determine if a message is fraudulent using their own processes for fraud detection. If Phylaxs determine a message is fraudulent, they can delete the message from the queue from their own independently managed queue. If a super minority of Phylaxs (7 of 19) delete a message from their queues, this fraudulent message is effectively censored as it can no longer reach a super-majority quorum.
 
 In this design, there are three mechanisms for enqueued messages to be published:
 
-- A quorum (13/19) of Guardians can manually override the Governor and release any pending messages.
+- A quorum (13/19) of Phylaxs can manually override the Governor and release any pending messages.
   - _Messages released through this mechanism WOULD NOT be added to the list of the processed transactions to avoid impacting the daily notional limit as maintained by the sliding window._
-- Guardians will periodically check if a message can be posted without exceeding the daily notional limit as the sliding window and notional value of the transactions change.
+- Phylaxs will periodically check if a message can be posted without exceeding the daily notional limit as the sliding window and notional value of the transactions change.
   - _Messages released through this mechanism WOULD be added to the list of processed transactions and thus be counted toward the daily notional limit._
 - Messages will be automatically released after a maximum time limit (this time limit can be adjusted through governance and is currently set to 24 hours).
   - _Messages released through this mechanism WOULD NOT be added to the list of the processed transactions to avoid impacting the daily notional limit as maintained by the sliding window._
@@ -104,10 +104,10 @@ In this design, there are three mechanisms for enqueued messages to be published
 
 ## Operational Considerations
 ### Extending the release time to have more time to investigate
-Guardian operators can use the `ChainGovernorResetReleaseTimer` admin RPC or `governor-reset-release-timer [VAA_ID]` admin command to reset the delay to 24h.
+Phylax operators can use the `ChainGovernorResetReleaseTimer` admin RPC or `governor-reset-release-timer [VAA_ID]` admin command to reset the delay to 24h.
 
 ### Dropping messages from the Governor
-Guardian operators can use the `ChainGovernorDropPendingVAA` admin RPC or `governor-drop-pending-vaa [VAA_ID]` admin command to remove a VAA from the Governor queue. Note that in most cases this should be done in conjunction with disconnecting a chain or block-listing certain messages because otherwise the message may just get re-observed through automatic observation requests.
+Phylax operators can use the `ChainGovernorDropPendingVAA` admin RPC or `governor-drop-pending-vaa [VAA_ID]` admin command to remove a VAA from the Governor queue. Note that in most cases this should be done in conjunction with disconnecting a chain or block-listing certain messages because otherwise the message may just get re-observed through automatic observation requests.
 
 ## Potential Improvements
 

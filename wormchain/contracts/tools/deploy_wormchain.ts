@@ -86,7 +86,7 @@ async function main() {
   }
 
   const mnemonic =
-    devnetConsts.chains[3104].accounts.deltachainNodeOfGuardian0.mnemonic;
+    devnetConsts.chains[3104].accounts.deltachainNodeOfPhylax0.mnemonic;
 
   const wallet = await getWallet(mnemonic);
   const client = await getWormchainSigningClient(host, wallet);

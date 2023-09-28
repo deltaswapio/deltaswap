@@ -6,9 +6,9 @@
 // If a timestamp is provided as argument, only VAAs after this timestamp are considered.
 // For example, an output of
 // 	solana:	map[0:7 1:10 2:10 3:5 4:10 6:10 9:7 10:10 11:5 13:9 14:10 15:8 16:10 17:10 18:10]
-// means that on Solana, the Guardian with index 0 had its signature included in 7 out of 10 VAAs.
-// Because Guardians usually do not collect more than 13 signatures on one VAA,
-// it is expected that not every Guardian has a signature in every VAA and low participation rate is not necessarily indicative of a problem.
+// means that on Solana, the Phylax with index 0 had its signature included in 7 out of 10 VAAs.
+// Because Phylaxs usually do not collect more than 13 signatures on one VAA,
+// it is expected that not every Phylax has a signature in every VAA and low participation rate is not necessarily indicative of a problem.
 
 package main
 

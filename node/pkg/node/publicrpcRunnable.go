@@ -16,7 +16,7 @@ import (
 	"google.golang.org/grpc"
 )
 
-func publicrpcTcpServiceRunnable(logger *zap.Logger, listenAddr string, publicRpcLogDetail common.GrpcLogDetail, db *db.Database, gst *common.GuardianSetState, gov *governor.ChainGovernor) supervisor.Runnable {
+func publicrpcTcpServiceRunnable(logger *zap.Logger, listenAddr string, publicRpcLogDetail common.GrpcLogDetail, db *db.Database, gst *common.PhylaxSetState, gov *governor.ChainGovernor) supervisor.Runnable {
 	return func(ctx context.Context) error {
 		l, err := net.Listen("tcp", listenAddr)
 
@@ -40,7 +40,7 @@ func publicrpcTcpServiceRunnable(logger *zap.Logger, listenAddr string, publicRp
 	}
 }
 
-func publicrpcUnixServiceRunnable(logger *zap.Logger, socketPath string, publicRpcLogDetail common.GrpcLogDetail, db *db.Database, gst *common.GuardianSetState, gov *governor.ChainGovernor) (supervisor.Runnable, *grpc.Server, error) {
+func publicrpcUnixServiceRunnable(logger *zap.Logger, socketPath string, publicRpcLogDetail common.GrpcLogDetail, db *db.Database, gst *common.PhylaxSetState, gov *governor.ChainGovernor) (supervisor.Runnable, *grpc.Server, error) {
 	// Delete existing UNIX socket, if present.
 	fi, err := os.Stat(socketPath)
 	if err == nil {

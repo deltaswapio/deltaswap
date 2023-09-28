@@ -92,7 +92,7 @@ afterAll(async () => {
   cosmWasmClient.disconnect();
 });
 
-// Guardian metrics are prometheus data
+// Phylax metrics are prometheus data
 const fetchGlobalAccountantMetrics = async (): Promise<{
   global_accountant_connection_errors_total: number;
   global_accountant_error_events_received: number;

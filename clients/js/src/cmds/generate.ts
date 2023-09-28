@@ -56,7 +56,7 @@ export const builder = function (y: typeof yargs) {
       .option("guardian-secret", {
         alias: "g",
         demandOption: true,
-        describe: "Guardians' secret keys (CSV)",
+        describe: "Phylaxs' secret keys (CSV)",
         type: "string",
       })
       // Registration

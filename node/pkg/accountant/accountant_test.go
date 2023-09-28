@@ -103,8 +103,8 @@ func newAccountantForTest(
 
 	gk := devnet.InsecureDeterministicEcdsaKeyByIndex(ethCrypto.S256(), uint64(0))
 
-	gst := common.NewGuardianSetState(nil)
-	gs := &common.GuardianSet{Keys: []ethCommon.Address{ethCommon.HexToAddress("0xbeFA429d57cD18b7F8A4d91A2da9AB4AF05d0FBe")}}
+	gst := common.NewPhylaxSetState(nil)
+	gs := &common.PhylaxSet{Keys: []ethCommon.Address{ethCommon.HexToAddress("0xbeFA429d57cD18b7F8A4d91A2da9AB4AF05d0FBe")}}
 	gst.Set(gs)
 
 	env := common.GoTest

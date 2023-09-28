@@ -20,8 +20,8 @@ func NewHandler(k keeper.Keeper) sdk.Handler {
 		case *types.MsgExecuteGovernanceVAA:
 			res, err := msgServer.ExecuteGovernanceVAA(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)
-		case *types.MsgRegisterAccountAsGuardian:
-			res, err := msgServer.RegisterAccountAsGuardian(sdk.WrapSDKContext(ctx), msg)
+		case *types.MsgRegisterAccountAsPhylax:
+			res, err := msgServer.RegisterAccountAsPhylax(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)
 		case *types.MsgStoreCode:
 			res, err := msgServer.StoreCode(sdk.WrapSDKContext(ctx), msg)

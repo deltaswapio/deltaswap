@@ -301,20 +301,20 @@ func local_request_PublicRPCService_GetSignedBatchVAA_0(ctx context.Context, mar
 
 }
 
-func request_PublicRPCService_GetCurrentGuardianSet_0(ctx context.Context, marshaler runtime.Marshaler, client PublicRPCServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq GetCurrentGuardianSetRequest
+func request_PublicRPCService_GetCurrentPhylaxSet_0(ctx context.Context, marshaler runtime.Marshaler, client PublicRPCServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetCurrentPhylaxSetRequest
 	var metadata runtime.ServerMetadata
 
-	msg, err := client.GetCurrentGuardianSet(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	msg, err := client.GetCurrentPhylaxSet(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
 
 }
 
-func local_request_PublicRPCService_GetCurrentGuardianSet_0(ctx context.Context, marshaler runtime.Marshaler, server PublicRPCServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq GetCurrentGuardianSetRequest
+func local_request_PublicRPCService_GetCurrentPhylaxSet_0(ctx context.Context, marshaler runtime.Marshaler, server PublicRPCServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetCurrentPhylaxSetRequest
 	var metadata runtime.ServerMetadata
 
-	msg, err := server.GetCurrentGuardianSet(ctx, &protoReq)
+	msg, err := server.GetCurrentPhylaxSet(ctx, &protoReq)
 	return msg, metadata, err
 
 }
@@ -574,18 +574,18 @@ func RegisterPublicRPCServiceHandlerServer(ctx context.Context, mux *runtime.Ser
 
 	})
 
-	mux.Handle("GET", pattern_PublicRPCService_GetCurrentGuardianSet_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("GET", pattern_PublicRPCService_GetCurrentPhylaxSet_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/publicrpc.v1.PublicRPCService/GetCurrentGuardianSet", runtime.WithHTTPPathPattern("/v1/guardianset/current"))
+		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/publicrpc.v1.PublicRPCService/GetCurrentPhylaxSet", runtime.WithHTTPPathPattern("/v1/guardianset/current"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_PublicRPCService_GetCurrentGuardianSet_0(rctx, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_PublicRPCService_GetCurrentPhylaxSet_0(rctx, inboundMarshaler, server, req, pathParams)
 		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
@@ -593,7 +593,7 @@ func RegisterPublicRPCServiceHandlerServer(ctx context.Context, mux *runtime.Ser
 			return
 		}
 
-		forward_PublicRPCService_GetCurrentGuardianSet_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_PublicRPCService_GetCurrentPhylaxSet_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
@@ -790,23 +790,23 @@ func RegisterPublicRPCServiceHandlerClient(ctx context.Context, mux *runtime.Ser
 
 	})
 
-	mux.Handle("GET", pattern_PublicRPCService_GetCurrentGuardianSet_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("GET", pattern_PublicRPCService_GetCurrentPhylaxSet_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		rctx, err := runtime.AnnotateContext(ctx, mux, req, "/publicrpc.v1.PublicRPCService/GetCurrentGuardianSet", runtime.WithHTTPPathPattern("/v1/guardianset/current"))
+		rctx, err := runtime.AnnotateContext(ctx, mux, req, "/publicrpc.v1.PublicRPCService/GetCurrentPhylaxSet", runtime.WithHTTPPathPattern("/v1/guardianset/current"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_PublicRPCService_GetCurrentGuardianSet_0(rctx, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_PublicRPCService_GetCurrentPhylaxSet_0(rctx, inboundMarshaler, client, req, pathParams)
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_PublicRPCService_GetCurrentGuardianSet_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_PublicRPCService_GetCurrentPhylaxSet_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
@@ -900,7 +900,7 @@ var (
 
 	pattern_PublicRPCService_GetSignedBatchVAA_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 1, 0, 4, 1, 5, 3, 1, 0, 4, 1, 5, 4}, []string{"v1", "signed_batch_vaa", "batch_id.emitter_chain", "batch_id.tx_id", "batch_id.nonce"}, ""))
 
-	pattern_PublicRPCService_GetCurrentGuardianSet_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v1", "guardianset", "current"}, ""))
+	pattern_PublicRPCService_GetCurrentPhylaxSet_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v1", "guardianset", "current"}, ""))
 
 	pattern_PublicRPCService_GovernorGetAvailableNotionalByChain_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v1", "governor", "available_notional_by_chain"}, ""))
 
@@ -918,7 +918,7 @@ var (
 
 	forward_PublicRPCService_GetSignedBatchVAA_0 = runtime.ForwardResponseMessage
 
-	forward_PublicRPCService_GetCurrentGuardianSet_0 = runtime.ForwardResponseMessage
+	forward_PublicRPCService_GetCurrentPhylaxSet_0 = runtime.ForwardResponseMessage
 
 	forward_PublicRPCService_GovernorGetAvailableNotionalByChain_0 = runtime.ForwardResponseMessage
 

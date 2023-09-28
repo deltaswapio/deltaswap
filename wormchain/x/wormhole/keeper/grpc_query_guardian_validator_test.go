@@ -18,34 +18,34 @@ import (
 // Prevent strconv unused error
 var _ = strconv.IntSize
 
-func TestGuardianValidatorQuerySingle(t *testing.T) {
+func TestPhylaxValidatorQuerySingle(t *testing.T) {
 	keeper, ctx := keepertest.WormholeKeeper(t)
 	wctx := sdk.WrapSDKContext(ctx)
-	msgs, _ := createNGuardianValidator(keeper, ctx, 2)
+	msgs, _ := createNPhylaxValidator(keeper, ctx, 2)
 	for _, tc := range []struct {
 		desc     string
-		request  *types.QueryGetGuardianValidatorRequest
-		response *types.QueryGetGuardianValidatorResponse
+		request  *types.QueryGetPhylaxValidatorRequest
+		response *types.QueryGetPhylaxValidatorResponse
 		err      error
 	}{
 		{
 			desc: "First",
-			request: &types.QueryGetGuardianValidatorRequest{
-				GuardianKey: msgs[0].GuardianKey,
+			request: &types.QueryGetPhylaxValidatorRequest{
+				PhylaxKey: msgs[0].PhylaxKey,
 			},
-			response: &types.QueryGetGuardianValidatorResponse{GuardianValidator: msgs[0]},
+			response: &types.QueryGetPhylaxValidatorResponse{PhylaxValidator: msgs[0]},
 		},
 		{
 			desc: "Second",
-			request: &types.QueryGetGuardianValidatorRequest{
-				GuardianKey: msgs[1].GuardianKey,
+			request: &types.QueryGetPhylaxValidatorRequest{
+				PhylaxKey: msgs[1].PhylaxKey,
 			},
-			response: &types.QueryGetGuardianValidatorResponse{GuardianValidator: msgs[1]},
+			response: &types.QueryGetPhylaxValidatorResponse{PhylaxValidator: msgs[1]},
 		},
 		{
 			desc:     "KeyNotFound",
-			request:  &types.QueryGetGuardianValidatorRequest{GuardianKey: []byte{0, 3, 4}},
-			response: &types.QueryGetGuardianValidatorResponse{},
+			request:  &types.QueryGetPhylaxValidatorRequest{PhylaxKey: []byte{0, 3, 4}},
+			response: &types.QueryGetPhylaxValidatorResponse{},
 			err:      status.Error(codes.InvalidArgument, "not found"),
 		},
 		{
@@ -54,7 +54,7 @@ func TestGuardianValidatorQuerySingle(t *testing.T) {
 		},
 	} {
 		t.Run(tc.desc, func(t *testing.T) {
-			response, err := keeper.GuardianValidator(wctx, tc.request)
+			response, err := keeper.PhylaxValidator(wctx, tc.request)
 			if tc.err != nil {
 				require.ErrorIs(t, err, tc.err)
 			} else {
@@ -68,13 +68,13 @@ func TestGuardianValidatorQuerySingle(t *testing.T) {
 	}
 }
 
-func TestGuardianValidatorQueryPaginated(t *testing.T) {
+func TestPhylaxValidatorQueryPaginated(t *testing.T) {
 	keeper, ctx := keepertest.WormholeKeeper(t)
 	wctx := sdk.WrapSDKContext(ctx)
-	msgs, _ := createNGuardianValidator(keeper, ctx, 5)
+	msgs, _ := createNPhylaxValidator(keeper, ctx, 5)
 
-	request := func(next []byte, offset, limit uint64, total bool) *types.QueryAllGuardianValidatorRequest {
-		return &types.QueryAllGuardianValidatorRequest{
+	request := func(next []byte, offset, limit uint64, total bool) *types.QueryAllPhylaxValidatorRequest {
+		return &types.QueryAllPhylaxValidatorRequest{
 			Pagination: &query.PageRequest{
 				Key:        next,
 				Offset:     offset,
@@ -86,12 +86,12 @@ func TestGuardianValidatorQueryPaginated(t *testing.T) {
 	t.Run("ByOffset", func(t *testing.T) {
 		step := 2
 		for i := 0; i < len(msgs); i += step {
-			resp, err := keeper.GuardianValidatorAll(wctx, request(nil, uint64(i), uint64(step), false))
+			resp, err := keeper.PhylaxValidatorAll(wctx, request(nil, uint64(i), uint64(step), false))
 			require.NoError(t, err)
-			require.LessOrEqual(t, len(resp.GuardianValidator), step)
+			require.LessOrEqual(t, len(resp.PhylaxValidator), step)
 			require.Subset(t,
 				nullify.Fill(msgs),
-				nullify.Fill(resp.GuardianValidator),
+				nullify.Fill(resp.PhylaxValidator),
 			)
 		}
 	})
@@ -99,27 +99,27 @@ func TestGuardianValidatorQueryPaginated(t *testing.T) {
 		step := 2
 		var next []byte
 		for i := 0; i < len(msgs); i += step {
-			resp, err := keeper.GuardianValidatorAll(wctx, request(next, 0, uint64(step), false))
+			resp, err := keeper.PhylaxValidatorAll(wctx, request(next, 0, uint64(step), false))
 			require.NoError(t, err)
-			require.LessOrEqual(t, len(resp.GuardianValidator), step)
+			require.LessOrEqual(t, len(resp.PhylaxValidator), step)
 			require.Subset(t,
 				nullify.Fill(msgs),
-				nullify.Fill(resp.GuardianValidator),
+				nullify.Fill(resp.PhylaxValidator),
 			)
 			next = resp.Pagination.NextKey
 		}
 	})
 	t.Run("Total", func(t *testing.T) {
-		resp, err := keeper.GuardianValidatorAll(wctx, request(nil, 0, 0, true))
+		resp, err := keeper.PhylaxValidatorAll(wctx, request(nil, 0, 0, true))
 		require.NoError(t, err)
 		require.Equal(t, len(msgs), int(resp.Pagination.Total))
 		require.ElementsMatch(t,
 			nullify.Fill(msgs),
-			nullify.Fill(resp.GuardianValidator),
+			nullify.Fill(resp.PhylaxValidator),
 		)
 	})
 	t.Run("InvalidRequest", func(t *testing.T) {
-		_, err := keeper.GuardianValidatorAll(wctx, nil)
+		_, err := keeper.PhylaxValidatorAll(wctx, nil)
 		require.ErrorIs(t, err, status.Error(codes.InvalidArgument, "invalid request"))
 	})
 }

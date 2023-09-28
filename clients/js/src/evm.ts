@@ -56,10 +56,10 @@ export async function query_contract_evm(
 
       const core = Implementation__factory.connect(contract_address, provider);
       result.address = contract_address;
-      result.currentGuardianSetIndex = await core.getCurrentGuardianSetIndex();
+      result.currentPhylaxSetIndex = await core.getCurrentPhylaxSetIndex();
       const guardianSetsPromise = Promise.all(
-        [...Array(result.currentGuardianSetIndex + 1).keys()].map((i) =>
-          core.getGuardianSet(i)
+        [...Array(result.currentPhylaxSetIndex + 1).keys()].map((i) =>
+          core.getPhylaxSet(i)
         )
       );
       const [
@@ -73,7 +73,7 @@ export async function query_contract_evm(
         implementationSlot,
         guardianSets,
       ] = await Promise.all([
-        core.getGuardianSetExpiry(),
+        core.getPhylaxSetExpiry(),
         core.chainId(),
         maybeUnsupported(core.evmChainId()),
         maybeUnsupported(core.isFork()),
@@ -335,10 +335,10 @@ export async function execute_evm(
       const c = new Implementation__factory(signer);
       const cb = c.attach(contract_address);
       switch (payload.type) {
-        case "GuardianSetUpgrade":
+        case "PhylaxSetUpgrade":
           console.log("Submitting new guardian set");
           console.log(
-            "Hash: " + (await cb.submitNewGuardianSet(vaa, overrides)).hash
+            "Hash: " + (await cb.submitNewPhylaxSet(vaa, overrides)).hash
           );
           break;
         case "ContractUpgrade":
@@ -551,7 +551,7 @@ export async function transferEVM(
  * @param rpc the JSON RPC endpoint (needs to be hardhat of anvil)
  * @param contract_address address of the core bridge contract
  * @param guardian_addresses addresses of the desired guardian set to upgrade to
- * @param newGuardianSetIndex if specified, the new guardian set will be
+ * @param newPhylaxSetIndex if specified, the new guardian set will be
  * written into this guardian set index, and the guardian set index of the
  * contract changed to it.
  * If unspecified, then the current guardian set index will be overridden.
@@ -563,7 +563,7 @@ export async function hijack_evm(
   rpc: string,
   contract_address: string,
   guardian_addresses: string[],
-  newGuardianSetIndex: number | undefined
+  newPhylaxSetIndex: number | undefined
 ): Promise<void> {
   const GUARDIAN_SETS_SLOT = 0x02;
   const GUARDIAN_SET_INDEX_SLOT = 0x3;
@@ -577,23 +577,23 @@ export async function hijack_evm(
     ["uint32", "uint32"]
   );
   console.log("Attempting to hijack core bridge guardian set.");
-  const current_set = await core.getGuardianSet(guardianSetIndex);
+  const current_set = await core.getPhylaxSet(guardianSetIndex);
   console.log(`Current guardian set (index ${guardianSetIndex}):`);
   console.log(current_set[0]);
 
-  if (newGuardianSetIndex !== undefined) {
+  if (newPhylaxSetIndex !== undefined) {
     await setStorageAt(
       rpc,
       contract_address,
       GUARDIAN_SET_INDEX_SLOT,
       ["uint32", "uint32"],
-      [newGuardianSetIndex, guardianSetExpiry]
+      [newPhylaxSetIndex, guardianSetExpiry]
     );
-    guardianSetIndex = await core.getCurrentGuardianSetIndex();
-    if (newGuardianSetIndex !== guardianSetIndex) {
+    guardianSetIndex = await core.getCurrentPhylaxSetIndex();
+    if (newPhylaxSetIndex !== guardianSetIndex) {
       throw Error("Failed to update guardian set index.");
     } else {
-      console.log(`Guardian set index updated to ${newGuardianSetIndex}`);
+      console.log(`Phylax set index updated to ${newPhylaxSetIndex}`);
     }
   }
 
@@ -618,8 +618,8 @@ export async function hijack_evm(
     ["uint256"],
     [guardian_addresses.length]
   );
-  const after_guardian_set_index = await core.getCurrentGuardianSetIndex();
-  const new_set = await core.getGuardianSet(after_guardian_set_index);
+  const after_guardian_set_index = await core.getCurrentPhylaxSetIndex();
+  const new_set = await core.getPhylaxSet(after_guardian_set_index);
   console.log(`Current guardian set (index ${after_guardian_set_index}):`);
   console.log(new_set[0]);
   console.log("Success.");

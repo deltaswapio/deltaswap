@@ -10,7 +10,7 @@ interface Structs {
 		bytes32 governanceContract;
 	}
 
-	struct GuardianSet {
+	struct PhylaxSet {
 		address[] keys;
 		uint32 expirationTime;
 	}

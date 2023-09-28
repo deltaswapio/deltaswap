@@ -4,7 +4,7 @@
 pragma solidity ^0.8.0;
 
 interface IWormhole {
-    struct GuardianSet {
+    struct PhylaxSet {
         address[] keys;
         uint32 expirationTime;
     }
@@ -40,13 +40,13 @@ interface IWormhole {
         address newContract;
     }
 
-    struct GuardianSetUpgrade {
+    struct PhylaxSetUpgrade {
         bytes32 module;
         uint8 action;
         uint16 chain;
 
-        GuardianSet newGuardianSet;
-        uint32 newGuardianSetIndex;
+        PhylaxSet newPhylaxSet;
+        uint32 newPhylaxSetIndex;
     }
 
     struct SetMessageFee {
@@ -76,7 +76,7 @@ interface IWormhole {
 
     event LogMessagePublished(address indexed sender, uint64 sequence, uint32 nonce, bytes payload, uint8 consistencyLevel);
     event ContractUpgraded(address indexed oldContract, address indexed newContract);
-    event GuardianSetAdded(uint32 indexed index);
+    event PhylaxSetAdded(uint32 indexed index);
 
     function publishMessage(
         uint32 nonce,
@@ -90,17 +90,17 @@ interface IWormhole {
 
     function verifyVM(VM memory vm) external view returns (bool valid, string memory reason);
 
-    function verifySignatures(bytes32 hash, Signature[] memory signatures, GuardianSet memory guardianSet) external pure returns (bool valid, string memory reason);
+    function verifySignatures(bytes32 hash, Signature[] memory signatures, PhylaxSet memory guardianSet) external pure returns (bool valid, string memory reason);
 
     function parseVM(bytes memory encodedVM) external pure returns (VM memory vm);
 
-    function quorum(uint numGuardians) external pure returns (uint numSignaturesRequiredForQuorum);
+    function quorum(uint numPhylaxs) external pure returns (uint numSignaturesRequiredForQuorum);
 
-    function getGuardianSet(uint32 index) external view returns (GuardianSet memory);
+    function getPhylaxSet(uint32 index) external view returns (PhylaxSet memory);
 
-    function getCurrentGuardianSetIndex() external view returns (uint32);
+    function getCurrentPhylaxSetIndex() external view returns (uint32);
 
-    function getGuardianSetExpiry() external view returns (uint32);
+    function getPhylaxSetExpiry() external view returns (uint32);
 
     function governanceActionIsConsumed(bytes32 hash) external view returns (bool);
 
@@ -122,7 +122,7 @@ interface IWormhole {
 
     function parseContractUpgrade(bytes memory encodedUpgrade) external pure returns (ContractUpgrade memory cu);
 
-    function parseGuardianSetUpgrade(bytes memory encodedUpgrade) external pure returns (GuardianSetUpgrade memory gsu);
+    function parsePhylaxSetUpgrade(bytes memory encodedUpgrade) external pure returns (PhylaxSetUpgrade memory gsu);
 
     function parseSetMessageFee(bytes memory encodedSetMessageFee) external pure returns (SetMessageFee memory smf);
 
@@ -134,7 +134,7 @@ interface IWormhole {
 
     function submitSetMessageFee(bytes memory _vm) external;
 
-    function submitNewGuardianSet(bytes memory _vm) external;
+    function submitNewPhylaxSet(bytes memory _vm) external;
 
     function submitTransferFees(bytes memory _vm) external;
 

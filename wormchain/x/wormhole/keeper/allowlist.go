@@ -53,17 +53,17 @@ func (k Keeper) GetAllAllowedAddresses(ctx sdk.Context) (list []types.ValidatorA
 // * Is in the current guardian set, OR
 // * Is in a future guardian set
 func (k Keeper) IsAddressValidatorOrFutureValidator(ctx sdk.Context, addr string) bool {
-	currentIndex, _ := k.GetConsensusGuardianSetIndex(ctx)
-	matchedValidator, found := k.GetGuardianValidatorByValidatorAddress(ctx, addr)
+	currentIndex, _ := k.GetConsensusPhylaxSetIndex(ctx)
+	matchedValidator, found := k.GetPhylaxValidatorByValidatorAddress(ctx, addr)
 	if !found {
 		return false
 	}
 	// check that the validator is in a current or future guardian set
-	guardianSets := k.GetAllGuardianSet(ctx)
+	guardianSets := k.GetAllPhylaxSet(ctx)
 	for _, gSet := range guardianSets {
 		if gSet.Index >= currentIndex.Index {
 			for _, gKey := range gSet.Keys {
-				if bytes.Equal(matchedValidator.GuardianKey, gKey) {
+				if bytes.Equal(matchedValidator.PhylaxKey, gKey) {
 					return true
 				}
 			}
@@ -72,12 +72,12 @@ func (k Keeper) IsAddressValidatorOrFutureValidator(ctx sdk.Context, addr string
 	return false
 }
 
-func (k Keeper) GetGuardianValidatorByValidatorAddress(ctx sdk.Context, addr string) (validator types.GuardianValidator, found bool) {
+func (k Keeper) GetPhylaxValidatorByValidatorAddress(ctx sdk.Context, addr string) (validator types.PhylaxValidator, found bool) {
 	addrBz, err := sdk.AccAddressFromBech32(addr)
 	if err != nil {
 		return
 	}
-	validators := k.GetAllGuardianValidator(ctx)
+	validators := k.GetAllPhylaxValidator(ctx)
 	for _, val := range validators {
 		if bytes.Equal(val.ValidatorAddr, addrBz) {
 			return val, true

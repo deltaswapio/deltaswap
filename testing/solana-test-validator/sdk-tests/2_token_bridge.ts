@@ -15,7 +15,7 @@ import {
   TOKEN_PROGRAM_ID,
 } from "@solana/spl-token";
 import {
-  MockGuardians,
+  MockPhylaxs,
   GovernanceEmitter,
   MockEthereumTokenBridge,
 } from "../../../sdk/js/src/mock";
@@ -106,7 +106,7 @@ describe("Token Bridge", () => {
   const wallet = new NodeWallet(web3.Keypair.generate());
 
   // for signing wormhole messages
-  const guardians = new MockGuardians(GUARDIAN_SET_INDEX + 1, GUARDIAN_KEYS);
+  const guardians = new MockPhylaxs(GUARDIAN_SET_INDEX + 1, GUARDIAN_KEYS);
 
   const localVariables: any = {};
 

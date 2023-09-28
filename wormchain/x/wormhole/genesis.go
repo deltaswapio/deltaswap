@@ -10,8 +10,8 @@ import (
 // state.
 func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) {
 	// Set all the guardianSet
-	for _, elem := range genState.GuardianSetList {
-		if _, err := k.AppendGuardianSet(ctx, elem); err != nil {
+	for _, elem := range genState.PhylaxSetList {
+		if _, err := k.AppendPhylaxSet(ctx, elem); err != nil {
 			panic(err)
 		}
 	}
@@ -29,12 +29,12 @@ func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) 
 		k.SetSequenceCounter(ctx, elem)
 	}
 	// Set if defined
-	if genState.ConsensusGuardianSetIndex != nil {
-		k.SetConsensusGuardianSetIndex(ctx, *genState.ConsensusGuardianSetIndex)
+	if genState.ConsensusPhylaxSetIndex != nil {
+		k.SetConsensusPhylaxSetIndex(ctx, *genState.ConsensusPhylaxSetIndex)
 	}
 	// Set all the guardianValidator
-	for _, elem := range genState.GuardianValidatorList {
-		k.SetGuardianValidator(ctx, elem)
+	for _, elem := range genState.PhylaxValidatorList {
+		k.SetPhylaxValidator(ctx, elem)
 	}
 	for _, elem := range genState.AllowedAddresses {
 		k.SetValidatorAllowedAddress(ctx, elem)
@@ -51,7 +51,7 @@ func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) 
 func ExportGenesis(ctx sdk.Context, k keeper.Keeper) *types.GenesisState {
 	genesis := types.DefaultGenesis()
 
-	genesis.GuardianSetList = k.GetAllGuardianSet(ctx)
+	genesis.PhylaxSetList = k.GetAllPhylaxSet(ctx)
 
 	// Get all config
 	config, found := k.GetConfig(ctx)
@@ -60,12 +60,12 @@ func ExportGenesis(ctx sdk.Context, k keeper.Keeper) *types.GenesisState {
 	}
 	genesis.ReplayProtectionList = k.GetAllReplayProtection(ctx)
 	genesis.SequenceCounterList = k.GetAllSequenceCounter(ctx)
-	// Get all consensusGuardianSetIndex
-	consensusGuardianSetIndex, found := k.GetConsensusGuardianSetIndex(ctx)
+	// Get all consensusPhylaxSetIndex
+	consensusPhylaxSetIndex, found := k.GetConsensusPhylaxSetIndex(ctx)
 	if found {
-		genesis.ConsensusGuardianSetIndex = &consensusGuardianSetIndex
+		genesis.ConsensusPhylaxSetIndex = &consensusPhylaxSetIndex
 	}
-	genesis.GuardianValidatorList = k.GetAllGuardianValidator(ctx)
+	genesis.PhylaxValidatorList = k.GetAllPhylaxValidator(ctx)
 	genesis.AllowedAddresses = k.GetAllAllowedAddresses(ctx)
 	genesis.WasmInstantiateAllowlist = k.GetAllWasmInstiateAllowedAddresses(ctx)
 	genesis.IbcComposabilityMwContract = k.GetIbcComposabilityMwContract(ctx)

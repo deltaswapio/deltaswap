@@ -148,7 +148,7 @@ contract MockWormhole is IWormhole {
 
     function initialize() external {}
 
-    function quorum(uint256 /*numGuardians*/ )
+    function quorum(uint256 /*numPhylaxs*/ )
         external
         pure
         returns (uint256 /*numSignaturesRequiredForQuorum*/ )
@@ -167,15 +167,15 @@ contract MockWormhole is IWormhole {
         return boundEvmChainId;
     }
 
-    function getCurrentGuardianSetIndex() external pure returns (uint32) {
+    function getCurrentPhylaxSetIndex() external pure returns (uint32) {
         return 0;
     }
 
-    function getGuardianSet(uint32 /*index*/ ) external pure returns (GuardianSet memory) {
-        revert("unsupported getGuardianSet in wormhole mock");
+    function getPhylaxSet(uint32 /*index*/ ) external pure returns (PhylaxSet memory) {
+        revert("unsupported getPhylaxSet in wormhole mock");
     }
 
-    function getGuardianSetExpiry() external pure returns (uint32) {
+    function getPhylaxSetExpiry() external pure returns (uint32) {
         return 0;
     }
 
@@ -218,7 +218,7 @@ contract MockWormhole is IWormhole {
     function verifySignatures(
         bytes32, /*hash*/
         Signature[] memory, /*signatures*/
-        GuardianSet memory /*guardianSet*/
+        PhylaxSet memory /*guardianSet*/
     ) external pure returns (bool, /*valid*/ string memory /*reason*/ ) {
         revert("unsupported verifySignatures in wormhole mock");
     }
@@ -231,12 +231,12 @@ contract MockWormhole is IWormhole {
         revert("unsupported parseContractUpgrade in wormhole mock");
     }
 
-    function parseGuardianSetUpgrade(bytes memory /*encodedUpgrade*/ )
+    function parsePhylaxSetUpgrade(bytes memory /*encodedUpgrade*/ )
         external
         pure
-        returns (GuardianSetUpgrade memory /*gsu*/ )
+        returns (PhylaxSetUpgrade memory /*gsu*/ )
     {
-        revert("unsupported parseGuardianSetUpgrade in wormhole mock");
+        revert("unsupported parsePhylaxSetUpgrade in wormhole mock");
     }
 
     function parseSetMessageFee(bytes memory /*encodedSetMessageFee*/ )
@@ -275,8 +275,8 @@ contract MockWormhole is IWormhole {
         currentMsgFee = newFee;
     }
 
-    function submitNewGuardianSet(bytes memory /*_vm*/ ) external pure {
-        revert("unsupported submitNewGuardianSet in wormhole mock");
+    function submitNewPhylaxSet(bytes memory /*_vm*/ ) external pure {
+        revert("unsupported submitNewPhylaxSet in wormhole mock");
     }
 
     function submitTransferFees(bytes memory /*_vm*/ ) external pure {

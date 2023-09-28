@@ -89,7 +89,7 @@ export type VAAPayload = {
 // Governance payload type
 export enum GovenanceMessageType {
 	SetUpdateHash = 1,
-	UpdateGuardians = 2,
+	UpdatePhylaxs = 2,
 	SetMessageFee = 3,
 	SendAlgo = 4,
 }
@@ -101,7 +101,7 @@ export type GovernancePayload = {
 	type: GovenanceMessageType.SetUpdateHash
 	updateHash: Uint8Array
 } | {
-	type: GovenanceMessageType.UpdateGuardians
+	type: GovenanceMessageType.UpdatePhylaxs
 	oldGSIndex: number
 	newGSIndex: number
 	guardians: Uint8Array[]

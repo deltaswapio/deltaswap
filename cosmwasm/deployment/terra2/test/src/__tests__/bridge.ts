@@ -1320,7 +1320,7 @@ function alwaysPassTests(shutdownMode: boolean, pass: number) {
     pass.toString() +
     ")";
   describe(name, () => {
-    test("Query GuardianSetInfo", (done) => {
+    test("Query PhylaxSetInfo", (done) => {
       (async () => {
         try {
           const [client] = await makeProviderAndWallet();
@@ -1335,7 +1335,7 @@ function alwaysPassTests(shutdownMode: boolean, pass: number) {
           done();
         } catch (e) {
           console.error(e);
-          done("Failed to Query GuardianSetInfo");
+          done("Failed to Query PhylaxSetInfo");
         }
       })();
     });

@@ -50,7 +50,7 @@ export async function waitForRelay(quantity?: number) {
   );
 }
 
-export const getGuardianRPC = (network: Network, ci: boolean) => {
+export const getPhylaxRPC = (network: Network, ci: boolean) => {
   return (
     process.env.GUARDIAN_RPC ||
     (ci

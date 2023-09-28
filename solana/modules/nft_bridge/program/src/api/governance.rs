@@ -57,7 +57,7 @@ pub struct UpgradeContract<'b> {
     /// Payer for account creation (vaa-claim)
     pub payer: Mut<Signer<Info<'b>>>,
 
-    /// GuardianSet change VAA
+    /// PhylaxSet change VAA
     pub vaa: PayloadMessage<'b, GovernancePayloadUpgrade>,
 
     /// Claim account representing whether the vaa has already been consumed.

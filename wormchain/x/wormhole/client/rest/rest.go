@@ -14,16 +14,16 @@ import (
 )
 
 type (
-	// GuardianSetUpdateProposalReq defines a guardian set update proposal request body.
-	GuardianSetUpdateProposalReq struct {
+	// PhylaxSetUpdateProposalReq defines a guardian set update proposal request body.
+	PhylaxSetUpdateProposalReq struct {
 		BaseReq rest.BaseReq `json:"base_req" yaml:"base_req"`
 
-		Title            string         `json:"title" yaml:"title"`
-		Description      string         `json:"description" yaml:"description"`
-		GuardianSetIndex uint32         `json:"guardianSetIndex" yaml:"guardianSetIndex"`
-		GuardianSetKeys  []string       `json:"guardianSetKeys" yaml:"guardianSetKeys"`
-		Proposer         sdk.AccAddress `json:"proposer" yaml:"proposer"`
-		Deposit          sdk.Coins      `json:"deposit" yaml:"deposit"`
+		Title          string         `json:"title" yaml:"title"`
+		Description    string         `json:"description" yaml:"description"`
+		PhylaxSetIndex uint32         `json:"guardianSetIndex" yaml:"guardianSetIndex"`
+		PhylaxSetKeys  []string       `json:"guardianSetKeys" yaml:"guardianSetKeys"`
+		Proposer       sdk.AccAddress `json:"proposer" yaml:"proposer"`
+		Deposit        sdk.Coins      `json:"deposit" yaml:"deposit"`
 	}
 
 	// WormholeGovernanceMessageProposalReq defines a wormhole governance message proposal request body.
@@ -41,18 +41,18 @@ type (
 	}
 )
 
-// ProposalGuardianSetUpdateRESTHandler returns a ProposalRESTHandler that exposes the guardian set update
+// ProposalPhylaxSetUpdateRESTHandler returns a ProposalRESTHandler that exposes the guardian set update
 // REST handler with a given sub-route.
-func ProposalGuardianSetUpdateRESTHandler(clientCtx client.Context) govrest.ProposalRESTHandler {
+func ProposalPhylaxSetUpdateRESTHandler(clientCtx client.Context) govrest.ProposalRESTHandler {
 	return govrest.ProposalRESTHandler{
 		SubRoute: "wormhole_guardian_update",
-		Handler:  postProposalGuardianSetUpdateHandlerFn(clientCtx),
+		Handler:  postProposalPhylaxSetUpdateHandlerFn(clientCtx),
 	}
 }
 
-func postProposalGuardianSetUpdateHandlerFn(clientCtx client.Context) http.HandlerFunc {
+func postProposalPhylaxSetUpdateHandlerFn(clientCtx client.Context) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		var req GuardianSetUpdateProposalReq
+		var req PhylaxSetUpdateProposalReq
 		if !rest.ReadRESTReq(w, r, clientCtx.LegacyAmino, &req) {
 			return
 		}
@@ -62,8 +62,8 @@ func postProposalGuardianSetUpdateHandlerFn(clientCtx client.Context) http.Handl
 			return
 		}
 
-		keys := make([][]byte, len(req.GuardianSetKeys))
-		for i, keyString := range req.GuardianSetKeys {
+		keys := make([][]byte, len(req.PhylaxSetKeys))
+		for i, keyString := range req.PhylaxSetKeys {
 			keyBytes, err := hex.DecodeString(keyString)
 			if rest.CheckBadRequestError(w, err) {
 				return
@@ -71,8 +71,8 @@ func postProposalGuardianSetUpdateHandlerFn(clientCtx client.Context) http.Handl
 			keys[i] = keyBytes
 		}
 
-		content := types.NewGuardianSetUpdateProposal(req.Title, req.Description, types.GuardianSet{
-			Index:          req.GuardianSetIndex,
+		content := types.NewPhylaxSetUpdateProposal(req.Title, req.Description, types.PhylaxSet{
+			Index:          req.PhylaxSetIndex,
 			Keys:           keys,
 			ExpirationTime: 0,
 		})

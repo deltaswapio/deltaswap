@@ -61,7 +61,7 @@ export async function execute_injective(
         vaa: fromUint8Array(vaa),
       };
       switch (payload.type) {
-        case "GuardianSetUpgrade":
+        case "PhylaxSetUpgrade":
           console.log("Submitting new guardian set");
           break;
         case "ContractUpgrade":

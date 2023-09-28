@@ -781,12 +781,12 @@ func runNode(cmd *cobra.Command, args []string) {
 
 	// In devnet mode, we generate a deterministic guardian key and write it to disk.
 	if *unsafeDevMode {
-		gk, err := generateDevnetGuardianKey()
+		gk, err := generateDevnetPhylaxKey()
 		if err != nil {
 			logger.Fatal("failed to generate devnet guardian key", zap.Error(err))
 		}
 
-		err = writeGuardianKey(gk, "auto-generated deterministic devnet key", *guardianKeyPath, true)
+		err = writePhylaxKey(gk, "auto-generated deterministic devnet key", *guardianKeyPath, true)
 		if err != nil {
 			logger.Fatal("failed to write devnet guardian key", zap.Error(err))
 		}
@@ -796,8 +796,8 @@ func runNode(cmd *cobra.Command, args []string) {
 	db := db.OpenDb(logger, dataDir)
 	defer db.Close()
 
-	// Guardian key
-	gk, err := loadGuardianKey(*guardianKeyPath)
+	// Phylax key
+	gk, err := loadPhylaxKey(*guardianKeyPath)
 	if err != nil {
 		logger.Fatal("failed to load guardian key", zap.Error(err))
 	}
@@ -824,10 +824,10 @@ func runNode(cmd *cobra.Command, args []string) {
 				logger.Info("Error resolving guardian-0.guardian. Trying again...")
 				time.Sleep(time.Second)
 			}
-			// TODO this is a hack. If this is not the bootstrap Guardian, we wait 10s such that the bootstrap Guardian has enough time to start.
+			// TODO this is a hack. If this is not the bootstrap Phylax, we wait 10s such that the bootstrap Phylax has enough time to start.
 			// This may no longer be necessary because now the p2p.go ensures that it can connect to at least one bootstrap peer and will
 			// exit the whole guardian if it is unable to. Sleeping here for a bit may reduce overall startup time by preventing unnecessary restarts, though.
-			logger.Info("This is not a bootstrap Guardian. Waiting another 10 seconds for the bootstrap guardian to come online.")
+			logger.Info("This is not a bootstrap Phylax. Waiting another 10 seconds for the bootstrap guardian to come online.")
 			time.Sleep(time.Second * 10)
 		}
 	} else {
@@ -1059,11 +1059,11 @@ func runNode(cmd *cobra.Command, args []string) {
 
 	if shouldStart(ethRPC) {
 		wc := &evm.WatcherConfig{
-			NetworkID:              "eth",
-			ChainID:                vaa.ChainIDEthereum,
-			Rpc:                    *ethRPC,
-			Contract:               *ethContract,
-			GuardianSetUpdateChain: true,
+			NetworkID:            "eth",
+			ChainID:              vaa.ChainIDEthereum,
+			Rpc:                  *ethRPC,
+			Contract:             *ethContract,
+			PhylaxSetUpdateChain: true,
 		}
 
 		watcherConfigs = append(watcherConfigs, wc)
@@ -1416,38 +1416,38 @@ func runNode(cmd *cobra.Command, args []string) {
 		}
 	}
 
-	guardianNode := node.NewGuardianNode(
+	guardianNode := node.NewPhylaxNode(
 		env,
 		gk,
 	)
 
-	guardianOptions := []*node.GuardianOption{
-		node.GuardianOptionDatabase(db),
-		node.GuardianOptionWatchers(watcherConfigs, ibcWatcherConfig),
-		node.GuardianOptionAccountant(*accountantContract, *accountantWS, *accountantCheckEnabled, accountantWormchainConn),
-		node.GuardianOptionGovernor(*chainGovernorEnabled),
-		node.GuardianOptionGatewayRelayer(*gatewayRelayerContract, gatewayRelayerWormchainConn),
-		node.GuardianOptionAdminService(*adminSocketPath, ethRPC, ethContract, rpcMap),
-		node.GuardianOptionP2P(p2pKey, *p2pNetworkID, *p2pBootstrap, *nodeName, *disableHeartbeatVerify, *p2pPort, ibc.GetFeatures),
-		node.GuardianOptionStatusServer(*statusAddr),
-		node.GuardianOptionProcessor(),
+	guardianOptions := []*node.PhylaxOption{
+		node.PhylaxOptionDatabase(db),
+		node.PhylaxOptionWatchers(watcherConfigs, ibcWatcherConfig),
+		node.PhylaxOptionAccountant(*accountantContract, *accountantWS, *accountantCheckEnabled, accountantWormchainConn),
+		node.PhylaxOptionGovernor(*chainGovernorEnabled),
+		node.PhylaxOptionGatewayRelayer(*gatewayRelayerContract, gatewayRelayerWormchainConn),
+		node.PhylaxOptionAdminService(*adminSocketPath, ethRPC, ethContract, rpcMap),
+		node.PhylaxOptionP2P(p2pKey, *p2pNetworkID, *p2pBootstrap, *nodeName, *disableHeartbeatVerify, *p2pPort, ibc.GetFeatures),
+		node.PhylaxOptionStatusServer(*statusAddr),
+		node.PhylaxOptionProcessor(),
 	}
 
 	if shouldStart(publicGRPCSocketPath) {
-		guardianOptions = append(guardianOptions, node.GuardianOptionPublicRpcSocket(*publicGRPCSocketPath, publicRpcLogDetail))
+		guardianOptions = append(guardianOptions, node.PhylaxOptionPublicRpcSocket(*publicGRPCSocketPath, publicRpcLogDetail))
 
 		if shouldStart(publicRPC) {
-			guardianOptions = append(guardianOptions, node.GuardianOptionPublicrpcTcpService(*publicRPC, publicRpcLogDetail))
+			guardianOptions = append(guardianOptions, node.PhylaxOptionPublicrpcTcpService(*publicRPC, publicRpcLogDetail))
 		}
 
 		if shouldStart(publicWeb) {
 			guardianOptions = append(guardianOptions,
-				node.GuardianOptionPublicWeb(*publicWeb, *publicGRPCSocketPath, *tlsHostname, *tlsProdEnv, path.Join(*dataDir, "autocert")),
+				node.PhylaxOptionPublicWeb(*publicWeb, *publicGRPCSocketPath, *tlsHostname, *tlsProdEnv, path.Join(*dataDir, "autocert")),
 			)
 		}
 	}
 
-	// Run supervisor with Guardian Node as root.
+	// Run supervisor with Phylax Node as root.
 	supervisor.New(rootCtx, logger, guardianNode.Run(rootCtxCancel, guardianOptions...),
 		// It's safer to crash and restart the process in case we encounter a panic,
 		// rather than attempting to reschedule the runnable.

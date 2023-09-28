@@ -20,7 +20,7 @@ pub static BRIDGE_CONTRACTS_KEY: &[u8] = b"bridge_contracts";
 pub static TOKEN_ID_HASHES_KEY: &[u8] = b"token_id_hashes";
 pub static SPL_CACHE_KEY: &[u8] = b"spl_cache";
 
-// Guardian set information
+// Phylax set information
 #[derive(Serialize, Deserialize, Clone, Debug, PartialEq, Eq, JsonSchema)]
 pub struct ConfigInfo {
     // governance contract details

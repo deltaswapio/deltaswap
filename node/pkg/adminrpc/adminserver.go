@@ -87,19 +87,19 @@ func NewPrivService(
 	}
 }
 
-// adminGuardianSetUpdateToVAA converts a nodev1.GuardianSetUpdate message to its canonical VAA representation.
+// adminPhylaxSetUpdateToVAA converts a nodev1.PhylaxSetUpdate message to its canonical VAA representation.
 // Returns an error if the data is invalid.
-func adminGuardianSetUpdateToVAA(req *nodev1.GuardianSetUpdate, timestamp time.Time, guardianSetIndex uint32, nonce uint32, sequence uint64) (*vaa.VAA, error) {
-	if len(req.Guardians) == 0 {
+func adminPhylaxSetUpdateToVAA(req *nodev1.PhylaxSetUpdate, timestamp time.Time, guardianSetIndex uint32, nonce uint32, sequence uint64) (*vaa.VAA, error) {
+	if len(req.Phylaxs) == 0 {
 		return nil, errors.New("empty guardian set specified")
 	}
 
-	if len(req.Guardians) > common.MaxGuardianCount {
-		return nil, fmt.Errorf("too many guardians - %d, maximum is %d", len(req.Guardians), common.MaxGuardianCount)
+	if len(req.Phylaxs) > common.MaxPhylaxCount {
+		return nil, fmt.Errorf("too many guardians - %d, maximum is %d", len(req.Phylaxs), common.MaxPhylaxCount)
 	}
 
-	addrs := make([]ethcommon.Address, len(req.Guardians))
-	for i, g := range req.Guardians {
+	addrs := make([]ethcommon.Address, len(req.Phylaxs))
+	for i, g := range req.Phylaxs {
 		if !ethcommon.IsHexAddress(g.Pubkey) {
 			return nil, fmt.Errorf("invalid pubkey format at index %d (%s)", i, g.Name)
 		}
@@ -115,7 +115,7 @@ func adminGuardianSetUpdateToVAA(req *nodev1.GuardianSetUpdate, timestamp time.T
 	}
 
 	v := vaa.CreateGovernanceVAA(timestamp, nonce, sequence, guardianSetIndex,
-		vaa.BodyGuardianSetUpdate{
+		vaa.BodyPhylaxSetUpdate{
 			Keys:     addrs,
 			NewIndex: guardianSetIndex + 1,
 		}.Serialize())
@@ -551,8 +551,8 @@ func GovMsgToVaa(message *nodev1.GovernanceMessage, currentSetIndex uint32, time
 	)
 
 	switch payload := message.Payload.(type) {
-	case *nodev1.GovernanceMessage_GuardianSet:
-		v, err = adminGuardianSetUpdateToVAA(payload.GuardianSet, timestamp, currentSetIndex, message.Nonce, message.Sequence)
+	case *nodev1.GovernanceMessage_PhylaxSet:
+		v, err = adminPhylaxSetUpdateToVAA(payload.PhylaxSet, timestamp, currentSetIndex, message.Nonce, message.Sequence)
 	case *nodev1.GovernanceMessage_ContractUpgrade:
 		v, err = adminContractUpgradeToVAA(payload.ContractUpgrade, timestamp, currentSetIndex, message.Nonce, message.Sequence)
 	case *nodev1.GovernanceMessage_BridgeRegisterChain:
@@ -887,7 +887,7 @@ func (s *nodePrivilegedService) SignExistingVAA(ctx context.Context, req *nodev1
 		return nil, fmt.Errorf("failed to unmarshal VAA: %w", err)
 	}
 
-	if req.NewGuardianSetIndex <= v.GuardianSetIndex {
+	if req.NewPhylaxSetIndex <= v.PhylaxSetIndex {
 		return nil, errors.New("new guardian set index must be higher than provided VAA")
 	}
 
@@ -895,23 +895,23 @@ func (s *nodePrivilegedService) SignExistingVAA(ctx context.Context, req *nodev1
 		return nil, errors.New("the node needs to have an Ethereum connection configured to sign existing VAAs")
 	}
 
-	var gs *common.GuardianSet
-	if cachedGs, exists := s.gsCache.Load(v.GuardianSetIndex); exists {
+	var gs *common.PhylaxSet
+	if cachedGs, exists := s.gsCache.Load(v.PhylaxSetIndex); exists {
 		var ok bool
-		gs, ok = cachedGs.(*common.GuardianSet)
+		gs, ok = cachedGs.(*common.PhylaxSet)
 		if !ok {
 			return nil, fmt.Errorf("internal error")
 		}
 	} else {
-		evmGs, err := s.evmConnector.GetGuardianSet(ctx, v.GuardianSetIndex)
+		evmGs, err := s.evmConnector.GetPhylaxSet(ctx, v.PhylaxSetIndex)
 		if err != nil {
-			return nil, fmt.Errorf("failed to load guardian set [%d]: %w", v.GuardianSetIndex, err)
+			return nil, fmt.Errorf("failed to load guardian set [%d]: %w", v.PhylaxSetIndex, err)
 		}
-		gs = &common.GuardianSet{
+		gs = &common.PhylaxSet{
 			Keys:  evmGs.Keys,
-			Index: v.GuardianSetIndex,
+			Index: v.PhylaxSetIndex,
 		}
-		s.gsCache.Store(v.GuardianSetIndex, gs)
+		s.gsCache.Store(v.PhylaxSetIndex, gs)
 	}
 
 	if slices.Index(gs.Keys, s.guardianAddress) != -1 {
@@ -924,11 +924,11 @@ func (s *nodePrivilegedService) SignExistingVAA(ctx context.Context, req *nodev1
 		return nil, fmt.Errorf("failed to verify existing VAA: %w", err)
 	}
 
-	if len(req.NewGuardianAddrs) > 255 {
+	if len(req.NewPhylaxAddrs) > 255 {
 		return nil, errors.New("new guardian set has too many guardians")
 	}
-	newGS := make([]ethcommon.Address, len(req.NewGuardianAddrs))
-	for i, guardianString := range req.NewGuardianAddrs {
+	newGS := make([]ethcommon.Address, len(req.NewPhylaxAddrs))
+	for i, guardianString := range req.NewPhylaxAddrs {
 		guardianAddress := ethcommon.HexToAddress(guardianString)
 		newGS[i] = guardianAddress
 	}
@@ -943,15 +943,15 @@ func (s *nodePrivilegedService) SignExistingVAA(ctx context.Context, req *nodev1
 		return nil, fmt.Errorf("duplicate guardians in the guardian set")
 	}
 
-	localGuardianIndex := slices.Index(newGS, s.guardianAddress)
-	if localGuardianIndex == -1 {
+	localPhylaxIndex := slices.Index(newGS, s.guardianAddress)
+	if localPhylaxIndex == -1 {
 		return nil, fmt.Errorf("local guardian is not a member of the new guardian set")
 	}
 
 	newVAA := &vaa.VAA{
 		Version: v.Version,
 		// Set the new guardian set index
-		GuardianSetIndex: req.NewGuardianSetIndex,
+		PhylaxSetIndex: req.NewPhylaxSetIndex,
 		// Signatures will be repopulated
 		Signatures:       nil,
 		Timestamp:        v.Timestamp,
@@ -967,7 +967,7 @@ func (s *nodePrivilegedService) SignExistingVAA(ctx context.Context, req *nodev1
 	for _, sig := range v.Signatures {
 		signerAddress := gs.Keys[sig.Index]
 		newIndex := slices.Index(newGS, signerAddress)
-		// Guardian is not part of the new set
+		// Phylax is not part of the new set
 		if newIndex == -1 {
 			continue
 		}
@@ -983,7 +983,7 @@ func (s *nodePrivilegedService) SignExistingVAA(ctx context.Context, req *nodev1
 	}
 
 	// Add local signature
-	newVAA.AddSignature(s.gk, uint8(localGuardianIndex))
+	newVAA.AddSignature(s.gk, uint8(localPhylaxIndex))
 
 	// Sort VAA signatures by guardian ID
 	slices.SortFunc(newVAA.Signatures, func(a, b *vaa.Signature) bool {

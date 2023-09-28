@@ -106,7 +106,7 @@ Options:
       --timestamp, --ts            timestamp to be used in the vaa in unix
                                    seconds                              [number]
   -p, --payload                    payload in hex format                [string]
-      --guardian-secret, --gs      Guardian's secret key                [string]
+      --guardian-secret, --gs      Phylax's secret key                [string]
 ```
 </details>
 
@@ -153,7 +153,7 @@ Commands:
 Options:
       --help             Show help                                     [boolean]
       --version          Show version number                           [boolean]
-  -g, --guardian-secret  Guardians' secret keys (CSV)        [string] [required]
+  -g, --guardian-secret  Phylaxs' secret keys (CSV)        [string] [required]
 ```
 </details>
 
@@ -404,11 +404,11 @@ sequence: 13940208096455381020n,
 consistencyLevel: 32,
 payload: {
   module: 'Core',
-  type: 'GuardianSetUpgrade',
+  type: 'PhylaxSetUpgrade',
   chain: 0,
-  newGuardianSetIndex: 2,
-  newGuardianSetLength: 19,
-  newGuardianSet: [
+  newPhylaxSetIndex: 2,
+  newPhylaxSetLength: 19,
+  newPhylaxSet: [
     '58cc3ae5c097b213ce3c81979e1b9f9570746aa5',
     'ff6cb952589bde862c25ef4392132fb9d4a42157',
     '114de8460193bdf3a2fcf81f86a09765f4762fd1',

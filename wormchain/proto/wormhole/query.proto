@@ -16,12 +16,12 @@ option go_package = "github.com/deltaswapio/deltachain/x/wormhole/types";
 // Query defines the gRPC querier service.
 service Query {
     // Queries a guardianSet by index.
-	rpc GuardianSet(QueryGetGuardianSetRequest) returns (QueryGetGuardianSetResponse) {
+	rpc PhylaxSet(QueryGetPhylaxSetRequest) returns (QueryGetPhylaxSetResponse) {
 		option (google.api.http).get = "/wormhole_foundation/deltachain/wormhole/guardianSet/{index}";
 	}
 
 	// Queries a list of guardianSet items.
-	rpc GuardianSetAll(QueryAllGuardianSetRequest) returns (QueryAllGuardianSetResponse) {
+	rpc PhylaxSetAll(QueryAllPhylaxSetRequest) returns (QueryAllPhylaxSetResponse) {
 		option (google.api.http).get = "/wormhole_foundation/deltachain/wormhole/guardianSet";
 	}
 
@@ -49,22 +49,22 @@ service Query {
 		option (google.api.http).get = "/wormhole_foundation/deltachain/wormhole/sequenceCounter";
 	}
 
-// Queries a ConsensusGuardianSetIndex by index.
-	rpc ConsensusGuardianSetIndex(QueryGetConsensusGuardianSetIndexRequest) returns (QueryGetConsensusGuardianSetIndexResponse) {
+// Queries a ConsensusPhylaxSetIndex by index.
+	rpc ConsensusPhylaxSetIndex(QueryGetConsensusPhylaxSetIndexRequest) returns (QueryGetConsensusPhylaxSetIndexResponse) {
 		option (google.api.http).get = "/wormhole_foundation/deltachain/wormhole/consensus_guardian_set_index";
 	}
-// Queries a GuardianValidator by index.
-	rpc GuardianValidator(QueryGetGuardianValidatorRequest) returns (QueryGetGuardianValidatorResponse) {
+// Queries a PhylaxValidator by index.
+	rpc PhylaxValidator(QueryGetPhylaxValidatorRequest) returns (QueryGetPhylaxValidatorResponse) {
 		option (google.api.http).get = "/wormhole_foundation/deltachain/wormhole/guardian_validator/{guardianKey}";
 	}
 
-	// Queries a list of GuardianValidator items.
-	rpc GuardianValidatorAll(QueryAllGuardianValidatorRequest) returns (QueryAllGuardianValidatorResponse) {
+	// Queries a list of PhylaxValidator items.
+	rpc PhylaxValidatorAll(QueryAllPhylaxValidatorRequest) returns (QueryAllPhylaxValidatorResponse) {
 		option (google.api.http).get = "/wormhole_foundation/deltachain/wormhole/guardian_validator";
 	}
 
-// Queries a list of LatestGuardianSetIndex items.
-	rpc LatestGuardianSetIndex(QueryLatestGuardianSetIndexRequest) returns (QueryLatestGuardianSetIndexResponse) {
+// Queries a list of LatestPhylaxSetIndex items.
+	rpc LatestPhylaxSetIndex(QueryLatestPhylaxSetIndexRequest) returns (QueryLatestPhylaxSetIndexResponse) {
 		option (google.api.http).get = "/wormhole_foundation/deltachain/wormhole/latest_guardian_set_index";
 	}
 
@@ -109,20 +109,20 @@ message QueryValidatorAllowlistResponse {
 	cosmos.base.query.v1beta1.PageResponse pagination = 3;
 }
 
-message QueryGetGuardianSetRequest {
+message QueryGetPhylaxSetRequest {
 	uint32 index = 1;
 }
 
-message QueryGetGuardianSetResponse {
-	GuardianSet GuardianSet = 1 [(gogoproto.nullable) = false];
+message QueryGetPhylaxSetResponse {
+	PhylaxSet PhylaxSet = 1 [(gogoproto.nullable) = false];
 }
 
-message QueryAllGuardianSetRequest {
+message QueryAllPhylaxSetRequest {
 	cosmos.base.query.v1beta1.PageRequest pagination = 1;
 }
 
-message QueryAllGuardianSetResponse {
-	repeated GuardianSet GuardianSet = 1 [(gogoproto.nullable) = false];
+message QueryAllPhylaxSetResponse {
+	repeated PhylaxSet PhylaxSet = 1 [(gogoproto.nullable) = false];
 	cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
 
@@ -167,34 +167,34 @@ message QueryAllSequenceCounterResponse {
 	cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
 
-message QueryGetConsensusGuardianSetIndexRequest {}
+message QueryGetConsensusPhylaxSetIndexRequest {}
 
-message QueryGetConsensusGuardianSetIndexResponse {
-	ConsensusGuardianSetIndex ConsensusGuardianSetIndex = 1 [(gogoproto.nullable) = false];
+message QueryGetConsensusPhylaxSetIndexResponse {
+	ConsensusPhylaxSetIndex ConsensusPhylaxSetIndex = 1 [(gogoproto.nullable) = false];
 }
-message QueryGetGuardianValidatorRequest {
+message QueryGetPhylaxValidatorRequest {
 	  bytes guardianKey = 1;
 
 }
 
-message QueryGetGuardianValidatorResponse {
-	GuardianValidator guardianValidator = 1 [(gogoproto.nullable) = false];
+message QueryGetPhylaxValidatorResponse {
+	PhylaxValidator guardianValidator = 1 [(gogoproto.nullable) = false];
 }
 
-message QueryAllGuardianValidatorRequest {
+message QueryAllPhylaxValidatorRequest {
 	cosmos.base.query.v1beta1.PageRequest pagination = 1;
 }
 
-message QueryAllGuardianValidatorResponse {
-	repeated GuardianValidator guardianValidator = 1 [(gogoproto.nullable) = false];
+message QueryAllPhylaxValidatorResponse {
+	repeated PhylaxValidator guardianValidator = 1 [(gogoproto.nullable) = false];
 	cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
 
-message QueryLatestGuardianSetIndexRequest {
+message QueryLatestPhylaxSetIndexRequest {
 }
 
-message QueryLatestGuardianSetIndexResponse {
-  uint32 latestGuardianSetIndex = 1;
+message QueryLatestPhylaxSetIndexResponse {
+  uint32 latestPhylaxSetIndex = 1;
 }
 
 message QueryIbcComposabilityMwContractRequest {

@@ -50,17 +50,17 @@ func GetGenesisCmd() *cobra.Command {
 		RunE:                       client.ValidateCmd,
 	}
 
-	cmd.AddCommand(CmdGenerateTestGuardianKey())
+	cmd.AddCommand(CmdGenerateTestPhylaxKey())
 	cmd.AddCommand(CmdDecodeAddress())
 	cmd.AddCommand(CmdGenerateVaa())
 	cmd.AddCommand(CmdGenerateGovernanceVaa())
-	cmd.AddCommand(CmdGenerateGuardianSetUpdatea())
+	cmd.AddCommand(CmdGeneratePhylaxSetUpdatea())
 	cmd.AddCommand(CmdTestSignAddress())
 
 	return cmd
 }
 
-func CmdGenerateTestGuardianKey() *cobra.Command {
+func CmdGenerateTestPhylaxKey() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "generate-test-guardian-keypair [output-private-key.hex] [address.hex]",
 		Short: "Generate a guardian keypair for testing use",
@@ -196,7 +196,7 @@ func parseVaaFromFlags(cmd *cobra.Command) (vaa.VAA, error) {
 
 	v := vaa.VAA{
 		Version:          uint8(1),
-		GuardianSetIndex: index,
+		PhylaxSetIndex:   index,
 		Signatures:       nil,
 		Timestamp:        time.Now(),
 		Nonce:            nonce,
@@ -329,7 +329,7 @@ func CmdGenerateGovernanceVaa() *cobra.Command {
 	return cmd
 }
 
-func CmdGenerateGuardianSetUpdatea() *cobra.Command {
+func CmdGeneratePhylaxSetUpdatea() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "generate-guardian-update-vaa",
 		Short: "generate and sign a governance vaa with any payload",
@@ -377,7 +377,7 @@ func CmdGenerateGuardianSetUpdatea() *cobra.Command {
 				set_update = append(set_update, pubkey...)
 			}
 
-			action := vaa.ActionGuardianSetUpdate
+			action := vaa.ActionPhylaxSetUpdate
 			chain := 3104
 			module := [32]byte{}
 			copy(module[:], vaa.CoreModule)

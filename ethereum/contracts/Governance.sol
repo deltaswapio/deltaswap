@@ -16,7 +16,7 @@ import "@openzeppelin/contracts/proxy/ERC1967/ERC1967Upgrade.sol";
  */
 abstract contract Governance is GovernanceStructs, Messages, Setters, ERC1967Upgrade {
     event ContractUpgraded(address indexed oldContract, address indexed newContract);
-    event GuardianSetAdded(uint32 indexed index);
+    event PhylaxSetAdded(uint32 indexed index);
 
     // "Core" (left padded)
     bytes32 constant module = 0x00000000000000000000000000000000000000000000000000000000436f7265;
@@ -76,14 +76,14 @@ abstract contract Governance is GovernanceStructs, Messages, Setters, ERC1967Upg
     /**
      * @dev Deploys a new `guardianSet` via Governance VAA/VM
      */
-    function submitNewGuardianSet(bytes memory _vm) public {
+    function submitNewPhylaxSet(bytes memory _vm) public {
         Structs.VM memory vm = parseVM(_vm);
 
         // Verify the VAA is valid before processing it
         (bool isValid, string memory reason) = verifyGovernanceVM(vm);
         require(isValid, reason);
 
-        GovernanceStructs.GuardianSetUpgrade memory upgrade = parseGuardianSetUpgrade(vm.payload);
+        GovernanceStructs.PhylaxSetUpgrade memory upgrade = parsePhylaxSetUpgrade(vm.payload);
 
         // Verify the VAA is for this module
         require(upgrade.module == module, "invalid Module");
@@ -91,24 +91,24 @@ abstract contract Governance is GovernanceStructs, Messages, Setters, ERC1967Upg
         // Verify the VAA is for this chain
         require((upgrade.chain == chainId() && !isFork()) || upgrade.chain == 0, "invalid Chain");
 
-        // Verify the Guardian Set keys are not empty, this guards
-        // against the accidential upgrade to an empty GuardianSet
-        require(upgrade.newGuardianSet.keys.length > 0, "new guardian set is empty");
+        // Verify the Phylax Set keys are not empty, this guards
+        // against the accidential upgrade to an empty PhylaxSet
+        require(upgrade.newPhylaxSet.keys.length > 0, "new guardian set is empty");
 
         // Verify that the index is incrementing via a predictable +1 pattern
-        require(upgrade.newGuardianSetIndex == getCurrentGuardianSetIndex() + 1, "index must increase in steps of 1");
+        require(upgrade.newPhylaxSetIndex == getCurrentPhylaxSetIndex() + 1, "index must increase in steps of 1");
 
         // Record the governance action as consumed to prevent reentry
         setGovernanceActionConsumed(vm.hash);
 
         // Trigger a time-based expiry of current guardianSet
-        expireGuardianSet(getCurrentGuardianSetIndex());
+        expirePhylaxSet(getCurrentPhylaxSetIndex());
 
         // Add the new guardianSet to guardianSets
-        storeGuardianSet(upgrade.newGuardianSet, upgrade.newGuardianSetIndex);
+        storePhylaxSet(upgrade.newPhylaxSet, upgrade.newPhylaxSetIndex);
 
         // Makes the new guardianSet effective
-        updateGuardianSetIndex(upgrade.newGuardianSetIndex);
+        updatePhylaxSetIndex(upgrade.newPhylaxSetIndex);
     }
 
     /**
@@ -195,7 +195,7 @@ abstract contract Governance is GovernanceStructs, Messages, Setters, ERC1967Upg
         }
 
         // only current guardianset can sign governance packets
-        if (vm.guardianSetIndex != getCurrentGuardianSetIndex()) {
+        if (vm.guardianSetIndex != getCurrentPhylaxSetIndex()) {
             return (false, "not signed by current guardian set");
         }
 

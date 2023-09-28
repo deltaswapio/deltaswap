@@ -70,7 +70,7 @@ body:
       label: Why should Wormhole add this chain?
       placeholder: |
         - Please include specific use cases for Wormhole messaging and/or token bridging, as many metrics as possible, and other details such as:
-        - **Light lift for Guardians** - Guardians are not required to run a full node for <chain> - connectivity will be via a Gateway IBC connection.
+        - **Light lift for Phylaxs** - Phylaxs are not required to run a full node for <chain> - connectivity will be via a Gateway IBC connection.
         - Other bridges that are already connected to the network.
         - Details and specific metrics about the ecosystem (dApps, users, etc).
         - Details about how your chain will use Wormhole messaging or token bridging.
@@ -116,10 +116,10 @@ body:
     id:  node-operators 
     attributes:
       label: Technical requirements for running a node 
-      description: "Any extra requirements for Guardians"
+      description: "Any extra requirements for Phylaxs"
       value: |
         If there are no extra requirements for guardians, please use the message below: 
-        None - [chain] will emit messages to Gateway via IBC. Guardians should not have to run anything additional (except for guardians who may run IBC relayers). 
+        None - [chain] will emit messages to Gateway via IBC. Phylaxs should not have to run anything additional (except for guardians who may run IBC relayers).
     validations:
       required: true
 
@@ -132,11 +132,11 @@ body:
     id: ibc-relaying 
     attributes:
       label: IBC Relaying Strategy 
-      description: "Any extra requirements for Guardians"
+      description: "Any extra requirements for Phylaxs"
       value: |
         Please describe how IBC relaying between Wormhole Gateway and your chain will be handled.
-        - Are you asking one of the Wormhole Guardians to handle IBC relaying?
-        - Do you already have an IBC relaying provider who is not a Wormhole Guardian? If so, please include as much information as possible on who they are and what kind of service agreement you have with them.
+        - Are you asking one of the Wormhole Phylaxs to handle IBC relaying?
+        - Do you already have an IBC relaying provider who is not a Wormhole Phylax? If so, please include as much information as possible on who they are and what kind of service agreement you have with them.
     validations:
       required: true
 

@@ -12,12 +12,12 @@ export interface MsgExecuteGovernanceVAA {
 
 export interface MsgExecuteGovernanceVAAResponse {}
 
-export interface MsgRegisterAccountAsGuardian {
+export interface MsgRegisterAccountAsPhylax {
   signer: string;
   signature: Uint8Array;
 }
 
-export interface MsgRegisterAccountAsGuardianResponse {}
+export interface MsgRegisterAccountAsPhylaxResponse {}
 
 /** Same as from x/wasmd but with vaa auth */
 export interface MsgStoreCode {
@@ -191,11 +191,11 @@ export const MsgExecuteGovernanceVAAResponse = {
   },
 };
 
-const baseMsgRegisterAccountAsGuardian: object = { signer: "" };
+const baseMsgRegisterAccountAsPhylax: object = { signer: "" };
 
-export const MsgRegisterAccountAsGuardian = {
+export const MsgRegisterAccountAsPhylax = {
   encode(
-    message: MsgRegisterAccountAsGuardian,
+    message: MsgRegisterAccountAsPhylax,
     writer: Writer = Writer.create()
   ): Writer {
     if (message.signer !== "") {
@@ -210,12 +210,12 @@ export const MsgRegisterAccountAsGuardian = {
   decode(
     input: Reader | Uint8Array,
     length?: number
-  ): MsgRegisterAccountAsGuardian {
+  ): MsgRegisterAccountAsPhylax {
     const reader = input instanceof Uint8Array ? new Reader(input) : input;
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = {
-      ...baseMsgRegisterAccountAsGuardian,
-    } as MsgRegisterAccountAsGuardian;
+      ...baseMsgRegisterAccountAsPhylax,
+    } as MsgRegisterAccountAsPhylax;
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -233,10 +233,10 @@ export const MsgRegisterAccountAsGuardian = {
     return message;
   },
 
-  fromJSON(object: any): MsgRegisterAccountAsGuardian {
+  fromJSON(object: any): MsgRegisterAccountAsPhylax {
     const message = {
-      ...baseMsgRegisterAccountAsGuardian,
-    } as MsgRegisterAccountAsGuardian;
+      ...baseMsgRegisterAccountAsPhylax,
+    } as MsgRegisterAccountAsPhylax;
     if (object.signer !== undefined && object.signer !== null) {
       message.signer = String(object.signer);
     } else {
@@ -248,7 +248,7 @@ export const MsgRegisterAccountAsGuardian = {
     return message;
   },
 
-  toJSON(message: MsgRegisterAccountAsGuardian): unknown {
+  toJSON(message: MsgRegisterAccountAsPhylax): unknown {
     const obj: any = {};
     message.signer !== undefined && (obj.signer = message.signer);
     message.signature !== undefined &&
@@ -259,11 +259,11 @@ export const MsgRegisterAccountAsGuardian = {
   },
 
   fromPartial(
-    object: DeepPartial<MsgRegisterAccountAsGuardian>
-  ): MsgRegisterAccountAsGuardian {
+    object: DeepPartial<MsgRegisterAccountAsPhylax>
+  ): MsgRegisterAccountAsPhylax {
     const message = {
-      ...baseMsgRegisterAccountAsGuardian,
-    } as MsgRegisterAccountAsGuardian;
+      ...baseMsgRegisterAccountAsPhylax,
+    } as MsgRegisterAccountAsPhylax;
     if (object.signer !== undefined && object.signer !== null) {
       message.signer = object.signer;
     } else {
@@ -278,11 +278,11 @@ export const MsgRegisterAccountAsGuardian = {
   },
 };
 
-const baseMsgRegisterAccountAsGuardianResponse: object = {};
+const baseMsgRegisterAccountAsPhylaxResponse: object = {};
 
-export const MsgRegisterAccountAsGuardianResponse = {
+export const MsgRegisterAccountAsPhylaxResponse = {
   encode(
-    _: MsgRegisterAccountAsGuardianResponse,
+    _: MsgRegisterAccountAsPhylaxResponse,
     writer: Writer = Writer.create()
   ): Writer {
     return writer;
@@ -291,12 +291,12 @@ export const MsgRegisterAccountAsGuardianResponse = {
   decode(
     input: Reader | Uint8Array,
     length?: number
-  ): MsgRegisterAccountAsGuardianResponse {
+  ): MsgRegisterAccountAsPhylaxResponse {
     const reader = input instanceof Uint8Array ? new Reader(input) : input;
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = {
-      ...baseMsgRegisterAccountAsGuardianResponse,
-    } as MsgRegisterAccountAsGuardianResponse;
+      ...baseMsgRegisterAccountAsPhylaxResponse,
+    } as MsgRegisterAccountAsPhylaxResponse;
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -308,24 +308,24 @@ export const MsgRegisterAccountAsGuardianResponse = {
     return message;
   },
 
-  fromJSON(_: any): MsgRegisterAccountAsGuardianResponse {
+  fromJSON(_: any): MsgRegisterAccountAsPhylaxResponse {
     const message = {
-      ...baseMsgRegisterAccountAsGuardianResponse,
-    } as MsgRegisterAccountAsGuardianResponse;
+      ...baseMsgRegisterAccountAsPhylaxResponse,
+    } as MsgRegisterAccountAsPhylaxResponse;
     return message;
   },
 
-  toJSON(_: MsgRegisterAccountAsGuardianResponse): unknown {
+  toJSON(_: MsgRegisterAccountAsPhylaxResponse): unknown {
     const obj: any = {};
     return obj;
   },
 
   fromPartial(
-    _: DeepPartial<MsgRegisterAccountAsGuardianResponse>
-  ): MsgRegisterAccountAsGuardianResponse {
+    _: DeepPartial<MsgRegisterAccountAsPhylaxResponse>
+  ): MsgRegisterAccountAsPhylaxResponse {
     const message = {
-      ...baseMsgRegisterAccountAsGuardianResponse,
-    } as MsgRegisterAccountAsGuardianResponse;
+      ...baseMsgRegisterAccountAsPhylaxResponse,
+    } as MsgRegisterAccountAsPhylaxResponse;
     return message;
   },
 };
@@ -707,9 +707,9 @@ export interface Msg {
   ExecuteGovernanceVAA(
     request: MsgExecuteGovernanceVAA
   ): Promise<MsgExecuteGovernanceVAAResponse>;
-  RegisterAccountAsGuardian(
-    request: MsgRegisterAccountAsGuardian
-  ): Promise<MsgRegisterAccountAsGuardianResponse>;
+  RegisterAccountAsPhylax(
+    request: MsgRegisterAccountAsPhylax
+  ): Promise<MsgRegisterAccountAsPhylaxResponse>;
   /** StoreCode to submit Wasm code to the system */
   StoreCode(request: MsgStoreCode): Promise<MsgStoreCodeResponse>;
   /** Instantiate creates a new smart contract instance for the given code id. */
@@ -737,17 +737,17 @@ export class MsgClientImpl implements Msg {
     );
   }
 
-  RegisterAccountAsGuardian(
-    request: MsgRegisterAccountAsGuardian
-  ): Promise<MsgRegisterAccountAsGuardianResponse> {
-    const data = MsgRegisterAccountAsGuardian.encode(request).finish();
+  RegisterAccountAsPhylax(
+    request: MsgRegisterAccountAsPhylax
+  ): Promise<MsgRegisterAccountAsPhylaxResponse> {
+    const data = MsgRegisterAccountAsPhylax.encode(request).finish();
     const promise = this.rpc.request(
       "wormhole_foundation.deltachain.wormhole.Msg",
-      "RegisterAccountAsGuardian",
+      "RegisterAccountAsPhylax",
       data
     );
     return promise.then((data) =>
-      MsgRegisterAccountAsGuardianResponse.decode(new Reader(data))
+      MsgRegisterAccountAsPhylaxResponse.decode(new Reader(data))
     );
   }
 

@@ -2,7 +2,7 @@ use cosmwasm_std::{Binary, Coin};
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 
-use crate::state::{GuardianAddress, GuardianSetInfo};
+use crate::state::{PhylaxAddress, PhylaxSetInfo};
 
 type HumanAddr = String;
 
@@ -11,7 +11,7 @@ pub struct InstantiateMsg {
     pub gov_chain: u16,
     pub gov_address: Binary,
 
-    pub initial_guardian_set: GuardianSetInfo,
+    pub initial_guardian_set: PhylaxSetInfo,
     pub guardian_set_expirity: u64,
 }
 
@@ -29,7 +29,7 @@ pub struct MigrateMsg {}
 #[derive(Serialize, Deserialize, Clone, Debug, PartialEq, Eq, JsonSchema)]
 #[serde(rename_all = "snake_case")]
 pub enum QueryMsg {
-    GuardianSetInfo {},
+    PhylaxSetInfo {},
     VerifyVAA { vaa: Binary, block_time: u64 },
     GetState {},
     QueryAddressHex { address: HumanAddr },
@@ -37,9 +37,9 @@ pub enum QueryMsg {
 
 #[derive(Serialize, Deserialize, Clone, Debug, PartialEq, Eq, JsonSchema)]
 #[serde(rename_all = "snake_case")]
-pub struct GuardianSetInfoResponse {
+pub struct PhylaxSetInfoResponse {
     pub guardian_set_index: u32,         // Current guardian set index
-    pub addresses: Vec<GuardianAddress>, // List of querdian addresses
+    pub addresses: Vec<PhylaxAddress>, // List of querdian addresses
 }
 
 #[derive(Serialize, Deserialize, Clone, Debug, PartialEq, Eq, JsonSchema)]

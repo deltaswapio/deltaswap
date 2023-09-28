@@ -286,7 +286,7 @@ async function test() {
   let seq = 1;
 
   console.log("lets upgrade the governance set to 1");
-  let vaa = ts.genGuardianSetUpgrade(
+  let vaa = ts.genPhylaxSetUpgrade(
     ts.guardianPrivKeys,
     0,
     1,

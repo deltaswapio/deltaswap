@@ -208,7 +208,7 @@
         "accountingNativeAddress": "wormhole14hj2tavq8fpesdwxxcu44rty3hh90vhujrvcmstl4zr3txmfvw9srrg465"
       },
       "accounts": {
-        "deltachainNodeOfGuardian0": {
+        "deltachainNodeOfPhylax0": {
           "address": "C10820983F33456CE7BEB3A046F5A83FA34F027D",
           "addressBase64": "wQggmD8zRWznvrOgRvWoP6NPAn0=",
           "addressWormhole": "000000000000000000000000c10820983f33456ce7beb3a046f5a83fa34f027d",
@@ -223,7 +223,7 @@
           "tendermint/PubKeyEd25519": "fnfoo/C+i+Ng1J8vct6wfvrTS9JeNIG5UeO87ZHKMkY=",
           "tendermint/PrivKeyEd25519": "Zb3gQZSd8qNMyXUQdKmeqM/SSYeVDD80S4XPEsCAgPN+d+ij8L6L42DUny9y3rB++tNL0l40gblR47ztkcoyRg=="
         },
-        "deltachainNodeOfGuardian1": {
+        "deltachainNodeOfPhylax1": {
           "address": "701C475B19A3F68D3FDEBF09591487FACEF2D636",
           "addressWormhole": "000000000000000000000000701c475b19a3f68d3fdebf09591487facef2d636",
           "addressBase64": "cBxHWxmj9o0/3r8JWRSH+s7y1jY=",
@@ -315,7 +315,7 @@
       "private": "0x77c5495fbb039eed474fc940f29955ed0531693cc9212911efd35dff0373153f"
     }
   ],
-  "devnetGuardians": [
+  "devnetPhylaxs": [
     {
       "name": "guardian-0",
       "public": "0xbeFA429d57cD18b7F8A4d91A2da9AB4AF05d0FBe",

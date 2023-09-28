@@ -10,7 +10,7 @@
 ///
 /// `publish_message` unpacks the `MessageTicket` and emits a
 /// `WormholeMessage` with this message info and timestamp. This event is
-/// observed by the Guardian network.
+/// observed by the Phylax network.
 ///
 /// The purpose of splitting this message publishing into two steps is in case
 /// Wormhole needs to be upgraded and there is a breaking change for this
@@ -32,7 +32,7 @@ module wormhole::publish_message {
     use wormhole::emitter::{Self, EmitterCap};
     use wormhole::state::{Self, State};
 
-    /// This type is emitted via `sui::event` module. Guardians pick up this
+    /// This type is emitted via `sui::event` module. Phylaxs pick up this
     /// observation and attest to its existence.
     struct WormholeMessage has drop, copy {
         /// `EmitterCap` object ID.

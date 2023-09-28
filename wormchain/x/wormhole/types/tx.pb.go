@@ -305,23 +305,23 @@ func (m *MsgExecuteGovernanceVAAResponse) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_MsgExecuteGovernanceVAAResponse proto.InternalMessageInfo
 
-type MsgRegisterAccountAsGuardian struct {
+type MsgRegisterAccountAsPhylax struct {
 	Signer    string `protobuf:"bytes,1,opt,name=signer,proto3" json:"signer,omitempty"`
 	Signature []byte `protobuf:"bytes,3,opt,name=signature,proto3" json:"signature,omitempty"`
 }
 
-func (m *MsgRegisterAccountAsGuardian) Reset()         { *m = MsgRegisterAccountAsGuardian{} }
-func (m *MsgRegisterAccountAsGuardian) String() string { return proto.CompactTextString(m) }
-func (*MsgRegisterAccountAsGuardian) ProtoMessage()    {}
-func (*MsgRegisterAccountAsGuardian) Descriptor() ([]byte, []int) {
+func (m *MsgRegisterAccountAsPhylax) Reset()         { *m = MsgRegisterAccountAsPhylax{} }
+func (m *MsgRegisterAccountAsPhylax) String() string { return proto.CompactTextString(m) }
+func (*MsgRegisterAccountAsPhylax) ProtoMessage()    {}
+func (*MsgRegisterAccountAsPhylax) Descriptor() ([]byte, []int) {
 	return fileDescriptor_55f7aa067b0c517b, []int{6}
 }
-func (m *MsgRegisterAccountAsGuardian) XXX_Unmarshal(b []byte) error {
+func (m *MsgRegisterAccountAsPhylax) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *MsgRegisterAccountAsGuardian) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *MsgRegisterAccountAsPhylax) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_MsgRegisterAccountAsGuardian.Marshal(b, m, deterministic)
+		return xxx_messageInfo_MsgRegisterAccountAsPhylax.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -331,47 +331,47 @@ func (m *MsgRegisterAccountAsGuardian) XXX_Marshal(b []byte, deterministic bool)
 		return b[:n], nil
 	}
 }
-func (m *MsgRegisterAccountAsGuardian) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgRegisterAccountAsGuardian.Merge(m, src)
+func (m *MsgRegisterAccountAsPhylax) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgRegisterAccountAsPhylax.Merge(m, src)
 }
-func (m *MsgRegisterAccountAsGuardian) XXX_Size() int {
+func (m *MsgRegisterAccountAsPhylax) XXX_Size() int {
 	return m.Size()
 }
-func (m *MsgRegisterAccountAsGuardian) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgRegisterAccountAsGuardian.DiscardUnknown(m)
+func (m *MsgRegisterAccountAsPhylax) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgRegisterAccountAsPhylax.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_MsgRegisterAccountAsGuardian proto.InternalMessageInfo
+var xxx_messageInfo_MsgRegisterAccountAsPhylax proto.InternalMessageInfo
 
-func (m *MsgRegisterAccountAsGuardian) GetSigner() string {
+func (m *MsgRegisterAccountAsPhylax) GetSigner() string {
 	if m != nil {
 		return m.Signer
 	}
 	return ""
 }
 
-func (m *MsgRegisterAccountAsGuardian) GetSignature() []byte {
+func (m *MsgRegisterAccountAsPhylax) GetSignature() []byte {
 	if m != nil {
 		return m.Signature
 	}
 	return nil
 }
 
-type MsgRegisterAccountAsGuardianResponse struct {
+type MsgRegisterAccountAsPhylaxResponse struct {
 }
 
-func (m *MsgRegisterAccountAsGuardianResponse) Reset()         { *m = MsgRegisterAccountAsGuardianResponse{} }
-func (m *MsgRegisterAccountAsGuardianResponse) String() string { return proto.CompactTextString(m) }
-func (*MsgRegisterAccountAsGuardianResponse) ProtoMessage()    {}
-func (*MsgRegisterAccountAsGuardianResponse) Descriptor() ([]byte, []int) {
+func (m *MsgRegisterAccountAsPhylaxResponse) Reset()         { *m = MsgRegisterAccountAsPhylaxResponse{} }
+func (m *MsgRegisterAccountAsPhylaxResponse) String() string { return proto.CompactTextString(m) }
+func (*MsgRegisterAccountAsPhylaxResponse) ProtoMessage()    {}
+func (*MsgRegisterAccountAsPhylaxResponse) Descriptor() ([]byte, []int) {
 	return fileDescriptor_55f7aa067b0c517b, []int{7}
 }
-func (m *MsgRegisterAccountAsGuardianResponse) XXX_Unmarshal(b []byte) error {
+func (m *MsgRegisterAccountAsPhylaxResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *MsgRegisterAccountAsGuardianResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *MsgRegisterAccountAsPhylaxResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_MsgRegisterAccountAsGuardianResponse.Marshal(b, m, deterministic)
+		return xxx_messageInfo_MsgRegisterAccountAsPhylaxResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -381,17 +381,17 @@ func (m *MsgRegisterAccountAsGuardianResponse) XXX_Marshal(b []byte, determinist
 		return b[:n], nil
 	}
 }
-func (m *MsgRegisterAccountAsGuardianResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgRegisterAccountAsGuardianResponse.Merge(m, src)
+func (m *MsgRegisterAccountAsPhylaxResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgRegisterAccountAsPhylaxResponse.Merge(m, src)
 }
-func (m *MsgRegisterAccountAsGuardianResponse) XXX_Size() int {
+func (m *MsgRegisterAccountAsPhylaxResponse) XXX_Size() int {
 	return m.Size()
 }
-func (m *MsgRegisterAccountAsGuardianResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgRegisterAccountAsGuardianResponse.DiscardUnknown(m)
+func (m *MsgRegisterAccountAsPhylaxResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgRegisterAccountAsPhylaxResponse.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_MsgRegisterAccountAsGuardianResponse proto.InternalMessageInfo
+var xxx_messageInfo_MsgRegisterAccountAsPhylaxResponse proto.InternalMessageInfo
 
 // Same as from x/wasmd but with vaa auth
 type MsgStoreCode struct {
@@ -1016,8 +1016,8 @@ func init() {
 	proto.RegisterType((*MsgAllowlistResponse)(nil), "wormhole_foundation.deltachain.wormhole.MsgAllowlistResponse")
 	proto.RegisterType((*MsgExecuteGovernanceVAA)(nil), "wormhole_foundation.deltachain.wormhole.MsgExecuteGovernanceVAA")
 	proto.RegisterType((*MsgExecuteGovernanceVAAResponse)(nil), "wormhole_foundation.deltachain.wormhole.MsgExecuteGovernanceVAAResponse")
-	proto.RegisterType((*MsgRegisterAccountAsGuardian)(nil), "wormhole_foundation.deltachain.wormhole.MsgRegisterAccountAsGuardian")
-	proto.RegisterType((*MsgRegisterAccountAsGuardianResponse)(nil), "wormhole_foundation.deltachain.wormhole.MsgRegisterAccountAsGuardianResponse")
+	proto.RegisterType((*MsgRegisterAccountAsPhylax)(nil), "wormhole_foundation.deltachain.wormhole.MsgRegisterAccountAsPhylax")
+	proto.RegisterType((*MsgRegisterAccountAsPhylaxResponse)(nil), "wormhole_foundation.deltachain.wormhole.MsgRegisterAccountAsPhylaxResponse")
 	proto.RegisterType((*MsgStoreCode)(nil), "wormhole_foundation.deltachain.wormhole.MsgStoreCode")
 	proto.RegisterType((*MsgStoreCodeResponse)(nil), "wormhole_foundation.deltachain.wormhole.MsgStoreCodeResponse")
 	proto.RegisterType((*MsgInstantiateContract)(nil), "wormhole_foundation.deltachain.wormhole.MsgInstantiateContract")
@@ -1102,7 +1102,7 @@ const _ = grpc.SupportPackageIsVersion4
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type MsgClient interface {
 	ExecuteGovernanceVAA(ctx context.Context, in *MsgExecuteGovernanceVAA, opts ...grpc.CallOption) (*MsgExecuteGovernanceVAAResponse, error)
-	RegisterAccountAsGuardian(ctx context.Context, in *MsgRegisterAccountAsGuardian, opts ...grpc.CallOption) (*MsgRegisterAccountAsGuardianResponse, error)
+	RegisterAccountAsPhylax(ctx context.Context, in *MsgRegisterAccountAsPhylax, opts ...grpc.CallOption) (*MsgRegisterAccountAsPhylaxResponse, error)
 	CreateAllowlistEntry(ctx context.Context, in *MsgCreateAllowlistEntryRequest, opts ...grpc.CallOption) (*MsgAllowlistResponse, error)
 	DeleteAllowlistEntry(ctx context.Context, in *MsgDeleteAllowlistEntryRequest, opts ...grpc.CallOption) (*MsgAllowlistResponse, error)
 	// StoreCode to submit Wasm code to the system
@@ -1132,9 +1132,9 @@ func (c *msgClient) ExecuteGovernanceVAA(ctx context.Context, in *MsgExecuteGove
 	return out, nil
 }
 
-func (c *msgClient) RegisterAccountAsGuardian(ctx context.Context, in *MsgRegisterAccountAsGuardian, opts ...grpc.CallOption) (*MsgRegisterAccountAsGuardianResponse, error) {
-	out := new(MsgRegisterAccountAsGuardianResponse)
-	err := c.cc.Invoke(ctx, "/wormhole_foundation.deltachain.wormhole.Msg/RegisterAccountAsGuardian", in, out, opts...)
+func (c *msgClient) RegisterAccountAsPhylax(ctx context.Context, in *MsgRegisterAccountAsPhylax, opts ...grpc.CallOption) (*MsgRegisterAccountAsPhylaxResponse, error) {
+	out := new(MsgRegisterAccountAsPhylaxResponse)
+	err := c.cc.Invoke(ctx, "/wormhole_foundation.deltachain.wormhole.Msg/RegisterAccountAsPhylax", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1216,7 +1216,7 @@ func (c *msgClient) ExecuteGatewayGovernanceVaa(ctx context.Context, in *MsgExec
 // MsgServer is the server API for Msg service.
 type MsgServer interface {
 	ExecuteGovernanceVAA(context.Context, *MsgExecuteGovernanceVAA) (*MsgExecuteGovernanceVAAResponse, error)
-	RegisterAccountAsGuardian(context.Context, *MsgRegisterAccountAsGuardian) (*MsgRegisterAccountAsGuardianResponse, error)
+	RegisterAccountAsPhylax(context.Context, *MsgRegisterAccountAsPhylax) (*MsgRegisterAccountAsPhylaxResponse, error)
 	CreateAllowlistEntry(context.Context, *MsgCreateAllowlistEntryRequest) (*MsgAllowlistResponse, error)
 	DeleteAllowlistEntry(context.Context, *MsgDeleteAllowlistEntryRequest) (*MsgAllowlistResponse, error)
 	// StoreCode to submit Wasm code to the system
@@ -1236,8 +1236,8 @@ type UnimplementedMsgServer struct {
 func (*UnimplementedMsgServer) ExecuteGovernanceVAA(ctx context.Context, req *MsgExecuteGovernanceVAA) (*MsgExecuteGovernanceVAAResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ExecuteGovernanceVAA not implemented")
 }
-func (*UnimplementedMsgServer) RegisterAccountAsGuardian(ctx context.Context, req *MsgRegisterAccountAsGuardian) (*MsgRegisterAccountAsGuardianResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method RegisterAccountAsGuardian not implemented")
+func (*UnimplementedMsgServer) RegisterAccountAsPhylax(ctx context.Context, req *MsgRegisterAccountAsPhylax) (*MsgRegisterAccountAsPhylaxResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RegisterAccountAsPhylax not implemented")
 }
 func (*UnimplementedMsgServer) CreateAllowlistEntry(ctx context.Context, req *MsgCreateAllowlistEntryRequest) (*MsgAllowlistResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateAllowlistEntry not implemented")
@@ -1286,20 +1286,20 @@ func _Msg_ExecuteGovernanceVAA_Handler(srv interface{}, ctx context.Context, dec
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Msg_RegisterAccountAsGuardian_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(MsgRegisterAccountAsGuardian)
+func _Msg_RegisterAccountAsPhylax_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgRegisterAccountAsPhylax)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MsgServer).RegisterAccountAsGuardian(ctx, in)
+		return srv.(MsgServer).RegisterAccountAsPhylax(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/wormhole_foundation.deltachain.wormhole.Msg/RegisterAccountAsGuardian",
+		FullMethod: "/wormhole_foundation.deltachain.wormhole.Msg/RegisterAccountAsPhylax",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MsgServer).RegisterAccountAsGuardian(ctx, req.(*MsgRegisterAccountAsGuardian))
+		return srv.(MsgServer).RegisterAccountAsPhylax(ctx, req.(*MsgRegisterAccountAsPhylax))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1457,8 +1457,8 @@ var _Msg_serviceDesc = grpc.ServiceDesc{
 			Handler:    _Msg_ExecuteGovernanceVAA_Handler,
 		},
 		{
-			MethodName: "RegisterAccountAsGuardian",
-			Handler:    _Msg_RegisterAccountAsGuardian_Handler,
+			MethodName: "RegisterAccountAsPhylax",
+			Handler:    _Msg_RegisterAccountAsPhylax_Handler,
 		},
 		{
 			MethodName: "CreateAllowlistEntry",
@@ -1684,7 +1684,7 @@ func (m *MsgExecuteGovernanceVAAResponse) MarshalToSizedBuffer(dAtA []byte) (int
 	return len(dAtA) - i, nil
 }
 
-func (m *MsgRegisterAccountAsGuardian) Marshal() (dAtA []byte, err error) {
+func (m *MsgRegisterAccountAsPhylax) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -1694,12 +1694,12 @@ func (m *MsgRegisterAccountAsGuardian) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *MsgRegisterAccountAsGuardian) MarshalTo(dAtA []byte) (int, error) {
+func (m *MsgRegisterAccountAsPhylax) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *MsgRegisterAccountAsGuardian) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *MsgRegisterAccountAsPhylax) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -1721,7 +1721,7 @@ func (m *MsgRegisterAccountAsGuardian) MarshalToSizedBuffer(dAtA []byte) (int, e
 	return len(dAtA) - i, nil
 }
 
-func (m *MsgRegisterAccountAsGuardianResponse) Marshal() (dAtA []byte, err error) {
+func (m *MsgRegisterAccountAsPhylaxResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -1731,12 +1731,12 @@ func (m *MsgRegisterAccountAsGuardianResponse) Marshal() (dAtA []byte, err error
 	return dAtA[:n], nil
 }
 
-func (m *MsgRegisterAccountAsGuardianResponse) MarshalTo(dAtA []byte) (int, error) {
+func (m *MsgRegisterAccountAsPhylaxResponse) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *MsgRegisterAccountAsGuardianResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *MsgRegisterAccountAsPhylaxResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -2253,7 +2253,7 @@ func (m *MsgExecuteGovernanceVAAResponse) Size() (n int) {
 	return n
 }
 
-func (m *MsgRegisterAccountAsGuardian) Size() (n int) {
+func (m *MsgRegisterAccountAsPhylax) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -2270,7 +2270,7 @@ func (m *MsgRegisterAccountAsGuardian) Size() (n int) {
 	return n
 }
 
-func (m *MsgRegisterAccountAsGuardianResponse) Size() (n int) {
+func (m *MsgRegisterAccountAsPhylaxResponse) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -3008,7 +3008,7 @@ func (m *MsgExecuteGovernanceVAAResponse) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *MsgRegisterAccountAsGuardian) Unmarshal(dAtA []byte) error {
+func (m *MsgRegisterAccountAsPhylax) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -3031,10 +3031,10 @@ func (m *MsgRegisterAccountAsGuardian) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: MsgRegisterAccountAsGuardian: wiretype end group for non-group")
+			return fmt.Errorf("proto: MsgRegisterAccountAsPhylax: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: MsgRegisterAccountAsGuardian: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: MsgRegisterAccountAsPhylax: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -3124,7 +3124,7 @@ func (m *MsgRegisterAccountAsGuardian) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *MsgRegisterAccountAsGuardianResponse) Unmarshal(dAtA []byte) error {
+func (m *MsgRegisterAccountAsPhylaxResponse) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -3147,10 +3147,10 @@ func (m *MsgRegisterAccountAsGuardianResponse) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: MsgRegisterAccountAsGuardianResponse: wiretype end group for non-group")
+			return fmt.Errorf("proto: MsgRegisterAccountAsPhylaxResponse: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: MsgRegisterAccountAsGuardianResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: MsgRegisterAccountAsPhylaxResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		default:

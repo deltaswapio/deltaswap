@@ -12,19 +12,19 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-func (k Keeper) GuardianSetAll(c context.Context, req *types.QueryAllGuardianSetRequest) (*types.QueryAllGuardianSetResponse, error) {
+func (k Keeper) PhylaxSetAll(c context.Context, req *types.QueryAllPhylaxSetRequest) (*types.QueryAllPhylaxSetResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
 	}
 
-	var guardianSets []types.GuardianSet
+	var guardianSets []types.PhylaxSet
 	ctx := sdk.UnwrapSDKContext(c)
 
 	store := ctx.KVStore(k.storeKey)
-	guardianSetStore := prefix.NewStore(store, types.KeyPrefix(types.GuardianSetKey))
+	guardianSetStore := prefix.NewStore(store, types.KeyPrefix(types.PhylaxSetKey))
 
 	pageRes, err := query.Paginate(guardianSetStore, req.Pagination, func(key []byte, value []byte) error {
-		var guardianSet types.GuardianSet
+		var guardianSet types.PhylaxSet
 		if err := k.cdc.Unmarshal(value, &guardianSet); err != nil {
 			return err
 		}
@@ -37,19 +37,19 @@ func (k Keeper) GuardianSetAll(c context.Context, req *types.QueryAllGuardianSet
 		return nil, status.Error(codes.Internal, err.Error())
 	}
 
-	return &types.QueryAllGuardianSetResponse{GuardianSet: guardianSets, Pagination: pageRes}, nil
+	return &types.QueryAllPhylaxSetResponse{PhylaxSet: guardianSets, Pagination: pageRes}, nil
 }
 
-func (k Keeper) GuardianSet(c context.Context, req *types.QueryGetGuardianSetRequest) (*types.QueryGetGuardianSetResponse, error) {
+func (k Keeper) PhylaxSet(c context.Context, req *types.QueryGetPhylaxSetRequest) (*types.QueryGetPhylaxSetResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
 	}
 
 	ctx := sdk.UnwrapSDKContext(c)
-	guardianSet, found := k.GetGuardianSet(ctx, req.Index)
+	guardianSet, found := k.GetPhylaxSet(ctx, req.Index)
 	if !found {
 		return nil, sdkerrors.ErrKeyNotFound
 	}
 
-	return &types.QueryGetGuardianSetResponse{GuardianSet: guardianSet}, nil
+	return &types.QueryGetPhylaxSetResponse{PhylaxSet: guardianSet}, nil
 }

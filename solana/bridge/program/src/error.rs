@@ -6,7 +6,7 @@ use solitaire::SolitaireError;
 
 #[derive(Debug)]
 pub enum Error {
-    GuardianSetMismatch,
+    PhylaxSetMismatch,
     InstructionAtWrongIndex,
     InsufficientFees,
     InvalidFeeRecipient,
@@ -15,13 +15,13 @@ pub enum Error {
     InvalidGovernanceKey,
     InvalidGovernanceModule,
     InvalidGovernanceWithdrawal,
-    InvalidGuardianSetUpgrade,
+    InvalidPhylaxSetUpgrade,
     InvalidHash,
     InvalidSecpInstruction,
     MathOverflow,
     PostVAAConsensusFailed,
-    PostVAAGuardianSetExpired,
-    TooManyGuardians,
+    PostVAAPhylaxSetExpired,
+    TooManyPhylaxs,
     VAAAlreadyExecuted,
     VAAInvalid,
     InvalidPayloadLength,

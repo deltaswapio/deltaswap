@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: Apache 2
 
-/// This module implements a custom type representing a Guardian governance
+/// This module implements a custom type representing a Phylax governance
 /// action. Each governance action has an associated module name, relevant chain
 /// and payload encoding instructions/data used to perform an adminstrative
 /// change on a contract.
@@ -13,7 +13,7 @@ module wormhole::governance_message {
     use wormhole::state::{Self, State, chain_id};
     use wormhole::vaa::{Self, VAA};
 
-    /// Guardian set used to sign VAA did not use current Guardian set.
+    /// Phylax set used to sign VAA did not use current Phylax set.
     const E_OLD_GUARDIAN_SET_GOVERNANCE: u64 = 0;
     /// Governance chain does not match.
     const E_INVALID_GOVERNANCE_CHAIN: u64 = 1;

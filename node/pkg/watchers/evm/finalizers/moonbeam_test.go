@@ -44,11 +44,11 @@ func (e *moonbeamMockConnector) ContractAddress() ethCommon.Address {
 	panic("not implemented by moonbeamMockConnector")
 }
 
-func (e *moonbeamMockConnector) GetCurrentGuardianSetIndex(ctx context.Context) (uint32, error) {
+func (e *moonbeamMockConnector) GetCurrentPhylaxSetIndex(ctx context.Context) (uint32, error) {
 	panic("not implemented by moonbeamMockConnector")
 }
 
-func (e *moonbeamMockConnector) GetGuardianSet(ctx context.Context, index uint32) (ethAbi.StructsGuardianSet, error) {
+func (e *moonbeamMockConnector) GetPhylaxSet(ctx context.Context, index uint32) (ethAbi.StructsPhylaxSet, error) {
 	panic("not implemented by moonbeamMockConnector")
 }
 

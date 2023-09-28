@@ -1,24 +1,24 @@
 import { expect } from "chai";
 import * as web3 from "@solana/web3.js";
 import {
-  MockGuardians,
+  MockPhylaxs,
   MockEthereumEmitter,
   GovernanceEmitter,
 } from "../../../sdk/js/src/mock";
 import { parseVaa, parseGovernanceVaa } from "../../../sdk/js/src/vaa";
 import {
   getPostedVaa,
-  getGuardianSet,
+  getPhylaxSet,
   createSetFeesInstruction,
   createTransferFeesInstruction,
-  createUpgradeGuardianSetInstruction,
+  createUpgradePhylaxSetInstruction,
   getWormholeBridgeData,
   getInitializeAccounts,
   getPostMessageAccounts,
   getPostVaaAccounts,
   getSetFeesAccounts,
   getTransferFeesAccounts,
-  getUpgradeGuardianSetAccounts,
+  getUpgradePhylaxSetAccounts,
   getVerifySignatureAccounts,
   getUpgradeContractAccounts,
   getSignatureSetData,
@@ -46,7 +46,7 @@ describe("Wormhole (Core Bridge)", () => {
   const wallet = new NodeWallet(web3.Keypair.generate());
 
   // for signing wormhole messages
-  const guardians = new MockGuardians(GUARDIAN_SET_INDEX, GUARDIAN_KEYS);
+  const guardians = new MockPhylaxs(GUARDIAN_SET_INDEX, GUARDIAN_KEYS);
 
   const localVariables: any = {};
 
@@ -277,18 +277,18 @@ describe("Wormhole (Core Bridge)", () => {
         .true;
     });
 
-    it("Instruction 7: Upgrade Guardian Set", () => {
+    it("Instruction 7: Upgrade Phylax Set", () => {
       const timestamp = 56789012;
-      const newGuardianSetIndex = guardians.setIndex + 1;
-      const newGuardianSet = guardians.getPublicKeys();
-      const message = governance.publishWormholeGuardianSetUpgrade(
+      const newPhylaxSetIndex = guardians.setIndex + 1;
+      const newPhylaxSet = guardians.getPublicKeys();
+      const message = governance.publishWormholePhylaxSetUpgrade(
         timestamp,
-        newGuardianSetIndex,
-        newGuardianSet
+        newPhylaxSetIndex,
+        newPhylaxSet
       );
       const signedVaa = guardians.addSignatures(message, [0]);
 
-      const accounts = getUpgradeGuardianSetAccounts(
+      const accounts = getUpgradePhylaxSetAccounts(
         CORE_BRIDGE_ADDRESS,
         payer,
         signedVaa
@@ -402,8 +402,8 @@ describe("Wormhole (Core Bridge)", () => {
     // hijacking the ethereum token bridge address for our fake emitter
     const ethereumWormhole = new MockEthereumEmitter(ETHEREUM_WALLET_BYTES32);
 
-    describe("Post VAA with One Guardian", () => {
-      it("Verify Guardian Signature and Post Message", async () => {
+    describe("Post VAA with One Phylax", () => {
+      it("Verify Phylax Signature and Post Message", async () => {
         const message = Buffer.from("All your base are belong to us.");
         const nonce = 0;
         const consistencyLevel = 15;
@@ -414,8 +414,8 @@ describe("Wormhole (Core Bridge)", () => {
           consistencyLevel,
           timestamp
         );
-        const signingGuardians = [0];
-        const signedVaa = guardians.addSignatures(published, signingGuardians);
+        const signingPhylaxs = [0];
+        const signedVaa = guardians.addSignatures(published, signingPhylaxs);
         // console.log(`signedVaa: ${signedVaa.toString("base64")}`);
 
         const txSignatures = await postVaa(
@@ -461,7 +461,7 @@ describe("Wormhole (Core Bridge)", () => {
         const signed = signatureSetData.signatures;
         expect(signed).has.length(1);
         expect(signed.filter((x) => !x)).has.length(0);
-        for (const i of signingGuardians) {
+        for (const i of signingPhylaxs) {
           expect(signed[i]).is.true;
         }
         expect(Buffer.compare(signatureSetData.hash, parsed.hash)).to.equal(0);
@@ -572,14 +572,14 @@ describe("Wormhole (Core Bridge)", () => {
         //const balanceAfter = await connection.getBalance(recipient);
       });
 
-      it("Upgrade Guardian Set to 19 Guardians", async () => {
+      it("Upgrade Phylax Set to 19 Phylaxs", async () => {
         const timestamp = 3;
-        const newGuardianSetIndex = guardians.setIndex + 1;
-        const newGuardianSet = guardians.getPublicKeys();
-        const message = governance.publishWormholeGuardianSetUpgrade(
+        const newPhylaxSetIndex = guardians.setIndex + 1;
+        const newPhylaxSet = guardians.getPublicKeys();
+        const message = governance.publishWormholePhylaxSetUpgrade(
           timestamp,
-          newGuardianSetIndex,
-          newGuardianSet
+          newPhylaxSetIndex,
+          newPhylaxSet
         );
         const signedVaa = guardians.addSignatures(message, [0]);
         // console.log(`signedVaa: ${signedVaa.toString("base64")}`);
@@ -601,7 +601,7 @@ describe("Wormhole (Core Bridge)", () => {
         const upgradeTx = await web3.sendAndConfirmTransaction(
           connection,
           new web3.Transaction().add(
-            createUpgradeGuardianSetInstruction(
+            createUpgradePhylaxSetInstruction(
               CORE_BRIDGE_ADDRESS,
               wallet.key(),
               parsed
@@ -609,28 +609,28 @@ describe("Wormhole (Core Bridge)", () => {
           ),
           [wallet.signer()]
         );
-        // console.log(`upgradeGuardianSet: ${upgradeTx}`);
+        // console.log(`upgradePhylaxSet: ${upgradeTx}`);
 
         // update guardian's set index now and verify upgrade
-        guardians.updateGuardianSetIndex(newGuardianSetIndex);
+        guardians.updatePhylaxSetIndex(newPhylaxSetIndex);
 
-        const guardianSetData = await getGuardianSet(
+        const guardianSetData = await getPhylaxSet(
           connection,
           CORE_BRIDGE_ADDRESS,
-          newGuardianSetIndex
+          newPhylaxSetIndex
         );
-        expect(guardianSetData.index).to.equal(newGuardianSetIndex);
+        expect(guardianSetData.index).to.equal(newPhylaxSetIndex);
         expect(guardianSetData.creationTime).to.equal(parsed.timestamp);
-        for (let i = 0; i < newGuardianSet.length; ++i) {
+        for (let i = 0; i < newPhylaxSet.length; ++i) {
           const key = guardianSetData.keys.at(i)!;
-          const expectedKey = newGuardianSet.at(i)!;
+          const expectedKey = newPhylaxSet.at(i)!;
           expect(Buffer.compare(key, expectedKey)).to.equal(0);
         }
       });
     });
 
-    describe("Post VAA with 19 Guardians", () => {
-      it("Post VAA Signed with 13 Guardians", async () => {
+    describe("Post VAA with 19 Phylaxs", () => {
+      it("Post VAA Signed with 13 Phylaxs", async () => {
         const message = Buffer.from("All your base are belong to us.");
         const nonce = 0;
         const consistencyLevel = 15;
@@ -639,8 +639,8 @@ describe("Wormhole (Core Bridge)", () => {
           message,
           consistencyLevel
         );
-        const signingGuardians = [0, 1, 2, 3, 5, 7, 8, 9, 10, 12, 15, 16, 18];
-        const signedVaa = guardians.addSignatures(published, signingGuardians);
+        const signingPhylaxs = [0, 1, 2, 3, 5, 7, 8, 9, 10, 12, 15, 16, 18];
+        const signedVaa = guardians.addSignatures(published, signingPhylaxs);
         // console.log(`signedVaa: ${signedVaa.toString("base64")}`);
 
         const txSignatures = await postVaa(
@@ -684,16 +684,16 @@ describe("Wormhole (Core Bridge)", () => {
         const signed = signatureSetData.signatures;
         expect(signed).has.length(guardians.signers.length);
         expect(signed.filter((x) => !x)).has.length(
-          19 - signingGuardians.length
+          19 - signingPhylaxs.length
         );
-        for (const i of signingGuardians) {
+        for (const i of signingPhylaxs) {
           expect(signed[i]).is.true;
         }
         expect(Buffer.compare(signatureSetData.hash, parsed.hash)).to.equal(0);
         expect(signatureSetData.guardianSetIndex).to.equal(guardians.setIndex);
       });
 
-      it("Post VAA Signed with 19 Guardians", async () => {
+      it("Post VAA Signed with 19 Phylaxs", async () => {
         const message = Buffer.from("All your base are belong to us.");
         const nonce = 0;
         const consistencyLevel = 15;
@@ -702,8 +702,8 @@ describe("Wormhole (Core Bridge)", () => {
           message,
           consistencyLevel
         );
-        const signingGuardians = [...Array(19).keys()];
-        const signedVaa = guardians.addSignatures(published, signingGuardians);
+        const signingPhylaxs = [...Array(19).keys()];
+        const signedVaa = guardians.addSignatures(published, signingPhylaxs);
         // console.log(`signedVaa: ${signedVaa.toString("base64")}`);
 
         const txSignatures = await postVaa(
@@ -747,9 +747,9 @@ describe("Wormhole (Core Bridge)", () => {
         const signed = signatureSetData.signatures;
         expect(signed).has.length(guardians.signers.length);
         expect(signed.filter((x) => !x)).has.length(
-          19 - signingGuardians.length
+          19 - signingPhylaxs.length
         );
-        for (const i of signingGuardians) {
+        for (const i of signingPhylaxs) {
           expect(signed[i]).is.true;
         }
         expect(Buffer.compare(signatureSetData.hash, parsed.hash)).to.equal(0);

@@ -62,12 +62,12 @@ chain becomes deadlocked.
 Thus we must only change over block production due to a guardian set update if a supermajority of guardians
 in the new guardian set are already registered.
 
-At present, Guardian Set upgrade VAAs are signed by the Guardians off-chain. This can stay off-chain for as long as needed, but should eventually be moved on-chain.
+At present, Phylax Set upgrade VAAs are signed by the Phylaxs off-chain. This can stay off-chain for as long as needed, but should eventually be moved on-chain.
 
 ## TODO Bootstraping the PoA Network
 
-At time of writing, the Guardian Network is currently at Guardian Set 2, but will possibly be at set 3 or 4 by the time of launch.
+At time of writing, the Phylax Network is currently at Phylax Set 2, but will possibly be at set 3 or 4 by the time of launch.
 
-It is likely not feasible to launch the chain with all 19 Guardians of the network hardcoded in the genesis block, as this would require the Guardians to determine their addresses off-chain, and have their information encoded in the genesis block.
+It is likely not feasible to launch the chain with all 19 Phylaxs of the network hardcoded in the genesis block, as this would require the Phylaxs to determine their addresses off-chain, and have their information encoded in the genesis block.
 
-As such, it is likely simpler to launch Wormhole Chain with a single validator (The guardian from Guardian Set 1), then have all the other Guardians perform real on-chain registrations for themselves, and then perform a Guardian Set upgrade directly to the current Guardian set.
+As such, it is likely simpler to launch Wormhole Chain with a single validator (The guardian from Phylax Set 1), then have all the other Phylaxs perform real on-chain registrations for themselves, and then perform a Phylax Set upgrade directly to the current Phylax set.

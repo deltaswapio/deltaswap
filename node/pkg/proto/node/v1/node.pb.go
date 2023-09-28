@@ -249,7 +249,7 @@ type GovernanceMessage struct {
 	Nonce uint32 `protobuf:"varint,3,opt,name=nonce,proto3" json:"nonce,omitempty"`
 	// Types that are assignable to Payload:
 	//
-	//	*GovernanceMessage_GuardianSet
+	//	*GovernanceMessage_PhylaxSet
 	//	*GovernanceMessage_ContractUpgrade
 	//	*GovernanceMessage_BridgeRegisterChain
 	//	*GovernanceMessage_BridgeContractUpgrade
@@ -322,9 +322,9 @@ func (m *GovernanceMessage) GetPayload() isGovernanceMessage_Payload {
 	return nil
 }
 
-func (x *GovernanceMessage) GetGuardianSet() *GuardianSetUpdate {
-	if x, ok := x.GetPayload().(*GovernanceMessage_GuardianSet); ok {
-		return x.GuardianSet
+func (x *GovernanceMessage) GetPhylaxSet() *PhylaxSetUpdate {
+	if x, ok := x.GetPayload().(*GovernanceMessage_PhylaxSet); ok {
+		return x.PhylaxSet
 	}
 	return nil
 }
@@ -445,8 +445,8 @@ type isGovernanceMessage_Payload interface {
 	isGovernanceMessage_Payload()
 }
 
-type GovernanceMessage_GuardianSet struct {
-	GuardianSet *GuardianSetUpdate `protobuf:"bytes,10,opt,name=guardian_set,json=guardianSet,proto3,oneof"`
+type GovernanceMessage_PhylaxSet struct {
+	PhylaxSet *PhylaxSetUpdate `protobuf:"bytes,10,opt,name=guardian_set,json=guardianSet,proto3,oneof"`
 }
 
 type GovernanceMessage_ContractUpgrade struct {
@@ -518,7 +518,7 @@ type GovernanceMessage_WormholeRelayerSetDefaultDeliveryProvider struct {
 	WormholeRelayerSetDefaultDeliveryProvider *WormholeRelayerSetDefaultDeliveryProvider `protobuf:"bytes,22,opt,name=wormhole_relayer_set_default_delivery_provider,json=wormholeRelayerSetDefaultDeliveryProvider,proto3,oneof"`
 }
 
-func (*GovernanceMessage_GuardianSet) isGovernanceMessage_Payload() {}
+func (*GovernanceMessage_PhylaxSet) isGovernanceMessage_Payload() {}
 
 func (*GovernanceMessage_ContractUpgrade) isGovernanceMessage_Payload() {}
 
@@ -601,19 +601,19 @@ func (x *InjectGovernanceVAAResponse) GetDigests() [][]byte {
 	return nil
 }
 
-// GuardianSet represents a new guardian set to be submitted to and signed by the node.
+// PhylaxSet represents a new guardian set to be submitted to and signed by the node.
 // During the genesis procedure, this data structure will be assembled using off-chain collaborative tooling
 // like GitHub using a human-readable encoding, so readability is a concern.
-type GuardianSetUpdate struct {
+type PhylaxSetUpdate struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Guardians []*GuardianSetUpdate_Guardian `protobuf:"bytes,3,rep,name=guardians,proto3" json:"guardians,omitempty"`
+	Phylaxs []*PhylaxSetUpdate_Phylax `protobuf:"bytes,3,rep,name=guardians,proto3" json:"guardians,omitempty"`
 }
 
-func (x *GuardianSetUpdate) Reset() {
-	*x = GuardianSetUpdate{}
+func (x *PhylaxSetUpdate) Reset() {
+	*x = PhylaxSetUpdate{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_node_v1_node_proto_msgTypes[3]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -621,13 +621,13 @@ func (x *GuardianSetUpdate) Reset() {
 	}
 }
 
-func (x *GuardianSetUpdate) String() string {
+func (x *PhylaxSetUpdate) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*GuardianSetUpdate) ProtoMessage() {}
+func (*PhylaxSetUpdate) ProtoMessage() {}
 
-func (x *GuardianSetUpdate) ProtoReflect() protoreflect.Message {
+func (x *PhylaxSetUpdate) ProtoReflect() protoreflect.Message {
 	mi := &file_node_v1_node_proto_msgTypes[3]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -639,20 +639,20 @@ func (x *GuardianSetUpdate) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use GuardianSetUpdate.ProtoReflect.Descriptor instead.
-func (*GuardianSetUpdate) Descriptor() ([]byte, []int) {
+// Deprecated: Use PhylaxSetUpdate.ProtoReflect.Descriptor instead.
+func (*PhylaxSetUpdate) Descriptor() ([]byte, []int) {
 	return file_node_v1_node_proto_rawDescGZIP(), []int{3}
 }
 
-func (x *GuardianSetUpdate) GetGuardians() []*GuardianSetUpdate_Guardian {
+func (x *PhylaxSetUpdate) GetPhylaxs() []*PhylaxSetUpdate_Phylax {
 	if x != nil {
-		return x.Guardians
+		return x.Phylaxs
 	}
 	return nil
 }
 
-// GuardianKey specifies the on-disk format for a node's guardian key.
-type GuardianKey struct {
+// PhylaxKey specifies the on-disk format for a node's guardian key.
+type PhylaxKey struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
@@ -663,8 +663,8 @@ type GuardianKey struct {
 	UnsafeDeterministicKey bool `protobuf:"varint,2,opt,name=unsafe_deterministic_key,json=unsafeDeterministicKey,proto3" json:"unsafe_deterministic_key,omitempty"`
 }
 
-func (x *GuardianKey) Reset() {
-	*x = GuardianKey{}
+func (x *PhylaxKey) Reset() {
+	*x = PhylaxKey{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_node_v1_node_proto_msgTypes[4]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -672,13 +672,13 @@ func (x *GuardianKey) Reset() {
 	}
 }
 
-func (x *GuardianKey) String() string {
+func (x *PhylaxKey) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*GuardianKey) ProtoMessage() {}
+func (*PhylaxKey) ProtoMessage() {}
 
-func (x *GuardianKey) ProtoReflect() protoreflect.Message {
+func (x *PhylaxKey) ProtoReflect() protoreflect.Message {
 	mi := &file_node_v1_node_proto_msgTypes[4]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -690,19 +690,19 @@ func (x *GuardianKey) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use GuardianKey.ProtoReflect.Descriptor instead.
-func (*GuardianKey) Descriptor() ([]byte, []int) {
+// Deprecated: Use PhylaxKey.ProtoReflect.Descriptor instead.
+func (*PhylaxKey) Descriptor() ([]byte, []int) {
 	return file_node_v1_node_proto_rawDescGZIP(), []int{4}
 }
 
-func (x *GuardianKey) GetData() []byte {
+func (x *PhylaxKey) GetData() []byte {
 	if x != nil {
 		return x.Data
 	}
 	return nil
 }
 
-func (x *GuardianKey) GetUnsafeDeterministicKey() bool {
+func (x *PhylaxKey) GetUnsafeDeterministicKey() bool {
 	if x != nil {
 		return x.UnsafeDeterministicKey
 	}
@@ -2508,8 +2508,8 @@ type SignExistingVAARequest struct {
 	unknownFields protoimpl.UnknownFields
 
 	Vaa                 []byte   `protobuf:"bytes,1,opt,name=vaa,proto3" json:"vaa,omitempty"`
-	NewGuardianAddrs    []string `protobuf:"bytes,2,rep,name=new_guardian_addrs,json=newGuardianAddrs,proto3" json:"new_guardian_addrs,omitempty"`
-	NewGuardianSetIndex uint32   `protobuf:"varint,3,opt,name=new_guardian_set_index,json=newGuardianSetIndex,proto3" json:"new_guardian_set_index,omitempty"`
+	NewPhylaxAddrs    []string `protobuf:"bytes,2,rep,name=new_guardian_addrs,json=newPhylaxAddrs,proto3" json:"new_guardian_addrs,omitempty"`
+	NewPhylaxSetIndex uint32   `protobuf:"varint,3,opt,name=new_guardian_set_index,json=newPhylaxSetIndex,proto3" json:"new_guardian_set_index,omitempty"`
 }
 
 func (x *SignExistingVAARequest) Reset() {
@@ -2551,16 +2551,16 @@ func (x *SignExistingVAARequest) GetVaa() []byte {
 	return nil
 }
 
-func (x *SignExistingVAARequest) GetNewGuardianAddrs() []string {
+func (x *SignExistingVAARequest) GetNewPhylaxAddrs() []string {
 	if x != nil {
-		return x.NewGuardianAddrs
+		return x.NewPhylaxAddrs
 	}
 	return nil
 }
 
-func (x *SignExistingVAARequest) GetNewGuardianSetIndex() uint32 {
+func (x *SignExistingVAARequest) GetNewPhylaxSetIndex() uint32 {
 	if x != nil {
-		return x.NewGuardianSetIndex
+		return x.NewPhylaxSetIndex
 	}
 	return 0
 }
@@ -2698,20 +2698,20 @@ func (x *DumpRPCsResponse) GetResponse() map[string]string {
 }
 
 // List of guardian set members.
-type GuardianSetUpdate_Guardian struct {
+type PhylaxSetUpdate_Phylax struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	// Guardian key pubkey. Stored as hex string with 0x prefix for human readability -
+	// Phylax key pubkey. Stored as hex string with 0x prefix for human readability -
 	// this is the canonical Ethereum representation.
 	Pubkey string `protobuf:"bytes,1,opt,name=pubkey,proto3" json:"pubkey,omitempty"`
 	// Optional descriptive name. Not stored on any chain, purely informational.
 	Name string `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
 }
 
-func (x *GuardianSetUpdate_Guardian) Reset() {
-	*x = GuardianSetUpdate_Guardian{}
+func (x *PhylaxSetUpdate_Phylax) Reset() {
+	*x = PhylaxSetUpdate_Phylax{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_node_v1_node_proto_msgTypes[41]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -2719,13 +2719,13 @@ func (x *GuardianSetUpdate_Guardian) Reset() {
 	}
 }
 
-func (x *GuardianSetUpdate_Guardian) String() string {
+func (x *PhylaxSetUpdate_Phylax) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*GuardianSetUpdate_Guardian) ProtoMessage() {}
+func (*PhylaxSetUpdate_Phylax) ProtoMessage() {}
 
-func (x *GuardianSetUpdate_Guardian) ProtoReflect() protoreflect.Message {
+func (x *PhylaxSetUpdate_Phylax) ProtoReflect() protoreflect.Message {
 	mi := &file_node_v1_node_proto_msgTypes[41]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -2737,19 +2737,19 @@ func (x *GuardianSetUpdate_Guardian) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use GuardianSetUpdate_Guardian.ProtoReflect.Descriptor instead.
-func (*GuardianSetUpdate_Guardian) Descriptor() ([]byte, []int) {
+// Deprecated: Use PhylaxSetUpdate_Phylax.ProtoReflect.Descriptor instead.
+func (*PhylaxSetUpdate_Phylax) Descriptor() ([]byte, []int) {
 	return file_node_v1_node_proto_rawDescGZIP(), []int{3, 0}
 }
 
-func (x *GuardianSetUpdate_Guardian) GetPubkey() string {
+func (x *PhylaxSetUpdate_Phylax) GetPubkey() string {
 	if x != nil {
 		return x.Pubkey
 	}
 	return ""
 }
 
-func (x *GuardianSetUpdate_Guardian) GetName() string {
+func (x *PhylaxSetUpdate_Phylax) GetName() string {
 	if x != nil {
 		return x.Name
 	}
@@ -3272,8 +3272,8 @@ var file_node_v1_node_proto_goTypes = []interface{}{
 	(*InjectGovernanceVAARequest)(nil),                     // 3: node.v1.InjectGovernanceVAARequest
 	(*GovernanceMessage)(nil),                              // 4: node.v1.GovernanceMessage
 	(*InjectGovernanceVAAResponse)(nil),                    // 5: node.v1.InjectGovernanceVAAResponse
-	(*GuardianSetUpdate)(nil),                              // 6: node.v1.GuardianSetUpdate
-	(*GuardianKey)(nil),                                    // 7: node.v1.GuardianKey
+	(*PhylaxSetUpdate)(nil),                              // 6: node.v1.PhylaxSetUpdate
+	(*PhylaxKey)(nil),                                    // 7: node.v1.PhylaxKey
 	(*BridgeRegisterChain)(nil),                            // 8: node.v1.BridgeRegisterChain
 	(*AccountantModifyBalance)(nil),                        // 9: node.v1.AccountantModifyBalance
 	(*ContractUpgrade)(nil),                                // 10: node.v1.ContractUpgrade
@@ -3310,13 +3310,13 @@ var file_node_v1_node_proto_goTypes = []interface{}{
 	(*SignExistingVAAResponse)(nil),                        // 41: node.v1.SignExistingVAAResponse
 	(*DumpRPCsRequest)(nil),                                // 42: node.v1.DumpRPCsRequest
 	(*DumpRPCsResponse)(nil),                               // 43: node.v1.DumpRPCsResponse
-	(*GuardianSetUpdate_Guardian)(nil),                     // 44: node.v1.GuardianSetUpdate.Guardian
+	(*PhylaxSetUpdate_Phylax)(nil),                     // 44: node.v1.PhylaxSetUpdate.Phylax
 	nil,                                                    // 45: node.v1.DumpRPCsResponse.ResponseEntry
 	(*v1.ObservationRequest)(nil),                          // 46: gossip.v1.ObservationRequest
 }
 var file_node_v1_node_proto_depIdxs = []int32{
 	4,  // 0: node.v1.InjectGovernanceVAARequest.messages:type_name -> node.v1.GovernanceMessage
-	6,  // 1: node.v1.GovernanceMessage.guardian_set:type_name -> node.v1.GuardianSetUpdate
+	6,  // 1: node.v1.GovernanceMessage.guardian_set:type_name -> node.v1.PhylaxSetUpdate
 	10, // 2: node.v1.GovernanceMessage.contract_upgrade:type_name -> node.v1.ContractUpgrade
 	8,  // 3: node.v1.GovernanceMessage.bridge_register_chain:type_name -> node.v1.BridgeRegisterChain
 	11, // 4: node.v1.GovernanceMessage.bridge_contract_upgrade:type_name -> node.v1.BridgeUpgradeContract
@@ -3333,7 +3333,7 @@ var file_node_v1_node_proto_depIdxs = []int32{
 	21, // 15: node.v1.GovernanceMessage.circle_integration_upgrade_contract_implementation:type_name -> node.v1.CircleIntegrationUpgradeContractImplementation
 	22, // 16: node.v1.GovernanceMessage.ibc_update_channel_chain:type_name -> node.v1.IbcUpdateChannelChain
 	23, // 17: node.v1.GovernanceMessage.wormhole_relayer_set_default_delivery_provider:type_name -> node.v1.WormholeRelayerSetDefaultDeliveryProvider
-	44, // 18: node.v1.GuardianSetUpdate.guardians:type_name -> node.v1.GuardianSetUpdate.Guardian
+	44, // 18: node.v1.PhylaxSetUpdate.guardians:type_name -> node.v1.PhylaxSetUpdate.Phylax
 	0,  // 19: node.v1.AccountantModifyBalance.kind:type_name -> node.v1.ModificationKind
 	1,  // 20: node.v1.WormchainWasmInstantiateAllowlist.action:type_name -> node.v1.WormchainWasmInstantiateAllowlistAction
 	2,  // 21: node.v1.IbcUpdateChannelChain.module:type_name -> node.v1.IbcUpdateChannelChainModule
@@ -3411,7 +3411,7 @@ func file_node_v1_node_proto_init() {
 			}
 		}
 		file_node_v1_node_proto_msgTypes[3].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*GuardianSetUpdate); i {
+			switch v := v.(*PhylaxSetUpdate); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -3423,7 +3423,7 @@ func file_node_v1_node_proto_init() {
 			}
 		}
 		file_node_v1_node_proto_msgTypes[4].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*GuardianKey); i {
+			switch v := v.(*PhylaxKey); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -3867,7 +3867,7 @@ func file_node_v1_node_proto_init() {
 			}
 		}
 		file_node_v1_node_proto_msgTypes[41].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*GuardianSetUpdate_Guardian); i {
+			switch v := v.(*PhylaxSetUpdate_Phylax); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -3880,7 +3880,7 @@ func file_node_v1_node_proto_init() {
 		}
 	}
 	file_node_v1_node_proto_msgTypes[1].OneofWrappers = []interface{}{
-		(*GovernanceMessage_GuardianSet)(nil),
+		(*GovernanceMessage_PhylaxSet)(nil),
 		(*GovernanceMessage_ContractUpgrade)(nil),
 		(*GovernanceMessage_BridgeRegisterChain)(nil),
 		(*GovernanceMessage_BridgeContractUpgrade)(nil),

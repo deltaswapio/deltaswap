@@ -20,7 +20,7 @@ func TestCreateGovernanceVAA(t *testing.T) {
 
 	want_vaa := &VAA{
 		Version:          uint8(1),
-		GuardianSetIndex: uint32(1),
+		PhylaxSetIndex:   uint32(1),
 		Signatures:       nil,
 		Timestamp:        timestamp,
 		Nonce:            uint32(1),

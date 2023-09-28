@@ -33,7 +33,7 @@ export class Wormhole {
 		},
 		global: {
 			'MessageFee': 'uint',
-			'currentGuardianSetIndex': 'uint',
+			'currentPhylaxSetIndex': 'uint',
 			'booted': 'bytes',
 			'vphash': 'bytes',
 			'validUpdateApproveHash': 'bytes',

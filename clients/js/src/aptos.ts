@@ -40,7 +40,7 @@ export async function execute_aptos(
       }
 
       switch (payload.type) {
-        case "GuardianSetUpgrade":
+        case "PhylaxSetUpgrade":
           console.log("Submitting new guardian set");
           await callEntryFunc(
             network,

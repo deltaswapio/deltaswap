@@ -194,10 +194,10 @@ type SignedHeartbeat struct {
 	Heartbeat []byte `protobuf:"bytes,1,opt,name=heartbeat,proto3" json:"heartbeat,omitempty"`
 	// ECDSA signature using the node's guardian public key.
 	Signature []byte `protobuf:"bytes,2,opt,name=signature,proto3" json:"signature,omitempty"`
-	// Guardian address that signed this payload (truncated Eth address).
+	// Phylax address that signed this payload (truncated Eth address).
 	// This is already contained in Heartbeat, however, we want to verify
 	// the payload before we deserialize it.
-	GuardianAddr []byte `protobuf:"bytes,3,opt,name=guardian_addr,json=guardianAddr,proto3" json:"guardian_addr,omitempty"`
+	PhylaxAddr []byte `protobuf:"bytes,3,opt,name=guardian_addr,json=guardianAddr,proto3" json:"guardian_addr,omitempty"`
 }
 
 func (x *SignedHeartbeat) Reset() {
@@ -246,9 +246,9 @@ func (x *SignedHeartbeat) GetSignature() []byte {
 	return nil
 }
 
-func (x *SignedHeartbeat) GetGuardianAddr() []byte {
+func (x *SignedHeartbeat) GetPhylaxAddr() []byte {
 	if x != nil {
-		return x.GuardianAddr
+		return x.PhylaxAddr
 	}
 	return nil
 }
@@ -269,7 +269,7 @@ type Heartbeat struct {
 	// Human-readable representation of the current bridge node release.
 	Version string `protobuf:"bytes,5,opt,name=version,proto3" json:"version,omitempty"`
 	// Human-readable representation of the guardian key's address.
-	GuardianAddr string `protobuf:"bytes,6,opt,name=guardian_addr,json=guardianAddr,proto3" json:"guardian_addr,omitempty"`
+	PhylaxAddr string `protobuf:"bytes,6,opt,name=guardian_addr,json=guardianAddr,proto3" json:"guardian_addr,omitempty"`
 	// UNIX boot timestamp.
 	BootTimestamp int64 `protobuf:"varint,7,opt,name=boot_timestamp,json=bootTimestamp,proto3" json:"boot_timestamp,omitempty"`
 	// List of features enabled on this node.
@@ -345,9 +345,9 @@ func (x *Heartbeat) GetVersion() string {
 	return ""
 }
 
-func (x *Heartbeat) GetGuardianAddr() string {
+func (x *Heartbeat) GetPhylaxAddr() string {
 	if x != nil {
-		return x.GuardianAddr
+		return x.PhylaxAddr
 	}
 	return ""
 }
@@ -391,7 +391,7 @@ type SignedObservation struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	// Guardian pubkey as truncated eth address.
+	// Phylax pubkey as truncated eth address.
 	Addr []byte `protobuf:"bytes,1,opt,name=addr,proto3" json:"addr,omitempty"`
 	// The observation's deterministic, unique hash.
 	Hash []byte `protobuf:"bytes,2,opt,name=hash,proto3" json:"hash,omitempty"`
@@ -537,7 +537,7 @@ type SignedObservationRequest struct {
 	ObservationRequest []byte `protobuf:"bytes,1,opt,name=observation_request,json=observationRequest,proto3" json:"observation_request,omitempty"`
 	// Signature
 	Signature    []byte `protobuf:"bytes,2,opt,name=signature,proto3" json:"signature,omitempty"`
-	GuardianAddr []byte `protobuf:"bytes,3,opt,name=guardian_addr,json=guardianAddr,proto3" json:"guardian_addr,omitempty"`
+	PhylaxAddr []byte `protobuf:"bytes,3,opt,name=guardian_addr,json=guardianAddr,proto3" json:"guardian_addr,omitempty"`
 }
 
 func (x *SignedObservationRequest) Reset() {
@@ -586,9 +586,9 @@ func (x *SignedObservationRequest) GetSignature() []byte {
 	return nil
 }
 
-func (x *SignedObservationRequest) GetGuardianAddr() []byte {
+func (x *SignedObservationRequest) GetPhylaxAddr() []byte {
 	if x != nil {
-		return x.GuardianAddr
+		return x.PhylaxAddr
 	}
 	return nil
 }
@@ -662,7 +662,7 @@ type SignedBatchObservation struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	// Guardian pubkey as truncated eth address.
+	// Phylax pubkey as truncated eth address.
 	Addr []byte `protobuf:"bytes,1,opt,name=addr,proto3" json:"addr,omitempty"`
 	// The observation batch's deterministic, unique hash.
 	Hash []byte `protobuf:"bytes,2,opt,name=hash,proto3" json:"hash,omitempty"`
@@ -853,8 +853,8 @@ type SignedChainGovernorConfig struct {
 	Config []byte `protobuf:"bytes,1,opt,name=config,proto3" json:"config,omitempty"`
 	// ECDSA signature using the node's guardian key.
 	Signature []byte `protobuf:"bytes,2,opt,name=signature,proto3" json:"signature,omitempty"`
-	// Guardian address that signed this payload (truncated Eth address).
-	GuardianAddr []byte `protobuf:"bytes,3,opt,name=guardian_addr,json=guardianAddr,proto3" json:"guardian_addr,omitempty"`
+	// Phylax address that signed this payload (truncated Eth address).
+	PhylaxAddr []byte `protobuf:"bytes,3,opt,name=guardian_addr,json=guardianAddr,proto3" json:"guardian_addr,omitempty"`
 }
 
 func (x *SignedChainGovernorConfig) Reset() {
@@ -903,9 +903,9 @@ func (x *SignedChainGovernorConfig) GetSignature() []byte {
 	return nil
 }
 
-func (x *SignedChainGovernorConfig) GetGuardianAddr() []byte {
+func (x *SignedChainGovernorConfig) GetPhylaxAddr() []byte {
 	if x != nil {
-		return x.GuardianAddr
+		return x.PhylaxAddr
 	}
 	return nil
 }
@@ -999,8 +999,8 @@ type SignedChainGovernorStatus struct {
 	Status []byte `protobuf:"bytes,1,opt,name=status,proto3" json:"status,omitempty"`
 	// ECDSA signature using the node's guardian key.
 	Signature []byte `protobuf:"bytes,2,opt,name=signature,proto3" json:"signature,omitempty"`
-	// Guardian address that signed this payload (truncated Eth address).
-	GuardianAddr []byte `protobuf:"bytes,3,opt,name=guardian_addr,json=guardianAddr,proto3" json:"guardian_addr,omitempty"`
+	// Phylax address that signed this payload (truncated Eth address).
+	PhylaxAddr []byte `protobuf:"bytes,3,opt,name=guardian_addr,json=guardianAddr,proto3" json:"guardian_addr,omitempty"`
 }
 
 func (x *SignedChainGovernorStatus) Reset() {
@@ -1049,9 +1049,9 @@ func (x *SignedChainGovernorStatus) GetSignature() []byte {
 	return nil
 }
 
-func (x *SignedChainGovernorStatus) GetGuardianAddr() []byte {
+func (x *SignedChainGovernorStatus) GetPhylaxAddr() []byte {
 	if x != nil {
-		return x.GuardianAddr
+		return x.PhylaxAddr
 	}
 	return nil
 }

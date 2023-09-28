@@ -21,7 +21,7 @@ const (
 		and actix_web by default supports 256 concurrent TLS connections per worker and 25k non-TLS
 		(https://actix.rs/actix-web/actix_web/struct.HttpServer.html#method.workers).
 
-		Therefore, the Guardian NEAR RPC node should allow at least 500 concurrent connections.
+		Therefore, the Phylax NEAR RPC node should allow at least 500 concurrent connections.
 		According to https://explorer.near.org/stats, NEAR blockchain has bursts of up to 2M tx/day,
 		so 500 concurrent RPC connections should be sufficient.
 	*/

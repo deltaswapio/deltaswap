@@ -136,7 +136,7 @@ describe('Wormhole', () => {
 		// signers = [...Array(19)].map(() => ec.genKeyPair())
 
 		// const payload: GovernancePayload = {
-		//     type: GovenanceMessageType.UpdateGuardians,
+		//     type: GovenanceMessageType.UpdatePhylaxs,
 		//     targetChainId: CHAIN_ID_ALGORAND,
 		//     oldGSIndex: 1,
 		//     newGSIndex: 2,

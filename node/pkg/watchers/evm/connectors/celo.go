@@ -69,16 +69,16 @@ func (c *CeloConnector) ContractAddress() ethCommon.Address {
 	return c.address
 }
 
-func (c *CeloConnector) GetCurrentGuardianSetIndex(ctx context.Context) (uint32, error) {
+func (c *CeloConnector) GetCurrentPhylaxSetIndex(ctx context.Context) (uint32, error) {
 	opts := &celoBind.CallOpts{Context: ctx}
-	return c.caller.GetCurrentGuardianSetIndex(opts)
+	return c.caller.GetCurrentPhylaxSetIndex(opts)
 }
 
-func (c *CeloConnector) GetGuardianSet(ctx context.Context, index uint32) (ethAbi.StructsGuardianSet, error) {
+func (c *CeloConnector) GetPhylaxSet(ctx context.Context, index uint32) (ethAbi.StructsPhylaxSet, error) {
 	opts := &celoBind.CallOpts{Context: ctx}
-	celoGs, err := c.caller.GetGuardianSet(opts, index)
+	celoGs, err := c.caller.GetPhylaxSet(opts, index)
 	if err != nil {
-		return ethAbi.StructsGuardianSet{}, err
+		return ethAbi.StructsPhylaxSet{}, err
 	}
 
 	ethKeys := make([]ethCommon.Address, len(celoGs.Keys))
@@ -86,7 +86,7 @@ func (c *CeloConnector) GetGuardianSet(ctx context.Context, index uint32) (ethAb
 		ethKeys[n] = ethCommon.BytesToAddress(k.Bytes())
 	}
 
-	return ethAbi.StructsGuardianSet{
+	return ethAbi.StructsPhylaxSet{
 		Keys:           ethKeys,
 		ExpirationTime: celoGs.ExpirationTime,
 	}, err

@@ -10,14 +10,14 @@ const DefaultIndex uint64 = 1
 // DefaultGenesis returns the default Capability genesis state
 func DefaultGenesis() *GenesisState {
 	return &GenesisState{
-		GuardianSetList:      []GuardianSet{},
+		PhylaxSetList:        []PhylaxSet{},
 		Config:               nil,
 		ReplayProtectionList: []ReplayProtection{},
 		SequenceCounterList:  []SequenceCounter{},
-		ConsensusGuardianSetIndex: &ConsensusGuardianSetIndex{
+		ConsensusPhylaxSetIndex: &ConsensusPhylaxSetIndex{
 			Index: 0,
 		},
-		GuardianValidatorList: []GuardianValidator{},
+		PhylaxValidatorList: []PhylaxValidator{},
 		// this line is used by starport scaffolding # genesis/types/default
 	}
 }
@@ -27,7 +27,7 @@ func DefaultGenesis() *GenesisState {
 func (gs GenesisState) Validate() error {
 	// Check for duplicated ID in guardianSet
 	guardianSetIdMap := make(map[uint32]bool)
-	for _, elem := range gs.GuardianSetList {
+	for _, elem := range gs.PhylaxSetList {
 		if _, ok := guardianSetIdMap[elem.Index]; ok {
 			return fmt.Errorf("duplicated id for guardianSet")
 		}
@@ -56,8 +56,8 @@ func (gs GenesisState) Validate() error {
 	// Check for duplicated index in guardianValidator
 	guardianValidatorIndexMap := make(map[string]struct{})
 
-	for _, elem := range gs.GuardianValidatorList {
-		index := string(GuardianValidatorKey(elem.GuardianKey))
+	for _, elem := range gs.PhylaxValidatorList {
+		index := string(PhylaxValidatorKey(elem.PhylaxKey))
 		if _, ok := guardianValidatorIndexMap[index]; ok {
 			return fmt.Errorf("duplicated index for guardianValidator")
 		}

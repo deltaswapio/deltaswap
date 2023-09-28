@@ -65,7 +65,7 @@ func main() {
 	for _, k := range msgs {
 		v := &vaa.VAA{
 			Version:          vaa.SupportedVAAVersion,
-			GuardianSetIndex: 1,
+			PhylaxSetIndex:   1,
 			Signatures:       nil,
 			Timestamp:        k.Timestamp,
 			Nonce:            k.Nonce,

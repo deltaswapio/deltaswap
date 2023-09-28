@@ -277,7 +277,7 @@ func getVaa() VAA {
 
 	return VAA{
 		Version:          uint8(1),
-		GuardianSetIndex: uint32(1),
+		PhylaxSetIndex:   uint32(1),
 		Signatures:       []*Signature{},
 		Timestamp:        time.Unix(0, 0),
 		Nonce:            uint32(1),
@@ -295,7 +295,7 @@ func getEmptyPayloadVaa() VAA {
 
 	return VAA{
 		Version:          uint8(1),
-		GuardianSetIndex: uint32(1),
+		PhylaxSetIndex:   uint32(1),
 		Signatures:       []*Signature{},
 		Timestamp:        time.Unix(0, 0),
 		Nonce:            uint32(1),

@@ -271,7 +271,7 @@ export type ParsedVAA = {
   EmitterChainID?: number;
   targetEmitter?: Uint8Array;
   newContract?: Uint8Array;
-  NewGuardianSetIndex?: number;
+  NewPhylaxSetIndex?: number;
   Type?: number;
   Contract?: string;
   FromChain?: number;
@@ -371,7 +371,7 @@ export function _parseVAAAlgorand(vaa: Uint8Array): ParsedVAA {
     off += 1;
     ret.targetChain = buf.readIntBE(off, 2);
     off += 2;
-    ret.NewGuardianSetIndex = buf.readIntBE(off, 4);
+    ret.NewPhylaxSetIndex = buf.readIntBE(off, 4);
   }
 
   //    ret.len=vaa.slice(off).length)
@@ -638,17 +638,17 @@ export async function submitVAAHeader(
     // The keyset is the set of guardians that correspond
     // to the current set of signatures in this loop.
     // Each signature in 20 bytes and comes from decodeLocalState()
-    const GuardianKeyLen: number = 20;
+    const PhylaxKeyLen: number = 20;
     const numSigsThisTxn = sigs.length / SIG_LEN;
-    let arraySize: number = numSigsThisTxn * GuardianKeyLen;
+    let arraySize: number = numSigsThisTxn * PhylaxKeyLen;
     let keySet: Uint8Array = new Uint8Array(arraySize);
     for (let i = 0; i < numSigsThisTxn; i++) {
       // The first byte of the sig is the relative index of that signature in the signatures array
       // Use that index to get the appropriate guardian key
       const idx = sigs[i * SIG_LEN];
       const key = keys.slice(
-        idx * GuardianKeyLen + 1,
-        (idx + 1) * GuardianKeyLen + 1
+        idx * PhylaxKeyLen + 1,
+        (idx + 1) * PhylaxKeyLen + 1
       );
       keySet.set(key, i * 20);
     }
@@ -717,20 +717,20 @@ export async function _submitVAAAlgorand(
   if (
     parsedVAA.Meta === "CoreGovernance" &&
     parsedVAA.action === 2 &&
-    parsedVAA.NewGuardianSetIndex !== undefined
+    parsedVAA.NewPhylaxSetIndex !== undefined
   ) {
-    const ngsi = parsedVAA.NewGuardianSetIndex;
+    const ngsi = parsedVAA.NewPhylaxSetIndex;
     const guardianPgmName = textToHexString("guardian");
-    // "newGuardianAddr"
-    const { addr: newGuardianAddr, txs: newGuardianOptInTxs } = await optin(
+    // "newPhylaxAddr"
+    const { addr: newPhylaxAddr, txs: newPhylaxOptInTxs } = await optin(
       client,
       senderAddr,
       bridgeId,
       BigInt(ngsi),
       guardianPgmName
     );
-    accts.push(newGuardianAddr);
-    txs.unshift(...newGuardianOptInTxs);
+    accts.push(newPhylaxAddr);
+    txs.unshift(...newPhylaxOptInTxs);
   }
 
   // When we attest for a new token, we need some place to store the info... later we will need to

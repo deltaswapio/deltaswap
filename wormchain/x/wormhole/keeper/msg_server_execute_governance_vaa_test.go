@@ -14,38 +14,38 @@ import (
 )
 
 func createExecuteGovernanceVaaPayload(k *keeper.Keeper, ctx sdk.Context, num_guardians byte) ([]byte, []*ecdsa.PrivateKey) {
-	guardians, privateKeys := createNGuardianValidator(k, ctx, int(num_guardians))
-	next_index := k.GetGuardianSetCount(ctx)
+	guardians, privateKeys := createNPhylaxValidator(k, ctx, int(num_guardians))
+	next_index := k.GetPhylaxSetCount(ctx)
 	set_update := make([]byte, 4)
 	binary.BigEndian.PutUint32(set_update, next_index)
 	set_update = append(set_update, num_guardians)
 	// Add keys to set_update
 	for _, guardian := range guardians {
-		set_update = append(set_update, guardian.GuardianKey...)
+		set_update = append(set_update, guardian.PhylaxKey...)
 	}
 	// governance message with sha3 of wasmBytes as the payload
 	module := [32]byte{}
 	copy(module[:], vaa.CoreModule)
-	gov_msg := types.NewGovernanceMessage(module, byte(vaa.ActionGuardianSetUpdate), uint16(vaa.ChainIDWormchain), set_update)
+	gov_msg := types.NewGovernanceMessage(module, byte(vaa.ActionPhylaxSetUpdate), uint16(vaa.ChainIDWormchain), set_update)
 
 	return gov_msg.MarshalBinary(), privateKeys
 }
 
 func TestExecuteGovernanceVAA(t *testing.T) {
 	k, ctx := keepertest.WormholeKeeper(t)
-	guardians, privateKeys := createNGuardianValidator(k, ctx, 10)
+	guardians, privateKeys := createNPhylaxValidator(k, ctx, 10)
 	_ = privateKeys
 	k.SetConfig(ctx, types.Config{
-		GovernanceEmitter:     vaa.GovernanceEmitter[:],
-		GovernanceChain:       uint32(vaa.GovernanceChain),
-		ChainId:               uint32(vaa.ChainIDWormchain),
-		GuardianSetExpiration: 86400,
+		GovernanceEmitter:   vaa.GovernanceEmitter[:],
+		GovernanceChain:     uint32(vaa.GovernanceChain),
+		ChainId:             uint32(vaa.ChainIDWormchain),
+		PhylaxSetExpiration: 86400,
 	})
 	signer_bz := [20]byte{}
 	signer := sdk.AccAddress(signer_bz[:])
 
-	set := createNewGuardianSet(k, ctx, guardians)
-	k.SetConsensusGuardianSetIndex(ctx, types.ConsensusGuardianSetIndex{Index: set.Index})
+	set := createNewPhylaxSet(k, ctx, guardians)
+	k.SetConsensusPhylaxSetIndex(ctx, types.ConsensusPhylaxSetIndex{Index: set.Index})
 
 	context := sdk.WrapSDKContext(ctx)
 	msgServer := keeper.NewMsgServerImpl(*k)
@@ -61,9 +61,9 @@ func TestExecuteGovernanceVAA(t *testing.T) {
 	assert.NoError(t, err)
 
 	// we should have a new set with 11 guardians now
-	new_index := k.GetLatestGuardianSetIndex(ctx)
+	new_index := k.GetLatestPhylaxSetIndex(ctx)
 	assert.Equal(t, set.Index+1, new_index)
-	new_set, _ := k.GetGuardianSet(ctx, new_index)
+	new_set, _ := k.GetPhylaxSet(ctx, new_index)
 	assert.Len(t, new_set.Keys, 11)
 
 	// Submitting another change with the old set doesn't work
@@ -73,7 +73,7 @@ func TestExecuteGovernanceVAA(t *testing.T) {
 		Signer: signer.String(),
 		Vaa:    vBz,
 	})
-	assert.ErrorIs(t, err, types.ErrGuardianSetNotSequential)
+	assert.ErrorIs(t, err, types.ErrPhylaxSetNotSequential)
 
 	// Invalid length
 	v = generateVaa(set.Index, privateKeys, vaa.ChainID(vaa.GovernanceChain), payload[:len(payload)-1])
@@ -93,7 +93,7 @@ func TestExecuteGovernanceVAA(t *testing.T) {
 		Signer: signer.String(),
 		Vaa:    vBz,
 	})
-	assert.ErrorIs(t, err, types.ErrDuplicateGuardianAddress)
+	assert.ErrorIs(t, err, types.ErrDuplicatePhylaxAddress)
 
 	// Change set again with new set update
 	payload, _ = createExecuteGovernanceVaaPayload(k, ctx, 12)
@@ -104,6 +104,6 @@ func TestExecuteGovernanceVAA(t *testing.T) {
 		Vaa:    vBz,
 	})
 	assert.NoError(t, err)
-	new_index2 := k.GetLatestGuardianSetIndex(ctx)
+	new_index2 := k.GetLatestPhylaxSetIndex(ctx)
 	assert.Equal(t, new_set.Index+1, new_index2)
 }

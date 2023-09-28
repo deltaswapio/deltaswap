@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: Apache 2
 
 /// This module implements a mechanism to parse and verify VAAs, which are
-/// verified Wormhole messages (messages with Guardian signatures attesting to
-/// its observation). Signatures on VAA are checked against an existing Guardian
+/// verified Wormhole messages (messages with Phylax signatures attesting to
+/// its observation). Signatures on VAA are checked against an existing Phylax
 /// set that exists in the `State` (see `wormhole::state`).
 ///
 /// A Wormhole integrator is discouraged from integrating `parse_and_verify` in
@@ -31,19 +31,19 @@ module wormhole::vaa {
     use wormhole::cursor::{Self};
     use wormhole::external_address::{Self, ExternalAddress};
     use wormhole::guardian::{Self};
-    use wormhole::guardian_set::{Self, GuardianSet};
-    use wormhole::guardian_signature::{Self, GuardianSignature};
+    use wormhole::guardian_set::{Self, PhylaxSet};
+    use wormhole::guardian_signature::{Self, PhylaxSignature};
     use wormhole::state::{Self, State};
 
     /// Incorrect VAA version.
     const E_WRONG_VERSION: u64 = 0;
     /// Not enough guardians attested to this Wormhole observation.
     const E_NO_QUORUM: u64 = 1;
-    /// Signature does not match expected Guardian public key.
+    /// Signature does not match expected Phylax public key.
     const E_INVALID_SIGNATURE: u64 = 2;
     /// Prior guardian set is no longer valid.
     const E_GUARDIAN_SET_EXPIRED: u64 = 3;
-    /// Guardian signature is encoded out of sequence.
+    /// Phylax signature is encoded out of sequence.
     const E_NON_INCREASING_SIGNERS: u64 = 4;
 
     const VERSION_VAA: u8 = 1;
@@ -51,7 +51,7 @@ module wormhole::vaa {
     /// Container storing verified Wormhole message info. This struct also
     /// caches the digest, which is a double Keccak256 hash of the message body.
     struct VAA {
-        /// Guardian set index of Guardians that attested to observing the
+        /// Phylax set index of Phylaxs that attested to observing the
         /// Wormhole message.
         guardian_set_index: u32,
         /// Time when Wormhole message was emitted or observed.
@@ -207,7 +207,7 @@ module wormhole::vaa {
     /// invariant that if an external module receives a `VAA` object, its
     /// signatures must have been verified, because the only public function
     /// that returns a `VAA` is `parse_and_verify`.
-    fun parse(buf: vector<u8>): (vector<GuardianSignature>, VAA) {
+    fun parse(buf: vector<u8>): (vector<PhylaxSignature>, VAA) {
         let cur = cursor::new(buf);
 
         // Check VAA version.
@@ -267,8 +267,8 @@ module wormhole::vaa {
         bytes32::new(keccak256(&keccak256(&buf)))
     }
 
-    /// Using the Guardian signatures deserialized from VAA, verify that all of
-    /// the Guardian public keys are recovered using these signatures and the
+    /// Using the Phylax signatures deserialized from VAA, verify that all of
+    /// the Phylax public keys are recovered using these signatures and the
     /// VAA message body as the message used to produce these signatures.
     ///
     /// We are careful to only allow `wormhole:vaa` to control the hash that
@@ -277,12 +277,12 @@ module wormhole::vaa {
     /// raw message (as of version 0.28), the "raw message" in this case is a
     /// single keccak256 hash of the VAA message body.
     fun verify_signatures(
-        set: &GuardianSet,
-        signatures: vector<GuardianSignature>,
+        set: &PhylaxSet,
+        signatures: vector<PhylaxSignature>,
         message_hash: vector<u8>,
         the_clock: &Clock
     ) {
-        // Guardian set must be active (not expired).
+        // Phylax set must be active (not expired).
         assert!(
             guardian_set::is_active(set, the_clock),
             E_GUARDIAN_SET_EXPIRED
@@ -335,7 +335,7 @@ module wormhole::vaa {
     #[test_only]
     public fun parse_test_only(
         buf: vector<u8>
-    ): (vector<GuardianSignature>, VAA) {
+    ): (vector<PhylaxSignature>, VAA) {
         parse(buf)
     }
 

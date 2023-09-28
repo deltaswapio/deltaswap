@@ -191,10 +191,10 @@ not considered a stable API. Log messages may be added, modified or removed with
 ## Running a public API endpoint
 
 Wormhole v2 no longer uses Solana as a data availability layer (see [design document](../whitepapers/0005_data_availability.md)).
-Instead, it relies on Guardian nodes exposing an API which web wallets and other clients can use to retrieve the signed VAA
+Instead, it relies on Phylax nodes exposing an API which web wallets and other clients can use to retrieve the signed VAA
 message for a given transaction.
 
-Guardian nodes are **strongly encouraged** to expose a public API endpoint to improve the protocol's robustness.
+Phylax nodes are **strongly encouraged** to expose a public API endpoint to improve the protocol's robustness.
 
 phylaxd comes with a built-in REST and grpc-web server which can be enabled using the `--publicWeb` flag:
 
@@ -255,7 +255,7 @@ Storing keys on an HSM or using remote signers only partially mitigates the risk
 can't get stolen, but an attacker could still cause the HSM to sign malicious payloads. Future iterations of Wormhole
 may include support for remote signing using a signer like [SignOS](https://certus.one/sign-os/).
 
-## Run the Guardian Spy
+## Run the Phylax Spy
 
 The spy connects to the wormhole guardian peer to peer network and listens for new VAAs. It publishes those via a socket and websocket that applications can subscribe to. If you want to run the spy built from source, change `ghcr.io/wormhole-foundation/phylaxd:latest` to `guardian` after building the `guardian` image.
 

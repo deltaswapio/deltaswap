@@ -67,12 +67,12 @@ func (e *EthereumConnector) ContractAddress() ethCommon.Address {
 	return e.address
 }
 
-func (e *EthereumConnector) GetCurrentGuardianSetIndex(ctx context.Context) (uint32, error) {
-	return e.caller.GetCurrentGuardianSetIndex(&ethBind.CallOpts{Context: ctx})
+func (e *EthereumConnector) GetCurrentPhylaxSetIndex(ctx context.Context) (uint32, error) {
+	return e.caller.GetCurrentPhylaxSetIndex(&ethBind.CallOpts{Context: ctx})
 }
 
-func (e *EthereumConnector) GetGuardianSet(ctx context.Context, index uint32) (ethAbi.StructsGuardianSet, error) {
-	return e.caller.GetGuardianSet(&ethBind.CallOpts{Context: ctx}, index)
+func (e *EthereumConnector) GetPhylaxSet(ctx context.Context, index uint32) (ethAbi.StructsPhylaxSet, error) {
+	return e.caller.GetPhylaxSet(&ethBind.CallOpts{Context: ctx}, index)
 }
 
 func (e *EthereumConnector) WatchLogMessagePublished(ctx context.Context, errC chan error, sink chan<- *ethAbi.AbiLogMessagePublished) (ethEvent.Subscription, error) {

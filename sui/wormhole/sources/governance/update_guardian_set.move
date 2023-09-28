@@ -11,13 +11,13 @@ module wormhole::update_guardian_set {
     use wormhole::bytes::{Self};
     use wormhole::cursor::{Self};
     use wormhole::governance_message::{Self, DecreeTicket, DecreeReceipt};
-    use wormhole::guardian::{Self, Guardian};
+    use wormhole::guardian::{Self, Phylax};
     use wormhole::guardian_set::{Self};
     use wormhole::state::{Self, State, LatestOnly};
 
     /// No guardians public keys found in VAA.
     const E_NO_GUARDIANS: u64 = 0;
-    /// Guardian set index is not incremented from last known guardian set.
+    /// Phylax set index is not incremented from last known guardian set.
     const E_NON_INCREMENTAL_GUARDIAN_SETS: u64 = 1;
 
     /// Specific governance payload ID (action) for updating the guardian set.
@@ -25,14 +25,14 @@ module wormhole::update_guardian_set {
 
     struct GovernanceWitness has drop {}
 
-    /// Event reflecting a Guardian Set update.
-    struct GuardianSetAdded has drop, copy {
+    /// Event reflecting a Phylax Set update.
+    struct PhylaxSetAdded has drop, copy {
         new_index: u32
     }
 
-    struct UpdateGuardianSet {
+    struct UpdatePhylaxSet {
         new_index: u32,
-        guardians: vector<Guardian>,
+        guardians: vector<Phylax>,
     }
 
     public fun authorize_governance(
@@ -47,8 +47,8 @@ module wormhole::update_guardian_set {
         )
     }
 
-    /// Redeem governance VAA to update the current Guardian set with a new
-    /// set of Guardian public keys. This governance action is applied globally
+    /// Redeem governance VAA to update the current Phylax set with a new
+    /// set of Phylax public keys. This governance action is applied globally
     /// across all networks.
     ///
     /// NOTE: This method is guarded by a minimum build version check. This
@@ -82,7 +82,7 @@ module wormhole::update_guardian_set {
         the_clock: &Clock
     ): u32 {
         // Deserialize the payload as the updated guardian set.
-        let UpdateGuardianSet {
+        let UpdatePhylaxSet {
             new_index,
             guardians
         } = deserialize(governance_payload);
@@ -104,18 +104,18 @@ module wormhole::update_guardian_set {
             guardian_set::new(new_index, guardians)
         );
 
-        sui::event::emit(GuardianSetAdded { new_index });
+        sui::event::emit(PhylaxSetAdded { new_index });
 
         new_index
     }
 
-    fun deserialize(payload: vector<u8>): UpdateGuardianSet {
+    fun deserialize(payload: vector<u8>): UpdatePhylaxSet {
         let cur = cursor::new(payload);
         let new_index = bytes::take_u32_be(&mut cur);
         let num_guardians = bytes::take_u8(&mut cur);
         assert!(num_guardians > 0, E_NO_GUARDIANS);
 
-        let guardians = vector::empty<Guardian>();
+        let guardians = vector::empty<Phylax>();
         let i = 0;
         while (i < num_guardians) {
             let key = bytes::take_bytes(&mut cur, 20);
@@ -124,7 +124,7 @@ module wormhole::update_guardian_set {
         };
         cursor::destroy_empty(cur);
 
-        UpdateGuardianSet { new_index, guardians }
+        UpdatePhylaxSet { new_index, guardians }
     }
 
     #[test_only]

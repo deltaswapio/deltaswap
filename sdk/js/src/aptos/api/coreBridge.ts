@@ -1,9 +1,9 @@
 import { Types } from "aptos";
 import { ChainId } from "../../utils";
 
-// Guardian set upgrade
+// Phylax set upgrade
 
-export const upgradeGuardianSet = (
+export const upgradePhylaxSet = (
   coreBridgeAddress: string,
   vaa: Uint8Array
 ): Types.EntryFunctionPayload => {
@@ -22,7 +22,7 @@ export const initWormhole = (
   chainId: ChainId,
   governanceChainId: number,
   governanceContract: Uint8Array,
-  initialGuardian: Uint8Array
+  initialPhylax: Uint8Array
 ): Types.EntryFunctionPayload => {
   if (!coreBridgeAddress) throw new Error("Need core bridge address.");
   return {
@@ -32,7 +32,7 @@ export const initWormhole = (
       chainId,
       governanceChainId,
       governanceContract,
-      initialGuardian,
+      initialPhylax,
     ],
   };
 };

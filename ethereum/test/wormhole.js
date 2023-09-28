@@ -15,7 +15,7 @@ const testBadSigner1PK = "87b45997ea577b93073568f06fc4838cffc1d01f90fc4d57f93695
 
 const core = '0x' + Buffer.from("Core").toString("hex").padStart(64, 0)
 const actionContractUpgrade = "01"
-const actionGuardianSetUpgrade = "02"
+const actionPhylaxSetUpgrade = "02"
 const actionMessageFee = "03"
 const actionTransferFee = "04"
 const actionRecoverChainId = "05"
@@ -81,8 +81,8 @@ contract("Wormhole", function () {
     it("should be initialized with the correct signers and values", async function () {
         const initialized = new web3.eth.Contract(ImplementationFullABI, Wormhole.address);
 
-        const index = await initialized.methods.getCurrentGuardianSetIndex().call();
-        const set = (await initialized.methods.getGuardianSet(index).call());
+        const index = await initialized.methods.getCurrentPhylaxSetIndex().call();
+        const set = (await initialized.methods.getPhylaxSet(index).call());
 
         // check set
         assert.lengthOf(set[0], 1);
@@ -500,13 +500,13 @@ contract("Wormhole", function () {
         const emitterAddress = testGovernanceContract;
         const zeroAddress = "0x0000000000000000000000000000000000000000";
 
-        let oldIndex = Number(await initialized.methods.getCurrentGuardianSetIndex().call());
+        let oldIndex = Number(await initialized.methods.getCurrentPhylaxSetIndex().call());
 
         data = [
             // Core
             core,
-            // Action 2 (Guardian Set Upgrade)
-            actionGuardianSetUpgrade,
+            // Action 2 (Phylax Set Upgrade)
+            actionPhylaxSetUpgrade,
             web3.eth.abi.encodeParameter("uint16", testChainId).substring(2 + (64 - 4)),
             web3.eth.abi.encodeParameter("uint32", oldIndex + 1).substring(2 + (64 - 8)),
             web3.eth.abi.encodeParameter("uint8", 3).substring(2 + (64 - 2)),
@@ -532,7 +532,7 @@ contract("Wormhole", function () {
         // try to submit a new guardian set including the zero address
         failed = false;
         try {
-            await initialized.methods.submitNewGuardianSet("0x" + vm).send({
+            await initialized.methods.submitNewPhylaxSet("0x" + vm).send({
                 value: 0,
                 from: accounts[0],
                 gasLimit: 1000000
@@ -554,13 +554,13 @@ contract("Wormhole", function () {
         const emitterChainId = testGovernanceChainId;
         const emitterAddress = testGovernanceContract
 
-        let oldIndex = Number(await initialized.methods.getCurrentGuardianSetIndex().call());
+        let oldIndex = Number(await initialized.methods.getCurrentPhylaxSetIndex().call());
 
         data = [
             // Core
             core,
-            // Action 2 (Guardian Set Upgrade)
-            actionGuardianSetUpgrade,
+            // Action 2 (Phylax Set Upgrade)
+            actionPhylaxSetUpgrade,
             web3.eth.abi.encodeParameter("uint16", testChainId).substring(2 + (64 - 4)),
             web3.eth.abi.encodeParameter("uint32", oldIndex + 1).substring(2 + (64 - 8)),
             web3.eth.abi.encodeParameter("uint8", 3).substring(2 + (64 - 2)),
@@ -583,19 +583,19 @@ contract("Wormhole", function () {
             2
         );
 
-        let set = await initialized.methods.submitNewGuardianSet("0x" + vm).send({
+        let set = await initialized.methods.submitNewPhylaxSet("0x" + vm).send({
             value: 0,
             from: accounts[0],
             gasLimit: 1000000
         });
 
-        let index = await initialized.methods.getCurrentGuardianSetIndex().call();
+        let index = await initialized.methods.getCurrentPhylaxSetIndex().call();
 
         assert.equal(oldIndex + 1, index);
 
         assert.equal(index, 1);
 
-        let guardians = await initialized.methods.getGuardianSet(index).call();
+        let guardians = await initialized.methods.getPhylaxSet(index).call();
 
         assert.equal(guardians.expirationTime, 0);
 
@@ -604,14 +604,14 @@ contract("Wormhole", function () {
         assert.equal(guardians[0][1], testSigner2.address);
         assert.equal(guardians[0][2], testSigner3.address);
 
-        let oldGuardians = await initialized.methods.getGuardianSet(oldIndex).call();
+        let oldPhylaxs = await initialized.methods.getPhylaxSet(oldIndex).call();
 
         const time = (await web3.eth.getBlock("latest")).timestamp;
 
         // old guardian set expiry is set
         assert.ok(
-            oldGuardians.expirationTime > Number(time) + 86000
-            && oldGuardians.expirationTime < Number(time) + 88000
+            oldPhylaxs.expirationTime > Number(time) + 86000
+            && oldPhylaxs.expirationTime < Number(time) + 88000
         );
     })
 

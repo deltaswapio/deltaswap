@@ -7,14 +7,14 @@ import { Registry, OfflineSigner, EncodeObject, DirectSecp256k1HdWallet } from "
 import { Api } from "./rest";
 import { MsgExecuteGovernanceVAA } from "./types/wormhole/tx";
 import { MsgStoreCode } from "./types/wormhole/tx";
-import { MsgRegisterAccountAsGuardian } from "./types/wormhole/tx";
+import { MsgRegisterAccountAsPhylax } from "./types/wormhole/tx";
 import { MsgInstantiateContract } from "./types/wormhole/tx";
 
 
 const types = [
   ["/wormhole_foundation.deltachain.wormhole.MsgExecuteGovernanceVAA", MsgExecuteGovernanceVAA],
   ["/wormhole_foundation.deltachain.wormhole.MsgStoreCode", MsgStoreCode],
-  ["/wormhole_foundation.deltachain.wormhole.MsgRegisterAccountAsGuardian", MsgRegisterAccountAsGuardian],
+  ["/wormhole_foundation.deltachain.wormhole.MsgRegisterAccountAsPhylax", MsgRegisterAccountAsPhylax],
   ["/wormhole_foundation.deltachain.wormhole.MsgInstantiateContract", MsgInstantiateContract],
   
 ];
@@ -50,7 +50,7 @@ const txClient = async (wallet: OfflineSigner, { addr: addr }: TxClientOptions =
     signAndBroadcast: (msgs: EncodeObject[], { fee, memo }: SignAndBroadcastOptions = {fee: defaultFee, memo: ""}) => client.signAndBroadcast(address, msgs, fee,memo),
     msgExecuteGovernanceVAA: (data: MsgExecuteGovernanceVAA): EncodeObject => ({ typeUrl: "/wormhole_foundation.deltachain.wormhole.MsgExecuteGovernanceVAA", value: MsgExecuteGovernanceVAA.fromPartial( data ) }),
     msgStoreCode: (data: MsgStoreCode): EncodeObject => ({ typeUrl: "/wormhole_foundation.deltachain.wormhole.MsgStoreCode", value: MsgStoreCode.fromPartial( data ) }),
-    msgRegisterAccountAsGuardian: (data: MsgRegisterAccountAsGuardian): EncodeObject => ({ typeUrl: "/wormhole_foundation.deltachain.wormhole.MsgRegisterAccountAsGuardian", value: MsgRegisterAccountAsGuardian.fromPartial( data ) }),
+    msgRegisterAccountAsPhylax: (data: MsgRegisterAccountAsPhylax): EncodeObject => ({ typeUrl: "/wormhole_foundation.deltachain.wormhole.MsgRegisterAccountAsPhylax", value: MsgRegisterAccountAsPhylax.fromPartial( data ) }),
     msgInstantiateContract: (data: MsgInstantiateContract): EncodeObject => ({ typeUrl: "/wormhole_foundation.deltachain.wormhole.MsgInstantiateContract", value: MsgInstantiateContract.fromPartial( data ) }),
     
   };

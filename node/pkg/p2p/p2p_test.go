@@ -18,10 +18,10 @@ import (
 func TestSignedHeartbeat(t *testing.T) {
 
 	type testCase struct {
-		timestamp             int64
-		gk                    *ecdsa.PrivateKey
-		heartbeatGuardianAddr string
-		expectSuccess         bool
+		timestamp           int64
+		gk                  *ecdsa.PrivateKey
+		heartbeatPhylaxAddr string
+		expectSuccess       bool
 	}
 
 	// define the tests
@@ -37,31 +37,31 @@ func TestSignedHeartbeat(t *testing.T) {
 	tests := []testCase{
 		// happy case
 		{
-			timestamp:             time.Now().UnixNano(),
-			gk:                    gk,
-			heartbeatGuardianAddr: gAddr.String(),
-			expectSuccess:         true,
+			timestamp:           time.Now().UnixNano(),
+			gk:                  gk,
+			heartbeatPhylaxAddr: gAddr.String(),
+			expectSuccess:       true,
 		},
 		// guardian signed a heartbeat for another guardian
 		{
-			timestamp:             time.Now().UnixNano(),
-			gk:                    gk,
-			heartbeatGuardianAddr: gAddr2.String(),
-			expectSuccess:         false,
+			timestamp:           time.Now().UnixNano(),
+			gk:                  gk,
+			heartbeatPhylaxAddr: gAddr2.String(),
+			expectSuccess:       false,
 		},
 		// old heartbeat
 		{
-			timestamp:             time.Now().Add(-time.Hour).UnixNano(),
-			gk:                    gk,
-			heartbeatGuardianAddr: gAddr2.String(),
-			expectSuccess:         false,
+			timestamp:           time.Now().Add(-time.Hour).UnixNano(),
+			gk:                  gk,
+			heartbeatPhylaxAddr: gAddr2.String(),
+			expectSuccess:       false,
 		},
 		// heartbeat from the distant future
 		{
-			timestamp:             time.Now().Add(time.Hour).UnixNano(),
-			gk:                    gk,
-			heartbeatGuardianAddr: gAddr2.String(),
-			expectSuccess:         false,
+			timestamp:           time.Now().Add(time.Hour).UnixNano(),
+			gk:                  gk,
+			heartbeatPhylaxAddr: gAddr2.String(),
+			expectSuccess:       false,
 		},
 	}
 	// run the tests
@@ -76,24 +76,24 @@ func TestSignedHeartbeat(t *testing.T) {
 			Timestamp:     tc.timestamp,
 			Networks:      []*gossipv1.Heartbeat_Network{},
 			Version:       "0.0.1beta",
-			GuardianAddr:  tc.heartbeatGuardianAddr,
+			PhylaxAddr:    tc.heartbeatPhylaxAddr,
 			BootTimestamp: time.Date(2021, 1, 1, 0, 0, 0, 0, time.UTC).UnixNano(),
 			Features:      []string{},
 		}
 
 		s := createSignedHeartbeat(gk, heartbeat)
-		gs := &node_common.GuardianSet{
+		gs := &node_common.PhylaxSet{
 			Keys:  []common.Address{addr},
 			Index: 1,
 		}
 
-		gst := node_common.NewGuardianSetState(nil)
+		gst := node_common.NewPhylaxSetState(nil)
 
 		heartbeatResult, err := processSignedHeartbeat("someone", s, gs, gst, false)
 
 		if tc.expectSuccess {
 			assert.NoError(t, err)
-			assert.EqualValues(t, heartbeat.GuardianAddr, heartbeatResult.GuardianAddr)
+			assert.EqualValues(t, heartbeat.PhylaxAddr, heartbeatResult.PhylaxAddr)
 		} else {
 			assert.Error(t, err)
 		}

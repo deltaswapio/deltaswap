@@ -32,7 +32,7 @@ func MockNext(ctx sdk.Context, tx sdk.Tx, simulate bool) (newCtx sdk.Context, er
 	return ctx, nil
 }
 
-func getSigner(guardianValidator *types.GuardianValidator) string {
+func getSigner(guardianValidator *types.PhylaxValidator) string {
 	return sdk.AccAddress(guardianValidator.ValidatorAddr).String()
 }
 
@@ -60,16 +60,16 @@ func getRandomAddress() string {
 
 func TestAllowlistEntry(t *testing.T) {
 	k, ctx := keepertest.WormholeKeeper(t)
-	guardians, _ := createNGuardianValidator(k, ctx, 10)
+	guardians, _ := createNPhylaxValidator(k, ctx, 10)
 	k.SetConfig(ctx, types.Config{
-		GovernanceEmitter:     vaa.GovernanceEmitter[:],
-		GovernanceChain:       uint32(vaa.GovernanceChain),
-		ChainId:               uint32(vaa.ChainIDWormchain),
-		GuardianSetExpiration: 86400,
+		GovernanceEmitter:   vaa.GovernanceEmitter[:],
+		GovernanceChain:     uint32(vaa.GovernanceChain),
+		ChainId:             uint32(vaa.ChainIDWormchain),
+		PhylaxSetExpiration: 86400,
 	})
 
-	createNewGuardianSet(k, ctx, guardians)
-	k.SetConsensusGuardianSetIndex(ctx, types.ConsensusGuardianSetIndex{
+	createNewPhylaxSet(k, ctx, guardians)
+	k.SetConsensusPhylaxSetIndex(ctx, types.ConsensusPhylaxSetIndex{
 		Index: 0,
 	})
 
@@ -137,13 +137,13 @@ func TestAllowlistEntry(t *testing.T) {
 	assert.Error(t, err)
 
 	// Cannot make AllowlistEntry if the guardian set changes
-	oldGuardian := guardians[0]
-	guardians, _ = createNGuardianValidator(k, ctx, 10)
-	createNewGuardianSet(k, ctx, guardians)
-	err = k.TrySwitchToNewConsensusGuardianSet(ctx)
+	oldPhylax := guardians[0]
+	guardians, _ = createNPhylaxValidator(k, ctx, 10)
+	createNewPhylaxSet(k, ctx, guardians)
+	err = k.TrySwitchToNewConsensusPhylaxSet(ctx)
 	assert.NoError(t, err)
 	_, err = msgServer.CreateAllowlistEntry(context, &types.MsgCreateAllowlistEntryRequest{
-		Signer:  getSigner(&oldGuardian),
+		Signer:  getSigner(&oldPhylax),
 		Address: getRandomAddress(),
 	})
 	assert.Error(t, err)
@@ -178,17 +178,17 @@ func TestAllowlistEntry(t *testing.T) {
 
 func TestAllowlistEntryAnteHandler(t *testing.T) {
 	k, ctx := keepertest.WormholeKeeper(t)
-	guardians, privateKeys := createNGuardianValidator(k, ctx, 10)
+	guardians, privateKeys := createNPhylaxValidator(k, ctx, 10)
 	_ = privateKeys
 	k.SetConfig(ctx, types.Config{
-		GovernanceEmitter:     vaa.GovernanceEmitter[:],
-		GovernanceChain:       uint32(vaa.GovernanceChain),
-		ChainId:               uint32(vaa.ChainIDWormchain),
-		GuardianSetExpiration: 86400,
+		GovernanceEmitter:   vaa.GovernanceEmitter[:],
+		GovernanceChain:     uint32(vaa.GovernanceChain),
+		ChainId:             uint32(vaa.ChainIDWormchain),
+		PhylaxSetExpiration: 86400,
 	})
 
-	createNewGuardianSet(k, ctx, guardians)
-	k.SetConsensusGuardianSetIndex(ctx, types.ConsensusGuardianSetIndex{
+	createNewPhylaxSet(k, ctx, guardians)
+	k.SetConsensusPhylaxSetIndex(ctx, types.ConsensusPhylaxSetIndex{
 		Index: 0,
 	})
 
@@ -246,9 +246,9 @@ func TestAllowlistEntryAnteHandler(t *testing.T) {
 	// test ante handler rejects address that is no longer valid
 	// due to validator set advancing
 	// 1. new guardian set
-	guardians, _ = createNGuardianValidator(k, ctx, 10)
-	createNewGuardianSet(k, ctx, guardians)
-	err = k.TrySwitchToNewConsensusGuardianSet(ctx)
+	guardians, _ = createNPhylaxValidator(k, ctx, 10)
+	createNewPhylaxSet(k, ctx, guardians)
+	err = k.TrySwitchToNewConsensusPhylaxSet(ctx)
 	assert.NoError(t, err)
 	// 2. expect reject
 	_, err = anteHandler.AnteHandle(ctx, getTxWithSigner(new_address), false, MockNext)

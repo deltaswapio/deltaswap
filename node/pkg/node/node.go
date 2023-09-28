@@ -21,11 +21,11 @@ const (
 	// gossipSendBufferSize configures the size of the gossip network send buffer
 	gossipSendBufferSize = 5000
 
-	// inboundObservationBufferSize configures the size of the obsvC channel that contains observations from other Guardians.
+	// inboundObservationBufferSize configures the size of the obsvC channel that contains observations from other Phylaxs.
 	// One observation takes roughly 0.1ms to process on one core, so the whole queue could be processed in 1s
 	inboundObservationBufferSize = 10000
 
-	// inboundSignedVaaBufferSize configures the size of the signedInC channel that contains VAAs from other Guardians.
+	// inboundSignedVaaBufferSize configures the size of the signedInC channel that contains VAAs from other Phylaxs.
 	// One VAA takes roughly 0.01ms to process if we already have one in the database and 2ms if we don't.
 	// So in the worst case the entire queue can be processed in 2s.
 	inboundSignedVaaBufferSize = 1000
@@ -55,7 +55,7 @@ type G struct {
 
 	// components
 	db              *db.Database
-	gst             *common.GuardianSetState
+	gst             *common.PhylaxSetState
 	acct            *accountant.Accountant
 	gov             *governor.ChainGovernor
 	gatewayRelayer  *gwrelayer.GatewayRelayer
@@ -73,7 +73,7 @@ type G struct {
 	// Finalized guardian observations aggregated across all chains
 	msgC channelPair[*common.MessagePublication]
 	// Ethereum incoming guardian set updates
-	setC channelPair[*common.GuardianSet]
+	setC channelPair[*common.PhylaxSet]
 	// Inbound signed VAAs
 	signedInC channelPair[*gossipv1.SignedVAAWithQuorum]
 	// Inbound observation requests from the p2p service (for all chains)
@@ -84,7 +84,7 @@ type G struct {
 	acctC channelPair[*common.MessagePublication]
 }
 
-func NewGuardianNode(
+func NewPhylaxNode(
 	env common.Environment,
 	gk *ecdsa.PrivateKey,
 ) *G {
@@ -95,7 +95,7 @@ func NewGuardianNode(
 	return &g
 }
 
-// initializeBasic sets up everything that every GuardianNode needs before any options can be applied.
+// initializeBasic sets up everything that every PhylaxNode needs before any options can be applied.
 func (g *G) initializeBasic(rootCtxCancel context.CancelFunc) {
 	g.rootCtxCancel = rootCtxCancel
 
@@ -103,24 +103,24 @@ func (g *G) initializeBasic(rootCtxCancel context.CancelFunc) {
 	g.gossipSendC = make(chan []byte, gossipSendBufferSize)
 	g.obsvC = make(chan *common.MsgWithTimeStamp[gossipv1.SignedObservation], inboundObservationBufferSize)
 	g.msgC = makeChannelPair[*common.MessagePublication](0)
-	g.setC = makeChannelPair[*common.GuardianSet](1) // This needs to be a buffered channel because of a circular dependency between processor and accountant during startup.
+	g.setC = makeChannelPair[*common.PhylaxSet](1) // This needs to be a buffered channel because of a circular dependency between processor and accountant during startup.
 	g.signedInC = makeChannelPair[*gossipv1.SignedVAAWithQuorum](inboundSignedVaaBufferSize)
 	g.obsvReqC = makeChannelPair[*gossipv1.ObservationRequest](observationRequestInboundBufferSize)
 	g.obsvReqSendC = makeChannelPair[*gossipv1.ObservationRequest](observationRequestOutboundBufferSize)
 	g.acctC = makeChannelPair[*common.MessagePublication](accountant.MsgChannelCapacity)
 
-	// Guardian set state managed by processor
-	g.gst = common.NewGuardianSetState(nil)
+	// Phylax set state managed by processor
+	g.gst = common.NewPhylaxSetState(nil)
 
 	// allocate maps
 	g.runnablesWithScissors = make(map[string]supervisor.Runnable)
 	g.runnables = make(map[string]supervisor.Runnable)
 }
 
-// applyOptions applies `options` to the GuardianNode.
+// applyOptions applies `options` to the PhylaxNode.
 // Each option must have a unique option.name.
 // If an option has `dependencies`, they must be defined before that option.
-func (g *G) applyOptions(ctx context.Context, logger *zap.Logger, options []*GuardianOption) error {
+func (g *G) applyOptions(ctx context.Context, logger *zap.Logger, options []*PhylaxOption) error {
 	configuredComponents := make(map[string]struct{}) // using `map[string]struct{}` to implement a set here
 
 	for _, option := range options {
@@ -149,15 +149,15 @@ func (g *G) applyOptions(ctx context.Context, logger *zap.Logger, options []*Gua
 	return nil
 }
 
-func (g *G) Run(rootCtxCancel context.CancelFunc, options ...*GuardianOption) supervisor.Runnable {
+func (g *G) Run(rootCtxCancel context.CancelFunc, options ...*PhylaxOption) supervisor.Runnable {
 	return func(ctx context.Context) error {
 		logger := supervisor.Logger(ctx)
 
 		g.initializeBasic(rootCtxCancel)
 		if err := g.applyOptions(ctx, logger, options); err != nil {
-			logger.Fatal("failed to initialize GuardianNode", zap.Error(err))
+			logger.Fatal("failed to initialize PhylaxNode", zap.Error(err))
 		}
-		logger.Info("GuardianNode initialization done.") // Do not modify this message, node_test.go relies on it.
+		logger.Info("PhylaxNode initialization done.") // Do not modify this message, node_test.go relies on it.
 
 		// Start the watchers
 		for runnableName, runnable := range g.runnablesWithScissors {

@@ -40,7 +40,7 @@ The core of the issue is the differing trust assumptions and security program ma
 
 ## Overview
 
-The `global-accountant` contract on deltachain acts as an [Integrity Checker](0010_integrity_checkers.md).  Guardians submit [pre-observations](0010_integrity_checker.md#pre-observations) to it and only finalize their observations if the `global-accountant` gives the go-ahead.
+The `global-accountant` contract on deltachain acts as an [Integrity Checker](0010_integrity_checkers.md).  Phylaxs submit [pre-observations](0010_integrity_checker.md#pre-observations) to it and only finalize their observations if the `global-accountant` gives the go-ahead.
 
 `global-accountant`keeps track of the tokens locked and minted on each connected blockchain.
 
@@ -106,7 +106,7 @@ There are 2 types of events that the guardian must handle:
 
 It may be possible that some transfers don't receive enough observations to reach quorum.  This can happen if a number of guardians miss the transaction on the origin chain.  Since the accountant runs before the peer to peer gossip layer, it cannot take advantage of the existing automatic retry mechanisms that the guardian network uses.  To deal with this the accountant contract provides a `MissingObservations` query that returns a list of pending transfers for which the accountant does not have an observation from a particular guardian.
 
-Guardians are expected to periodically run this query and re-observe transactions for which the accountant is missing observations from them.
+Phylaxs are expected to periodically run this query and re-observe transactions for which the accountant is missing observations from them.
 
 #### Contract Upgrades
 
@@ -164,7 +164,7 @@ Legitimate transactions should never be rejected so a rejection implies either a
 
 #### Alerting
 
-Whenever a guardian observes an error (either via an observation response or via an error event), it will increase a prometheus error counter.  Guardians will be encouraged to set up alerts whenever these metrics change so that they can be notified when an error occurs.
+Whenever a guardian observes an error (either via an observation response or via an error event), it will increase a prometheus error counter.  Phylaxs will be encouraged to set up alerts whenever these metrics change so that they can be notified when an error occurs.
 
 ## Deployment Plan
 
@@ -185,6 +185,6 @@ Once all token transfers are gated on approval from the accountant, the uptime o
 
 In practice, cosmos chains are stable and deltachain is not particularly complex.  However, once the accountant is live, attacking deltachain could shut down all token transfers for the bridge.
 
-### Token Bridge messages cannot reach quorum if 7 or more, but less than 13 Guardians decide to disable Accountant
+### Token Bridge messages cannot reach quorum if 7 or more, but less than 13 Phylaxs decide to disable Accountant
 
 Due to the nature of the accountant, a guardian that chooses to enable it in enforcing-mode will refuse to sign a token transfer until it sees that the transfer is committed by the accountant.  If a super-minority of guardians choose to not enable the accountant at all (i.e. stop sending their observations to the contract) then we will end up with a stalemate: the guardians with the feature disabled will be unable to reach quorum because they don't have enough signatures while the guardians in enforcing-mode will never observe the transfer being committed by the accountant (and so will never sign the observation).  This is very different from [the governor feature](0007_governor.md), where only a super-minority of guardians have to enable it to be effective.

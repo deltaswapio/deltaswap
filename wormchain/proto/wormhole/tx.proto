@@ -9,7 +9,7 @@ option go_package = "github.com/deltaswapio/deltachain/x/wormhole/types";
 // Msg defines the Msg service.
 service Msg {
   rpc ExecuteGovernanceVAA(MsgExecuteGovernanceVAA) returns (MsgExecuteGovernanceVAAResponse);
-  rpc RegisterAccountAsGuardian(MsgRegisterAccountAsGuardian) returns (MsgRegisterAccountAsGuardianResponse);
+  rpc RegisterAccountAsPhylax(MsgRegisterAccountAsPhylax) returns (MsgRegisterAccountAsPhylaxResponse);
 
   rpc CreateAllowlistEntry(MsgCreateAllowlistEntryRequest) returns (MsgAllowlistResponse);
   rpc DeleteAllowlistEntry(MsgDeleteAllowlistEntryRequest) returns (MsgAllowlistResponse);
@@ -59,12 +59,12 @@ message MsgExecuteGovernanceVAA {
 message MsgExecuteGovernanceVAAResponse {
 }
 
-message MsgRegisterAccountAsGuardian {
+message MsgRegisterAccountAsPhylax {
   string signer = 1;
   bytes signature = 3;
 }
 
-message MsgRegisterAccountAsGuardianResponse {
+message MsgRegisterAccountAsPhylaxResponse {
 }
 
 // Same as from x/wasmd but with vaa auth

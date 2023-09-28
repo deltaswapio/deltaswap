@@ -16,7 +16,7 @@ function encodeGovernancePayload(payload: GovernancePayload): Uint8Array {
 			body = payload.updateHash
 			break
 		}
-		case GovenanceMessageType.UpdateGuardians: {
+		case GovenanceMessageType.UpdatePhylaxs: {
 			body = concatArrays([
 				encodeUint32(payload.newGSIndex),
 				encodeUint8(payload.guardians.length),

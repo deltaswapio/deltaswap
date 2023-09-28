@@ -49,7 +49,7 @@ async function main() {
     buildForBytecodeAndDigest(dstWormholePath);
 
   // We will use the signed VAA when we execute the upgrade.
-  const guardians = new mock.MockGuardians(0, [guardianPrivateKey]);
+  const guardians = new mock.MockPhylaxs(0, [guardianPrivateKey]);
 
   const timestamp = 12345678;
   const governance = new mock.GovernanceEmitter(GOVERNANCE_EMITTER);

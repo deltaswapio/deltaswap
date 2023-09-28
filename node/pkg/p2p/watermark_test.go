@@ -34,7 +34,7 @@ type G struct {
 	signedInC              chan *gossipv1.SignedVAAWithQuorum
 	priv                   p2pcrypto.PrivKey
 	gk                     *ecdsa.PrivateKey
-	gst                    *node_common.GuardianSetState
+	gst                    *node_common.PhylaxSetState
 	networkID              string
 	bootstrapPeers         string
 	nodeName               string
@@ -69,7 +69,7 @@ func NewG(t *testing.T, nodeName string) *G {
 		signedInC:              make(chan *gossipv1.SignedVAAWithQuorum, cs),
 		priv:                   p2ppriv,
 		gk:                     guardianpriv,
-		gst:                    node_common.NewGuardianSetState(nil),
+		gst:                    node_common.NewPhylaxSetState(nil),
 		nodeName:               nodeName,
 		disableHeartbeatVerify: false,
 		rootCtxCancel:          nil,
@@ -103,7 +103,7 @@ func TestWatermark(t *testing.T) {
 	defer cancel()
 
 	// Create 4 nodes
-	var guardianset = &node_common.GuardianSet{}
+	var guardianset = &node_common.PhylaxSet{}
 	var gs [4]*G
 	for i := range gs {
 		gs[i] = NewG(t, fmt.Sprintf("n%d", i))
@@ -126,7 +126,7 @@ func TestWatermark(t *testing.T) {
 
 	// Start the nodes
 	for _, g := range gs {
-		startGuardian(t, ctx, g)
+		startPhylax(t, ctx, g)
 	}
 
 	// Wait ~20s to let the nodes gossip.
@@ -137,32 +137,32 @@ func TestWatermark(t *testing.T) {
 
 		// expectedProtectedPeers is expected to be 2 for all nodes except the last one where 3 is expected
 		func() {
-			guardian.components.ProtectedHostByGuardianKeyLock.Lock()
-			defer guardian.components.ProtectedHostByGuardianKeyLock.Unlock()
+			guardian.components.ProtectedHostByPhylaxKeyLock.Lock()
+			defer guardian.components.ProtectedHostByPhylaxKeyLock.Unlock()
 			expectedProtectedPeers := 2
 			if guardianIndex == 3 {
 				expectedProtectedPeers = 3
 			}
-			assert.Equal(t, expectedProtectedPeers, len(guardian.components.ProtectedHostByGuardianKey))
+			assert.Equal(t, expectedProtectedPeers, len(guardian.components.ProtectedHostByPhylaxKey))
 		}()
 
 		// check that nodes {0, 1, 2} are protected on all other nodes and that nodes {3} are not protected.
-		for otherGuardianIndex, otherGuardian := range gs {
-			g1addr, err := p2ppeer.IDFromPublicKey(otherGuardian.priv.GetPublic())
+		for otherPhylaxIndex, otherPhylax := range gs {
+			g1addr, err := p2ppeer.IDFromPublicKey(otherPhylax.priv.GetPublic())
 			require.NoError(t, err)
 			isProtected := guardian.components.ConnMgr.IsProtected(g1addr, "heartbeat")
 
 			// A node cannot be protected on itself as one's own heartbeats are dropped
-			if guardianIndex == otherGuardianIndex {
+			if guardianIndex == otherPhylaxIndex {
 				continue
 			}
-			assert.Falsef(t, isProtected && otherGuardianIndex == 3, "node at index 3 should not be protected on node %d but was", guardianIndex)
-			assert.Falsef(t, !isProtected && otherGuardianIndex != 3, "node at index %d should be protected on node %d but is not", otherGuardianIndex, guardianIndex)
+			assert.Falsef(t, isProtected && otherPhylaxIndex == 3, "node at index 3 should not be protected on node %d but was", guardianIndex)
+			assert.Falsef(t, !isProtected && otherPhylaxIndex != 3, "node at index %d should be protected on node %d but is not", otherPhylaxIndex, guardianIndex)
 		}
 	}
 }
 
-func startGuardian(t *testing.T, ctx context.Context, g *G) {
+func startPhylax(t *testing.T, ctx context.Context, g *G) {
 	t.Helper()
 	supervisor.New(ctx, zap.L(),
 		Run(g.obsvC,

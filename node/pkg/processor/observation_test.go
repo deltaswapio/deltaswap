@@ -23,7 +23,7 @@ func getVAA() vaa.VAA {
 
 	vaa := vaa.VAA{
 		Version:          uint8(1),
-		GuardianSetIndex: uint32(1),
+		PhylaxSetIndex:   uint32(1),
 		Signatures:       nil,
 		Timestamp:        time.Unix(0, 0),
 		Nonce:            uint32(1),
@@ -37,7 +37,7 @@ func getVAA() vaa.VAA {
 	return vaa
 }
 
-func TestHandleInboundSignedVAAWithQuorum_NilGuardianSet(t *testing.T) {
+func TestHandleInboundSignedVAAWithQuorum_NilPhylaxSet(t *testing.T) {
 	vaa := getVAA()
 	marshalVAA, _ := vaa.Marshal()
 
@@ -72,7 +72,7 @@ func TestHandleInboundSignedVAAWithQuorum(t *testing.T) {
 		addrs      []ethcommon.Address
 		errString  string
 	}{
-		{label: "GuardianSetNoKeys", keyOrder: []*ecdsa.PrivateKey{}, indexOrder: []uint8{}, addrs: []ethcommon.Address{},
+		{label: "PhylaxSetNoKeys", keyOrder: []*ecdsa.PrivateKey{}, indexOrder: []uint8{}, addrs: []ethcommon.Address{},
 			errString: "dropping SignedVAAWithQuorum message since we have a guardian set without keys"},
 		{label: "VAANoSignatures", keyOrder: []*ecdsa.PrivateKey{}, indexOrder: []uint8{0}, addrs: []ethcommon.Address{goodAddr1},
 			errString: "dropping SignedVAAWithQuorum message because it failed verification: VAA was not signed"},
@@ -88,8 +88,8 @@ func TestHandleInboundSignedVAAWithQuorum(t *testing.T) {
 		t.Run(tc.label, func(t *testing.T) {
 			vaa := getVAA()
 
-			// Define a GuardianSet from test addrs
-			guardianSet := common.GuardianSet{
+			// Define a PhylaxSet from test addrs
+			guardianSet := common.PhylaxSet{
 				Keys:  tc.addrs,
 				Index: 1,
 			}

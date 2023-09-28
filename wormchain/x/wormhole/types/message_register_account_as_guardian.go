@@ -5,26 +5,26 @@ import (
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
 
-const TypeMsgRegisterAccountAsGuardian = "register_account_as_guardian"
+const TypeMsgRegisterAccountAsPhylax = "register_account_as_guardian"
 
-var _ sdk.Msg = &MsgRegisterAccountAsGuardian{}
+var _ sdk.Msg = &MsgRegisterAccountAsPhylax{}
 
-func NewMsgRegisterAccountAsGuardian(signer string, signature []byte) *MsgRegisterAccountAsGuardian {
-	return &MsgRegisterAccountAsGuardian{
+func NewMsgRegisterAccountAsPhylax(signer string, signature []byte) *MsgRegisterAccountAsPhylax {
+	return &MsgRegisterAccountAsPhylax{
 		Signer:    signer,
 		Signature: signature,
 	}
 }
 
-func (msg *MsgRegisterAccountAsGuardian) Route() string {
+func (msg *MsgRegisterAccountAsPhylax) Route() string {
 	return RouterKey
 }
 
-func (msg *MsgRegisterAccountAsGuardian) Type() string {
-	return TypeMsgRegisterAccountAsGuardian
+func (msg *MsgRegisterAccountAsPhylax) Type() string {
+	return TypeMsgRegisterAccountAsPhylax
 }
 
-func (msg *MsgRegisterAccountAsGuardian) GetSigners() []sdk.AccAddress {
+func (msg *MsgRegisterAccountAsPhylax) GetSigners() []sdk.AccAddress {
 	signer, err := sdk.AccAddressFromBech32(msg.Signer)
 	if err != nil {
 		panic(err)
@@ -32,12 +32,12 @@ func (msg *MsgRegisterAccountAsGuardian) GetSigners() []sdk.AccAddress {
 	return []sdk.AccAddress{signer}
 }
 
-func (msg *MsgRegisterAccountAsGuardian) GetSignBytes() []byte {
+func (msg *MsgRegisterAccountAsPhylax) GetSignBytes() []byte {
 	bz := ModuleCdc.MustMarshalJSON(msg)
 	return sdk.MustSortJSON(bz)
 }
 
-func (msg *MsgRegisterAccountAsGuardian) ValidateBasic() error {
+func (msg *MsgRegisterAccountAsPhylax) ValidateBasic() error {
 	_, err := sdk.AccAddressFromBech32(msg.Signer)
 	if err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid signer address (%s)", err)

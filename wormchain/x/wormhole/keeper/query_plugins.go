@@ -35,9 +35,9 @@ type WormholeQuery struct {
 
 // deprecated
 type verifyQuorumParams struct {
-	Data             []byte           `json:"data"`
-	GuardianSetIndex uint32           `json:"guardian_set_index"`
-	Signatures       []*vaa.Signature `json:"signatures"`
+	Data           []byte           `json:"data"`
+	PhylaxSetIndex uint32           `json:"guardian_set_index"`
+	Signatures     []*vaa.Signature `json:"signatures"`
 }
 
 type verifyVaaParams struct {
@@ -45,14 +45,14 @@ type verifyVaaParams struct {
 }
 
 type verifyMessageSignatureParams struct {
-	Prefix           []byte         `json:"prefix"`
-	Data             []byte         `json:"data"`
-	GuardianSetIndex uint32         `json:"guardian_set_index"`
-	Signature        *vaa.Signature `json:"signature"`
+	Prefix         []byte         `json:"prefix"`
+	Data           []byte         `json:"data"`
+	PhylaxSetIndex uint32         `json:"guardian_set_index"`
+	Signature      *vaa.Signature `json:"signature"`
 }
 
 type calculateQuorumParams struct {
-	GuardianSetIndex uint32 `json:"guardian_set_index"`
+	PhylaxSetIndex uint32 `json:"guardian_set_index"`
 }
 
 func WormholeQuerier(keeper Keeper) func(ctx sdk.Context, data json.RawMessage) ([]byte, error) {
@@ -65,7 +65,7 @@ func WormholeQuerier(keeper Keeper) func(ctx sdk.Context, data json.RawMessage) 
 
 		if wormholeQuery.VerifyQuorum != nil {
 			// verify vaa using deprecated method
-			err := keeper.DeprecatedVerifyVaa(ctx, wormholeQuery.VerifyQuorum.Data, wormholeQuery.VerifyQuorum.GuardianSetIndex, wormholeQuery.VerifyQuorum.Signatures)
+			err := keeper.DeprecatedVerifyVaa(ctx, wormholeQuery.VerifyQuorum.Data, wormholeQuery.VerifyQuorum.PhylaxSetIndex, wormholeQuery.VerifyQuorum.Signatures)
 			if err != nil {
 				return nil, err
 			}
@@ -89,7 +89,7 @@ func WormholeQuerier(keeper Keeper) func(ctx sdk.Context, data json.RawMessage) 
 				ctx,
 				wormholeQuery.VerifyMessageSignature.Prefix,
 				wormholeQuery.VerifyMessageSignature.Data,
-				wormholeQuery.VerifyMessageSignature.GuardianSetIndex,
+				wormholeQuery.VerifyMessageSignature.PhylaxSetIndex,
 				wormholeQuery.VerifyMessageSignature.Signature,
 			)
 			if err != nil {
@@ -99,7 +99,7 @@ func WormholeQuerier(keeper Keeper) func(ctx sdk.Context, data json.RawMessage) 
 		}
 		if wormholeQuery.CalculateQuorum != nil {
 			// handle the calculate quorum query
-			quorum, _, err := keeper.CalculateQuorum(ctx, wormholeQuery.CalculateQuorum.GuardianSetIndex)
+			quorum, _, err := keeper.CalculateQuorum(ctx, wormholeQuery.CalculateQuorum.PhylaxSetIndex)
 			if err != nil {
 				return nil, err
 			}

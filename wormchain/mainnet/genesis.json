@@ -871,7 +871,7 @@
           },
           "delegator_shares": "0.000000000000000000",
           "description": {
-            "details": "01node Guardian",
+            "details": "01node Phylax",
             "identity": "7BDD4C2E94392626",
             "moniker": "01node",
             "security_contact": "",
@@ -1071,7 +1071,7 @@
         "governance_emitter": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQ=",
         "guardian_set_expiration": "86400"
       },
-      "consensusGuardianSetIndex": {
+      "consensusPhylaxSetIndex": {
         "index": 1
       },
       "guardianSetList": [

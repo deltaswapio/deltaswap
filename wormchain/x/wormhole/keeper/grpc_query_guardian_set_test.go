@@ -14,29 +14,29 @@ import (
 	"github.com/deltaswapio/deltachain/x/wormhole/types"
 )
 
-func TestGuardianSetQuerySingle(t *testing.T) {
+func TestPhylaxSetQuerySingle(t *testing.T) {
 	keeper, ctx := keepertest.WormholeKeeper(t)
 	wctx := sdk.WrapSDKContext(ctx)
-	msgs := createNGuardianSet(t, keeper, ctx, 2)
+	msgs := createNPhylaxSet(t, keeper, ctx, 2)
 	for _, tc := range []struct {
 		desc     string
-		request  *types.QueryGetGuardianSetRequest
-		response *types.QueryGetGuardianSetResponse
+		request  *types.QueryGetPhylaxSetRequest
+		response *types.QueryGetPhylaxSetResponse
 		err      error
 	}{
 		{
 			desc:     "First",
-			request:  &types.QueryGetGuardianSetRequest{Index: msgs[0].Index},
-			response: &types.QueryGetGuardianSetResponse{GuardianSet: msgs[0]},
+			request:  &types.QueryGetPhylaxSetRequest{Index: msgs[0].Index},
+			response: &types.QueryGetPhylaxSetResponse{PhylaxSet: msgs[0]},
 		},
 		{
 			desc:     "Second",
-			request:  &types.QueryGetGuardianSetRequest{Index: msgs[1].Index},
-			response: &types.QueryGetGuardianSetResponse{GuardianSet: msgs[1]},
+			request:  &types.QueryGetPhylaxSetRequest{Index: msgs[1].Index},
+			response: &types.QueryGetPhylaxSetResponse{PhylaxSet: msgs[1]},
 		},
 		{
 			desc:    "KeyNotFound",
-			request: &types.QueryGetGuardianSetRequest{Index: uint32(len(msgs))},
+			request: &types.QueryGetPhylaxSetRequest{Index: uint32(len(msgs))},
 			err:     sdkerrors.ErrKeyNotFound,
 		},
 		{
@@ -45,7 +45,7 @@ func TestGuardianSetQuerySingle(t *testing.T) {
 		},
 	} {
 		t.Run(tc.desc, func(t *testing.T) {
-			response, err := keeper.GuardianSet(wctx, tc.request)
+			response, err := keeper.PhylaxSet(wctx, tc.request)
 			if tc.err != nil {
 				require.ErrorIs(t, err, tc.err)
 			} else {
@@ -56,13 +56,13 @@ func TestGuardianSetQuerySingle(t *testing.T) {
 	}
 }
 
-func TestGuardianSetQueryPaginated(t *testing.T) {
+func TestPhylaxSetQueryPaginated(t *testing.T) {
 	keeper, ctx := keepertest.WormholeKeeper(t)
 	wctx := sdk.WrapSDKContext(ctx)
-	msgs := createNGuardianSet(t, keeper, ctx, 5)
+	msgs := createNPhylaxSet(t, keeper, ctx, 5)
 
-	request := func(next []byte, offset, limit uint64, total bool) *types.QueryAllGuardianSetRequest {
-		return &types.QueryAllGuardianSetRequest{
+	request := func(next []byte, offset, limit uint64, total bool) *types.QueryAllPhylaxSetRequest {
+		return &types.QueryAllPhylaxSetRequest{
 			Pagination: &query.PageRequest{
 				Key:        next,
 				Offset:     offset,
@@ -74,30 +74,30 @@ func TestGuardianSetQueryPaginated(t *testing.T) {
 	t.Run("ByOffset", func(t *testing.T) {
 		step := 2
 		for i := 0; i < len(msgs); i += step {
-			resp, err := keeper.GuardianSetAll(wctx, request(nil, uint64(i), uint64(step), false))
+			resp, err := keeper.PhylaxSetAll(wctx, request(nil, uint64(i), uint64(step), false))
 			require.NoError(t, err)
-			require.LessOrEqual(t, len(resp.GuardianSet), step)
-			require.Subset(t, msgs, resp.GuardianSet)
+			require.LessOrEqual(t, len(resp.PhylaxSet), step)
+			require.Subset(t, msgs, resp.PhylaxSet)
 		}
 	})
 	t.Run("ByKey", func(t *testing.T) {
 		step := 2
 		var next []byte
 		for i := 0; i < len(msgs); i += step {
-			resp, err := keeper.GuardianSetAll(wctx, request(next, 0, uint64(step), false))
+			resp, err := keeper.PhylaxSetAll(wctx, request(next, 0, uint64(step), false))
 			require.NoError(t, err)
-			require.LessOrEqual(t, len(resp.GuardianSet), step)
-			require.Subset(t, msgs, resp.GuardianSet)
+			require.LessOrEqual(t, len(resp.PhylaxSet), step)
+			require.Subset(t, msgs, resp.PhylaxSet)
 			next = resp.Pagination.NextKey
 		}
 	})
 	t.Run("Total", func(t *testing.T) {
-		resp, err := keeper.GuardianSetAll(wctx, request(nil, 0, 0, true))
+		resp, err := keeper.PhylaxSetAll(wctx, request(nil, 0, 0, true))
 		require.NoError(t, err)
 		require.Equal(t, len(msgs), int(resp.Pagination.Total))
 	})
 	t.Run("InvalidRequest", func(t *testing.T) {
-		_, err := keeper.GuardianSetAll(wctx, nil)
+		_, err := keeper.PhylaxSetAll(wctx, nil)
 		require.ErrorIs(t, err, status.Error(codes.InvalidArgument, "invalid request"))
 	})
 }

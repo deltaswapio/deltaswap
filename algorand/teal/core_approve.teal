@@ -132,7 +132,7 @@ txna Accounts 2
 pushint 519 // 519
 &&
 assert
-bytec_3 // "currentGuardianSetIndex"
+bytec_3 // "currentPhylaxSetIndex"
 app_global_get
 store 27
 load 27
@@ -323,7 +323,7 @@ intc_1 // 0
 ==
 bnz main_l26
 main_l23:
-bytec_3 // "currentGuardianSetIndex"
+bytec_3 // "currentPhylaxSetIndex"
 load 26
 app_global_put
 load 22
@@ -766,7 +766,7 @@ bytec 15 // "booted"
 pushbytes 0x74727565 // "true"
 app_global_put
 callsub checkForDuplicate_11
-bytec_3 // "currentGuardianSetIndex"
+bytec_3 // "currentPhylaxSetIndex"
 app_global_get
 store 7
 load 7
@@ -955,7 +955,7 @@ intc_1 // 0
 ==
 bnz main_l65
 main_l62:
-bytec_3 // "currentGuardianSetIndex"
+bytec_3 // "currentPhylaxSetIndex"
 load 6
 app_global_put
 load 2
@@ -1162,7 +1162,7 @@ app_global_put
 bytec 8 // "vphash"
 bytec_0 // ""
 app_global_put
-bytec_3 // "currentGuardianSetIndex"
+bytec_3 // "currentPhylaxSetIndex"
 intc_1 // 0
 app_global_put
 bytec 7 // "validUpdateApproveHash"

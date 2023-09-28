@@ -211,7 +211,7 @@ class GenTest:
             version,
         )
 
-    def genGuardianSetUpgrade(self, signers, guardianSet, targetSet, nonce, seq):
+    def genPhylaxSetUpgrade(self, signers, guardianSet, targetSet, nonce, seq):
         b  = self.zeroPadBytes[0:(28*2)]
         b += self.encoder("uint8", ord("C"))
         b += self.encoder("uint8", ord("o"))

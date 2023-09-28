@@ -202,7 +202,7 @@ func (e *Watcher) runObsvReqProcessor(ctx context.Context) error {
 
 			// TODO e.wormholeContract is not the correct value for senderAccountId. Instead, it should be the account id of the transaction sender.
 			// This value is used by NEAR to determine which shard to query. An incorrect value here is not a security risk but could lead to reobservation requests failing.
-			// Guardians currently run nodes for all shards and the API seems to be returning the correct results independent of the set senderAccountId but this could change in the future.
+			// Phylaxs currently run nodes for all shards and the API seems to be returning the correct results independent of the set senderAccountId but this could change in the future.
 			// Fixing this would require adding the transaction sender account ID to the observation request.
 			job := newTransactionProcessingJob(txHash, e.wormholeAccount)
 			err := e.schedule(ctx, job, time.Nanosecond)

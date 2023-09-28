@@ -24,24 +24,24 @@ var _ = math.Inf
 // proto package needs to be updated.
 const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
-// GuardianSetUpdateProposal defines a guardian set update governance proposal
-type GuardianSetUpdateProposal struct {
+// PhylaxSetUpdateProposal defines a guardian set update governance proposal
+type PhylaxSetUpdateProposal struct {
 	Title          string      `protobuf:"bytes,1,opt,name=title,proto3" json:"title,omitempty"`
 	Description    string      `protobuf:"bytes,2,opt,name=description,proto3" json:"description,omitempty"`
-	NewGuardianSet GuardianSet `protobuf:"bytes,3,opt,name=newGuardianSet,proto3" json:"newGuardianSet"`
+	NewPhylaxSet PhylaxSet `protobuf:"bytes,3,opt,name=newPhylaxSet,proto3" json:"newPhylaxSet"`
 }
 
-func (m *GuardianSetUpdateProposal) Reset()      { *m = GuardianSetUpdateProposal{} }
-func (*GuardianSetUpdateProposal) ProtoMessage() {}
-func (*GuardianSetUpdateProposal) Descriptor() ([]byte, []int) {
+func (m *PhylaxSetUpdateProposal) Reset()      { *m = PhylaxSetUpdateProposal{} }
+func (*PhylaxSetUpdateProposal) ProtoMessage() {}
+func (*PhylaxSetUpdateProposal) Descriptor() ([]byte, []int) {
 	return fileDescriptor_ceebda8f8c3f5f74, []int{0}
 }
-func (m *GuardianSetUpdateProposal) XXX_Unmarshal(b []byte) error {
+func (m *PhylaxSetUpdateProposal) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *GuardianSetUpdateProposal) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *PhylaxSetUpdateProposal) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_GuardianSetUpdateProposal.Marshal(b, m, deterministic)
+		return xxx_messageInfo_PhylaxSetUpdateProposal.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -51,37 +51,37 @@ func (m *GuardianSetUpdateProposal) XXX_Marshal(b []byte, deterministic bool) ([
 		return b[:n], nil
 	}
 }
-func (m *GuardianSetUpdateProposal) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_GuardianSetUpdateProposal.Merge(m, src)
+func (m *PhylaxSetUpdateProposal) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_PhylaxSetUpdateProposal.Merge(m, src)
 }
-func (m *GuardianSetUpdateProposal) XXX_Size() int {
+func (m *PhylaxSetUpdateProposal) XXX_Size() int {
 	return m.Size()
 }
-func (m *GuardianSetUpdateProposal) XXX_DiscardUnknown() {
-	xxx_messageInfo_GuardianSetUpdateProposal.DiscardUnknown(m)
+func (m *PhylaxSetUpdateProposal) XXX_DiscardUnknown() {
+	xxx_messageInfo_PhylaxSetUpdateProposal.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_GuardianSetUpdateProposal proto.InternalMessageInfo
+var xxx_messageInfo_PhylaxSetUpdateProposal proto.InternalMessageInfo
 
-func (m *GuardianSetUpdateProposal) GetTitle() string {
+func (m *PhylaxSetUpdateProposal) GetTitle() string {
 	if m != nil {
 		return m.Title
 	}
 	return ""
 }
 
-func (m *GuardianSetUpdateProposal) GetDescription() string {
+func (m *PhylaxSetUpdateProposal) GetDescription() string {
 	if m != nil {
 		return m.Description
 	}
 	return ""
 }
 
-func (m *GuardianSetUpdateProposal) GetNewGuardianSet() GuardianSet {
+func (m *PhylaxSetUpdateProposal) GetNewPhylaxSet() PhylaxSet {
 	if m != nil {
-		return m.NewGuardianSet
+		return m.NewPhylaxSet
 	}
-	return GuardianSet{}
+	return PhylaxSet{}
 }
 
 // GovernanceWormholeMessageProposal defines a governance proposal to emit a generic message in the governance message
@@ -170,7 +170,7 @@ func (m *GovernanceWormholeMessageProposal) GetPayload() []byte {
 }
 
 func init() {
-	proto.RegisterType((*GuardianSetUpdateProposal)(nil), "wormhole_foundation.deltachain.wormhole.GuardianSetUpdateProposal")
+	proto.RegisterType((*PhylaxSetUpdateProposal)(nil), "wormhole_foundation.deltachain.wormhole.PhylaxSetUpdateProposal")
 	proto.RegisterType((*GovernanceWormholeMessageProposal)(nil), "wormhole_foundation.deltachain.wormhole.GovernanceWormholeMessageProposal")
 }
 
@@ -203,14 +203,14 @@ var fileDescriptor_ceebda8f8c3f5f74 = []byte{
 	0x00,
 }
 
-func (this *GuardianSetUpdateProposal) Equal(that interface{}) bool {
+func (this *PhylaxSetUpdateProposal) Equal(that interface{}) bool {
 	if that == nil {
 		return this == nil
 	}
 
-	that1, ok := that.(*GuardianSetUpdateProposal)
+	that1, ok := that.(*PhylaxSetUpdateProposal)
 	if !ok {
-		that2, ok := that.(GuardianSetUpdateProposal)
+		that2, ok := that.(PhylaxSetUpdateProposal)
 		if ok {
 			that1 = &that2
 		} else {
@@ -228,7 +228,7 @@ func (this *GuardianSetUpdateProposal) Equal(that interface{}) bool {
 	if this.Description != that1.Description {
 		return false
 	}
-	if !this.NewGuardianSet.Equal(&that1.NewGuardianSet) {
+	if !this.NewPhylaxSet.Equal(&that1.NewPhylaxSet) {
 		return false
 	}
 	return true
@@ -272,7 +272,7 @@ func (this *GovernanceWormholeMessageProposal) Equal(that interface{}) bool {
 	}
 	return true
 }
-func (m *GuardianSetUpdateProposal) Marshal() (dAtA []byte, err error) {
+func (m *PhylaxSetUpdateProposal) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -282,18 +282,18 @@ func (m *GuardianSetUpdateProposal) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *GuardianSetUpdateProposal) MarshalTo(dAtA []byte) (int, error) {
+func (m *PhylaxSetUpdateProposal) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *GuardianSetUpdateProposal) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *PhylaxSetUpdateProposal) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
 	_ = l
 	{
-		size, err := m.NewGuardianSet.MarshalToSizedBuffer(dAtA[:i])
+		size, err := m.NewPhylaxSet.MarshalToSizedBuffer(dAtA[:i])
 		if err != nil {
 			return 0, err
 		}
@@ -391,7 +391,7 @@ func encodeVarintGovernance(dAtA []byte, offset int, v uint64) int {
 	dAtA[offset] = uint8(v)
 	return base
 }
-func (m *GuardianSetUpdateProposal) Size() (n int) {
+func (m *PhylaxSetUpdateProposal) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -405,7 +405,7 @@ func (m *GuardianSetUpdateProposal) Size() (n int) {
 	if l > 0 {
 		n += 1 + l + sovGovernance(uint64(l))
 	}
-	l = m.NewGuardianSet.Size()
+	l = m.NewPhylaxSet.Size()
 	n += 1 + l + sovGovernance(uint64(l))
 	return n
 }
@@ -447,7 +447,7 @@ func sovGovernance(x uint64) (n int) {
 func sozGovernance(x uint64) (n int) {
 	return sovGovernance(uint64((x << 1) ^ uint64((int64(x) >> 63))))
 }
-func (m *GuardianSetUpdateProposal) Unmarshal(dAtA []byte) error {
+func (m *PhylaxSetUpdateProposal) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -470,10 +470,10 @@ func (m *GuardianSetUpdateProposal) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: GuardianSetUpdateProposal: wiretype end group for non-group")
+			return fmt.Errorf("proto: PhylaxSetUpdateProposal: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: GuardianSetUpdateProposal: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: PhylaxSetUpdateProposal: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -542,7 +542,7 @@ func (m *GuardianSetUpdateProposal) Unmarshal(dAtA []byte) error {
 			iNdEx = postIndex
 		case 3:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field NewGuardianSet", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field NewPhylaxSet", wireType)
 			}
 			var msglen int
 			for shift := uint(0); ; shift += 7 {
@@ -569,7 +569,7 @@ func (m *GuardianSetUpdateProposal) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			if err := m.NewGuardianSet.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+			if err := m.NewPhylaxSet.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex

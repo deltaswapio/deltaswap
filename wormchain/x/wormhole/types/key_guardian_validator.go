@@ -5,12 +5,12 @@ import "encoding/binary"
 var _ binary.ByteOrder
 
 const (
-	// GuardianValidatorKeyPrefix is the prefix to retrieve all GuardianValidator
-	GuardianValidatorKeyPrefix = "GuardianValidator/value/"
+	// PhylaxValidatorKeyPrefix is the prefix to retrieve all PhylaxValidator
+	PhylaxValidatorKeyPrefix = "PhylaxValidator/value/"
 )
 
-// GuardianValidatorKey returns the store key to retrieve a GuardianValidator from the index fields
-func GuardianValidatorKey(
+// PhylaxValidatorKey returns the store key to retrieve a PhylaxValidator from the index fields
+func PhylaxValidatorKey(
 	guardianKey []byte,
 ) []byte {
 	var key []byte

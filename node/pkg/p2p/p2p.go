@@ -91,15 +91,15 @@ type Components struct {
 	// P2PIDInHeartbeat determines if the guardian will put it's libp2p node ID in the authenticated heartbeat payload
 	P2PIDInHeartbeat           bool
 	ListeningAddressesPatterns []string
-	// Port on which the Guardian is going to bind
+	// Port on which the Phylax is going to bind
 	Port uint
-	// ConnMgr is the ConnectionManager that the Guardian is going to use
+	// ConnMgr is the ConnectionManager that the Phylax is going to use
 	ConnMgr *connmgr.BasicConnMgr
-	// ProtectedHostByGuardianKey is used to ensure that only one p2p peer can be protected by any given known guardian key
-	ProtectedHostByGuardianKey map[eth_common.Address]peer.ID
-	// ProtectedHostByGuardianKeyLock is only useful to prevent a race condition in test as ProtectedHostByGuardianKey
-	// is only accessed by a single routine at any given time in a running Guardian.
-	ProtectedHostByGuardianKeyLock sync.Mutex
+	// ProtectedHostByPhylaxKey is used to ensure that only one p2p peer can be protected by any given known guardian key
+	ProtectedHostByPhylaxKey map[eth_common.Address]peer.ID
+	// ProtectedHostByPhylaxKeyLock is only useful to prevent a race condition in test as ProtectedHostByPhylaxKey
+	// is only accessed by a single routine at any given time in a running Phylax.
+	ProtectedHostByPhylaxKeyLock sync.Mutex
 	// WarnChannelOverflow: If true, errors due to overflowing channels will produce logger.Warn
 	WarnChannelOverflow bool
 	// SignedHeartbeatLogLevel is the log level at which SignedHeartbeatReceived events will be logged.
@@ -128,10 +128,10 @@ func DefaultComponents() *Components {
 			"/ip4/0.0.0.0/udp/%d/quic",
 			"/ip6/::/udp/%d/quic",
 		},
-		Port:                       DefaultPort,
-		ConnMgr:                    mgr,
-		ProtectedHostByGuardianKey: make(map[eth_common.Address]peer.ID),
-		SignedHeartbeatLogLevel:    zapcore.DebugLevel,
+		Port:                     DefaultPort,
+		ConnMgr:                  mgr,
+		ProtectedHostByPhylaxKey: make(map[eth_common.Address]peer.ID),
+		SignedHeartbeatLogLevel:  zapcore.DebugLevel,
 	}
 }
 
@@ -197,7 +197,7 @@ func Run(
 	signedInC chan<- *gossipv1.SignedVAAWithQuorum,
 	priv crypto.PrivKey,
 	gk *ecdsa.PrivateKey,
-	gst *common.GuardianSetState,
+	gst *common.PhylaxSetState,
 	networkID string,
 	bootstrapPeers string,
 	nodeName string,
@@ -359,7 +359,7 @@ func Run(
 			ourAddr := ethcrypto.PubkeyToAddress(gk.PublicKey)
 
 			ctr := int64(0)
-			// Guardians should send out their first heartbeat immediately to speed up test runs.
+			// Phylaxs should send out their first heartbeat immediately to speed up test runs.
 			// But we also want to wait a little bit such that network connections can be established by then.
 			timer := time.NewTimer(time.Second * 2)
 			defer timer.Stop()
@@ -405,7 +405,7 @@ func Run(
 							Timestamp:     time.Now().UnixNano(),
 							Networks:      networks,
 							Version:       version.Version(),
-							GuardianAddr:  ourAddr.String(),
+							PhylaxAddr:    ourAddr.String(),
 							BootTimestamp: bootTime.UnixNano(),
 							Features:      features,
 						}
@@ -474,7 +474,7 @@ func Run(
 					sReq := &gossipv1.SignedObservationRequest{
 						ObservationRequest: b,
 						Signature:          sig,
-						GuardianAddr:       ethcrypto.PubkeyToAddress(gk.PublicKey).Bytes(),
+						PhylaxAddr:         ethcrypto.PubkeyToAddress(gk.PublicKey).Bytes(),
 					}
 
 					envelope := &gossipv1.GossipMessage{
@@ -555,8 +555,8 @@ func Run(
 
 					func() {
 						if len(heartbeat.P2PNodeId) != 0 {
-							components.ProtectedHostByGuardianKeyLock.Lock()
-							defer components.ProtectedHostByGuardianKeyLock.Unlock()
+							components.ProtectedHostByPhylaxKeyLock.Lock()
+							defer components.ProtectedHostByPhylaxKeyLock.Unlock()
 							var peerId peer.ID
 							if err = peerId.Unmarshal(heartbeat.P2PNodeId); err != nil {
 								logger.Error("p2p_node_id_in_heartbeat_invalid",
@@ -565,9 +565,9 @@ func Run(
 									zap.Binary("raw", envelope.Data),
 									zap.String("from", envelope.GetFrom().String()))
 							} else {
-								guardianAddr := eth_common.BytesToAddress(s.GuardianAddr)
+								guardianAddr := eth_common.BytesToAddress(s.PhylaxAddr)
 								if guardianAddr != ethcrypto.PubkeyToAddress(gk.PublicKey) {
-									prevPeerId, ok := components.ProtectedHostByGuardianKey[guardianAddr]
+									prevPeerId, ok := components.ProtectedHostByPhylaxKey[guardianAddr]
 									if ok {
 										if prevPeerId != peerId {
 											logger.Info("p2p_guardian_peer_changed",
@@ -577,11 +577,11 @@ func Run(
 											)
 											components.ConnMgr.Unprotect(prevPeerId, "heartbeat")
 											components.ConnMgr.Protect(peerId, "heartbeat")
-											components.ProtectedHostByGuardianKey[guardianAddr] = peerId
+											components.ProtectedHostByPhylaxKey[guardianAddr] = peerId
 										}
 									} else {
 										components.ConnMgr.Protect(peerId, "heartbeat")
-										components.ProtectedHostByGuardianKey[guardianAddr] = peerId
+										components.ProtectedHostByPhylaxKey[guardianAddr] = peerId
 									}
 								}
 							}
@@ -681,14 +681,14 @@ func createSignedHeartbeat(gk *ecdsa.PrivateKey, heartbeat *gossipv1.Heartbeat) 
 	}
 
 	return &gossipv1.SignedHeartbeat{
-		Heartbeat:    b,
-		Signature:    sig,
-		GuardianAddr: ourAddr.Bytes(),
+		Heartbeat:  b,
+		Signature:  sig,
+		PhylaxAddr: ourAddr.Bytes(),
 	}
 }
 
-func processSignedHeartbeat(from peer.ID, s *gossipv1.SignedHeartbeat, gs *common.GuardianSet, gst *common.GuardianSetState, disableVerify bool) (*gossipv1.Heartbeat, error) {
-	envelopeAddr := eth_common.BytesToAddress(s.GuardianAddr)
+func processSignedHeartbeat(from peer.ID, s *gossipv1.SignedHeartbeat, gs *common.PhylaxSet, gst *common.PhylaxSetState, disableVerify bool) (*gossipv1.Heartbeat, error) {
+	envelopeAddr := eth_common.BytesToAddress(s.PhylaxAddr)
 	idx, ok := gs.KeyIndex(envelopeAddr)
 	var pk eth_common.Address
 	if !ok {
@@ -726,8 +726,8 @@ func processSignedHeartbeat(from peer.ID, s *gossipv1.SignedHeartbeat, gs *commo
 		return nil, fmt.Errorf("heartbeat is too old or too far into the future")
 	}
 
-	if h.GuardianAddr != signerAddr.String() {
-		return nil, fmt.Errorf("GuardianAddr in heartbeat does not match signerAddr")
+	if h.PhylaxAddr != signerAddr.String() {
+		return nil, fmt.Errorf("PhylaxAddr in heartbeat does not match signerAddr")
 	}
 
 	// Store verified heartbeat in global guardian set state.
@@ -740,8 +740,8 @@ func processSignedHeartbeat(from peer.ID, s *gossipv1.SignedHeartbeat, gs *commo
 	return &h, nil
 }
 
-func processSignedObservationRequest(s *gossipv1.SignedObservationRequest, gs *common.GuardianSet) (*gossipv1.ObservationRequest, error) {
-	envelopeAddr := eth_common.BytesToAddress(s.GuardianAddr)
+func processSignedObservationRequest(s *gossipv1.SignedObservationRequest, gs *common.PhylaxSet) (*gossipv1.ObservationRequest, error) {
+	envelopeAddr := eth_common.BytesToAddress(s.PhylaxAddr)
 	idx, ok := gs.KeyIndex(envelopeAddr)
 	var pk eth_common.Address
 	if !ok {

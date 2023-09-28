@@ -69,7 +69,7 @@ type (
 		// The hash of the transaction in which the observation was made.  Used for re-observation requests.
 		txHash []byte
 		// Copy of the guardian set valid at observation/injection time.
-		gs *common.GuardianSet
+		gs *common.PhylaxSet
 	}
 
 	observationMap map[string]*state
@@ -89,7 +89,7 @@ type Processor struct {
 	// msgC is a channel of observed emitted messages
 	msgC <-chan *common.MessagePublication
 	// setC is a channel of guardian set updates
-	setC <-chan *common.GuardianSet
+	setC <-chan *common.PhylaxSet
 	// gossipSendC is a channel of outbound messages to broadcast on p2p
 	gossipSendC chan<- []byte
 	// obsvC is a channel of inbound decoded observations from p2p
@@ -111,10 +111,10 @@ type Processor struct {
 	// Runtime state
 
 	// gs is the currently valid guardian set
-	gs *common.GuardianSet
+	gs *common.PhylaxSet
 	// gst is managed by the processor and allows concurrent access to the
 	// guardian set by other components.
-	gst *common.GuardianSetState
+	gst *common.PhylaxSetState
 
 	// state is the current runtime VAA view
 	state *aggregationState
@@ -148,13 +148,13 @@ func NewProcessor(
 	ctx context.Context,
 	db *db.Database,
 	msgC <-chan *common.MessagePublication,
-	setC <-chan *common.GuardianSet,
+	setC <-chan *common.PhylaxSet,
 	gossipSendC chan<- []byte,
 	obsvC chan *common.MsgWithTimeStamp[gossipv1.SignedObservation],
 	obsvReqSendC chan<- *gossipv1.ObservationRequest,
 	signedInC <-chan *gossipv1.SignedVAAWithQuorum,
 	gk *ecdsa.PrivateKey,
-	gst *common.GuardianSetState,
+	gst *common.PhylaxSetState,
 	g *governor.ChainGovernor,
 	acct *accountant.Accountant,
 	acctReadC <-chan *common.MessagePublication,

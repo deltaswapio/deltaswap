@@ -20,7 +20,7 @@ pub static BRIDGE_CONTRACTS: &[u8] = b"bridge_contracts";
 pub static BRIDGE_DEPOSITS: &[u8] = b"bridge_deposits";
 pub static NATIVE_COUNTER: &[u8] = b"native_counter";
 
-// Guardian set information
+// Phylax set information
 #[derive(Serialize, Deserialize, Clone, Debug, PartialEq, Eq, JsonSchema)]
 pub struct ConfigInfo {
     // governance contract details

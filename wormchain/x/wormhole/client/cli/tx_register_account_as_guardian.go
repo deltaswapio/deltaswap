@@ -15,7 +15,7 @@ import (
 
 var _ = strconv.Itoa(0)
 
-func CmdRegisterAccountAsGuardian() *cobra.Command {
+func CmdRegisterAccountAsPhylax() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "register-account-as-guardian [signature]",
 		Short: "Register a guardian public key with a wormhole chain address.",
@@ -31,7 +31,7 @@ func CmdRegisterAccountAsGuardian() *cobra.Command {
 				return err
 			}
 
-			msg := types.NewMsgRegisterAccountAsGuardian(
+			msg := types.NewMsgRegisterAccountAsPhylax(
 				clientCtx.GetFromAddress().String(),
 				argSignature,
 			)

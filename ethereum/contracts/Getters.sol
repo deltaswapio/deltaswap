@@ -6,15 +6,15 @@ pragma solidity ^0.8.0;
 import "./State.sol";
 
 contract Getters is State {
-    function getGuardianSet(uint32 index) public view returns (Structs.GuardianSet memory) {
+    function getPhylaxSet(uint32 index) public view returns (Structs.PhylaxSet memory) {
         return _state.guardianSets[index];
     }
 
-    function getCurrentGuardianSetIndex() public view returns (uint32) {
+    function getCurrentPhylaxSetIndex() public view returns (uint32) {
         return _state.guardianSetIndex;
     }
 
-    function getGuardianSetExpiry() public view returns (uint32) {
+    function getPhylaxSetExpiry() public view returns (uint32) {
         return _state.guardianSetExpiry;
     }
 

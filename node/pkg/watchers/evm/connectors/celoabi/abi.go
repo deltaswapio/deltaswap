@@ -36,13 +36,13 @@ type GovernanceStructsContractUpgrade struct {
 	NewContract common.Address
 }
 
-// GovernanceStructsGuardianSetUpgrade is an auto generated low-level Go binding around an user-defined struct.
-type GovernanceStructsGuardianSetUpgrade struct {
+// GovernanceStructsPhylaxSetUpgrade is an auto generated low-level Go binding around an user-defined struct.
+type GovernanceStructsPhylaxSetUpgrade struct {
 	Module              [32]byte
 	Action              uint8
 	Chain               uint16
-	NewGuardianSet      StructsGuardianSet
-	NewGuardianSetIndex uint32
+	NewPhylaxSet      StructsPhylaxSet
+	NewPhylaxSetIndex uint32
 }
 
 // GovernanceStructsSetMessageFee is an auto generated low-level Go binding around an user-defined struct.
@@ -62,8 +62,8 @@ type GovernanceStructsTransferFees struct {
 	Recipient [32]byte
 }
 
-// StructsGuardianSet is an auto generated low-level Go binding around an user-defined struct.
-type StructsGuardianSet struct {
+// StructsPhylaxSet is an auto generated low-level Go binding around an user-defined struct.
+type StructsPhylaxSet struct {
 	Keys           []common.Address
 	ExpirationTime uint32
 }
@@ -73,7 +73,7 @@ type StructsSignature struct {
 	R             [32]byte
 	S             [32]byte
 	V             uint8
-	GuardianIndex uint8
+	PhylaxIndex uint8
 }
 
 // StructsVM is an auto generated low-level Go binding around an user-defined struct.
@@ -86,14 +86,14 @@ type StructsVM struct {
 	Sequence         uint64
 	ConsistencyLevel uint8
 	Payload          []byte
-	GuardianSetIndex uint32
+	PhylaxSetIndex uint32
 	Signatures       []StructsSignature
 	Hash             [32]byte
 }
 
 // AbiMetaData contains all meta data concerning the Abi contract.
 var AbiMetaData = &bind.MetaData{
-	ABI: "[{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"address\",\"name\":\"previousAdmin\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"address\",\"name\":\"newAdmin\",\"type\":\"address\"}],\"name\":\"AdminChanged\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"beacon\",\"type\":\"address\"}],\"name\":\"BeaconUpgraded\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"oldContract\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"newContract\",\"type\":\"address\"}],\"name\":\"ContractUpgraded\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"uint32\",\"name\":\"index\",\"type\":\"uint32\"}],\"name\":\"GuardianSetAdded\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"sender\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"sequence\",\"type\":\"uint64\"},{\"indexed\":false,\"internalType\":\"uint32\",\"name\":\"nonce\",\"type\":\"uint32\"},{\"indexed\":false,\"internalType\":\"bytes\",\"name\":\"payload\",\"type\":\"bytes\"},{\"indexed\":false,\"internalType\":\"uint8\",\"name\":\"consistencyLevel\",\"type\":\"uint8\"}],\"name\":\"LogMessagePublished\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"implementation\",\"type\":\"address\"}],\"name\":\"Upgraded\",\"type\":\"event\"},{\"stateMutability\":\"payable\",\"type\":\"fallback\",\"payable\":true},{\"inputs\":[],\"name\":\"chainId\",\"outputs\":[{\"internalType\":\"uint16\",\"name\":\"\",\"type\":\"uint16\"}],\"stateMutability\":\"view\",\"type\":\"function\",\"constant\":true},{\"inputs\":[],\"name\":\"getCurrentGuardianSetIndex\",\"outputs\":[{\"internalType\":\"uint32\",\"name\":\"\",\"type\":\"uint32\"}],\"stateMutability\":\"view\",\"type\":\"function\",\"constant\":true},{\"inputs\":[{\"internalType\":\"uint32\",\"name\":\"index\",\"type\":\"uint32\"}],\"name\":\"getGuardianSet\",\"outputs\":[{\"components\":[{\"internalType\":\"address[]\",\"name\":\"keys\",\"type\":\"address[]\"},{\"internalType\":\"uint32\",\"name\":\"expirationTime\",\"type\":\"uint32\"}],\"internalType\":\"structStructs.GuardianSet\",\"name\":\"\",\"type\":\"tuple\"}],\"stateMutability\":\"view\",\"type\":\"function\",\"constant\":true},{\"inputs\":[],\"name\":\"getGuardianSetExpiry\",\"outputs\":[{\"internalType\":\"uint32\",\"name\":\"\",\"type\":\"uint32\"}],\"stateMutability\":\"view\",\"type\":\"function\",\"constant\":true},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"hash\",\"type\":\"bytes32\"}],\"name\":\"governanceActionIsConsumed\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\",\"constant\":true},{\"inputs\":[],\"name\":\"governanceChainId\",\"outputs\":[{\"internalType\":\"uint16\",\"name\":\"\",\"type\":\"uint16\"}],\"stateMutability\":\"view\",\"type\":\"function\",\"constant\":true},{\"inputs\":[],\"name\":\"governanceContract\",\"outputs\":[{\"internalType\":\"bytes32\",\"name\":\"\",\"type\":\"bytes32\"}],\"stateMutability\":\"view\",\"type\":\"function\",\"constant\":true},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"impl\",\"type\":\"address\"}],\"name\":\"isInitialized\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\",\"constant\":true},{\"inputs\":[],\"name\":\"messageFee\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\",\"constant\":true},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"emitter\",\"type\":\"address\"}],\"name\":\"nextSequence\",\"outputs\":[{\"internalType\":\"uint64\",\"name\":\"\",\"type\":\"uint64\"}],\"stateMutability\":\"view\",\"type\":\"function\",\"constant\":true},{\"inputs\":[{\"internalType\":\"bytes\",\"name\":\"encodedVM\",\"type\":\"bytes\"}],\"name\":\"parseAndVerifyVM\",\"outputs\":[{\"components\":[{\"internalType\":\"uint8\",\"name\":\"version\",\"type\":\"uint8\"},{\"internalType\":\"uint32\",\"name\":\"timestamp\",\"type\":\"uint32\"},{\"internalType\":\"uint32\",\"name\":\"nonce\",\"type\":\"uint32\"},{\"internalType\":\"uint16\",\"name\":\"emitterChainId\",\"type\":\"uint16\"},{\"internalType\":\"bytes32\",\"name\":\"emitterAddress\",\"type\":\"bytes32\"},{\"internalType\":\"uint64\",\"name\":\"sequence\",\"type\":\"uint64\"},{\"internalType\":\"uint8\",\"name\":\"consistencyLevel\",\"type\":\"uint8\"},{\"internalType\":\"bytes\",\"name\":\"payload\",\"type\":\"bytes\"},{\"internalType\":\"uint32\",\"name\":\"guardianSetIndex\",\"type\":\"uint32\"},{\"components\":[{\"internalType\":\"bytes32\",\"name\":\"r\",\"type\":\"bytes32\"},{\"internalType\":\"bytes32\",\"name\":\"s\",\"type\":\"bytes32\"},{\"internalType\":\"uint8\",\"name\":\"v\",\"type\":\"uint8\"},{\"internalType\":\"uint8\",\"name\":\"guardianIndex\",\"type\":\"uint8\"}],\"internalType\":\"structStructs.Signature[]\",\"name\":\"signatures\",\"type\":\"tuple[]\"},{\"internalType\":\"bytes32\",\"name\":\"hash\",\"type\":\"bytes32\"}],\"internalType\":\"structStructs.VM\",\"name\":\"vm\",\"type\":\"tuple\"},{\"internalType\":\"bool\",\"name\":\"valid\",\"type\":\"bool\"},{\"internalType\":\"string\",\"name\":\"reason\",\"type\":\"string\"}],\"stateMutability\":\"view\",\"type\":\"function\",\"constant\":true},{\"inputs\":[{\"internalType\":\"bytes\",\"name\":\"encodedUpgrade\",\"type\":\"bytes\"}],\"name\":\"parseContractUpgrade\",\"outputs\":[{\"components\":[{\"internalType\":\"bytes32\",\"name\":\"module\",\"type\":\"bytes32\"},{\"internalType\":\"uint8\",\"name\":\"action\",\"type\":\"uint8\"},{\"internalType\":\"uint16\",\"name\":\"chain\",\"type\":\"uint16\"},{\"internalType\":\"address\",\"name\":\"newContract\",\"type\":\"address\"}],\"internalType\":\"structGovernanceStructs.ContractUpgrade\",\"name\":\"cu\",\"type\":\"tuple\"}],\"stateMutability\":\"pure\",\"type\":\"function\",\"constant\":true},{\"inputs\":[{\"internalType\":\"bytes\",\"name\":\"encodedUpgrade\",\"type\":\"bytes\"}],\"name\":\"parseGuardianSetUpgrade\",\"outputs\":[{\"components\":[{\"internalType\":\"bytes32\",\"name\":\"module\",\"type\":\"bytes32\"},{\"internalType\":\"uint8\",\"name\":\"action\",\"type\":\"uint8\"},{\"internalType\":\"uint16\",\"name\":\"chain\",\"type\":\"uint16\"},{\"components\":[{\"internalType\":\"address[]\",\"name\":\"keys\",\"type\":\"address[]\"},{\"internalType\":\"uint32\",\"name\":\"expirationTime\",\"type\":\"uint32\"}],\"internalType\":\"structStructs.GuardianSet\",\"name\":\"newGuardianSet\",\"type\":\"tuple\"},{\"internalType\":\"uint32\",\"name\":\"newGuardianSetIndex\",\"type\":\"uint32\"}],\"internalType\":\"structGovernanceStructs.GuardianSetUpgrade\",\"name\":\"gsu\",\"type\":\"tuple\"}],\"stateMutability\":\"pure\",\"type\":\"function\",\"constant\":true},{\"inputs\":[{\"internalType\":\"bytes\",\"name\":\"encodedSetMessageFee\",\"type\":\"bytes\"}],\"name\":\"parseSetMessageFee\",\"outputs\":[{\"components\":[{\"internalType\":\"bytes32\",\"name\":\"module\",\"type\":\"bytes32\"},{\"internalType\":\"uint8\",\"name\":\"action\",\"type\":\"uint8\"},{\"internalType\":\"uint16\",\"name\":\"chain\",\"type\":\"uint16\"},{\"internalType\":\"uint256\",\"name\":\"messageFee\",\"type\":\"uint256\"}],\"internalType\":\"structGovernanceStructs.SetMessageFee\",\"name\":\"smf\",\"type\":\"tuple\"}],\"stateMutability\":\"pure\",\"type\":\"function\",\"constant\":true},{\"inputs\":[{\"internalType\":\"bytes\",\"name\":\"encodedTransferFees\",\"type\":\"bytes\"}],\"name\":\"parseTransferFees\",\"outputs\":[{\"components\":[{\"internalType\":\"bytes32\",\"name\":\"module\",\"type\":\"bytes32\"},{\"internalType\":\"uint8\",\"name\":\"action\",\"type\":\"uint8\"},{\"internalType\":\"uint16\",\"name\":\"chain\",\"type\":\"uint16\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"},{\"internalType\":\"bytes32\",\"name\":\"recipient\",\"type\":\"bytes32\"}],\"internalType\":\"structGovernanceStructs.TransferFees\",\"name\":\"tf\",\"type\":\"tuple\"}],\"stateMutability\":\"pure\",\"type\":\"function\",\"constant\":true},{\"inputs\":[{\"internalType\":\"bytes\",\"name\":\"encodedVM\",\"type\":\"bytes\"}],\"name\":\"parseVM\",\"outputs\":[{\"components\":[{\"internalType\":\"uint8\",\"name\":\"version\",\"type\":\"uint8\"},{\"internalType\":\"uint32\",\"name\":\"timestamp\",\"type\":\"uint32\"},{\"internalType\":\"uint32\",\"name\":\"nonce\",\"type\":\"uint32\"},{\"internalType\":\"uint16\",\"name\":\"emitterChainId\",\"type\":\"uint16\"},{\"internalType\":\"bytes32\",\"name\":\"emitterAddress\",\"type\":\"bytes32\"},{\"internalType\":\"uint64\",\"name\":\"sequence\",\"type\":\"uint64\"},{\"internalType\":\"uint8\",\"name\":\"consistencyLevel\",\"type\":\"uint8\"},{\"internalType\":\"bytes\",\"name\":\"payload\",\"type\":\"bytes\"},{\"internalType\":\"uint32\",\"name\":\"guardianSetIndex\",\"type\":\"uint32\"},{\"components\":[{\"internalType\":\"bytes32\",\"name\":\"r\",\"type\":\"bytes32\"},{\"internalType\":\"bytes32\",\"name\":\"s\",\"type\":\"bytes32\"},{\"internalType\":\"uint8\",\"name\":\"v\",\"type\":\"uint8\"},{\"internalType\":\"uint8\",\"name\":\"guardianIndex\",\"type\":\"uint8\"}],\"internalType\":\"structStructs.Signature[]\",\"name\":\"signatures\",\"type\":\"tuple[]\"},{\"internalType\":\"bytes32\",\"name\":\"hash\",\"type\":\"bytes32\"}],\"internalType\":\"structStructs.VM\",\"name\":\"vm\",\"type\":\"tuple\"}],\"stateMutability\":\"pure\",\"type\":\"function\",\"constant\":true},{\"inputs\":[{\"internalType\":\"bytes\",\"name\":\"_vm\",\"type\":\"bytes\"}],\"name\":\"submitContractUpgrade\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes\",\"name\":\"_vm\",\"type\":\"bytes\"}],\"name\":\"submitNewGuardianSet\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes\",\"name\":\"_vm\",\"type\":\"bytes\"}],\"name\":\"submitSetMessageFee\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes\",\"name\":\"_vm\",\"type\":\"bytes\"}],\"name\":\"submitTransferFees\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"hash\",\"type\":\"bytes32\"},{\"components\":[{\"internalType\":\"bytes32\",\"name\":\"r\",\"type\":\"bytes32\"},{\"internalType\":\"bytes32\",\"name\":\"s\",\"type\":\"bytes32\"},{\"internalType\":\"uint8\",\"name\":\"v\",\"type\":\"uint8\"},{\"internalType\":\"uint8\",\"name\":\"guardianIndex\",\"type\":\"uint8\"}],\"internalType\":\"structStructs.Signature[]\",\"name\":\"signatures\",\"type\":\"tuple[]\"},{\"components\":[{\"internalType\":\"address[]\",\"name\":\"keys\",\"type\":\"address[]\"},{\"internalType\":\"uint32\",\"name\":\"expirationTime\",\"type\":\"uint32\"}],\"internalType\":\"structStructs.GuardianSet\",\"name\":\"guardianSet\",\"type\":\"tuple\"}],\"name\":\"verifySignatures\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"valid\",\"type\":\"bool\"},{\"internalType\":\"string\",\"name\":\"reason\",\"type\":\"string\"}],\"stateMutability\":\"pure\",\"type\":\"function\",\"constant\":true},{\"inputs\":[{\"components\":[{\"internalType\":\"uint8\",\"name\":\"version\",\"type\":\"uint8\"},{\"internalType\":\"uint32\",\"name\":\"timestamp\",\"type\":\"uint32\"},{\"internalType\":\"uint32\",\"name\":\"nonce\",\"type\":\"uint32\"},{\"internalType\":\"uint16\",\"name\":\"emitterChainId\",\"type\":\"uint16\"},{\"internalType\":\"bytes32\",\"name\":\"emitterAddress\",\"type\":\"bytes32\"},{\"internalType\":\"uint64\",\"name\":\"sequence\",\"type\":\"uint64\"},{\"internalType\":\"uint8\",\"name\":\"consistencyLevel\",\"type\":\"uint8\"},{\"internalType\":\"bytes\",\"name\":\"payload\",\"type\":\"bytes\"},{\"internalType\":\"uint32\",\"name\":\"guardianSetIndex\",\"type\":\"uint32\"},{\"components\":[{\"internalType\":\"bytes32\",\"name\":\"r\",\"type\":\"bytes32\"},{\"internalType\":\"bytes32\",\"name\":\"s\",\"type\":\"bytes32\"},{\"internalType\":\"uint8\",\"name\":\"v\",\"type\":\"uint8\"},{\"internalType\":\"uint8\",\"name\":\"guardianIndex\",\"type\":\"uint8\"}],\"internalType\":\"structStructs.Signature[]\",\"name\":\"signatures\",\"type\":\"tuple[]\"},{\"internalType\":\"bytes32\",\"name\":\"hash\",\"type\":\"bytes32\"}],\"internalType\":\"structStructs.VM\",\"name\":\"vm\",\"type\":\"tuple\"}],\"name\":\"verifyVM\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"valid\",\"type\":\"bool\"},{\"internalType\":\"string\",\"name\":\"reason\",\"type\":\"string\"}],\"stateMutability\":\"view\",\"type\":\"function\",\"constant\":true},{\"stateMutability\":\"payable\",\"type\":\"receive\",\"payable\":true},{\"inputs\":[{\"internalType\":\"uint32\",\"name\":\"nonce\",\"type\":\"uint32\"},{\"internalType\":\"bytes\",\"name\":\"payload\",\"type\":\"bytes\"},{\"internalType\":\"uint8\",\"name\":\"consistencyLevel\",\"type\":\"uint8\"}],\"name\":\"publishMessage\",\"outputs\":[{\"internalType\":\"uint64\",\"name\":\"sequence\",\"type\":\"uint64\"}],\"stateMutability\":\"payable\",\"type\":\"function\",\"payable\":true}]",
+	ABI: "[{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"address\",\"name\":\"previousAdmin\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"address\",\"name\":\"newAdmin\",\"type\":\"address\"}],\"name\":\"AdminChanged\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"beacon\",\"type\":\"address\"}],\"name\":\"BeaconUpgraded\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"oldContract\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"newContract\",\"type\":\"address\"}],\"name\":\"ContractUpgraded\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"uint32\",\"name\":\"index\",\"type\":\"uint32\"}],\"name\":\"PhylaxSetAdded\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"sender\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint64\",\"name\":\"sequence\",\"type\":\"uint64\"},{\"indexed\":false,\"internalType\":\"uint32\",\"name\":\"nonce\",\"type\":\"uint32\"},{\"indexed\":false,\"internalType\":\"bytes\",\"name\":\"payload\",\"type\":\"bytes\"},{\"indexed\":false,\"internalType\":\"uint8\",\"name\":\"consistencyLevel\",\"type\":\"uint8\"}],\"name\":\"LogMessagePublished\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"implementation\",\"type\":\"address\"}],\"name\":\"Upgraded\",\"type\":\"event\"},{\"stateMutability\":\"payable\",\"type\":\"fallback\",\"payable\":true},{\"inputs\":[],\"name\":\"chainId\",\"outputs\":[{\"internalType\":\"uint16\",\"name\":\"\",\"type\":\"uint16\"}],\"stateMutability\":\"view\",\"type\":\"function\",\"constant\":true},{\"inputs\":[],\"name\":\"getCurrentPhylaxSetIndex\",\"outputs\":[{\"internalType\":\"uint32\",\"name\":\"\",\"type\":\"uint32\"}],\"stateMutability\":\"view\",\"type\":\"function\",\"constant\":true},{\"inputs\":[{\"internalType\":\"uint32\",\"name\":\"index\",\"type\":\"uint32\"}],\"name\":\"getPhylaxSet\",\"outputs\":[{\"components\":[{\"internalType\":\"address[]\",\"name\":\"keys\",\"type\":\"address[]\"},{\"internalType\":\"uint32\",\"name\":\"expirationTime\",\"type\":\"uint32\"}],\"internalType\":\"structStructs.PhylaxSet\",\"name\":\"\",\"type\":\"tuple\"}],\"stateMutability\":\"view\",\"type\":\"function\",\"constant\":true},{\"inputs\":[],\"name\":\"getPhylaxSetExpiry\",\"outputs\":[{\"internalType\":\"uint32\",\"name\":\"\",\"type\":\"uint32\"}],\"stateMutability\":\"view\",\"type\":\"function\",\"constant\":true},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"hash\",\"type\":\"bytes32\"}],\"name\":\"governanceActionIsConsumed\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\",\"constant\":true},{\"inputs\":[],\"name\":\"governanceChainId\",\"outputs\":[{\"internalType\":\"uint16\",\"name\":\"\",\"type\":\"uint16\"}],\"stateMutability\":\"view\",\"type\":\"function\",\"constant\":true},{\"inputs\":[],\"name\":\"governanceContract\",\"outputs\":[{\"internalType\":\"bytes32\",\"name\":\"\",\"type\":\"bytes32\"}],\"stateMutability\":\"view\",\"type\":\"function\",\"constant\":true},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"impl\",\"type\":\"address\"}],\"name\":\"isInitialized\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\",\"constant\":true},{\"inputs\":[],\"name\":\"messageFee\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\",\"constant\":true},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"emitter\",\"type\":\"address\"}],\"name\":\"nextSequence\",\"outputs\":[{\"internalType\":\"uint64\",\"name\":\"\",\"type\":\"uint64\"}],\"stateMutability\":\"view\",\"type\":\"function\",\"constant\":true},{\"inputs\":[{\"internalType\":\"bytes\",\"name\":\"encodedVM\",\"type\":\"bytes\"}],\"name\":\"parseAndVerifyVM\",\"outputs\":[{\"components\":[{\"internalType\":\"uint8\",\"name\":\"version\",\"type\":\"uint8\"},{\"internalType\":\"uint32\",\"name\":\"timestamp\",\"type\":\"uint32\"},{\"internalType\":\"uint32\",\"name\":\"nonce\",\"type\":\"uint32\"},{\"internalType\":\"uint16\",\"name\":\"emitterChainId\",\"type\":\"uint16\"},{\"internalType\":\"bytes32\",\"name\":\"emitterAddress\",\"type\":\"bytes32\"},{\"internalType\":\"uint64\",\"name\":\"sequence\",\"type\":\"uint64\"},{\"internalType\":\"uint8\",\"name\":\"consistencyLevel\",\"type\":\"uint8\"},{\"internalType\":\"bytes\",\"name\":\"payload\",\"type\":\"bytes\"},{\"internalType\":\"uint32\",\"name\":\"guardianSetIndex\",\"type\":\"uint32\"},{\"components\":[{\"internalType\":\"bytes32\",\"name\":\"r\",\"type\":\"bytes32\"},{\"internalType\":\"bytes32\",\"name\":\"s\",\"type\":\"bytes32\"},{\"internalType\":\"uint8\",\"name\":\"v\",\"type\":\"uint8\"},{\"internalType\":\"uint8\",\"name\":\"guardianIndex\",\"type\":\"uint8\"}],\"internalType\":\"structStructs.Signature[]\",\"name\":\"signatures\",\"type\":\"tuple[]\"},{\"internalType\":\"bytes32\",\"name\":\"hash\",\"type\":\"bytes32\"}],\"internalType\":\"structStructs.VM\",\"name\":\"vm\",\"type\":\"tuple\"},{\"internalType\":\"bool\",\"name\":\"valid\",\"type\":\"bool\"},{\"internalType\":\"string\",\"name\":\"reason\",\"type\":\"string\"}],\"stateMutability\":\"view\",\"type\":\"function\",\"constant\":true},{\"inputs\":[{\"internalType\":\"bytes\",\"name\":\"encodedUpgrade\",\"type\":\"bytes\"}],\"name\":\"parseContractUpgrade\",\"outputs\":[{\"components\":[{\"internalType\":\"bytes32\",\"name\":\"module\",\"type\":\"bytes32\"},{\"internalType\":\"uint8\",\"name\":\"action\",\"type\":\"uint8\"},{\"internalType\":\"uint16\",\"name\":\"chain\",\"type\":\"uint16\"},{\"internalType\":\"address\",\"name\":\"newContract\",\"type\":\"address\"}],\"internalType\":\"structGovernanceStructs.ContractUpgrade\",\"name\":\"cu\",\"type\":\"tuple\"}],\"stateMutability\":\"pure\",\"type\":\"function\",\"constant\":true},{\"inputs\":[{\"internalType\":\"bytes\",\"name\":\"encodedUpgrade\",\"type\":\"bytes\"}],\"name\":\"parsePhylaxSetUpgrade\",\"outputs\":[{\"components\":[{\"internalType\":\"bytes32\",\"name\":\"module\",\"type\":\"bytes32\"},{\"internalType\":\"uint8\",\"name\":\"action\",\"type\":\"uint8\"},{\"internalType\":\"uint16\",\"name\":\"chain\",\"type\":\"uint16\"},{\"components\":[{\"internalType\":\"address[]\",\"name\":\"keys\",\"type\":\"address[]\"},{\"internalType\":\"uint32\",\"name\":\"expirationTime\",\"type\":\"uint32\"}],\"internalType\":\"structStructs.PhylaxSet\",\"name\":\"newPhylaxSet\",\"type\":\"tuple\"},{\"internalType\":\"uint32\",\"name\":\"newPhylaxSetIndex\",\"type\":\"uint32\"}],\"internalType\":\"structGovernanceStructs.PhylaxSetUpgrade\",\"name\":\"gsu\",\"type\":\"tuple\"}],\"stateMutability\":\"pure\",\"type\":\"function\",\"constant\":true},{\"inputs\":[{\"internalType\":\"bytes\",\"name\":\"encodedSetMessageFee\",\"type\":\"bytes\"}],\"name\":\"parseSetMessageFee\",\"outputs\":[{\"components\":[{\"internalType\":\"bytes32\",\"name\":\"module\",\"type\":\"bytes32\"},{\"internalType\":\"uint8\",\"name\":\"action\",\"type\":\"uint8\"},{\"internalType\":\"uint16\",\"name\":\"chain\",\"type\":\"uint16\"},{\"internalType\":\"uint256\",\"name\":\"messageFee\",\"type\":\"uint256\"}],\"internalType\":\"structGovernanceStructs.SetMessageFee\",\"name\":\"smf\",\"type\":\"tuple\"}],\"stateMutability\":\"pure\",\"type\":\"function\",\"constant\":true},{\"inputs\":[{\"internalType\":\"bytes\",\"name\":\"encodedTransferFees\",\"type\":\"bytes\"}],\"name\":\"parseTransferFees\",\"outputs\":[{\"components\":[{\"internalType\":\"bytes32\",\"name\":\"module\",\"type\":\"bytes32\"},{\"internalType\":\"uint8\",\"name\":\"action\",\"type\":\"uint8\"},{\"internalType\":\"uint16\",\"name\":\"chain\",\"type\":\"uint16\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"},{\"internalType\":\"bytes32\",\"name\":\"recipient\",\"type\":\"bytes32\"}],\"internalType\":\"structGovernanceStructs.TransferFees\",\"name\":\"tf\",\"type\":\"tuple\"}],\"stateMutability\":\"pure\",\"type\":\"function\",\"constant\":true},{\"inputs\":[{\"internalType\":\"bytes\",\"name\":\"encodedVM\",\"type\":\"bytes\"}],\"name\":\"parseVM\",\"outputs\":[{\"components\":[{\"internalType\":\"uint8\",\"name\":\"version\",\"type\":\"uint8\"},{\"internalType\":\"uint32\",\"name\":\"timestamp\",\"type\":\"uint32\"},{\"internalType\":\"uint32\",\"name\":\"nonce\",\"type\":\"uint32\"},{\"internalType\":\"uint16\",\"name\":\"emitterChainId\",\"type\":\"uint16\"},{\"internalType\":\"bytes32\",\"name\":\"emitterAddress\",\"type\":\"bytes32\"},{\"internalType\":\"uint64\",\"name\":\"sequence\",\"type\":\"uint64\"},{\"internalType\":\"uint8\",\"name\":\"consistencyLevel\",\"type\":\"uint8\"},{\"internalType\":\"bytes\",\"name\":\"payload\",\"type\":\"bytes\"},{\"internalType\":\"uint32\",\"name\":\"guardianSetIndex\",\"type\":\"uint32\"},{\"components\":[{\"internalType\":\"bytes32\",\"name\":\"r\",\"type\":\"bytes32\"},{\"internalType\":\"bytes32\",\"name\":\"s\",\"type\":\"bytes32\"},{\"internalType\":\"uint8\",\"name\":\"v\",\"type\":\"uint8\"},{\"internalType\":\"uint8\",\"name\":\"guardianIndex\",\"type\":\"uint8\"}],\"internalType\":\"structStructs.Signature[]\",\"name\":\"signatures\",\"type\":\"tuple[]\"},{\"internalType\":\"bytes32\",\"name\":\"hash\",\"type\":\"bytes32\"}],\"internalType\":\"structStructs.VM\",\"name\":\"vm\",\"type\":\"tuple\"}],\"stateMutability\":\"pure\",\"type\":\"function\",\"constant\":true},{\"inputs\":[{\"internalType\":\"bytes\",\"name\":\"_vm\",\"type\":\"bytes\"}],\"name\":\"submitContractUpgrade\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes\",\"name\":\"_vm\",\"type\":\"bytes\"}],\"name\":\"submitNewPhylaxSet\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes\",\"name\":\"_vm\",\"type\":\"bytes\"}],\"name\":\"submitSetMessageFee\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes\",\"name\":\"_vm\",\"type\":\"bytes\"}],\"name\":\"submitTransferFees\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"hash\",\"type\":\"bytes32\"},{\"components\":[{\"internalType\":\"bytes32\",\"name\":\"r\",\"type\":\"bytes32\"},{\"internalType\":\"bytes32\",\"name\":\"s\",\"type\":\"bytes32\"},{\"internalType\":\"uint8\",\"name\":\"v\",\"type\":\"uint8\"},{\"internalType\":\"uint8\",\"name\":\"guardianIndex\",\"type\":\"uint8\"}],\"internalType\":\"structStructs.Signature[]\",\"name\":\"signatures\",\"type\":\"tuple[]\"},{\"components\":[{\"internalType\":\"address[]\",\"name\":\"keys\",\"type\":\"address[]\"},{\"internalType\":\"uint32\",\"name\":\"expirationTime\",\"type\":\"uint32\"}],\"internalType\":\"structStructs.PhylaxSet\",\"name\":\"guardianSet\",\"type\":\"tuple\"}],\"name\":\"verifySignatures\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"valid\",\"type\":\"bool\"},{\"internalType\":\"string\",\"name\":\"reason\",\"type\":\"string\"}],\"stateMutability\":\"pure\",\"type\":\"function\",\"constant\":true},{\"inputs\":[{\"components\":[{\"internalType\":\"uint8\",\"name\":\"version\",\"type\":\"uint8\"},{\"internalType\":\"uint32\",\"name\":\"timestamp\",\"type\":\"uint32\"},{\"internalType\":\"uint32\",\"name\":\"nonce\",\"type\":\"uint32\"},{\"internalType\":\"uint16\",\"name\":\"emitterChainId\",\"type\":\"uint16\"},{\"internalType\":\"bytes32\",\"name\":\"emitterAddress\",\"type\":\"bytes32\"},{\"internalType\":\"uint64\",\"name\":\"sequence\",\"type\":\"uint64\"},{\"internalType\":\"uint8\",\"name\":\"consistencyLevel\",\"type\":\"uint8\"},{\"internalType\":\"bytes\",\"name\":\"payload\",\"type\":\"bytes\"},{\"internalType\":\"uint32\",\"name\":\"guardianSetIndex\",\"type\":\"uint32\"},{\"components\":[{\"internalType\":\"bytes32\",\"name\":\"r\",\"type\":\"bytes32\"},{\"internalType\":\"bytes32\",\"name\":\"s\",\"type\":\"bytes32\"},{\"internalType\":\"uint8\",\"name\":\"v\",\"type\":\"uint8\"},{\"internalType\":\"uint8\",\"name\":\"guardianIndex\",\"type\":\"uint8\"}],\"internalType\":\"structStructs.Signature[]\",\"name\":\"signatures\",\"type\":\"tuple[]\"},{\"internalType\":\"bytes32\",\"name\":\"hash\",\"type\":\"bytes32\"}],\"internalType\":\"structStructs.VM\",\"name\":\"vm\",\"type\":\"tuple\"}],\"name\":\"verifyVM\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"valid\",\"type\":\"bool\"},{\"internalType\":\"string\",\"name\":\"reason\",\"type\":\"string\"}],\"stateMutability\":\"view\",\"type\":\"function\",\"constant\":true},{\"stateMutability\":\"payable\",\"type\":\"receive\",\"payable\":true},{\"inputs\":[{\"internalType\":\"uint32\",\"name\":\"nonce\",\"type\":\"uint32\"},{\"internalType\":\"bytes\",\"name\":\"payload\",\"type\":\"bytes\"},{\"internalType\":\"uint8\",\"name\":\"consistencyLevel\",\"type\":\"uint8\"}],\"name\":\"publishMessage\",\"outputs\":[{\"internalType\":\"uint64\",\"name\":\"sequence\",\"type\":\"uint64\"}],\"stateMutability\":\"payable\",\"type\":\"function\",\"payable\":true}]",
 }
 
 // AbiABI is the input ABI used to generate the binding from.
@@ -282,12 +282,12 @@ func (_Abi *AbiCallerSession) ChainId() (uint16, error) {
 	return _Abi.Contract.ChainId(&_Abi.CallOpts)
 }
 
-// GetCurrentGuardianSetIndex is a free data retrieval call binding the contract method 0x1cfe7951.
+// GetCurrentPhylaxSetIndex is a free data retrieval call binding the contract method 0x1cfe7951.
 //
-// Solidity: function getCurrentGuardianSetIndex() view returns(uint32)
-func (_Abi *AbiCaller) GetCurrentGuardianSetIndex(opts *bind.CallOpts) (uint32, error) {
+// Solidity: function getCurrentPhylaxSetIndex() view returns(uint32)
+func (_Abi *AbiCaller) GetCurrentPhylaxSetIndex(opts *bind.CallOpts) (uint32, error) {
 	var out []interface{}
-	err := _Abi.contract.Call(opts, &out, "getCurrentGuardianSetIndex")
+	err := _Abi.contract.Call(opts, &out, "getCurrentPhylaxSetIndex")
 
 	if err != nil {
 		return *new(uint32), err
@@ -299,57 +299,57 @@ func (_Abi *AbiCaller) GetCurrentGuardianSetIndex(opts *bind.CallOpts) (uint32, 
 
 }
 
-// GetCurrentGuardianSetIndex is a free data retrieval call binding the contract method 0x1cfe7951.
+// GetCurrentPhylaxSetIndex is a free data retrieval call binding the contract method 0x1cfe7951.
 //
-// Solidity: function getCurrentGuardianSetIndex() view returns(uint32)
-func (_Abi *AbiSession) GetCurrentGuardianSetIndex() (uint32, error) {
-	return _Abi.Contract.GetCurrentGuardianSetIndex(&_Abi.CallOpts)
+// Solidity: function getCurrentPhylaxSetIndex() view returns(uint32)
+func (_Abi *AbiSession) GetCurrentPhylaxSetIndex() (uint32, error) {
+	return _Abi.Contract.GetCurrentPhylaxSetIndex(&_Abi.CallOpts)
 }
 
-// GetCurrentGuardianSetIndex is a free data retrieval call binding the contract method 0x1cfe7951.
+// GetCurrentPhylaxSetIndex is a free data retrieval call binding the contract method 0x1cfe7951.
 //
-// Solidity: function getCurrentGuardianSetIndex() view returns(uint32)
-func (_Abi *AbiCallerSession) GetCurrentGuardianSetIndex() (uint32, error) {
-	return _Abi.Contract.GetCurrentGuardianSetIndex(&_Abi.CallOpts)
+// Solidity: function getCurrentPhylaxSetIndex() view returns(uint32)
+func (_Abi *AbiCallerSession) GetCurrentPhylaxSetIndex() (uint32, error) {
+	return _Abi.Contract.GetCurrentPhylaxSetIndex(&_Abi.CallOpts)
 }
 
-// GetGuardianSet is a free data retrieval call binding the contract method 0xf951975a.
+// GetPhylaxSet is a free data retrieval call binding the contract method 0xf951975a.
 //
-// Solidity: function getGuardianSet(uint32 index) view returns((address[],uint32))
-func (_Abi *AbiCaller) GetGuardianSet(opts *bind.CallOpts, index uint32) (StructsGuardianSet, error) {
+// Solidity: function getPhylaxSet(uint32 index) view returns((address[],uint32))
+func (_Abi *AbiCaller) GetPhylaxSet(opts *bind.CallOpts, index uint32) (StructsPhylaxSet, error) {
 	var out []interface{}
-	err := _Abi.contract.Call(opts, &out, "getGuardianSet", index)
+	err := _Abi.contract.Call(opts, &out, "getPhylaxSet", index)
 
 	if err != nil {
-		return *new(StructsGuardianSet), err
+		return *new(StructsPhylaxSet), err
 	}
 
-	out0 := *abi.ConvertType(out[0], new(StructsGuardianSet)).(*StructsGuardianSet)
+	out0 := *abi.ConvertType(out[0], new(StructsPhylaxSet)).(*StructsPhylaxSet)
 
 	return out0, err
 
 }
 
-// GetGuardianSet is a free data retrieval call binding the contract method 0xf951975a.
+// GetPhylaxSet is a free data retrieval call binding the contract method 0xf951975a.
 //
-// Solidity: function getGuardianSet(uint32 index) view returns((address[],uint32))
-func (_Abi *AbiSession) GetGuardianSet(index uint32) (StructsGuardianSet, error) {
-	return _Abi.Contract.GetGuardianSet(&_Abi.CallOpts, index)
+// Solidity: function getPhylaxSet(uint32 index) view returns((address[],uint32))
+func (_Abi *AbiSession) GetPhylaxSet(index uint32) (StructsPhylaxSet, error) {
+	return _Abi.Contract.GetPhylaxSet(&_Abi.CallOpts, index)
 }
 
-// GetGuardianSet is a free data retrieval call binding the contract method 0xf951975a.
+// GetPhylaxSet is a free data retrieval call binding the contract method 0xf951975a.
 //
-// Solidity: function getGuardianSet(uint32 index) view returns((address[],uint32))
-func (_Abi *AbiCallerSession) GetGuardianSet(index uint32) (StructsGuardianSet, error) {
-	return _Abi.Contract.GetGuardianSet(&_Abi.CallOpts, index)
+// Solidity: function getPhylaxSet(uint32 index) view returns((address[],uint32))
+func (_Abi *AbiCallerSession) GetPhylaxSet(index uint32) (StructsPhylaxSet, error) {
+	return _Abi.Contract.GetPhylaxSet(&_Abi.CallOpts, index)
 }
 
-// GetGuardianSetExpiry is a free data retrieval call binding the contract method 0xeb8d3f12.
+// GetPhylaxSetExpiry is a free data retrieval call binding the contract method 0xeb8d3f12.
 //
-// Solidity: function getGuardianSetExpiry() view returns(uint32)
-func (_Abi *AbiCaller) GetGuardianSetExpiry(opts *bind.CallOpts) (uint32, error) {
+// Solidity: function getPhylaxSetExpiry() view returns(uint32)
+func (_Abi *AbiCaller) GetPhylaxSetExpiry(opts *bind.CallOpts) (uint32, error) {
 	var out []interface{}
-	err := _Abi.contract.Call(opts, &out, "getGuardianSetExpiry")
+	err := _Abi.contract.Call(opts, &out, "getPhylaxSetExpiry")
 
 	if err != nil {
 		return *new(uint32), err
@@ -361,18 +361,18 @@ func (_Abi *AbiCaller) GetGuardianSetExpiry(opts *bind.CallOpts) (uint32, error)
 
 }
 
-// GetGuardianSetExpiry is a free data retrieval call binding the contract method 0xeb8d3f12.
+// GetPhylaxSetExpiry is a free data retrieval call binding the contract method 0xeb8d3f12.
 //
-// Solidity: function getGuardianSetExpiry() view returns(uint32)
-func (_Abi *AbiSession) GetGuardianSetExpiry() (uint32, error) {
-	return _Abi.Contract.GetGuardianSetExpiry(&_Abi.CallOpts)
+// Solidity: function getPhylaxSetExpiry() view returns(uint32)
+func (_Abi *AbiSession) GetPhylaxSetExpiry() (uint32, error) {
+	return _Abi.Contract.GetPhylaxSetExpiry(&_Abi.CallOpts)
 }
 
-// GetGuardianSetExpiry is a free data retrieval call binding the contract method 0xeb8d3f12.
+// GetPhylaxSetExpiry is a free data retrieval call binding the contract method 0xeb8d3f12.
 //
-// Solidity: function getGuardianSetExpiry() view returns(uint32)
-func (_Abi *AbiCallerSession) GetGuardianSetExpiry() (uint32, error) {
-	return _Abi.Contract.GetGuardianSetExpiry(&_Abi.CallOpts)
+// Solidity: function getPhylaxSetExpiry() view returns(uint32)
+func (_Abi *AbiCallerSession) GetPhylaxSetExpiry() (uint32, error) {
+	return _Abi.Contract.GetPhylaxSetExpiry(&_Abi.CallOpts)
 }
 
 // GovernanceActionIsConsumed is a free data retrieval call binding the contract method 0x2c3c02a4.
@@ -642,35 +642,35 @@ func (_Abi *AbiCallerSession) ParseContractUpgrade(encodedUpgrade []byte) (Gover
 	return _Abi.Contract.ParseContractUpgrade(&_Abi.CallOpts, encodedUpgrade)
 }
 
-// ParseGuardianSetUpgrade is a free data retrieval call binding the contract method 0x04ca84cf.
+// ParsePhylaxSetUpgrade is a free data retrieval call binding the contract method 0x04ca84cf.
 //
-// Solidity: function parseGuardianSetUpgrade(bytes encodedUpgrade) pure returns((bytes32,uint8,uint16,(address[],uint32),uint32) gsu)
-func (_Abi *AbiCaller) ParseGuardianSetUpgrade(opts *bind.CallOpts, encodedUpgrade []byte) (GovernanceStructsGuardianSetUpgrade, error) {
+// Solidity: function parsePhylaxSetUpgrade(bytes encodedUpgrade) pure returns((bytes32,uint8,uint16,(address[],uint32),uint32) gsu)
+func (_Abi *AbiCaller) ParsePhylaxSetUpgrade(opts *bind.CallOpts, encodedUpgrade []byte) (GovernanceStructsPhylaxSetUpgrade, error) {
 	var out []interface{}
-	err := _Abi.contract.Call(opts, &out, "parseGuardianSetUpgrade", encodedUpgrade)
+	err := _Abi.contract.Call(opts, &out, "parsePhylaxSetUpgrade", encodedUpgrade)
 
 	if err != nil {
-		return *new(GovernanceStructsGuardianSetUpgrade), err
+		return *new(GovernanceStructsPhylaxSetUpgrade), err
 	}
 
-	out0 := *abi.ConvertType(out[0], new(GovernanceStructsGuardianSetUpgrade)).(*GovernanceStructsGuardianSetUpgrade)
+	out0 := *abi.ConvertType(out[0], new(GovernanceStructsPhylaxSetUpgrade)).(*GovernanceStructsPhylaxSetUpgrade)
 
 	return out0, err
 
 }
 
-// ParseGuardianSetUpgrade is a free data retrieval call binding the contract method 0x04ca84cf.
+// ParsePhylaxSetUpgrade is a free data retrieval call binding the contract method 0x04ca84cf.
 //
-// Solidity: function parseGuardianSetUpgrade(bytes encodedUpgrade) pure returns((bytes32,uint8,uint16,(address[],uint32),uint32) gsu)
-func (_Abi *AbiSession) ParseGuardianSetUpgrade(encodedUpgrade []byte) (GovernanceStructsGuardianSetUpgrade, error) {
-	return _Abi.Contract.ParseGuardianSetUpgrade(&_Abi.CallOpts, encodedUpgrade)
+// Solidity: function parsePhylaxSetUpgrade(bytes encodedUpgrade) pure returns((bytes32,uint8,uint16,(address[],uint32),uint32) gsu)
+func (_Abi *AbiSession) ParsePhylaxSetUpgrade(encodedUpgrade []byte) (GovernanceStructsPhylaxSetUpgrade, error) {
+	return _Abi.Contract.ParsePhylaxSetUpgrade(&_Abi.CallOpts, encodedUpgrade)
 }
 
-// ParseGuardianSetUpgrade is a free data retrieval call binding the contract method 0x04ca84cf.
+// ParsePhylaxSetUpgrade is a free data retrieval call binding the contract method 0x04ca84cf.
 //
-// Solidity: function parseGuardianSetUpgrade(bytes encodedUpgrade) pure returns((bytes32,uint8,uint16,(address[],uint32),uint32) gsu)
-func (_Abi *AbiCallerSession) ParseGuardianSetUpgrade(encodedUpgrade []byte) (GovernanceStructsGuardianSetUpgrade, error) {
-	return _Abi.Contract.ParseGuardianSetUpgrade(&_Abi.CallOpts, encodedUpgrade)
+// Solidity: function parsePhylaxSetUpgrade(bytes encodedUpgrade) pure returns((bytes32,uint8,uint16,(address[],uint32),uint32) gsu)
+func (_Abi *AbiCallerSession) ParsePhylaxSetUpgrade(encodedUpgrade []byte) (GovernanceStructsPhylaxSetUpgrade, error) {
+	return _Abi.Contract.ParsePhylaxSetUpgrade(&_Abi.CallOpts, encodedUpgrade)
 }
 
 // ParseSetMessageFee is a free data retrieval call binding the contract method 0x515f3247.
@@ -769,7 +769,7 @@ func (_Abi *AbiCallerSession) ParseVM(encodedVM []byte) (StructsVM, error) {
 // VerifySignatures is a free data retrieval call binding the contract method 0xa0cce1b3.
 //
 // Solidity: function verifySignatures(bytes32 hash, (bytes32,bytes32,uint8,uint8)[] signatures, (address[],uint32) guardianSet) pure returns(bool valid, string reason)
-func (_Abi *AbiCaller) VerifySignatures(opts *bind.CallOpts, hash [32]byte, signatures []StructsSignature, guardianSet StructsGuardianSet) (struct {
+func (_Abi *AbiCaller) VerifySignatures(opts *bind.CallOpts, hash [32]byte, signatures []StructsSignature, guardianSet StructsPhylaxSet) (struct {
 	Valid  bool
 	Reason string
 }, error) {
@@ -794,7 +794,7 @@ func (_Abi *AbiCaller) VerifySignatures(opts *bind.CallOpts, hash [32]byte, sign
 // VerifySignatures is a free data retrieval call binding the contract method 0xa0cce1b3.
 //
 // Solidity: function verifySignatures(bytes32 hash, (bytes32,bytes32,uint8,uint8)[] signatures, (address[],uint32) guardianSet) pure returns(bool valid, string reason)
-func (_Abi *AbiSession) VerifySignatures(hash [32]byte, signatures []StructsSignature, guardianSet StructsGuardianSet) (struct {
+func (_Abi *AbiSession) VerifySignatures(hash [32]byte, signatures []StructsSignature, guardianSet StructsPhylaxSet) (struct {
 	Valid  bool
 	Reason string
 }, error) {
@@ -804,7 +804,7 @@ func (_Abi *AbiSession) VerifySignatures(hash [32]byte, signatures []StructsSign
 // VerifySignatures is a free data retrieval call binding the contract method 0xa0cce1b3.
 //
 // Solidity: function verifySignatures(bytes32 hash, (bytes32,bytes32,uint8,uint8)[] signatures, (address[],uint32) guardianSet) pure returns(bool valid, string reason)
-func (_Abi *AbiCallerSession) VerifySignatures(hash [32]byte, signatures []StructsSignature, guardianSet StructsGuardianSet) (struct {
+func (_Abi *AbiCallerSession) VerifySignatures(hash [32]byte, signatures []StructsSignature, guardianSet StructsPhylaxSet) (struct {
 	Valid  bool
 	Reason string
 }, error) {
@@ -898,25 +898,25 @@ func (_Abi *AbiTransactorSession) SubmitContractUpgrade(_vm []byte) (*types.Tran
 	return _Abi.Contract.SubmitContractUpgrade(&_Abi.TransactOpts, _vm)
 }
 
-// SubmitNewGuardianSet is a paid mutator transaction binding the contract method 0x6606b4e0.
+// SubmitNewPhylaxSet is a paid mutator transaction binding the contract method 0x6606b4e0.
 //
-// Solidity: function submitNewGuardianSet(bytes _vm) returns()
-func (_Abi *AbiTransactor) SubmitNewGuardianSet(opts *bind.TransactOpts, _vm []byte) (*types.Transaction, error) {
-	return _Abi.contract.Transact(opts, "submitNewGuardianSet", _vm)
+// Solidity: function submitNewPhylaxSet(bytes _vm) returns()
+func (_Abi *AbiTransactor) SubmitNewPhylaxSet(opts *bind.TransactOpts, _vm []byte) (*types.Transaction, error) {
+	return _Abi.contract.Transact(opts, "submitNewPhylaxSet", _vm)
 }
 
-// SubmitNewGuardianSet is a paid mutator transaction binding the contract method 0x6606b4e0.
+// SubmitNewPhylaxSet is a paid mutator transaction binding the contract method 0x6606b4e0.
 //
-// Solidity: function submitNewGuardianSet(bytes _vm) returns()
-func (_Abi *AbiSession) SubmitNewGuardianSet(_vm []byte) (*types.Transaction, error) {
-	return _Abi.Contract.SubmitNewGuardianSet(&_Abi.TransactOpts, _vm)
+// Solidity: function submitNewPhylaxSet(bytes _vm) returns()
+func (_Abi *AbiSession) SubmitNewPhylaxSet(_vm []byte) (*types.Transaction, error) {
+	return _Abi.Contract.SubmitNewPhylaxSet(&_Abi.TransactOpts, _vm)
 }
 
-// SubmitNewGuardianSet is a paid mutator transaction binding the contract method 0x6606b4e0.
+// SubmitNewPhylaxSet is a paid mutator transaction binding the contract method 0x6606b4e0.
 //
-// Solidity: function submitNewGuardianSet(bytes _vm) returns()
-func (_Abi *AbiTransactorSession) SubmitNewGuardianSet(_vm []byte) (*types.Transaction, error) {
-	return _Abi.Contract.SubmitNewGuardianSet(&_Abi.TransactOpts, _vm)
+// Solidity: function submitNewPhylaxSet(bytes _vm) returns()
+func (_Abi *AbiTransactorSession) SubmitNewPhylaxSet(_vm []byte) (*types.Transaction, error) {
+	return _Abi.Contract.SubmitNewPhylaxSet(&_Abi.TransactOpts, _vm)
 }
 
 // SubmitSetMessageFee is a paid mutator transaction binding the contract method 0xf42bc641.
@@ -975,8 +975,8 @@ func (_Abi *AbiFilterer) TryParseLog(log types.Log) (eventName string, event int
 		event, err = _Abi.ParseBeaconUpgraded(log)
 	case "ContractUpgraded":
 		event, err = _Abi.ParseContractUpgraded(log)
-	case "GuardianSetAdded":
-		event, err = _Abi.ParseGuardianSetAdded(log)
+	case "PhylaxSetAdded":
+		event, err = _Abi.ParsePhylaxSetAdded(log)
 	case "LogMessagePublished":
 		event, err = _Abi.ParseLogMessagePublished(log)
 	case "Upgraded":
@@ -1463,9 +1463,9 @@ func (_Abi *AbiFilterer) ParseContractUpgraded(log types.Log) (*AbiContractUpgra
 	return event, nil
 }
 
-// AbiGuardianSetAddedIterator is returned from FilterGuardianSetAdded and is used to iterate over the raw logs and unpacked data for GuardianSetAdded events raised by the Abi contract.
-type AbiGuardianSetAddedIterator struct {
-	Event *AbiGuardianSetAdded // Event containing the contract specifics and raw log
+// AbiPhylaxSetAddedIterator is returned from FilterPhylaxSetAdded and is used to iterate over the raw logs and unpacked data for PhylaxSetAdded events raised by the Abi contract.
+type AbiPhylaxSetAddedIterator struct {
+	Event *AbiPhylaxSetAdded // Event containing the contract specifics and raw log
 
 	contract *bind.BoundContract // Generic contract to use for unpacking event data
 	event    string              // Event name to use for unpacking event data
@@ -1479,7 +1479,7 @@ type AbiGuardianSetAddedIterator struct {
 // Next advances the iterator to the subsequent event, returning whether there
 // are any more events found. In case of a retrieval or parsing error, false is
 // returned and Error() can be queried for the exact failure.
-func (it *AbiGuardianSetAddedIterator) Next() bool {
+func (it *AbiPhylaxSetAddedIterator) Next() bool {
 	// If the iterator failed, stop iterating
 	if it.fail != nil {
 		return false
@@ -1488,7 +1488,7 @@ func (it *AbiGuardianSetAddedIterator) Next() bool {
 	if it.done {
 		select {
 		case log := <-it.logs:
-			it.Event = new(AbiGuardianSetAdded)
+			it.Event = new(AbiPhylaxSetAdded)
 			if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
 				it.fail = err
 				return false
@@ -1503,7 +1503,7 @@ func (it *AbiGuardianSetAddedIterator) Next() bool {
 	// Iterator still in progress, wait for either a data or an error event
 	select {
 	case log := <-it.logs:
-		it.Event = new(AbiGuardianSetAdded)
+		it.Event = new(AbiPhylaxSetAdded)
 		if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
 			it.fail = err
 			return false
@@ -1519,51 +1519,51 @@ func (it *AbiGuardianSetAddedIterator) Next() bool {
 }
 
 // Error returns any retrieval or parsing error occurred during filtering.
-func (it *AbiGuardianSetAddedIterator) Error() error {
+func (it *AbiPhylaxSetAddedIterator) Error() error {
 	return it.fail
 }
 
 // Close terminates the iteration process, releasing any pending underlying
 // resources.
-func (it *AbiGuardianSetAddedIterator) Close() error {
+func (it *AbiPhylaxSetAddedIterator) Close() error {
 	it.sub.Unsubscribe()
 	return nil
 }
 
-// AbiGuardianSetAdded represents a GuardianSetAdded event raised by the Abi contract.
-type AbiGuardianSetAdded struct {
+// AbiPhylaxSetAdded represents a PhylaxSetAdded event raised by the Abi contract.
+type AbiPhylaxSetAdded struct {
 	Index uint32
 	Raw   types.Log // Blockchain specific contextual infos
 }
 
-// FilterGuardianSetAdded is a free log retrieval operation binding the contract event 0x2384dbc52f7b617fb7c5aa71e5455a21ff21d58604bb6daef6af2bb44aadebdd.
+// FilterPhylaxSetAdded is a free log retrieval operation binding the contract event 0x2384dbc52f7b617fb7c5aa71e5455a21ff21d58604bb6daef6af2bb44aadebdd.
 //
-// Solidity: event GuardianSetAdded(uint32 indexed index)
-func (_Abi *AbiFilterer) FilterGuardianSetAdded(opts *bind.FilterOpts, index []uint32) (*AbiGuardianSetAddedIterator, error) {
+// Solidity: event PhylaxSetAdded(uint32 indexed index)
+func (_Abi *AbiFilterer) FilterPhylaxSetAdded(opts *bind.FilterOpts, index []uint32) (*AbiPhylaxSetAddedIterator, error) {
 
 	var indexRule []interface{}
 	for _, indexItem := range index {
 		indexRule = append(indexRule, indexItem)
 	}
 
-	logs, sub, err := _Abi.contract.FilterLogs(opts, "GuardianSetAdded", indexRule)
+	logs, sub, err := _Abi.contract.FilterLogs(opts, "PhylaxSetAdded", indexRule)
 	if err != nil {
 		return nil, err
 	}
-	return &AbiGuardianSetAddedIterator{contract: _Abi.contract, event: "GuardianSetAdded", logs: logs, sub: sub}, nil
+	return &AbiPhylaxSetAddedIterator{contract: _Abi.contract, event: "PhylaxSetAdded", logs: logs, sub: sub}, nil
 }
 
-// WatchGuardianSetAdded is a free log subscription operation binding the contract event 0x2384dbc52f7b617fb7c5aa71e5455a21ff21d58604bb6daef6af2bb44aadebdd.
+// WatchPhylaxSetAdded is a free log subscription operation binding the contract event 0x2384dbc52f7b617fb7c5aa71e5455a21ff21d58604bb6daef6af2bb44aadebdd.
 //
-// Solidity: event GuardianSetAdded(uint32 indexed index)
-func (_Abi *AbiFilterer) WatchGuardianSetAdded(opts *bind.WatchOpts, sink chan<- *AbiGuardianSetAdded, index []uint32) (event.Subscription, error) {
+// Solidity: event PhylaxSetAdded(uint32 indexed index)
+func (_Abi *AbiFilterer) WatchPhylaxSetAdded(opts *bind.WatchOpts, sink chan<- *AbiPhylaxSetAdded, index []uint32) (event.Subscription, error) {
 
 	var indexRule []interface{}
 	for _, indexItem := range index {
 		indexRule = append(indexRule, indexItem)
 	}
 
-	logs, sub, err := _Abi.contract.WatchLogs(opts, "GuardianSetAdded", indexRule)
+	logs, sub, err := _Abi.contract.WatchLogs(opts, "PhylaxSetAdded", indexRule)
 	if err != nil {
 		return nil, err
 	}
@@ -1573,8 +1573,8 @@ func (_Abi *AbiFilterer) WatchGuardianSetAdded(opts *bind.WatchOpts, sink chan<-
 			select {
 			case log := <-logs:
 				// New log arrived, parse the event and forward to the user
-				event := new(AbiGuardianSetAdded)
-				if err := _Abi.contract.UnpackLog(event, "GuardianSetAdded", log); err != nil {
+				event := new(AbiPhylaxSetAdded)
+				if err := _Abi.contract.UnpackLog(event, "PhylaxSetAdded", log); err != nil {
 					return err
 				}
 				event.Raw = log
@@ -1595,12 +1595,12 @@ func (_Abi *AbiFilterer) WatchGuardianSetAdded(opts *bind.WatchOpts, sink chan<-
 	}), nil
 }
 
-// ParseGuardianSetAdded is a log parse operation binding the contract event 0x2384dbc52f7b617fb7c5aa71e5455a21ff21d58604bb6daef6af2bb44aadebdd.
+// ParsePhylaxSetAdded is a log parse operation binding the contract event 0x2384dbc52f7b617fb7c5aa71e5455a21ff21d58604bb6daef6af2bb44aadebdd.
 //
-// Solidity: event GuardianSetAdded(uint32 indexed index)
-func (_Abi *AbiFilterer) ParseGuardianSetAdded(log types.Log) (*AbiGuardianSetAdded, error) {
-	event := new(AbiGuardianSetAdded)
-	if err := _Abi.contract.UnpackLog(event, "GuardianSetAdded", log); err != nil {
+// Solidity: event PhylaxSetAdded(uint32 indexed index)
+func (_Abi *AbiFilterer) ParsePhylaxSetAdded(log types.Log) (*AbiPhylaxSetAdded, error) {
+	event := new(AbiPhylaxSetAdded)
+	if err := _Abi.contract.UnpackLog(event, "PhylaxSetAdded", log); err != nil {
 		return nil, err
 	}
 	event.Raw = log

@@ -22,8 +22,8 @@ func KeyPrefix(p string) []byte {
 }
 
 const (
-	GuardianSetKey      = "GuardianSet-value-"
-	GuardianSetCountKey = "GuardianSet-count-"
+	PhylaxSetKey      = "PhylaxSet-value-"
+	PhylaxSetCountKey = "PhylaxSet-count-"
 )
 
 const (
@@ -31,7 +31,7 @@ const (
 )
 
 const (
-	ConsensusGuardianSetIndexKey = "ConsensusGuardianSetIndex-value-"
+	ConsensusPhylaxSetIndexKey = "ConsensusPhylaxSetIndex-value-"
 )
 
 const (

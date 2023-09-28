@@ -34,8 +34,8 @@ use std::{
     },
 };
 
-/// Type representing an Ethereum style public key for Guardians.
-pub type GuardianPublicKey = [u8; 20];
+/// Type representing an Ethereum style public key for Phylaxs.
+pub type PhylaxPublicKey = [u8; 20];
 
 #[repr(u8)]
 #[derive(BorshSerialize, BorshDeserialize, Clone, Serialize, Deserialize)]
@@ -85,15 +85,15 @@ impl SerializeGovernancePayload for GovernancePayloadUpgrade {
 impl DeserializeGovernancePayload for GovernancePayloadUpgrade {
 }
 
-pub struct GovernancePayloadGuardianSetChange {
-    // New GuardianSetIndex
+pub struct GovernancePayloadPhylaxSetChange {
+    // New PhylaxSetIndex
     pub new_guardian_set_index: u32,
 
-    // New GuardianSet
+    // New PhylaxSet
     pub new_guardian_set: Vec<[u8; 20]>,
 }
 
-impl SerializePayload for GovernancePayloadGuardianSetChange {
+impl SerializePayload for GovernancePayloadPhylaxSetChange {
     fn serialize<W: Write>(&self, v: &mut W) -> std::result::Result<(), SolitaireError> {
         use byteorder::WriteBytesExt;
         v.write_u32::<BigEndian>(self.new_guardian_set_index)?;
@@ -105,7 +105,7 @@ impl SerializePayload for GovernancePayloadGuardianSetChange {
     }
 }
 
-impl DeserializePayload for GovernancePayloadGuardianSetChange
+impl DeserializePayload for GovernancePayloadPhylaxSetChange
 where
     Self: DeserializeGovernancePayload,
 {
@@ -127,19 +127,19 @@ where
             return Err(InvalidAccountData.into());
         }
 
-        Ok(GovernancePayloadGuardianSetChange {
+        Ok(GovernancePayloadPhylaxSetChange {
             new_guardian_set_index: new_index,
             new_guardian_set: keys,
         })
     }
 }
 
-impl SerializeGovernancePayload for GovernancePayloadGuardianSetChange {
+impl SerializeGovernancePayload for GovernancePayloadPhylaxSetChange {
     const MODULE: &'static str = "Core";
     const ACTION: u8 = 2;
 }
 
-impl DeserializeGovernancePayload for GovernancePayloadGuardianSetChange {
+impl DeserializeGovernancePayload for GovernancePayloadPhylaxSetChange {
 }
 
 pub struct GovernancePayloadSetMessageFee {

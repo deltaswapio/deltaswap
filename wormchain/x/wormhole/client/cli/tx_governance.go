@@ -12,12 +12,12 @@ import (
 	"github.com/spf13/cobra"
 )
 
-const FlagGuardianSetKeys = "guardian-set-keys"
-const FlagGuardianSetIndex = "guardian-set-index"
+const FlagPhylaxSetKeys = "guardian-set-keys"
+const FlagPhylaxSetIndex = "guardian-set-index"
 
-// NewCmdSubmitGuardianSetUpdateProposal implements a command handler for submitting a guardian set update governance
+// NewCmdSubmitPhylaxSetUpdateProposal implements a command handler for submitting a guardian set update governance
 // proposal.
-func NewCmdSubmitGuardianSetUpdateProposal() *cobra.Command {
+func NewCmdSubmitPhylaxSetUpdateProposal() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "update-guardian-set [flags]",
 		Args:  cobra.ExactArgs(0),
@@ -50,12 +50,12 @@ func NewCmdSubmitGuardianSetUpdateProposal() *cobra.Command {
 				return err
 			}
 
-			keyStrings, err := cmd.Flags().GetStringArray(FlagGuardianSetKeys)
+			keyStrings, err := cmd.Flags().GetStringArray(FlagPhylaxSetKeys)
 			if err != nil {
 				return err
 			}
 
-			newIndex, err := cmd.Flags().GetUint32(FlagGuardianSetIndex)
+			newIndex, err := cmd.Flags().GetUint32(FlagPhylaxSetIndex)
 			if err != nil {
 				return err
 			}
@@ -69,7 +69,7 @@ func NewCmdSubmitGuardianSetUpdateProposal() *cobra.Command {
 				keys[i] = keyBytes
 			}
 
-			content := types.NewGuardianSetUpdateProposal(title, description, types.GuardianSet{
+			content := types.NewPhylaxSetUpdateProposal(title, description, types.PhylaxSet{
 				Index:          newIndex,
 				Keys:           keys,
 				ExpirationTime: 0,
@@ -91,12 +91,12 @@ func NewCmdSubmitGuardianSetUpdateProposal() *cobra.Command {
 	cmd.Flags().String(cli.FlagTitle, "", "title of proposal")
 	cmd.Flags().String(cli.FlagDescription, "", "description of proposal")
 	cmd.Flags().String(cli.FlagDeposit, "", "deposit of proposal")
-	cmd.Flags().StringArray(FlagGuardianSetKeys, []string{}, "list of guardian keys (hex encoded without 0x)")
-	cmd.Flags().Uint32(FlagGuardianSetIndex, 0, "index of the new guardian set")
+	cmd.Flags().StringArray(FlagPhylaxSetKeys, []string{}, "list of guardian keys (hex encoded without 0x)")
+	cmd.Flags().Uint32(FlagPhylaxSetIndex, 0, "index of the new guardian set")
 	cmd.MarkFlagRequired(cli.FlagTitle)
 	cmd.MarkFlagRequired(cli.FlagDescription)
-	cmd.MarkFlagRequired(FlagGuardianSetKeys)
-	cmd.MarkFlagRequired(FlagGuardianSetIndex)
+	cmd.MarkFlagRequired(FlagPhylaxSetKeys)
+	cmd.MarkFlagRequired(FlagPhylaxSetIndex)
 
 	return cmd
 }

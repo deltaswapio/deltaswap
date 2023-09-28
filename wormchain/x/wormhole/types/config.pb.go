@@ -24,7 +24,7 @@ var _ = math.Inf
 const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
 type Config struct {
-	GuardianSetExpiration uint64 `protobuf:"varint,1,opt,name=guardian_set_expiration,json=guardianSetExpiration,proto3" json:"guardian_set_expiration,omitempty"`
+	PhylaxSetExpiration uint64 `protobuf:"varint,1,opt,name=guardian_set_expiration,json=guardianSetExpiration,proto3" json:"guardian_set_expiration,omitempty"`
 	GovernanceEmitter     []byte `protobuf:"bytes,2,opt,name=governance_emitter,json=governanceEmitter,proto3" json:"governance_emitter,omitempty"`
 	GovernanceChain       uint32 `protobuf:"varint,3,opt,name=governance_chain,json=governanceChain,proto3" json:"governance_chain,omitempty"`
 	ChainId               uint32 `protobuf:"varint,4,opt,name=chain_id,json=chainId,proto3" json:"chain_id,omitempty"`
@@ -63,9 +63,9 @@ func (m *Config) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_Config proto.InternalMessageInfo
 
-func (m *Config) GetGuardianSetExpiration() uint64 {
+func (m *Config) GetPhylaxSetExpiration() uint64 {
 	if m != nil {
-		return m.GuardianSetExpiration
+		return m.PhylaxSetExpiration
 	}
 	return 0
 }
@@ -155,8 +155,8 @@ func (m *Config) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 		i--
 		dAtA[i] = 0x12
 	}
-	if m.GuardianSetExpiration != 0 {
-		i = encodeVarintConfig(dAtA, i, uint64(m.GuardianSetExpiration))
+	if m.PhylaxSetExpiration != 0 {
+		i = encodeVarintConfig(dAtA, i, uint64(m.PhylaxSetExpiration))
 		i--
 		dAtA[i] = 0x8
 	}
@@ -180,8 +180,8 @@ func (m *Config) Size() (n int) {
 	}
 	var l int
 	_ = l
-	if m.GuardianSetExpiration != 0 {
-		n += 1 + sovConfig(uint64(m.GuardianSetExpiration))
+	if m.PhylaxSetExpiration != 0 {
+		n += 1 + sovConfig(uint64(m.PhylaxSetExpiration))
 	}
 	l = len(m.GovernanceEmitter)
 	if l > 0 {
@@ -233,9 +233,9 @@ func (m *Config) Unmarshal(dAtA []byte) error {
 		switch fieldNum {
 		case 1:
 			if wireType != 0 {
-				return fmt.Errorf("proto: wrong wireType = %d for field GuardianSetExpiration", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field PhylaxSetExpiration", wireType)
 			}
-			m.GuardianSetExpiration = 0
+			m.PhylaxSetExpiration = 0
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowConfig
@@ -245,7 +245,7 @@ func (m *Config) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				m.GuardianSetExpiration |= uint64(b&0x7F) << shift
+				m.PhylaxSetExpiration |= uint64(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}

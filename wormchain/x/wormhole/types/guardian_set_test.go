@@ -24,7 +24,7 @@ func TestKeysAsAddresses(t *testing.T) {
 	addrs = append(addrs, addr1)
 	addrs = append(addrs, addr2)
 
-	guardianSet := GuardianSet{
+	guardianSet := PhylaxSet{
 		Index:          1,
 		Keys:           addrsBytes,
 		ExpirationTime: 0,
@@ -46,7 +46,7 @@ func TestContainsKey(t *testing.T) {
 	addrsBytes = append(addrsBytes, addr1.Bytes())
 	addrsBytes = append(addrsBytes, addr2.Bytes())
 
-	guardianSet := GuardianSet{
+	guardianSet := PhylaxSet{
 		Index:          1,
 		Keys:           addrsBytes,
 		ExpirationTime: 0,
@@ -75,13 +75,13 @@ func TestValidateBasic(t *testing.T) {
 
 	tests := []struct {
 		label     string
-		gs        GuardianSet
+		gs        PhylaxSet
 		valid     bool
 		willError bool
 	}{
-		{label: "ValidSet", gs: GuardianSet{Keys: addrsBytes, Index: 1, ExpirationTime: 0}, willError: false},
-		{label: "EmptySet", gs: GuardianSet{}, willError: true},
-		{label: "TooLargeSet", gs: GuardianSet{Keys: largeAddrsBytes, Index: 1, ExpirationTime: 0}, willError: true},
+		{label: "ValidSet", gs: PhylaxSet{Keys: addrsBytes, Index: 1, ExpirationTime: 0}, willError: false},
+		{label: "EmptySet", gs: PhylaxSet{}, willError: true},
+		{label: "TooLargeSet", gs: PhylaxSet{Keys: largeAddrsBytes, Index: 1, ExpirationTime: 0}, willError: true},
 	}
 
 	for _, tc := range tests {

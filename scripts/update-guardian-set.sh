@@ -6,8 +6,8 @@ set -e
 # wait for the guardians to establish networking
 sleep 20
 
-newNumGuardians=$1
-echo "new number of guardians: ${newNumGuardians}"
+newNumPhylaxs=$1
+echo "new number of guardians: ${newNumPhylaxs}"
 
 webHost=$2
 echo "webHost ${webHost}"
@@ -28,26 +28,26 @@ sock=/tmp/admin.sock
 
 guardianPublicWebBaseUrl="${webHost}:7071"
 
-currentGuardianSetUrl="${guardianPublicWebBaseUrl}/v1/guardianset/current"
+currentPhylaxSetUrl="${guardianPublicWebBaseUrl}/v1/guardianset/current"
 
 # fetch result and parse json body:
-guardianSet=$(curl ${currentGuardianSetUrl} | jq ".guardianSet")
+guardianSet=$(curl ${currentPhylaxSetUrl} | jq ".guardianSet")
 currentIndex=$(echo ${guardianSet} | jq ".index")
-currentNumGuardians=$(echo ${guardianSet} | jq ".addresses | length")
+currentNumPhylaxs=$(echo ${guardianSet} | jq ".addresses | length")
 echo "currentIndex: ${currentIndex}"
-echo "currentNumGuardians ${currentNumGuardians}"
+echo "currentNumPhylaxs ${currentNumPhylaxs}"
 
 
-if [ ${currentNumGuardians} == ${newNumGuardians} ]; then
+if [ ${currentNumPhylaxs} == ${newNumPhylaxs} ]; then
     echo "number of guardians is as expected."
     exit 0
 fi
 
 echo "creating guardian set update governance message template prototext"
-minikube kubectl -- exec -n ${namespace} guardian-0 -c phylaxd -- /phylaxd template guardian-set-update --num=${newNumGuardians} --idx=${currentIndex} > ${tmpFile}
+minikube kubectl -- exec -n ${namespace} guardian-0 -c phylaxd -- /phylaxd template guardian-set-update --num=${newNumPhylaxs} --idx=${currentIndex} > ${tmpFile}
 
-# for i in $(seq ${newNumGuardians})
-for i in $(seq ${currentNumGuardians})
+# for i in $(seq ${newNumPhylaxs})
+for i in $(seq ${currentNumPhylaxs})
 do
   # create guardian index: [0-18]
   guardianIndex=$((i-1))
@@ -104,17 +104,17 @@ echo "got hex VAA: ${hexVaa}"
 sleep 30
 
 # fetch result and parse json body:
-echo "going to fetch current guardianset from ${currentGuardianSetUrl}"
-nextGuardianSet=$(curl ${currentGuardianSetUrl} | jq ".guardianSet")
-nextIndex=$(echo ${nexGuardianSet} | jq ".index")
-nextNumGuardians=$(echo ${nextGuardianSet} | jq ".addresses | length")
+echo "going to fetch current guardianset from ${currentPhylaxSetUrl}"
+nextPhylaxSet=$(curl ${currentPhylaxSetUrl} | jq ".guardianSet")
+nextIndex=$(echo ${nexPhylaxSet} | jq ".index")
+nextNumPhylaxs=$(echo ${nextPhylaxSet} | jq ".addresses | length")
 echo "nextIndex: ${nextIndex}"
-echo "nextNumGuardians ${nextNumGuardians}"
+echo "nextNumPhylaxs ${nextNumPhylaxs}"
 
-if [ ${nextNumGuardians} == ${newNumGuardians} ]; then
+if [ ${nextNumPhylaxs} == ${newNumPhylaxs} ]; then
     echo "number of guardians is as expected."
 else
-    echo "number of guardians is not as expected. number of guardians in set: ${nextNumGuardians}."
+    echo "number of guardians is not as expected. number of guardians in set: ${nextNumPhylaxs}."
     exit 1
 fi
 

@@ -79,7 +79,7 @@ func TestPurgingPythnetVAAs(t *testing.T) {
 	for count := 0; count < 50; count++ {
 		err = storeVAA(db, &vaa.VAA{
 			Version:          uint8(1),
-			GuardianSetIndex: uint32(1),
+			PhylaxSetIndex:   uint32(1),
 			Signatures:       nil,
 			Timestamp:        timeStamp,
 			Nonce:            uint32(1),
@@ -94,7 +94,7 @@ func TestPurgingPythnetVAAs(t *testing.T) {
 
 		err = storeVAA(db, &vaa.VAA{
 			Version:          uint8(1),
-			GuardianSetIndex: uint32(1),
+			PhylaxSetIndex:   uint32(1),
 			Signatures:       nil,
 			Timestamp:        timeStamp,
 			Nonce:            uint32(1),
@@ -113,7 +113,7 @@ func TestPurgingPythnetVAAs(t *testing.T) {
 	for count := 0; count < 75; count++ {
 		err = storeVAA(db, &vaa.VAA{
 			Version:          uint8(1),
-			GuardianSetIndex: uint32(1),
+			PhylaxSetIndex:   uint32(1),
 			Signatures:       nil,
 			Timestamp:        timeStamp,
 			Nonce:            uint32(1),
@@ -128,7 +128,7 @@ func TestPurgingPythnetVAAs(t *testing.T) {
 
 		err = storeVAA(db, &vaa.VAA{
 			Version:          uint8(1),
-			GuardianSetIndex: uint32(1),
+			PhylaxSetIndex:   uint32(1),
 			Signatures:       nil,
 			Timestamp:        timeStamp,
 			Nonce:            uint32(1),
@@ -184,7 +184,7 @@ func TestPurgingVAAsForOneEmitterAddress(t *testing.T) {
 	for count := 0; count < 50; count++ {
 		err = storeVAA(db, &vaa.VAA{
 			Version:          uint8(1),
-			GuardianSetIndex: uint32(1),
+			PhylaxSetIndex:   uint32(1),
 			Signatures:       nil,
 			Timestamp:        timeStamp,
 			Nonce:            uint32(1),
@@ -198,7 +198,7 @@ func TestPurgingVAAsForOneEmitterAddress(t *testing.T) {
 
 		err = storeVAA(db, &vaa.VAA{
 			Version:          uint8(1),
-			GuardianSetIndex: uint32(1),
+			PhylaxSetIndex:   uint32(1),
 			Signatures:       nil,
 			Timestamp:        timeStamp,
 			Nonce:            uint32(1),
@@ -214,7 +214,7 @@ func TestPurgingVAAsForOneEmitterAddress(t *testing.T) {
 
 		err = storeVAA(db, &vaa.VAA{
 			Version:          uint8(1),
-			GuardianSetIndex: uint32(1),
+			PhylaxSetIndex:   uint32(1),
 			Signatures:       nil,
 			Timestamp:        timeStamp,
 			Nonce:            uint32(1),
@@ -233,7 +233,7 @@ func TestPurgingVAAsForOneEmitterAddress(t *testing.T) {
 	for count := 0; count < 75; count++ {
 		err = storeVAA(db, &vaa.VAA{
 			Version:          uint8(1),
-			GuardianSetIndex: uint32(1),
+			PhylaxSetIndex:   uint32(1),
 			Signatures:       nil,
 			Timestamp:        timeStamp,
 			Nonce:            uint32(1),
@@ -247,7 +247,7 @@ func TestPurgingVAAsForOneEmitterAddress(t *testing.T) {
 
 		err = storeVAA(db, &vaa.VAA{
 			Version:          uint8(1),
-			GuardianSetIndex: uint32(1),
+			PhylaxSetIndex:   uint32(1),
 			Signatures:       nil,
 			Timestamp:        timeStamp,
 			Nonce:            uint32(1),
@@ -263,7 +263,7 @@ func TestPurgingVAAsForOneEmitterAddress(t *testing.T) {
 
 		err = storeVAA(db, &vaa.VAA{
 			Version:          uint8(1),
-			GuardianSetIndex: uint32(1),
+			PhylaxSetIndex:   uint32(1),
 			Signatures:       nil,
 			Timestamp:        timeStamp,
 			Nonce:            uint32(1),

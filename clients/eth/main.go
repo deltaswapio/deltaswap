@@ -133,8 +133,8 @@ func executeGovernance(cmd *cobra.Command, args []string) {
 		println("Governance Action: ContractUpgrade")
 		contractFunction = t.SubmitContractUpgrade
 	case 2:
-		println("Governance Action: NewGuardianSet")
-		contractFunction = t.SubmitNewGuardianSet
+		println("Governance Action: NewPhylaxSet")
+		contractFunction = t.SubmitNewPhylaxSet
 	case 3:
 		println("Governance Action: SetMessageFee")
 		contractFunction = t.SubmitSetMessageFee
