@@ -363,6 +363,6 @@ replace github.com/deltaswapio/deltaswap/sdk => ../sdk
 
 replace github.com/deltaswapio/deltachain => ../deltachain
 
-replace github.com/CosmWasm/wasmd v0.30.0 => github.com/wormhole-foundation/wasmd v0.30.0-deltachain-2
+replace github.com/CosmWasm/wasmd v0.30.0 => github.com/wormhole-foundation/wasmd v0.30.0-wormchain-2
 
 replace github.com/cosmos/cosmos-sdk => github.com/wormhole-foundation/cosmos-sdk v0.45.9-wormhole

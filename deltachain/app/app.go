@@ -123,7 +123,7 @@ import (
 )
 
 const (
-	AccountAddressPrefix = "wormhole"
+	AccountAddressPrefix = "delta"
 	Name                 = "deltachain"
 )
 
