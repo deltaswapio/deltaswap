@@ -7,13 +7,13 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/certusone/wormhole/node/pkg/watchers/evm/connectors"
-	"github.com/certusone/wormhole/node/pkg/watchers/evm/connectors/ethabi"
-	"github.com/certusone/wormhole/node/pkg/watchers/evm/finalizers"
-	"github.com/certusone/wormhole/node/pkg/watchers/interfaces"
+	"github.com/deltaswapio/deltaswap/node/pkg/watchers/evm/connectors"
+	"github.com/deltaswapio/deltaswap/node/pkg/watchers/evm/connectors/ethabi"
+	"github.com/deltaswapio/deltaswap/node/pkg/watchers/evm/finalizers"
+	"github.com/deltaswapio/deltaswap/node/pkg/watchers/interfaces"
 
-	"github.com/certusone/wormhole/node/pkg/p2p"
-	gossipv1 "github.com/certusone/wormhole/node/pkg/proto/gossip/v1"
+	"github.com/deltaswapio/deltaswap/node/pkg/p2p"
+	gossipv1 "github.com/deltaswapio/deltaswap/node/pkg/proto/gossip/v1"
 	"github.com/ethereum/go-ethereum/rpc"
 	"github.com/prometheus/client_golang/prometheus/promauto"
 
@@ -23,10 +23,10 @@ import (
 	eth_hexutil "github.com/ethereum/go-ethereum/common/hexutil"
 	"go.uber.org/zap"
 
-	"github.com/certusone/wormhole/node/pkg/common"
-	"github.com/certusone/wormhole/node/pkg/readiness"
-	"github.com/certusone/wormhole/node/pkg/supervisor"
-	"github.com/wormhole-foundation/wormhole/sdk/vaa"
+	"github.com/deltaswapio/deltaswap/node/pkg/common"
+	"github.com/deltaswapio/deltaswap/node/pkg/readiness"
+	"github.com/deltaswapio/deltaswap/node/pkg/supervisor"
+	"github.com/deltaswapio/deltaswap/sdk/vaa"
 )
 
 var (

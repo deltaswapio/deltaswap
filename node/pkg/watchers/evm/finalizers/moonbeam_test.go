@@ -7,9 +7,9 @@ import (
 	"math/big"
 	"testing"
 
-	"github.com/certusone/wormhole/node/pkg/watchers/evm/connectors"
+	"github.com/deltaswapio/deltaswap/node/pkg/watchers/evm/connectors"
 
-	ethAbi "github.com/certusone/wormhole/node/pkg/watchers/evm/connectors/ethabi"
+	ethAbi "github.com/deltaswapio/deltaswap/node/pkg/watchers/evm/connectors/ethabi"
 
 	ethereum "github.com/ethereum/go-ethereum"
 	ethCommon "github.com/ethereum/go-ethereum/common"

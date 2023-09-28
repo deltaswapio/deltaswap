@@ -8,7 +8,7 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/wormhole-foundation/wormhole/sdk/vaa"
+	"github.com/deltaswapio/deltaswap/sdk/vaa"
 
 	cosmossdk "github.com/cosmos/cosmos-sdk/types"
 

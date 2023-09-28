@@ -5,11 +5,11 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/certusone/wormhole/node/pkg/watchers/evm/connectors"
+	"github.com/deltaswapio/deltaswap/node/pkg/watchers/evm/connectors"
 
-	"github.com/certusone/wormhole/node/pkg/common"
+	"github.com/deltaswapio/deltaswap/node/pkg/common"
+	"github.com/deltaswapio/deltaswap/sdk/vaa"
 	eth_common "github.com/ethereum/go-ethereum/common"
-	"github.com/wormhole-foundation/wormhole/sdk/vaa"
 )
 
 var (

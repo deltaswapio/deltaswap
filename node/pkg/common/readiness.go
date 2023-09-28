@@ -3,8 +3,8 @@ package common
 import (
 	"fmt"
 
-	"github.com/certusone/wormhole/node/pkg/readiness"
-	"github.com/wormhole-foundation/wormhole/sdk/vaa"
+	"github.com/deltaswapio/deltaswap/node/pkg/readiness"
+	"github.com/deltaswapio/deltaswap/sdk/vaa"
 )
 
 const (

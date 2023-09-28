@@ -18,11 +18,11 @@ import (
 	sdktypes "github.com/cosmos/cosmos-sdk/types"
 	sdktx "github.com/cosmos/cosmos-sdk/types/tx"
 
-	"github.com/certusone/wormhole/node/pkg/common"
-	"github.com/certusone/wormhole/node/pkg/db"
-	"github.com/certusone/wormhole/node/pkg/devnet"
-	gossipv1 "github.com/certusone/wormhole/node/pkg/proto/gossip/v1"
-	"github.com/wormhole-foundation/wormhole/sdk/vaa"
+	"github.com/deltaswapio/deltaswap/node/pkg/common"
+	"github.com/deltaswapio/deltaswap/node/pkg/db"
+	"github.com/deltaswapio/deltaswap/node/pkg/devnet"
+	gossipv1 "github.com/deltaswapio/deltaswap/node/pkg/proto/gossip/v1"
+	"github.com/deltaswapio/deltaswap/sdk/vaa"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zaptest"
 )

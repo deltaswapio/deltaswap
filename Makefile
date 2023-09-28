@@ -37,6 +37,6 @@ node: $(BIN)/phylaxd
 .PHONY: $(BIN)/phylaxd
 $(BIN)/phylaxd: dirs generate
 	@# The go-ethereum and celo-blockchain packages both implement secp256k1 using the exact same header, but that causes duplicate symbols.
-	cd node && go build -ldflags "-X github.com/certusone/wormhole/node/pkg/version.version=${VERSION} -extldflags -Wl,--allow-multiple-definition" \
+	cd node && go build -ldflags "-X github.com/deltaswapio/deltaswap/node/pkg/version.version=${VERSION} -extldflags -Wl,--allow-multiple-definition" \
 	  -mod=readonly -o ../$(BIN)/phylaxd \
-	  github.com/certusone/wormhole/node
+	  github.com/deltaswapio/deltaswap/node

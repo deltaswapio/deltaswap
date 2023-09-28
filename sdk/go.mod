@@ -1,4 +1,4 @@
-module github.com/wormhole-foundation/wormhole/sdk
+module github.com/deltaswapio/deltaswap/sdk
 
 go 1.20
 

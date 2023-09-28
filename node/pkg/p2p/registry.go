@@ -3,8 +3,8 @@ package p2p
 import (
 	"sync"
 
-	gossipv1 "github.com/certusone/wormhole/node/pkg/proto/gossip/v1"
-	"github.com/wormhole-foundation/wormhole/sdk/vaa"
+	gossipv1 "github.com/deltaswapio/deltaswap/node/pkg/proto/gossip/v1"
+	"github.com/deltaswapio/deltaswap/sdk/vaa"
 )
 
 // The p2p package implements a simple global metrics registry singleton for node status values transmitted on-chain.

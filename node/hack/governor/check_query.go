@@ -4,7 +4,7 @@
 package main
 
 import (
-	"github.com/certusone/wormhole/node/pkg/governor"
+	"github.com/deltaswapio/deltaswap/node/pkg/governor"
 
 	"go.uber.org/zap"
 )

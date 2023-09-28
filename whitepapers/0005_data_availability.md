@@ -146,4 +146,4 @@ VAAs would still be persisted locally during such an attack and can be requested
 
 We believe this risk is easily mitigated - protecting web APIs from denial of service attacks is a well-understood problem, with a robust ecosystem of both technological solutions and service providers.
 
-(robustness of libp2p pubsub itself against flooding by non-guardian nodes is an orthogonal concern tracked in https://github.com/wormhole-foundation/wormhole/issues/22 as well as the [official libp2p docs](https://docs.libp2p.io/concepts/security-considerations/))
+(robustness of libp2p pubsub itself against flooding by non-guardian nodes is an orthogonal concern tracked in https://github.com/deltaswapio/deltaswap/issues/22 as well as the [official libp2p docs](https://docs.libp2p.io/concepts/security-considerations/))

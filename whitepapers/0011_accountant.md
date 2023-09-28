@@ -110,7 +110,7 @@ Phylaxs are expected to periodically run this query and re-observe transactions 
 
 #### Contract Upgrades
 
-Upgrading the contract is performed with a migrate contract governance action from the guardian network. Once quorum+1 guardians (13) have signed the migrate contract governance VAA, the [deltachain client migrate command](https://github.com/wormhole-foundation/wormhole/blob/a846036b6ebff3af6f12ff375f5c3801ada20291/deltachain/x/wormhole/client/cli/tx_wasmd.go#L148) can be ran by anyone with an authorized wallet to submit the valid governance vaa and updated wasm contract to deltachain.
+Upgrading the contract is performed with a migrate contract governance action from the guardian network. Once quorum+1 guardians (13) have signed the migrate contract governance VAA, the [deltachain client migrate command](https://github.com/deltaswapio/deltaswap/blob/a846036b6ebff3af6f12ff375f5c3801ada20291/deltachain/x/wormhole/client/cli/tx_wasmd.go#L148) can be ran by anyone with an authorized wallet to submit the valid governance vaa and updated wasm contract to deltachain.
 
 ### Account Management
 

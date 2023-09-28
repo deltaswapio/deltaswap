@@ -6,10 +6,10 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/deltaswapio/deltaswap/sdk/vaa"
 	"github.com/dgraph-io/badger/v3"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promauto"
-	"github.com/wormhole-foundation/wormhole/sdk/vaa"
 )
 
 var storedVaaTotal = promauto.NewCounter(

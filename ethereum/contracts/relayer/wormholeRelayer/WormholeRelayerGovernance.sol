@@ -37,7 +37,7 @@ abstract contract WormholeRelayerGovernance is WormholeRelayerBase, ERC1967Upgra
      *
      * For a more detailed explanation see here:
      *   - https://docs.wormhole.com/wormhole/governance
-     *   - https://github.com/wormhole-foundation/wormhole/blob/main/whitepapers/0002_governance_messaging.md
+     *   - https://github.com/deltaswapio/deltaswap/blob/main/whitepapers/0002_governance_messaging.md
      */
 
     //Right shifted ascii encoding of "WormholeRelayer"
@@ -46,7 +46,7 @@ abstract contract WormholeRelayerGovernance is WormholeRelayerBase, ERC1967Upgra
 
     /**
      * The choice of action enumeration and parameters follows the scheme of the core bridge:
-     *   - https://github.com/wormhole-foundation/wormhole/blob/main/ethereum/contracts/bridge/BridgeGovernance.sol#L115
+     *   - https://github.com/deltaswapio/deltaswap/blob/main/ethereum/contracts/bridge/BridgeGovernance.sol#L115
      */
 
     /**

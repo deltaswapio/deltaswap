@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 	"testing"
 
-	"github.com/wormhole-foundation/wormhole/sdk/vaa"
+	"github.com/deltaswapio/deltaswap/sdk/vaa"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"

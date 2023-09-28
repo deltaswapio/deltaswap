@@ -10,8 +10,8 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/certusone/wormhole/node/pkg/common"
-	"github.com/wormhole-foundation/wormhole/sdk/vaa"
+	"github.com/deltaswapio/deltaswap/node/pkg/common"
+	"github.com/deltaswapio/deltaswap/sdk/vaa"
 
 	sdktypes "github.com/cosmos/cosmos-sdk/types"
 	"go.uber.org/zap"

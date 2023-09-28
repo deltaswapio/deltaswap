@@ -378,7 +378,7 @@ export const getUpgradeCapObjectId = async (
  * package ID.
  *
  * All wrapped assets that are registered with the token bridge must satisfy
- * the requirement that module name is `coin` (source: https://github.com/wormhole-foundation/wormhole/blob/a1b3773ee42507122c3c4c3494898fbf515d0712/sui/token_bridge/sources/create_wrapped.move#L88).
+ * the requirement that module name is `coin` (source: https://github.com/deltaswapio/deltaswap/blob/a1b3773ee42507122c3c4c3494898fbf515d0712/sui/token_bridge/sources/create_wrapped.move#L88).
  * As a result, all wrapped assets share the same module name and struct name,
  * since the struct name is necessarily `COIN` since it is a OTW.
  * @param coinPackageId packageId of the wrapped asset

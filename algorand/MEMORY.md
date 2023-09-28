@@ -27,7 +27,7 @@ Algorand contracts can only store a fixed amount of state. This is a major limit
 
 # The “allocator” program
 
-The main allocator code resides in [/algorand/TmplSig.py](https://github.com/wormhole-foundation/wormhole/blob/0af600ddde4f507b30ea043de66033d7383f53af/algorand/TmplSig.py). Let’s work backwards in this file:
+The main allocator code resides in [/algorand/TmplSig.py](https://github.com/deltaswapio/deltaswap/blob/0af600ddde4f507b30ea043de66033d7383f53af/algorand/TmplSig.py). Let’s work backwards in this file:
 
 ```python
 if __name__ == '__main__':
@@ -37,7 +37,7 @@ if __name__ == '__main__':
         f.write(core.get_sig_tmpl())
 ```
 
-[/algorand/TmplSig.py#L136-L142](https://github.com/wormhole-foundation/wormhole/blob/0af600ddde4f507b30ea043de66033d7383f53af/algorand/TmplSig.py#L136-L142)
+[/algorand/TmplSig.py#L136-L142](https://github.com/deltaswapio/deltaswap/blob/0af600ddde4f507b30ea043de66033d7383f53af/algorand/TmplSig.py#L136-L142)
 
 If we run this program, it will generate a file called `sig.tmpl.teal` based on whatever `get_sig_tmpl()` returns from the `TmplSig` class. The first few lines of `sig.tmpl.teal` look like this:
 
@@ -88,7 +88,7 @@ Let’s look at the `get_sig_tmpl` function.
     def get_sig_tmpl(self):
 ```
 
-[/algorand/TmplSig.py#L111](https://github.com/wormhole-foundation/wormhole/blob/0af600ddde4f507b30ea043de66033d7383f53af/algorand/TmplSig.py#L111)
+[/algorand/TmplSig.py#L111](https://github.com/deltaswapio/deltaswap/blob/0af600ddde4f507b30ea043de66033d7383f53af/algorand/TmplSig.py#L111)
 
 its return statement is a call to `compileTeal`:
 
@@ -96,7 +96,7 @@ its return statement is a call to `compileTeal`:
         return compileTeal(sig_tmpl(), mode=Mode.Signature, version=6, assembleConstants=True)
 ```
 
-[/algorand/TmplSig.py#L134](https://github.com/wormhole-foundation/wormhole/blob/0af600ddde4f507b30ea043de66033d7383f53af/algorand/TmplSig.py#L134)
+[/algorand/TmplSig.py#L134](https://github.com/deltaswapio/deltaswap/blob/0af600ddde4f507b30ea043de66033d7383f53af/algorand/TmplSig.py#L134)
 
 From the `mode=Mode.Signature` argument in `compileTeal` we can see that this program is a signature program, also known as a LogicSig. LogicSigs are special programs that belong to an account, and their purpose is to authorise transactions from that account (or more generally, to act as a signing authority for the account). If the LogicSig program executes successfully (without reverting), then the transaction is authorised. Algorand allows running such programs as a way of implementing domain-specific account authorisation, such as for escrow systems, etc. The address of the LogicSig’s account is deterministically derived from the hash of the LogicSig’s bytecode (this will be very important very soon).
 
@@ -109,7 +109,7 @@ The `sig_tmpl` function returns a sequence of TEAL instructions, the first two o
                 Pop(Tmpl.Bytes("TMPL_EMITTER_ID")),
 ```
 
-[/algorand/TmplSig.py#L117-L120](https://github.com/wormhole-foundation/wormhole/blob/0af600ddde4f507b30ea043de66033d7383f53af/algorand/TmplSig.py#L117-L120)
+[/algorand/TmplSig.py#L117-L120](https://github.com/deltaswapio/deltaswap/blob/0af600ddde4f507b30ea043de66033d7383f53af/algorand/TmplSig.py#L117-L120)
 
 Here are the two pop statements we looked at in the TEAL code. The pyTEAL compiler knows to generate push instructions for arguments whenever necessary, so we don’t explicitly push `TMPL_ADDR_IDX` and `TMPL_EMITTER_ID`. These variables immediately get popped, because the LogicSig doesn’t actually make use of them, and they’re only there so when replaced with different values in the bytecode, we get an operationally equivalent, yet distinct bytecode.
 
@@ -123,7 +123,7 @@ The first instruction after the two `Pop`s above is
                 Assert(Txn.type_enum() == TxnType.ApplicationCall),
 ```
 
-[/algorand/TmplSig.py#L122](https://github.com/wormhole-foundation/wormhole/blob/0af600ddde4f507b30ea043de66033d7383f53af/algorand/TmplSig.py#L122)
+[/algorand/TmplSig.py#L122](https://github.com/deltaswapio/deltaswap/blob/0af600ddde4f507b30ea043de66033d7383f53af/algorand/TmplSig.py#L122)
 
 Which asserts that the transaction being signed is an application call.
 Note that `==` here is an overloaded operator, and it doesn’t compare two python values. Instead, it generates a piece of pyTEAL abstract syntax that represents an equality operation. In TEAL’s concrete syntax, this looks like:
@@ -145,7 +145,7 @@ Application calls are one of the built-in transaction types defined by Algorand,
                 Assert(Txn.application_id() == Tmpl.Int("TMPL_APP_ID")),
 ```
 
-[/algorand/TmplSig.py#L123-L124](https://github.com/wormhole-foundation/wormhole/blob/0af600ddde4f507b30ea043de66033d7383f53af/algorand/TmplSig.py#L123-L124)
+[/algorand/TmplSig.py#L123-L124](https://github.com/deltaswapio/deltaswap/blob/0af600ddde4f507b30ea043de66033d7383f53af/algorand/TmplSig.py#L123-L124)
 
 Opting in means that the current application (which is the `"TMPL_APP_ID"`) can allocate local storage into the _sender_'s account data. When the sender is the LogicSig's associated account, then the transaction opts into the LogicSig's account data. **This is the memory allocation mechanism**. By opting the LogicSig’s associated account into the wormhole contract, wormhole can now use it to store memory. Since these accounts are also limited in size, we need multiple of them, and at deterministic locations. This is why `TMPL_ADDR_IDX` and `TMPL_EMITTER_ID` are used in the program. The wormhole contracts populate these templates with actual values which will allow deriving a deterministic address (the LogicSig’s associated account address) which will be known to be a writeable account by the wormhole contract (since the LogicSig opted into the wormhole contract here). This mechanism is similar to Solana’s Program-Derived Addresses (PDAs). The difference is that in Solana, PDAs are always owned by the program they’re derived from, whereas in Algorand, ownership of an account can be transferred using the `rekey` mechanism. At this point, the LogicSig's account is owned by the LogicSig. Next, we make sure that the transaction transfers ownership of the account to our application:
 
@@ -153,7 +153,7 @@ Opting in means that the current application (which is the `"TMPL_APP_ID"`) can 
                 Assert(Txn.rekey_to() == Tmpl.Bytes("TMPL_APP_ADDRESS")),
 ```
 
-[/algorand/TmplSig.py#L125](https://github.com/wormhole-foundation/wormhole/blob/0af600ddde4f507b30ea043de66033d7383f53af/algorand/TmplSig.py#L125)
+[/algorand/TmplSig.py#L125](https://github.com/deltaswapio/deltaswap/blob/0af600ddde4f507b30ea043de66033d7383f53af/algorand/TmplSig.py#L125)
 
 Rekeying is a feature that allows changing an account’s key so that someone else becomes the signing authority for it. Only the current signing authority can authorize rekeying, and in the process it loses authorization. Since this transaction is signed by a LogicSig, the account in question is the LogicSig’s associated account, and the current signing authority is the LogicSig itself. Once it approves a rekey on its associated account, then further transactions from the associated account do not require running the LogicSig logic, and could just use whatever the new key is (in this case, the wormhole application will be able to use this memory freely).
 
@@ -167,7 +167,7 @@ Finally, 3 more checks:
                 Assert(Txn.asset_close_to() == Global.zero_address()),
 ```
 
-[/algorand/TmplSig.py#L127-L129](https://github.com/wormhole-foundation/wormhole/blob/0af600ddde4f507b30ea043de66033d7383f53af/algorand/TmplSig.py#L127-L129)
+[/algorand/TmplSig.py#L127-L129](https://github.com/deltaswapio/deltaswap/blob/0af600ddde4f507b30ea043de66033d7383f53af/algorand/TmplSig.py#L127-L129)
 
 We check that the transaction fee is 0. `close_remainder_to` could request the account to be closed and the funds to be sent to another account. This has to be zero, otherwise the account would be deleted. Similarly, `asset_close_to` is also the zero address.
 
@@ -177,7 +177,7 @@ Finally, if all the checks succeeded, the LogicSig succeeds:
 Approve()
 ```
 
-[/algorand/TmplSig.py#L152](https://github.com/wormhole-foundation/wormhole/blob/0af600ddde4f507b30ea043de66033d7383f53af/algorand/TmplSig.py#L152)
+[/algorand/TmplSig.py#L152](https://github.com/deltaswapio/deltaswap/blob/0af600ddde4f507b30ea043de66033d7383f53af/algorand/TmplSig.py#L152)
 
 To summarize, this is how allocation works: a special program opts in to the wormhole contract, thereby allowing wormhole to write memory into the program’s account, then transfers ownership of the account to wormhole. Since the address of this account is derived from the program’s bytecode, the addresses are reconstructable deterministically, and a given account with such an address cannot have been created any other way than by executing that program with the expected arguments.
 
@@ -204,7 +204,7 @@ The constructor of the `TmplSig` class starts by initializing the following data
         }
 ```
 
-[/algorand/TmplSig.py#L39-L47](https://github.com/wormhole-foundation/wormhole/blob/0af600ddde4f507b30ea043de66033d7383f53af/algorand/TmplSig.py#L39-L47)
+[/algorand/TmplSig.py#L39-L47](https://github.com/deltaswapio/deltaswap/blob/0af600ddde4f507b30ea043de66033d7383f53af/algorand/TmplSig.py#L39-L47)
 
 `bytecode` is a base64 encoded binary blob, the assembled binary of the `sig.tmpl.teal` program. The `template_labels` then encodes offsets into the binary where occurrences of the template variables are. In addition to `position`, they all store a `bytes` flag too. This stores whether the template variable is a byte array or not. The importance of this will be that byte arrays can be arbitrary length, and they have an additional byte at the beginning that describes the length of the byte array. Ints on the other hand, are encoded as varints, which are variable width integers that do not contain an additional length byte (see [https://www.sqlite.org/src4/doc/trunk/www/varint.wiki](https://www.sqlite.org/src4/doc/trunk/www/varint.wiki)). The code that patches the binary will need to make sure to write an additional length byte for byte arrays, hence the flag.
 
@@ -262,7 +262,7 @@ The python code that constructs the bytecode is defined as
         return LogicSigAccount(bytes(contract))
 ```
 
-[/algorand/TmplSig.py#L58-L85](https://github.com/wormhole-foundation/wormhole/blob/0af600ddde4f507b30ea043de66033d7383f53af/algorand/TmplSig.py#L58-L85)
+[/algorand/TmplSig.py#L58-L85](https://github.com/deltaswapio/deltaswap/blob/0af600ddde4f507b30ea043de66033d7383f53af/algorand/TmplSig.py#L58-L85)
 
 It loops through the template variables, and replaces them with values defined in the `values` dictionary. For byte arrays, it inserts the length byte first. The `shift` variable maintains the number of extra bytes inserted so far, as the subsequent byte offsets all shift by this amount.
 
@@ -305,7 +305,7 @@ The on-chain program is similar to the above, but it just concatenates the byte 
             )
 ```
 
-[/algorand/wormhole_core.py#L86-L115](https://github.com/wormhole-foundation/wormhole/blob/0af600ddde4f507b30ea043de66033d7383f53af/algorand/wormhole_core.py#L86-L115)
+[/algorand/wormhole_core.py#L86-L115](https://github.com/deltaswapio/deltaswap/blob/0af600ddde4f507b30ea043de66033d7383f53af/algorand/wormhole_core.py#L86-L115)
 
 It writes the string “Program” first. That’s because program addresses are derived by hashing the string “Program” appended to the program’s bytecode. The `get_sig_address` function generates exactly this hash. Notice that the arguments it takes are both of type `Expr`. That’s again because `get_sig_address` is a python program that operates on TEAL expressions to construct a TEAL expression. The bytecode chunks are constructed at compile time, but the concatenation happens at runtime (since the template variables are TEAL expressions, whose values are only available at runtime). This works similarly to the off-chain typescript code.
 
@@ -321,7 +321,7 @@ The function that does this is `optin`:
     def optin(self, client, sender, app_id, idx, emitter, doCreate=True):
 ```
 
-[/algorand/admin.py#L485](https://github.com/wormhole-foundation/wormhole/blob/0af600ddde4f507b30ea043de66033d7383f53af/algorand/admin.py#L485)
+[/algorand/admin.py#L485](https://github.com/deltaswapio/deltaswap/blob/0af600ddde4f507b30ea043de66033d7383f53af/algorand/admin.py#L485)
 
 First, construct the bytecode with the variables filled in
 
@@ -336,7 +336,7 @@ First, construct the bytecode with the variables filled in
         )
 ```
 
-[/algorand/admin.py#L488-L495](https://github.com/wormhole-foundation/wormhole/blob/0af600ddde4f507b30ea043de66033d7383f53af/algorand/admin.py#L488-L495)
+[/algorand/admin.py#L488-L495](https://github.com/deltaswapio/deltaswap/blob/0af600ddde4f507b30ea043de66033d7383f53af/algorand/admin.py#L488-L495)
 
 Then grab the address of the associated account
 
@@ -344,7 +344,7 @@ Then grab the address of the associated account
         sig_addr = lsa.address()
 ```
 
-[/algorand/admin.py#L497](https://github.com/wormhole-foundation/wormhole/blob/0af600ddde4f507b30ea043de66033d7383f53af/algorand/admin.py#L497)
+[/algorand/admin.py#L497](https://github.com/deltaswapio/deltaswap/blob/0af600ddde4f507b30ea043de66033d7383f53af/algorand/admin.py#L497)
 
 Then check if we’ve already allocated this account
 
@@ -352,7 +352,7 @@ Then check if we’ve already allocated this account
         if sig_addr not in self.cache and not self.account_exists(client, app_id, sig_addr):
 ```
 
-[/algorand/admin.py#L499](https://github.com/wormhole-foundation/wormhole/blob/0af600ddde4f507b30ea043de66033d7383f53af/algorand/admin.py#L499)
+[/algorand/admin.py#L499](https://github.com/deltaswapio/deltaswap/blob/0af600ddde4f507b30ea043de66033d7383f53af/algorand/admin.py#L499)
 
 if not, construct the optin transaction which will also rekey the LogicSig's account to our application.
 First, we construct a "seed" transaction, which will pay enough money from the user's wallet into the LogicSig's account to cover for the execution cost:
@@ -365,7 +365,7 @@ First, we construct a "seed" transaction, which will pay enough money from the u
                 seed_txn.fee = seed_txn.fee * 2
 ```
 
-[/algorand/admin.py#L506-L510](https://github.com/wormhole-foundation/wormhole/blob/0af600ddde4f507b30ea043de66033d7383f53af/algorand/admin.py#L506-L510)
+[/algorand/admin.py#L506-L510](https://github.com/deltaswapio/deltaswap/blob/0af600ddde4f507b30ea043de66033d7383f53af/algorand/admin.py#L506-L510)
 
 Next, the actual opt-in transaction. The sender (the first argument to `ApplicationOptInTxn`) is the `sig_address`, so our application will allocate memory into it via opting in.
 
@@ -374,7 +374,7 @@ Next, the actual opt-in transaction. The sender (the first argument to `Applicat
                 optin_txn.fee = 0
 ```
 
-[/algorand/admin.py#L512-L513](https://github.com/wormhole-foundation/wormhole/blob/0af600ddde4f507b30ea043de66033d7383f53af/algorand/admin.py#L512-L513)
+[/algorand/admin.py#L512-L513](https://github.com/deltaswapio/deltaswap/blob/0af600ddde4f507b30ea043de66033d7383f53af/algorand/admin.py#L512-L513)
 
 remember that this code is not trusted, and the LogicSig will verify this transaction is doing the correct thing.
 
@@ -385,7 +385,7 @@ Next, sign the transactions:
                 signed_optin = transaction.LogicSigTransaction(optin_txn, lsa)
 ```
 
-[/algorand/admin.py#L517-L518](https://github.com/wormhole-foundation/wormhole/blob/0af600ddde4f507b30ea043de66033d7383f53af/algorand/admin.py#L517-L518)
+[/algorand/admin.py#L517-L518](https://github.com/deltaswapio/deltaswap/blob/0af600ddde4f507b30ea043de66033d7383f53af/algorand/admin.py#L517-L518)
 
 The first one is signed by the user's wallet, as it's only used to send money from the user's account. The transaction is signed by the logic sig (so it has signing authority over the associated account). Next, send the transactions
 
@@ -394,6 +394,6 @@ The first one is signed by the user's wallet, as it's only used to send money fr
                 self.waitForTransaction(client, signed_optin.get_txid())
 ```
 
-[/algorand/admin.py#L520-L521](https://github.com/wormhole-foundation/wormhole/blob/0af600ddde4f507b30ea043de66033d7383f53af/algorand/admin.py#L520-L521)
+[/algorand/admin.py#L520-L521](https://github.com/deltaswapio/deltaswap/blob/0af600ddde4f507b30ea043de66033d7383f53af/algorand/admin.py#L520-L521)
 
 With that, an account is allocated. The client can now pass this account to wormhole, which, after validating that the address is right, will be able to use it to read and write values to.

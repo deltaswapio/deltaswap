@@ -7,16 +7,16 @@ import (
 	"testing"
 	"time"
 
-	nodev1 "github.com/certusone/wormhole/node/pkg/proto/node/v1"
-	"github.com/certusone/wormhole/node/pkg/watchers/evm/connectors"
-	"github.com/certusone/wormhole/node/pkg/watchers/evm/connectors/ethabi"
+	nodev1 "github.com/deltaswapio/deltaswap/node/pkg/proto/node/v1"
+	"github.com/deltaswapio/deltaswap/node/pkg/watchers/evm/connectors"
+	"github.com/deltaswapio/deltaswap/node/pkg/watchers/evm/connectors/ethabi"
+	"github.com/deltaswapio/deltaswap/sdk/vaa"
 	ethereum "github.com/ethereum/go-ethereum"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/core/types"
 	ethcrypto "github.com/ethereum/go-ethereum/crypto"
 	"github.com/ethereum/go-ethereum/event"
 	"github.com/stretchr/testify/require"
-	"github.com/wormhole-foundation/wormhole/sdk/vaa"
 	"go.uber.org/zap"
 )
 

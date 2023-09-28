@@ -8,7 +8,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/certusone/wormhole/node/pkg/common"
+	"github.com/deltaswapio/deltaswap/node/pkg/common"
 )
 
 func main() {

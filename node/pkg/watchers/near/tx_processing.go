@@ -11,12 +11,12 @@ import (
 	"strings"
 	"time"
 
-	"github.com/certusone/wormhole/node/pkg/common"
-	"github.com/certusone/wormhole/node/pkg/watchers/near/nearapi"
+	"github.com/deltaswapio/deltaswap/node/pkg/common"
+	"github.com/deltaswapio/deltaswap/node/pkg/watchers/near/nearapi"
+	"github.com/deltaswapio/deltaswap/sdk/vaa"
 	eth_common "github.com/ethereum/go-ethereum/common"
 	"github.com/mr-tron/base58"
 	"github.com/tidwall/gjson"
-	"github.com/wormhole-foundation/wormhole/sdk/vaa"
 	"go.uber.org/zap"
 )
 

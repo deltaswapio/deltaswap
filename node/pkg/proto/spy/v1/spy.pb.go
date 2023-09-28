@@ -7,8 +7,8 @@
 package spyv1
 
 import (
-	v11 "github.com/certusone/wormhole/node/pkg/proto/gossip/v1"
-	v1 "github.com/certusone/wormhole/node/pkg/proto/publicrpc/v1"
+	v11 "github.com/deltaswapio/deltaswap/node/pkg/proto/gossip/v1"
+	v1 "github.com/deltaswapio/deltaswap/node/pkg/proto/publicrpc/v1"
 	_ "google.golang.org/genproto/googleapis/api/annotations"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"

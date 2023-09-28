@@ -6,19 +6,19 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/certusone/wormhole/node/pkg/db"
-	"github.com/certusone/wormhole/node/pkg/governor"
+	"github.com/deltaswapio/deltaswap/node/pkg/db"
+	"github.com/deltaswapio/deltaswap/node/pkg/governor"
 
 	ethcommon "github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/crypto"
 	"go.uber.org/zap"
 
-	"github.com/certusone/wormhole/node/pkg/accountant"
-	"github.com/certusone/wormhole/node/pkg/common"
-	"github.com/certusone/wormhole/node/pkg/gwrelayer"
-	gossipv1 "github.com/certusone/wormhole/node/pkg/proto/gossip/v1"
-	"github.com/certusone/wormhole/node/pkg/supervisor"
-	"github.com/wormhole-foundation/wormhole/sdk/vaa"
+	"github.com/deltaswapio/deltaswap/node/pkg/accountant"
+	"github.com/deltaswapio/deltaswap/node/pkg/common"
+	"github.com/deltaswapio/deltaswap/node/pkg/gwrelayer"
+	gossipv1 "github.com/deltaswapio/deltaswap/node/pkg/proto/gossip/v1"
+	"github.com/deltaswapio/deltaswap/node/pkg/supervisor"
+	"github.com/deltaswapio/deltaswap/sdk/vaa"
 
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promauto"

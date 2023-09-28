@@ -4,11 +4,11 @@ import (
 	"context"
 	"time"
 
-	"github.com/certusone/wormhole/node/pkg/p2p"
-	"github.com/certusone/wormhole/node/pkg/supervisor"
+	"github.com/deltaswapio/deltaswap/node/pkg/p2p"
+	"github.com/deltaswapio/deltaswap/node/pkg/supervisor"
+	"github.com/deltaswapio/deltaswap/sdk/vaa"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promauto"
-	"github.com/wormhole-foundation/wormhole/sdk/vaa"
 	"go.uber.org/zap"
 )
 

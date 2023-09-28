@@ -54,7 +54,7 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		panic(err)
 	}
-	_, err = resp.Write([]byte("[these values update AT STARTUP ONLY - see https://github.com/wormhole-foundation/wormhole/blob/main/docs/operations.md#readyz]\n\n"))
+	_, err = resp.Write([]byte("[these values update AT STARTUP ONLY - see https://github.com/deltaswapio/deltaswap/blob/main/docs/operations.md#readyz]\n\n"))
 	if err != nil {
 		panic(err)
 	}

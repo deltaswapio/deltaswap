@@ -24,9 +24,9 @@ import (
 	"math/big"
 	"time"
 
-	"github.com/certusone/wormhole/node/pkg/common"
-	"github.com/certusone/wormhole/node/pkg/supervisor"
-	rootAbi "github.com/certusone/wormhole/node/pkg/watchers/evm/connectors/polygonabi"
+	"github.com/deltaswapio/deltaswap/node/pkg/common"
+	"github.com/deltaswapio/deltaswap/node/pkg/supervisor"
+	rootAbi "github.com/deltaswapio/deltaswap/node/pkg/watchers/evm/connectors/polygonabi"
 
 	ethereum "github.com/ethereum/go-ethereum"
 	ethBind "github.com/ethereum/go-ethereum/accounts/abi/bind"

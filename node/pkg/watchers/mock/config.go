@@ -1,13 +1,13 @@
 package mock
 
 import (
-	"github.com/certusone/wormhole/node/pkg/common"
-	gossipv1 "github.com/certusone/wormhole/node/pkg/proto/gossip/v1"
-	"github.com/certusone/wormhole/node/pkg/supervisor"
-	"github.com/certusone/wormhole/node/pkg/watchers"
-	"github.com/certusone/wormhole/node/pkg/watchers/interfaces"
+	"github.com/deltaswapio/deltaswap/node/pkg/common"
+	gossipv1 "github.com/deltaswapio/deltaswap/node/pkg/proto/gossip/v1"
+	"github.com/deltaswapio/deltaswap/node/pkg/supervisor"
+	"github.com/deltaswapio/deltaswap/node/pkg/watchers"
+	"github.com/deltaswapio/deltaswap/node/pkg/watchers/interfaces"
+	"github.com/deltaswapio/deltaswap/sdk/vaa"
 	eth_common "github.com/ethereum/go-ethereum/common"
-	"github.com/wormhole-foundation/wormhole/sdk/vaa"
 )
 
 type ObservationDb map[eth_common.Hash]*common.MessagePublication

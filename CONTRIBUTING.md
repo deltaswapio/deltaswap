@@ -85,8 +85,8 @@ Example Full Commit Text:
 
 Example Full Commits:
 
-- https://github.com/wormhole-foundation/wormhole/commit/5cc2c071572daab876db2fd82e9d16dc4c34aa11
-- https://github.com/wormhole-foundation/wormhole/commit/eeb1682fba9530a8cd8755b53639ba3daefeda36
+- https://github.com/deltaswapio/deltaswap/commit/5cc2c071572daab876db2fd82e9d16dc4c34aa11
+- https://github.com/deltaswapio/deltaswap/commit/eeb1682fba9530a8cd8755b53639ba3daefeda36
 
 Resources for writing good commit messages:
 
@@ -148,4 +148,4 @@ Places to find out more about existing test coverage and how to run those tests:
   - Tests: `./algorand/test/*`
   - Run: `cd algorand && make test`
 
-The best place to understand how we invoke these tests via GitHub Actions on every commit can be found via `./.github/workflows/*.yml` and the best place to observe the results of these builds can be found via [https://github.com/wormhole-foundation/wormhole/actions](https://github.com/wormhole-foundation/wormhole/actions).
+The best place to understand how we invoke these tests via GitHub Actions on every commit can be found via `./.github/workflows/*.yml` and the best place to observe the results of these builds can be found via [https://github.com/deltaswapio/deltaswap/actions](https://github.com/deltaswapio/deltaswap/actions).

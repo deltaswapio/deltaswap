@@ -13,7 +13,7 @@ import (
 
 	"go.uber.org/zap"
 
-	ethAbi "github.com/certusone/wormhole/node/pkg/watchers/evm/connectors/ethabi"
+	ethAbi "github.com/deltaswapio/deltaswap/node/pkg/watchers/evm/connectors/ethabi"
 
 	ethereum "github.com/ethereum/go-ethereum"
 	ethCommon "github.com/ethereum/go-ethereum/common"

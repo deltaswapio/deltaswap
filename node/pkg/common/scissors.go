@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/certusone/wormhole/node/pkg/supervisor"
+	"github.com/deltaswapio/deltaswap/node/pkg/supervisor"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promauto"
 )

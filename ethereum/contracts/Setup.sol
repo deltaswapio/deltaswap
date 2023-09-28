@@ -36,7 +36,7 @@ contract Setup is Setters, ERC1967Upgrade {
 
         _upgradeTo(implementation);
 
-        // See https://github.com/wormhole-foundation/wormhole/issues/1930 for
+        // See https://github.com/deltaswapio/deltaswap/issues/1930 for
         // why we set this here
         setInitialized(implementation);
     }

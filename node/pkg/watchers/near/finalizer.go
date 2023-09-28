@@ -4,7 +4,7 @@ import (
 	"context"
 	"errors"
 
-	"github.com/certusone/wormhole/node/pkg/watchers/near/nearapi"
+	"github.com/deltaswapio/deltaswap/node/pkg/watchers/near/nearapi"
 	lru "github.com/hashicorp/golang-lru"
 	"go.uber.org/zap"
 )

@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/certusone/wormhole/node/pkg/common"
+	"github.com/deltaswapio/deltaswap/node/pkg/common"
 	"github.com/dgraph-io/badger/v3"
 
 	"go.uber.org/zap"

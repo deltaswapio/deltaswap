@@ -6,7 +6,7 @@ import (
 	"math/big"
 	"sync"
 
-	"github.com/certusone/wormhole/node/pkg/watchers/evm/connectors/ethabi"
+	"github.com/deltaswapio/deltaswap/node/pkg/watchers/evm/connectors/ethabi"
 
 	"github.com/ethereum/go-ethereum"
 	"github.com/ethereum/go-ethereum/common"

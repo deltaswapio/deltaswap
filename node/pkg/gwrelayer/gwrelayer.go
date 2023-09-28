@@ -11,10 +11,10 @@ import (
 	"strings"
 	"time"
 
-	"github.com/certusone/wormhole/node/pkg/common"
-	"github.com/certusone/wormhole/node/pkg/supervisor"
-	"github.com/wormhole-foundation/wormhole/sdk"
-	"github.com/wormhole-foundation/wormhole/sdk/vaa"
+	"github.com/deltaswapio/deltaswap/node/pkg/common"
+	"github.com/deltaswapio/deltaswap/node/pkg/supervisor"
+	"github.com/deltaswapio/deltaswap/sdk"
+	"github.com/deltaswapio/deltaswap/sdk/vaa"
 
 	wasmdtypes "github.com/CosmWasm/wasmd/x/wasm/types"
 	sdktypes "github.com/cosmos/cosmos-sdk/types"

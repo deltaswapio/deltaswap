@@ -7,8 +7,8 @@ import (
 	"testing"
 
 	"github.com/algorand/go-algorand-sdk/types"
-	"github.com/certusone/wormhole/node/pkg/common"
-	gossipv1 "github.com/certusone/wormhole/node/pkg/proto/gossip/v1"
+	"github.com/deltaswapio/deltaswap/node/pkg/common"
+	gossipv1 "github.com/deltaswapio/deltaswap/node/pkg/proto/gossip/v1"
 	"go.uber.org/zap"
 )
 

@@ -10,20 +10,20 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/certusone/wormhole/node/pkg/p2p"
-	gossipv1 "github.com/certusone/wormhole/node/pkg/proto/gossip/v1"
+	"github.com/deltaswapio/deltaswap/node/pkg/p2p"
+	gossipv1 "github.com/deltaswapio/deltaswap/node/pkg/proto/gossip/v1"
 	"github.com/prometheus/client_golang/prometheus/promauto"
 
 	"github.com/prometheus/client_golang/prometheus"
 
 	eth_common "github.com/ethereum/go-ethereum/common"
 
-	"github.com/certusone/wormhole/node/pkg/common"
-	"github.com/certusone/wormhole/node/pkg/readiness"
-	"github.com/certusone/wormhole/node/pkg/supervisor"
+	"github.com/deltaswapio/deltaswap/node/pkg/common"
+	"github.com/deltaswapio/deltaswap/node/pkg/readiness"
+	"github.com/deltaswapio/deltaswap/node/pkg/supervisor"
 
+	"github.com/deltaswapio/deltaswap/sdk/vaa"
 	"github.com/tidwall/gjson"
-	"github.com/wormhole-foundation/wormhole/sdk/vaa"
 	"go.uber.org/zap"
 	"nhooyr.io/websocket"
 	"nhooyr.io/websocket/wsjson"

@@ -30,7 +30,7 @@ import { assertNetwork, checkBinary, evm_address, hex } from "../utils";
 const APTOS_NODE_URL = "http://0.0.0.0:8080/v1";
 const APTOS_FAUCET_URL = "http://0.0.0.0:8081";
 const README_URL =
-  "https://github.com/wormhole-foundation/wormhole/blob/main/aptos/README.md";
+  "https://github.com/deltaswapio/deltaswap/blob/main/aptos/README.md";
 
 interface Package {
   meta_file: string;

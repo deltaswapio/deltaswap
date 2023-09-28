@@ -1,9 +1,9 @@
 package governor
 
 import (
+	"github.com/deltaswapio/deltaswap/sdk"
+	"github.com/deltaswapio/deltaswap/sdk/vaa"
 	"github.com/stretchr/testify/assert"
-	"github.com/wormhole-foundation/wormhole/sdk"
-	"github.com/wormhole-foundation/wormhole/sdk/vaa"
 
 	"testing"
 )

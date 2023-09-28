@@ -16,7 +16,7 @@ We will use the flattened source file, as it's easier to upload. Flattened just
 means that the whole contract, including its dependencies, are inlined into a
 single source file.
 Wormhole's flattened source files can be downloaded from [Github
-Actions](https://github.com/wormhole-foundation/wormhole/actions/workflows/evm-flattened-contracts.yml).
+Actions](https://github.com/deltaswapio/deltaswap/actions/workflows/evm-flattened-contracts.yml).
 This page includes a version of the contracts for each ethereum contract
 deployment. The deployed token contract tends not to change very often (if at
 all), so it should be safe to just pick the latest run and download the
@@ -107,7 +107,7 @@ Next, we will run a `forge` script to compute the constructor arguments. For
 this, we will need two pieces of data. First, the address of the Portal token
 bridge contract on the chain we're performing verification on. This can be found
 in
-https://github.com/wormhole-foundation/wormhole/blob/main/sdk/js/src/utils/consts.ts
+https://github.com/deltaswapio/deltaswap/blob/main/sdk/js/src/utils/consts.ts
 under the MAINNET section (or TESTNET if you're verifying a testnet contract).
 For our example, the mainnet moonbeam token bridge contract is
 `0xb1731c586ca89a23809861c6103f0b96b3f57d92`.

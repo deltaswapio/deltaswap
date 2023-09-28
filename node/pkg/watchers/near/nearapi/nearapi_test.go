@@ -7,10 +7,10 @@ import (
 	"testing"
 	"time"
 
-	mockserver "github.com/certusone/wormhole/node/pkg/watchers/near/nearapi/mock"
+	mockserver "github.com/deltaswapio/deltaswap/node/pkg/watchers/near/nearapi/mock"
 	"go.uber.org/zap/zaptest"
 
-	"github.com/certusone/wormhole/node/pkg/watchers/near/nearapi"
+	"github.com/deltaswapio/deltaswap/node/pkg/watchers/near/nearapi"
 	"github.com/stretchr/testify/assert"
 )
 

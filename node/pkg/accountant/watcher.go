@@ -8,8 +8,8 @@ import (
 	"reflect"
 	"time"
 
-	"github.com/certusone/wormhole/node/pkg/common"
-	"github.com/wormhole-foundation/wormhole/sdk/vaa"
+	"github.com/deltaswapio/deltaswap/node/pkg/common"
+	"github.com/deltaswapio/deltaswap/sdk/vaa"
 
 	ethCommon "github.com/ethereum/go-ethereum/common"
 

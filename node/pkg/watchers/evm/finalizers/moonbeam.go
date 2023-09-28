@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/certusone/wormhole/node/pkg/watchers/evm/connectors"
+	"github.com/deltaswapio/deltaswap/node/pkg/watchers/evm/connectors"
 
 	"go.uber.org/zap"
 )

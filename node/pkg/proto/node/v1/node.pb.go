@@ -7,7 +7,7 @@
 package nodev1
 
 import (
-	v1 "github.com/certusone/wormhole/node/pkg/proto/gossip/v1"
+	v1 "github.com/deltaswapio/deltaswap/node/pkg/proto/gossip/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"

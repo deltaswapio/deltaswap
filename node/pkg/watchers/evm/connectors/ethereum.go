@@ -4,7 +4,7 @@ import (
 	"context"
 	"time"
 
-	ethAbi "github.com/certusone/wormhole/node/pkg/watchers/evm/connectors/ethabi"
+	ethAbi "github.com/deltaswapio/deltaswap/node/pkg/watchers/evm/connectors/ethabi"
 
 	ethRpc "github.com/ethereum/go-ethereum/rpc"
 
@@ -15,7 +15,7 @@ import (
 	ethClient "github.com/ethereum/go-ethereum/ethclient"
 	ethEvent "github.com/ethereum/go-ethereum/event"
 
-	"github.com/certusone/wormhole/node/pkg/common"
+	"github.com/deltaswapio/deltaswap/node/pkg/common"
 	"go.uber.org/zap"
 )
 

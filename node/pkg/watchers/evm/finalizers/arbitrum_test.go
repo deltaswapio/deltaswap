@@ -5,7 +5,7 @@ import (
 	"math/big"
 	"testing"
 
-	"github.com/certusone/wormhole/node/pkg/watchers/evm/connectors"
+	"github.com/deltaswapio/deltaswap/node/pkg/watchers/evm/connectors"
 
 	ethCommon "github.com/ethereum/go-ethereum/common"
 

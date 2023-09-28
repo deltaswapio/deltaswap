@@ -3,9 +3,9 @@ package mock
 import (
 	"context"
 
-	"github.com/certusone/wormhole/node/pkg/common"
-	gossipv1 "github.com/certusone/wormhole/node/pkg/proto/gossip/v1"
-	"github.com/certusone/wormhole/node/pkg/supervisor"
+	"github.com/deltaswapio/deltaswap/node/pkg/common"
+	gossipv1 "github.com/deltaswapio/deltaswap/node/pkg/proto/gossip/v1"
+	"github.com/deltaswapio/deltaswap/node/pkg/supervisor"
 	eth_common "github.com/ethereum/go-ethereum/common"
 	"go.uber.org/zap"
 )

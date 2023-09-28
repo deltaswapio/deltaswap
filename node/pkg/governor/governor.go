@@ -34,10 +34,10 @@ import (
 	"sync"
 	"time"
 
-	"github.com/certusone/wormhole/node/pkg/common"
-	"github.com/certusone/wormhole/node/pkg/db"
-	"github.com/wormhole-foundation/wormhole/sdk"
-	"github.com/wormhole-foundation/wormhole/sdk/vaa"
+	"github.com/deltaswapio/deltaswap/node/pkg/common"
+	"github.com/deltaswapio/deltaswap/node/pkg/db"
+	"github.com/deltaswapio/deltaswap/sdk"
+	"github.com/deltaswapio/deltaswap/sdk/vaa"
 
 	"go.uber.org/zap"
 )

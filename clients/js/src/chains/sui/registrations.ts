@@ -32,8 +32,8 @@ export async function queryRegistrationsSui(
   const emitterRegistryId = state!.emitter_registry.fields.id.id;
 
   // TODO: handle pagination
-  //   - recursive: https://github.com/wormhole-foundation/wormhole/blob/7608b2b740df5d4c2551daaf4d620eac81c07790/sdk/js/src/sui/utils.ts#L175
-  //   - iterative: https://github.com/wormhole-foundation/wormhole/blob/7608b2b740df5d4c2551daaf4d620eac81c07790/sdk/js/src/sui/utils.ts#L199
+  //   - recursive: https://github.com/deltaswapio/deltaswap/blob/7608b2b740df5d4c2551daaf4d620eac81c07790/sdk/js/src/sui/utils.ts#L175
+  //   - iterative: https://github.com/deltaswapio/deltaswap/blob/7608b2b740df5d4c2551daaf4d620eac81c07790/sdk/js/src/sui/utils.ts#L199
   const emitterRegistry = await provider.getDynamicFields({
     parentId: emitterRegistryId,
   });

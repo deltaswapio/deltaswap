@@ -80,10 +80,10 @@ import (
 	"sort"
 	"time"
 
-	"github.com/certusone/wormhole/node/pkg/db"
-	gossipv1 "github.com/certusone/wormhole/node/pkg/proto/gossip/v1"
-	publicrpcv1 "github.com/certusone/wormhole/node/pkg/proto/publicrpc/v1"
-	"github.com/wormhole-foundation/wormhole/sdk/vaa"
+	"github.com/deltaswapio/deltaswap/node/pkg/db"
+	gossipv1 "github.com/deltaswapio/deltaswap/node/pkg/proto/gossip/v1"
+	publicrpcv1 "github.com/deltaswapio/deltaswap/node/pkg/proto/publicrpc/v1"
+	"github.com/deltaswapio/deltaswap/sdk/vaa"
 	"go.uber.org/zap"
 
 	ethCommon "github.com/ethereum/go-ethereum/common"

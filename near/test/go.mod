@@ -1,4 +1,4 @@
-module github.com/certusone/wormhole/near
+module github.com/deltaswapio/deltaswap/near
 
 go 1.19
 

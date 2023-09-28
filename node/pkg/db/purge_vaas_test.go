@@ -6,8 +6,8 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/deltaswapio/deltaswap/sdk/vaa"
 	"github.com/ethereum/go-ethereum/crypto"
-	"github.com/wormhole-foundation/wormhole/sdk/vaa"
 
 	"testing"
 	"time"

@@ -24,8 +24,8 @@ import (
 	"strings"
 	"time"
 
-	gossipv1 "github.com/certusone/wormhole/node/pkg/proto/gossip/v1"
-	"github.com/wormhole-foundation/wormhole/sdk/vaa"
+	gossipv1 "github.com/deltaswapio/deltaswap/node/pkg/proto/gossip/v1"
+	"github.com/deltaswapio/deltaswap/sdk/vaa"
 
 	cosmossdk "github.com/cosmos/cosmos-sdk/types"
 

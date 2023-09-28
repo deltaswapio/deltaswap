@@ -4,9 +4,9 @@ import (
 	"context"
 	"testing"
 
-	"github.com/certusone/wormhole/node/pkg/common"
-	"github.com/certusone/wormhole/node/pkg/governor"
-	publicrpcv1 "github.com/certusone/wormhole/node/pkg/proto/publicrpc/v1"
+	"github.com/deltaswapio/deltaswap/node/pkg/common"
+	"github.com/deltaswapio/deltaswap/node/pkg/governor"
+	publicrpcv1 "github.com/deltaswapio/deltaswap/node/pkg/proto/publicrpc/v1"
 	"github.com/stretchr/testify/assert"
 	"go.uber.org/zap"
 	"google.golang.org/grpc/codes"

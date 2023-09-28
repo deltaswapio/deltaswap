@@ -1,4 +1,4 @@
-module github.com/certusone/wormhole/third_party/abigen-celo
+module github.com/deltaswapio/deltaswap/third_party/abigen-celo
 
 go 1.15
 

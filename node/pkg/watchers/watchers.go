@@ -1,11 +1,11 @@
 package watchers
 
 import (
-	"github.com/certusone/wormhole/node/pkg/common"
-	gossipv1 "github.com/certusone/wormhole/node/pkg/proto/gossip/v1"
-	"github.com/certusone/wormhole/node/pkg/supervisor"
-	"github.com/certusone/wormhole/node/pkg/watchers/interfaces"
-	"github.com/wormhole-foundation/wormhole/sdk/vaa"
+	"github.com/deltaswapio/deltaswap/node/pkg/common"
+	gossipv1 "github.com/deltaswapio/deltaswap/node/pkg/proto/gossip/v1"
+	"github.com/deltaswapio/deltaswap/node/pkg/supervisor"
+	"github.com/deltaswapio/deltaswap/node/pkg/watchers/interfaces"
+	"github.com/deltaswapio/deltaswap/sdk/vaa"
 )
 
 // NetworkID is a unique identifier of a watcher that is used to link watchers together for the purpose of L1 Finalizers.

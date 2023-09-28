@@ -3,9 +3,9 @@ package evm
 import (
 	"testing"
 
+	"github.com/deltaswapio/deltaswap/sdk/vaa"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/stretchr/testify/assert"
-	"github.com/wormhole-foundation/wormhole/sdk/vaa"
 )
 
 func TestPadAddress(t *testing.T) {

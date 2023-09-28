@@ -1,4 +1,4 @@
-module github.com/certusone/wormhole/node
+module github.com/deltaswapio/deltaswap/node
 
 go 1.20
 
@@ -60,7 +60,7 @@ require (
 	github.com/prometheus/client_model v0.4.0
 	github.com/prometheus/common v0.44.0
 	github.com/deltaswapio/deltachain v0.0.0-00010101000000-000000000000
-	github.com/wormhole-foundation/wormhole/sdk v0.0.0-20220926172624-4b38dc650bb0
+	github.com/deltaswapio/deltaswap/sdk v0.0.0-20220926172624-4b38dc650bb0
 	golang.org/x/exp v0.0.0-20230713183714-613f0c0eb8a1
 	google.golang.org/genproto/googleapis/api v0.0.0-20230726155614-23370e0ffb3e
 	nhooyr.io/websocket v1.8.7
@@ -359,7 +359,7 @@ require (
 // https://github.com/cosmos/cosmos-sdk/issues/10925 for more details.
 replace github.com/gogo/protobuf => github.com/regen-network/protobuf v1.3.3-alpha.regen.1
 
-replace github.com/wormhole-foundation/wormhole/sdk => ../sdk
+replace github.com/deltaswapio/deltaswap/sdk => ../sdk
 
 replace github.com/deltaswapio/deltachain => ../deltachain
 

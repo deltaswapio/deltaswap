@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/deltaswapio/deltaswap/sdk/vaa"
 	"github.com/dgraph-io/badger/v3"
-	"github.com/wormhole-foundation/wormhole/sdk/vaa"
 )
 
 // This function deletes all VAAs for either the specified chain or specified chain / emitter address

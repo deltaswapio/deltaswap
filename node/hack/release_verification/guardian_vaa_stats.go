@@ -21,8 +21,8 @@ import (
 	"strings"
 	"time"
 
+	"github.com/deltaswapio/deltaswap/sdk/vaa"
 	"github.com/tidwall/gjson"
-	"github.com/wormhole-foundation/wormhole/sdk/vaa"
 )
 
 func getValidatorIndexForChain(chainId vaa.ChainID, onlyafter time.Time) (map[uint8]int, error) {

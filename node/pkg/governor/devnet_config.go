@@ -3,7 +3,7 @@
 package governor
 
 import (
-	"github.com/wormhole-foundation/wormhole/sdk/vaa"
+	"github.com/deltaswapio/deltaswap/sdk/vaa"
 )
 
 func (gov *ChainGovernor) initDevnetConfig() ([]tokenConfigEntry, []chainConfigEntry) {

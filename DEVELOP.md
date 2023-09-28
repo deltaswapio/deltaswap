@@ -132,9 +132,9 @@ IntelliJ's [remote development backend](https://www.jetbrains.com/remote-develop
 
 ### Generate protos (Go / TypeScript)
 
-As of [#1352](https://github.com/wormhole-foundation/wormhole/pull/1352), the tsproto generated ts files are provided in two npm packages for [node](./sdk/js-proto-node/) and [web](./sdk/js-proto-web/)
+As of [#1352](https://github.com/deltaswapio/deltaswap/pull/1352), the tsproto generated ts files are provided in two npm packages for [node](./sdk/js-proto-node/) and [web](./sdk/js-proto-web/)
 
-As of [#1824](https://github.com/wormhole-foundation/wormhole/pull/1824), changes to the proto files must match the generated go files.
+As of [#1824](https://github.com/deltaswapio/deltaswap/pull/1824), changes to the proto files must match the generated go files.
 
 To re-generate these files run `rm -rf node/pkg/proto && docker build --target go-export -f Dockerfile.proto -o type=local,dest=node .` from the root of the repo.
 

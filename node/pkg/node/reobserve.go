@@ -6,8 +6,8 @@ import (
 	"time"
 
 	"github.com/benbjohnson/clock"
-	gossipv1 "github.com/certusone/wormhole/node/pkg/proto/gossip/v1"
-	"github.com/wormhole-foundation/wormhole/sdk/vaa"
+	gossipv1 "github.com/deltaswapio/deltaswap/node/pkg/proto/gossip/v1"
+	"github.com/deltaswapio/deltaswap/sdk/vaa"
 	"go.uber.org/zap"
 )
 

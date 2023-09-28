@@ -10,9 +10,9 @@ import (
 	"sync"
 	"sync/atomic"
 
+	"github.com/deltaswapio/deltaswap/sdk/vaa"
 	"github.com/dgraph-io/badger/v3"
 	"github.com/ethereum/go-ethereum/crypto"
-	"github.com/wormhole-foundation/wormhole/sdk/vaa"
 
 	"testing"
 	"time"

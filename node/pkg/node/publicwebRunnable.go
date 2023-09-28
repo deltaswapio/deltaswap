@@ -8,8 +8,8 @@ import (
 	"strings"
 	"time"
 
-	publicrpcv1 "github.com/certusone/wormhole/node/pkg/proto/publicrpc/v1"
-	"github.com/certusone/wormhole/node/pkg/supervisor"
+	publicrpcv1 "github.com/deltaswapio/deltaswap/node/pkg/proto/publicrpc/v1"
+	"github.com/deltaswapio/deltaswap/node/pkg/supervisor"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"github.com/improbable-eng/grpc-web/go/grpcweb"
 	"go.uber.org/zap"

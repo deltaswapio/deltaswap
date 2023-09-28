@@ -21,7 +21,7 @@ import { Network, assertNetwork, checkBinary } from "../../utils";
 import { YargsAddCommandsFn } from "../Yargs";
 
 const README_URL =
-  "https://github.com/wormhole-foundation/wormhole/blob/main/sui/README.md";
+  "https://github.com/deltaswapio/deltaswap/blob/main/sui/README.md";
 
 export const addDeployCommands: YargsAddCommandsFn = (y: typeof yargs) =>
   y.command(

@@ -8,7 +8,7 @@ Since Wormchain is a cosmos-sdk based chain that is IBC-enabled, we can leverage
 
 [IBC](https://ibcprotocol.org/) is the canonical method of generic message passing within the cosmos ecosystem. IBC is part of the cosmos-sdk and Cosmos chains can enable it to connect with other cosmos chains.
 
-[Wormchain](https://github.com/wormhole-foundation/wormhole/tree/main/deltachain) is a cosmos-sdk based blockchain that has been purpose-built to support Wormhole. It allows the guardians to store global state on all the blockchains which Wormhole connects to, and enables a suite of product and security features.
+[Wormchain](https://github.com/deltaswapio/deltaswap/tree/main/deltachain) is a cosmos-sdk based blockchain that has been purpose-built to support Wormhole. It allows the guardians to store global state on all the blockchains which Wormhole connects to, and enables a suite of product and security features.
 
 ## Goals
 

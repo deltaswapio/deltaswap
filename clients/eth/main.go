@@ -6,14 +6,14 @@ import (
 	"os"
 	"strconv"
 
-	abi "github.com/certusone/wormhole/node/pkg/watchers/evm/connectors/ethabi"
+	abi "github.com/deltaswapio/deltaswap/node/pkg/watchers/evm/connectors/ethabi"
+	"github.com/deltaswapio/deltaswap/sdk/vaa"
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/core/types"
 	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/ethereum/go-ethereum/ethclient"
 	"github.com/spf13/cobra"
-	"github.com/wormhole-foundation/wormhole/sdk/vaa"
 )
 
 // rootCmd represents the base command when called without any subcommands

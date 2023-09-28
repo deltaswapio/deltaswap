@@ -10,13 +10,13 @@ import (
 	"testing"
 	"time"
 
-	"github.com/certusone/wormhole/node/pkg/common"
-	gossipv1 "github.com/certusone/wormhole/node/pkg/proto/gossip/v1"
-	"github.com/certusone/wormhole/node/pkg/supervisor"
-	mockserver "github.com/certusone/wormhole/node/pkg/watchers/near/nearapi/mock"
+	"github.com/deltaswapio/deltaswap/node/pkg/common"
+	gossipv1 "github.com/deltaswapio/deltaswap/node/pkg/proto/gossip/v1"
+	"github.com/deltaswapio/deltaswap/node/pkg/supervisor"
+	mockserver "github.com/deltaswapio/deltaswap/node/pkg/watchers/near/nearapi/mock"
+	"github.com/deltaswapio/deltaswap/sdk/vaa"
 	eth_common "github.com/ethereum/go-ethereum/common"
 	"github.com/stretchr/testify/assert"
-	"github.com/wormhole-foundation/wormhole/sdk/vaa"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zaptest"
 )

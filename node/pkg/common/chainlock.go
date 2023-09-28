@@ -8,7 +8,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/wormhole-foundation/wormhole/sdk/vaa"
+	"github.com/deltaswapio/deltaswap/sdk/vaa"
 	"go.uber.org/zap"
 
 	"github.com/ethereum/go-ethereum/common"

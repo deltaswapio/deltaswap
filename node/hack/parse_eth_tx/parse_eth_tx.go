@@ -10,12 +10,12 @@ import (
 	"flag"
 	"log"
 
-	"github.com/certusone/wormhole/node/pkg/watchers/evm"
-	"github.com/certusone/wormhole/node/pkg/watchers/evm/connectors"
+	"github.com/deltaswapio/deltaswap/node/pkg/watchers/evm"
+	"github.com/deltaswapio/deltaswap/node/pkg/watchers/evm/connectors"
 	"go.uber.org/zap"
 
+	"github.com/deltaswapio/deltaswap/sdk/vaa"
 	ethCommon "github.com/ethereum/go-ethereum/common"
-	"github.com/wormhole-foundation/wormhole/sdk/vaa"
 )
 
 var (

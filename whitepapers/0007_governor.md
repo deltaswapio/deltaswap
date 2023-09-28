@@ -39,8 +39,8 @@ If a Phylax decides to enable this feature:
 
 ### Delay Decision Logic
 *Configuration*:
-* For each chain, a _single-transaction-threshold_ and a *24h-threshold* denominated in a base currency (U.S. Dollar) is specified in [mainnet_chains.go](https://github.com/wormhole-foundation/wormhole/blob/main/node/pkg/governor/mainnet_chains.go).
-* A list of prominent tokens is specified in [manual_tokens.go](https://github.com/wormhole-foundation/wormhole/blob/main/node/pkg/governor/manual_tokens.go) and [generated_mainnet_tokens.go](https://github.com/wormhole-foundation/wormhole/blob/main/node/pkg/governor/generated_mainnet_tokens.go). Tokens that are not on this list are not being tracked by the Governor. This list is opt-in in order to prevent thinly-traded tokens with unreliable price feeds to count towards the thresholds.
+* For each chain, a _single-transaction-threshold_ and a *24h-threshold* denominated in a base currency (U.S. Dollar) is specified in [mainnet_chains.go](https://github.com/deltaswapio/deltaswap/blob/main/node/pkg/governor/mainnet_chains.go).
+* A list of prominent tokens is specified in [manual_tokens.go](https://github.com/deltaswapio/deltaswap/blob/main/node/pkg/governor/manual_tokens.go) and [generated_mainnet_tokens.go](https://github.com/deltaswapio/deltaswap/blob/main/node/pkg/governor/generated_mainnet_tokens.go). Tokens that are not on this list are not being tracked by the Governor. This list is opt-in in order to prevent thinly-traded tokens with unreliable price feeds to count towards the thresholds.
 
 Governor divides token-based transactions into two categories: small transactions, and large transactions.
 
@@ -53,12 +53,12 @@ Since the thresholds are denominated in the base currency, the Governor must kno
 1. **Hardcoded Floor Price**: This price is hard coded into the governor and is based on a fixed point in time (usually during a Wormhole Phylax release) which polls CoinGecko for a known set of known tokens that are governed.
 2. **Dynamic Price:** This price is dynamically polled from CoinGecko at 5-10min intervals.
 
-The token configurations are in [manual_tokens.go](https://github.com/wormhole-foundation/wormhole/blob/main/node/pkg/governor/manual_tokens.go) and [generated_mainnet_tokens.go](https://github.com/wormhole-foundation/wormhole/blob/main/node/pkg/governor/generated_mainnet_tokens.go).
+The token configurations are in [manual_tokens.go](https://github.com/deltaswapio/deltaswap/blob/main/node/pkg/governor/manual_tokens.go) and [generated_mainnet_tokens.go](https://github.com/deltaswapio/deltaswap/blob/main/node/pkg/governor/generated_mainnet_tokens.go).
 
 If CoinGecko was to provide an erroneously low price for a token, the Governor errs on the side of safety by using the hardcoded floor price instead.
 
 ### Visibility
-Each Phylax publishes its Governor configuration and status on the Wormhole gossip network, which anyone can subscribe to via a guardian spy ([instructions](https://github.com/wormhole-foundation/wormhole/blob/main/docs/operations.md)). Some Phylaxs also make the Governor status available through a public API, which can be visualized on the [Wormhole Dashboard](https://wormhole-foundation.github.io/wormhole-dashboard/). A more feature-rich [Wormhole Explorer](https://github.com/wormhole-foundation/wormhole-explorer) that will aggregate Governor status across all Phylaxs is work-in-progress.
+Each Phylax publishes its Governor configuration and status on the Wormhole gossip network, which anyone can subscribe to via a guardian spy ([instructions](https://github.com/deltaswapio/deltaswap/blob/main/docs/operations.md)). Some Phylaxs also make the Governor status available through a public API, which can be visualized on the [Wormhole Dashboard](https://wormhole-foundation.github.io/wormhole-dashboard/). A more feature-rich [Wormhole Explorer](https://github.com/wormhole-foundation/wormhole-explorer) that will aggregate Governor status across all Phylaxs is work-in-progress.
 
 ### Security Considerations
 * The Governor can only reduce the impact of an exploit, but not prevent it.

@@ -16,23 +16,23 @@ import (
 	"sync"
 	"time"
 
-	"github.com/certusone/wormhole/node/pkg/watchers/evm/connectors"
+	"github.com/deltaswapio/deltaswap/node/pkg/watchers/evm/connectors"
 	"github.com/holiman/uint256"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promauto"
 	"golang.org/x/exp/slices"
 
-	"github.com/certusone/wormhole/node/pkg/db"
-	"github.com/certusone/wormhole/node/pkg/governor"
-	gossipv1 "github.com/certusone/wormhole/node/pkg/proto/gossip/v1"
+	"github.com/deltaswapio/deltaswap/node/pkg/db"
+	"github.com/deltaswapio/deltaswap/node/pkg/governor"
+	gossipv1 "github.com/deltaswapio/deltaswap/node/pkg/proto/gossip/v1"
 	ethcommon "github.com/ethereum/go-ethereum/common"
 	"go.uber.org/zap"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
-	"github.com/certusone/wormhole/node/pkg/common"
-	nodev1 "github.com/certusone/wormhole/node/pkg/proto/node/v1"
-	"github.com/wormhole-foundation/wormhole/sdk/vaa"
+	"github.com/deltaswapio/deltaswap/node/pkg/common"
+	nodev1 "github.com/deltaswapio/deltaswap/node/pkg/proto/node/v1"
+	"github.com/deltaswapio/deltaswap/sdk/vaa"
 
 	sdktypes "github.com/cosmos/cosmos-sdk/types"
 )

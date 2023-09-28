@@ -1,6 +1,6 @@
 package sdk
 
-import "github.com/wormhole-foundation/wormhole/sdk/vaa"
+import "github.com/deltaswapio/deltaswap/sdk/vaa"
 
 // KnownTestnetEmitters is a list of known emitters on the various L1 testnets.
 var KnownTestnetEmitters = buildKnownEmitters(knownTestnetTokenbridgeEmitters, knownTestnetNFTBridgeEmitters)

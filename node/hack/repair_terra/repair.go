@@ -14,15 +14,15 @@ import (
 
 	"time"
 
-	"github.com/certusone/wormhole/node/pkg/common"
-	"github.com/certusone/wormhole/node/pkg/db"
-	"github.com/wormhole-foundation/wormhole/sdk"
+	"github.com/deltaswapio/deltaswap/node/pkg/common"
+	"github.com/deltaswapio/deltaswap/node/pkg/db"
+	"github.com/deltaswapio/deltaswap/sdk"
 	"go.uber.org/zap"
 
-	gossipv1 "github.com/certusone/wormhole/node/pkg/proto/gossip/v1"
-	nodev1 "github.com/certusone/wormhole/node/pkg/proto/node/v1"
-	"github.com/certusone/wormhole/node/pkg/watchers/cosmwasm"
-	"github.com/wormhole-foundation/wormhole/sdk/vaa"
+	gossipv1 "github.com/deltaswapio/deltaswap/node/pkg/proto/gossip/v1"
+	nodev1 "github.com/deltaswapio/deltaswap/node/pkg/proto/node/v1"
+	"github.com/deltaswapio/deltaswap/node/pkg/watchers/cosmwasm"
+	"github.com/deltaswapio/deltaswap/sdk/vaa"
 
 	"github.com/tidwall/gjson"
 	"golang.org/x/time/rate"

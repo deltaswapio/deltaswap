@@ -12,11 +12,11 @@ import (
 	"os"
 	"time"
 
-	"github.com/certusone/wormhole/node/pkg/accountant"
-	"github.com/certusone/wormhole/node/pkg/common"
-	nodev1 "github.com/certusone/wormhole/node/pkg/proto/node/v1"
-	"github.com/certusone/wormhole/node/pkg/wormconn"
-	"github.com/wormhole-foundation/wormhole/sdk/vaa"
+	"github.com/deltaswapio/deltaswap/node/pkg/accountant"
+	"github.com/deltaswapio/deltaswap/node/pkg/common"
+	nodev1 "github.com/deltaswapio/deltaswap/node/pkg/proto/node/v1"
+	"github.com/deltaswapio/deltaswap/node/pkg/wormconn"
+	"github.com/deltaswapio/deltaswap/sdk/vaa"
 
 	sdktx "github.com/cosmos/cosmos-sdk/types/tx"
 

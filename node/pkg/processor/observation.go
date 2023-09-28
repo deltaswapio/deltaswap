@@ -1,4 +1,4 @@
-//nolint:unparam // this will be refactored in https://github.com/wormhole-foundation/wormhole/pull/1953
+//nolint:unparam // this will be refactored in https://github.com/deltaswapio/deltaswap/pull/1953
 package processor
 
 import (
@@ -7,8 +7,8 @@ import (
 	"fmt"
 	"time"
 
-	node_common "github.com/certusone/wormhole/node/pkg/common"
-	"github.com/certusone/wormhole/node/pkg/db"
+	node_common "github.com/deltaswapio/deltaswap/node/pkg/common"
+	"github.com/deltaswapio/deltaswap/node/pkg/db"
 	"github.com/mr-tron/base58"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promauto"
@@ -18,8 +18,8 @@ import (
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 
-	gossipv1 "github.com/certusone/wormhole/node/pkg/proto/gossip/v1"
-	"github.com/wormhole-foundation/wormhole/sdk/vaa"
+	gossipv1 "github.com/deltaswapio/deltaswap/node/pkg/proto/gossip/v1"
+	"github.com/deltaswapio/deltaswap/sdk/vaa"
 )
 
 var (

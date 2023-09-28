@@ -6,8 +6,8 @@ import (
 	"strings"
 
 	"github.com/davecgh/go-spew/spew"
+	"github.com/deltaswapio/deltaswap/sdk/vaa"
 	"github.com/spf13/cobra"
-	"github.com/wormhole-foundation/wormhole/sdk/vaa"
 )
 
 var decodeVaaCmd = &cobra.Command{

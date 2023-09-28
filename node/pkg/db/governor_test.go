@@ -9,12 +9,12 @@ import (
 	"testing"
 	"time"
 
-	"github.com/certusone/wormhole/node/pkg/common"
+	"github.com/deltaswapio/deltaswap/node/pkg/common"
+	"github.com/deltaswapio/deltaswap/sdk/vaa"
 	"github.com/dgraph-io/badger/v3"
 	eth_common "github.com/ethereum/go-ethereum/common"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	"github.com/wormhole-foundation/wormhole/sdk/vaa"
 	"go.uber.org/zap"
 )
 
