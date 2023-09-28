@@ -53,15 +53,15 @@ func (gs GenesisState) Validate() error {
 		}
 		sequenceCounterIndexMap[index] = struct{}{}
 	}
-	// Check for duplicated index in guardianValidator
-	guardianValidatorIndexMap := make(map[string]struct{})
+	// Check for duplicated index in phylaxValidator
+	phylaxValidatorIndexMap := make(map[string]struct{})
 
 	for _, elem := range gs.PhylaxValidatorList {
 		index := string(PhylaxValidatorKey(elem.PhylaxKey))
-		if _, ok := guardianValidatorIndexMap[index]; ok {
-			return fmt.Errorf("duplicated index for guardianValidator")
+		if _, ok := phylaxValidatorIndexMap[index]; ok {
+			return fmt.Errorf("duplicated index for phylaxValidator")
 		}
-		guardianValidatorIndexMap[index] = struct{}{}
+		phylaxValidatorIndexMap[index] = struct{}{}
 	}
 	// this line is used by starport scaffolding # genesis/types/validate
 

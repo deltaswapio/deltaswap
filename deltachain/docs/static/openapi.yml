@@ -32524,7 +32524,7 @@ paths:
               Config:
                 type: object
                 properties:
-                  guardian_set_expiration:
+                  phylax_set_expiration:
                     type: string
                     format: uint64
                   governance_emitter:
@@ -32556,7 +32556,7 @@ paths:
                   additionalProperties: {}
       tags:
         - Query
-  /deltaswapio/deltachain/deltaswap/consensus_guardian_set_index:
+  /deltaswapio/deltachain/deltaswap/consensus_phylax_set_index:
     get:
       summary: Queries a ConsensusPhylaxSetIndex by index.
       operationId: DeltaswapFoundationWormchainDeltaswapConsensusPhylaxSetIndex
@@ -32772,7 +32772,7 @@ paths:
           format: int64
       tags:
         - Query
-  /deltaswapio/deltachain/deltaswap/guardian_validator:
+  /deltaswapio/deltachain/deltaswap/phylax_validator:
     get:
       summary: Queries a list of PhylaxValidator items.
       operationId: DeltaswapFoundationWormchainDeltaswapPhylaxValidatorAll
@@ -32782,12 +32782,12 @@ paths:
           schema:
             type: object
             properties:
-              guardianValidator:
+              phylaxValidator:
                 type: array
                 items:
                   type: object
                   properties:
-                    guardianKey:
+                    phylaxKey:
                       type: string
                       format: byte
                     validatorAddr:
@@ -32897,7 +32897,7 @@ paths:
           type: boolean
       tags:
         - Query
-  '/deltaswapio/deltachain/deltaswap/guardian_validator/{guardianKey}':
+  '/deltaswapio/deltachain/deltaswap/phylax_validator/{phylaxKey}':
     get:
       summary: Queries a PhylaxValidator by index.
       operationId: DeltaswapFoundationWormchainDeltaswapPhylaxValidator
@@ -32907,10 +32907,10 @@ paths:
           schema:
             type: object
             properties:
-              guardianValidator:
+              phylaxValidator:
                 type: object
                 properties:
-                  guardianKey:
+                  phylaxKey:
                     type: string
                     format: byte
                   validatorAddr:
@@ -32935,14 +32935,14 @@ paths:
                       type: string
                   additionalProperties: {}
       parameters:
-        - name: guardianKey
+        - name: phylaxKey
           in: path
           required: true
           type: string
           format: byte
       tags:
         - Query
-  /deltaswapio/deltachain/deltaswap/latest_guardian_set_index:
+  /deltaswapio/deltachain/deltaswap/latest_phylax_set_index:
     get:
       summary: Queries a list of LatestPhylaxSetIndex items.
       operationId: DeltaswapFoundationWormchainDeltaswapLatestPhylaxSetIndex
@@ -55212,7 +55212,7 @@ definitions:
   deltaswapio.deltachain.deltaswap.Config:
     type: object
     properties:
-      guardian_set_expiration:
+      phylax_set_expiration:
         type: string
         format: uint64
       governance_emitter:
@@ -55253,7 +55253,7 @@ definitions:
   deltaswapio.deltachain.deltaswap.PhylaxValidator:
     type: object
     properties:
-      guardianKey:
+      phylaxKey:
         type: string
         format: byte
       validatorAddr:
@@ -55327,12 +55327,12 @@ definitions:
   deltaswapio.deltachain.deltaswap.QueryAllPhylaxValidatorResponse:
     type: object
     properties:
-      guardianValidator:
+      phylaxValidator:
         type: array
         items:
           type: object
           properties:
-            guardianKey:
+            phylaxKey:
               type: string
               format: byte
             validatorAddr:
@@ -55442,7 +55442,7 @@ definitions:
       Config:
         type: object
         properties:
-          guardian_set_expiration:
+          phylax_set_expiration:
             type: string
             format: uint64
           governance_emitter:
@@ -55483,10 +55483,10 @@ definitions:
   deltaswapio.deltachain.deltaswap.QueryGetPhylaxValidatorResponse:
     type: object
     properties:
-      guardianValidator:
+      phylaxValidator:
         type: object
         properties:
-          guardianKey:
+          phylaxKey:
             type: string
             format: byte
           validatorAddr:

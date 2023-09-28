@@ -569,7 +569,7 @@ func TestWasmdAccountantContractSubmitObservation(t *testing.T) {
 
 	execute_msg := fmt.Sprintf(`{
 		"submit_observations": {
-			"guardian_set_index": %d,
+			"phylax_set_index": %d,
 			"observations": "%s",
 			"signature": {
 			  "index": %d,
@@ -593,7 +593,7 @@ func TestWasmdAccountantContractSubmitObservation(t *testing.T) {
 	signature_serialized = strings.Join(strings.Fields(fmt.Sprintf("%d", sig)), ",")
 	execute_msg = fmt.Sprintf(`{
 		"submit_observations": {
-			"guardian_set_index": %d,
+			"phylax_set_index": %d,
 			"observations": "%s",
 			"signature": {
 			  "index": %d,

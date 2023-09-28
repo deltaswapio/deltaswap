@@ -16,24 +16,24 @@ genesis="$pwd/devnet/base/config/genesis.json"
 #   app_state.auth.accounts
 #   app_state.bank.balances
 # add the gentx
-# add the guardian pubkey base64 to deltaswap.guardianSetList[0].keys
-# add the validator obj to deltaswap.guardianValidatorList
+# add the guardian pubkey base64 to deltaswap.phylaxSetList[0].keys
+# add the validator obj to deltaswap.phylaxValidatorList
 
 
 # TEMP manually add the second validator info to genesis.json
 if [ $NUM_GUARDIANS -ge 2 ]; then
   echo "number of guardians is >= 2, adding second validator to genesis.json."
   # the validator info for deltachain-1
-  guardianKey="iNfYsyqRBdIoEA5y3/4vrgcF0xw="
+  phylaxKey="iNfYsyqRBdIoEA5y3/4vrgcF0xw="
   validatorAddr="cBxHWxmj9o0/3r8JWRSH+s7y1jY="
 
-  # add the validatorAddr to guardianSetList.keys.
+  # add the validatorAddr to phylaxSetList.keys.
   # use jq to add the object to the list in genesis.json. use cat and a sub-shell to send the output of jq to the json file.
-  cat <<< $(jq --arg new "$guardianKey" '.app_state.deltaswap.guardianSetList[0].keys += [$new]' ${genesis})  > ${genesis}
+  cat <<< $(jq --arg new "$phylaxKey" '.app_state.deltaswap.phylaxSetList[0].keys += [$new]' ${genesis})  > ${genesis}
 
-  # create a guardianValidator config object and add it to the guardianValidatorList.
-  validatorConfig="{\"guardianKey\": \"$guardianKey\", \"validatorAddr\": \"$validatorAddr\"}"
-  cat <<< $(jq --argjson new "$validatorConfig" '.app_state.deltaswap.guardianValidatorList += [$new]' ${genesis})  > ${genesis}
+  # create a phylaxValidator config object and add it to the phylaxValidatorList.
+  validatorConfig="{\"phylaxKey\": \"$phylaxKey\", \"validatorAddr\": \"$validatorAddr\"}"
+  cat <<< $(jq --argjson new "$validatorConfig" '.app_state.deltaswap.phylaxValidatorList += [$new]' ${genesis})  > ${genesis}
 fi
 
 

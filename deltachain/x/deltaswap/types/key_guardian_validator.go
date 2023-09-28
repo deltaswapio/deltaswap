@@ -11,11 +11,11 @@ const (
 
 // PhylaxValidatorKey returns the store key to retrieve a PhylaxValidator from the index fields
 func PhylaxValidatorKey(
-	guardianKey []byte,
+	phylaxKey []byte,
 ) []byte {
 	var key []byte
 
-	key = append(key, guardianKey...)
+	key = append(key, phylaxKey...)
 	key = append(key, []byte("/")...)
 
 	return key

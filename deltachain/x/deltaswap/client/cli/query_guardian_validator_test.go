@@ -29,11 +29,11 @@ func networkWithPhylaxValidatorObjects(t *testing.T, n int) (*network.Network, [
 	require.NoError(t, cfg.Codec.UnmarshalJSON(cfg.GenesisState[types.ModuleName], &state))
 
 	for i := 0; i < n; i++ {
-		guardianValidator := types.PhylaxValidator{
+		phylaxValidator := types.PhylaxValidator{
 			PhylaxKey:     []byte(strconv.Itoa(i)),
 			ValidatorAddr: []byte(strconv.Itoa(i)),
 		}
-		state.PhylaxValidatorList = append(state.PhylaxValidatorList, guardianValidator)
+		state.PhylaxValidatorList = append(state.PhylaxValidatorList, phylaxValidator)
 	}
 	buf, err := cfg.Codec.MarshalJSON(&state)
 	require.NoError(t, err)

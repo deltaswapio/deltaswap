@@ -1,6 +1,6 @@
 //@ts-nocheck
 /* eslint-disable */
-import { PhylaxSet } from "../deltaswap/guardian_set";
+import { PhylaxSet } from "../deltaswap/phylax_set";
 import { Writer, Reader } from "protobufjs/minimal";
 
 export const protobufPackage = "deltaswapio.deltachain.deltaswap";

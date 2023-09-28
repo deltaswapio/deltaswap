@@ -16,19 +16,19 @@ func (k Keeper) PhylaxValidatorAll(c context.Context, req *types.QueryAllPhylaxV
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
 	}
 
-	var guardianValidators []types.PhylaxValidator
+	var phylaxValidators []types.PhylaxValidator
 	ctx := sdk.UnwrapSDKContext(c)
 
 	store := ctx.KVStore(k.storeKey)
-	guardianValidatorStore := prefix.NewStore(store, types.KeyPrefix(types.PhylaxValidatorKeyPrefix))
+	phylaxValidatorStore := prefix.NewStore(store, types.KeyPrefix(types.PhylaxValidatorKeyPrefix))
 
-	pageRes, err := query.Paginate(guardianValidatorStore, req.Pagination, func(key []byte, value []byte) error {
-		var guardianValidator types.PhylaxValidator
-		if err := k.cdc.Unmarshal(value, &guardianValidator); err != nil {
+	pageRes, err := query.Paginate(phylaxValidatorStore, req.Pagination, func(key []byte, value []byte) error {
+		var phylaxValidator types.PhylaxValidator
+		if err := k.cdc.Unmarshal(value, &phylaxValidator); err != nil {
 			return err
 		}
 
-		guardianValidators = append(guardianValidators, guardianValidator)
+		phylaxValidators = append(phylaxValidators, phylaxValidator)
 		return nil
 	})
 
@@ -36,7 +36,7 @@ func (k Keeper) PhylaxValidatorAll(c context.Context, req *types.QueryAllPhylaxV
 		return nil, status.Error(codes.Internal, err.Error())
 	}
 
-	return &types.QueryAllPhylaxValidatorResponse{PhylaxValidator: guardianValidators, Pagination: pageRes}, nil
+	return &types.QueryAllPhylaxValidatorResponse{PhylaxValidator: phylaxValidators, Pagination: pageRes}, nil
 }
 
 func (k Keeper) PhylaxValidator(c context.Context, req *types.QueryGetPhylaxValidatorRequest) (*types.QueryGetPhylaxValidatorResponse, error) {

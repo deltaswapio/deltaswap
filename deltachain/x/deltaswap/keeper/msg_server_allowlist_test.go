@@ -32,8 +32,8 @@ func MockNext(ctx sdk.Context, tx sdk.Tx, simulate bool) (newCtx sdk.Context, er
 	return ctx, nil
 }
 
-func getSigner(guardianValidator *types.PhylaxValidator) string {
-	return sdk.AccAddress(guardianValidator.ValidatorAddr).String()
+func getSigner(phylaxValidator *types.PhylaxValidator) string {
+	return sdk.AccAddress(phylaxValidator.ValidatorAddr).String()
 }
 
 func getMsgWithSigner(signer string) sdk.Msg {

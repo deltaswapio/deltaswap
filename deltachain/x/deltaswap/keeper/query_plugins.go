@@ -36,7 +36,7 @@ type DeltaswapQuery struct {
 // deprecated
 type verifyQuorumParams struct {
 	Data           []byte           `json:"data"`
-	PhylaxSetIndex uint32           `json:"guardian_set_index"`
+	PhylaxSetIndex uint32           `json:"phylax_set_index"`
 	Signatures     []*vaa.Signature `json:"signatures"`
 }
 
@@ -47,12 +47,12 @@ type verifyVaaParams struct {
 type verifyMessageSignatureParams struct {
 	Prefix         []byte         `json:"prefix"`
 	Data           []byte         `json:"data"`
-	PhylaxSetIndex uint32         `json:"guardian_set_index"`
+	PhylaxSetIndex uint32         `json:"phylax_set_index"`
 	Signature      *vaa.Signature `json:"signature"`
 }
 
 type calculateQuorumParams struct {
-	PhylaxSetIndex uint32 `json:"guardian_set_index"`
+	PhylaxSetIndex uint32 `json:"phylax_set_index"`
 }
 
 func DeltaswapQuerier(keeper Keeper) func(ctx sdk.Context, data json.RawMessage) ([]byte, error) {

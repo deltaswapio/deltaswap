@@ -350,15 +350,15 @@ func request_Query_PhylaxValidator_0(ctx context.Context, marshaler runtime.Mars
 		_   = err
 	)
 
-	val, ok = pathParams["guardianKey"]
+	val, ok = pathParams["phylaxKey"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "guardianKey")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "phylaxKey")
 	}
 
 	protoReq.PhylaxKey, err = runtime.Bytes(val)
 
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "guardianKey", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "phylaxKey", err)
 	}
 
 	msg, err := client.PhylaxValidator(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
@@ -377,15 +377,15 @@ func local_request_Query_PhylaxValidator_0(ctx context.Context, marshaler runtim
 		_   = err
 	)
 
-	val, ok = pathParams["guardianKey"]
+	val, ok = pathParams["phylaxKey"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "guardianKey")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "phylaxKey")
 	}
 
 	protoReq.PhylaxKey, err = runtime.Bytes(val)
 
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "guardianKey", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "phylaxKey", err)
 	}
 
 	msg, err := server.PhylaxValidator(ctx, &protoReq)
@@ -1305,35 +1305,35 @@ func RegisterQueryHandlerClient(ctx context.Context, mux *runtime.ServeMux, clie
 }
 
 var (
-	pattern_Query_PhylaxSet_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4}, []string{"deltaswapio", "deltachain", "wormhole", "guardianSet", "index"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_Query_PhylaxSet_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4}, []string{"deltaswapio", "deltachain", "deltaswap", "phylaxSet", "index"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_Query_PhylaxSetAll_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"deltaswapio", "deltachain", "wormhole", "guardianSet"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_Query_PhylaxSetAll_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"deltaswapio", "deltachain", "deltaswap", "phylaxSet"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_Query_Config_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"deltaswapio", "deltachain", "wormhole", "config"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_Query_Config_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"deltaswapio", "deltachain", "deltaswap", "config"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_Query_ReplayProtection_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4}, []string{"deltaswapio", "deltachain", "wormhole", "replayProtection", "index"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_Query_ReplayProtection_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4}, []string{"deltaswapio", "deltachain", "deltaswap", "replayProtection", "index"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_Query_ReplayProtectionAll_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"deltaswapio", "deltachain", "wormhole", "replayProtection"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_Query_ReplayProtectionAll_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"deltaswapio", "deltachain", "deltaswap", "replayProtection"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_Query_SequenceCounter_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4}, []string{"deltaswapio", "deltachain", "wormhole", "sequenceCounter", "index"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_Query_SequenceCounter_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4}, []string{"deltaswapio", "deltachain", "deltaswap", "sequenceCounter", "index"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_Query_SequenceCounterAll_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"deltaswapio", "deltachain", "wormhole", "sequenceCounter"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_Query_SequenceCounterAll_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"deltaswapio", "deltachain", "deltaswap", "sequenceCounter"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_Query_ConsensusPhylaxSetIndex_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"deltaswapio", "deltachain", "wormhole", "consensus_guardian_set_index"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_Query_ConsensusPhylaxSetIndex_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"deltaswapio", "deltachain", "deltaswap", "consensus_phylax_set_index"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_Query_PhylaxValidator_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4}, []string{"deltaswapio", "deltachain", "wormhole", "guardian_validator", "guardianKey"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_Query_PhylaxValidator_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4}, []string{"deltaswapio", "deltachain", "deltaswap", "phylax_validator", "phylaxKey"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_Query_PhylaxValidatorAll_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"deltaswapio", "deltachain", "wormhole", "guardian_validator"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_Query_PhylaxValidatorAll_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"deltaswapio", "deltachain", "deltaswap", "phylax_validator"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_Query_LatestPhylaxSetIndex_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"deltaswapio", "deltachain", "wormhole", "latest_guardian_set_index"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_Query_LatestPhylaxSetIndex_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"deltaswapio", "deltachain", "deltaswap", "latest_phylax_set_index"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_Query_AllowlistAll_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"deltaswapio", "deltachain", "wormhole", "allowlist"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_Query_AllowlistAll_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"deltaswapio", "deltachain", "deltaswap", "allowlist"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_Query_Allowlist_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4}, []string{"deltaswapio", "deltachain", "wormhole", "allowlist", "validator_address"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_Query_Allowlist_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 1, 0, 4, 1, 5, 4}, []string{"deltaswapio", "deltachain", "deltaswap", "allowlist", "validator_address"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_Query_IbcComposabilityMwContract_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"deltaswapio", "deltachain", "wormhole", "ibc_composability_mw_contract"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_Query_IbcComposabilityMwContract_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"deltaswapio", "deltachain", "deltaswap", "ibc_composability_mw_contract"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_Query_WasmInstantiateAllowlistAll_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"deltaswapio", "deltachain", "wormhole", "wasm_instantiate_allowlist"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_Query_WasmInstantiateAllowlistAll_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"deltaswapio", "deltachain", "deltaswap", "wasm_instantiate_allowlist"}, "", runtime.AssumeColonVerbOpt(true)))
 )
 
 var (

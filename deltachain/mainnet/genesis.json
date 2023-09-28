@@ -1069,12 +1069,12 @@
         "chain_id": 3104,
         "governance_chain": 1,
         "governance_emitter": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQ=",
-        "guardian_set_expiration": "86400"
+        "phylax_set_expiration": "86400"
       },
       "consensusPhylaxSetIndex": {
         "index": 1
       },
-      "guardianSetList": [
+      "phylaxSetList": [
         {
           "expirationTime": "0",
           "index": 0,
@@ -1115,29 +1115,29 @@
           ]
         }
       ],
-      "guardianValidatorList": [
+      "phylaxValidatorList": [
         {
-          "guardianKey": "EU3oRgGTvfOi/PgfhqCXZfR2L9E=",
+          "phylaxKey": "EU3oRgGTvfOi/PgfhqCXZfR2L9E=",
           "validatorAddr": "aBGBWdLBfa+MCVvFdQsbruK53R4="
         },
         {
-          "guardianKey": "VM5bTTSPt0uVjolm4uw9vUlYp80=",
+          "phylaxKey": "VM5bTTSPt0uVjolm4uw9vUlYp80=",
           "validatorAddr": "7iIyF9Y9YrbNitQh4MD6c/9dwh4="
         },
         {
-          "guardianKey": "WMw65cCXshPOPIGXnhuflXB0aqU=",
+          "phylaxKey": "WMw65cCXshPOPIGXnhuflXB0aqU=",
           "validatorAddr": "xuvwE/SVFly5visHOA0dVie/nx0="
         },
         {
-          "guardianKey": "dKO/kTlT1pUmDYi8GqJaTu42PvA=",
+          "phylaxKey": "dKO/kTlT1pUmDYi8GqJaTu42PvA=",
           "validatorAddr": "Usc1fWKooOMC+QwweAKCx5GrvMs="
         },
         {
-          "guardianKey": "0sw3pNwDao0jK0j2LN1HMUEvSJA=",
+          "phylaxKey": "0sw3pNwDao0jK0j2LN1HMUEvSJA=",
           "validatorAddr": "Nu7MB5cgb7j1UGOwum2HiVGOIcY="
         },
         {
-          "guardianKey": "2nmPaJajMx9ktIwS0dV/2cvnCBE=",
+          "phylaxKey": "2nmPaJajMx9ktIwS0dV/2cvnCBE=",
           "validatorAddr": "raZ3U/hpY8uzpUGDwLHwIqtW5Ns="
         }
       ],

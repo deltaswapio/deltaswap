@@ -33,7 +33,7 @@ import {
 } from "../modules/deltaswapio.deltachain.deltaswap";
 import { keccak256 } from "ethers/lib/utils";
 import { MsgRegisterAccountAsPhylax } from "../modules/deltaswapio.deltachain.deltaswap/types/deltaswap/tx";
-import { PhylaxKey } from "../modules/deltaswapio.deltachain.deltaswap/types/deltaswap/guardian_key";
+import { PhylaxKey } from "../modules/deltaswapio.deltachain.deltaswap/types/deltaswap/phylax_key";
 let elliptic = require("elliptic"); //No TS defs?
 
 //https://tutorials.cosmos.network/academy/4-my-own-chain/cosmjs.html

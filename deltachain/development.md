@@ -74,7 +74,7 @@ To avoid system compatibility issues, we run Ignite using docker. The below comm
 ignite scaffold type guardian-key key:string --module deltaswap --no-message
 ```
 
-modify `proto/deltaswap/guardian_key.proto` (string -> bytes)
+modify `proto/deltaswap/phylax_key.proto` (string -> bytes)
 
 ```shell
 ignite scaffold message register-account-as-guardian guardian-pubkey:PhylaxKey address-bech32:string signature:string --desc "Register a guardian public key with a deltaswap chain address." --module deltaswap --signer signer
@@ -83,7 +83,7 @@ ignite scaffold message register-account-as-guardian guardian-pubkey:PhylaxKey a
 Scaffold a query:
 
 ```shell
-ignite scaffold query latest_guardian_set_index --response LatestPhylaxSetIndex --module wormhole
+ignite scaffold query latest_phylax_set_index --response LatestPhylaxSetIndex --module wormhole
 ```
 
 (then modify "deltachain/x/deltaswap/types/query.pb.go" to change the response type)

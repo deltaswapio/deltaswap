@@ -1,0 +1,12 @@
+syntax = "proto3";
+package deltaswapio.deltachain.deltaswap;
+
+option go_package = "github.com/deltaswapio/deltachain/x/deltaswap/types";
+
+
+
+message ReplayProtection {
+  string index = 1; 
+  
+}
+

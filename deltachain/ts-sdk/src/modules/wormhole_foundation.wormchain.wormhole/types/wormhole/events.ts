@@ -19,7 +19,7 @@ export interface EventPostedMessage {
 }
 
 export interface EventPhylaxRegistered {
-  guardian_key: Uint8Array;
+  phylax_key: Uint8Array;
   validator_key: Uint8Array;
 }
 
@@ -240,8 +240,8 @@ export const EventPhylaxRegistered = {
     message: EventPhylaxRegistered,
     writer: Writer = Writer.create()
   ): Writer {
-    if (message.guardian_key.length !== 0) {
-      writer.uint32(10).bytes(message.guardian_key);
+    if (message.phylax_key.length !== 0) {
+      writer.uint32(10).bytes(message.phylax_key);
     }
     if (message.validator_key.length !== 0) {
       writer.uint32(18).bytes(message.validator_key);
@@ -259,7 +259,7 @@ export const EventPhylaxRegistered = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.guardian_key = reader.bytes();
+          message.phylax_key = reader.bytes();
           break;
         case 2:
           message.validator_key = reader.bytes();
@@ -276,8 +276,8 @@ export const EventPhylaxRegistered = {
     const message = {
       ...baseEventPhylaxRegistered,
     } as EventPhylaxRegistered;
-    if (object.guardian_key !== undefined && object.guardian_key !== null) {
-      message.guardian_key = bytesFromBase64(object.guardian_key);
+    if (object.phylax_key !== undefined && object.phylax_key !== null) {
+      message.phylax_key = bytesFromBase64(object.phylax_key);
     }
     if (object.validator_key !== undefined && object.validator_key !== null) {
       message.validator_key = bytesFromBase64(object.validator_key);
@@ -287,10 +287,10 @@ export const EventPhylaxRegistered = {
 
   toJSON(message: EventPhylaxRegistered): unknown {
     const obj: any = {};
-    message.guardian_key !== undefined &&
-      (obj.guardian_key = base64FromBytes(
-        message.guardian_key !== undefined
-          ? message.guardian_key
+    message.phylax_key !== undefined &&
+      (obj.phylax_key = base64FromBytes(
+        message.phylax_key !== undefined
+          ? message.phylax_key
           : new Uint8Array()
       ));
     message.validator_key !== undefined &&
@@ -308,10 +308,10 @@ export const EventPhylaxRegistered = {
     const message = {
       ...baseEventPhylaxRegistered,
     } as EventPhylaxRegistered;
-    if (object.guardian_key !== undefined && object.guardian_key !== null) {
-      message.guardian_key = object.guardian_key;
+    if (object.phylax_key !== undefined && object.phylax_key !== null) {
+      message.phylax_key = object.phylax_key;
     } else {
-      message.guardian_key = new Uint8Array();
+      message.phylax_key = new Uint8Array();
     }
     if (object.validator_key !== undefined && object.validator_key !== null) {
       message.validator_key = object.validator_key;

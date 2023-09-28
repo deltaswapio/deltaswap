@@ -5,7 +5,7 @@ import { Writer, Reader } from "protobufjs/minimal";
 export const protobufPackage = "deltaswapio.deltachain.deltaswap";
 
 export interface PhylaxValidator {
-  guardianKey: Uint8Array;
+  phylaxKey: Uint8Array;
   validatorAddr: Uint8Array;
 }
 
@@ -13,8 +13,8 @@ const basePhylaxValidator: object = {};
 
 export const PhylaxValidator = {
   encode(message: PhylaxValidator, writer: Writer = Writer.create()): Writer {
-    if (message.guardianKey.length !== 0) {
-      writer.uint32(10).bytes(message.guardianKey);
+    if (message.phylaxKey.length !== 0) {
+      writer.uint32(10).bytes(message.phylaxKey);
     }
     if (message.validatorAddr.length !== 0) {
       writer.uint32(18).bytes(message.validatorAddr);
@@ -30,7 +30,7 @@ export const PhylaxValidator = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.guardianKey = reader.bytes();
+          message.phylaxKey = reader.bytes();
           break;
         case 2:
           message.validatorAddr = reader.bytes();
@@ -45,8 +45,8 @@ export const PhylaxValidator = {
 
   fromJSON(object: any): PhylaxValidator {
     const message = { ...basePhylaxValidator } as PhylaxValidator;
-    if (object.guardianKey !== undefined && object.guardianKey !== null) {
-      message.guardianKey = bytesFromBase64(object.guardianKey);
+    if (object.phylaxKey !== undefined && object.phylaxKey !== null) {
+      message.phylaxKey = bytesFromBase64(object.phylaxKey);
     }
     if (object.validatorAddr !== undefined && object.validatorAddr !== null) {
       message.validatorAddr = bytesFromBase64(object.validatorAddr);
@@ -56,10 +56,10 @@ export const PhylaxValidator = {
 
   toJSON(message: PhylaxValidator): unknown {
     const obj: any = {};
-    message.guardianKey !== undefined &&
-      (obj.guardianKey = base64FromBytes(
-        message.guardianKey !== undefined
-          ? message.guardianKey
+    message.phylaxKey !== undefined &&
+      (obj.phylaxKey = base64FromBytes(
+        message.phylaxKey !== undefined
+          ? message.phylaxKey
           : new Uint8Array()
       ));
     message.validatorAddr !== undefined &&
@@ -73,10 +73,10 @@ export const PhylaxValidator = {
 
   fromPartial(object: DeepPartial<PhylaxValidator>): PhylaxValidator {
     const message = { ...basePhylaxValidator } as PhylaxValidator;
-    if (object.guardianKey !== undefined && object.guardianKey !== null) {
-      message.guardianKey = object.guardianKey;
+    if (object.phylaxKey !== undefined && object.phylaxKey !== null) {
+      message.phylaxKey = object.phylaxKey;
     } else {
-      message.guardianKey = new Uint8Array();
+      message.phylaxKey = new Uint8Array();
     }
     if (object.validatorAddr !== undefined && object.validatorAddr !== null) {
       message.validatorAddr = object.validatorAddr;

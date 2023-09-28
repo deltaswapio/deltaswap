@@ -1,0 +1,26 @@
+syntax = "proto3";
+package deltaswapio.deltachain.deltaswap;
+
+import "deltaswap/phylax.proto";
+import "deltaswap/config.proto";
+import "deltaswap/replay_protection.proto";
+import "deltaswap/sequence_counter.proto";
+import "deltaswap/consensus_phylax_set_index.proto";
+// this line is used by starport scaffolding # genesis/proto/import
+import "gogoproto/gogo.proto";
+
+option go_package = "github.com/deltaswapio/deltachain/x/deltaswap/types";
+
+// GenesisState defines the deltaswap module's genesis state.
+message GenesisState {
+  repeated PhylaxSet phylaxSetList = 1 [(gogoproto.nullable) = false];
+  Config config = 2;
+  repeated ReplayProtection replayProtectionList = 3 [(gogoproto.nullable) = false];
+  repeated SequenceCounter sequenceCounterList = 4 [(gogoproto.nullable) = false];
+  ConsensusPhylaxSetIndex consensusPhylaxSetIndex = 5;
+  repeated PhylaxValidator phylaxValidatorList = 6 [(gogoproto.nullable) = false];
+  repeated ValidatorAllowedAddress allowedAddresses = 7 [(gogoproto.nullable) = false];
+  repeated WasmInstantiateAllowedContractCodeId wasmInstantiateAllowlist = 8 [(gogoproto.nullable) = false];
+  IbcComposabilityMwContract ibcComposabilityMwContract = 9 [(gogoproto.nullable) = false];
+  // this line is used by starport scaffolding # genesis/proto/state
+}

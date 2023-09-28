@@ -6,25 +6,25 @@ import (
 	"github.com/deltaswapio/deltachain/x/deltaswap/types"
 )
 
-// SetPhylaxValidator set a specific guardianValidator in the store from its index
-func (k Keeper) SetPhylaxValidator(ctx sdk.Context, guardianValidator types.PhylaxValidator) {
+// SetPhylaxValidator set a specific phylaxValidator in the store from its index
+func (k Keeper) SetPhylaxValidator(ctx sdk.Context, phylaxValidator types.PhylaxValidator) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.PhylaxValidatorKeyPrefix))
-	b := k.cdc.MustMarshal(&guardianValidator)
+	b := k.cdc.MustMarshal(&phylaxValidator)
 	store.Set(types.PhylaxValidatorKey(
-		guardianValidator.PhylaxKey,
+		phylaxValidator.PhylaxKey,
 	), b)
 }
 
-// GetPhylaxValidator returns a guardianValidator from its index
+// GetPhylaxValidator returns a phylaxValidator from its index
 func (k Keeper) GetPhylaxValidator(
 	ctx sdk.Context,
-	guardianKey []byte,
+	phylaxKey []byte,
 
 ) (val types.PhylaxValidator, found bool) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.PhylaxValidatorKeyPrefix))
 
 	b := store.Get(types.PhylaxValidatorKey(
-		guardianKey,
+		phylaxKey,
 	))
 	if b == nil {
 		return val, false
@@ -34,19 +34,19 @@ func (k Keeper) GetPhylaxValidator(
 	return val, true
 }
 
-// RemovePhylaxValidator removes a guardianValidator from the store
+// RemovePhylaxValidator removes a phylaxValidator from the store
 func (k Keeper) RemovePhylaxValidator(
 	ctx sdk.Context,
-	guardianKey []byte,
+	phylaxKey []byte,
 
 ) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.PhylaxValidatorKeyPrefix))
 	store.Delete(types.PhylaxValidatorKey(
-		guardianKey,
+		phylaxKey,
 	))
 }
 
-// GetAllPhylaxValidator returns all guardianValidator
+// GetAllPhylaxValidator returns all phylaxValidator
 func (k Keeper) GetAllPhylaxValidator(ctx sdk.Context) (list []types.PhylaxValidator) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.PhylaxValidatorKeyPrefix))
 	iterator := sdk.KVStorePrefixIterator(store, []byte{})

@@ -32,7 +32,7 @@ func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) 
 	if genState.ConsensusPhylaxSetIndex != nil {
 		k.SetConsensusPhylaxSetIndex(ctx, *genState.ConsensusPhylaxSetIndex)
 	}
-	// Set all the guardianValidator
+	// Set all the phylaxValidator
 	for _, elem := range genState.PhylaxValidatorList {
 		k.SetPhylaxValidator(ctx, elem)
 	}

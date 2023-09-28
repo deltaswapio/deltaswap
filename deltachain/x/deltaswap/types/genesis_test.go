@@ -106,7 +106,7 @@ func TestGenesisState_Validate(t *testing.T) {
 			valid: false,
 		},
 		{
-			desc: "duplicated guardianValidator",
+			desc: "duplicated phylaxValidator",
 			genState: &types.GenesisState{
 				PhylaxValidatorList: []types.PhylaxValidator{
 					{

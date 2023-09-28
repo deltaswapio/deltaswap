@@ -27,13 +27,13 @@ func networkWithConsensusPhylaxSetIndexObjects(t *testing.T) (*network.Network, 
 	nullify.Fill(&consensusPhylaxSetIndex)
 	state.ConsensusPhylaxSetIndex = consensusPhylaxSetIndex
 
-	guardianSetList := []types.PhylaxSet{{
+	phylaxSetList := []types.PhylaxSet{{
 		Index:          0,
 		Keys:           [][]byte{},
 		ExpirationTime: 0,
 	}}
-	nullify.Fill(&guardianSetList)
-	state.PhylaxSetList = guardianSetList
+	nullify.Fill(&phylaxSetList)
+	state.PhylaxSetList = phylaxSetList
 
 	buf, err := cfg.Codec.MarshalJSON(&state)
 	require.NoError(t, err)
