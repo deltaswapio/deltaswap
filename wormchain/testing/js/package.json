@@ -15,14 +15,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/wormhole-foundation/deltachain.git"
+    "url": "git+https://github.com/deltaswapio/deltachain.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/wormhole-foundation/deltachain/issues"
+    "url": "https://github.com/deltaswapio/deltachain/issues"
   },
-  "homepage": "https://github.com/wormhole-foundation/deltachain#readme",
+  "homepage": "https://github.com/deltaswapio/deltachain#readme",
   "dependencies": {
     "@certusone/wormhole-sdk": "^0.2.0",
     "@cosmjs/cosmwasm-stargate": "^0.27.1",
@@ -30,7 +30,7 @@
     "@cosmjs/proto-signing": "^0.27.1",
     "@cosmjs/stargate": "^0.27.1",
     "@cosmjs/tendermint-rpc": "^0.27.1",
-    "@wormhole-foundation/deltachain-sdk": "file:../../ts-sdk",
+    "@deltaswapio/deltachain-sdk": "file:../../ts-sdk",
     "axios": "^0.26.0",
     "bech32": "^2.0.0",
     "elliptic": "^6.5.4",

@@ -95,31 +95,31 @@ import (
 	"github.com/tendermint/spm/cosmoscmd"
 	"github.com/tendermint/spm/openapiconsole"
 
-	"github.com/wormhole-foundation/deltachain/docs"
-	wormholemodule "github.com/wormhole-foundation/deltachain/x/wormhole"
-	wormholemoduleante "github.com/wormhole-foundation/deltachain/x/wormhole/ante"
-	wormholeclient "github.com/wormhole-foundation/deltachain/x/wormhole/client"
-	wormholemodulekeeper "github.com/wormhole-foundation/deltachain/x/wormhole/keeper"
-	wormholemoduletypes "github.com/wormhole-foundation/deltachain/x/wormhole/types"
+	"github.com/deltaswapio/deltachain/docs"
+	wormholemodule "github.com/deltaswapio/deltachain/x/wormhole"
+	wormholemoduleante "github.com/deltaswapio/deltachain/x/wormhole/ante"
+	wormholeclient "github.com/deltaswapio/deltachain/x/wormhole/client"
+	wormholemodulekeeper "github.com/deltaswapio/deltachain/x/wormhole/keeper"
+	wormholemoduletypes "github.com/deltaswapio/deltachain/x/wormhole/types"
 
 	// this line is used by starport scaffolding # stargate/app/moduleImport
 
-	"github.com/wormhole-foundation/deltachain/x/tokenfactory"
-	"github.com/wormhole-foundation/deltachain/x/tokenfactory/bindings"
-	tokenfactorykeeper "github.com/wormhole-foundation/deltachain/x/tokenfactory/keeper"
-	tokenfactorytypes "github.com/wormhole-foundation/deltachain/x/tokenfactory/types"
+	"github.com/deltaswapio/deltachain/x/tokenfactory"
+	"github.com/deltaswapio/deltachain/x/tokenfactory/bindings"
+	tokenfactorykeeper "github.com/deltaswapio/deltachain/x/tokenfactory/keeper"
+	tokenfactorytypes "github.com/deltaswapio/deltachain/x/tokenfactory/types"
 
-	ibchooks "github.com/wormhole-foundation/deltachain/x/ibc-hooks"
-	ibchookskeeper "github.com/wormhole-foundation/deltachain/x/ibc-hooks/keeper"
-	ibchookstypes "github.com/wormhole-foundation/deltachain/x/ibc-hooks/types"
+	ibchooks "github.com/deltaswapio/deltachain/x/ibc-hooks"
+	ibchookskeeper "github.com/deltaswapio/deltachain/x/ibc-hooks/keeper"
+	ibchookstypes "github.com/deltaswapio/deltachain/x/ibc-hooks/types"
 
 	packetforward "github.com/strangelove-ventures/packet-forward-middleware/v4/router"
 	packetforwardkeeper "github.com/strangelove-ventures/packet-forward-middleware/v4/router/keeper"
 	packetforwardtypes "github.com/strangelove-ventures/packet-forward-middleware/v4/router/types"
 
-	ibccomposabilitymw "github.com/wormhole-foundation/deltachain/x/ibc-composability-mw"
-	ibccomposabilitymwkeeper "github.com/wormhole-foundation/deltachain/x/ibc-composability-mw/keeper"
-	ibccomposabilitytypes "github.com/wormhole-foundation/deltachain/x/ibc-composability-mw/types"
+	ibccomposabilitymw "github.com/deltaswapio/deltachain/x/ibc-composability-mw"
+	ibccomposabilitymwkeeper "github.com/deltaswapio/deltachain/x/ibc-composability-mw/keeper"
+	ibccomposabilitytypes "github.com/deltaswapio/deltachain/x/ibc-composability-mw/types"
 )
 
 const (

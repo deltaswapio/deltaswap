@@ -5,7 +5,7 @@ import (
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
-	"github.com/wormhole-foundation/deltachain/x/wormhole/types"
+	"github.com/deltaswapio/deltachain/x/wormhole/types"
 )
 
 func (k msgServer) CreateAllowlistEntry(goCtx context.Context, msg *types.MsgCreateAllowlistEntryRequest) (*types.MsgAllowlistResponse, error) {

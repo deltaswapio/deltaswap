@@ -9,8 +9,8 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	govtypes "github.com/cosmos/cosmos-sdk/x/gov/types"
-	"github.com/wormhole-foundation/deltachain/x/wormhole/keeper"
-	"github.com/wormhole-foundation/deltachain/x/wormhole/types"
+	"github.com/deltaswapio/deltachain/x/wormhole/keeper"
+	"github.com/deltaswapio/deltachain/x/wormhole/types"
 	"github.com/wormhole-foundation/wormhole/sdk/vaa"
 )
 

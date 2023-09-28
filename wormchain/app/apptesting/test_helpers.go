@@ -13,6 +13,8 @@ import (
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
 	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
+	"github.com/deltaswapio/deltachain/app"
+	appparams "github.com/deltaswapio/deltachain/app/params"
 	"github.com/stretchr/testify/require"
 	"github.com/tendermint/spm/cosmoscmd"
 	abci "github.com/tendermint/tendermint/abci/types"
@@ -22,8 +24,6 @@ import (
 	tmproto "github.com/tendermint/tendermint/proto/tendermint/types"
 	tmtypes "github.com/tendermint/tendermint/types"
 	dbm "github.com/tendermint/tm-db"
-	"github.com/wormhole-foundation/deltachain/app"
-	appparams "github.com/wormhole-foundation/deltachain/app/params"
 )
 
 // SimAppChainID hardcoded chainID for simulation

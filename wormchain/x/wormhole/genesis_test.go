@@ -3,10 +3,10 @@ package wormhole_test
 import (
 	"testing"
 
+	keepertest "github.com/deltaswapio/deltachain/testutil/keeper"
+	"github.com/deltaswapio/deltachain/x/wormhole"
+	"github.com/deltaswapio/deltachain/x/wormhole/types"
 	"github.com/stretchr/testify/require"
-	keepertest "github.com/wormhole-foundation/deltachain/testutil/keeper"
-	"github.com/wormhole-foundation/deltachain/x/wormhole"
-	"github.com/wormhole-foundation/deltachain/x/wormhole/types"
 )
 
 func TestGenesis(t *testing.T) {

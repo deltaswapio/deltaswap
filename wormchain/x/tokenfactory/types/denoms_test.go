@@ -5,7 +5,7 @@ import (
 
 	"github.com/stretchr/testify/require"
 
-	"github.com/wormhole-foundation/deltachain/x/tokenfactory/types"
+	"github.com/deltaswapio/deltachain/x/tokenfactory/types"
 )
 
 func TestDeconstructDenom(t *testing.T) {

@@ -9,7 +9,7 @@ import (
 	porttypes "github.com/cosmos/ibc-go/v4/modules/core/05-port/types"
 	ibcexported "github.com/cosmos/ibc-go/v4/modules/core/exported"
 
-	"github.com/wormhole-foundation/deltachain/x/ibc-composability-mw/keeper"
+	"github.com/deltaswapio/deltachain/x/ibc-composability-mw/keeper"
 )
 
 var _ porttypes.ICS4Wrapper = &ICS4Middleware{}

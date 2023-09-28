@@ -1,4 +1,4 @@
-module github.com/wormhole-foundation/deltachain
+module github.com/deltaswapio/deltachain
 
 go 1.19
 

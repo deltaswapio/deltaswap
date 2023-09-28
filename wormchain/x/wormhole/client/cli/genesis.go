@@ -19,8 +19,8 @@ import (
 	"github.com/cosmos/cosmos-sdk/client"
 	// "github.com/cosmos/cosmos-sdk/client/flags"
 
+	"github.com/deltaswapio/deltachain/x/wormhole/types"
 	"github.com/ethereum/go-ethereum/crypto"
-	"github.com/wormhole-foundation/deltachain/x/wormhole/types"
 	wormholesdk "github.com/wormhole-foundation/wormhole/sdk"
 	"github.com/wormhole-foundation/wormhole/sdk/vaa"
 )

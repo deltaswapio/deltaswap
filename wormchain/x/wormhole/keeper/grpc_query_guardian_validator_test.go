@@ -10,9 +10,9 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
-	keepertest "github.com/wormhole-foundation/deltachain/testutil/keeper"
-	"github.com/wormhole-foundation/deltachain/testutil/nullify"
-	"github.com/wormhole-foundation/deltachain/x/wormhole/types"
+	keepertest "github.com/deltaswapio/deltachain/testutil/keeper"
+	"github.com/deltaswapio/deltachain/testutil/nullify"
+	"github.com/deltaswapio/deltachain/x/wormhole/types"
 )
 
 // Prevent strconv unused error

@@ -10,7 +10,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/types/rest"
 	govrest "github.com/cosmos/cosmos-sdk/x/gov/client/rest"
 	govtypes "github.com/cosmos/cosmos-sdk/x/gov/types"
-	"github.com/wormhole-foundation/deltachain/x/wormhole/types"
+	"github.com/deltaswapio/deltachain/x/wormhole/types"
 )
 
 type (

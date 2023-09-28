@@ -12,8 +12,8 @@ import { fromBase64, toUtf8, fromBech32 } from "@cosmjs/encoding";
 import {
   getWallet,
   getWormchainSigningClient,
-} from "@wormhole-foundation/deltachain-sdk";
-import { ZERO_FEE } from "@wormhole-foundation/deltachain-sdk/lib/core/consts";
+} from "@deltaswapio/deltachain-sdk";
+import { ZERO_FEE } from "@deltaswapio/deltachain-sdk/lib/core/consts";
 import "dotenv/config";
 import * as fs from "fs";
 import { readdirSync } from "fs";

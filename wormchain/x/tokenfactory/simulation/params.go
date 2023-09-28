@@ -6,7 +6,7 @@ import (
 
 	simtypes "github.com/cosmos/cosmos-sdk/types/simulation"
 	"github.com/cosmos/cosmos-sdk/x/simulation"
-	"github.com/wormhole-foundation/deltachain/x/tokenfactory/types"
+	"github.com/deltaswapio/deltachain/x/tokenfactory/types"
 )
 
 func ParamChanges(_ *rand.Rand) []simtypes.ParamChange {

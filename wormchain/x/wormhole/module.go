@@ -16,9 +16,9 @@ import (
 	cdctypes "github.com/cosmos/cosmos-sdk/codec/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/module"
-	"github.com/wormhole-foundation/deltachain/x/wormhole/client/cli"
-	"github.com/wormhole-foundation/deltachain/x/wormhole/keeper"
-	"github.com/wormhole-foundation/deltachain/x/wormhole/types"
+	"github.com/deltaswapio/deltachain/x/wormhole/client/cli"
+	"github.com/deltaswapio/deltachain/x/wormhole/keeper"
+	"github.com/deltaswapio/deltachain/x/wormhole/types"
 )
 
 var (

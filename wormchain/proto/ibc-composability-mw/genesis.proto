@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package wormhole_foundation.deltachain.ibc_composability_mw.v1;
 
-option go_package = "github.com/wormhole-foundation/deltachain/x/ibc-composability-mw/types";
+option go_package = "github.com/deltaswapio/deltachain/x/ibc-composability-mw/types";
 
 import "gogoproto/gogo.proto";
 

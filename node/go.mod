@@ -59,7 +59,7 @@ require (
 	github.com/holiman/uint256 v1.2.1
 	github.com/prometheus/client_model v0.4.0
 	github.com/prometheus/common v0.44.0
-	github.com/wormhole-foundation/deltachain v0.0.0-00010101000000-000000000000
+	github.com/deltaswapio/deltachain v0.0.0-00010101000000-000000000000
 	github.com/wormhole-foundation/wormhole/sdk v0.0.0-20220926172624-4b38dc650bb0
 	golang.org/x/exp v0.0.0-20230713183714-613f0c0eb8a1
 	google.golang.org/genproto/googleapis/api v0.0.0-20230726155614-23370e0ffb3e
@@ -361,7 +361,7 @@ replace github.com/gogo/protobuf => github.com/regen-network/protobuf v1.3.3-alp
 
 replace github.com/wormhole-foundation/wormhole/sdk => ../sdk
 
-replace github.com/wormhole-foundation/deltachain => ../deltachain
+replace github.com/deltaswapio/deltachain => ../deltachain
 
 replace github.com/CosmWasm/wasmd v0.30.0 => github.com/wormhole-foundation/wasmd v0.30.0-deltachain-2
 

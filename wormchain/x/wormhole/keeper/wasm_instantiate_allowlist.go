@@ -5,7 +5,7 @@ import (
 
 	"github.com/cosmos/cosmos-sdk/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/wormhole-foundation/deltachain/x/wormhole/types"
+	"github.com/deltaswapio/deltachain/x/wormhole/types"
 )
 
 func (k Keeper) SetWasmInstantiateAllowlist(ctx sdk.Context, entry types.WasmInstantiateAllowedContractCodeId) {

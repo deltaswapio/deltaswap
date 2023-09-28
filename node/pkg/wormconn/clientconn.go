@@ -10,7 +10,7 @@ import (
 	sdktx "github.com/cosmos/cosmos-sdk/types/tx"
 
 	"github.com/btcsuite/btcutil/bech32"
-	deltachain "github.com/wormhole-foundation/deltachain/app"
+	deltachain "github.com/deltaswapio/deltachain/app"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"

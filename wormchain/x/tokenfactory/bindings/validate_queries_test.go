@@ -10,7 +10,7 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	bankkeeper "github.com/cosmos/cosmos-sdk/x/bank/keeper"
 
-	wasmbinding "github.com/wormhole-foundation/deltachain/x/tokenfactory/bindings"
+	wasmbinding "github.com/deltaswapio/deltachain/x/tokenfactory/bindings"
 )
 
 func TestFullDenom(t *testing.T) {

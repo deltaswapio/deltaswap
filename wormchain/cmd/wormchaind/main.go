@@ -4,9 +4,9 @@ import (
 	"os"
 
 	svrcmd "github.com/cosmos/cosmos-sdk/server/cmd"
+	"github.com/deltaswapio/deltachain/app"
+	"github.com/deltaswapio/deltachain/x/wormhole/client/cli"
 	"github.com/tendermint/spm/cosmoscmd"
-	"github.com/wormhole-foundation/deltachain/app"
-	"github.com/wormhole-foundation/deltachain/x/wormhole/client/cli"
 )
 
 func main() {

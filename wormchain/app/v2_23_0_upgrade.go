@@ -6,10 +6,10 @@ import (
 	"github.com/cosmos/cosmos-sdk/types/module"
 	upgradetypes "github.com/cosmos/cosmos-sdk/x/upgrade/types"
 
+	ibccomposabilitytypes "github.com/deltaswapio/deltachain/x/ibc-composability-mw/types"
+	ibchookstypes "github.com/deltaswapio/deltachain/x/ibc-hooks/types"
+	tokenfactorytypes "github.com/deltaswapio/deltachain/x/tokenfactory/types"
 	packetforwardtypes "github.com/strangelove-ventures/packet-forward-middleware/v4/router/types"
-	ibccomposabilitytypes "github.com/wormhole-foundation/deltachain/x/ibc-composability-mw/types"
-	ibchookstypes "github.com/wormhole-foundation/deltachain/x/ibc-hooks/types"
-	tokenfactorytypes "github.com/wormhole-foundation/deltachain/x/tokenfactory/types"
 )
 
 var V2_23_0_Upgrade = Upgrade{

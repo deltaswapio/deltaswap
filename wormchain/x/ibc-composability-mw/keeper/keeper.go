@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/wormhole-foundation/deltachain/x/ibc-composability-mw/types"
+	"github.com/deltaswapio/deltachain/x/ibc-composability-mw/types"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
@@ -16,7 +16,7 @@ import (
 	ibcexported "github.com/cosmos/ibc-go/v4/modules/core/exported"
 
 	wasmkeeper "github.com/CosmWasm/wasmd/x/wasm/keeper"
-	wormholekeeper "github.com/wormhole-foundation/deltachain/x/wormhole/keeper"
+	wormholekeeper "github.com/deltaswapio/deltachain/x/wormhole/keeper"
 )
 
 type Keeper struct {

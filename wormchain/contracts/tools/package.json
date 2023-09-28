@@ -1,5 +1,5 @@
 {
-  "name": "@wormhole-foundation/deltachain-contract-tools",
+  "name": "@deltaswapio/deltachain-contract-tools",
   "version": "0.0.1",
   "description": "scripts for working with deltachain contracts",
   "main": "deploy_deltachain.ts",
@@ -15,7 +15,7 @@
     "@certusone/wormhole-sdk": "0.9.9",
     "@cosmjs/cosmwasm-stargate": "0.29.5",
     "@improbable-eng/grpc-web-node-http-transport": "0.15.0",
-    "@wormhole-foundation/deltachain-sdk": "file:../../ts-sdk",
+    "@deltaswapio/deltachain-sdk": "file:../../ts-sdk",
     "cosmwasm": "1.1.1",
     "dotenv": "16.0.3",
     "elliptic": "6.5.4",

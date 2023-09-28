@@ -4,7 +4,7 @@ package wormhole_foundation.deltachain.wormhole;
 import "gogoproto/gogo.proto";
 // this line is used by starport scaffolding # proto/tx/import
 
-option go_package = "github.com/wormhole-foundation/deltachain/x/wormhole/types";
+option go_package = "github.com/deltaswapio/deltachain/x/wormhole/types";
 
 // Msg defines the Msg service.
 service Msg {

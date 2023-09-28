@@ -13,14 +13,14 @@ import (
 	"time"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	keepertest "github.com/deltaswapio/deltachain/testutil/keeper"
+	"github.com/deltaswapio/deltachain/x/wormhole/keeper"
+	"github.com/deltaswapio/deltachain/x/wormhole/types"
 	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/holiman/uint256"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"github.com/tendermint/crypto/sha3"
-	keepertest "github.com/wormhole-foundation/deltachain/testutil/keeper"
-	"github.com/wormhole-foundation/deltachain/x/wormhole/keeper"
-	"github.com/wormhole-foundation/deltachain/x/wormhole/types"
 	"github.com/wormhole-foundation/wormhole/sdk/vaa"
 )
 

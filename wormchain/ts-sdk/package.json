@@ -1,5 +1,5 @@
 {
-  "name": "@wormhole-foundation/deltachain-sdk",
+  "name": "@deltaswapio/deltachain-sdk",
   "version": "0.0.1",
   "description": "Typescript SDK for interating with the Wormhole chain",
   "main": "lib/index.js",
@@ -10,14 +10,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/wormhole-foundation/deltachain.git"
+    "url": "git+https://github.com/deltaswapio/deltachain.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/wormhole-foundation/deltachain/issues"
+    "url": "https://github.com/deltaswapio/deltachain/issues"
   },
-  "homepage": "https://github.com/wormhole-foundation/deltachain#readme",
+  "homepage": "https://github.com/deltaswapio/deltachain#readme",
   "dependencies": {
     "@certusone/wormhole-sdk": "^0.2.0",
     "@cosmjs/cosmwasm-stargate": "^0.27.1",

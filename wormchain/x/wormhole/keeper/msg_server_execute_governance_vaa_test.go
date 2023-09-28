@@ -6,10 +6,10 @@ import (
 	"testing"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	keepertest "github.com/deltaswapio/deltachain/testutil/keeper"
+	"github.com/deltaswapio/deltachain/x/wormhole/keeper"
+	"github.com/deltaswapio/deltachain/x/wormhole/types"
 	"github.com/stretchr/testify/assert"
-	keepertest "github.com/wormhole-foundation/deltachain/testutil/keeper"
-	"github.com/wormhole-foundation/deltachain/x/wormhole/keeper"
-	"github.com/wormhole-foundation/deltachain/x/wormhole/types"
 	"github.com/wormhole-foundation/wormhole/sdk/vaa"
 )
 

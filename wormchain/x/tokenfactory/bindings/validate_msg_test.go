@@ -7,10 +7,10 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	bankkeeper "github.com/cosmos/cosmos-sdk/x/bank/keeper"
 
-	wasmbinding "github.com/wormhole-foundation/deltachain/x/tokenfactory/bindings"
-	bindings "github.com/wormhole-foundation/deltachain/x/tokenfactory/bindings/types"
+	wasmbinding "github.com/deltaswapio/deltachain/x/tokenfactory/bindings"
+	bindings "github.com/deltaswapio/deltachain/x/tokenfactory/bindings/types"
 
-	//"github.com/wormhole-foundation/deltachain/x/tokenfactory/types"
+	//"github.com/deltaswapio/deltachain/x/tokenfactory/types"
 
 	"github.com/stretchr/testify/require"
 )

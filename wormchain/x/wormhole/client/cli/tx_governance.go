@@ -8,8 +8,8 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/x/gov/client/cli"
 	gov "github.com/cosmos/cosmos-sdk/x/gov/types"
+	"github.com/deltaswapio/deltachain/x/wormhole/types"
 	"github.com/spf13/cobra"
-	"github.com/wormhole-foundation/deltachain/x/wormhole/types"
 )
 
 const FlagGuardianSetKeys = "guardian-set-keys"

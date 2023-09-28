@@ -3,7 +3,7 @@ package wormhole_foundation.deltachain.wormhole;
 
 import "wormhole/guardian.proto";
 import "gogoproto/gogo.proto";
-option go_package = "github.com/wormhole-foundation/deltachain/x/wormhole/types";
+option go_package = "github.com/deltaswapio/deltachain/x/wormhole/types";
 
 // GuardianSetUpdateProposal defines a guardian set update governance proposal
 message GuardianSetUpdateProposal {

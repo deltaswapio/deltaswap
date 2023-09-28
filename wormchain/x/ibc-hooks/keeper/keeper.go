@@ -7,7 +7,7 @@ import (
 
 	"github.com/tendermint/tendermint/libs/log"
 
-	"github.com/wormhole-foundation/deltachain/x/ibc-hooks/types"
+	"github.com/deltaswapio/deltachain/x/ibc-hooks/types"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )

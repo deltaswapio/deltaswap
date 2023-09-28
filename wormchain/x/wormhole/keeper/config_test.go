@@ -6,9 +6,9 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/stretchr/testify/require"
 
-	keepertest "github.com/wormhole-foundation/deltachain/testutil/keeper"
-	"github.com/wormhole-foundation/deltachain/x/wormhole/keeper"
-	"github.com/wormhole-foundation/deltachain/x/wormhole/types"
+	keepertest "github.com/deltaswapio/deltachain/testutil/keeper"
+	"github.com/deltaswapio/deltachain/x/wormhole/keeper"
+	"github.com/deltaswapio/deltachain/x/wormhole/types"
 )
 
 func createTestConfig(keeper *keeper.Keeper, ctx sdk.Context) types.Config {

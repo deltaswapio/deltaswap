@@ -7,7 +7,7 @@ import {
   getWallet,
   getWormchainSigningClient,
   getWormholeQueryClient,
-} from "@wormhole-foundation/deltachain-sdk";
+} from "@deltaswapio/deltachain-sdk";
 import {
   WORM_DENOM,
   NODE_URL,

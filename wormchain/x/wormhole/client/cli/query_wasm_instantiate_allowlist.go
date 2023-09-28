@@ -5,8 +5,8 @@ import (
 
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
+	"github.com/deltaswapio/deltachain/x/wormhole/types"
 	"github.com/spf13/cobra"
-	"github.com/wormhole-foundation/deltachain/x/wormhole/types"
 )
 
 func CmdListWasmInstantiateAllowlist() *cobra.Command {

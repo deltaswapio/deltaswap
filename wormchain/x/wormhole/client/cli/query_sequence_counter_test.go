@@ -12,9 +12,9 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
-	"github.com/wormhole-foundation/deltachain/testutil/network"
-	"github.com/wormhole-foundation/deltachain/x/wormhole/client/cli"
-	"github.com/wormhole-foundation/deltachain/x/wormhole/types"
+	"github.com/deltaswapio/deltachain/testutil/network"
+	"github.com/deltaswapio/deltachain/x/wormhole/client/cli"
+	"github.com/deltaswapio/deltachain/x/wormhole/types"
 )
 
 // Prevent strconv unused error

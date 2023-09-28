@@ -7,10 +7,10 @@ import (
 	"github.com/stretchr/testify/suite"
 	tmproto "github.com/tendermint/tendermint/proto/tendermint/types"
 
-	"github.com/wormhole-foundation/deltachain/app/apptesting"
-	"github.com/wormhole-foundation/deltachain/x/tokenfactory/keeper"
-	"github.com/wormhole-foundation/deltachain/x/tokenfactory/testhelpers"
-	"github.com/wormhole-foundation/deltachain/x/tokenfactory/types"
+	"github.com/deltaswapio/deltachain/app/apptesting"
+	"github.com/deltaswapio/deltachain/x/tokenfactory/keeper"
+	"github.com/deltaswapio/deltachain/x/tokenfactory/testhelpers"
+	"github.com/deltaswapio/deltachain/x/tokenfactory/types"
 )
 
 type KeeperTestSuite struct {

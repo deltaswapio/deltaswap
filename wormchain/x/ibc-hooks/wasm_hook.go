@@ -15,8 +15,8 @@ import (
 	channeltypes "github.com/cosmos/ibc-go/v4/modules/core/04-channel/types"
 	ibcexported "github.com/cosmos/ibc-go/v4/modules/core/exported"
 
-	"github.com/wormhole-foundation/deltachain/x/ibc-hooks/keeper"
-	"github.com/wormhole-foundation/deltachain/x/ibc-hooks/types"
+	"github.com/deltaswapio/deltachain/x/ibc-hooks/keeper"
+	"github.com/deltaswapio/deltachain/x/ibc-hooks/types"
 )
 
 type ContractAck struct {

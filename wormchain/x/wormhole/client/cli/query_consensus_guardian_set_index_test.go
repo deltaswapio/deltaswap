@@ -9,10 +9,10 @@ import (
 	tmcli "github.com/tendermint/tendermint/libs/cli"
 	"google.golang.org/grpc/status"
 
-	"github.com/wormhole-foundation/deltachain/testutil/network"
-	"github.com/wormhole-foundation/deltachain/testutil/nullify"
-	"github.com/wormhole-foundation/deltachain/x/wormhole/client/cli"
-	"github.com/wormhole-foundation/deltachain/x/wormhole/types"
+	"github.com/deltaswapio/deltachain/testutil/network"
+	"github.com/deltaswapio/deltachain/testutil/nullify"
+	"github.com/deltaswapio/deltachain/x/wormhole/client/cli"
+	"github.com/deltaswapio/deltachain/x/wormhole/types"
 )
 
 func networkWithConsensusGuardianSetIndexObjects(t *testing.T) (*network.Network, types.ConsensusGuardianSetIndex) {
