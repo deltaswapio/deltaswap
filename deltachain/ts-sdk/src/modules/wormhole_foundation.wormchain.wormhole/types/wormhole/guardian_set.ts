@@ -3,7 +3,7 @@
 import * as Long from "long";
 import { util, configure, Writer, Reader } from "protobufjs/minimal";
 
-export const protobufPackage = "wormhole_foundation.deltachain.wormhole";
+export const protobufPackage = "deltaswapio.deltachain.deltaswap";
 
 export interface PhylaxSet {
   index: number;

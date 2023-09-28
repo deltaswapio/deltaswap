@@ -7,17 +7,17 @@ import (
 )
 
 // Reject all messages if we're expecting a software update.
-type WormholeAllowlistDecorator struct {
+type DeltaswapAllowlistDecorator struct {
 	k keeper.Keeper
 }
 
-func NewWormholeAllowlistDecorator(k keeper.Keeper) WormholeAllowlistDecorator {
-	return WormholeAllowlistDecorator{
+func NewDeltaswapAllowlistDecorator(k keeper.Keeper) DeltaswapAllowlistDecorator {
+	return DeltaswapAllowlistDecorator{
 		k: k,
 	}
 }
 
-func (wh WormholeAllowlistDecorator) AnteHandle(request sdk.Request, tx sdk.Tx, simulate bool, next sdk.AnteHandler) (newCtx sdk.Request, err error) {
+func (wh DeltaswapAllowlistDecorator) AnteHandle(request sdk.Request, tx sdk.Tx, simulate bool, next sdk.AnteHandler) (newCtx sdk.Request, err error) {
 	if request.IsReCheckTx() {
 		return next(request, tx, simulate)
 	}

@@ -6,7 +6,7 @@ import {
   getAddress,
   getWallet,
   getWormchainSigningClient,
-  getWormholeQueryClient,
+  getDeltaswapQueryClient,
 } from "@deltaswapio/deltachain-sdk";
 import {
   WORM_DENOM,
@@ -20,7 +20,7 @@ import * as elliptic from "elliptic";
 import keccak256 from "keccak256";
 
 export async function getQueryClient() {
-  return getWormholeQueryClient(NODE_URL, true);
+  return getDeltaswapQueryClient(NODE_URL, true);
 }
 
 export async function getSigningClient() {

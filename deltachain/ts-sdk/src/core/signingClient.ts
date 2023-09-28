@@ -19,7 +19,7 @@ import * as txModule from "../modules/cosmos.tx.v1beta1";
 import * as upgradeModule from "../modules/cosmos.upgrade.v1beta1";
 import * as vestingModule from "../modules/cosmos.vesting.v1beta1";
 import * as wasmModule from "../modules/cosmwasm.wasm.v1";
-import * as coreModule from "../modules/wormhole_foundation.deltachain.wormhole";
+import * as coreModule from "../modules/deltaswapio.deltachain.deltaswap";
 
 //protobuf isn't guaranteed to have long support, which is used by the stargate signing client,
 //so we're going to use an independent long module and shove it into the globals of protobuf
@@ -296,7 +296,7 @@ export const getWormchainSigningClient = async (
   type UpgradeType = Omit<typeof upgradeShell, "signAndBroadcast">;
   type VestingType = Omit<typeof vestingShell, "signAndBroadcast">;
   type WasmType = Omit<typeof wasmShell, "signAndBroadcast">;
-  type WormholeFunctions = {
+  type DeltaswapFunctions = {
     core: CoreType;
     auth: AuthzType;
     bank: BankType;
@@ -315,9 +315,9 @@ export const getWormchainSigningClient = async (
     vesting: VestingType;
     wasm: WasmType;
   };
-  type WormholeSigningClient = SigningStargateClient & WormholeFunctions;
+  type DeltaswapSigningClient = SigningStargateClient & DeltaswapFunctions;
 
-  const output: WormholeSigningClient = client as WormholeSigningClient;
+  const output: DeltaswapSigningClient = client as DeltaswapSigningClient;
 
   output.core = coreShell;
   output.auth = authShell;

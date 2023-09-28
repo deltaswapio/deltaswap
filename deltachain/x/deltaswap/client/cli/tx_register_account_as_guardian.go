@@ -18,7 +18,7 @@ var _ = strconv.Itoa(0)
 func CmdRegisterAccountAsPhylax() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "register-account-as-guardian [signature]",
-		Short: "Register a guardian public key with a wormhole chain address.",
+		Short: "Register a guardian public key with a deltaswap chain address.",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			argSignature, err := hex.DecodeString(args[0])

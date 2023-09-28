@@ -1,13 +1,13 @@
 syntax = "proto3";
-package wormhole_foundation.deltachain.wormhole;
+package deltaswapio.deltachain.deltaswap;
 
 import "google/api/annotations.proto";
 import "cosmos/base/query/v1beta1/pagination.proto";
-import "wormhole/guardian.proto";
-import "wormhole/config.proto";
-import "wormhole/replay_protection.proto";
-import "wormhole/sequence_counter.proto";
-import "wormhole/consensus_guardian_set_index.proto";
+import "deltaswap/guardian.proto";
+import "deltaswap/config.proto";
+import "deltaswap/replay_protection.proto";
+import "deltaswap/sequence_counter.proto";
+import "deltaswap/consensus_guardian_set_index.proto";
 // this line is used by starport scaffolding # 1
 import "gogoproto/gogo.proto";
 
@@ -17,71 +17,71 @@ option go_package = "github.com/deltaswapio/deltachain/x/deltaswap/types";
 service Query {
     // Queries a guardianSet by index.
 	rpc PhylaxSet(QueryGetPhylaxSetRequest) returns (QueryGetPhylaxSetResponse) {
-		option (google.api.http).get = "/wormhole_foundation/deltachain/wormhole/guardianSet/{index}";
+		option (google.api.http).get = "/deltaswapio/deltachain/deltaswap/guardianSet/{index}";
 	}
 
 	// Queries a list of guardianSet items.
 	rpc PhylaxSetAll(QueryAllPhylaxSetRequest) returns (QueryAllPhylaxSetResponse) {
-		option (google.api.http).get = "/wormhole_foundation/deltachain/wormhole/guardianSet";
+		option (google.api.http).get = "/deltaswapio/deltachain/deltaswap/guardianSet";
 	}
 
 // Queries a config by index.
 	rpc Config(QueryGetConfigRequest) returns (QueryGetConfigResponse) {
-		option (google.api.http).get = "/wormhole_foundation/deltachain/wormhole/config";
+		option (google.api.http).get = "/deltaswapio/deltachain/deltaswap/config";
 	}
 // Queries a replayProtection by index.
 	rpc ReplayProtection(QueryGetReplayProtectionRequest) returns (QueryGetReplayProtectionResponse) {
-		option (google.api.http).get = "/wormhole_foundation/deltachain/wormhole/replayProtection/{index}";
+		option (google.api.http).get = "/deltaswapio/deltachain/deltaswap/replayProtection/{index}";
 	}
 
 	// Queries a list of replayProtection items.
 	rpc ReplayProtectionAll(QueryAllReplayProtectionRequest) returns (QueryAllReplayProtectionResponse) {
-		option (google.api.http).get = "/wormhole_foundation/deltachain/wormhole/replayProtection";
+		option (google.api.http).get = "/deltaswapio/deltachain/deltaswap/replayProtection";
 	}
 
 // Queries a sequenceCounter by index.
 	rpc SequenceCounter(QueryGetSequenceCounterRequest) returns (QueryGetSequenceCounterResponse) {
-		option (google.api.http).get = "/wormhole_foundation/deltachain/wormhole/sequenceCounter/{index}";
+		option (google.api.http).get = "/deltaswapio/deltachain/deltaswap/sequenceCounter/{index}";
 	}
 
 	// Queries a list of sequenceCounter items.
 	rpc SequenceCounterAll(QueryAllSequenceCounterRequest) returns (QueryAllSequenceCounterResponse) {
-		option (google.api.http).get = "/wormhole_foundation/deltachain/wormhole/sequenceCounter";
+		option (google.api.http).get = "/deltaswapio/deltachain/deltaswap/sequenceCounter";
 	}
 
 // Queries a ConsensusPhylaxSetIndex by index.
 	rpc ConsensusPhylaxSetIndex(QueryGetConsensusPhylaxSetIndexRequest) returns (QueryGetConsensusPhylaxSetIndexResponse) {
-		option (google.api.http).get = "/wormhole_foundation/deltachain/wormhole/consensus_guardian_set_index";
+		option (google.api.http).get = "/deltaswapio/deltachain/deltaswap/consensus_guardian_set_index";
 	}
 // Queries a PhylaxValidator by index.
 	rpc PhylaxValidator(QueryGetPhylaxValidatorRequest) returns (QueryGetPhylaxValidatorResponse) {
-		option (google.api.http).get = "/wormhole_foundation/deltachain/wormhole/guardian_validator/{guardianKey}";
+		option (google.api.http).get = "/deltaswapio/deltachain/deltaswap/guardian_validator/{guardianKey}";
 	}
 
 	// Queries a list of PhylaxValidator items.
 	rpc PhylaxValidatorAll(QueryAllPhylaxValidatorRequest) returns (QueryAllPhylaxValidatorResponse) {
-		option (google.api.http).get = "/wormhole_foundation/deltachain/wormhole/guardian_validator";
+		option (google.api.http).get = "/deltaswapio/deltachain/deltaswap/guardian_validator";
 	}
 
 // Queries a list of LatestPhylaxSetIndex items.
 	rpc LatestPhylaxSetIndex(QueryLatestPhylaxSetIndexRequest) returns (QueryLatestPhylaxSetIndexResponse) {
-		option (google.api.http).get = "/wormhole_foundation/deltachain/wormhole/latest_guardian_set_index";
+		option (google.api.http).get = "/deltaswapio/deltachain/deltaswap/latest_guardian_set_index";
 	}
 
 	rpc AllowlistAll(QueryAllValidatorAllowlist) returns (QueryAllValidatorAllowlistResponse) {
-		option (google.api.http).get = "/wormhole_foundation/deltachain/wormhole/allowlist";
+		option (google.api.http).get = "/deltaswapio/deltachain/deltaswap/allowlist";
 	}
 
 	rpc Allowlist(QueryValidatorAllowlist) returns (QueryValidatorAllowlistResponse) {
-		option (google.api.http).get = "/wormhole_foundation/deltachain/wormhole/allowlist/{validator_address}";
+		option (google.api.http).get = "/deltaswapio/deltachain/deltaswap/allowlist/{validator_address}";
 	}
 
 	rpc IbcComposabilityMwContract(QueryIbcComposabilityMwContractRequest) returns (QueryIbcComposabilityMwContractResponse) {
-		option (google.api.http).get = "/wormhole_foundation/deltachain/wormhole/ibc_composability_mw_contract";
+		option (google.api.http).get = "/deltaswapio/deltachain/deltaswap/ibc_composability_mw_contract";
 	}
 
 	rpc WasmInstantiateAllowlistAll(QueryAllWasmInstantiateAllowlist) returns (QueryAllWasmInstantiateAllowlistResponse) {
-		option (google.api.http).get = "/wormhole_foundation/deltachain/wormhole/wasm_instantiate_allowlist";
+		option (google.api.http).get = "/deltaswapio/deltachain/deltaswap/wasm_instantiate_allowlist";
 	}
 
 // this line is used by starport scaffolding # 2

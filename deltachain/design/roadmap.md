@@ -1,12 +1,12 @@
-# Wormhole Chain Roadmap
+# Deltaswap Chain Roadmap
 
-## Why Wormhole Chain?
+## Why Deltaswap Chain?
 
-At the time of writing, the Wormhole Phylax Network is a decentralized network of 19 validators operating in a Proof-of-Authority consensus mechanism. They validate using the phylaxd program from the Wormhole core repository, and perform governance off-chain. There are currently no features to the Wormhole Phylax Network except the core function of observing and signing VAAs.
+At the time of writing, the Deltaswap Phylax Network is a decentralized network of 19 validators operating in a Proof-of-Authority consensus mechanism. They validate using the phylaxd program from the Deltaswap core repository, and perform governance off-chain. There are currently no features to the Deltaswap Phylax Network except the core function of observing and signing VAAs.
 
-The roadmap is that as Wormhole grows and matures, it will add more advanced features, such as Accounting, Wormhole Pipes, Cross-Chain Queries, and more. It will also move its governance, VAA generation, and validator on-boarding to a formalized process, and change its governance structure from PoA to another mechanism (possibly a modified Proof of Stake mechanism).
+The roadmap is that as Deltaswap grows and matures, it will add more advanced features, such as Accounting, Deltaswap Pipes, Cross-Chain Queries, and more. It will also move its governance, VAA generation, and validator on-boarding to a formalized process, and change its governance structure from PoA to another mechanism (possibly a modified Proof of Stake mechanism).
 
-Considering that future Wormhole governance is intended to be token based, and that many of these upcoming features are incentivized via fee or staking mechanisms, the obvious path forward is to launch a purpose-built blockchain to support this vision.
+Considering that future Deltaswap governance is intended to be token based, and that many of these upcoming features are incentivized via fee or staking mechanisms, the obvious path forward is to launch a purpose-built blockchain to support this vision.
 
 ## Why Cosmos?
 
@@ -17,15 +17,15 @@ When building a new blockchain, there are not particularly many options. The pri
 - Build one from scratch
 - Implement into an existing environment (parachain), or implement as a layer 2.
 
-There is not any blockchain in particular which stands out to be forked, and most forked blockchains (such as Ethereum), would require maintaining a smart-contract runtime, which is an unnecessary overhead for Wormhole Chain.
+There is not any blockchain in particular which stands out to be forked, and most forked blockchains (such as Ethereum), would require maintaining a smart-contract runtime, which is an unnecessary overhead for Deltaswap Chain.
 
-The Cosmos SDK is the most sensible choice, as its extensible 'module' system allows for the outlined features of Wormhole Chain to be easily added to the out-of-the-box runtime. Additionally, the Cosmos SDK's use of Tendermint for its consensus mechanism can easily be modified to support Proof of Authority for block production, while still allowing stake-weighted on-chain voting for governance. In the future, PoA can also be seamlessly swapped out for an entirely PoS system. Using the Cosmos SDK will also open up the opportunity for the Wormhole ecosystem to directly leverage the IBC protocol.
+The Cosmos SDK is the most sensible choice, as its extensible 'module' system allows for the outlined features of Deltaswap Chain to be easily added to the out-of-the-box runtime. Additionally, the Cosmos SDK's use of Tendermint for its consensus mechanism can easily be modified to support Proof of Authority for block production, while still allowing stake-weighted on-chain voting for governance. In the future, PoA can also be seamlessly swapped out for an entirely PoS system. Using the Cosmos SDK will also open up the opportunity for the Deltaswap ecosystem to directly leverage the IBC protocol.
 
-Because the Cosmos SDK is able to support the planned feature set of Wormhole Chain, building it from scratch would largely be a case of 'reinventing the wheel', and even potentially sacrifice features, such as IBC support.
+Because the Cosmos SDK is able to support the planned feature set of Deltaswap Chain, building it from scratch would largely be a case of 'reinventing the wheel', and even potentially sacrifice features, such as IBC support.
 
-The last option would be to implement the chain as a layer two, or integrate as a parachain in an existing environment like Polkadot. Both of these create dependencies and constraints for Wormhole which would make it hard to hand-roll a consensus mechanism or unilaterally develop new functionality.
+The last option would be to implement the chain as a layer two, or integrate as a parachain in an existing environment like Polkadot. Both of these create dependencies and constraints for Deltaswap which would make it hard to hand-roll a consensus mechanism or unilaterally develop new functionality.
 
-## Wormhole Chain Explorer
+## Deltaswap Chain Explorer
 
 Every blockchain should have an explorer, as it is a useful tool. The primary Cosmos blockchain explorers are shown here:
 
@@ -33,13 +33,13 @@ https://github.com/cosmos/awesome#block-explorers
 
 Of the explorers listed, the two most popular and well-supported appear to be PingPub, and Big Dipper v2. 
 
-Big Dipper seems to be the more robust, popular, and feature-rich of the two. Its only downside appears to be that it (quite reasonably) requires an external database. It also has the added benefit of being built in React, which will be easier to support, and allow the blockchain explorer to be more easily merged with the existing Wormhole Network Explorer. For these reasons, it stands out as being the best production candidate.
+Big Dipper seems to be the more robust, popular, and feature-rich of the two. Its only downside appears to be that it (quite reasonably) requires an external database. It also has the added benefit of being built in React, which will be easier to support, and allow the blockchain explorer to be more easily merged with the existing Deltaswap Network Explorer. For these reasons, it stands out as being the best production candidate.
 
 PingPub (LOOK Explorer) has the benefit of only requiring an LCD connection. Because it is very easy to run, it may be useful as a development tool.
 
 # Feature Roadmap
 
-The upcoming Wormhole Chain features fall into four categories, roughly arranged in their dependency ordering.
+The upcoming Deltaswap Chain features fall into four categories, roughly arranged in their dependency ordering.
 
 - Basic Functionality
 - Accounting
@@ -48,15 +48,15 @@ The upcoming Wormhole Chain features fall into four categories, roughly arranged
 
 ## Basic Functionality
 
-This category contains the critical features which allow Wormhole Chain to produce blocks, and for downstream functions to exist.
+This category contains the critical features which allow Deltaswap Chain to produce blocks, and for downstream functions to exist.
 
 ### Proof of Authority Block Production
 
-The 19 Phylaxs of the current Wormhole Network will also serve as the 19 validators for the Wormhole Chain. Furthermore, new Phylaxs must be able to register as validators on the Wormhole Chain, so that the Phylax Set Upgrade VAAs can be submitted in a Wormhole Chain transaction to change its validator set, akin to the process on other chains.
+The 19 Phylaxs of the current Deltaswap Network will also serve as the 19 validators for the Deltaswap Chain. Furthermore, new Phylaxs must be able to register as validators on the Deltaswap Chain, so that the Phylax Set Upgrade VAAs can be submitted in a Deltaswap Chain transaction to change its validator set, akin to the process on other chains.
 
 ### Core Bridge and Token Bridge
 
-Wormhole Chain will contain critical functions for the Wormhole network, but it will also be another connected chain to the network. As such it will need an implementation of the Wormhole Core Bridge and Token Bridge.
+Deltaswap Chain will contain critical functions for the Deltaswap network, but it will also be another connected chain to the network. As such it will need an implementation of the Deltaswap Core Bridge and Token Bridge.
 
 ## Accounting
 
@@ -74,10 +74,10 @@ In order to vote, users will have to transfer and stake $WORM tokens from anothe
 ## New Cross-Chain Functionality
 
 ### Cross-Chain Queries
-Cross Chain queries are a mechanism by which read-only data can be requested from a chain without actually submitting a transaction on that chain. For example, a user could request a VAA for the current balance of an Ethereum wallet by submitting a transaction Wormhole Chain. This would be a unified location to request data from any chain, and be a tremendous cost-saving mechanism over executing transactions on other L1s.
+Cross Chain queries are a mechanism by which read-only data can be requested from a chain without actually submitting a transaction on that chain. For example, a user could request a VAA for the current balance of an Ethereum wallet by submitting a transaction Deltaswap Chain. This would be a unified location to request data from any chain, and be a tremendous cost-saving mechanism over executing transactions on other L1s.
 
-### Wormhole Pipes
-Wormhole pipes are similar to Cross-Chain queries, but act via a 'Push' model whereby contracts can subscribe to systematically read data from other chains. Subscriptions would be managed via Wormhole Chain.
+### Deltaswap Pipes
+Deltaswap pipes are similar to Cross-Chain queries, but act via a 'Push' model whereby contracts can subscribe to systematically read data from other chains. Subscriptions would be managed via Deltaswap Chain.
 
 ### Many others
-Going forward, Wormhole Chain will be an excellent mechanism for both the public to interact with the Phylax network, and for the Phylaxs to communicate between themselves. As such, Wormhole Chain should become the primary mechanism by which requests are made to the Phylaxs, and how new oracle features are implemented.
+Going forward, Deltaswap Chain will be an excellent mechanism for both the public to interact with the Phylax network, and for the Phylaxs to communicate between themselves. As such, Deltaswap Chain should become the primary mechanism by which requests are made to the Phylaxs, and how new oracle features are implemented.

@@ -16,8 +16,8 @@ genesis="$pwd/devnet/base/config/genesis.json"
 #   app_state.auth.accounts
 #   app_state.bank.balances
 # add the gentx
-# add the guardian pubkey base64 to wormhole.guardianSetList[0].keys
-# add the validator obj to wormhole.guardianValidatorList
+# add the guardian pubkey base64 to deltaswap.guardianSetList[0].keys
+# add the validator obj to deltaswap.guardianValidatorList
 
 
 # TEMP manually add the second validator info to genesis.json
@@ -29,11 +29,11 @@ if [ $NUM_GUARDIANS -ge 2 ]; then
 
   # add the validatorAddr to guardianSetList.keys.
   # use jq to add the object to the list in genesis.json. use cat and a sub-shell to send the output of jq to the json file.
-  cat <<< $(jq --arg new "$guardianKey" '.app_state.wormhole.guardianSetList[0].keys += [$new]' ${genesis})  > ${genesis}
+  cat <<< $(jq --arg new "$guardianKey" '.app_state.deltaswap.guardianSetList[0].keys += [$new]' ${genesis})  > ${genesis}
 
   # create a guardianValidator config object and add it to the guardianValidatorList.
   validatorConfig="{\"guardianKey\": \"$guardianKey\", \"validatorAddr\": \"$validatorAddr\"}"
-  cat <<< $(jq --argjson new "$validatorConfig" '.app_state.wormhole.guardianValidatorList += [$new]' ${genesis})  > ${genesis}
+  cat <<< $(jq --argjson new "$validatorConfig" '.app_state.deltaswap.guardianValidatorList += [$new]' ${genesis})  > ${genesis}
 fi
 
 

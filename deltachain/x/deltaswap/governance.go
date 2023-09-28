@@ -14,20 +14,20 @@ import (
 	"github.com/deltaswapio/deltaswap/sdk/vaa"
 )
 
-// NewWormholeGovernanceProposalHandler creates a governance handler to manage new proposal types.
-// It enables PhylaxSetProposal to update the guardian set and GenericWormholeMessageProposal to emit a generic wormhole
+// NewDeltaswapGovernanceProposalHandler creates a governance handler to manage new proposal types.
+// It enables PhylaxSetProposal to update the guardian set and GenericDeltaswapMessageProposal to emit a generic wormhole
 // message from the governance emitter.
-func NewWormholeGovernanceProposalHandler(k keeper.Keeper) govtypes.Handler {
+func NewDeltaswapGovernanceProposalHandler(k keeper.Keeper) govtypes.Handler {
 	return func(ctx sdk.Context, content govtypes.Content) error {
 		switch c := content.(type) {
 		case *types.PhylaxSetUpdateProposal:
 			return handlePhylaxSetUpdateProposal(ctx, k, c)
 
-		case *types.GovernanceWormholeMessageProposal:
-			return handleGovernanceWormholeMessageProposal(ctx, k, c)
+		case *types.GovernanceDeltaswapMessageProposal:
+			return handleGovernanceDeltaswapMessageProposal(ctx, k, c)
 
 		default:
-			return sdkerrors.Wrapf(sdkerrors.ErrUnknownRequest, "unrecognized wormhole proposal content type: %T", c)
+			return sdkerrors.Wrapf(sdkerrors.ErrUnknownRequest, "unrecognized deltaswap proposal content type: %T", c)
 		}
 	}
 }
@@ -47,7 +47,7 @@ func handlePhylaxSetUpdateProposal(ctx sdk.Context, k keeper.Keeper, proposal *t
 		return types.ErrNoConfig
 	}
 
-	// Post a wormhole guardian set update governance message
+	// Post a deltaswap guardian set update governance message
 	message := &bytes.Buffer{}
 
 	// Header
@@ -75,13 +75,13 @@ func handlePhylaxSetUpdateProposal(ctx sdk.Context, k keeper.Keeper, proposal *t
 	return nil
 }
 
-func handleGovernanceWormholeMessageProposal(ctx sdk.Context, k keeper.Keeper, proposal *types.GovernanceWormholeMessageProposal) error {
+func handleGovernanceDeltaswapMessageProposal(ctx sdk.Context, k keeper.Keeper, proposal *types.GovernanceDeltaswapMessageProposal) error {
 	config, ok := k.GetConfig(ctx)
 	if !ok {
 		return types.ErrNoConfig
 	}
 
-	// Post a wormhole governance message
+	// Post a deltaswap governance message
 	message := &bytes.Buffer{}
 	message.Write(proposal.Module)
 	MustWrite(message, binary.BigEndian, uint8(proposal.Action))

@@ -59,7 +59,7 @@ func getRandomAddress() string {
 }
 
 func TestAllowlistEntry(t *testing.T) {
-	k, ctx := keepertest.WormholeKeeper(t)
+	k, ctx := keepertest.DeltaswapKeeper(t)
 	guardians, _ := createNPhylaxValidator(k, ctx, 10)
 	k.SetConfig(ctx, types.Config{
 		GovernanceEmitter:   vaa.GovernanceEmitter[:],
@@ -177,7 +177,7 @@ func TestAllowlistEntry(t *testing.T) {
 }
 
 func TestAllowlistEntryAnteHandler(t *testing.T) {
-	k, ctx := keepertest.WormholeKeeper(t)
+	k, ctx := keepertest.DeltaswapKeeper(t)
 	guardians, privateKeys := createNPhylaxValidator(k, ctx, 10)
 	_ = privateKeys
 	k.SetConfig(ctx, types.Config{
@@ -195,7 +195,7 @@ func TestAllowlistEntryAnteHandler(t *testing.T) {
 	context := sdk.WrapSDKContext(ctx)
 	msgServer := keeper.NewMsgServerImpl(*k)
 
-	anteHandler := ante.NewWormholeAllowlistDecorator(*k)
+	anteHandler := ante.NewDeltaswapAllowlistDecorator(*k)
 
 	// Test ante handler works with validate validator address
 	for _, g := range guardians {

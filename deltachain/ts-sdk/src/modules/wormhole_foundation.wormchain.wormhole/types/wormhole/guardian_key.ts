@@ -2,7 +2,7 @@
 /* eslint-disable */
 import { Writer, Reader } from "protobufjs/minimal";
 
-export const protobufPackage = "wormhole_foundation.deltachain.wormhole";
+export const protobufPackage = "deltaswapio.deltachain.deltaswap";
 
 export interface PhylaxKey {
   key: Uint8Array;

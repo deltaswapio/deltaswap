@@ -1,7 +1,7 @@
 {
   "name": "@wormhole-foundation/tests-deltachain",
   "version": "0.0.1",
-  "description": "testing project for wormhole chain",
+  "description": "testing project for deltaswap chain",
   "main": "index.js",
   "type": "module",
   "directories": {

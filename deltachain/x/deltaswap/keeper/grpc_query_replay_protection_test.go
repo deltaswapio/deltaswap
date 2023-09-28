@@ -18,7 +18,7 @@ import (
 var _ = strconv.IntSize
 
 func TestReplayProtectionQuerySingle(t *testing.T) {
-	keeper, ctx := keepertest.WormholeKeeper(t)
+	keeper, ctx := keepertest.DeltaswapKeeper(t)
 	wctx := sdk.WrapSDKContext(ctx)
 	msgs := createNReplayProtection(keeper, ctx, 2)
 	for _, tc := range []struct {
@@ -65,7 +65,7 @@ func TestReplayProtectionQuerySingle(t *testing.T) {
 }
 
 func TestReplayProtectionQueryPaginated(t *testing.T) {
-	keeper, ctx := keepertest.WormholeKeeper(t)
+	keeper, ctx := keepertest.DeltaswapKeeper(t)
 	wctx := sdk.WrapSDKContext(ctx)
 	msgs := createNReplayProtection(keeper, ctx, 5)
 

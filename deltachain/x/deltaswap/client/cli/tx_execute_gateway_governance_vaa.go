@@ -13,11 +13,11 @@ import (
 
 var _ = strconv.Itoa(0)
 
-// CmdExecuteGatewayGovernanceVaa will submit and execute a governance VAA for wormhole Gateway.
+// CmdExecuteGatewayGovernanceVaa will submit and execute a governance VAA for deltaswap Gateway.
 func CmdExecuteGatewayGovernanceVaa() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "execute-gateway-governance-vaa [vaa-hex]",
-		Short: "Execute the provided Wormhole Gateway governance VAA",
+		Short: "Execute the provided Deltaswap Gateway governance VAA",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			clientCtx, err := client.GetClientTxContext(cmd)

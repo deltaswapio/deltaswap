@@ -12,11 +12,11 @@ import (
 
 func NewCustomQueryHandler(keeper Keeper) *wasmkeeper.QueryPlugins {
 	return &wasmkeeper.QueryPlugins{
-		Custom: WormholeQuerier(keeper),
+		Custom: DeltaswapQuerier(keeper),
 	}
 }
 
-type WormholeQuery struct {
+type DeltaswapQuery struct {
 	// This is deprecated and will be removed in a subsequent release
 	// because it uses an error-prone verification interface.
 	VerifyQuorum *verifyQuorumParams `json:"verify_quorum,omitempty"`
@@ -55,9 +55,9 @@ type calculateQuorumParams struct {
 	PhylaxSetIndex uint32 `json:"guardian_set_index"`
 }
 
-func WormholeQuerier(keeper Keeper) func(ctx sdk.Context, data json.RawMessage) ([]byte, error) {
+func DeltaswapQuerier(keeper Keeper) func(ctx sdk.Context, data json.RawMessage) ([]byte, error) {
 	return func(ctx sdk.Context, data json.RawMessage) ([]byte, error) {
-		var wormholeQuery WormholeQuery
+		var wormholeQuery DeltaswapQuery
 		err := json.Unmarshal(data, &wormholeQuery)
 		if err != nil {
 			return nil, sdkerrors.Wrap(sdkerrors.ErrJSONUnmarshal, err.Error())

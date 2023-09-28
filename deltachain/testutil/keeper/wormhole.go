@@ -30,12 +30,12 @@ import (
 	tmdb "github.com/tendermint/tm-db"
 )
 
-func WormholeKeeper(t testing.TB) (*keeper.Keeper, sdk.Context) {
-	k, _, _, ctx := WormholeKeeperAndWasmd(t)
+func DeltaswapKeeper(t testing.TB) (*keeper.Keeper, sdk.Context) {
+	k, _, _, ctx := DeltaswapKeeperAndWasmd(t)
 	return k, ctx
 }
 
-func WormholeKeeperAndWasmd(t testing.TB) (*keeper.Keeper, wasmkeeper.Keeper, *wasmkeeper.PermissionedKeeper, sdk.Context) {
+func DeltaswapKeeperAndWasmd(t testing.TB) (*keeper.Keeper, wasmkeeper.Keeper, *wasmkeeper.PermissionedKeeper, sdk.Context) {
 	keys := sdk.NewKVStoreKeys(
 		authtypes.StoreKey,
 		paramstypes.StoreKey,
@@ -92,7 +92,7 @@ func WormholeKeeperAndWasmd(t testing.TB) (*keeper.Keeper, wasmkeeper.Keeper, *w
 	)
 
 	supportedFeatures := "iterator,staking,stargate,wormhole"
-	appapp.WormholeKeeper = *k
+	appapp.DeltaswapKeeper = *k
 
 	appapp.CapabilityKeeper = capabilitykeeper.NewKeeper(appCodec, keys[capabilitytypes.StoreKey], memKeys[capabilitytypes.MemStoreKey])
 	scopedWasmKeeper := appapp.CapabilityKeeper.ScopeToModule(wasm.ModuleName)
@@ -113,13 +113,13 @@ func WormholeKeeperAndWasmd(t testing.TB) (*keeper.Keeper, wasmkeeper.Keeper, *w
 		&wasm_handlers.PortKeeperHandler{},
 		scopedWasmKeeper,
 		&wasm_handlers.ICS20TransferPortSourceHandler{},
-		appapp.WormholeKeeper,
+		appapp.DeltaswapKeeper,
 		appapp.MsgServiceRouter(),
 		appapp.GRPCQueryRouter(),
 		wasmDir,
 		wasm.DefaultWasmConfig(),
 		supportedFeatures,
-		wasmkeeper.WithQueryPlugins(keeper.NewCustomQueryHandler(appapp.WormholeKeeper)),
+		wasmkeeper.WithQueryPlugins(keeper.NewCustomQueryHandler(appapp.DeltaswapKeeper)),
 	)
 	ctx := sdk.NewContext(stateStore, tmproto.Header{
 		Time: time.Now(),
@@ -136,7 +136,7 @@ func WormholeKeeperAndWasmd(t testing.TB) (*keeper.Keeper, wasmkeeper.Keeper, *w
 	wasmGenState.Params.InstantiateDefaultPermission = wasmtypes.AccessTypeEverybody
 	wasmKeeper.SetParams(ctx, wasmGenState.Params)
 	permissionedWasmKeeper := wasmkeeper.NewDefaultPermissionKeeper(wasmKeeper)
-	appapp.WormholeKeeper.SetWasmdKeeper(permissionedWasmKeeper)
+	appapp.DeltaswapKeeper.SetWasmdKeeper(permissionedWasmKeeper)
 	k.SetWasmdKeeper(permissionedWasmKeeper)
 
 	return k, wasmKeeper, permissionedWasmKeeper, ctx

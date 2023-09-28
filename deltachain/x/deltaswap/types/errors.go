@@ -6,7 +6,7 @@ import (
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
 
-// x/wormhole module sentinel errors
+// x/deltaswap module sentinel errors
 var (
 	ErrPhylaxSetNotFound                     = sdkerrors.Register(ModuleName, 1101, "guardian set not found")
 	ErrSignaturesInvalid                     = sdkerrors.Register(ModuleName, 1102, "invalid signatures on VAA")

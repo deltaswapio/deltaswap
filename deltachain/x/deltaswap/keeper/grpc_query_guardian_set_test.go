@@ -15,7 +15,7 @@ import (
 )
 
 func TestPhylaxSetQuerySingle(t *testing.T) {
-	keeper, ctx := keepertest.WormholeKeeper(t)
+	keeper, ctx := keepertest.DeltaswapKeeper(t)
 	wctx := sdk.WrapSDKContext(ctx)
 	msgs := createNPhylaxSet(t, keeper, ctx, 2)
 	for _, tc := range []struct {
@@ -57,7 +57,7 @@ func TestPhylaxSetQuerySingle(t *testing.T) {
 }
 
 func TestPhylaxSetQueryPaginated(t *testing.T) {
-	keeper, ctx := keepertest.WormholeKeeper(t)
+	keeper, ctx := keepertest.DeltaswapKeeper(t)
 	wctx := sdk.WrapSDKContext(ctx)
 	msgs := createNPhylaxSet(t, keeper, ctx, 5)
 

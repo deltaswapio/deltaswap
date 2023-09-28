@@ -9,7 +9,7 @@ FROM base AS ignite-go-build
 RUN ignite generate proto-go
 
 FROM scratch AS go-export
-COPY --from=ignite-go-build /apps/deltachain/x/deltaswap/types /x/wormhole/types
+COPY --from=ignite-go-build /apps/deltachain/x/deltaswap/types /x/deltaswap/types
 COPY --from=ignite-go-build /apps/deltachain/x/tokenfactory/types /x/tokenfactory/types
 COPY --from=ignite-go-build /apps/deltachain/x/ibc-composability-mw/types /x/ibc-composability-mw/types
 

@@ -7,4 +7,4 @@ import (
 )
 
 var PhylaxSetUpdateProposalHandler = govclient.NewProposalHandler(cli.NewCmdSubmitPhylaxSetUpdateProposal, rest.ProposalPhylaxSetUpdateRESTHandler)
-var WormholeGovernanceMessageProposalHandler = govclient.NewProposalHandler(cli.NewCmdSubmitWormholeGovernanceMessageProposal, rest.ProposalWormholeGovernanceMessageRESTHandler)
+var DeltaswapGovernanceMessageProposalHandler = govclient.NewProposalHandler(cli.NewCmdSubmitDeltaswapGovernanceMessageProposal, rest.ProposalDeltaswapGovernanceMessageRESTHandler)

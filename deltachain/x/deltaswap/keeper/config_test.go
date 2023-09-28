@@ -18,14 +18,14 @@ func createTestConfig(keeper *keeper.Keeper, ctx sdk.Context) types.Config {
 }
 
 func TestConfigGet(t *testing.T) {
-	keeper, ctx := keepertest.WormholeKeeper(t)
+	keeper, ctx := keepertest.DeltaswapKeeper(t)
 	item := createTestConfig(keeper, ctx)
 	rst, found := keeper.GetConfig(ctx)
 	require.True(t, found)
 	require.Equal(t, item, rst)
 }
 func TestConfigRemove(t *testing.T) {
-	keeper, ctx := keepertest.WormholeKeeper(t)
+	keeper, ctx := keepertest.DeltaswapKeeper(t)
 	createTestConfig(keeper, ctx)
 	keeper.RemoveConfig(ctx)
 	_, found := keeper.GetConfig(ctx)

@@ -21,7 +21,7 @@ func ParseVAA(data []byte) (*vaa.VAA, error) {
 // CalculateQuorum returns the minimum number of guardians that need to sign a VAA for a given guardian set.
 //
 // The canonical source is the calculation in the contracts (solana/bridge/src/processor.rs and
-// ethereum/contracts/Wormhole.sol), and this needs to match the implementation in the contracts.
+// ethereum/contracts/Deltaswap.sol), and this needs to match the implementation in the contracts.
 func CalculateQuorum(numPhylaxs int) int {
 	return (numPhylaxs*2)/3 + 1
 }

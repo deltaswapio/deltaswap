@@ -25,7 +25,7 @@ func createNReplayProtection(keeper *keeper.Keeper, ctx sdk.Context, n int) []ty
 }
 
 func TestReplayProtectionGet(t *testing.T) {
-	keeper, ctx := keepertest.WormholeKeeper(t)
+	keeper, ctx := keepertest.DeltaswapKeeper(t)
 	items := createNReplayProtection(keeper, ctx, 10)
 	for _, item := range items {
 		rst, found := keeper.GetReplayProtection(ctx,
@@ -36,7 +36,7 @@ func TestReplayProtectionGet(t *testing.T) {
 	}
 }
 func TestReplayProtectionRemove(t *testing.T) {
-	keeper, ctx := keepertest.WormholeKeeper(t)
+	keeper, ctx := keepertest.DeltaswapKeeper(t)
 	items := createNReplayProtection(keeper, ctx, 10)
 	for _, item := range items {
 		keeper.RemoveReplayProtection(ctx,
@@ -50,7 +50,7 @@ func TestReplayProtectionRemove(t *testing.T) {
 }
 
 func TestReplayProtectionGetAll(t *testing.T) {
-	keeper, ctx := keepertest.WormholeKeeper(t)
+	keeper, ctx := keepertest.DeltaswapKeeper(t)
 	items := createNReplayProtection(keeper, ctx, 10)
 	require.ElementsMatch(t, items, keeper.GetAllReplayProtection(ctx))
 }

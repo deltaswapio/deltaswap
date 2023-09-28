@@ -26,14 +26,14 @@ import { Tendermint34Client } from "@cosmjs/tendermint-rpc";
 import {
   RpcStatus,
   HttpResponse,
-} from "../modules/wormhole_foundation.deltachain.wormhole/rest";
+} from "../modules/deltaswapio.deltachain.deltaswap/rest";
 import {
   txClient,
   queryClient,
-} from "../modules/wormhole_foundation.deltachain.wormhole";
+} from "../modules/deltaswapio.deltachain.deltaswap";
 import { keccak256 } from "ethers/lib/utils";
-import { MsgRegisterAccountAsPhylax } from "../modules/wormhole_foundation.deltachain.wormhole/types/wormhole/tx";
-import { PhylaxKey } from "../modules/wormhole_foundation.deltachain.wormhole/types/wormhole/guardian_key";
+import { MsgRegisterAccountAsPhylax } from "../modules/deltaswapio.deltachain.deltaswap/types/deltaswap/tx";
+import { PhylaxKey } from "../modules/deltaswapio.deltachain.deltaswap/types/deltaswap/guardian_key";
 let elliptic = require("elliptic"); //No TS defs?
 
 //https://tutorials.cosmos.network/academy/4-my-own-chain/cosmjs.html

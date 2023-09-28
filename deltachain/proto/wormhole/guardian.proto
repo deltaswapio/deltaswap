@@ -1,5 +1,5 @@
 syntax = "proto3";
-package wormhole_foundation.deltachain.wormhole;
+package deltaswapio.deltachain.deltaswap;
 
 option go_package = "github.com/deltaswapio/deltachain/x/deltaswap/types";
 

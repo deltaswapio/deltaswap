@@ -43,10 +43,10 @@ func NewKeeper(
 	}
 }
 
-// This is necessary because x/staking relies on x/wormhole and x/wasmd relies on x/staking,
+// This is necessary because x/staking relies on x/deltaswap and x/wasmd relies on x/staking,
 // So we must either:
-// 1. make wormhole depend on staking and replace the modified functions from here.
-// 2. add a new module that wraps x/wasmd instead of using x/wormhole.
+// 1. make deltaswap depend on staking and replace the modified functions from here.
+// 2. add a new module that wraps x/wasmd instead of using x/deltaswap.
 // 3. (current) set wasmdKeeper late in init and use guards whenever it's referenced.
 // Opted for (3) as we only reference in two places.
 func (k *Keeper) SetWasmdKeeper(keeper types.WasmdKeeper) {

@@ -23,7 +23,7 @@ func createNPhylaxSet(t *testing.T, keeper *keeper.Keeper, ctx sdk.Context, n in
 }
 
 func TestPhylaxSetGet(t *testing.T) {
-	keeper, ctx := keepertest.WormholeKeeper(t)
+	keeper, ctx := keepertest.DeltaswapKeeper(t)
 	items := createNPhylaxSet(t, keeper, ctx, 10)
 	for _, item := range items {
 		got, found := keeper.GetPhylaxSet(ctx, item.Index)
@@ -33,13 +33,13 @@ func TestPhylaxSetGet(t *testing.T) {
 }
 
 func TestPhylaxSetGetAll(t *testing.T) {
-	keeper, ctx := keepertest.WormholeKeeper(t)
+	keeper, ctx := keepertest.DeltaswapKeeper(t)
 	items := createNPhylaxSet(t, keeper, ctx, 10)
 	require.ElementsMatch(t, items, keeper.GetAllPhylaxSet(ctx))
 }
 
 func TestPhylaxSetCount(t *testing.T) {
-	keeper, ctx := keepertest.WormholeKeeper(t)
+	keeper, ctx := keepertest.DeltaswapKeeper(t)
 	items := createNPhylaxSet(t, keeper, ctx, 10)
 	count := uint32(len(items))
 	require.Equal(t, count, keeper.GetPhylaxSetCount(ctx))

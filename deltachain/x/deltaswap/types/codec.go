@@ -9,16 +9,16 @@ import (
 )
 
 func RegisterCodec(cdc *codec.LegacyAmino) {
-	cdc.RegisterConcrete(&MsgExecuteGovernanceVAA{}, "wormhole/ExecuteGovernanceVAA", nil)
-	cdc.RegisterConcrete(&MsgRegisterAccountAsPhylax{}, "wormhole/RegisterAccountAsPhylax", nil)
-	cdc.RegisterConcrete(&MsgStoreCode{}, "wormhole/StoreCode", nil)
-	cdc.RegisterConcrete(&MsgInstantiateContract{}, "wormhole/InstantiateContract", nil)
-	cdc.RegisterConcrete(&MsgMigrateContract{}, "wormhole/MigrateContract", nil)
-	cdc.RegisterConcrete(&MsgCreateAllowlistEntryRequest{}, "wormhole/CreateAllowlistEntryRequest", nil)
-	cdc.RegisterConcrete(&MsgDeleteAllowlistEntryRequest{}, "wormhole/DeleteAllowlistEntryRequest", nil)
-	cdc.RegisterConcrete(&MsgAddWasmInstantiateAllowlist{}, "wormhole/AddWasmInstantiateAllowlist", nil)
-	cdc.RegisterConcrete(&MsgDeleteWasmInstantiateAllowlist{}, "wormhole/DeleteWasmInstantiateAllowlist", nil)
-	cdc.RegisterConcrete(&MsgExecuteGatewayGovernanceVaa{}, "wormhole/ExecuteGatewayGovernanceVaa", nil)
+	cdc.RegisterConcrete(&MsgExecuteGovernanceVAA{}, "deltaswap/ExecuteGovernanceVAA", nil)
+	cdc.RegisterConcrete(&MsgRegisterAccountAsPhylax{}, "deltaswap/RegisterAccountAsPhylax", nil)
+	cdc.RegisterConcrete(&MsgStoreCode{}, "deltaswap/StoreCode", nil)
+	cdc.RegisterConcrete(&MsgInstantiateContract{}, "deltaswap/InstantiateContract", nil)
+	cdc.RegisterConcrete(&MsgMigrateContract{}, "deltaswap/MigrateContract", nil)
+	cdc.RegisterConcrete(&MsgCreateAllowlistEntryRequest{}, "deltaswap/CreateAllowlistEntryRequest", nil)
+	cdc.RegisterConcrete(&MsgDeleteAllowlistEntryRequest{}, "deltaswap/DeleteAllowlistEntryRequest", nil)
+	cdc.RegisterConcrete(&MsgAddWasmInstantiateAllowlist{}, "deltaswap/AddWasmInstantiateAllowlist", nil)
+	cdc.RegisterConcrete(&MsgDeleteWasmInstantiateAllowlist{}, "deltaswap/DeleteWasmInstantiateAllowlist", nil)
+	cdc.RegisterConcrete(&MsgExecuteGatewayGovernanceVaa{}, "deltaswap/ExecuteGatewayGovernanceVaa", nil)
 	// this line is used by starport scaffolding # 2
 }
 
@@ -33,7 +33,7 @@ func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 		&MsgExecuteGatewayGovernanceVaa{},
 	)
 	registry.RegisterImplementations((*gov.Content)(nil),
-		&GovernanceWormholeMessageProposal{},
+		&GovernanceDeltaswapMessageProposal{},
 		&PhylaxSetUpdateProposal{})
 	registry.RegisterImplementations((*sdk.Msg)(nil),
 		&MsgRegisterAccountAsPhylax{},

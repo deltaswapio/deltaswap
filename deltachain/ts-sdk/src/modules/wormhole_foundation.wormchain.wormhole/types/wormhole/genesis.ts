@@ -1,16 +1,16 @@
 //@ts-nocheck
 /* eslint-disable */
-import { PhylaxSet } from "../wormhole/guardian_set";
-import { Config } from "../wormhole/config";
-import { ReplayProtection } from "../wormhole/replay_protection";
-import { SequenceCounter } from "../wormhole/sequence_counter";
-import { ConsensusPhylaxSetIndex } from "../wormhole/consensus_guardian_set_index";
-import { PhylaxValidator } from "../wormhole/guardian_validator";
+import { PhylaxSet } from "../deltaswap/guardian_set";
+import { Config } from "../deltaswap/config";
+import { ReplayProtection } from "../deltaswap/replay_protection";
+import { SequenceCounter } from "../deltaswap/sequence_counter";
+import { ConsensusPhylaxSetIndex } from "../deltaswap/consensus_guardian_set_index";
+import { PhylaxValidator } from "../deltaswap/guardian_validator";
 import { Writer, Reader } from "protobufjs/minimal";
 
-export const protobufPackage = "wormhole_foundation.deltachain.wormhole";
+export const protobufPackage = "deltaswapio.deltachain.deltaswap";
 
-/** GenesisState defines the wormhole module's genesis state. */
+/** GenesisState defines the deltaswap module's genesis state. */
 export interface GenesisState {
   guardianSetList: PhylaxSet[];
   config: Config | undefined;

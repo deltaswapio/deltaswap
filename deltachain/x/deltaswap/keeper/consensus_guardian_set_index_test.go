@@ -19,7 +19,7 @@ func createTestConsensusPhylaxSetIndex(keeper *keeper.Keeper, ctx sdk.Context) t
 }
 
 func TestConsensusPhylaxSetIndexGet(t *testing.T) {
-	keeper, ctx := keepertest.WormholeKeeper(t)
+	keeper, ctx := keepertest.DeltaswapKeeper(t)
 	item := createTestConsensusPhylaxSetIndex(keeper, ctx)
 	rst, found := keeper.GetConsensusPhylaxSetIndex(ctx)
 	require.True(t, found)
@@ -30,7 +30,7 @@ func TestConsensusPhylaxSetIndexGet(t *testing.T) {
 }
 
 func TestConsensusPhylaxSetIndexRemove(t *testing.T) {
-	keeper, ctx := keepertest.WormholeKeeper(t)
+	keeper, ctx := keepertest.DeltaswapKeeper(t)
 	createTestConsensusPhylaxSetIndex(keeper, ctx)
 	keeper.RemoveConsensusPhylaxSetIndex(ctx)
 	_, found := keeper.GetConsensusPhylaxSetIndex(ctx)

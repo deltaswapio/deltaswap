@@ -1,5 +1,5 @@
 syntax = "proto3";
-package wormhole_foundation.deltachain.wormhole;
+package deltaswapio.deltachain.deltaswap;
 
 import "gogoproto/gogo.proto";
 // this line is used by starport scaffolding # proto/tx/import

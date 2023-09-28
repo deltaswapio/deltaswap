@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package wormhole_foundation.deltachain.ibc_composability_mw.v1;
+package deltaswapio.deltachain.ibc_composability_mw.v1;
 
 option go_package = "github.com/deltaswapio/deltachain/x/ibc-composability-mw/types";
 

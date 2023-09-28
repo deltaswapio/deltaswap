@@ -12,7 +12,7 @@
 
 ## TODO Bootstrap chain
 
-The native token of the Wormhole chain is $WORM. This token is used both for
+The native token of the Deltaswap chain is $WORM. This token is used both for
 staking (governance) and fees. These tokens are already minted on Solana, and
 they won't be available initially at the genesis of the chain. This presents
 a number of difficulties around bootstrapping.
@@ -33,18 +33,18 @@ votes will reach consensus with DPoS by staking $WORM tokens.
 
 ## TODO Onboarding guardians
 
-The validators of wormhole chain are going to be the 19 guardians. We need a
-way to connect their existing guardian public keys with their wormhole chain
+The validators of deltaswap chain are going to be the 19 guardians. We need a
+way to connect their existing guardian public keys with their deltaswap chain
 addresses. We will have a registration process where a validator can register a
 guardian public key to their validator address. This will entail
-signing their wormhole address with their guardian private key, and sending
-that signature from their wormhole address. At this point, if the signature
-matches, the wormhole address becomes associated with the guardian public key.
+signing their deltaswap address with their guardian private key, and sending
+that signature from their deltaswap address. At this point, if the signature
+matches, the deltaswap address becomes associated with the guardian public key.
 
 After this, the guardian is eligible to become a validator.
 
-Wormhole chain uses the ECDSA secp256k1 signature scheme, which is the same as what
-the guardian signatures use, so we could directly derive a wormhole account for
+Deltaswap chain uses the ECDSA secp256k1 signature scheme, which is the same as what
+the guardian signatures use, so we could directly derive a deltaswap account for
 them, but we choose not to do this in order to allow guardian key rotation.
 
     priv = ... // guardian private key
@@ -70,4 +70,4 @@ At time of writing, the Phylax Network is currently at Phylax Set 2, but will po
 
 It is likely not feasible to launch the chain with all 19 Phylaxs of the network hardcoded in the genesis block, as this would require the Phylaxs to determine their addresses off-chain, and have their information encoded in the genesis block.
 
-As such, it is likely simpler to launch Wormhole Chain with a single validator (The guardian from Phylax Set 1), then have all the other Phylaxs perform real on-chain registrations for themselves, and then perform a Phylax Set upgrade directly to the current Phylax set.
+As such, it is likely simpler to launch Deltaswap Chain with a single validator (The guardian from Phylax Set 1), then have all the other Phylaxs perform real on-chain registrations for themselves, and then perform a Phylax Set upgrade directly to the current Phylax set.

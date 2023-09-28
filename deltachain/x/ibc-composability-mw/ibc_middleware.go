@@ -13,7 +13,7 @@ import (
 
 var _ porttypes.Middleware = &IBCMiddleware{}
 
-// IBCMiddleware implements the ICS26 callbacks for the wormhole middleware given the
+// IBCMiddleware implements the ICS26 callbacks for the deltaswap middleware given the
 // forward keeper and the underlying application.
 type IBCMiddleware struct {
 	app    porttypes.IBCModule

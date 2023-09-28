@@ -1,7 +1,7 @@
 {
   "name": "@deltaswapio/deltachain-sdk",
   "version": "0.0.1",
-  "description": "Typescript SDK for interating with the Wormhole chain",
+  "description": "Typescript SDK for interating with the Deltaswap chain",
   "main": "lib/index.js",
   "scripts": {
     "test": "jest --config jestconfig.json --verbose",

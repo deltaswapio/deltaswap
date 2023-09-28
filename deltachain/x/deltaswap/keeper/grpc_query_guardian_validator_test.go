@@ -19,7 +19,7 @@ import (
 var _ = strconv.IntSize
 
 func TestPhylaxValidatorQuerySingle(t *testing.T) {
-	keeper, ctx := keepertest.WormholeKeeper(t)
+	keeper, ctx := keepertest.DeltaswapKeeper(t)
 	wctx := sdk.WrapSDKContext(ctx)
 	msgs, _ := createNPhylaxValidator(keeper, ctx, 2)
 	for _, tc := range []struct {
@@ -69,7 +69,7 @@ func TestPhylaxValidatorQuerySingle(t *testing.T) {
 }
 
 func TestPhylaxValidatorQueryPaginated(t *testing.T) {
-	keeper, ctx := keepertest.WormholeKeeper(t)
+	keeper, ctx := keepertest.DeltaswapKeeper(t)
 	wctx := sdk.WrapSDKContext(ctx)
 	msgs, _ := createNPhylaxValidator(keeper, ctx, 5)
 

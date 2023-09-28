@@ -139,7 +139,7 @@ func getGovProposalHandlers() []govclient.ProposalHandler {
 		upgradeclient.ProposalHandler,
 		upgradeclient.CancelProposalHandler,
 		wormholeclient.PhylaxSetUpdateProposalHandler,
-		wormholeclient.WormholeGovernanceMessageProposalHandler,
+		wormholeclient.DeltaswapGovernanceMessageProposalHandler,
 		// this line is used by starport scaffolding # stargate/app/govProposalHandler
 	)
 
@@ -153,8 +153,8 @@ func GetWasmOpts(app *App, appOpts servertypes.AppOptions) []wasm.Option {
 		wasmOpts = append(wasmOpts, wasmkeeper.WithVMCacheMetrics(prometheus.DefaultRegisterer))
 	}
 
-	// add the custom wormhole query handler
-	wasmOpts = append(wasmOpts, wasmkeeper.WithQueryPlugins(wormholemodulekeeper.NewCustomQueryHandler(app.WormholeKeeper)))
+	// add the custom deltaswap query handler
+	wasmOpts = append(wasmOpts, wasmkeeper.WithQueryPlugins(wormholemodulekeeper.NewCustomQueryHandler(app.DeltaswapKeeper)))
 
 	// Move custom query of token factory to stargate, still use custom msg which is tfOpts[1]
 	bankBaseKeeper, ok := app.BankKeeper.(bankkeeper.BaseKeeper)
@@ -273,7 +273,7 @@ type App struct {
 	ScopedIBCKeeper      capabilitykeeper.ScopedKeeper
 	ScopedTransferKeeper capabilitykeeper.ScopedKeeper
 
-	WormholeKeeper     wormholemodulekeeper.Keeper
+	DeltaswapKeeper    wormholemodulekeeper.Keeper
 	TokenFactoryKeeper tokenfactorykeeper.Keeper
 
 	// IBC modules
@@ -365,7 +365,7 @@ func New(
 		appCodec, keys[banktypes.StoreKey], app.AccountKeeper, app.GetSubspace(banktypes.ModuleName), app.ModuleAccountAddrs(),
 	)
 
-	app.WormholeKeeper = *wormholemodulekeeper.NewKeeper(
+	app.DeltaswapKeeper = *wormholemodulekeeper.NewKeeper(
 		appCodec,
 		keys[wormholemoduletypes.StoreKey],
 		keys[wormholemoduletypes.MemStoreKey],
@@ -375,7 +375,7 @@ func New(
 	)
 
 	stakingKeeper := stakingkeeper.NewKeeper(
-		appCodec, keys[stakingtypes.StoreKey], app.AccountKeeper, app.BankKeeper, app.WormholeKeeper, app.GetSubspace(stakingtypes.ModuleName),
+		appCodec, keys[stakingtypes.StoreKey], app.AccountKeeper, app.BankKeeper, app.DeltaswapKeeper, app.GetSubspace(stakingtypes.ModuleName),
 	)
 	app.MintKeeper = mintkeeper.NewKeeper(
 		appCodec, keys[minttypes.StoreKey], app.GetSubspace(minttypes.ModuleName), &stakingKeeper,
@@ -394,7 +394,7 @@ func New(
 
 	app.FeeGrantKeeper = feegrantkeeper.NewKeeper(appCodec, keys[feegrant.StoreKey], app.AccountKeeper)
 	app.UpgradeKeeper = upgradekeeper.NewKeeper(skipUpgradeHeights, keys[upgradetypes.StoreKey], appCodec, homePath, app.BaseApp)
-	app.WormholeKeeper.SetUpgradeKeeper(app.UpgradeKeeper)
+	app.DeltaswapKeeper.SetUpgradeKeeper(app.UpgradeKeeper)
 
 	// register the staking hooks
 	// NOTE: stakingKeeper above is passed by reference, so that it will contain these hooks
@@ -409,7 +409,7 @@ func New(
 		appCodec, keys[ibchost.StoreKey], app.GetSubspace(ibchost.ModuleName), app.StakingKeeper, app.UpgradeKeeper, app.ScopedIBCKeeper,
 	)
 
-	app.WireICS20PreWasmKeeper(&app.WormholeKeeper)
+	app.WireICS20PreWasmKeeper(&app.DeltaswapKeeper)
 
 	// register the proposal types
 	govRouter := govtypes.NewRouter()
@@ -426,7 +426,7 @@ func New(
 	// If evidence needs to be handled for the app, set routes in router here and seal
 	app.EvidenceKeeper = *evidenceKeeper
 
-	govRouter.AddRoute(wormholemoduletypes.RouterKey, wormholemodule.NewWormholeGovernanceProposalHandler(app.WormholeKeeper))
+	govRouter.AddRoute(wormholemoduletypes.RouterKey, wormholemodule.NewDeltaswapGovernanceProposalHandler(app.DeltaswapKeeper))
 
 	app.GovKeeper = govkeeper.NewKeeper(
 		appCodec, keys[govtypes.StoreKey], app.GetSubspace(govtypes.ModuleName), app.AccountKeeper, app.BankKeeper,
@@ -461,7 +461,7 @@ func New(
 		&app.IBCKeeper.PortKeeper,
 		app.scopedWasmKeeper,
 		app.TransferKeeper,
-		app.WormholeKeeper,
+		app.DeltaswapKeeper,
 		app.MsgServiceRouter(),
 		app.GRPCQueryRouter(),
 		wasmDir,
@@ -471,9 +471,9 @@ func New(
 		GetWasmOpts(app, appOpts)...,
 	)
 	permissionedWasmKeeper := wasmkeeper.NewDefaultPermissionKeeper(app.wasmKeeper)
-	app.WormholeKeeper.SetWasmdKeeper(permissionedWasmKeeper)
-	// the wormhole module must be instantiated after the wasmd module
-	wormholeModule := wormholemodule.NewAppModule(appCodec, app.WormholeKeeper)
+	app.DeltaswapKeeper.SetWasmdKeeper(permissionedWasmKeeper)
+	// the deltaswap module must be instantiated after the wasmd module
+	wormholeModule := wormholemodule.NewAppModule(appCodec, app.DeltaswapKeeper)
 
 	// this line is used by starport scaffolding # stargate/app/keeperDefinition
 
@@ -515,7 +515,7 @@ func New(
 		mint.NewAppModule(appCodec, app.MintKeeper, app.AccountKeeper),
 		slashing.NewAppModule(appCodec, app.SlashingKeeper, app.AccountKeeper, app.BankKeeper, app.StakingKeeper),
 		distr.NewAppModule(appCodec, app.DistrKeeper, app.AccountKeeper, app.BankKeeper, app.StakingKeeper),
-		staking.NewAppModule(appCodec, app.StakingKeeper, app.AccountKeeper, app.BankKeeper, app.WormholeKeeper),
+		staking.NewAppModule(appCodec, app.StakingKeeper, app.AccountKeeper, app.BankKeeper, app.DeltaswapKeeper),
 		upgrade.NewAppModule(app.UpgradeKeeper),
 		evidence.NewAppModule(app.EvidenceKeeper),
 		ibc.NewAppModule(app.IBCKeeper),
@@ -593,7 +593,7 @@ func New(
 	// NOTE: Capability module must occur first so that it can initialize any capabilities
 	// so that other modules that want to create or claim capabilities afterwards in InitChain
 	// can do so safely.
-	// NOTE: The wormhole module must occur before staking so that the consensus
+	// NOTE: The deltaswap module must occur before staking so that the consensus
 	// guardian set is properly initialised before the staking module allocates
 	// voting power in its genesis handler
 	app.mm.SetOrderInitGenesis(
@@ -651,7 +651,7 @@ func New(
 	if err != nil {
 		panic(err)
 	}
-	wrappedAnteHandler := WrapAnteHandler(anteHandlerSdk, app.WormholeKeeper, app.IBCKeeper)
+	wrappedAnteHandler := WrapAnteHandler(anteHandlerSdk, app.DeltaswapKeeper, app.IBCKeeper)
 
 	app.SetAnteHandler(wrappedAnteHandler)
 	app.SetEndBlocker(app.EndBlocker)
@@ -668,10 +668,10 @@ func New(
 }
 
 // Wrap the standard cosmos-sdk antehandlers with additional antehandlers:
-// - wormhole allowlist antehandler
+// - deltaswap allowlist antehandler
 // - default ibc antehandler
 func WrapAnteHandler(originalHandler sdk.AnteHandler, wormKeeper wormholemodulekeeper.Keeper, ibcKeeper *ibckeeper.Keeper) sdk.AnteHandler {
-	whHandler := wormholemoduleante.NewWormholeAllowlistDecorator(wormKeeper)
+	whHandler := wormholemoduleante.NewDeltaswapAllowlistDecorator(wormKeeper)
 	ibcHandler := ibcante.NewAnteDecorator(ibcKeeper)
 	newHandlers := sdk.ChainAnteDecorators(whHandler, ibcHandler)
 	return func(ctx sdk.Context, tx sdk.Tx, simulate bool) (sdk.Context, error) {

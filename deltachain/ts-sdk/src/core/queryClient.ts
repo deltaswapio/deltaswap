@@ -14,7 +14,7 @@ import { Api as txApi } from "../modules/cosmos.tx.v1beta1/rest";
 import { Api as upgradeApi } from "../modules/cosmos.upgrade.v1beta1/rest";
 import { Api as vestingApi } from "../modules/cosmos.vesting.v1beta1/rest";
 import { Api as wasmApi } from "../modules/cosmwasm.wasm.v1/rest";
-import { Api as coreApi } from "../modules/wormhole_foundation.deltachain.wormhole/rest";
+import { Api as coreApi } from "../modules/deltaswapio.deltachain.deltaswap/rest";
 
 export type WormchainQueryClient = {
   core: coreApi<any>;
@@ -36,7 +36,7 @@ export type WormchainQueryClient = {
   wasm: wasmApi<any>;
 };
 
-export function getWormholeQueryClient(
+export function getDeltaswapQueryClient(
   lcdAddress: string,
   nodejs?: boolean
 ): WormchainQueryClient {

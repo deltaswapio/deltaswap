@@ -132,7 +132,7 @@ func setupAccountantAndPhylaxSet(t *testing.T, ctx sdk.Context, k *keeper.Keeper
 }
 
 func TestWasmdStoreCode(t *testing.T) {
-	k, ctx := keepertest.WormholeKeeper(t)
+	k, ctx := keepertest.DeltaswapKeeper(t)
 	guardians, privateKeys := createNPhylaxValidator(k, ctx, 10)
 	_ = privateKeys
 	k.SetConfig(ctx, types.Config{
@@ -201,7 +201,7 @@ func TestWasmdStoreCode(t *testing.T) {
 }
 
 func TestWasmdInstantiateContract(t *testing.T) {
-	k, ctx := keepertest.WormholeKeeper(t)
+	k, ctx := keepertest.DeltaswapKeeper(t)
 	guardians, privateKeys := createNPhylaxValidator(k, ctx, 10)
 	_ = privateKeys
 	k.SetConfig(ctx, types.Config{
@@ -326,7 +326,7 @@ func TestWasmdInstantiateContract(t *testing.T) {
 }
 
 func TestWasmdMigrateContract(t *testing.T) {
-	k, ctx := keepertest.WormholeKeeper(t)
+	k, ctx := keepertest.DeltaswapKeeper(t)
 	tb := setupAccountantAndPhylaxSet(t, ctx, k)
 
 	// First we need to (1) upload some codes and (2) instantiate.
@@ -473,9 +473,9 @@ func TestWasmdMigrateContract(t *testing.T) {
 }
 
 // This specifically tests the modify vaa in accountant
-// This also tests that the path to verify VAAs through the accountant contract to the wormhole querier interface is working.
+// This also tests that the path to verify VAAs through the accountant contract to the deltaswap querier interface is working.
 func TestWasmdAccountantContractModify(t *testing.T) {
-	k, wasmd, permissionedWasmd, ctx := keepertest.WormholeKeeperAndWasmd(t)
+	k, wasmd, permissionedWasmd, ctx := keepertest.DeltaswapKeeperAndWasmd(t)
 	_ = permissionedWasmd
 
 	tb := setupAccountantAndPhylaxSet(t, ctx, k)
@@ -528,9 +528,9 @@ func TestWasmdAccountantContractModify(t *testing.T) {
 }
 
 // This specifically tests the modify vaa in accountant
-// This also tests that the path to verify VAAs through the accountant contract to the wormhole querier interface is working.
+// This also tests that the path to verify VAAs through the accountant contract to the deltaswap querier interface is working.
 func TestWasmdAccountantContractSubmitObservation(t *testing.T) {
-	k, _, permissionedWasmd, ctx := keepertest.WormholeKeeperAndWasmd(t)
+	k, _, permissionedWasmd, ctx := keepertest.DeltaswapKeeperAndWasmd(t)
 	_ = permissionedWasmd
 
 	tb := setupAccountantAndPhylaxSet(t, ctx, k)

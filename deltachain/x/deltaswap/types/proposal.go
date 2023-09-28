@@ -7,15 +7,15 @@ import (
 )
 
 const (
-	ProposalTypePhylaxSetUpdate           string = "PhylaxSetUpdate"
-	ProposalTypeGovernanceWormholeMessage string = "GovernanceWormholeMessage"
+	ProposalTypePhylaxSetUpdate            string = "PhylaxSetUpdate"
+	ProposalTypeGovernanceDeltaswapMessage string = "GovernanceDeltaswapMessage"
 )
 
 func init() {
 	gov.RegisterProposalType(ProposalTypePhylaxSetUpdate)
-	gov.RegisterProposalTypeCodec(&PhylaxSetUpdateProposal{}, "wormhole/PhylaxSetUpdate")
-	gov.RegisterProposalType(ProposalTypeGovernanceWormholeMessage)
-	gov.RegisterProposalTypeCodec(&GovernanceWormholeMessageProposal{}, "wormhole/GovernanceWormholeMessage")
+	gov.RegisterProposalTypeCodec(&PhylaxSetUpdateProposal{}, "deltaswap/PhylaxSetUpdate")
+	gov.RegisterProposalType(ProposalTypeGovernanceDeltaswapMessage)
+	gov.RegisterProposalTypeCodec(&GovernanceDeltaswapMessageProposal{}, "deltaswap/GovernanceDeltaswapMessage")
 }
 
 func NewPhylaxSetUpdateProposal(title, description string, guardianSet PhylaxSet) *PhylaxSetUpdateProposal {
@@ -42,8 +42,8 @@ func (sup *PhylaxSetUpdateProposal) String() string {
   PhylaxSet: %s`, sup.Title, sup.Description, sup.NewPhylaxSet.String())
 }
 
-func NewGovernanceWormholeMessageProposal(title, description string, action uint8, targetChain uint16, module []byte, payload []byte) *GovernanceWormholeMessageProposal {
-	return &GovernanceWormholeMessageProposal{
+func NewGovernanceDeltaswapMessageProposal(title, description string, action uint8, targetChain uint16, module []byte, payload []byte) *GovernanceDeltaswapMessageProposal {
+	return &GovernanceDeltaswapMessageProposal{
 		Title:       title,
 		Description: description,
 		Module:      module,
@@ -53,19 +53,19 @@ func NewGovernanceWormholeMessageProposal(title, description string, action uint
 	}
 }
 
-func (sup *GovernanceWormholeMessageProposal) ProposalRoute() string { return RouterKey }
-func (sup *GovernanceWormholeMessageProposal) ProposalType() string {
-	return ProposalTypeGovernanceWormholeMessage
+func (sup *GovernanceDeltaswapMessageProposal) ProposalRoute() string { return RouterKey }
+func (sup *GovernanceDeltaswapMessageProposal) ProposalType() string {
+	return ProposalTypeGovernanceDeltaswapMessage
 }
-func (sup *GovernanceWormholeMessageProposal) ValidateBasic() error {
+func (sup *GovernanceDeltaswapMessageProposal) ValidateBasic() error {
 	if len(sup.Module) != 32 {
 		return fmt.Errorf("invalid module length: %d != 32", len(sup.Module))
 	}
 	return gov.ValidateAbstract(sup)
 }
 
-func (sup *GovernanceWormholeMessageProposal) String() string {
-	return fmt.Sprintf(`Governance Wormhole Message Proposal: 
+func (sup *GovernanceDeltaswapMessageProposal) String() string {
+	return fmt.Sprintf(`Governance Deltaswap Message Proposal: 
   Title:       %s
   Description: %s
   Module: %x

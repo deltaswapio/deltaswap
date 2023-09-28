@@ -1,9 +1,9 @@
 //@ts-nocheck
 /* eslint-disable */
-import { PhylaxSet } from "../wormhole/guardian_set";
+import { PhylaxSet } from "../deltaswap/guardian_set";
 import { Writer, Reader } from "protobufjs/minimal";
 
-export const protobufPackage = "wormhole_foundation.deltachain.wormhole";
+export const protobufPackage = "deltaswapio.deltachain.deltaswap";
 
 /** PhylaxSetUpdateProposal defines a guardian set update governance proposal */
 export interface PhylaxSetUpdateProposal {
@@ -13,10 +13,10 @@ export interface PhylaxSetUpdateProposal {
 }
 
 /**
- * GovernanceWormholeMessageProposal defines a governance proposal to emit a generic message in the governance message
+ * GovernanceDeltaswapMessageProposal defines a governance proposal to emit a generic message in the governance message
  * format.
  */
-export interface GovernanceWormholeMessageProposal {
+export interface GovernanceDeltaswapMessageProposal {
   title: string;
   description: string;
   action: number;
@@ -135,16 +135,16 @@ export const PhylaxSetUpdateProposal = {
   },
 };
 
-const baseGovernanceWormholeMessageProposal: object = {
+const baseGovernanceDeltaswapMessageProposal: object = {
   title: "",
   description: "",
   action: 0,
   targetChain: 0,
 };
 
-export const GovernanceWormholeMessageProposal = {
+export const GovernanceDeltaswapMessageProposal = {
   encode(
-    message: GovernanceWormholeMessageProposal,
+    message: GovernanceDeltaswapMessageProposal,
     writer: Writer = Writer.create()
   ): Writer {
     if (message.title !== "") {
@@ -171,12 +171,12 @@ export const GovernanceWormholeMessageProposal = {
   decode(
     input: Reader | Uint8Array,
     length?: number
-  ): GovernanceWormholeMessageProposal {
+  ): GovernanceDeltaswapMessageProposal {
     const reader = input instanceof Uint8Array ? new Reader(input) : input;
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = {
-      ...baseGovernanceWormholeMessageProposal,
-    } as GovernanceWormholeMessageProposal;
+      ...baseGovernanceDeltaswapMessageProposal,
+    } as GovernanceDeltaswapMessageProposal;
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -206,10 +206,10 @@ export const GovernanceWormholeMessageProposal = {
     return message;
   },
 
-  fromJSON(object: any): GovernanceWormholeMessageProposal {
+  fromJSON(object: any): GovernanceDeltaswapMessageProposal {
     const message = {
-      ...baseGovernanceWormholeMessageProposal,
-    } as GovernanceWormholeMessageProposal;
+      ...baseGovernanceDeltaswapMessageProposal,
+    } as GovernanceDeltaswapMessageProposal;
     if (object.title !== undefined && object.title !== null) {
       message.title = String(object.title);
     } else {
@@ -239,7 +239,7 @@ export const GovernanceWormholeMessageProposal = {
     return message;
   },
 
-  toJSON(message: GovernanceWormholeMessageProposal): unknown {
+  toJSON(message: GovernanceDeltaswapMessageProposal): unknown {
     const obj: any = {};
     message.title !== undefined && (obj.title = message.title);
     message.description !== undefined &&
@@ -259,11 +259,11 @@ export const GovernanceWormholeMessageProposal = {
   },
 
   fromPartial(
-    object: DeepPartial<GovernanceWormholeMessageProposal>
-  ): GovernanceWormholeMessageProposal {
+    object: DeepPartial<GovernanceDeltaswapMessageProposal>
+  ): GovernanceDeltaswapMessageProposal {
     const message = {
-      ...baseGovernanceWormholeMessageProposal,
-    } as GovernanceWormholeMessageProposal;
+      ...baseGovernanceDeltaswapMessageProposal,
+    } as GovernanceDeltaswapMessageProposal;
     if (object.title !== undefined && object.title !== null) {
       message.title = object.title;
     } else {

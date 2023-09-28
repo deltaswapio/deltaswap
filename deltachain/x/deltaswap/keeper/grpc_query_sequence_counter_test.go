@@ -18,7 +18,7 @@ import (
 var _ = strconv.IntSize
 
 func TestSequenceCounterQuerySingle(t *testing.T) {
-	keeper, ctx := keepertest.WormholeKeeper(t)
+	keeper, ctx := keepertest.DeltaswapKeeper(t)
 	wctx := sdk.WrapSDKContext(ctx)
 	msgs := createNSequenceCounter(keeper, ctx, 2)
 	for _, tc := range []struct {
@@ -65,7 +65,7 @@ func TestSequenceCounterQuerySingle(t *testing.T) {
 }
 
 func TestSequenceCounterQueryPaginated(t *testing.T) {
-	keeper, ctx := keepertest.WormholeKeeper(t)
+	keeper, ctx := keepertest.DeltaswapKeeper(t)
 	wctx := sdk.WrapSDKContext(ctx)
 	msgs := createNSequenceCounter(keeper, ctx, 5)
 
