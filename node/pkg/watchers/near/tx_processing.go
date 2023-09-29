@@ -243,6 +243,7 @@ func (e *Watcher) processDeltaswapLog(logger *zap.Logger, _ context.Context, job
 		EmitterAddress:   a,
 		Payload:          pl,
 		ConsistencyLevel: 0,
+		IsReobservation:  job.isReobservation,
 	}
 
 	// tell everyone about it
