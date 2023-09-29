@@ -13,7 +13,7 @@ var _ = strconv.Itoa(0)
 
 func CmdLatestPhylaxSetIndex() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "latest-guardian-set-index",
+		Use:   "latest-phylax-set-index",
 		Short: "Query latest_phylax_set_index",
 		Args:  cobra.ExactArgs(0),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {

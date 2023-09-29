@@ -80,9 +80,9 @@ async function main() {
     console.log("utest balance ", utestBalance.amount)
 
 
-    // create key for guardian0
+    // create key for phylax0
     const ec = new elliptic.ec("secp256k1");
-    // create key from the devnet guardian0's private key
+    // create key from the devnet phylax0's private key
     const key = ec.keyFromPrivate(Buffer.from(signerPk, "hex"));
 
 

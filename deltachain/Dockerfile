@@ -29,8 +29,8 @@ RUN unset GOPATH
 # create the dir for the default "home" config
 RUN mkdir -p /root/.deltachain
 
-ARG num_guardians
-ENV NUM_GUARDIANS=$num_guardians
+ARG num_phylaxs
+ENV NUM_PHYLAXS=$num_phylaxs
 
 RUN /bin/bash /app/devnet/create-genesis.sh
 

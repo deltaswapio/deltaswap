@@ -1805,11 +1805,11 @@ export const QueryLatestPhylaxSetIndexResponse = {
 
 /** Query defines the gRPC querier service. */
 export interface Query {
-  /** Queries a guardianSet by index. */
+  /** Queries a phylaxSet by index. */
   PhylaxSet(
     request: QueryGetPhylaxSetRequest
   ): Promise<QueryGetPhylaxSetResponse>;
-  /** Queries a list of guardianSet items. */
+  /** Queries a list of phylaxSet items. */
   PhylaxSetAll(
     request: QueryAllPhylaxSetRequest
   ): Promise<QueryAllPhylaxSetResponse>;

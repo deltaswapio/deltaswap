@@ -51,7 +51,7 @@ contracts-tools-deps: contracts/tools/package-lock.json
 
 # get .env and devnet-consts.json for contracts/tools
 contracts-devnet-env:
-	cd .. && ./scripts/guardian-set-init.sh 1
+	cd .. && ./scripts/phylax-set-init.sh 1
 	cd .. && ./scripts/distribute-devnet-consts.sh
 
 # get wasm artifacts for cosmwasm contracts

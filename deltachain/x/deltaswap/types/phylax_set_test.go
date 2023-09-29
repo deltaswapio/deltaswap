@@ -24,13 +24,13 @@ func TestKeysAsAddresses(t *testing.T) {
 	addrs = append(addrs, addr1)
 	addrs = append(addrs, addr2)
 
-	guardianSet := PhylaxSet{
+	phylaxSet := PhylaxSet{
 		Index:          1,
 		Keys:           addrsBytes,
 		ExpirationTime: 0,
 	}
 
-	assert.Equal(t, addrs, guardianSet.KeysAsAddresses())
+	assert.Equal(t, addrs, phylaxSet.KeysAsAddresses())
 }
 
 func TestContainsKey(t *testing.T) {
@@ -46,15 +46,15 @@ func TestContainsKey(t *testing.T) {
 	addrsBytes = append(addrsBytes, addr1.Bytes())
 	addrsBytes = append(addrsBytes, addr2.Bytes())
 
-	guardianSet := PhylaxSet{
+	phylaxSet := PhylaxSet{
 		Index:          1,
 		Keys:           addrsBytes,
 		ExpirationTime: 0,
 	}
 
-	assert.Equal(t, true, guardianSet.ContainsKey(addr1))
-	assert.Equal(t, true, guardianSet.ContainsKey(addr2))
-	assert.Equal(t, false, guardianSet.ContainsKey(addr3))
+	assert.Equal(t, true, phylaxSet.ContainsKey(addr1))
+	assert.Equal(t, true, phylaxSet.ContainsKey(addr2))
+	assert.Equal(t, false, phylaxSet.ContainsKey(addr3))
 }
 
 func TestValidateBasic(t *testing.T) {

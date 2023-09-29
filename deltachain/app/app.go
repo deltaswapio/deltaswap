@@ -594,7 +594,7 @@ func New(
 	// so that other modules that want to create or claim capabilities afterwards in InitChain
 	// can do so safely.
 	// NOTE: The deltaswap module must occur before staking so that the consensus
-	// guardian set is properly initialised before the staking module allocates
+	// phylax set is properly initialised before the staking module allocates
 	// voting power in its genesis handler
 	app.mm.SetOrderInitGenesis(
 		capabilitytypes.ModuleName,

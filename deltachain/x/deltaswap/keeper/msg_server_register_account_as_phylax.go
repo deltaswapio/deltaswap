@@ -20,7 +20,7 @@ func (k msgServer) RegisterAccountAsPhylax(goCtx context.Context, msg *types.Msg
 	if err != nil {
 		return nil, err
 	}
-	// recover guardian key from signature
+	// recover phylax key from signature
 	signerHash := crypto.Keccak256Hash(wormholesdk.SignedWormchainAddressPrefix, signer)
 	phylaxKey, err := crypto.Ecrecover(signerHash.Bytes(), msg.Signature)
 
@@ -36,7 +36,7 @@ func (k msgServer) RegisterAccountAsPhylax(goCtx context.Context, msg *types.Msg
 	// https://ethereum.org/en/developers/docs/accounts/#account-creation)
 	phylaxKeyAddr := common.BytesToAddress(crypto.Keccak256(phylaxKey[1:])[12:])
 
-	// next we check if this guardian key is in the most recent guardian set.
+	// next we check if this phylax key is in the most recent phylax set.
 	// we don't allow registration of arbitrary public keys, since that would
 	// enable a DoS vector
 	latestPhylaxSetIndex := k.Keeper.GetLatestPhylaxSetIndex(ctx)
@@ -56,14 +56,14 @@ func (k msgServer) RegisterAccountAsPhylax(goCtx context.Context, msg *types.Msg
 		return nil, types.ErrPhylaxNotFound
 	}
 
-	// Check if the tx signer was already registered as a guardian validator.
+	// Check if the tx signer was already registered as a phylax validator.
 	for _, gv := range k.GetAllPhylaxValidator(ctx) {
 		if bytes.Equal(gv.ValidatorAddr, signer) {
 			return nil, types.ErrSignerAlreadyRegistered
 		}
 	}
 
-	// register validator in store for guardian
+	// register validator in store for phylax
 	k.Keeper.SetPhylaxValidator(ctx, types.PhylaxValidator{
 		PhylaxKey:     phylaxKeyAddr.Bytes(),
 		ValidatorAddr: signer,

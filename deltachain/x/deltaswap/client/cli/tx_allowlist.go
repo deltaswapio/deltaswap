@@ -48,7 +48,7 @@ func CmdCreateAllowedAddress() *cobra.Command {
 func CmdDeleteAllowedAddress() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "delete-allowed-address [deltachain-address]",
-		Short:   "Remove an allowlist entry. The allowlist must be stale (only valid under old guardian set) or you must be the creator of the allowlist.",
+		Short:   "Remove an allowlist entry. The allowlist must be stale (only valid under old phylax set) or you must be the creator of the allowlist.",
 		Aliases: []string{"delete-allowlist", "remove-allowlist", "disallow"},
 		Args:    cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {

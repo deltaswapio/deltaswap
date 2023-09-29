@@ -33,7 +33,7 @@ service Msg {
 message EmptyResponse {}
 
 message MsgCreateAllowlistEntryRequest {
-  // signer should be a guardian validator in a current set or future set.
+  // signer should be a phylax validator in a current set or future set.
   string signer = 1;
   // the address to allowlist
   string address = 2;
@@ -42,7 +42,7 @@ message MsgCreateAllowlistEntryRequest {
 }
 
 message MsgDeleteAllowlistEntryRequest {
-  // signer should be a guardian validator in a current set or future set.
+  // signer should be a phylax validator in a current set or future set.
   string signer = 1;
   // the address allowlist to remove
   string address = 2;
@@ -117,7 +117,7 @@ message MsgAddWasmInstantiateAllowlist {
 }
 
 message MsgDeleteWasmInstantiateAllowlist {
-    // signer should be a guardian validator in a current set or future set.
+    // signer should be a phylax validator in a current set or future set.
     string signer = 1;
     // the <contract, code_id> pair to remove
     string address = 2;

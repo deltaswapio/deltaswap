@@ -14,14 +14,14 @@ import (
 )
 
 type (
-	// PhylaxSetUpdateProposalReq defines a guardian set update proposal request body.
+	// PhylaxSetUpdateProposalReq defines a phylax set update proposal request body.
 	PhylaxSetUpdateProposalReq struct {
 		BaseReq rest.BaseReq `json:"base_req" yaml:"base_req"`
 
 		Title          string         `json:"title" yaml:"title"`
 		Description    string         `json:"description" yaml:"description"`
-		PhylaxSetIndex uint32         `json:"guardianSetIndex" yaml:"guardianSetIndex"`
-		PhylaxSetKeys  []string       `json:"guardianSetKeys" yaml:"guardianSetKeys"`
+		PhylaxSetIndex uint32         `json:"phylaxSetIndex" yaml:"phylaxSetIndex"`
+		PhylaxSetKeys  []string       `json:"phylaxSetKeys" yaml:"phylaxSetKeys"`
 		Proposer       sdk.AccAddress `json:"proposer" yaml:"proposer"`
 		Deposit        sdk.Coins      `json:"deposit" yaml:"deposit"`
 	}
@@ -41,7 +41,7 @@ type (
 	}
 )
 
-// ProposalPhylaxSetUpdateRESTHandler returns a ProposalRESTHandler that exposes the guardian set update
+// ProposalPhylaxSetUpdateRESTHandler returns a ProposalRESTHandler that exposes the phylax set update
 // REST handler with a given sub-route.
 func ProposalPhylaxSetUpdateRESTHandler(clientCtx client.Context) govrest.ProposalRESTHandler {
 	return govrest.ProposalRESTHandler{

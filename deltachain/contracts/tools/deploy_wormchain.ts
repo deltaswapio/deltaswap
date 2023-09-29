@@ -115,7 +115,7 @@ async function main() {
       const payload = keccak256(contract_bytes);
       let vaa: VAA<Other> = {
         version: 1,
-        guardianSetIndex: 0,
+        phylaxSetIndex: 0,
         signatures: [],
         timestamp: 0,
         nonce: 0,
@@ -180,7 +180,7 @@ async function main() {
 
     let vaa: VAA<Other> = {
       version: 1,
-      guardianSetIndex: 0,
+      phylaxSetIndex: 0,
       signatures: [],
       timestamp: 0,
       nonce: 0,
@@ -195,7 +195,7 @@ async function main() {
         )}${fullHash}`,
       },
     };
-    // TODO: check for number of guardians in set and use the corresponding keys
+    // TODO: check for number of phylaxs in set and use the corresponding keys
     vaa.signatures = sign(VAA_SIGNERS, vaa as unknown as VAA<Payload>);
     const msg = client.core.msgInstantiateContract({
       signer,
@@ -285,7 +285,7 @@ async function main() {
   // `phylaxd admin governance-vaa-verify deltachain.prototxt`
   let deltachainIbcReceiverWhitelistVaa: VAA<Other> = {
     version: 1,
-    guardianSetIndex: 0,
+    phylaxSetIndex: 0,
     signatures: [],
     timestamp: 0,
     nonce: 0,

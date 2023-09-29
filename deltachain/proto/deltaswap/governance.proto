@@ -5,7 +5,7 @@ import "deltaswap/phylax.proto";
 import "gogoproto/gogo.proto";
 option go_package = "github.com/deltaswapio/deltachain/x/deltaswap/types";
 
-// PhylaxSetUpdateProposal defines a guardian set update governance proposal
+// PhylaxSetUpdateProposal defines a phylax set update governance proposal
 message PhylaxSetUpdateProposal {
   option (gogoproto.equal)            = true;
   option (gogoproto.goproto_stringer) = false;

@@ -5,7 +5,7 @@ import (
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
 
-const TypeMsgRegisterAccountAsPhylax = "register_account_as_guardian"
+const TypeMsgRegisterAccountAsPhylax = "register_account_as_phylax"
 
 var _ sdk.Msg = &MsgRegisterAccountAsPhylax{}
 

@@ -17,19 +17,19 @@ func (k Keeper) PhylaxSetAll(c context.Context, req *types.QueryAllPhylaxSetRequ
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
 	}
 
-	var guardianSets []types.PhylaxSet
+	var phylaxSets []types.PhylaxSet
 	ctx := sdk.UnwrapSDKContext(c)
 
 	store := ctx.KVStore(k.storeKey)
-	guardianSetStore := prefix.NewStore(store, types.KeyPrefix(types.PhylaxSetKey))
+	phylaxSetStore := prefix.NewStore(store, types.KeyPrefix(types.PhylaxSetKey))
 
-	pageRes, err := query.Paginate(guardianSetStore, req.Pagination, func(key []byte, value []byte) error {
-		var guardianSet types.PhylaxSet
-		if err := k.cdc.Unmarshal(value, &guardianSet); err != nil {
+	pageRes, err := query.Paginate(phylaxSetStore, req.Pagination, func(key []byte, value []byte) error {
+		var phylaxSet types.PhylaxSet
+		if err := k.cdc.Unmarshal(value, &phylaxSet); err != nil {
 			return err
 		}
 
-		guardianSets = append(guardianSets, guardianSet)
+		phylaxSets = append(phylaxSets, phylaxSet)
 		return nil
 	})
 
@@ -37,7 +37,7 @@ func (k Keeper) PhylaxSetAll(c context.Context, req *types.QueryAllPhylaxSetRequ
 		return nil, status.Error(codes.Internal, err.Error())
 	}
 
-	return &types.QueryAllPhylaxSetResponse{PhylaxSet: guardianSets, Pagination: pageRes}, nil
+	return &types.QueryAllPhylaxSetResponse{PhylaxSet: phylaxSets, Pagination: pageRes}, nil
 }
 
 func (k Keeper) PhylaxSet(c context.Context, req *types.QueryGetPhylaxSetRequest) (*types.QueryGetPhylaxSetResponse, error) {
@@ -46,10 +46,10 @@ func (k Keeper) PhylaxSet(c context.Context, req *types.QueryGetPhylaxSetRequest
 	}
 
 	ctx := sdk.UnwrapSDKContext(c)
-	guardianSet, found := k.GetPhylaxSet(ctx, req.Index)
+	phylaxSet, found := k.GetPhylaxSet(ctx, req.Index)
 	if !found {
 		return nil, sdkerrors.ErrKeyNotFound
 	}
 
-	return &types.QueryGetPhylaxSetResponse{PhylaxSet: guardianSet}, nil
+	return &types.QueryGetPhylaxSetResponse{PhylaxSet: phylaxSet}, nil
 }

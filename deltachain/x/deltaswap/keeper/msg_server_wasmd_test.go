@@ -68,7 +68,7 @@ func createWasmMigratePayload(code_id uint64, contract string, json_msg string) 
 }
 
 type Testbench struct {
-	guardians       []types.PhylaxValidator
+	phylaxs         []types.PhylaxValidator
 	set             types.PhylaxSet
 	privateKeys     []*ecdsa.PrivateKey
 	signer          sdk.AccAddress
@@ -82,14 +82,14 @@ func setupAccountantAndPhylaxSet(t *testing.T, ctx sdk.Context, k *keeper.Keeper
 	signer_bz := [20]byte{}
 	signer := sdk.AccAddress(signer_bz[:])
 
-	guardians, privateKeys := createNPhylaxValidator(k, ctx, 10)
+	phylaxs, privateKeys := createNPhylaxValidator(k, ctx, 10)
 	k.SetConfig(ctx, types.Config{
 		GovernanceEmitter:   vaa.GovernanceEmitter[:],
 		GovernanceChain:     uint32(vaa.GovernanceChain),
 		ChainId:             uint32(vaa.ChainIDWormchain),
 		PhylaxSetExpiration: 86400,
 	})
-	set := createNewPhylaxSet(k, ctx, guardians)
+	set := createNewPhylaxSet(k, ctx, phylaxs)
 	context := sdk.WrapSDKContext(ctx)
 	msgServer := keeper.NewMsgServerImpl(*k)
 
@@ -120,7 +120,7 @@ func setupAccountantAndPhylaxSet(t *testing.T, ctx sdk.Context, k *keeper.Keeper
 	})
 	require.NoError(t, err)
 	return &Testbench{
-		guardians:       guardians,
+		phylaxs:         phylaxs,
 		set:             *set,
 		privateKeys:     privateKeys,
 		signer:          signer,
@@ -133,7 +133,7 @@ func setupAccountantAndPhylaxSet(t *testing.T, ctx sdk.Context, k *keeper.Keeper
 
 func TestWasmdStoreCode(t *testing.T) {
 	k, ctx := keepertest.DeltaswapKeeper(t)
-	guardians, privateKeys := createNPhylaxValidator(k, ctx, 10)
+	phylaxs, privateKeys := createNPhylaxValidator(k, ctx, 10)
 	_ = privateKeys
 	k.SetConfig(ctx, types.Config{
 		GovernanceEmitter:   vaa.GovernanceEmitter[:],
@@ -144,7 +144,7 @@ func TestWasmdStoreCode(t *testing.T) {
 	signer_bz := [20]byte{}
 	signer := sdk.AccAddress(signer_bz[:])
 
-	set := createNewPhylaxSet(k, ctx, guardians)
+	set := createNewPhylaxSet(k, ctx, phylaxs)
 
 	context := sdk.WrapSDKContext(ctx)
 	msgServer := keeper.NewMsgServerImpl(*k)
@@ -202,7 +202,7 @@ func TestWasmdStoreCode(t *testing.T) {
 
 func TestWasmdInstantiateContract(t *testing.T) {
 	k, ctx := keepertest.DeltaswapKeeper(t)
-	guardians, privateKeys := createNPhylaxValidator(k, ctx, 10)
+	phylaxs, privateKeys := createNPhylaxValidator(k, ctx, 10)
 	_ = privateKeys
 	k.SetConfig(ctx, types.Config{
 		GovernanceEmitter:   vaa.GovernanceEmitter[:],
@@ -213,7 +213,7 @@ func TestWasmdInstantiateContract(t *testing.T) {
 	signer_bz := [20]byte{}
 	signer := sdk.AccAddress(signer_bz[:])
 
-	set := createNewPhylaxSet(k, ctx, guardians)
+	set := createNewPhylaxSet(k, ctx, phylaxs)
 
 	context := sdk.WrapSDKContext(ctx)
 	msgServer := keeper.NewMsgServerImpl(*k)

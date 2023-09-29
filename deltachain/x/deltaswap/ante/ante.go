@@ -28,7 +28,7 @@ func (wh DeltaswapAllowlistDecorator) AnteHandle(request sdk.Request, tx sdk.Tx,
 
 	// We permit if there is a message with a signer satisfying either condition:
 	// 1. There is an allowlist entry for the signer(s), OR
-	// 2. The signer is a validators in a current or future guardian set.
+	// 2. The signer is a validators in a current or future phylax set.
 	// I.e. If one message has an allowed signer, then the transaction has a signature from that address.
 	for _, msg := range tx.GetMsgs() {
 		for _, signer := range msg.GetSigners() {

@@ -18,11 +18,11 @@ func init() {
 	gov.RegisterProposalTypeCodec(&GovernanceDeltaswapMessageProposal{}, "deltaswap/GovernanceDeltaswapMessage")
 }
 
-func NewPhylaxSetUpdateProposal(title, description string, guardianSet PhylaxSet) *PhylaxSetUpdateProposal {
+func NewPhylaxSetUpdateProposal(title, description string, phylaxSet PhylaxSet) *PhylaxSetUpdateProposal {
 	return &PhylaxSetUpdateProposal{
 		Title:        title,
 		Description:  description,
-		NewPhylaxSet: guardianSet,
+		NewPhylaxSet: phylaxSet,
 	}
 }
 

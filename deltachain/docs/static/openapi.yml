@@ -32592,9 +32592,9 @@ paths:
                   additionalProperties: {}
       tags:
         - Query
-  /deltaswapio/deltachain/deltaswap/guardianSet:
+  /deltaswapio/deltachain/deltaswap/phylaxSet:
     get:
-      summary: Queries a list of guardianSet items.
+      summary: Queries a list of phylaxSet items.
       operationId: DeltaswapFoundationWormchainDeltaswapPhylaxSetAll
       responses:
         '200':
@@ -32722,9 +32722,9 @@ paths:
           type: boolean
       tags:
         - Query
-  '/deltaswapio/deltachain/deltaswap/guardianSet/{index}':
+  '/deltaswapio/deltachain/deltaswap/phylaxSet/{index}':
     get:
-      summary: Queries a guardianSet by index.
+      summary: Queries a phylaxSet by index.
       operationId: DeltaswapFoundationWormchainDeltaswapPhylaxSet
       responses:
         '200':

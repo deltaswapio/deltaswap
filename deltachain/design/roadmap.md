@@ -60,11 +60,11 @@ Deltaswap Chain will contain critical functions for the Deltaswap network, but i
 
 ## Accounting
 
-Accounting is a defense-in-depth security mechanism, whereby the guardians will keep a running total of the circulating supply of each token on each chain, and refuse to issue VAAs for transfers which are logically impossible (as they must be the result of an exploit or 51% attack).
+Accounting is a defense-in-depth security mechanism, whereby the phylaxs will keep a running total of the circulating supply of each token on each chain, and refuse to issue VAAs for transfers which are logically impossible (as they must be the result of an exploit or 51% attack).
 
 More advanced mechanisms of accounting are planned as well, which would track token custody at a finer level to detect and prevent exploits from propagating across chains.
 
-There is also the option to move the current gossip network by which the guardians sign VAAs on-chain, which could allow for accounting to be more tightly integrated into the signing process.
+There is also the option to move the current gossip network by which the phylaxs sign VAAs on-chain, which could allow for accounting to be more tightly integrated into the signing process.
 
 ## Governance
 While block production will initially be PoA, the governance mechanism is intended to launch with on-chain voting in a PoS system. 

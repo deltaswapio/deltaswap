@@ -21,26 +21,26 @@ import (
 func TestCalculateQuorum(t *testing.T) {
 
 	tests := []struct {
-		guardians int
-		quorum    int
+		phylaxs int
+		quorum  int
 	}{
-		{guardians: 0, quorum: 1},
-		{guardians: 1, quorum: 1},
-		{guardians: 2, quorum: 2},
-		{guardians: 3, quorum: 3},
-		{guardians: 4, quorum: 3},
-		{guardians: 5, quorum: 4},
-		{guardians: 6, quorum: 5},
-		{guardians: 7, quorum: 5},
-		{guardians: 8, quorum: 6},
-		{guardians: 9, quorum: 7},
-		{guardians: 10, quorum: 7},
-		{guardians: 19, quorum: 13},
+		{phylaxs: 0, quorum: 1},
+		{phylaxs: 1, quorum: 1},
+		{phylaxs: 2, quorum: 2},
+		{phylaxs: 3, quorum: 3},
+		{phylaxs: 4, quorum: 3},
+		{phylaxs: 5, quorum: 4},
+		{phylaxs: 6, quorum: 5},
+		{phylaxs: 7, quorum: 5},
+		{phylaxs: 8, quorum: 6},
+		{phylaxs: 9, quorum: 7},
+		{phylaxs: 10, quorum: 7},
+		{phylaxs: 19, quorum: 13},
 	}
 
 	for _, tc := range tests {
-		t.Run(fmt.Sprintf("%v", tc.guardians), func(t *testing.T) {
-			quorum := keeper.CalculateQuorum(tc.guardians)
+		t.Run(fmt.Sprintf("%v", tc.phylaxs), func(t *testing.T) {
+			quorum := keeper.CalculateQuorum(tc.phylaxs)
 			assert.Equal(t, tc.quorum, quorum)
 		})
 	}
@@ -55,36 +55,36 @@ func TestKeeperCalculateQuorum(t *testing.T) {
 	addrsBytes = append(addrsBytes, addr1.Bytes())
 
 	tests := []struct {
-		label            string
-		guardianSet      types.PhylaxSet
-		guardianSetIndex uint32
-		quorum           int
-		willError        bool
-		err              error
+		label          string
+		phylaxSet      types.PhylaxSet
+		phylaxSetIndex uint32
+		quorum         int
+		willError      bool
+		err            error
 	}{
 
 		{label: "HappyPath",
-			guardianSet:      types.PhylaxSet{Index: 0, Keys: addrsBytes, ExpirationTime: 0},
-			guardianSetIndex: 0,
-			quorum:           1,
-			willError:        false},
+			phylaxSet:      types.PhylaxSet{Index: 0, Keys: addrsBytes, ExpirationTime: 0},
+			phylaxSetIndex: 0,
+			quorum:         1,
+			willError:      false},
 		{label: "PhylaxSetNotFound",
-			guardianSet:      types.PhylaxSet{Index: 0, Keys: addrsBytes, ExpirationTime: 0},
-			guardianSetIndex: 1,
-			willError:        true,
-			err:              types.ErrPhylaxSetNotFound},
+			phylaxSet:      types.PhylaxSet{Index: 0, Keys: addrsBytes, ExpirationTime: 0},
+			phylaxSetIndex: 1,
+			willError:      true,
+			err:            types.ErrPhylaxSetNotFound},
 		{label: "PhylaxSetExpired",
-			guardianSet:      types.PhylaxSet{Index: 0, Keys: addrsBytes, ExpirationTime: 100},
-			guardianSetIndex: 0,
-			willError:        true,
-			err:              types.ErrPhylaxSetExpired},
+			phylaxSet:      types.PhylaxSet{Index: 0, Keys: addrsBytes, ExpirationTime: 100},
+			phylaxSetIndex: 0,
+			willError:      true,
+			err:            types.ErrPhylaxSetExpired},
 	}
 
 	for _, tc := range tests {
 		t.Run(tc.label, func(t *testing.T) {
 			keeper, ctx := keepertest.DeltaswapKeeper(t)
-			keeper.AppendPhylaxSet(ctx, tc.guardianSet)
-			quorum, _, err := keeper.CalculateQuorum(ctx, tc.guardianSetIndex)
+			keeper.AppendPhylaxSet(ctx, tc.phylaxSet)
+			quorum, _, err := keeper.CalculateQuorum(ctx, tc.phylaxSetIndex)
 
 			if tc.willError == true {
 				assert.NotNil(t, err)
@@ -126,7 +126,7 @@ func TestVerifyMessageSignature(t *testing.T) {
 
 	tests := []struct {
 		label       string
-		guardianSet types.PhylaxSet
+		phylaxSet   types.PhylaxSet
 		signer      *ecdsa.PrivateKey
 		setSigIndex bool
 		sigIndex    uint8
@@ -135,27 +135,27 @@ func TestVerifyMessageSignature(t *testing.T) {
 	}{
 
 		{label: "ValidSigner",
-			guardianSet: types.PhylaxSet{Index: 0, Keys: addrsBytes, ExpirationTime: 0},
-			signer:      privKey1,
-			willError:   false},
+			phylaxSet: types.PhylaxSet{Index: 0, Keys: addrsBytes, ExpirationTime: 0},
+			signer:    privKey1,
+			willError: false},
 		{label: "IndexOutOfBounds",
-			guardianSet: types.PhylaxSet{Index: 0, Keys: addrsBytes, ExpirationTime: 0},
+			phylaxSet:   types.PhylaxSet{Index: 0, Keys: addrsBytes, ExpirationTime: 0},
 			signer:      privKey1,
 			setSigIndex: true,
 			sigIndex:    1,
 			willError:   true,
 			err:         types.ErrPhylaxIndexOutOfBounds},
 		{label: "InvalidSigner",
-			guardianSet: types.PhylaxSet{Index: 0, Keys: addrsBytes, ExpirationTime: 0},
-			signer:      privKey2,
-			willError:   true,
-			err:         types.ErrSignaturesInvalid},
+			phylaxSet: types.PhylaxSet{Index: 0, Keys: addrsBytes, ExpirationTime: 0},
+			signer:    privKey2,
+			willError: true,
+			err:       types.ErrSignaturesInvalid},
 	}
 
 	for _, tc := range tests {
 		t.Run(tc.label, func(t *testing.T) {
 			keeper, ctx := keepertest.DeltaswapKeeper(t)
-			keeper.AppendPhylaxSet(ctx, tc.guardianSet)
+			keeper.AppendPhylaxSet(ctx, tc.phylaxSet)
 
 			// build the signature
 			signature := sign(digest, tc.signer, 0)
@@ -164,7 +164,7 @@ func TestVerifyMessageSignature(t *testing.T) {
 			}
 
 			// verify the signature
-			err := keeper.VerifyMessageSignature(ctx, prefix[:], payload, tc.guardianSet.Index, signature)
+			err := keeper.VerifyMessageSignature(ctx, prefix[:], payload, tc.phylaxSet.Index, signature)
 
 			if tc.willError == true {
 				assert.NotNil(t, err)
@@ -196,7 +196,7 @@ func TestVerifyVaaSignature(t *testing.T) {
 
 	tests := []struct {
 		label       string
-		guardianSet types.PhylaxSet
+		phylaxSet   types.PhylaxSet
 		signer      *ecdsa.PrivateKey
 		setSigIndex bool
 		sigIndex    uint8
@@ -205,11 +205,11 @@ func TestVerifyVaaSignature(t *testing.T) {
 	}{
 
 		{label: "ValidSigner",
-			guardianSet: types.PhylaxSet{Index: 0, Keys: addrsBytes, ExpirationTime: 0},
-			signer:      privKey1,
-			willError:   false},
+			phylaxSet: types.PhylaxSet{Index: 0, Keys: addrsBytes, ExpirationTime: 0},
+			signer:    privKey1,
+			willError: false},
 		{label: "IndexOutOfBounds",
-			guardianSet: types.PhylaxSet{Index: 0, Keys: addrsBytes, ExpirationTime: 0},
+			phylaxSet:   types.PhylaxSet{Index: 0, Keys: addrsBytes, ExpirationTime: 0},
 			signer:      privKey1,
 			setSigIndex: true,
 			sigIndex:    1,
@@ -217,16 +217,16 @@ func TestVerifyVaaSignature(t *testing.T) {
 			// this out of bounds issue will trigger invalid signature from sdk.
 			err: types.ErrSignaturesInvalid},
 		{label: "InvalidSigner",
-			guardianSet: types.PhylaxSet{Index: 0, Keys: addrsBytes, ExpirationTime: 0},
-			signer:      privKey2,
-			willError:   true,
-			err:         types.ErrSignaturesInvalid},
+			phylaxSet: types.PhylaxSet{Index: 0, Keys: addrsBytes, ExpirationTime: 0},
+			signer:    privKey2,
+			willError: true,
+			err:       types.ErrSignaturesInvalid},
 	}
 
 	for _, tc := range tests {
 		t.Run(tc.label, func(t *testing.T) {
 			keeper, ctx := keepertest.DeltaswapKeeper(t)
-			keeper.AppendPhylaxSet(ctx, tc.guardianSet)
+			keeper.AppendPhylaxSet(ctx, tc.phylaxSet)
 
 			// build the signature
 			signature := sign(digest, tc.signer, 0)
@@ -292,32 +292,32 @@ func TestVerifyVAA(t *testing.T) {
 	addrsBytes = append(addrsBytes, addr1.Bytes())
 
 	tests := []struct {
-		label       string
-		guardianSet types.PhylaxSet
-		signers     []*ecdsa.PrivateKey
-		willError   bool
+		label     string
+		phylaxSet types.PhylaxSet
+		signers   []*ecdsa.PrivateKey
+		willError bool
 	}{
 
 		{label: "ValidSigner",
-			guardianSet: types.PhylaxSet{Index: 0, Keys: addrsBytes, ExpirationTime: 0},
-			signers:     []*ecdsa.PrivateKey{privKey1},
-			willError:   false},
+			phylaxSet: types.PhylaxSet{Index: 0, Keys: addrsBytes, ExpirationTime: 0},
+			signers:   []*ecdsa.PrivateKey{privKey1},
+			willError: false},
 		{label: "InvalidSigner",
-			guardianSet: types.PhylaxSet{Index: 0, Keys: addrsBytes, ExpirationTime: 0},
-			signers:     []*ecdsa.PrivateKey{privKey2},
-			willError:   true},
+			phylaxSet: types.PhylaxSet{Index: 0, Keys: addrsBytes, ExpirationTime: 0},
+			signers:   []*ecdsa.PrivateKey{privKey2},
+			willError: true},
 		{label: "InvalidPhylaxSetIndex",
-			guardianSet: types.PhylaxSet{Index: 1, Keys: addrsBytes, ExpirationTime: 0},
-			signers:     []*ecdsa.PrivateKey{privKey1},
-			willError:   true},
+			phylaxSet: types.PhylaxSet{Index: 1, Keys: addrsBytes, ExpirationTime: 0},
+			signers:   []*ecdsa.PrivateKey{privKey1},
+			willError: true},
 	}
 
 	for _, tc := range tests {
 		t.Run(tc.label, func(t *testing.T) {
 			keeper, ctx := keepertest.DeltaswapKeeper(t)
-			vaa := generateVaa(tc.guardianSet.Index, tc.signers, vaa.ChainIDSolana, payload)
+			vaa := generateVaa(tc.phylaxSet.Index, tc.signers, vaa.ChainIDSolana, payload)
 
-			keeper.AppendPhylaxSet(ctx, tc.guardianSet)
+			keeper.AppendPhylaxSet(ctx, tc.phylaxSet)
 			err := keeper.VerifyVAA(ctx, &vaa)
 
 			if tc.willError == true {
@@ -331,8 +331,8 @@ func TestVerifyVAA(t *testing.T) {
 
 func TestVerifyVAA2(t *testing.T) {
 	keeper, ctx := keepertest.DeltaswapKeeper(t)
-	guardians, privateKeys := createNPhylaxValidator(keeper, ctx, 25)
-	set := createNewPhylaxSet(keeper, ctx, guardians)
+	phylaxs, privateKeys := createNPhylaxValidator(keeper, ctx, 25)
+	set := createNewPhylaxSet(keeper, ctx, phylaxs)
 
 	// check verify works
 	payload := []byte{97, 97, 97, 97, 97, 97}
@@ -346,7 +346,7 @@ func TestVerifyVAA2(t *testing.T) {
 	err = keeper.VerifyVAA(ctx, &v)
 	assert.Error(t, err)
 
-	// generate for a non existing guardian set
+	// generate for a non existing phylax set
 	v = generateVaa(set.Index+1, privateKeys, vaa.ChainIDSolana, payload)
 	err = keeper.VerifyVAA(ctx, &v)
 	assert.Error(t, err)
@@ -354,8 +354,8 @@ func TestVerifyVAA2(t *testing.T) {
 
 func TestVerifyVAAGovernance(t *testing.T) {
 	keeper, ctx := keepertest.DeltaswapKeeper(t)
-	guardians, privateKeys := createNPhylaxValidator(keeper, ctx, 25)
-	set := createNewPhylaxSet(keeper, ctx, guardians)
+	phylaxs, privateKeys := createNPhylaxValidator(keeper, ctx, 25)
+	set := createNewPhylaxSet(keeper, ctx, phylaxs)
 	config := types.Config{
 		GovernanceEmitter:   vaa.GovernanceEmitter[:],
 		GovernanceChain:     uint32(vaa.GovernanceChain),

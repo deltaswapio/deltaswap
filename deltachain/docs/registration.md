@@ -10,8 +10,8 @@ This is deterministically generated from the module.
 
 ## Testnet
 
-TBD (need to be signed by testnet guardian)
+TBD (need to be signed by testnet phylax)
 
 ## Mainnet
 
-TBD (need to be signed by the most recent guardian set)
+TBD (need to be signed by the most recent phylax set)

@@ -13,8 +13,8 @@ import (
 
 func CmdListPhylaxValidator() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "list-guardian-validator",
-		Short: "list all guardian-validator",
+		Use:   "list-phylax-validator",
+		Short: "list all phylax-validator",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			clientCtx := client.GetClientContextFromCmd(cmd)
 
@@ -46,8 +46,8 @@ func CmdListPhylaxValidator() *cobra.Command {
 
 func CmdShowPhylaxValidator() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "show-guardian-validator [guardian-key]",
-		Short: "shows a guardian-validator",
+		Use:   "show-phylax-validator [phylax-key]",
+		Short: "shows a phylax-validator",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			clientCtx := client.GetClientContextFromCmd(cmd)

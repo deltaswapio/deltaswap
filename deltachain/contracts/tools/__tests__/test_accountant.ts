@@ -43,15 +43,15 @@ if (process.env.INIT_SIGNERS_KEYS_CSV === "undefined") {
  *   1. Ensure a token can be sent from its origin chain
  *   2. Ensure a token can be sent back from a foreign chain
  *   3. Ensure spoofed tokens for more than the outstanding amount rejects successfully
- *   4. Validate the guardian metrics for each of these cases
+ *   4. Validate the phylax metrics for each of these cases
  *   5. Bonus: Validate the on chain contract state via queries
  */
 
 const ci = !!process.env.CI;
 
-const GUARDIAN_HOST = ci ? "guardian" : "localhost";
-const GUARDIAN_RPCS = [`http://${GUARDIAN_HOST}:7071`];
-const GUARDIAN_METRICS = `http://${GUARDIAN_HOST}:6060/metrics`;
+const PHYLAX_HOST = ci ? "phylax" : "localhost";
+const PHYLAX_RPCS = [`http://${PHYLAX_HOST}:7071`];
+const PHYLAX_METRICS = `http://${PHYLAX_HOST}:6060/metrics`;
 const ETH_NODE_URL = ci ? "ws://eth-devnet:8545" : "ws://localhost:8545";
 const BSC_NODE_URL = ci ? "ws://eth-devnet2:8545" : "ws://localhost:8546";
 const ETH_PRIVATE_KEY9 =
@@ -104,7 +104,7 @@ const fetchGlobalAccountantMetrics = async (): Promise<{
   global_accountant_transfer_vaas_submitted: number;
   global_accountant_transfer_vaas_submitted_and_approved: number;
 }> =>
-  (await (await fetch(GUARDIAN_METRICS)).text())
+  (await (await fetch(PHYLAX_METRICS)).text())
     .split("\n")
     .filter((m) => m.startsWith("global_accountant"))
     .reduce((p, m) => {
@@ -183,9 +183,9 @@ describe("Global Accountant Tests", () => {
           CONTRACTS.DEVNET.ethereum.token_bridge
         );
         console.log(`fetching vaa ${sequence}...`);
-        // poll until the guardian(s) witness and sign the vaa
+        // poll until the phylax(s) witness and sign the vaa
         const { vaaBytes: signedVAA } = await getSignedVAAWithRetry(
-          GUARDIAN_RPCS,
+          PHYLAX_RPCS,
           CHAIN_ID_ETH,
           emitterAddress,
           sequence,
@@ -251,9 +251,9 @@ describe("Global Accountant Tests", () => {
         CONTRACTS.DEVNET.ethereum.token_bridge
       );
       console.log(`fetching vaa ${sequence}...`);
-      // poll until the guardian(s) witness and sign the vaa
+      // poll until the phylax(s) witness and sign the vaa
       const { vaaBytes: signedVAA } = await getSignedVAAWithRetry(
-        GUARDIAN_RPCS,
+        PHYLAX_RPCS,
         CHAIN_ID_ETH,
         emitterAddress,
         sequence,
@@ -359,9 +359,9 @@ describe("Global Accountant Tests", () => {
         CONTRACTS.DEVNET.bsc.token_bridge
       );
       console.log(`fetching vaa ${sequence}...`);
-      // poll until the guardian(s) witness and sign the vaa
+      // poll until the phylax(s) witness and sign the vaa
       const { vaaBytes: signedVAA } = await getSignedVAAWithRetry(
-        GUARDIAN_RPCS,
+        PHYLAX_RPCS,
         CHAIN_ID_BSC,
         emitterAddress,
         sequence,
@@ -431,7 +431,7 @@ describe("Global Accountant Tests", () => {
       console.log("redeeming spoofed tokens");
       let vaa: VAA<TokenBridgeTransfer> = {
         version: 1,
-        guardianSetIndex: 0,
+        phylaxSetIndex: 0,
         signatures: [],
         timestamp: 0,
         nonce: 0,
@@ -493,7 +493,7 @@ describe("Global Accountant Tests", () => {
         CONTRACTS.DEVNET.bsc.core
       );
       console.log("waiting 30s to fetch metrics...");
-      await sleep(30 * 1000); // give the guardian a few seconds to pick up the transfers and attempt to submit them
+      await sleep(30 * 1000); // give the phylax a few seconds to pick up the transfers and attempt to submit them
       const afterMetrics = await fetchGlobalAccountantMetrics();
       console.log(
         "balance errors b/a:",

@@ -24,7 +24,7 @@ var _ = math.Inf
 // proto package needs to be updated.
 const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
-// PhylaxSetUpdateProposal defines a guardian set update governance proposal
+// PhylaxSetUpdateProposal defines a phylax set update governance proposal
 type PhylaxSetUpdateProposal struct {
 	Title        string    `protobuf:"bytes,1,opt,name=title,proto3" json:"title,omitempty"`
 	Description  string    `protobuf:"bytes,2,opt,name=description,proto3" json:"description,omitempty"`

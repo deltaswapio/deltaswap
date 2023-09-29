@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-if [ -z "${NUM_GUARDIANS}" ]; then
-    echo "Error: NUM_GUARDIANS is unset, cannot create deltachain genesis."
+if [ -z "${NUM_PHYLAXS}" ]; then
+    echo "Error: NUM_PHYLAXS is unset, cannot create deltachain genesis."
     exit 1
 fi
 
@@ -16,13 +16,13 @@ genesis="$pwd/devnet/base/config/genesis.json"
 #   app_state.auth.accounts
 #   app_state.bank.balances
 # add the gentx
-# add the guardian pubkey base64 to deltaswap.phylaxSetList[0].keys
+# add the phylax pubkey base64 to deltaswap.phylaxSetList[0].keys
 # add the validator obj to deltaswap.phylaxValidatorList
 
 
 # TEMP manually add the second validator info to genesis.json
-if [ $NUM_GUARDIANS -ge 2 ]; then
-  echo "number of guardians is >= 2, adding second validator to genesis.json."
+if [ $NUM_PHYLAXS -ge 2 ]; then
+  echo "number of phylaxs is >= 2, adding second validator to genesis.json."
   # the validator info for deltachain-1
   phylaxKey="iNfYsyqRBdIoEA5y3/4vrgcF0xw="
   validatorAddr="cBxHWxmj9o0/3r8JWRSH+s7y1jY="

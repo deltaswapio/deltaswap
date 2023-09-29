@@ -15,7 +15,7 @@ import (
 )
 
 // NewDeltaswapGovernanceProposalHandler creates a governance handler to manage new proposal types.
-// It enables PhylaxSetProposal to update the guardian set and GenericDeltaswapMessageProposal to emit a generic wormhole
+// It enables PhylaxSetProposal to update the phylax set and GenericDeltaswapMessageProposal to emit a generic wormhole
 // message from the governance emitter.
 func NewDeltaswapGovernanceProposalHandler(k keeper.Keeper) govtypes.Handler {
 	return func(ctx sdk.Context, content govtypes.Content) error {
@@ -39,7 +39,7 @@ func handlePhylaxSetUpdateProposal(ctx sdk.Context, k keeper.Keeper, proposal *t
 		ExpirationTime: 0,
 	})
 	if err != nil {
-		return fmt.Errorf("failed to update guardian set: %w", err)
+		return fmt.Errorf("failed to update phylax set: %w", err)
 	}
 
 	config, ok := k.GetConfig(ctx)
@@ -47,7 +47,7 @@ func handlePhylaxSetUpdateProposal(ctx sdk.Context, k keeper.Keeper, proposal *t
 		return types.ErrNoConfig
 	}
 
-	// Post a deltaswap guardian set update governance message
+	// Post a deltaswap phylax set update governance message
 	message := &bytes.Buffer{}
 
 	// Header

@@ -9,7 +9,7 @@ import (
 // InitGenesis initializes the capability module's state from a provided genesis
 // state.
 func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) {
-	// Set all the guardianSet
+	// Set all the phylaxSet
 	for _, elem := range genState.PhylaxSetList {
 		if _, err := k.AppendPhylaxSet(ctx, elem); err != nil {
 			panic(err)

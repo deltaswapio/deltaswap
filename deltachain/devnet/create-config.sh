@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-if [ -z "${NUM_GUARDIANS}" ]; then
-    echo "Error: NUM_GUARDIANS is unset, cannot create deltachain config."
+if [ -z "${NUM_PHYLAXS}" ]; then
+    echo "Error: NUM_PHYLAXS is unset, cannot create deltachain config."
     exit 1
 fi
 
@@ -41,7 +41,7 @@ sed -i "s/moniker = \"deltachain\"/moniker = \"$hostname\"/g" ${home_path}/confi
 # set the external address so deltachain peers can resolve each other
 sed -i "s/external_address = \"\"/external_address = \"${hostname}:26656\"/g" ${home_path}/config/config.toml
 
-if [ $instance -eq 0 ] && [ $NUM_GUARDIANS -ge 2 ]; then
+if [ $instance -eq 0 ] && [ $NUM_PHYLAXS -ge 2 ]; then
   echo "$hostname: enabling seed mode in config.toml."
   sed -i "s/pex = false/pex = true/g" ${home_path}/config/config.toml
   sed -i "s/seed_mode = false/seed_mode = true/g" ${home_path}/config/config.toml

@@ -470,8 +470,8 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
    *
    * @tags Query
    * @name QueryPhylaxSetAll
-   * @summary Queries a list of guardianSet items.
-   * @request GET:/deltaswapio/deltachain/deltaswap/guardianSet
+   * @summary Queries a list of phylaxSet items.
+   * @request GET:/deltaswapio/deltachain/deltaswap/phylaxSet
    */
   queryPhylaxSetAll = (
     query?: {
@@ -484,7 +484,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     params: RequestParams = {},
   ) =>
     this.request<DeltaswapQueryAllPhylaxSetResponse, RpcStatus>({
-      path: `/deltaswapio/deltachain/deltaswap/guardianSet`,
+      path: `/deltaswapio/deltachain/deltaswap/phylaxSet`,
       method: "GET",
       query: query,
       format: "json",
@@ -496,12 +496,12 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
    *
    * @tags Query
    * @name QueryPhylaxSet
-   * @summary Queries a guardianSet by index.
-   * @request GET:/deltaswapio/deltachain/deltaswap/guardianSet/{index}
+   * @summary Queries a phylaxSet by index.
+   * @request GET:/deltaswapio/deltachain/deltaswap/phylaxSet/{index}
    */
   queryPhylaxSet = (index: number, params: RequestParams = {}) =>
     this.request<DeltaswapQueryGetPhylaxSetResponse, RpcStatus>({
-      path: `/deltaswapio/deltachain/deltaswap/guardianSet/${index}`,
+      path: `/deltaswapio/deltachain/deltaswap/phylaxSet/${index}`,
       method: "GET",
       format: "json",
       ...params,

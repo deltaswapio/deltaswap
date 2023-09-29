@@ -11,8 +11,8 @@ import (
 
 func CmdShowConsensusPhylaxSetIndex() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "show-consensus-guardian-set-index",
-		Short: "shows consensus-guardian-set-index",
+		Use:   "show-consensus-phylax-set-index",
+		Short: "shows consensus-phylax-set-index",
 		Args:  cobra.NoArgs,
 		RunE: func(cmd *cobra.Command, args []string) error {
 			clientCtx := client.GetClientContextFromCmd(cmd)

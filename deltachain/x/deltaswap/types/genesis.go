@@ -25,13 +25,13 @@ func DefaultGenesis() *GenesisState {
 // Validate performs basic genesis state validation returning an error upon any
 // failure.
 func (gs GenesisState) Validate() error {
-	// Check for duplicated ID in guardianSet
-	guardianSetIdMap := make(map[uint32]bool)
+	// Check for duplicated ID in phylaxSet
+	phylaxSetIdMap := make(map[uint32]bool)
 	for _, elem := range gs.PhylaxSetList {
-		if _, ok := guardianSetIdMap[elem.Index]; ok {
-			return fmt.Errorf("duplicated id for guardianSet")
+		if _, ok := phylaxSetIdMap[elem.Index]; ok {
+			return fmt.Errorf("duplicated id for phylaxSet")
 		}
-		guardianSetIdMap[elem.Index] = true
+		phylaxSetIdMap[elem.Index] = true
 	}
 	// Check for duplicated index in replayProtection
 	replayProtectionIndexMap := make(map[string]struct{})

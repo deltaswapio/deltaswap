@@ -13,15 +13,15 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func createExecuteGovernanceVaaPayload(k *keeper.Keeper, ctx sdk.Context, num_guardians byte) ([]byte, []*ecdsa.PrivateKey) {
-	guardians, privateKeys := createNPhylaxValidator(k, ctx, int(num_guardians))
+func createExecuteGovernanceVaaPayload(k *keeper.Keeper, ctx sdk.Context, num_phylaxs byte) ([]byte, []*ecdsa.PrivateKey) {
+	phylaxs, privateKeys := createNPhylaxValidator(k, ctx, int(num_phylaxs))
 	next_index := k.GetPhylaxSetCount(ctx)
 	set_update := make([]byte, 4)
 	binary.BigEndian.PutUint32(set_update, next_index)
-	set_update = append(set_update, num_guardians)
+	set_update = append(set_update, num_phylaxs)
 	// Add keys to set_update
-	for _, guardian := range guardians {
-		set_update = append(set_update, guardian.PhylaxKey...)
+	for _, phylax := range phylaxs {
+		set_update = append(set_update, phylax.PhylaxKey...)
 	}
 	// governance message with sha3 of wasmBytes as the payload
 	module := [32]byte{}
@@ -33,7 +33,7 @@ func createExecuteGovernanceVaaPayload(k *keeper.Keeper, ctx sdk.Context, num_gu
 
 func TestExecuteGovernanceVAA(t *testing.T) {
 	k, ctx := keepertest.DeltaswapKeeper(t)
-	guardians, privateKeys := createNPhylaxValidator(k, ctx, 10)
+	phylaxs, privateKeys := createNPhylaxValidator(k, ctx, 10)
 	_ = privateKeys
 	k.SetConfig(ctx, types.Config{
 		GovernanceEmitter:   vaa.GovernanceEmitter[:],
@@ -44,13 +44,13 @@ func TestExecuteGovernanceVAA(t *testing.T) {
 	signer_bz := [20]byte{}
 	signer := sdk.AccAddress(signer_bz[:])
 
-	set := createNewPhylaxSet(k, ctx, guardians)
+	set := createNewPhylaxSet(k, ctx, phylaxs)
 	k.SetConsensusPhylaxSetIndex(ctx, types.ConsensusPhylaxSetIndex{Index: set.Index})
 
 	context := sdk.WrapSDKContext(ctx)
 	msgServer := keeper.NewMsgServerImpl(*k)
 
-	// create governance to update guardian set with extra guardian
+	// create governance to update phylax set with extra phylax
 	payload, newPrivateKeys := createExecuteGovernanceVaaPayload(k, ctx, 11)
 	v := generateVaa(set.Index, privateKeys, vaa.ChainID(vaa.GovernanceChain), payload)
 	vBz, _ := v.Marshal()
@@ -60,7 +60,7 @@ func TestExecuteGovernanceVAA(t *testing.T) {
 	})
 	assert.NoError(t, err)
 
-	// we should have a new set with 11 guardians now
+	// we should have a new set with 11 phylaxs now
 	new_index := k.GetLatestPhylaxSetIndex(ctx)
 	assert.Equal(t, set.Index+1, new_index)
 	new_set, _ := k.GetPhylaxSet(ctx, new_index)
@@ -84,7 +84,7 @@ func TestExecuteGovernanceVAA(t *testing.T) {
 	})
 	assert.ErrorIs(t, err, types.ErrInvalidGovernancePayloadLength)
 
-	// Include a guardian address twice in an update
+	// Include a phylax address twice in an update
 	payload_bad, _ := createExecuteGovernanceVaaPayload(k, ctx, 11)
 	copy(payload_bad[len(payload_bad)-20:], payload_bad[len(payload_bad)-40:len(payload_bad)-20])
 	v = generateVaa(set.Index, privateKeys, vaa.ChainID(vaa.GovernanceChain), payload_bad)

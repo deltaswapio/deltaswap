@@ -62,8 +62,8 @@ func GetGenesisCmd() *cobra.Command {
 
 func CmdGenerateTestPhylaxKey() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "generate-test-guardian-keypair [output-private-key.hex] [address.hex]",
-		Short: "Generate a guardian keypair for testing use",
+		Use:   "generate-test-phylax-keypair [output-private-key.hex] [address.hex]",
+		Short: "Generate a phylax keypair for testing use",
 		Args:  cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			outPrivatePath := args[0]
@@ -211,9 +211,9 @@ func parseVaaFromFlags(cmd *cobra.Command) (vaa.VAA, error) {
 }
 
 func addVaaFlags(cmd *cobra.Command) {
-	cmd.Flags().StringArray(FLAG_KEY, []string{}, "guardian private key file(s) to sign with (hex format) in order.")
+	cmd.Flags().StringArray(FLAG_KEY, []string{}, "phylax private key file(s) to sign with (hex format) in order.")
 	cmd.Flags().Uint16(FLAG_EMITTER_CHAIN, 0, "emitter chain")
-	cmd.Flags().Uint32(FLAG_INDEX, 0, "guardian set index")
+	cmd.Flags().Uint32(FLAG_INDEX, 0, "phylax set index")
 	cmd.Flags().Uint64(FLAG_SEQUENCE, 0, "sequence number")
 	cmd.Flags().Uint32(FLAG_NONCE, 0, "nonce")
 	cmd.Flags().String(FLAG_PAYLOAD, "", "payload (hex format)")
@@ -331,7 +331,7 @@ func CmdGenerateGovernanceVaa() *cobra.Command {
 
 func CmdGeneratePhylaxSetUpdatea() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "generate-guardian-update-vaa",
+		Use:   "generate-phylax-update-vaa",
 		Short: "generate and sign a governance vaa with any payload",
 		Args:  cobra.ExactArgs(0),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
@@ -400,8 +400,8 @@ func CmdGeneratePhylaxSetUpdatea() *cobra.Command {
 	}
 
 	addVaaFlags(cmd)
-	cmd.Flags().StringArray(FLAG_PUBLIC_KEY, []string{}, "guardian public key file(s) to include in new set (hex/evm format) in order.")
-	cmd.Flags().Uint32(FLAG_NEXT_INDEX, 0, "next guardian set index")
+	cmd.Flags().StringArray(FLAG_PUBLIC_KEY, []string{}, "phylax public key file(s) to include in new set (hex/evm format) in order.")
+	cmd.Flags().Uint32(FLAG_NEXT_INDEX, 0, "next phylax set index")
 
 	return cmd
 }
@@ -409,7 +409,7 @@ func CmdGeneratePhylaxSetUpdatea() *cobra.Command {
 func CmdTestSignAddress() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "test-sign-address",
-		Short: "Test method sign the validator address to use for registering as a guardian.  Use phylaxd for production, not this method.  Read guardian key as hex in $GUARDIAN_KEY env variable. use --from to indicate address to sign.",
+		Short: "Test method sign the validator address to use for registering as a phylax.  Use phylaxd for production, not this method.  Read phylax key as hex in $PHYLAX_KEY env variable. use --from to indicate address to sign.",
 		Args:  cobra.ExactArgs(0),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			clientCtx, err := client.GetClientTxContext(cmd)
@@ -421,7 +421,7 @@ func CmdTestSignAddress() *cobra.Command {
 				return err
 			}
 
-			keyHex := os.Getenv("GUARDIAN_KEY")
+			keyHex := os.Getenv("PHYLAX_KEY")
 			key, err := ImportKeyFromHex(keyHex)
 			if err != nil {
 				return err

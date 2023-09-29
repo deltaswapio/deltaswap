@@ -12,7 +12,7 @@ import (
 
 func CmdListPhylaxSet() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "list-guardian-set",
+		Use:   "list-phylax-set",
 		Short: "list all PhylaxSet",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			clientCtx := client.GetClientContextFromCmd(cmd)
@@ -45,7 +45,7 @@ func CmdListPhylaxSet() *cobra.Command {
 
 func CmdShowPhylaxSet() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "show-guardian-set [id]",
+		Use:   "show-phylax-set [id]",
 		Short: "shows a PhylaxSet",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {

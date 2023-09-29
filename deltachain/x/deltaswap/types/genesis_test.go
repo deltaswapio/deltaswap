@@ -64,7 +64,7 @@ func TestGenesisState_Validate(t *testing.T) {
 			valid: true,
 		},
 		{
-			desc: "duplicated guardianSet",
+			desc: "duplicated phylaxSet",
 			genState: &types.GenesisState{
 				PhylaxSetList: []types.PhylaxSet{
 					{

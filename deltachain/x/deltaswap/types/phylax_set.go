@@ -34,11 +34,11 @@ func (gs PhylaxSet) ValidateBasic() error {
 	}
 
 	if len(gs.Keys) == 0 {
-		return fmt.Errorf("guardian set must not be empty")
+		return fmt.Errorf("phylax set must not be empty")
 	}
 
 	if len(gs.Keys) > 255 {
-		return fmt.Errorf("guardian set length must be <= 255, is %d", len(gs.Keys))
+		return fmt.Errorf("phylax set length must be <= 255, is %d", len(gs.Keys))
 	}
 
 	return nil

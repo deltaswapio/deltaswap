@@ -5,7 +5,7 @@ import { Writer, Reader } from "protobufjs/minimal";
 
 export const protobufPackage = "deltaswapio.deltachain.deltaswap";
 
-/** PhylaxSetUpdateProposal defines a guardian set update governance proposal */
+/** PhylaxSetUpdateProposal defines a phylax set update governance proposal */
 export interface PhylaxSetUpdateProposal {
   title: string;
   description: string;

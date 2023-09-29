@@ -14,7 +14,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-// Create N guardians and return both their public and private keys
+// Create N phylaxs and return both their public and private keys
 func createNPhylaxValidator(keeper *keeper.Keeper, ctx sdk.Context, n int) ([]types.PhylaxValidator, []*ecdsa.PrivateKey) {
 	items := make([]types.PhylaxValidator, n)
 	privKeys := []*ecdsa.PrivateKey{}
@@ -23,14 +23,14 @@ func createNPhylaxValidator(keeper *keeper.Keeper, ctx sdk.Context, n int) ([]ty
 		if err != nil {
 			panic(err)
 		}
-		guardianAddr := crypto.PubkeyToAddress(privKey.PublicKey)
+		phylaxAddr := crypto.PubkeyToAddress(privKey.PublicKey)
 		privKeyValidator, err := ecdsa.GenerateKey(crypto.S256(), rand.Reader)
 		if err != nil {
 			panic(err)
 		}
 
 		validatorAddr := crypto.PubkeyToAddress(privKeyValidator.PublicKey)
-		items[i].PhylaxKey = guardianAddr[:]
+		items[i].PhylaxKey = phylaxAddr[:]
 		items[i].ValidatorAddr = validatorAddr[:]
 		privKeys = append(privKeys, privKey)
 
@@ -39,20 +39,20 @@ func createNPhylaxValidator(keeper *keeper.Keeper, ctx sdk.Context, n int) ([]ty
 	return items, privKeys
 }
 
-func createNewPhylaxSet(keeper *keeper.Keeper, ctx sdk.Context, guardians []types.PhylaxValidator) *types.PhylaxSet {
+func createNewPhylaxSet(keeper *keeper.Keeper, ctx sdk.Context, phylaxs []types.PhylaxValidator) *types.PhylaxSet {
 	next_index := keeper.GetPhylaxSetCount(ctx)
 
-	guardianSet := &types.PhylaxSet{
+	phylaxSet := &types.PhylaxSet{
 		Index:          next_index,
 		Keys:           [][]byte{},
 		ExpirationTime: 0,
 	}
-	for _, guardian := range guardians {
-		guardianSet.Keys = append(guardianSet.Keys, guardian.PhylaxKey)
+	for _, phylax := range phylaxs {
+		phylaxSet.Keys = append(phylaxSet.Keys, phylax.PhylaxKey)
 	}
 
-	keeper.AppendPhylaxSet(ctx, *guardianSet)
-	return guardianSet
+	keeper.AppendPhylaxSet(ctx, *phylaxSet)
+	return phylaxSet
 }
 
 func TestPhylaxValidatorGet(t *testing.T) {

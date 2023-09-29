@@ -49,18 +49,18 @@ func (k Keeper) GetAllAllowedAddresses(ctx sdk.Context) (list []types.ValidatorA
 	return
 }
 
-// Checks if a given address is registered as a guardian validator and either:
-// * Is in the current guardian set, OR
-// * Is in a future guardian set
+// Checks if a given address is registered as a phylax validator and either:
+// * Is in the current phylax set, OR
+// * Is in a future phylax set
 func (k Keeper) IsAddressValidatorOrFutureValidator(ctx sdk.Context, addr string) bool {
 	currentIndex, _ := k.GetConsensusPhylaxSetIndex(ctx)
 	matchedValidator, found := k.GetPhylaxValidatorByValidatorAddress(ctx, addr)
 	if !found {
 		return false
 	}
-	// check that the validator is in a current or future guardian set
-	guardianSets := k.GetAllPhylaxSet(ctx)
-	for _, gSet := range guardianSets {
+	// check that the validator is in a current or future phylax set
+	phylaxSets := k.GetAllPhylaxSet(ctx)
+	for _, gSet := range phylaxSets {
 		if gSet.Index >= currentIndex.Index {
 			for _, gKey := range gSet.Keys {
 				if bytes.Equal(matchedValidator.PhylaxKey, gKey) {

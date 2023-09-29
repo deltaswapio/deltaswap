@@ -65,7 +65,7 @@ func (m *EmptyResponse) XXX_DiscardUnknown() {
 var xxx_messageInfo_EmptyResponse proto.InternalMessageInfo
 
 type MsgCreateAllowlistEntryRequest struct {
-	// signer should be a guardian validator in a current set or future set.
+	// signer should be a phylax validator in a current set or future set.
 	Signer string `protobuf:"bytes,1,opt,name=signer,proto3" json:"signer,omitempty"`
 	// the address to allowlist
 	Address string `protobuf:"bytes,2,opt,name=address,proto3" json:"address,omitempty"`
@@ -128,7 +128,7 @@ func (m *MsgCreateAllowlistEntryRequest) GetName() string {
 }
 
 type MsgDeleteAllowlistEntryRequest struct {
-	// signer should be a guardian validator in a current set or future set.
+	// signer should be a phylax validator in a current set or future set.
 	Signer string `protobuf:"bytes,1,opt,name=signer,proto3" json:"signer,omitempty"`
 	// the address allowlist to remove
 	Address string `protobuf:"bytes,2,opt,name=address,proto3" json:"address,omitempty"`
@@ -720,7 +720,7 @@ func (m *MsgAddWasmInstantiateAllowlist) GetVaa() []byte {
 }
 
 type MsgDeleteWasmInstantiateAllowlist struct {
-	// signer should be a guardian validator in a current set or future set.
+	// signer should be a phylax validator in a current set or future set.
 	Signer string `protobuf:"bytes,1,opt,name=signer,proto3" json:"signer,omitempty"`
 	// the <contract, code_id> pair to remove
 	Address string `protobuf:"bytes,2,opt,name=address,proto3" json:"address,omitempty"`

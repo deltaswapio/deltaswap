@@ -35,7 +35,7 @@ See [development.md](./development.md)
 ## Allowlists
 
 Accounts on deltachain are allowlisted.  To be able to submit a tx on deltachain, you must have an account that is either:
-* A validator on deltachain that is part of a current or future guardian set, or
+* A validator on deltachain that is part of a current or future phylax set, or
 * An account that is allowlisted by a current validator on deltachain.
 
 To create or delete an allowlist entry, you use a validator account.  Allowlist entries can become stale,

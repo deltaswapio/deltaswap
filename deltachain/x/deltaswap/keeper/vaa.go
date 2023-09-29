@@ -18,7 +18,7 @@ func ParseVAA(data []byte) (*vaa.VAA, error) {
 	return v, nil
 }
 
-// CalculateQuorum returns the minimum number of guardians that need to sign a VAA for a given guardian set.
+// CalculateQuorum returns the minimum number of phylaxs that need to sign a VAA for a given phylax set.
 //
 // The canonical source is the calculation in the contracts (solana/bridge/src/processor.rs and
 // ethereum/contracts/Deltaswap.sol), and this needs to match the implementation in the contracts.
@@ -26,29 +26,29 @@ func CalculateQuorum(numPhylaxs int) int {
 	return (numPhylaxs*2)/3 + 1
 }
 
-// Calculate Quorum retrieves the guardian set for the given index, verifies that it is a valid set, and then calculates the needed quorum.
-func (k Keeper) CalculateQuorum(ctx sdk.Context, guardianSetIndex uint32) (int, *types.PhylaxSet, error) {
-	guardianSet, exists := k.GetPhylaxSet(ctx, guardianSetIndex)
+// Calculate Quorum retrieves the phylax set for the given index, verifies that it is a valid set, and then calculates the needed quorum.
+func (k Keeper) CalculateQuorum(ctx sdk.Context, phylaxSetIndex uint32) (int, *types.PhylaxSet, error) {
+	phylaxSet, exists := k.GetPhylaxSet(ctx, phylaxSetIndex)
 	if !exists {
 		return 0, nil, types.ErrPhylaxSetNotFound
 	}
 
-	if 0 < guardianSet.ExpirationTime && guardianSet.ExpirationTime < uint64(ctx.BlockTime().Unix()) {
+	if 0 < phylaxSet.ExpirationTime && phylaxSet.ExpirationTime < uint64(ctx.BlockTime().Unix()) {
 		return 0, nil, types.ErrPhylaxSetExpired
 	}
 
-	return CalculateQuorum(len(guardianSet.Keys)), &guardianSet, nil
+	return CalculateQuorum(len(phylaxSet.Keys)), &phylaxSet, nil
 }
 
-func (k Keeper) VerifyMessageSignature(ctx sdk.Context, prefix []byte, data []byte, guardianSetIndex uint32, signature *vaa.Signature) error {
-	// Calculate quorum and retrieve guardian set
-	_, guardianSet, err := k.CalculateQuorum(ctx, guardianSetIndex)
+func (k Keeper) VerifyMessageSignature(ctx sdk.Context, prefix []byte, data []byte, phylaxSetIndex uint32, signature *vaa.Signature) error {
+	// Calculate quorum and retrieve phylax set
+	_, phylaxSet, err := k.CalculateQuorum(ctx, phylaxSetIndex)
 	if err != nil {
 		return err
 	}
 
 	// verify signature
-	addresses := guardianSet.KeysAsAddresses()
+	addresses := phylaxSet.KeysAsAddresses()
 	if int(signature.Index) >= len(addresses) {
 		return types.ErrPhylaxIndexOutOfBounds
 	}
@@ -61,9 +61,9 @@ func (k Keeper) VerifyMessageSignature(ctx sdk.Context, prefix []byte, data []by
 	return nil
 }
 
-func (k Keeper) DeprecatedVerifyVaa(ctx sdk.Context, vaaBody []byte, guardianSetIndex uint32, signatures []*vaa.Signature) error {
-	// Calculate quorum and retrieve guardian set
-	quorum, guardianSet, err := k.CalculateQuorum(ctx, guardianSetIndex)
+func (k Keeper) DeprecatedVerifyVaa(ctx sdk.Context, vaaBody []byte, phylaxSetIndex uint32, signatures []*vaa.Signature) error {
+	// Calculate quorum and retrieve phylax set
+	quorum, phylaxSet, err := k.CalculateQuorum(ctx, phylaxSetIndex)
 	if err != nil {
 		return err
 	}
@@ -72,7 +72,7 @@ func (k Keeper) DeprecatedVerifyVaa(ctx sdk.Context, vaaBody []byte, guardianSet
 	}
 
 	// Verify signatures
-	ok := vaa.DeprecatedVerifySignatures(vaaBody, signatures, guardianSet.KeysAsAddresses())
+	ok := vaa.DeprecatedVerifySignatures(vaaBody, signatures, phylaxSet.KeysAsAddresses())
 	if !ok {
 		return types.ErrSignaturesInvalid
 	}
@@ -81,8 +81,8 @@ func (k Keeper) DeprecatedVerifyVaa(ctx sdk.Context, vaaBody []byte, guardianSet
 }
 
 func (k Keeper) VerifyVAA(ctx sdk.Context, v *vaa.VAA) error {
-	// Calculate quorum and retrieve guardian set
-	quorum, guardianSet, err := k.CalculateQuorum(ctx, v.PhylaxSetIndex)
+	// Calculate quorum and retrieve phylax set
+	quorum, phylaxSet, err := k.CalculateQuorum(ctx, v.PhylaxSetIndex)
 	if err != nil {
 		return err
 	}
@@ -91,7 +91,7 @@ func (k Keeper) VerifyVAA(ctx sdk.Context, v *vaa.VAA) error {
 	}
 
 	// Verify signatures
-	ok := v.VerifySignatures(guardianSet.KeysAsAddresses())
+	ok := v.VerifySignatures(phylaxSet.KeysAsAddresses())
 	if !ok {
 		return types.ErrSignaturesInvalid
 	}

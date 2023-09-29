@@ -32,7 +32,7 @@ func (k msgServer) ExecuteGovernanceVAA(goCtx context.Context, msg *types.MsgExe
 		if len(payload) < 5 {
 			return nil, types.ErrInvalidGovernancePayloadLength
 		}
-		// Update guardian set
+		// Update phylax set
 		newIndex := binary.BigEndian.Uint32(payload[:4])
 		numPhylaxs := int(payload[4])
 

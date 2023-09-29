@@ -11,8 +11,8 @@ import {
   toValAddress,
 } from "@deltaswapio/deltachain-sdk";
 import {
-  GUARDIAN_VALIDATOR_BASE64_VALADDR,
-  GUARDIAN_VALIDATOR_VALADDR,
+  PHYLAX_VALIDATOR_BASE64_VALADDR,
+  PHYLAX_VALIDATOR_VALADDR,
   TEST_WALLET_ADDRESS_1,
   TEST_WALLET_MNEMONIC_1,
 } from "../consts";
@@ -22,8 +22,8 @@ jest.setTimeout(60000);
 describe("SDK tests", () => {
   test("Address manipulation", (done) => {
     const accountAddress = TEST_WALLET_ADDRESS_1;
-    const validatorAddress = GUARDIAN_VALIDATOR_VALADDR;
-    const validatorAddr64 = GUARDIAN_VALIDATOR_BASE64_VALADDR;
+    const validatorAddress = PHYLAX_VALIDATOR_VALADDR;
+    const validatorAddr64 = PHYLAX_VALIDATOR_BASE64_VALADDR;
 
     //checking invertibility
     expect(
@@ -69,7 +69,7 @@ describe("SDK tests", () => {
       const valAddr = await getAddress(operWallet);
 
       expect(address === TEST_WALLET_ADDRESS_1).toBe(true);
-      expect(valAddr === GUARDIAN_VALIDATOR_VALADDR).toBe(true);
+      expect(valAddr === PHYLAX_VALIDATOR_VALADDR).toBe(true);
 
       done();
     })();

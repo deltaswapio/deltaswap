@@ -71,13 +71,13 @@ Wormchain was initially scaffolded using the [Ignite CLI](https://github.com/ign
 To avoid system compatibility issues, we run Ignite using docker. The below commands should be run using the ignite docker container (see the Makefile recipes for examples).
 
 ```shell
-ignite scaffold type guardian-key key:string --module deltaswap --no-message
+ignite scaffold type phylax-key key:string --module deltaswap --no-message
 ```
 
 modify `proto/deltaswap/phylax_key.proto` (string -> bytes)
 
 ```shell
-ignite scaffold message register-account-as-guardian guardian-pubkey:PhylaxKey address-bech32:string signature:string --desc "Register a guardian public key with a deltaswap chain address." --module deltaswap --signer signer
+ignite scaffold message register-account-as-phylax phylax-pubkey:PhylaxKey address-bech32:string signature:string --desc "Register a phylax public key with a deltaswap chain address." --module deltaswap --signer signer
 ```
 
 Scaffold a query:

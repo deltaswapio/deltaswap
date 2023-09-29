@@ -12,17 +12,17 @@ import (
 	"github.com/spf13/cobra"
 )
 
-const FlagPhylaxSetKeys = "guardian-set-keys"
-const FlagPhylaxSetIndex = "guardian-set-index"
+const FlagPhylaxSetKeys = "phylax-set-keys"
+const FlagPhylaxSetIndex = "phylax-set-index"
 
-// NewCmdSubmitPhylaxSetUpdateProposal implements a command handler for submitting a guardian set update governance
+// NewCmdSubmitPhylaxSetUpdateProposal implements a command handler for submitting a phylax set update governance
 // proposal.
 func NewCmdSubmitPhylaxSetUpdateProposal() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "update-guardian-set [flags]",
+		Use:   "update-phylax-set [flags]",
 		Args:  cobra.ExactArgs(0),
-		Short: "Submit a guardian set update proposal",
-		Long:  "Submit a proposal to update the current guardian set to a new one",
+		Short: "Submit a phylax set update proposal",
+		Long:  "Submit a proposal to update the current phylax set to a new one",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
@@ -91,8 +91,8 @@ func NewCmdSubmitPhylaxSetUpdateProposal() *cobra.Command {
 	cmd.Flags().String(cli.FlagTitle, "", "title of proposal")
 	cmd.Flags().String(cli.FlagDescription, "", "description of proposal")
 	cmd.Flags().String(cli.FlagDeposit, "", "deposit of proposal")
-	cmd.Flags().StringArray(FlagPhylaxSetKeys, []string{}, "list of guardian keys (hex encoded without 0x)")
-	cmd.Flags().Uint32(FlagPhylaxSetIndex, 0, "index of the new guardian set")
+	cmd.Flags().StringArray(FlagPhylaxSetKeys, []string{}, "list of phylax keys (hex encoded without 0x)")
+	cmd.Flags().Uint32(FlagPhylaxSetIndex, 0, "index of the new phylax set")
 	cmd.MarkFlagRequired(cli.FlagTitle)
 	cmd.MarkFlagRequired(cli.FlagDescription)
 	cmd.MarkFlagRequired(FlagPhylaxSetKeys)

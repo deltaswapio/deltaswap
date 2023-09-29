@@ -29,7 +29,7 @@ type DeltaswapQuery struct {
 	// The caller should take care not to allow outside sources to choose the prefix.
 	VerifyMessageSignature *verifyMessageSignatureParams `json:"verify_message_signature,omitempty"`
 
-	// Calculate the minimum number of participants required in quorum for the latest guardian set.
+	// Calculate the minimum number of participants required in quorum for the latest phylax set.
 	CalculateQuorum *calculateQuorumParams `json:"calculate_quorum,omitempty"`
 }
 

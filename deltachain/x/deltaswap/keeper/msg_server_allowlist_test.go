@@ -60,7 +60,7 @@ func getRandomAddress() string {
 
 func TestAllowlistEntry(t *testing.T) {
 	k, ctx := keepertest.DeltaswapKeeper(t)
-	guardians, _ := createNPhylaxValidator(k, ctx, 10)
+	phylaxs, _ := createNPhylaxValidator(k, ctx, 10)
 	k.SetConfig(ctx, types.Config{
 		GovernanceEmitter:   vaa.GovernanceEmitter[:],
 		GovernanceChain:     uint32(vaa.GovernanceChain),
@@ -68,7 +68,7 @@ func TestAllowlistEntry(t *testing.T) {
 		PhylaxSetExpiration: 86400,
 	})
 
-	createNewPhylaxSet(k, ctx, guardians)
+	createNewPhylaxSet(k, ctx, phylaxs)
 	k.SetConsensusPhylaxSetIndex(ctx, types.ConsensusPhylaxSetIndex{
 		Index: 0,
 	})
@@ -84,13 +84,13 @@ func TestAllowlistEntry(t *testing.T) {
 	}
 	for _, addr := range new_addresses {
 		_, err := msgServer.CreateAllowlistEntry(context, &types.MsgCreateAllowlistEntryRequest{
-			Signer:  getSigner(&guardians[0]),
+			Signer:  getSigner(&phylaxs[0]),
 			Address: addr,
 		})
 		assert.NoError(t, err)
 	}
 	// Test creating the same address again is rejected
-	for _, g := range guardians {
+	for _, g := range phylaxs {
 		for _, addr := range new_addresses {
 
 			_, err := msgServer.CreateAllowlistEntry(context, &types.MsgCreateAllowlistEntryRequest{
@@ -103,25 +103,25 @@ func TestAllowlistEntry(t *testing.T) {
 
 	// Test address can be Deleted
 	_, err := msgServer.DeleteAllowlistEntry(context, &types.MsgDeleteAllowlistEntryRequest{
-		Signer:  getSigner(&guardians[0]),
+		Signer:  getSigner(&phylaxs[0]),
 		Address: new_addresses[0],
 	})
 	assert.NoError(t, err)
 	// Can't be deleted again since it doesn't exist
 	_, err = msgServer.DeleteAllowlistEntry(context, &types.MsgDeleteAllowlistEntryRequest{
-		Signer:  getSigner(&guardians[0]),
+		Signer:  getSigner(&phylaxs[0]),
 		Address: new_addresses[0],
 	})
 	assert.Error(t, err)
 	// Can be added again
 	_, err = msgServer.CreateAllowlistEntry(context, &types.MsgCreateAllowlistEntryRequest{
-		Signer:  getSigner(&guardians[0]),
+		Signer:  getSigner(&phylaxs[0]),
 		Address: new_addresses[0],
 	})
 	assert.NoError(t, err)
 
-	// another guardian cannot delete an AllowlistEntry they did not create
-	for _, g := range guardians[1:] {
+	// another phylax cannot delete an AllowlistEntry they did not create
+	for _, g := range phylaxs[1:] {
 		_, err = msgServer.DeleteAllowlistEntry(context, &types.MsgDeleteAllowlistEntryRequest{
 			Signer:  getSigner(&g),
 			Address: new_addresses[0],
@@ -136,10 +136,10 @@ func TestAllowlistEntry(t *testing.T) {
 	})
 	assert.Error(t, err)
 
-	// Cannot make AllowlistEntry if the guardian set changes
-	oldPhylax := guardians[0]
-	guardians, _ = createNPhylaxValidator(k, ctx, 10)
-	createNewPhylaxSet(k, ctx, guardians)
+	// Cannot make AllowlistEntry if the phylax set changes
+	oldPhylax := phylaxs[0]
+	phylaxs, _ = createNPhylaxValidator(k, ctx, 10)
+	createNewPhylaxSet(k, ctx, phylaxs)
 	err = k.TrySwitchToNewConsensusPhylaxSet(ctx)
 	assert.NoError(t, err)
 	_, err = msgServer.CreateAllowlistEntry(context, &types.MsgCreateAllowlistEntryRequest{
@@ -148,9 +148,9 @@ func TestAllowlistEntry(t *testing.T) {
 	})
 	assert.Error(t, err)
 
-	// still works with new guardian set
+	// still works with new phylax set
 	_, err = msgServer.CreateAllowlistEntry(context, &types.MsgCreateAllowlistEntryRequest{
-		Signer:  getSigner(&guardians[0]),
+		Signer:  getSigner(&phylaxs[0]),
 		Address: getRandomAddress(),
 	})
 	assert.NoError(t, err)
@@ -158,19 +158,19 @@ func TestAllowlistEntry(t *testing.T) {
 	// Anyone can remove stale AllowlistEntrys
 	// (new_address list is now stale as it's validator is no longer in validator set)
 	_, err = msgServer.DeleteAllowlistEntry(context, &types.MsgDeleteAllowlistEntryRequest{
-		Signer:  getSigner(&guardians[9]),
+		Signer:  getSigner(&phylaxs[9]),
 		Address: new_addresses[0],
 	})
 	assert.NoError(t, err)
 
 	// stale addresses will get overwritten by new validator
 	_, err = msgServer.CreateAllowlistEntry(context, &types.MsgCreateAllowlistEntryRequest{
-		Signer:  getSigner(&guardians[0]),
+		Signer:  getSigner(&phylaxs[0]),
 		Address: new_addresses[1],
 	})
 	assert.NoError(t, err)
 	allowed := k.GetValidatorAllowedAddress(ctx, new_addresses[1])
-	assert.Equal(t, allowed.ValidatorAddress, getSigner(&guardians[0]))
+	assert.Equal(t, allowed.ValidatorAddress, getSigner(&phylaxs[0]))
 
 	_ = msgServer
 	_ = context
@@ -178,7 +178,7 @@ func TestAllowlistEntry(t *testing.T) {
 
 func TestAllowlistEntryAnteHandler(t *testing.T) {
 	k, ctx := keepertest.DeltaswapKeeper(t)
-	guardians, privateKeys := createNPhylaxValidator(k, ctx, 10)
+	phylaxs, privateKeys := createNPhylaxValidator(k, ctx, 10)
 	_ = privateKeys
 	k.SetConfig(ctx, types.Config{
 		GovernanceEmitter:   vaa.GovernanceEmitter[:],
@@ -187,7 +187,7 @@ func TestAllowlistEntryAnteHandler(t *testing.T) {
 		PhylaxSetExpiration: 86400,
 	})
 
-	createNewPhylaxSet(k, ctx, guardians)
+	createNewPhylaxSet(k, ctx, phylaxs)
 	k.SetConsensusPhylaxSetIndex(ctx, types.ConsensusPhylaxSetIndex{
 		Index: 0,
 	})
@@ -198,7 +198,7 @@ func TestAllowlistEntryAnteHandler(t *testing.T) {
 	anteHandler := ante.NewDeltaswapAllowlistDecorator(*k)
 
 	// Test ante handler works with validate validator address
-	for _, g := range guardians {
+	for _, g := range phylaxs {
 		msgs := []sdk.Msg{}
 		for i := 0; i < 5; i += 1 {
 			msgs = append(msgs, getMsgWithSigner(getSigner(&g)))
@@ -217,7 +217,7 @@ func TestAllowlistEntryAnteHandler(t *testing.T) {
 
 	// Test ante handler accepts new address when whitelisted
 	_, err = msgServer.CreateAllowlistEntry(context, &types.MsgCreateAllowlistEntryRequest{
-		Signer:  getSigner(&guardians[0]),
+		Signer:  getSigner(&phylaxs[0]),
 		Address: new_address,
 	})
 	assert.NoError(t, err)
@@ -226,7 +226,7 @@ func TestAllowlistEntryAnteHandler(t *testing.T) {
 
 	// Test ante handler rejects when AllowlistEntry is removed
 	_, err = msgServer.DeleteAllowlistEntry(context, &types.MsgDeleteAllowlistEntryRequest{
-		Signer:  getSigner(&guardians[0]),
+		Signer:  getSigner(&phylaxs[0]),
 		Address: new_address,
 	})
 	assert.NoError(t, err)
@@ -236,7 +236,7 @@ func TestAllowlistEntryAnteHandler(t *testing.T) {
 
 	// (add back the AllowlistEntry)
 	_, err = msgServer.CreateAllowlistEntry(context, &types.MsgCreateAllowlistEntryRequest{
-		Signer:  getSigner(&guardians[0]),
+		Signer:  getSigner(&phylaxs[0]),
 		Address: new_address,
 	})
 	assert.NoError(t, err)
@@ -245,9 +245,9 @@ func TestAllowlistEntryAnteHandler(t *testing.T) {
 
 	// test ante handler rejects address that is no longer valid
 	// due to validator set advancing
-	// 1. new guardian set
-	guardians, _ = createNPhylaxValidator(k, ctx, 10)
-	createNewPhylaxSet(k, ctx, guardians)
+	// 1. new phylax set
+	phylaxs, _ = createNPhylaxValidator(k, ctx, 10)
+	createNewPhylaxSet(k, ctx, phylaxs)
 	err = k.TrySwitchToNewConsensusPhylaxSet(ctx)
 	assert.NoError(t, err)
 	// 2. expect reject

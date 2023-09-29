@@ -5,7 +5,7 @@ The Deltaswap Chain is intended to operate via the same PoA mechanism as the res
 - Two thirds of the Consensus Phylax Set are required for consensus. (In this case, block production.)
 - Phylax Sets are upgraded via processing Phylax Set Upgrade Governance VAAs.
 
-As such, the intent is that the 19 guardians will validate for Deltaswap Chain, and Deltaswap Chain consensus will be achieved when 13 Phylaxs vote to approve a block (via Tendermint). This means that we will need to hand-roll a PoA mechanism in the Cosmos-SDK on top of Tendermint and the normal Cosmos Staking module.
+As such, the intent is that the 19 phylaxs will validate for Deltaswap Chain, and Deltaswap Chain consensus will be achieved when 13 Phylaxs vote to approve a block (via Tendermint). This means that we will need to hand-roll a PoA mechanism in the Cosmos-SDK on top of Tendermint and the normal Cosmos Staking module.
 
 ## High-Level PoA Design Overview
 

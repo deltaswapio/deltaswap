@@ -71,7 +71,7 @@ func (k Keeper) TrySwitchToNewConsensusPhylaxSet(ctx sdk.Context) error {
 		return types.ErrPhylaxSetNotFound
 	}
 
-	// make sure each guardian has a registered validator
+	// make sure each phylax has a registered validator
 	for _, key := range latestPhylaxSet.Keys {
 		_, found := k.GetPhylaxValidator(ctx, key)
 		// if one of them doesn't, we don't attempt to switch
@@ -96,7 +96,7 @@ func (k Keeper) TrySwitchToNewConsensusPhylaxSet(ctx sdk.Context) error {
 	return err
 }
 
-// GetPhylaxSetCount get the total number of guardianSet
+// GetPhylaxSetCount get the total number of phylaxSet
 func (k Keeper) GetPhylaxSetCount(ctx sdk.Context) uint32 {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), []byte{})
 	byteKey := types.KeyPrefix(types.PhylaxSetCountKey)
@@ -111,7 +111,7 @@ func (k Keeper) GetPhylaxSetCount(ctx sdk.Context) uint32 {
 	return binary.BigEndian.Uint32(bz)
 }
 
-// setPhylaxSetCount set the total number of guardianSet
+// setPhylaxSetCount set the total number of phylaxSet
 func (k Keeper) setPhylaxSetCount(ctx sdk.Context, count uint32) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), []byte{})
 	byteKey := types.KeyPrefix(types.PhylaxSetCountKey)
@@ -120,32 +120,32 @@ func (k Keeper) setPhylaxSetCount(ctx sdk.Context, count uint32) {
 	store.Set(byteKey, bz)
 }
 
-// AppendPhylaxSet appends a guardianSet in the store with a new id and update the count
+// AppendPhylaxSet appends a phylaxSet in the store with a new id and update the count
 func (k Keeper) AppendPhylaxSet(
 	ctx sdk.Context,
-	guardianSet types.PhylaxSet,
+	phylaxSet types.PhylaxSet,
 ) (uint32, error) {
-	// Create the guardianSet
+	// Create the phylaxSet
 	count := k.GetPhylaxSetCount(ctx)
 
-	if guardianSet.Index != count {
+	if phylaxSet.Index != count {
 		return 0, types.ErrPhylaxSetNotSequential
 	}
 
-	k.setPhylaxSet(ctx, guardianSet)
+	k.setPhylaxSet(ctx, phylaxSet)
 	k.setPhylaxSetCount(ctx, count+1)
 
 	return count, nil
 }
 
-// SetPhylaxSet set a specific guardianSet in the store
-func (k Keeper) setPhylaxSet(ctx sdk.Context, guardianSet types.PhylaxSet) {
+// SetPhylaxSet set a specific phylaxSet in the store
+func (k Keeper) setPhylaxSet(ctx sdk.Context, phylaxSet types.PhylaxSet) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.PhylaxSetKey))
-	b := k.cdc.MustMarshal(&guardianSet)
-	store.Set(GetPhylaxSetIDBytes(guardianSet.Index), b)
+	b := k.cdc.MustMarshal(&phylaxSet)
+	store.Set(GetPhylaxSetIDBytes(phylaxSet.Index), b)
 }
 
-// GetPhylaxSet returns a guardianSet from its id
+// GetPhylaxSet returns a phylaxSet from its id
 func (k Keeper) GetPhylaxSet(ctx sdk.Context, id uint32) (val types.PhylaxSet, found bool) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.PhylaxSetKey))
 	b := store.Get(GetPhylaxSetIDBytes(id))
@@ -156,17 +156,17 @@ func (k Keeper) GetPhylaxSet(ctx sdk.Context, id uint32) (val types.PhylaxSet, f
 	return val, true
 }
 
-// Returns true when the given validator address is registered as a guardian and
-// that guardian is a member of the consensus guardian set.
+// Returns true when the given validator address is registered as a phylax and
+// that phylax is a member of the consensus phylax set.
 //
-// Note that this function is linear in the size of the consensus guardian set,
+// Note that this function is linear in the size of the consensus phylax set,
 // and it's eecuted on each endblocker when assigning voting power to validators.
 func (k Keeper) IsConsensusPhylax(ctx sdk.Context, addr sdk.ValAddress) (bool, error) {
-	// If there are no guardian sets, return true
+	// If there are no phylax sets, return true
 	// This is useful for testing, but the code path is never encountered when
-	// the chain is bootstrapped with a non-empty guardian set at gensis.
-	guardianSetCount := k.GetPhylaxSetCount(ctx)
-	if guardianSetCount == 0 {
+	// the chain is bootstrapped with a non-empty phylax set at gensis.
+	phylaxSetCount := k.GetPhylaxSetCount(ctx)
+	if phylaxSetCount == 0 {
 		return true, nil
 	}
 
@@ -181,9 +181,9 @@ func (k Keeper) IsConsensusPhylax(ctx sdk.Context, addr sdk.ValAddress) (bool, e
 		return false, types.ErrPhylaxSetNotFound
 	}
 
-	// If the consensus guardian set is empty, return true.
+	// If the consensus phylax set is empty, return true.
 	// This is useful for testing, but the code path is never encountered when
-	// the chain is bootstrapped with a non-empty guardian set at gensis.
+	// the chain is bootstrapped with a non-empty phylax set at gensis.
 	if len(consensusPhylaxSet.Keys) == 0 {
 		return true, nil
 	}
@@ -203,7 +203,7 @@ func (k Keeper) IsConsensusPhylax(ctx sdk.Context, addr sdk.ValAddress) (bool, e
 	return isConsensusPhylax, nil
 }
 
-// GetAllPhylaxSet returns all guardianSet
+// GetAllPhylaxSet returns all phylaxSet
 func (k Keeper) GetAllPhylaxSet(ctx sdk.Context) (list []types.PhylaxSet) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.PhylaxSetKey))
 	iterator := sdk.KVStorePrefixIterator(store, []byte{})

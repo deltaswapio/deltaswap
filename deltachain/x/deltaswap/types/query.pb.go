@@ -1541,9 +1541,9 @@ const _ = grpc.SupportPackageIsVersion4
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type QueryClient interface {
-	// Queries a guardianSet by index.
+	// Queries a phylaxSet by index.
 	PhylaxSet(ctx context.Context, in *QueryGetPhylaxSetRequest, opts ...grpc.CallOption) (*QueryGetPhylaxSetResponse, error)
-	// Queries a list of guardianSet items.
+	// Queries a list of phylaxSet items.
 	PhylaxSetAll(ctx context.Context, in *QueryAllPhylaxSetRequest, opts ...grpc.CallOption) (*QueryAllPhylaxSetResponse, error)
 	// Queries a config by index.
 	Config(ctx context.Context, in *QueryGetConfigRequest, opts ...grpc.CallOption) (*QueryGetConfigResponse, error)
@@ -1714,9 +1714,9 @@ func (c *queryClient) WasmInstantiateAllowlistAll(ctx context.Context, in *Query
 
 // QueryServer is the server API for Query service.
 type QueryServer interface {
-	// Queries a guardianSet by index.
+	// Queries a phylaxSet by index.
 	PhylaxSet(context.Context, *QueryGetPhylaxSetRequest) (*QueryGetPhylaxSetResponse, error)
-	// Queries a list of guardianSet items.
+	// Queries a list of phylaxSet items.
 	PhylaxSetAll(context.Context, *QueryAllPhylaxSetRequest) (*QueryAllPhylaxSetResponse, error)
 	// Queries a config by index.
 	Config(context.Context, *QueryGetConfigRequest) (*QueryGetConfigResponse, error)

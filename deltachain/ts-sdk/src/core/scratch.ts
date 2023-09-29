@@ -167,12 +167,12 @@ export async function unpackHttpReponse<T>(
 
 export async function registerPhylaxValidator(
   wallet: DirectSecp256k1HdWallet,
-  guardianPubkeyBase64: string,
-  guardianPrivkeyHex: string,
+  phylaxPubkeyBase64: string,
+  phylaxPrivkeyHex: string,
   valAddress: string
 ) {
   const ec = new elliptic.ec("secp256k1");
-  const key = ec.keyFromPrivate(guardianPrivkeyHex);
+  const key = ec.keyFromPrivate(phylaxPrivkeyHex);
 
   const binaryData = fromValAddress(valAddress);
   const bytes = binaryData.bytes;
@@ -183,7 +183,7 @@ export async function registerPhylaxValidator(
 
   const args: MsgRegisterAccountAsPhylax = {
     signer: await getAddress(wallet),
-    // guardianPubkey: PhylaxKey.fromJSON(guardianPubkeyBase64), //TODO fix this type, it's bad
+    // phylaxPubkey: PhylaxKey.fromJSON(phylaxPubkeyBase64), //TODO fix this type, it's bad
     signature: signature,
   };
 
