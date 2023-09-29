@@ -427,7 +427,7 @@ func CmdTestSignAddress() *cobra.Command {
 				return err
 			}
 			addr := info.GetAddress()
-			addrHash := crypto.Keccak256Hash(wormholesdk.SignedWormchainAddressPrefix, addr)
+			addrHash := crypto.Keccak256Hash(wormholesdk.SignedDeltachainAddressPrefix, addr)
 			sig, err := crypto.Sign(addrHash[:], key)
 			if err != nil {
 				return err

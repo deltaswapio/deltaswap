@@ -654,7 +654,7 @@ type MsgAddWasmInstantiateAllowlist struct {
 	Address string `protobuf:"bytes,2,opt,name=address,proto3" json:"address,omitempty"`
 	// CodeID is the reference to the stored WASM code that can be instantiated
 	CodeId uint64 `protobuf:"varint,3,opt,name=code_id,json=codeId,proto3" json:"code_id,omitempty"`
-	// vaa is the WormchainAddWasmInstantiateAllowlist governance message
+	// vaa is the DeltachainAddWasmInstantiateAllowlist governance message
 	Vaa []byte `protobuf:"bytes,4,opt,name=vaa,proto3" json:"vaa,omitempty"`
 }
 
@@ -725,7 +725,7 @@ type MsgDeleteWasmInstantiateAllowlist struct {
 	// the <contract, code_id> pair to remove
 	Address string `protobuf:"bytes,2,opt,name=address,proto3" json:"address,omitempty"`
 	CodeId  uint64 `protobuf:"varint,3,opt,name=code_id,json=codeId,proto3" json:"code_id,omitempty"`
-	// vaa is the WormchainDeleteWasmInstantiateAllowlist governance message
+	// vaa is the DeltachainDeleteWasmInstantiateAllowlist governance message
 	Vaa []byte `protobuf:"bytes,4,opt,name=vaa,proto3" json:"vaa,omitempty"`
 }
 

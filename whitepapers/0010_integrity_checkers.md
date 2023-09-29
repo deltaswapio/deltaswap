@@ -1,11 +1,11 @@
 # Integrity Checkers
 
-Wormchain Integrity Checkers are smart contracts deployed on Wormchain. They allow  xApp developers to validate the integrity of cross-chain messages based on a globally synchronized state. This document describes the motivation, goals, and technical design.
+Deltachain Integrity Checkers are smart contracts deployed on Deltachain. They allow  xApp developers to validate the integrity of cross-chain messages based on a globally synchronized state. This document describes the motivation, goals, and technical design.
 
 ## Objectives
 
-- Allow xApps to implement safety checks on Wormchain that have access to the global, synchronized, state of the xApp.
-- Integrity Checkers on Wormchain should be trustless. This means they can block but not create or modify messages.
+- Allow xApps to implement safety checks on Deltachain that have access to the global, synchronized, state of the xApp.
+- Integrity Checkers on Deltachain should be trustless. This means they can block but not create or modify messages.
 
 ## Background
 
@@ -26,20 +26,20 @@ Conversely, the lack of synchronized state in the distributed xApp model often l
 
 ### Out of scope (for now)
 
-- Registration of Integrity Checkers: For now, Wormchain will be restricted to trusted Integrity Checkers.
-- Gas cost: For now, executing the checkers on Wormchain will be free.
+- Registration of Integrity Checkers: For now, Deltachain will be restricted to trusted Integrity Checkers.
+- Gas cost: For now, executing the checkers on Deltachain will be free.
 
 ## Overview
 
-After making an observation, a Phylax checks if there are integrity checkers configured for the emitter. If there are, it submits a pre-observation to the integrity-checker smart contract on Wormchain. It then saves the pre-observation to a local database.
+After making an observation, a Phylax checks if there are integrity checkers configured for the emitter. If there are, it submits a pre-observation to the integrity-checker smart contract on Deltachain. It then saves the pre-observation to a local database.
 
 After its conditions are met, an integrity-checker approves the wormhole message it deems to be valid.
 
-The Phylax picks up the messages approved from the integrity-checkers on Wormchain when they correspond to an observation the Phylax has made itself. It signs and broadcasts the signature to the Phylax peer to peer network. Thereby, an integrity-checker is unable to modify or inject messages and can only block messages.
+The Phylax picks up the messages approved from the integrity-checkers on Deltachain when they correspond to an observation the Phylax has made itself. It signs and broadcasts the signature to the Phylax peer to peer network. Thereby, an integrity-checker is unable to modify or inject messages and can only block messages.
 
 ## Terminology
 
 * `Pre-Observation` - used to designate an observation being submitted to the integrity checker contract by a Wormhole Phylax. They are similar to observations, i.e. a Wormhole message signed by a single phylax, but can be distinguished by their prefix and signature format. They follow the same signature format as signed gossip messages described in [phylax key usage](0009_phylax_key.md) with a unique signature prefix.  Signed pre-observations therefore cannot be used like signed observations to create a VAA.
-* `Batching` - pre-observations accumulate over a configurable time period and are batch submitted to Wormchain. This both saves on gas costs and results in less computational overhead.
+* `Batching` - pre-observations accumulate over a configurable time period and are batch submitted to Deltachain. This both saves on gas costs and results in less computational overhead.
 * `Persistence` - the Phylax persists the status of pre-observations to the local database.
-* `Retry` - the Phylax periodically watches the Wormchain state and ensures that all local pre-observations have been submitted correctly. In case of an error, it retries the submission.
+* `Retry` - the Phylax periodically watches the Deltachain state and ensures that all local pre-observations have been submitted correctly. In case of an error, it retries the submission.

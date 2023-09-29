@@ -2,7 +2,7 @@ import { expect, jest, test } from "@jest/globals";
 import {
   fromAccAddress,
   getWallet,
-  getWormchainSigningClient,
+  getDeltachainSigningClient,
   toValAddress,
 } from "@deltaswapio/deltachain-sdk";
 import { getZeroFee } from "../bootstrap";
@@ -32,7 +32,7 @@ test("Process phylax set upgrade", async () => {});
 
 test("RegisterPhylaxValidator", async () => {
   const wallet = await getWallet(TEST_WALLET_MNEMONIC_2);
-  const signingClient = await getWormchainSigningClient(TENDERMINT_URL, wallet);
+  const signingClient = await getDeltachainSigningClient(TENDERMINT_URL, wallet);
   const registerMsg = signingClient.core.msgRegisterAccountAsPhylax({
     phylaxPubkey: { key: Buffer.from(DEVNET_PHYLAX_PUBLIC_KEY, "hex") },
     signer: TEST_WALLET_ADDRESS_2,

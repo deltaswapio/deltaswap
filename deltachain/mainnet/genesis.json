@@ -407,7 +407,7 @@
               "exponent": 6
             }
           ],
-          "description": "Wormchain's native test asset",
+          "description": "Deltachain's native test asset",
           "display": "test",
           "name": "Test Coin",
           "symbol": "TEST"
@@ -426,7 +426,7 @@
               "exponent": 6
             }
           ],
-          "description": "Wormchain's native staking asset",
+          "description": "Deltachain's native staking asset",
           "display": "worm",
           "name": "Worm Coin",
           "symbol": "WORM"

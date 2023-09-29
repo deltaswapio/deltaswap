@@ -88,7 +88,7 @@ export const MissingWalletError = new Error("wallet is required");
 
 const registry = new Registry(<any>aggregateTypes);
 
-export const getWormchainSigningClient = async (
+export const getDeltachainSigningClient = async (
   tendermintAddress: string,
   wallet: OfflineSigner,
   options?: SigningStargateClientOptions

@@ -37,7 +37,7 @@ func main() {
 	contract := "wormhole14hj2tavq8fpesdwxxcu44rty3hh90vhujrvcmstl4zr3txmfvw9srrg465"
 	phylaxKeyPath := string("./dev.phylax.key")
 
-	deltachainKey, err := wormconn.LoadWormchainPrivKey(deltachainKeyPath, "test0000")
+	deltachainKey, err := wormconn.LoadDeltachainPrivKey(deltachainKeyPath, "test0000")
 	if err != nil {
 		logger.Fatal("failed to load devnet deltachain private key", zap.Error(err))
 	}

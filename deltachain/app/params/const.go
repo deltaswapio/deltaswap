@@ -1,7 +1,7 @@
 package params
 
 const (
-	// Name defines the application name of Wormchain.
+	// Name defines the application name of Deltachain.
 	Name = "uworm"
 
 	// BondDenom defines the native staking token denomination.

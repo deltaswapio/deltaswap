@@ -64,7 +64,7 @@ func TestAllowlistEntry(t *testing.T) {
 	k.SetConfig(ctx, types.Config{
 		GovernanceEmitter:   vaa.GovernanceEmitter[:],
 		GovernanceChain:     uint32(vaa.GovernanceChain),
-		ChainId:             uint32(vaa.ChainIDWormchain),
+		ChainId:             uint32(vaa.ChainIDDeltachain),
 		PhylaxSetExpiration: 86400,
 	})
 
@@ -183,7 +183,7 @@ func TestAllowlistEntryAnteHandler(t *testing.T) {
 	k.SetConfig(ctx, types.Config{
 		GovernanceEmitter:   vaa.GovernanceEmitter[:],
 		GovernanceChain:     uint32(vaa.GovernanceChain),
-		ChainId:             uint32(vaa.ChainIDWormchain),
+		ChainId:             uint32(vaa.ChainIDDeltachain),
 		PhylaxSetExpiration: 86400,
 	})
 

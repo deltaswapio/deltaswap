@@ -112,7 +112,7 @@ message MsgAddWasmInstantiateAllowlist {
   string address = 2;
   // CodeID is the reference to the stored WASM code that can be instantiated
   uint64 code_id = 3;
-  // vaa is the WormchainAddWasmInstantiateAllowlist governance message
+  // vaa is the DeltachainAddWasmInstantiateAllowlist governance message
   bytes vaa = 4;
 }
 
@@ -122,7 +122,7 @@ message MsgDeleteWasmInstantiateAllowlist {
     // the <contract, code_id> pair to remove
     string address = 2;
     uint64 code_id = 3;
-    // vaa is the WormchainDeleteWasmInstantiateAllowlist governance message
+    // vaa is the DeltachainDeleteWasmInstantiateAllowlist governance message
     bytes vaa = 4;
 }
 

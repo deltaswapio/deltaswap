@@ -198,7 +198,7 @@ Aptos support
 
 ### Changed
 
-Wormchain rename
+Deltachain rename
 
 ## 0.7.2
 

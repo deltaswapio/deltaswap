@@ -72,7 +72,7 @@ func init() {
 	AdminCmd.AddCommand(AdminClientFindMissingMessagesCmd)
 	AdminCmd.AddCommand(AdminClientGovernanceVAAVerifyCmd)
 	AdminCmd.AddCommand(AdminClientListNodes)
-	AdminCmd.AddCommand(AdminClientSignWormchainAddress)
+	AdminCmd.AddCommand(AdminClientSignDeltachainAddress)
 	AdminCmd.AddCommand(DumpVAAByMessageID)
 	AdminCmd.AddCommand(DumpRPCs)
 	AdminCmd.AddCommand(SendObservationRequest)
@@ -92,10 +92,10 @@ var AdminCmd = &cobra.Command{
 	Short: "Phylax node admin commands",
 }
 
-var AdminClientSignWormchainAddress = &cobra.Command{
+var AdminClientSignDeltachainAddress = &cobra.Command{
 	Use:   "sign-deltachain-address [/path/to/phylaxKey] [deltachain-validator-address]",
 	Short: "Sign a deltachain validator address.  Only sign the address that you control the key for and will be for your validator.",
-	RunE:  runSignWormchainValidatorAddress,
+	RunE:  runSignDeltachainValidatorAddress,
 	Args:  cobra.ExactArgs(2),
 }
 
@@ -219,7 +219,7 @@ func getPublicRPCServiceClient(ctx context.Context, addr string) (*grpc.ClientCo
 	return conn, c, err
 }
 
-func runSignWormchainValidatorAddress(cmd *cobra.Command, args []string) error {
+func runSignDeltachainValidatorAddress(cmd *cobra.Command, args []string) error {
 	phylaxKeyPath := args[0]
 	deltachainAddress := args[1]
 	if !strings.HasPrefix(deltachainAddress, "wormhole") || strings.HasPrefix(deltachainAddress, "wormholeval") {
@@ -234,7 +234,7 @@ func runSignWormchainValidatorAddress(cmd *cobra.Command, args []string) error {
 		return fmt.Errorf("failed to decode deltachain address: %w", err)
 	}
 	// Hash and sign address
-	addrHash := crypto.Keccak256Hash(sdk.SignedWormchainAddressPrefix, addr)
+	addrHash := crypto.Keccak256Hash(sdk.SignedDeltachainAddressPrefix, addr)
 	sig, err := crypto.Sign(addrHash[:], gk)
 	if err != nil {
 		return fmt.Errorf("failed to sign deltachain address: %w", err)

@@ -108,31 +108,31 @@ func init() {
 
 	deltachainStoreCodeFlagSet := pflag.NewFlagSet("deltachain-store-code", pflag.ExitOnError)
 	deltachainStoreCodeWasmHash = deltachainStoreCodeFlagSet.String("wasm-hash", "", "WASM Hash of the stored code")
-	AdminClientWormchainStoreCodeCmd.Flags().AddFlagSet(deltachainStoreCodeFlagSet)
-	TemplateCmd.AddCommand(AdminClientWormchainStoreCodeCmd)
+	AdminClientDeltachainStoreCodeCmd.Flags().AddFlagSet(deltachainStoreCodeFlagSet)
+	TemplateCmd.AddCommand(AdminClientDeltachainStoreCodeCmd)
 
 	deltachainInstantiateContractFlagSet := pflag.NewFlagSet("deltachain-instantiate-contract", pflag.ExitOnError)
 	deltachainInstantiateContractCodeId = deltachainInstantiateContractFlagSet.String("code-id", "", "code ID of the stored code")
 	deltachainInstantiateContractLabel = deltachainInstantiateContractFlagSet.String("label", "", "label")
 	deltachainInstantiateContractInstantiationMsg = deltachainInstantiateContractFlagSet.String("instantiation-msg", "", "instantiate message")
-	AdminClientWormchainInstantiateContractCmd.Flags().AddFlagSet(deltachainInstantiateContractFlagSet)
-	TemplateCmd.AddCommand(AdminClientWormchainInstantiateContractCmd)
+	AdminClientDeltachainInstantiateContractCmd.Flags().AddFlagSet(deltachainInstantiateContractFlagSet)
+	TemplateCmd.AddCommand(AdminClientDeltachainInstantiateContractCmd)
 
 	deltachainMigrateContractFlagSet := pflag.NewFlagSet("deltachain-migrate-contract", pflag.ExitOnError)
 	deltachainMigrateContractCodeId = deltachainMigrateContractFlagSet.String("code-id", "", "code ID of the stored code")
 	deltachainMigrateContractContractAddress = deltachainMigrateContractFlagSet.String("contract-address", "", "contract address")
 	deltachainMigrateContractInstantiationMsg = deltachainMigrateContractFlagSet.String("instantiation-msg", "", "instantiate message")
-	AdminClientWormchainMigrateContractCmd.Flags().AddFlagSet(deltachainMigrateContractFlagSet)
-	TemplateCmd.AddCommand(AdminClientWormchainMigrateContractCmd)
+	AdminClientDeltachainMigrateContractCmd.Flags().AddFlagSet(deltachainMigrateContractFlagSet)
+	TemplateCmd.AddCommand(AdminClientDeltachainMigrateContractCmd)
 
 	// flags for the deltachain add/delete wasm instantiate allowlist commands
 	deltachainWasmInstantiateAllowlistFlagSet := pflag.NewFlagSet("deltachain-wasm-instantiate-allowlist", pflag.ExitOnError)
 	deltachainWasmInstantiateAllowlistCodeId = deltachainWasmInstantiateAllowlistFlagSet.String("code-id", "", "code ID of the stored code to add/delete allowlist wasm instantiate for")
 	deltachainWasmInstantiateAllowlistContractAddress = deltachainWasmInstantiateAllowlistFlagSet.String("contract-address", "", "contract address to add/delete allowlist wasm instantiate for")
-	AdminClientWormchainAddWasmInstantiateAllowlistCmd.Flags().AddFlagSet(deltachainWasmInstantiateAllowlistFlagSet)
-	AdminClientWormchainDeleteWasmInstantiateAllowlistCmd.Flags().AddFlagSet(deltachainWasmInstantiateAllowlistFlagSet)
-	TemplateCmd.AddCommand(AdminClientWormchainAddWasmInstantiateAllowlistCmd)
-	TemplateCmd.AddCommand(AdminClientWormchainDeleteWasmInstantiateAllowlistCmd)
+	AdminClientDeltachainAddWasmInstantiateAllowlistCmd.Flags().AddFlagSet(deltachainWasmInstantiateAllowlistFlagSet)
+	AdminClientDeltachainDeleteWasmInstantiateAllowlistCmd.Flags().AddFlagSet(deltachainWasmInstantiateAllowlistFlagSet)
+	TemplateCmd.AddCommand(AdminClientDeltachainAddWasmInstantiateAllowlistCmd)
+	TemplateCmd.AddCommand(AdminClientDeltachainDeleteWasmInstantiateAllowlistCmd)
 
 	// flags for the gateway-ibc-composability-mw-set-contract command
 	gatewayIbcComposabilityMwFlagSet := pflag.NewFlagSet("gateway-ibc-composability-mw-set-contract", pflag.ExitOnError)
@@ -153,7 +153,7 @@ func init() {
 	// flags for the ibc-receiver-update-channel-chain and ibc-translator-update-channel-chain commands
 	ibcUpdateChannelChainFlagSet := pflag.NewFlagSet("ibc-mapping", pflag.ExitOnError)
 	ibcUpdateChannelChainTargetChainId = ibcUpdateChannelChainFlagSet.String("target-chain-id", "", "Target Chain ID for the governance VAA")
-	ibcUpdateChannelChainChannelId = ibcUpdateChannelChainFlagSet.String("channel-id", "", "IBC Channel ID on Wormchain")
+	ibcUpdateChannelChainChannelId = ibcUpdateChannelChainFlagSet.String("channel-id", "", "IBC Channel ID on Deltachain")
 	ibcUpdateChannelChainChainId = ibcUpdateChannelChainFlagSet.String("chain-id", "", "IBC Chain ID that the channel ID corresponds to")
 	AdminClientIbcReceiverUpdateChannelChainCmd.Flags().AddFlagSet(ibcUpdateChannelChainFlagSet)
 	AdminClientIbcTranslatorUpdateChannelChainCmd.Flags().AddFlagSet(ibcUpdateChannelChainFlagSet)
@@ -208,34 +208,34 @@ var AdminClientCircleIntegrationUpgradeContractImplementationCmd = &cobra.Comman
 	Run:   runCircleIntegrationUpgradeContractImplementationTemplate,
 }
 
-var AdminClientWormchainStoreCodeCmd = &cobra.Command{
+var AdminClientDeltachainStoreCodeCmd = &cobra.Command{
 	Use:   "deltachain-store-code",
 	Short: "Generate an empty deltachain store code template at specified path",
-	Run:   runWormchainStoreCodeTemplate,
+	Run:   runDeltachainStoreCodeTemplate,
 }
 
-var AdminClientWormchainInstantiateContractCmd = &cobra.Command{
+var AdminClientDeltachainInstantiateContractCmd = &cobra.Command{
 	Use:   "deltachain-instantiate-contract",
 	Short: "Generate an empty deltachain instantiate contract template at specified path",
-	Run:   runWormchainInstantiateContractTemplate,
+	Run:   runDeltachainInstantiateContractTemplate,
 }
 
-var AdminClientWormchainMigrateContractCmd = &cobra.Command{
+var AdminClientDeltachainMigrateContractCmd = &cobra.Command{
 	Use:   "deltachain-migrate-contract",
 	Short: "Generate an empty deltachain migrate contract template at specified path",
-	Run:   runWormchainMigrateContractTemplate,
+	Run:   runDeltachainMigrateContractTemplate,
 }
 
-var AdminClientWormchainAddWasmInstantiateAllowlistCmd = &cobra.Command{
+var AdminClientDeltachainAddWasmInstantiateAllowlistCmd = &cobra.Command{
 	Use:   "deltachain-add-wasm-instantiate-allowlist",
 	Short: "Generate an empty deltachain add wasm instantiate allowlist template at specified path",
-	Run:   runWormchainAddWasmInstantiateAllowlistTemplate,
+	Run:   runDeltachainAddWasmInstantiateAllowlistTemplate,
 }
 
-var AdminClientWormchainDeleteWasmInstantiateAllowlistCmd = &cobra.Command{
+var AdminClientDeltachainDeleteWasmInstantiateAllowlistCmd = &cobra.Command{
 	Use:   "deltachain-delete-wasm-instantiate-allowlist",
 	Short: "Generate an empty deltachain delete wasm instantiate allowlist template at specified path",
-	Run:   runWormchainDeleteWasmInstantiateAllowlistTemplate,
+	Run:   runDeltachainDeleteWasmInstantiateAllowlistTemplate,
 }
 
 var AdminClientGatewayScheduleUpgradeCmd = &cobra.Command{
@@ -538,7 +538,7 @@ func runCircleIntegrationUpgradeContractImplementationTemplate(cmd *cobra.Comman
 	fmt.Print(string(b))
 }
 
-func runWormchainStoreCodeTemplate(cmd *cobra.Command, args []string) {
+func runDeltachainStoreCodeTemplate(cmd *cobra.Command, args []string) {
 	if *deltachainStoreCodeWasmHash == "" {
 		log.Fatal("--wasm-hash must be specified.")
 	}
@@ -560,8 +560,8 @@ func runWormchainStoreCodeTemplate(cmd *cobra.Command, args []string) {
 			{
 				Sequence: rand.Uint64(),
 				Nonce:    rand.Uint32(),
-				Payload: &nodev1.GovernanceMessage_WormchainStoreCode{
-					WormchainStoreCode: &nodev1.WormchainStoreCode{
+				Payload: &nodev1.GovernanceMessage_DeltachainStoreCode{
+					DeltachainStoreCode: &nodev1.DeltachainStoreCode{
 						WasmHash: string(*deltachainStoreCodeWasmHash),
 					},
 				},
@@ -576,7 +576,7 @@ func runWormchainStoreCodeTemplate(cmd *cobra.Command, args []string) {
 	fmt.Print(string(b))
 }
 
-func runWormchainInstantiateContractTemplate(cmd *cobra.Command, args []string) {
+func runDeltachainInstantiateContractTemplate(cmd *cobra.Command, args []string) {
 	if *deltachainInstantiateContractCodeId == "" {
 		log.Fatal("--code-id must be specified.")
 	}
@@ -597,8 +597,8 @@ func runWormchainInstantiateContractTemplate(cmd *cobra.Command, args []string) 
 			{
 				Sequence: rand.Uint64(),
 				Nonce:    rand.Uint32(),
-				Payload: &nodev1.GovernanceMessage_WormchainInstantiateContract{
-					WormchainInstantiateContract: &nodev1.WormchainInstantiateContract{
+				Payload: &nodev1.GovernanceMessage_DeltachainInstantiateContract{
+					DeltachainInstantiateContract: &nodev1.DeltachainInstantiateContract{
 						CodeId:           codeId,
 						Label:            *deltachainInstantiateContractLabel,
 						InstantiationMsg: *deltachainInstantiateContractInstantiationMsg,
@@ -615,7 +615,7 @@ func runWormchainInstantiateContractTemplate(cmd *cobra.Command, args []string) 
 	fmt.Print(string(b))
 }
 
-func runWormchainMigrateContractTemplate(cmd *cobra.Command, args []string) {
+func runDeltachainMigrateContractTemplate(cmd *cobra.Command, args []string) {
 	if *deltachainMigrateContractCodeId == "" {
 		log.Fatal("--code-id must be specified.")
 	}
@@ -636,8 +636,8 @@ func runWormchainMigrateContractTemplate(cmd *cobra.Command, args []string) {
 			{
 				Sequence: rand.Uint64(),
 				Nonce:    rand.Uint32(),
-				Payload: &nodev1.GovernanceMessage_WormchainMigrateContract{
-					WormchainMigrateContract: &nodev1.WormchainMigrateContract{
+				Payload: &nodev1.GovernanceMessage_DeltachainMigrateContract{
+					DeltachainMigrateContract: &nodev1.DeltachainMigrateContract{
 						CodeId:           codeId,
 						Contract:         *deltachainMigrateContractContractAddress,
 						InstantiationMsg: *deltachainMigrateContractInstantiationMsg,
@@ -654,15 +654,15 @@ func runWormchainMigrateContractTemplate(cmd *cobra.Command, args []string) {
 	fmt.Print(string(b))
 }
 
-func runWormchainAddWasmInstantiateAllowlistTemplate(cmd *cobra.Command, args []string) {
-	runWormchainWasmInstantiateAllowlistTemplate(nodev1.WormchainWasmInstantiateAllowlistAction_WORMCHAIN_WASM_INSTANTIATE_ALLOWLIST_ACTION_ADD)
+func runDeltachainAddWasmInstantiateAllowlistTemplate(cmd *cobra.Command, args []string) {
+	runDeltachainWasmInstantiateAllowlistTemplate(nodev1.DeltachainWasmInstantiateAllowlistAction_WORMCHAIN_WASM_INSTANTIATE_ALLOWLIST_ACTION_ADD)
 }
 
-func runWormchainDeleteWasmInstantiateAllowlistTemplate(cmd *cobra.Command, args []string) {
-	runWormchainWasmInstantiateAllowlistTemplate(nodev1.WormchainWasmInstantiateAllowlistAction_WORMCHAIN_WASM_INSTANTIATE_ALLOWLIST_ACTION_DELETE)
+func runDeltachainDeleteWasmInstantiateAllowlistTemplate(cmd *cobra.Command, args []string) {
+	runDeltachainWasmInstantiateAllowlistTemplate(nodev1.DeltachainWasmInstantiateAllowlistAction_WORMCHAIN_WASM_INSTANTIATE_ALLOWLIST_ACTION_DELETE)
 }
 
-func runWormchainWasmInstantiateAllowlistTemplate(action nodev1.WormchainWasmInstantiateAllowlistAction) {
+func runDeltachainWasmInstantiateAllowlistTemplate(action nodev1.DeltachainWasmInstantiateAllowlistAction) {
 	if *deltachainWasmInstantiateAllowlistCodeId == "" {
 		log.Fatal("--code-id must be specified")
 	}
@@ -680,8 +680,8 @@ func runWormchainWasmInstantiateAllowlistTemplate(action nodev1.WormchainWasmIns
 			{
 				Sequence: rand.Uint64(),
 				Nonce:    rand.Uint32(),
-				Payload: &nodev1.GovernanceMessage_WormchainWasmInstantiateAllowlist{
-					WormchainWasmInstantiateAllowlist: &nodev1.WormchainWasmInstantiateAllowlist{
+				Payload: &nodev1.GovernanceMessage_DeltachainWasmInstantiateAllowlist{
+					DeltachainWasmInstantiateAllowlist: &nodev1.DeltachainWasmInstantiateAllowlist{
 						CodeId:   codeId,
 						Contract: *deltachainWasmInstantiateAllowlistContractAddress,
 						Action:   action,

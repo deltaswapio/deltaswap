@@ -267,9 +267,9 @@ func tokenBridgeUpgradeContract(req *nodev1.BridgeUpgradeContract, timestamp tim
 	return v, nil
 }
 
-// deltachainStoreCode converts a nodev1.WormchainStoreCode to its canonical VAA representation
+// deltachainStoreCode converts a nodev1.DeltachainStoreCode to its canonical VAA representation
 // Returns an error if the data is invalid
-func deltachainStoreCode(req *nodev1.WormchainStoreCode, timestamp time.Time, phylaxSetIndex uint32, nonce uint32, sequence uint64) (*vaa.VAA, error) {
+func deltachainStoreCode(req *nodev1.DeltachainStoreCode, timestamp time.Time, phylaxSetIndex uint32, nonce uint32, sequence uint64) (*vaa.VAA, error) {
 	// validate the length of the hex passed in
 	b, err := hex.DecodeString(req.WasmHash)
 	if err != nil {
@@ -284,32 +284,32 @@ func deltachainStoreCode(req *nodev1.WormchainStoreCode, timestamp time.Time, ph
 	copy(wasmHash[:], b)
 
 	v := vaa.CreateGovernanceVAA(timestamp, nonce, sequence, phylaxSetIndex,
-		vaa.BodyWormchainStoreCode{
+		vaa.BodyDeltachainStoreCode{
 			WasmHash: wasmHash,
 		}.Serialize())
 
 	return v, nil
 }
 
-// deltachainInstantiateContract converts a nodev1.WormchainInstantiateContract to its canonical VAA representation
+// deltachainInstantiateContract converts a nodev1.DeltachainInstantiateContract to its canonical VAA representation
 // Returns an error if the data is invalid
-func deltachainInstantiateContract(req *nodev1.WormchainInstantiateContract, timestamp time.Time, phylaxSetIndex uint32, nonce uint32, sequence uint64) (*vaa.VAA, error) { //nolint:unparam // error is always nil but kept to mirror function signature of other functions
+func deltachainInstantiateContract(req *nodev1.DeltachainInstantiateContract, timestamp time.Time, phylaxSetIndex uint32, nonce uint32, sequence uint64) (*vaa.VAA, error) { //nolint:unparam // error is always nil but kept to mirror function signature of other functions
 	instantiationParams_hash := vaa.CreateInstatiateCosmwasmContractHash(req.CodeId, req.Label, []byte(req.InstantiationMsg))
 
 	v := vaa.CreateGovernanceVAA(timestamp, nonce, sequence, phylaxSetIndex,
-		vaa.BodyWormchainInstantiateContract{
+		vaa.BodyDeltachainInstantiateContract{
 			InstantiationParamsHash: instantiationParams_hash,
 		}.Serialize())
 
 	return v, nil
 }
 
-// deltachainMigrateContract converts a nodev1.WormchainMigrateContract to its canonical VAA representation
-func deltachainMigrateContract(req *nodev1.WormchainMigrateContract, timestamp time.Time, phylaxSetIndex uint32, nonce uint32, sequence uint64) (*vaa.VAA, error) { //nolint:unparam // error is always nil but kept to mirror function signature of other functions
+// deltachainMigrateContract converts a nodev1.DeltachainMigrateContract to its canonical VAA representation
+func deltachainMigrateContract(req *nodev1.DeltachainMigrateContract, timestamp time.Time, phylaxSetIndex uint32, nonce uint32, sequence uint64) (*vaa.VAA, error) { //nolint:unparam // error is always nil but kept to mirror function signature of other functions
 	instantiationParams_hash := vaa.CreateMigrateCosmwasmContractHash(req.CodeId, req.Contract, []byte(req.InstantiationMsg))
 
 	v := vaa.CreateGovernanceVAA(timestamp, nonce, sequence, phylaxSetIndex,
-		vaa.BodyWormchainMigrateContract{
+		vaa.BodyDeltachainMigrateContract{
 			MigrationParamsHash: instantiationParams_hash,
 		}.Serialize())
 
@@ -317,7 +317,7 @@ func deltachainMigrateContract(req *nodev1.WormchainMigrateContract, timestamp t
 }
 
 func deltachainWasmInstantiateAllowlist(
-	req *nodev1.WormchainWasmInstantiateAllowlist,
+	req *nodev1.DeltachainWasmInstantiateAllowlist,
 	timestamp time.Time,
 	phylaxSetIndex uint32,
 	nonce uint32,
@@ -329,9 +329,9 @@ func deltachainWasmInstantiateAllowlist(
 	}
 
 	var action vaa.GovernanceAction
-	if req.Action == nodev1.WormchainWasmInstantiateAllowlistAction_WORMCHAIN_WASM_INSTANTIATE_ALLOWLIST_ACTION_ADD {
+	if req.Action == nodev1.DeltachainWasmInstantiateAllowlistAction_WORMCHAIN_WASM_INSTANTIATE_ALLOWLIST_ACTION_ADD {
 		action = vaa.ActionAddWasmInstantiateAllowlist
-	} else if req.Action == nodev1.WormchainWasmInstantiateAllowlistAction_WORMCHAIN_WASM_INSTANTIATE_ALLOWLIST_ACTION_DELETE {
+	} else if req.Action == nodev1.DeltachainWasmInstantiateAllowlistAction_WORMCHAIN_WASM_INSTANTIATE_ALLOWLIST_ACTION_DELETE {
 		action = vaa.ActionDeleteWasmInstantiateAllowlist
 	} else {
 		return nil, fmt.Errorf("unrecognized wasm instantiate allowlist action")
@@ -340,7 +340,7 @@ func deltachainWasmInstantiateAllowlist(
 	var decodedAddr32 [32]byte
 	copy(decodedAddr32[:], decodedAddr)
 
-	v := vaa.CreateGovernanceVAA(timestamp, nonce, sequence, phylaxSetIndex, vaa.BodyWormchainWasmAllowlistInstantiate{
+	v := vaa.CreateGovernanceVAA(timestamp, nonce, sequence, phylaxSetIndex, vaa.BodyDeltachainWasmAllowlistInstantiate{
 		ContractAddr: decodedAddr32,
 		CodeId:       req.CodeId,
 	}.Serialize(action))
@@ -370,7 +370,7 @@ func gatewayCancelUpgrade(
 	sequence uint64,
 ) (*vaa.VAA, error) { //nolint:unparam // error is always nil but kept to mirror function signature of other functions
 	v := vaa.CreateGovernanceVAA(timestamp, nonce, sequence, phylaxSetIndex,
-		vaa.EmptyPayloadVaa(vaa.GatewayModuleStr, vaa.ActionCancelUpgrade, vaa.ChainIDWormchain),
+		vaa.EmptyPayloadVaa(vaa.GatewayModuleStr, vaa.ActionCancelUpgrade, vaa.ChainIDDeltachain),
 	)
 
 	return v, nil
@@ -561,14 +561,14 @@ func GovMsgToVaa(message *nodev1.GovernanceMessage, currentSetIndex uint32, time
 		v, err = tokenBridgeUpgradeContract(payload.BridgeContractUpgrade, timestamp, currentSetIndex, message.Nonce, message.Sequence)
 	case *nodev1.GovernanceMessage_AccountantModifyBalance:
 		v, err = accountantModifyBalance(payload.AccountantModifyBalance, timestamp, currentSetIndex, message.Nonce, message.Sequence)
-	case *nodev1.GovernanceMessage_WormchainStoreCode:
-		v, err = deltachainStoreCode(payload.WormchainStoreCode, timestamp, currentSetIndex, message.Nonce, message.Sequence)
-	case *nodev1.GovernanceMessage_WormchainInstantiateContract:
-		v, err = deltachainInstantiateContract(payload.WormchainInstantiateContract, timestamp, currentSetIndex, message.Nonce, message.Sequence)
-	case *nodev1.GovernanceMessage_WormchainMigrateContract:
-		v, err = deltachainMigrateContract(payload.WormchainMigrateContract, timestamp, currentSetIndex, message.Nonce, message.Sequence)
-	case *nodev1.GovernanceMessage_WormchainWasmInstantiateAllowlist:
-		v, err = deltachainWasmInstantiateAllowlist(payload.WormchainWasmInstantiateAllowlist, timestamp, currentSetIndex, message.Nonce, message.Sequence)
+	case *nodev1.GovernanceMessage_DeltachainStoreCode:
+		v, err = deltachainStoreCode(payload.DeltachainStoreCode, timestamp, currentSetIndex, message.Nonce, message.Sequence)
+	case *nodev1.GovernanceMessage_DeltachainInstantiateContract:
+		v, err = deltachainInstantiateContract(payload.DeltachainInstantiateContract, timestamp, currentSetIndex, message.Nonce, message.Sequence)
+	case *nodev1.GovernanceMessage_DeltachainMigrateContract:
+		v, err = deltachainMigrateContract(payload.DeltachainMigrateContract, timestamp, currentSetIndex, message.Nonce, message.Sequence)
+	case *nodev1.GovernanceMessage_DeltachainWasmInstantiateAllowlist:
+		v, err = deltachainWasmInstantiateAllowlist(payload.DeltachainWasmInstantiateAllowlist, timestamp, currentSetIndex, message.Nonce, message.Sequence)
 	case *nodev1.GovernanceMessage_GatewayScheduleUpgrade:
 		v, err = gatewayScheduleUpgrade(payload.GatewayScheduleUpgrade, timestamp, currentSetIndex, message.Nonce, message.Sequence)
 	case *nodev1.GovernanceMessage_GatewayCancelUpgrade:

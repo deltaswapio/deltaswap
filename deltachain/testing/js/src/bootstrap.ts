@@ -31,7 +31,7 @@ import fs from "fs";
 const {
   getAddress,
   getWallet,
-  getWormchainSigningClient,
+  getDeltachainSigningClient,
   getDeltaswapQueryClient,
 } = sdk;
 
@@ -52,7 +52,7 @@ async function fullBootstrapProcess() {
     const queryClient = getDeltaswapQueryClient(NODE_URL, true);
     const wallet2Signer = await getWallet(TEST_WALLET_MNEMONIC_2);
     const wallet2Address = await getAddress(wallet2Signer);
-    const signingClient = await getWormchainSigningClient(
+    const signingClient = await getDeltachainSigningClient(
       TENDERMINT_URL,
       wallet2Signer
     );

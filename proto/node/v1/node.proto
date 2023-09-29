@@ -87,12 +87,12 @@ message GovernanceMessage {
     BridgeRegisterChain bridge_register_chain = 12;
     BridgeUpgradeContract bridge_contract_upgrade = 13;
 
-    // Wormchain
+    // Deltachain
 
-    WormchainStoreCode deltachain_store_code = 14;
-    WormchainInstantiateContract deltachain_instantiate_contract = 15;
-    WormchainMigrateContract deltachain_migrate_contract = 16;
-    WormchainWasmInstantiateAllowlist deltachain_wasm_instantiate_allowlist = 23;
+    DeltachainStoreCode deltachain_store_code = 14;
+    DeltachainInstantiateContract deltachain_instantiate_contract = 15;
+    DeltachainMigrateContract deltachain_migrate_contract = 16;
+    DeltachainWasmInstantiateAllowlist deltachain_wasm_instantiate_allowlist = 23;
 
     // Gateway
     GatewayScheduleUpgrade gateway_schedule_upgrade = 24;
@@ -203,12 +203,12 @@ message BridgeUpgradeContract {
   string new_contract = 3;
 }
 
-message WormchainStoreCode {
+message DeltachainStoreCode {
   // payload is the hex string of the sha3 256 hash of the wasm binary being uploaded
   string wasm_hash = 1;
 }
 
-message WormchainInstantiateContract {
+message DeltachainInstantiateContract {
   // CodeID is the reference to the stored WASM code
   uint64 code_id = 1;
 
@@ -219,7 +219,7 @@ message WormchainInstantiateContract {
   string instantiation_msg = 3;
 }
 
-message WormchainMigrateContract {
+message DeltachainMigrateContract {
   // CodeID is the reference to the stored WASM code that the contract should migrate to.
   uint64 code_id = 1;
 
@@ -230,13 +230,13 @@ message WormchainMigrateContract {
   string instantiation_msg = 3;
 }
 
-enum WormchainWasmInstantiateAllowlistAction {
+enum DeltachainWasmInstantiateAllowlistAction {
   WORMCHAIN_WASM_INSTANTIATE_ALLOWLIST_ACTION_UNSPECIFIED = 0;
   WORMCHAIN_WASM_INSTANTIATE_ALLOWLIST_ACTION_ADD = 1;
   WORMCHAIN_WASM_INSTANTIATE_ALLOWLIST_ACTION_DELETE = 2;
 }
 
-message WormchainWasmInstantiateAllowlist {
+message DeltachainWasmInstantiateAllowlist {
   // CodeID is the reference to the stored WASM code.
   uint64 code_id = 1;
 
@@ -244,7 +244,7 @@ message WormchainWasmInstantiateAllowlist {
   string contract = 2;
 
   // Specifying whether to add or delete the allowlist entry
-  WormchainWasmInstantiateAllowlistAction action = 3;
+  DeltachainWasmInstantiateAllowlistAction action = 3;
 }
 
 message GatewayIbcComposabilityMwSetContract {

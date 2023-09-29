@@ -7,7 +7,7 @@ import (
 	cryptotypes "github.com/cosmos/cosmos-sdk/crypto/types"
 )
 
-func LoadWormchainPrivKey(path string, passPhrase string) (cryptotypes.PrivKey, error) {
+func LoadDeltachainPrivKey(path string, passPhrase string) (cryptotypes.PrivKey, error) {
 	armor, err := os.ReadFile(path)
 	if err != nil {
 		return nil, err

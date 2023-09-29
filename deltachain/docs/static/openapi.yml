@@ -32514,7 +32514,7 @@ paths:
   /deltaswapio/deltachain/deltaswap/config:
     get:
       summary: Queries a config by index.
-      operationId: DeltaswapFoundationWormchainDeltaswapConfig
+      operationId: DeltaswapFoundationDeltachainDeltaswapConfig
       responses:
         '200':
           description: A successful response.
@@ -32559,7 +32559,7 @@ paths:
   /deltaswapio/deltachain/deltaswap/consensus_phylax_set_index:
     get:
       summary: Queries a ConsensusPhylaxSetIndex by index.
-      operationId: DeltaswapFoundationWormchainDeltaswapConsensusPhylaxSetIndex
+      operationId: DeltaswapFoundationDeltachainDeltaswapConsensusPhylaxSetIndex
       responses:
         '200':
           description: A successful response.
@@ -32595,7 +32595,7 @@ paths:
   /deltaswapio/deltachain/deltaswap/phylaxSet:
     get:
       summary: Queries a list of phylaxSet items.
-      operationId: DeltaswapFoundationWormchainDeltaswapPhylaxSetAll
+      operationId: DeltaswapFoundationDeltachainDeltaswapPhylaxSetAll
       responses:
         '200':
           description: A successful response.
@@ -32725,7 +32725,7 @@ paths:
   '/deltaswapio/deltachain/deltaswap/phylaxSet/{index}':
     get:
       summary: Queries a phylaxSet by index.
-      operationId: DeltaswapFoundationWormchainDeltaswapPhylaxSet
+      operationId: DeltaswapFoundationDeltachainDeltaswapPhylaxSet
       responses:
         '200':
           description: A successful response.
@@ -32775,7 +32775,7 @@ paths:
   /deltaswapio/deltachain/deltaswap/phylax_validator:
     get:
       summary: Queries a list of PhylaxValidator items.
-      operationId: DeltaswapFoundationWormchainDeltaswapPhylaxValidatorAll
+      operationId: DeltaswapFoundationDeltachainDeltaswapPhylaxValidatorAll
       responses:
         '200':
           description: A successful response.
@@ -32900,7 +32900,7 @@ paths:
   '/deltaswapio/deltachain/deltaswap/phylax_validator/{phylaxKey}':
     get:
       summary: Queries a PhylaxValidator by index.
-      operationId: DeltaswapFoundationWormchainDeltaswapPhylaxValidator
+      operationId: DeltaswapFoundationDeltachainDeltaswapPhylaxValidator
       responses:
         '200':
           description: A successful response.
@@ -32945,7 +32945,7 @@ paths:
   /deltaswapio/deltachain/deltaswap/latest_phylax_set_index:
     get:
       summary: Queries a list of LatestPhylaxSetIndex items.
-      operationId: DeltaswapFoundationWormchainDeltaswapLatestPhylaxSetIndex
+      operationId: DeltaswapFoundationDeltachainDeltaswapLatestPhylaxSetIndex
       responses:
         '200':
           description: A successful response.
@@ -32978,7 +32978,7 @@ paths:
   /deltaswapio/deltachain/deltaswap/replayProtection:
     get:
       summary: Queries a list of replayProtection items.
-      operationId: DeltaswapFoundationWormchainDeltaswapReplayProtectionAll
+      operationId: DeltaswapFoundationDeltachainDeltaswapReplayProtectionAll
       responses:
         '200':
           description: A successful response.
@@ -33099,7 +33099,7 @@ paths:
   '/deltaswapio/deltachain/deltaswap/replayProtection/{index}':
     get:
       summary: Queries a replayProtection by index.
-      operationId: DeltaswapFoundationWormchainDeltaswapReplayProtection
+      operationId: DeltaswapFoundationDeltachainDeltaswapReplayProtection
       responses:
         '200':
           description: A successful response.
@@ -33139,7 +33139,7 @@ paths:
   /deltaswapio/deltachain/deltaswap/sequenceCounter:
     get:
       summary: Queries a list of sequenceCounter items.
-      operationId: DeltaswapFoundationWormchainDeltaswapSequenceCounterAll
+      operationId: DeltaswapFoundationDeltachainDeltaswapSequenceCounterAll
       responses:
         '200':
           description: A successful response.
@@ -33263,7 +33263,7 @@ paths:
   '/deltaswapio/deltachain/deltaswap/sequenceCounter/{index}':
     get:
       summary: Queries a sequenceCounter by index.
-      operationId: DeltaswapFoundationWormchainDeltaswapSequenceCounter
+      operationId: DeltaswapFoundationDeltachainDeltaswapSequenceCounter
       responses:
         '200':
           description: A successful response.

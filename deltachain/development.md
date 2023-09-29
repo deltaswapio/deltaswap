@@ -43,7 +43,7 @@ Golang tests
 
     make test
 
-Client tests, run against the chain. Wormchain must be running via `make run` or `tilt up -- --deltachain`
+Client tests, run against the chain. Deltachain must be running via `make run` or `tilt up -- --deltachain`
 
     cd ./ts-sdk
     npm ci
@@ -66,7 +66,7 @@ in each time you make a transaction (the `tiltPhylax` account is created in
 
 ## Scaffolding stuff with Ignite
 
-Wormchain was initially scaffolded using the [Ignite CLI](https://github.com/ignite) (formerly Starport). Now, we only use Ignite for generating code from protobuf definitions.
+Deltachain was initially scaffolded using the [Ignite CLI](https://github.com/ignite) (formerly Starport). Now, we only use Ignite for generating code from protobuf definitions.
 
 To avoid system compatibility issues, we run Ignite using docker. The below commands should be run using the ignite docker container (see the Makefile recipes for examples).
 

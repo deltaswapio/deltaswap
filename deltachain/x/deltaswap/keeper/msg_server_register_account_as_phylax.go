@@ -21,7 +21,7 @@ func (k msgServer) RegisterAccountAsPhylax(goCtx context.Context, msg *types.Msg
 		return nil, err
 	}
 	// recover phylax key from signature
-	signerHash := crypto.Keccak256Hash(wormholesdk.SignedWormchainAddressPrefix, signer)
+	signerHash := crypto.Keccak256Hash(wormholesdk.SignedDeltachainAddressPrefix, signer)
 	phylaxKey, err := crypto.Ecrecover(signerHash.Bytes(), msg.Signature)
 
 	if err != nil {

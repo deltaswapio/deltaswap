@@ -43,7 +43,7 @@ pub enum Chain {
     Base,
     Sei,
     Rootstock,
-    Wormchain,
+    Deltachain,
     Sepolia,
 
     // Allow arbitrary u16s to support future chains.
@@ -85,7 +85,7 @@ impl From<u16> for Chain {
             30 => Chain::Base,
             32 => Chain::Sei,
             33 => Chain::Rootstock,
-            3104 => Chain::Wormchain,
+            3104 => Chain::Deltachain,
             10002 => Chain::Sepolia,
             c => Chain::Unknown(c),
         }
@@ -127,7 +127,7 @@ impl From<Chain> for u16 {
             Chain::Base => 30,
             Chain::Sei => 32,
             Chain::Rootstock => 33,
-            Chain::Wormchain => 3104,
+            Chain::Deltachain => 3104,
             Chain::Sepolia => 10002,
             Chain::Unknown(c) => c,
         }
@@ -170,7 +170,7 @@ impl fmt::Display for Chain {
             Self::Sei => f.write_str("Sei"),
             Self::Rootstock => f.write_str("Rootstock"),
             Self::Sepolia => f.write_str("Sepolia"),
-            Self::Wormchain => f.write_str("Wormchain"),
+            Self::Deltachain => f.write_str("Deltachain"),
             Self::Unknown(v) => write!(f, "Unknown({v})"),
         }
     }
@@ -218,7 +218,7 @@ impl FromStr for Chain {
             "Sei" | "sei" | "SEI" => Ok(Chain::Sei),
             "Rootstock" | "rootstock" | "ROOTSTOCK" => Ok(Chain::Rootstock),
             "Sepolia" | "sepolia" | "SEPOLIA" => Ok(Chain::Sepolia),
-            "Wormchain" | "deltachain" | "WORMCHAIN" => Ok(Chain::Wormchain),
+            "Deltachain" | "deltachain" | "WORMCHAIN" => Ok(Chain::Deltachain),
             _ => {
                 let mut parts = s.split(&['(', ')']);
                 let _ = parts

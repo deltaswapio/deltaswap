@@ -261,7 +261,7 @@ pub fn submit_update_chain_to_channel_map(
 
     // validate the governance VAA is directed to deltachain
     ensure!(
-        govpacket.chain == Chain::Wormchain || govpacket.chain == Chain::Any,
+        govpacket.chain == Chain::Deltachain || govpacket.chain == Chain::Any,
         "this governance VAA is for another chain"
     );
 
@@ -284,7 +284,7 @@ pub fn submit_update_chain_to_channel_map(
             chain_id,
         } => {
             ensure!(
-                chain_id != Chain::Wormchain,
+                chain_id != Chain::Deltachain,
                 "the ibc-translator contract should not maintain channel mappings to deltachain"
             );
 

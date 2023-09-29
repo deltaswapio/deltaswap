@@ -31,7 +31,7 @@ func createWasmStoreCodePayload(wasmBytes []byte) []byte {
 	keccak.Write(wasmBytes)
 	keccak.Sum(hashWasm[:0])
 
-	gov_msg := types.NewGovernanceMessage(vaa.WasmdModule, byte(vaa.ActionStoreCode), uint16(vaa.ChainIDWormchain), hashWasm[:])
+	gov_msg := types.NewGovernanceMessage(vaa.WasmdModule, byte(vaa.ActionStoreCode), uint16(vaa.ChainIDDeltachain), hashWasm[:])
 	return gov_msg.MarshalBinary()
 }
 
@@ -45,7 +45,7 @@ func createWasmInstantiatePayload(code_id uint64, label string, json_msg string)
 	var payload bytes.Buffer
 	payload.Write(vaa.WasmdModule[:])
 	payload.Write([]byte{byte(vaa.ActionInstantiateContract)})
-	binary.Write(&payload, binary.BigEndian, uint16(vaa.ChainIDWormchain))
+	binary.Write(&payload, binary.BigEndian, uint16(vaa.ChainIDDeltachain))
 	// custom payload
 	payload.Write(expected_hash[:])
 	return payload.Bytes()
@@ -61,7 +61,7 @@ func createWasmMigratePayload(code_id uint64, contract string, json_msg string) 
 	var payload bytes.Buffer
 	payload.Write(vaa.WasmdModule[:])
 	payload.Write([]byte{byte(vaa.ActionMigrateContract)})
-	binary.Write(&payload, binary.BigEndian, uint16(vaa.ChainIDWormchain))
+	binary.Write(&payload, binary.BigEndian, uint16(vaa.ChainIDDeltachain))
 	// custom payload
 	payload.Write(expected_hash[:])
 	return payload.Bytes()
@@ -86,7 +86,7 @@ func setupAccountantAndPhylaxSet(t *testing.T, ctx sdk.Context, k *keeper.Keeper
 	k.SetConfig(ctx, types.Config{
 		GovernanceEmitter:   vaa.GovernanceEmitter[:],
 		GovernanceChain:     uint32(vaa.GovernanceChain),
-		ChainId:             uint32(vaa.ChainIDWormchain),
+		ChainId:             uint32(vaa.ChainIDDeltachain),
 		PhylaxSetExpiration: 86400,
 	})
 	set := createNewPhylaxSet(k, ctx, phylaxs)
@@ -138,7 +138,7 @@ func TestWasmdStoreCode(t *testing.T) {
 	k.SetConfig(ctx, types.Config{
 		GovernanceEmitter:   vaa.GovernanceEmitter[:],
 		GovernanceChain:     uint32(vaa.GovernanceChain),
-		ChainId:             uint32(vaa.ChainIDWormchain),
+		ChainId:             uint32(vaa.ChainIDDeltachain),
 		PhylaxSetExpiration: 86400,
 	})
 	signer_bz := [20]byte{}
@@ -207,7 +207,7 @@ func TestWasmdInstantiateContract(t *testing.T) {
 	k.SetConfig(ctx, types.Config{
 		GovernanceEmitter:   vaa.GovernanceEmitter[:],
 		GovernanceChain:     uint32(vaa.GovernanceChain),
-		ChainId:             uint32(vaa.ChainIDWormchain),
+		ChainId:             uint32(vaa.ChainIDDeltachain),
 		PhylaxSetExpiration: 86400,
 	})
 	signer_bz := [20]byte{}
@@ -491,7 +491,7 @@ func TestWasmdAccountantContractModify(t *testing.T) {
 	// construct the modify balance vaa
 	modify_msg := vaa.BodyAccountantModifyBalance{
 		Module:        "GlobalAccountant",
-		TargetChainID: vaa.ChainIDWormchain,
+		TargetChainID: vaa.ChainIDDeltachain,
 		Sequence:      uint64(lastestSequence),
 		ChainId:       vaa.ChainIDSolana,
 		TokenChain:    vaa.ChainIDSolana,

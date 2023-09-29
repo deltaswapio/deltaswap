@@ -43,7 +43,7 @@ func TestTokenListChainTokensPresent(t *testing.T) {
 				}
 			}
 
-			if e != vaa.ChainIDXpla && e != vaa.ChainIDAptos && e != vaa.ChainIDArbitrum && e != vaa.ChainIDWormchain {
+			if e != vaa.ChainIDXpla && e != vaa.ChainIDAptos && e != vaa.ChainIDArbitrum && e != vaa.ChainIDDeltachain {
 				assert.Equal(t, found, true)
 			}
 		})

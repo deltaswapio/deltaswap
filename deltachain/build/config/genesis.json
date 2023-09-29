@@ -91,7 +91,7 @@
       "supply": [],
       "denom_metadata": [
         {
-          "description": "Wormchain's native test asset",
+          "description": "Deltachain's native test asset",
           "denom_units": [
             {
               "denom": "utest",
@@ -110,7 +110,7 @@
           "symbol": "TEST"
         },
         {
-          "description": "Wormchain's native staking asset",
+          "description": "Deltachain's native staking asset",
           "denom_units": [
             {
               "denom": "uworm",

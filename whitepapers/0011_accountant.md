@@ -2,7 +2,7 @@
 
 This document describes the motivation, goals, and technical design of the "Global Accountant".
 
-The Global Accountant is a safety feature for registered token bridges.  It is implemented as an [Integrity Checker](0010_integrity_checkers.md) on Wormchain.
+The Global Accountant is a safety feature for registered token bridges.  It is implemented as an [Integrity Checker](0010_integrity_checkers.md) on Deltachain.
 
 ## Objectives
 
@@ -93,7 +93,7 @@ When a phylax submits a transfer (observation) to the contract, the contract wil
 
 If the phylax receives a `Committed` status for a transfer then it can immediately proceed to signing the VAA.  If it receives an `Error` status, then it should halt further processing of the transfer (see the [Handling Rejections](#handling-rejections) section for more details).  If it receives a `Pending` status, then it should add the observation to a local database of pending transfers and wait for an event from the accountant.
 
-#### Observing Events from Wormchain
+#### Observing Events from Deltachain
 
 Each phylax sets up a watcher for the accountant watching for events emitted signalling a determination on a transfer.  An event for a transfer is emitted when there is a quorum of pre-observations.
 

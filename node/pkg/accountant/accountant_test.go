@@ -32,25 +32,25 @@ const (
 	dontEnforceAccountant = false
 )
 
-type MockAccountantWormchainConn struct {
+type MockAccountantDeltachainConn struct {
 	BroadcastTxResponse string
 
 	lock   sync.Mutex
 	txResp *sdktx.BroadcastTxResponse
 }
 
-func (c *MockAccountantWormchainConn) Close() {
+func (c *MockAccountantDeltachainConn) Close() {
 }
 
-func (c *MockAccountantWormchainConn) SenderAddress() string {
+func (c *MockAccountantDeltachainConn) SenderAddress() string {
 	return "wormfakesigner"
 }
 
-func (c *MockAccountantWormchainConn) SubmitQuery(ctx context.Context, contractAddress string, query []byte) ([]byte, error) {
+func (c *MockAccountantDeltachainConn) SubmitQuery(ctx context.Context, contractAddress string, query []byte) ([]byte, error) {
 	return []byte{}, nil
 }
 
-func (c *MockAccountantWormchainConn) SignAndBroadcastTx(ctx context.Context, msg sdktypes.Msg) (*sdktx.BroadcastTxResponse, error) {
+func (c *MockAccountantDeltachainConn) SignAndBroadcastTx(ctx context.Context, msg sdktypes.Msg) (*sdktx.BroadcastTxResponse, error) {
 	for {
 		c.lock.Lock()
 		if c.txResp != nil {
@@ -64,23 +64,23 @@ func (c *MockAccountantWormchainConn) SignAndBroadcastTx(ctx context.Context, ms
 	}
 }
 
-func (c *MockAccountantWormchainConn) BroadcastTxResponseToString(txResp *sdktx.BroadcastTxResponse) string {
+func (c *MockAccountantDeltachainConn) BroadcastTxResponseToString(txResp *sdktx.BroadcastTxResponse) string {
 	return c.BroadcastTxResponse
 }
 
-func (c *MockAccountantWormchainConn) SetTxResp(txResp *sdktx.BroadcastTxResponse) {
+func (c *MockAccountantDeltachainConn) SetTxResp(txResp *sdktx.BroadcastTxResponse) {
 	c.lock.Lock()
 	defer c.lock.Unlock()
 	c.txResp = txResp
 }
 
-func (c *MockAccountantWormchainConn) TxRespPending() bool {
+func (c *MockAccountantDeltachainConn) TxRespPending() bool {
 	c.lock.Lock()
 	defer c.lock.Unlock()
 	return c.txResp != nil
 }
 
-func (c *MockAccountantWormchainConn) WaitUntilTxRespConsumed() {
+func (c *MockAccountantDeltachainConn) WaitUntilTxRespConsumed() {
 	for {
 		stillPending := c.TxRespPending()
 		time.Sleep(50 * time.Millisecond)
@@ -97,7 +97,7 @@ func newAccountantForTest(
 	accountantCheckEnabled bool,
 	obsvReqWriteC chan<- *gossipv1.ObservationRequest,
 	acctWriteC chan<- *common.MessagePublication,
-	deltachainConn *MockAccountantWormchainConn,
+	deltachainConn *MockAccountantDeltachainConn,
 ) *Accountant {
 	var db db.MockAccountantDB
 
@@ -327,7 +327,7 @@ func TestForDeadlock(t *testing.T) {
 	logger := zaptest.NewLogger(t)
 	obsvReqWriteC := make(chan *gossipv1.ObservationRequest, 10)
 	acctChan := make(chan *common.MessagePublication, MsgChannelCapacity)
-	deltachainConn := MockAccountantWormchainConn{}
+	deltachainConn := MockAccountantDeltachainConn{}
 	acct := newAccountantForTest(t, logger, ctx, enforceAccountant, obsvReqWriteC, acctChan, &deltachainConn)
 	require.NotNil(t, acct)
 

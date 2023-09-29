@@ -66,7 +66,7 @@ async function main() {
     // there is no danger here, just several Cosmos chains in devnet, so check for config issues
     let id = await cwc.getChainId()
     if (id !== "deltachain") {
-        throw new Error(`Wormchain CosmWasmClient connection produced an unexpected chainID: ${id}`)
+        throw new Error(`Deltachain CosmWasmClient connection produced an unexpected chainID: ${id}`)
     }
 
     const signers = await w.getAccounts()

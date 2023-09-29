@@ -85,7 +85,7 @@ fn handle_vaa(deps: DepsMut<WormholeQuery>, vaa: Binary) -> anyhow::Result<Event
 
     // validate the governance VAA is directed to deltachain
     ensure!(
-        govpacket.chain == Chain::Wormchain,
+        govpacket.chain == Chain::Deltachain,
         "this governance VAA is for another chain"
     );
 
@@ -107,7 +107,7 @@ fn handle_vaa(deps: DepsMut<WormholeQuery>, vaa: Binary) -> anyhow::Result<Event
             channel_id,
             chain_id,
         } => {
-            ensure!(chain_id != Chain::Wormchain, "the deltachain-ibc-receiver contract should not maintain channel mappings to deltachain");
+            ensure!(chain_id != Chain::Deltachain, "the deltachain-ibc-receiver contract should not maintain channel mappings to deltachain");
 
             let channel_id_str =
                 str::from_utf8(&channel_id).context("failed to parse channel-id as utf-8")?;

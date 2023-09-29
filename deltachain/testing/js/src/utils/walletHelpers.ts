@@ -5,7 +5,7 @@ import {
   fromValAddress,
   getAddress,
   getWallet,
-  getWormchainSigningClient,
+  getDeltachainSigningClient,
   getDeltaswapQueryClient,
 } from "@deltaswapio/deltachain-sdk";
 import {
@@ -25,7 +25,7 @@ export async function getQueryClient() {
 
 export async function getSigningClient() {
   const testWallet1 = await getWallet(TEST_WALLET_MNEMONIC_1);
-  return await getWormchainSigningClient(TENDERMINT_URL, testWallet1);
+  return await getDeltachainSigningClient(TENDERMINT_URL, testWallet1);
 }
 
 export async function getBalance(address: string, denom: string) {
@@ -40,7 +40,7 @@ export async function sendTokens(
   amount: string,
   denom: string
 ) {
-  const client = await getWormchainSigningClient(TENDERMINT_URL, wallet);
+  const client = await getDeltachainSigningClient(TENDERMINT_URL, wallet);
   const fromAddress = await getAddress(wallet);
   //TODO the autogenned protobuf code doesn't appear to be correct. This not working is a serious bug
   //   const msg = client.bank.msgSend({

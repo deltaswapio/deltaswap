@@ -12,7 +12,7 @@ import (
 // CoreModule is the identifier of the Core module (which is used for governance messages)
 var CoreModule = []byte{00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 0x43, 0x6f, 0x72, 0x65}
 
-// WasmdModule is the identifier of the Wormchain Wasmd module (which is used for governance messages)
+// WasmdModule is the identifier of the Deltachain Wasmd module (which is used for governance messages)
 var WasmdModule = [32]byte{00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 00, 0x57, 0x61, 0x73, 0x6D, 0x64, 0x4D, 0x6F, 0x64, 0x75, 0x6C, 0x65}
 var WasmdModuleStr = string(WasmdModule[:])
 
@@ -31,7 +31,7 @@ var CircleIntegrationModule = [32]byte{
 }
 var CircleIntegrationModuleStr = string(CircleIntegrationModule[:])
 
-// IbcReceiverModule is the identifier of the Wormchain ibc_receiver contract module (which is used for governance messages)
+// IbcReceiverModule is the identifier of the Deltachain ibc_receiver contract module (which is used for governance messages)
 // It is the hex representation of "IbcReceiver" left padded with zeroes.
 var IbcReceiverModule = [32]byte{
 	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
@@ -39,7 +39,7 @@ var IbcReceiverModule = [32]byte{
 }
 var IbcReceiverModuleStr = string(IbcReceiverModule[:])
 
-// IbcTranslatorModule is the identifier of the Wormchain ibc_receiver contract module (which is used for governance messages)
+// IbcTranslatorModule is the identifier of the Deltachain ibc_receiver contract module (which is used for governance messages)
 // It is the hex representation of "IbcTranslator" left padded with zeroes.
 var IbcTranslatorModule = [32]byte{
 	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
@@ -66,7 +66,7 @@ var (
 	ActionCoreTransferFees   GovernanceAction = 4
 	ActionCoreRecoverChainId GovernanceAction = 5
 
-	// Wormchain cosmwasm/middleware governance actions
+	// Deltachain cosmwasm/middleware governance actions
 	ActionStoreCode                      GovernanceAction = 1
 	ActionInstantiateContract            GovernanceAction = 2
 	ActionMigrateContract                GovernanceAction = 3
@@ -141,23 +141,23 @@ type (
 		Reason        string
 	}
 
-	// BodyWormchainStoreCode is a governance message to upload a new cosmwasm contract to deltachain
-	BodyWormchainStoreCode struct {
+	// BodyDeltachainStoreCode is a governance message to upload a new cosmwasm contract to deltachain
+	BodyDeltachainStoreCode struct {
 		WasmHash [32]byte
 	}
 
-	// BodyWormchainInstantiateContract is a governance message to instantiate a cosmwasm contract on deltachain
-	BodyWormchainInstantiateContract struct {
+	// BodyDeltachainInstantiateContract is a governance message to instantiate a cosmwasm contract on deltachain
+	BodyDeltachainInstantiateContract struct {
 		InstantiationParamsHash [32]byte
 	}
 
-	// BodyWormchainInstantiateContract is a governance message to migrate a cosmwasm contract on deltachain
-	BodyWormchainMigrateContract struct {
+	// BodyDeltachainInstantiateContract is a governance message to migrate a cosmwasm contract on deltachain
+	BodyDeltachainMigrateContract struct {
 		MigrationParamsHash [32]byte
 	}
 
-	// BodyWormchainAllowlistInstantiateContract is a governance message to allowlist a specific contract address to instantiate a specific wasm code id.
-	BodyWormchainWasmAllowlistInstantiate struct {
+	// BodyDeltachainAllowlistInstantiateContract is a governance message to allowlist a specific contract address to instantiate a specific wasm code id.
+	BodyDeltachainWasmAllowlistInstantiate struct {
 		ContractAddr [32]byte
 		CodeId       uint64
 	}
@@ -280,26 +280,26 @@ func (r BodyAccountantModifyBalance) Serialize() []byte {
 	return serializeBridgeGovernanceVaa(r.Module, ActionModifyBalance, r.TargetChainID, payload.Bytes())
 }
 
-func (r BodyWormchainStoreCode) Serialize() []byte {
-	return serializeBridgeGovernanceVaa(WasmdModuleStr, ActionStoreCode, ChainIDWormchain, r.WasmHash[:])
+func (r BodyDeltachainStoreCode) Serialize() []byte {
+	return serializeBridgeGovernanceVaa(WasmdModuleStr, ActionStoreCode, ChainIDDeltachain, r.WasmHash[:])
 }
 
-func (r BodyWormchainInstantiateContract) Serialize() []byte {
-	return serializeBridgeGovernanceVaa(WasmdModuleStr, ActionInstantiateContract, ChainIDWormchain, r.InstantiationParamsHash[:])
+func (r BodyDeltachainInstantiateContract) Serialize() []byte {
+	return serializeBridgeGovernanceVaa(WasmdModuleStr, ActionInstantiateContract, ChainIDDeltachain, r.InstantiationParamsHash[:])
 }
 
-func (r BodyWormchainMigrateContract) Serialize() []byte {
-	return serializeBridgeGovernanceVaa(WasmdModuleStr, ActionMigrateContract, ChainIDWormchain, r.MigrationParamsHash[:])
+func (r BodyDeltachainMigrateContract) Serialize() []byte {
+	return serializeBridgeGovernanceVaa(WasmdModuleStr, ActionMigrateContract, ChainIDDeltachain, r.MigrationParamsHash[:])
 }
 
-func (r BodyWormchainWasmAllowlistInstantiate) Serialize(action GovernanceAction) []byte {
+func (r BodyDeltachainWasmAllowlistInstantiate) Serialize(action GovernanceAction) []byte {
 	payload := &bytes.Buffer{}
 	payload.Write(r.ContractAddr[:])
 	MustWrite(payload, binary.BigEndian, r.CodeId)
-	return serializeBridgeGovernanceVaa(WasmdModuleStr, action, ChainIDWormchain, payload.Bytes())
+	return serializeBridgeGovernanceVaa(WasmdModuleStr, action, ChainIDDeltachain, payload.Bytes())
 }
 
-func (r *BodyWormchainWasmAllowlistInstantiate) Deserialize(bz []byte) {
+func (r *BodyDeltachainWasmAllowlistInstantiate) Deserialize(bz []byte) {
 	if len(bz) != 40 {
 		panic("incorrect payload length")
 	}
@@ -316,7 +316,7 @@ func (r *BodyWormchainWasmAllowlistInstantiate) Deserialize(bz []byte) {
 func (r BodyGatewayIbcComposabilityMwContract) Serialize() []byte {
 	payload := &bytes.Buffer{}
 	payload.Write(r.ContractAddr[:])
-	return serializeBridgeGovernanceVaa(GatewayModuleStr, ActionSetIbcComposabilityMwContract, ChainIDWormchain, payload.Bytes())
+	return serializeBridgeGovernanceVaa(GatewayModuleStr, ActionSetIbcComposabilityMwContract, ChainIDDeltachain, payload.Bytes())
 }
 
 func (r *BodyGatewayIbcComposabilityMwContract) Deserialize(bz []byte) {
@@ -334,7 +334,7 @@ func (r BodyGatewayScheduleUpgrade) Serialize() []byte {
 	payload := &bytes.Buffer{}
 	payload.Write([]byte(r.Name))
 	MustWrite(payload, binary.BigEndian, r.Height)
-	return serializeBridgeGovernanceVaa(GatewayModuleStr, ActionScheduleUpgrade, ChainIDWormchain, payload.Bytes())
+	return serializeBridgeGovernanceVaa(GatewayModuleStr, ActionScheduleUpgrade, ChainIDDeltachain, payload.Bytes())
 }
 
 func (r *BodyGatewayScheduleUpgrade) Deserialize(bz []byte) {

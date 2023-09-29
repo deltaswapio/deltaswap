@@ -66,7 +66,7 @@ fn deltachain_target() {
     let (wh, mut contract) = proper_instantiate();
 
     let mut body = create_vaa_body();
-    body.payload.chain = Chain::Wormchain;
+    body.payload.chain = Chain::Deltachain;
 
     let (v, data) = sign_vaa_body(&wh, body);
     let resp = contract

@@ -33,7 +33,7 @@ import (
 const MsgChannelCapacity = 5 * batchSize
 
 type (
-	AccountantWormchainConn interface {
+	AccountantDeltachainConn interface {
 		Close()
 		SenderAddress() string
 		SubmitQuery(ctx context.Context, contractAddress string, query []byte) ([]byte, error)
@@ -80,7 +80,7 @@ type Accountant struct {
 	obsvReqWriteC        chan<- *gossipv1.ObservationRequest
 	contract             string
 	wsUrl                string
-	deltachainConn       AccountantWormchainConn
+	deltachainConn       AccountantDeltachainConn
 	enforceFlag          bool
 	gk                   *ecdsa.PrivateKey
 	gst                  *common.PhylaxSetState
@@ -104,7 +104,7 @@ func NewAccountant(
 	obsvReqWriteC chan<- *gossipv1.ObservationRequest,
 	contract string, // the address of the smart contract on deltachain
 	wsUrl string, // the URL of the deltachain websocket interface
-	deltachainConn AccountantWormchainConn, // used for communicating with the smart contract
+	deltachainConn AccountantDeltachainConn, // used for communicating with the smart contract
 	enforceFlag bool, // whether or not accountant should be enforced
 	gk *ecdsa.PrivateKey, // the phylax key used for signing observation requests
 	gst *common.PhylaxSetState, // used to get the current phylax set index when sending observation requests

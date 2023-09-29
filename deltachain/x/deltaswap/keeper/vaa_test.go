@@ -359,7 +359,7 @@ func TestVerifyVAAGovernance(t *testing.T) {
 	config := types.Config{
 		GovernanceEmitter:   vaa.GovernanceEmitter[:],
 		GovernanceChain:     uint32(vaa.GovernanceChain),
-		ChainId:             uint32(vaa.ChainIDWormchain),
+		ChainId:             uint32(vaa.ChainIDDeltachain),
 		PhylaxSetExpiration: 86400,
 	}
 	keeper.SetConfig(ctx, config)
@@ -371,7 +371,7 @@ func TestVerifyVAAGovernance(t *testing.T) {
 	payload = append(payload, our_module[:]...)
 	payload = append(payload, action)
 	chain_bz := [2]byte{}
-	binary.BigEndian.PutUint16(chain_bz[:], uint16(vaa.ChainIDWormchain))
+	binary.BigEndian.PutUint16(chain_bz[:], uint16(vaa.ChainIDDeltachain))
 	payload = append(payload, chain_bz[:]...)
 	// custom payload
 	custom_payload := []byte{1, 2, 3, 4, 5}

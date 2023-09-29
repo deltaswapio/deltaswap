@@ -1,6 +1,6 @@
-# Wormchain
+# Deltachain
 
-**Wormchain** is a blockchain built using Cosmos SDK and Tendermint and initially created with [Ignite](https://github.com/ignite).
+**Deltachain** is a blockchain built using Cosmos SDK and Tendermint and initially created with [Ignite](https://github.com/ignite).
 
 ## Building
 

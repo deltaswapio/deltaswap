@@ -16,7 +16,7 @@ import { Api as vestingApi } from "../modules/cosmos.vesting.v1beta1/rest";
 import { Api as wasmApi } from "../modules/cosmwasm.wasm.v1/rest";
 import { Api as coreApi } from "../modules/deltaswapio.deltachain.deltaswap/rest";
 
-export type WormchainQueryClient = {
+export type DeltachainQueryClient = {
   core: coreApi<any>;
   auth: authApi<any>;
   bank: bankApi<any>;
@@ -39,7 +39,7 @@ export type WormchainQueryClient = {
 export function getDeltaswapQueryClient(
   lcdAddress: string,
   nodejs?: boolean
-): WormchainQueryClient {
+): DeltachainQueryClient {
   if (nodejs) {
     var fetch = require("node-fetch");
     //@ts-ignore

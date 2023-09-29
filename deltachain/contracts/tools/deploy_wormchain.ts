@@ -11,7 +11,7 @@ import { toBinary } from "@cosmjs/cosmwasm-stargate";
 import { fromBase64, toUtf8, fromBech32 } from "@cosmjs/encoding";
 import {
   getWallet,
-  getWormchainSigningClient,
+  getDeltachainSigningClient,
 } from "@deltaswapio/deltachain-sdk";
 import { ZERO_FEE } from "@deltaswapio/deltachain-sdk/lib/core/consts";
 import "dotenv/config";
@@ -89,13 +89,13 @@ async function main() {
     devnetConsts.chains[3104].accounts.deltachainNodeOfPhylax0.mnemonic;
 
   const wallet = await getWallet(mnemonic);
-  const client = await getWormchainSigningClient(host, wallet);
+  const client = await getDeltachainSigningClient(host, wallet);
 
   // there are several Cosmos chains in devnet, so check the config is as expected
   let id = await client.getChainId();
   if (id !== "deltachain") {
     throw new Error(
-      `Wormchain CosmWasmClient connection produced an unexpected chainID: ${id}`
+      `Deltachain CosmWasmClient connection produced an unexpected chainID: ${id}`
     );
   }
 

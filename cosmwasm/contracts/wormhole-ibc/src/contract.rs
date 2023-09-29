@@ -116,7 +116,7 @@ fn handle_vaa(deps: DepsMut, env: Env, vaa: Binary) -> anyhow::Result<Event> {
             // validate that the chain_id for the channel is deltachain
             // we should only be whitelisting IBC connections to deltachain
             ensure!(
-                chain_id == Chain::Wormchain,
+                chain_id == Chain::Deltachain,
                 "whitelisted ibc channel not for deltachain"
             );
 

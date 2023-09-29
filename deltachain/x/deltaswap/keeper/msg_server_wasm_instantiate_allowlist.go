@@ -56,7 +56,7 @@ func (k msgServer) ExecuteWasmInstantiateAllowlistAction(goCtx context.Context, 
 	}
 
 	// validate the <contractAddress, codeId> in the VAA payload match the ones in the message
-	var payloadBody vaa.BodyWormchainWasmAllowlistInstantiate
+	var payloadBody vaa.BodyDeltachainWasmAllowlistInstantiate
 	payloadBody.Deserialize(payload)
 	if !bytes.Equal(payloadBody.ContractAddr[:], addrBytes) {
 		return nil, types.ErrInvalidAllowlistContractAddr

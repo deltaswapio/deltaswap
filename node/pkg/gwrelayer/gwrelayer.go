@@ -27,7 +27,7 @@ import (
 )
 
 type (
-	GatewayRelayerWormchainConn interface {
+	GatewayRelayerDeltachainConn interface {
 		Close()
 		SenderAddress() string
 		SubmitQuery(ctx context.Context, contractAddress string, query []byte) ([]byte, error)
@@ -42,7 +42,7 @@ type (
 		ctx                         context.Context
 		logger                      *zap.Logger
 		ibcTranslatorAddress        string
-		deltachainConn              GatewayRelayerWormchainConn
+		deltachainConn              GatewayRelayerDeltachainConn
 		env                         common.Environment
 		subChan                     chan *VaaToPublish
 		tokenBridges                tokenBridgeMap
@@ -104,7 +104,7 @@ func NewGatewayRelayer(
 	ctx context.Context,
 	logger *zap.Logger,
 	ibcTranslatorAddress string,
-	deltachainConn GatewayRelayerWormchainConn,
+	deltachainConn GatewayRelayerDeltachainConn,
 	env common.Environment,
 ) *GatewayRelayer {
 	if ibcTranslatorAddress == "" {
@@ -172,7 +172,7 @@ func buildTokenBridgeMap(logger *zap.Logger, env common.Environment) (tokenBridg
 	tokenBridges := make(tokenBridgeMap)
 	tokenBridgeAddress := ""
 	for chainId, emitterAddrBytes := range emitterMap {
-		if chainId == vaa.ChainIDWormchain {
+		if chainId == vaa.ChainIDDeltachain {
 			var err error
 			tokenBridgeAddress, err = sdktypes.Bech32ifyAddressBytes("wormhole", emitterAddrBytes)
 			if err != nil {
@@ -220,7 +220,7 @@ func convertBech32AddressToWormhole(contractAddress string) (vaa.Address, error)
 // SubmitVAA checks to see if the VAA should be submitted to the smart contract, and if so, writes it to the channel for publishing.
 func (gwr *GatewayRelayer) SubmitVAA(v *vaa.VAA) {
 	var v2p VaaToPublish
-	if shouldPub, err := shouldPublishToIbcTranslator(v.Payload, vaa.ChainIDWormchain, gwr.ibcTranslatorPayloadAddress); err != nil {
+	if shouldPub, err := shouldPublishToIbcTranslator(v.Payload, vaa.ChainIDDeltachain, gwr.ibcTranslatorPayloadAddress); err != nil {
 		gwr.logger.Error("failed to check if vaa should be published", zap.String("msgId", v.MessageID()), zap.Error(err))
 		return
 	} else if shouldPub {
@@ -341,7 +341,7 @@ type (
 func SubmitVAAToContract(
 	ctx context.Context,
 	logger *zap.Logger,
-	deltachainConn GatewayRelayerWormchainConn,
+	deltachainConn GatewayRelayerDeltachainConn,
 	v2p *VaaToPublish,
 ) (*sdktx.BroadcastTxResponse, error) {
 	logger.Info("submitting VAA to contract", zap.String("message_id", v2p.V.MessageID()), zap.String("contract", v2p.ContractAddress), zap.Uint8("vaaType", uint8(v2p.VType)))

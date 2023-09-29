@@ -295,7 +295,7 @@ func SubmitObservationsToContract(
 	gk *ecdsa.PrivateKey,
 	gsIndex uint32,
 	phylaxIndex uint32,
-	deltachainConn AccountantWormchainConn,
+	deltachainConn AccountantDeltachainConn,
 	contract string,
 	msgs []*common.MessagePublication,
 ) (*sdktx.BroadcastTxResponse, error) {

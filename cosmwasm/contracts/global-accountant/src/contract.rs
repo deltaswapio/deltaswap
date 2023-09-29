@@ -370,7 +370,7 @@ fn handle_token_governance_vaa(
     body: Body<token::GovernancePacket>,
 ) -> anyhow::Result<Event> {
     ensure!(
-        body.payload.chain == Chain::Any || body.payload.chain == Chain::Wormchain,
+        body.payload.chain == Chain::Any || body.payload.chain == Chain::Deltachain,
         "this token governance VAA is for another chain"
     );
 
@@ -400,7 +400,7 @@ fn handle_accountant_governance_vaa(
     body: Body<accountant_module::GovernancePacket>,
 ) -> anyhow::Result<Event> {
     ensure!(
-        body.payload.chain == Chain::Wormchain,
+        body.payload.chain == Chain::Deltachain,
         "this accountant governance VAA is for another chain"
     );
 
