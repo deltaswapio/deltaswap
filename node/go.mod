@@ -51,6 +51,8 @@ require (
 	github.com/blendle/zapdriver v1.3.1
 	github.com/btcsuite/btcutil v1.0.3-0.20201208143702-a53e38424cce
 	github.com/cosmos/cosmos-sdk v0.45.11
+	github.com/deltaswapio/deltachain v0.0.0-00010101000000-000000000000
+	github.com/deltaswapio/deltaswap/sdk v0.0.0-20220926172624-4b38dc650bb0
 	github.com/go-kit/kit v0.12.0
 	github.com/google/uuid v1.3.0
 	github.com/grafana/dskit v0.0.0-20230201083518-528d8a7d52f2
@@ -59,8 +61,6 @@ require (
 	github.com/holiman/uint256 v1.2.1
 	github.com/prometheus/client_model v0.4.0
 	github.com/prometheus/common v0.44.0
-	github.com/deltaswapio/deltachain v0.0.0-00010101000000-000000000000
-	github.com/deltaswapio/deltaswap/sdk v0.0.0-20220926172624-4b38dc650bb0
 	golang.org/x/exp v0.0.0-20230713183714-613f0c0eb8a1
 	google.golang.org/genproto/googleapis/api v0.0.0-20230726155614-23370e0ffb3e
 	nhooyr.io/websocket v1.8.7
