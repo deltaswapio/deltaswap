@@ -12,8 +12,8 @@ uint32 constant MAX_UINT32 = 0xffffffff;
 
 bytes32 constant CHAINID_STORAGE_INDEX = bytes32(uint256(0));
 bytes32 constant GOVERNANCECONTRACT_STORAGE_INDEX = bytes32(uint256(1));
-bytes32 constant GUARDIANSETS_STORAGE_INDEX = bytes32(uint256(2));
-bytes32 constant GUARDIANSETINDEX_STORAGE_INDEX = bytes32(uint256(3));
+bytes32 constant PHYLAXSETS_STORAGE_INDEX = bytes32(uint256(2));
+bytes32 constant PHYLAXSETINDEX_STORAGE_INDEX = bytes32(uint256(3));
 bytes32 constant SEQUENCES_STORAGE_INDEX = bytes32(uint256(4));
 bytes32 constant CONSUMEDGOVACTIONS_STORAGE_INDEX = bytes32(uint256(5));
 bytes32 constant INITIALIZEDIMPLEMENTATIONS_STORAGE_INDEX = bytes32(uint256(6));

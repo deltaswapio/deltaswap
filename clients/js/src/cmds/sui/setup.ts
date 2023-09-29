@@ -29,7 +29,7 @@ import {
 import {
   GOVERNANCE_CHAIN,
   GOVERNANCE_EMITTER,
-  INITIAL_GUARDIAN_DEVNET,
+  INITIAL_PHYLAX_DEVNET,
   NETWORKS,
   RPC_OPTIONS,
 } from "../../consts";
@@ -73,7 +73,7 @@ export const addSetupCommands: YargsAddCommandsFn = (y: typeof yargs) =>
       const coreBridgeInitRes = await initWormhole(
         network,
         coreBridgePackageId,
-        INITIAL_GUARDIAN_DEVNET,
+        INITIAL_PHYLAX_DEVNET,
         GOVERNANCE_CHAIN,
         0,
         GOVERNANCE_EMITTER,

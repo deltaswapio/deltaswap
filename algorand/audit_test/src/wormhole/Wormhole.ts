@@ -7,7 +7,7 @@ import assert from 'assert'
 import { SignedVAA, WormholeSigner } from './WormholeTypes'
 import { signWormholeMessage } from './WormholeEncoders'
 import { generateInitVAA } from './WormholeVAA'
-import { EMITTER_GUARDIAN, WormholeTmplSig } from './WormholeTmplSig'
+import { EMITTER_PHYLAX, WormholeTmplSig } from './WormholeTmplSig'
 
 export class Wormhole {
 	public static BASE_PATH = path.resolve(__dirname, '../../../')
@@ -159,7 +159,7 @@ export class Wormhole {
 		console.log(`TmplSig address: ${dedupTmplSig.address}, base64: ${Buffer.from(decodeAddress(dedupTmplSig.address).publicKey).toString('base64')}`)
 
 		// Generate phylax template sig
-		const phylaxTmplSig = new WormholeTmplSig(vaa.gsIndex, EMITTER_GUARDIAN, this.coreId)
+		const phylaxTmplSig = new WormholeTmplSig(vaa.gsIndex, EMITTER_PHYLAX, this.coreId)
 
 		// Opt-in tmplsig
 		const templateSigs = [dedupTmplSig, phylaxTmplSig].concat(vaa.extraTmplSigs)

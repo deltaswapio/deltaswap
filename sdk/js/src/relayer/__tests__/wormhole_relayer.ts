@@ -6,8 +6,8 @@ import {
   waitForRelay,
   PRIVATE_KEY,
   getPhylaxRPC,
-  GUARDIAN_KEYS,
-  GUARDIAN_SET_INDEX,
+  PHYLAX_KEYS,
+  PHYLAX_SET_INDEX,
   GOVERNANCE_EMITTER_ADDRESS,
   getArbitraryBytes32,
 } from "./utils/utils";
@@ -111,7 +111,7 @@ const optionalParamsTarget = {
 };
 
 // for signing wormhole messages
-const phylaxs = new MockPhylaxs(GUARDIAN_SET_INDEX, GUARDIAN_KEYS);
+const phylaxs = new MockPhylaxs(PHYLAX_SET_INDEX, PHYLAX_KEYS);
 
 // for generating governance wormhole messages
 const governance = new GovernanceEmitter(GOVERNANCE_EMITTER_ADDRESS);

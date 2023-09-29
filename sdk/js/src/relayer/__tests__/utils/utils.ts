@@ -52,7 +52,7 @@ export async function waitForRelay(quantity?: number) {
 
 export const getPhylaxRPC = (network: Network, ci: boolean) => {
   return (
-    process.env.GUARDIAN_RPC ||
+    process.env.PHYLAX_RPC ||
     (ci
       ? "http://phylax:7071"
       : network == "DEVNET"
@@ -67,8 +67,8 @@ export const getPhylaxRPC = (network: Network, ci: boolean) => {
 // Ideally we find a better home for these (probably somewhere in the SDK)
 // These are used to mock a devnet/CI phylax
 
-export const GUARDIAN_KEYS = process.env.GUARDIAN_KEY
-  ? [process.env.GUARDIAN_KEY]
+export const PHYLAX_KEYS = process.env.PHYLAX_KEY
+  ? [process.env.PHYLAX_KEY]
   : [
       "cfb12303a19cde580bb4dd771639b0d26bc68353645571a8cff516ab2ee113a0",
       "c3b2e45c422a1602333a64078aeb42637370b0f48fe385f9cfa6ad54a8e0c47e",
@@ -90,8 +90,8 @@ export const GUARDIAN_KEYS = process.env.GUARDIAN_KEY
       "1db31a6ba3bcd54d2e8a64f8a2415064265d291593450c6eb7e9a6a986bd9400",
       "70d8f1c9534a0ab61a020366b831a494057a289441c07be67e4288c44bc6cd5d",
     ];
-export const GUARDIAN_SET_INDEX = process.env.GUARDIAN_SET_INDEX
-  ? parseInt(process.env.GUARDIAN_SET_INDEX)
+export const PHYLAX_SET_INDEX = process.env.PHYLAX_SET_INDEX
+  ? parseInt(process.env.PHYLAX_SET_INDEX)
   : 0;
 export const GOVERNANCE_EMITTER_ADDRESS =
   process.env.GOVERNANCE_EMITTER_ADDRESS ||

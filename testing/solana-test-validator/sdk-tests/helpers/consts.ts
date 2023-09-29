@@ -15,8 +15,8 @@ export const NFT_BRIDGE_ADDRESS = new PublicKey(
   "caosnXgev6ceZQAUFk3hCjYtUwJLoKWwaoqZx9V9s9Q"
 );
 
-export const GUARDIAN_SET_INDEX = 0;
-export const GUARDIAN_KEYS = [
+export const PHYLAX_SET_INDEX = 0;
+export const PHYLAX_KEYS = [
   "cfb12303a19cde580bb4dd771639b0d26bc68353645571a8cff516ab2ee113a0",
   "c3b2e45c422a1602333a64078aeb42637370b0f48fe385f9cfa6ad54a8e0c47e",
   "9f790d3f08bc4b5cd910d4278f3deb406e57bb5e924906ccd52052bb078ccd47",

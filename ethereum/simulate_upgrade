@@ -83,8 +83,8 @@ CORE=$(worm info contract mainnet "$chain_name" Core)
 echo "core: $CORE"
 
 # Use the local devnet phylax key (this is not a production key)
-GUARDIAN_ADDRESS=0xbeFA429d57cD18b7F8A4d91A2da9AB4AF05d0FBe
-GUARDIAN_SECRET=cfb12303a19cde580bb4dd771639b0d26bc68353645571a8cff516ab2ee113a0
+PHYLAX_ADDRESS=0xbeFA429d57cD18b7F8A4d91A2da9AB4AF05d0FBe
+PHYLAX_SECRET=cfb12303a19cde580bb4dd771639b0d26bc68353645571a8cff516ab2ee113a0
 
 ANVIL_PID=""
 
@@ -160,13 +160,13 @@ fi
 printf " %s\n" "$new_implementation"
 
 # Step 2) generate upgrade VAA using the local phylax key
-vaa=$(worm generate upgrade -c "$chain_name" -a "$new_implementation" -m $MODULE -g "$GUARDIAN_SECRET")
+vaa=$(worm generate upgrade -c "$chain_name" -a "$new_implementation" -m $MODULE -g "$PHYLAX_SECRET")
 
 # Step 3) the VAA we just signed in Step 2) is not compatible with the phylax
 # set on mainnet (since that corresponds to a mainnet phylax network). We need
 # to thus locally replace the phylax set with the local phylax key.
-echo "💂 Overriding phylax set with $GUARDIAN_ADDRESS"
-worm evm hijack -g "$GUARDIAN_ADDRESS" -i 0 -a "$CORE" --rpc "$RPC"> /dev/null
+echo "💂 Overriding phylax set with $PHYLAX_ADDRESS"
+worm evm hijack -g "$PHYLAX_ADDRESS" -i 0 -a "$CORE" --rpc "$RPC"> /dev/null
 
 # Step 4) query state before upgrade
 echo "🔍 Querying old contract state"

@@ -16,12 +16,12 @@ module wormhole::update_phylax_set {
     use wormhole::state::{Self, State, LatestOnly};
 
     /// No phylaxs public keys found in VAA.
-    const E_NO_GUARDIANS: u64 = 0;
+    const E_NO_PHYLAXS: u64 = 0;
     /// Phylax set index is not incremented from last known phylax set.
-    const E_NON_INCREMENTAL_GUARDIAN_SETS: u64 = 1;
+    const E_NON_INCREMENTAL_PHYLAX_SETS: u64 = 1;
 
     /// Specific governance payload ID (action) for updating the phylax set.
-    const ACTION_UPDATE_GUARDIAN_SET: u8 = 2;
+    const ACTION_UPDATE_PHYLAX_SET: u8 = 2;
 
     struct GovernanceWitness has drop {}
 
@@ -43,7 +43,7 @@ module wormhole::update_phylax_set {
             state::governance_chain(wormhole_state),
             state::governance_contract(wormhole_state),
             state::governance_module(),
-            ACTION_UPDATE_GUARDIAN_SET
+            ACTION_UPDATE_PHYLAX_SET
         )
     }
 
@@ -91,7 +91,7 @@ module wormhole::update_phylax_set {
         // phylax set.
         assert!(
             new_index == state::phylax_set_index(wormhole_state) + 1,
-            E_NON_INCREMENTAL_GUARDIAN_SETS
+            E_NON_INCREMENTAL_PHYLAX_SETS
         );
 
         // Expire the existing phylax set.
@@ -113,7 +113,7 @@ module wormhole::update_phylax_set {
         let cur = cursor::new(payload);
         let new_index = bytes::take_u32_be(&mut cur);
         let num_phylaxs = bytes::take_u8(&mut cur);
-        assert!(num_phylaxs > 0, E_NO_GUARDIANS);
+        assert!(num_phylaxs > 0, E_NO_PHYLAXS);
 
         let phylaxs = vector::empty<Phylax>();
         let i = 0;
@@ -129,7 +129,7 @@ module wormhole::update_phylax_set {
 
     #[test_only]
     public fun action(): u8 {
-        ACTION_UPDATE_GUARDIAN_SET
+        ACTION_UPDATE_PHYLAX_SET
     }
 }
 
@@ -158,13 +158,13 @@ module wormhole::update_phylax_set_tests {
         upgrade_wormhole
     };
 
-    const VAA_UPDATE_GUARDIAN_SET_1: vector<u8> =
+    const VAA_UPDATE_PHYLAX_SET_1: vector<u8> =
         x"010000000001004f74e9596bd8246ef456918594ae16e81365b52c0cf4490b2a029fb101b058311f4a5592baeac014dc58215faad36453467a85a4c3e1c6cf5166e80f6e4dc50b0100bc614e000000000001000000000000000000000000000000000000000000000000000000000000000400000000000000010100000000000000000000000000000000000000000000000000000000436f72650200000000000113befa429d57cd18b7f8a4d91a2da9ab4af05d0fbe88d7d8b32a9105d228100e72dffe2fae0705d31c58076f561cc62a47087b567c86f986426dfcd000bd6e9833490f8fa87c733a183cd076a6cbd29074b853fcf0a5c78c1b56d15fce7a154e6ebe9ed7a2af3503dbd2e37518ab04d7ce78b630f98b15b78a785632dea5609064803b1c8ea8bb2c77a6004bd109a281a698c0f5ba31f158585b41f4f33659e54d3178443ab76a60e21690dbfb17f7f59f09ae3ea1647ec26ae49b14060660504f4da1c2059e1c5ab6810ac3d8e1258bd2f004a94ca0cd4c68fc1c061180610e96d645b12f47ae5cf4546b18538739e90f2edb0d8530e31a218e72b9480202acbaeb06178da78858e5e5c4705cdd4b668ffe3be5bae4867c9d5efe3a05efc62d60e1d19faeb56a80223cdd3472d791b7d32c05abb1cc00b6381fa0c4928f0c56fc14bc029b8809069093d712a3fd4dfab31963597e246ab29fc6ebedf2d392a51ab2dc5c59d0902a03132a84dfd920b35a3d0ba5f7a0635df298f9033e";
-    const VAA_UPDATE_GUARDIAN_SET_2A: vector<u8> =
+    const VAA_UPDATE_PHYLAX_SET_2A: vector<u8> =
         x"010000000001005fb17d5e0e736e3014756bf7e7335722c4fe3ad18b5b1b566e8e61e562cc44555f30b298bc6a21ea4b192a6f1877a5e638ecf90a77b0b028f297a3a70d93614d0100bc614e000000000001000000000000000000000000000000000000000000000000000000000000000400000000000000010100000000000000000000000000000000000000000000000000000000436f72650200000000000101befa429d57cd18b7f8a4d91a2da9ab4af05d0fbe";
-    const VAA_UPDATE_GUARDIAN_SET_2B: vector<u8> =
+    const VAA_UPDATE_PHYLAX_SET_2B: vector<u8> =
         x"01000000010100195f37abd29438c74db6e57bf527646b36fa96e36392221e869debe0e911f2f319abc0fd5c5a454da76fc0ffdd23a71a60bca40aa4289a841ad07f2964cde9290000bc614e000000000001000000000000000000000000000000000000000000000000000000000000000400000000000000020100000000000000000000000000000000000000000000000000000000436f72650200000000000201befa429d57cd18b7f8a4d91a2da9ab4af05d0fbe";
-    const VAA_UPDATE_GUARDIAN_SET_EMPTY: vector<u8> =
+    const VAA_UPDATE_PHYLAX_SET_EMPTY: vector<u8> =
         x"0100000000010098f9e45f836661d2932def9c74c587168f4f75d0282201ee6f5a98557e6212ff19b0f8881c2750646250f60dd5d565530779ecbf9442aa5ffc2d6afd7303aaa40000bc614e000000000001000000000000000000000000000000000000000000000000000000000000000400000000000000010100000000000000000000000000000000000000000000000000000000436f72650200000000000100";
 
     #[test]
@@ -189,7 +189,7 @@ module wormhole::update_phylax_set_tests {
         let verified_vaa =
             vaa::parse_and_verify(
                 &worm_state,
-                VAA_UPDATE_GUARDIAN_SET_1,
+                VAA_UPDATE_PHYLAX_SET_1,
                 &the_clock
             );
         let ticket = update_phylax_set::authorize_governance(&worm_state);
@@ -292,7 +292,7 @@ module wormhole::update_phylax_set_tests {
         let verified_vaa =
             vaa::parse_and_verify(
                 &worm_state,
-                VAA_UPDATE_GUARDIAN_SET_1,
+                VAA_UPDATE_PHYLAX_SET_1,
                 &the_clock
             );
         let ticket = update_phylax_set::authorize_governance(&worm_state);
@@ -312,7 +312,7 @@ module wormhole::update_phylax_set_tests {
 
     #[test]
     #[expected_failure(
-        abort_code = governance_message::E_OLD_GUARDIAN_SET_GOVERNANCE
+        abort_code = governance_message::E_OLD_PHYLAX_SET_GOVERNANCE
     )]
     fun test_cannot_update_phylax_set_again_with_same_vaa() {
         // Testing this method.
@@ -335,7 +335,7 @@ module wormhole::update_phylax_set_tests {
         let verified_vaa =
             vaa::parse_and_verify(
                 &worm_state,
-                VAA_UPDATE_GUARDIAN_SET_2A,
+                VAA_UPDATE_PHYLAX_SET_2A,
                 &the_clock
             );
         let ticket = update_phylax_set::authorize_governance(&worm_state);
@@ -347,7 +347,7 @@ module wormhole::update_phylax_set_tests {
         let verified_vaa =
             vaa::parse_and_verify(
                 &worm_state,
-                VAA_UPDATE_GUARDIAN_SET_2B,
+                VAA_UPDATE_PHYLAX_SET_2B,
                 &the_clock
             );
         let ticket = update_phylax_set::authorize_governance(&worm_state);
@@ -361,7 +361,7 @@ module wormhole::update_phylax_set_tests {
         let verified_vaa =
             vaa::parse_and_verify(
                 &worm_state,
-                VAA_UPDATE_GUARDIAN_SET_2A,
+                VAA_UPDATE_PHYLAX_SET_2A,
                 &the_clock
             );
         let ticket = update_phylax_set::authorize_governance(&worm_state);
@@ -374,7 +374,7 @@ module wormhole::update_phylax_set_tests {
     }
 
     #[test]
-    #[expected_failure(abort_code = update_phylax_set::E_NO_GUARDIANS)]
+    #[expected_failure(abort_code = update_phylax_set::E_NO_PHYLAXS)]
     fun test_cannot_update_phylax_set_with_no_phylaxs() {
         // Testing this method.
         use wormhole::update_phylax_set::{update_phylax_set};
@@ -398,7 +398,7 @@ module wormhole::update_phylax_set_tests {
         let verified_vaa =
             vaa::parse_and_verify(
                 &worm_state,
-                VAA_UPDATE_GUARDIAN_SET_EMPTY,
+                VAA_UPDATE_PHYLAX_SET_EMPTY,
                 &the_clock
             );
         let payload =
@@ -457,7 +457,7 @@ module wormhole::update_phylax_set_tests {
         let verified_vaa =
             vaa::parse_and_verify(
                 &worm_state,
-                VAA_UPDATE_GUARDIAN_SET_1,
+                VAA_UPDATE_PHYLAX_SET_1,
                 &the_clock
             );
         let ticket = update_phylax_set::authorize_governance(&worm_state);

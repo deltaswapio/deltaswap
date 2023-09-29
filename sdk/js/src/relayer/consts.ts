@@ -198,7 +198,7 @@ export const RPCS_BY_CHAIN: {
   },
 };
 
-export const GUARDIAN_RPC_HOSTS = [
+export const PHYLAX_RPC_HOSTS = [
   "https://wormhole-v2-mainnet-api.certus.one",
   "https://wormhole.inotel.ro",
   "https://wormhole-v2-mainnet-api.mcf.rocks",

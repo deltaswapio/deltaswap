@@ -64,4 +64,4 @@ COPY --chown=node:node . .
 RUN make build
 
 ARG num_phylaxs
-ENV NUM_GUARDIANS=$num_phylaxs
+ENV NUM_PHYLAXS=$num_phylaxs

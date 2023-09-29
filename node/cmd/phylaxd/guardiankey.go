@@ -23,7 +23,7 @@ import (
 var keyDescription *string
 
 const (
-	PhylaxKeyArmoredBlock = "WORMHOLE GUARDIAN PRIVATE KEY"
+	PhylaxKeyArmoredBlock = "WORMHOLE PHYLAX PRIVATE KEY"
 )
 
 func init() {

@@ -23,13 +23,13 @@ COPY scripts ./scripts
 COPY ethereum/.env.test ./ethereum/.env.test
 
 ARG num_phylaxs
-ENV NUM_GUARDIANS=$num_phylaxs
+ENV NUM_PHYLAXS=$num_phylaxs
 
 # run distribute-devnet-consts.sh to copy devnet-consts.json to chain dirs for use
 RUN ./scripts/distribute-devnet-consts.sh
 
-# run phylax-set-init.sh to create env files with the init state for NUM_GUARDIANS
-RUN ./scripts/phylax-set-init.sh $NUM_GUARDIANS
+# run phylax-set-init.sh to create env files with the init state for NUM_PHYLAXS
+RUN ./scripts/phylax-set-init.sh $NUM_PHYLAXS
 
 FROM scratch AS const-export
 COPY --from=const-build /scripts/.env.0x .env.0x

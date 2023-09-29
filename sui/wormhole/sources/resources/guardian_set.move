@@ -17,7 +17,7 @@ module wormhole::phylax_set {
     friend wormhole::state;
 
     /// Found duplicate public key.
-    const E_DUPLICATE_GUARDIAN: u64 = 0;
+    const E_DUPLICATE_PHYLAX: u64 = 0;
 
     /// Container for the list of Phylax public keys, its index value and at
     /// what point in time the Phylax set is configured to expire.
@@ -41,7 +41,7 @@ module wormhole::phylax_set {
             let j = i + 1;
             while (j < n) {
                 let right = phylax::pubkey(vector::borrow(&phylaxs, j));
-                assert!(left != right, E_DUPLICATE_GUARDIAN);
+                assert!(left != right, E_DUPLICATE_PHYLAX);
                 j = j + 1;
             };
             i = i + 1;
@@ -161,7 +161,7 @@ module wormhole::phylax_set_tests {
     }
 
     #[test]
-    #[expected_failure(abort_code = phylax_set::E_DUPLICATE_GUARDIAN)]
+    #[expected_failure(abort_code = phylax_set::E_DUPLICATE_PHYLAX)]
     fun test_cannot_new_duplicate_phylax() {
         let phylaxs = vector::empty();
 

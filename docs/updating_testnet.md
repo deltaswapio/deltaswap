@@ -32,7 +32,7 @@ The EVM contracts do not allow updating a registration for a chain that is alrea
 4. Run `./upgrade_all_test`. This should upgrade each EVM chain and submit the contract upgrade VAA for it.
 5. Deal with any chains that fail, on a case by case basis. If you need to rerun a single chain, do something like this:
 ```bash
-MNEMONIC=<deployerMnemonic> GUARDIAN_MNEMONIC=<phylaxSecretKey> ./upgrade testnet TokenBridge acala
+MNEMONIC=<deployerMnemonic> PHYLAX_MNEMONIC=<phylaxSecretKey> ./upgrade testnet TokenBridge acala
 ```
 
 ## Upgrading Cosmwasm Contracts

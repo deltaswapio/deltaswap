@@ -34,8 +34,8 @@ import {
   CORE_BRIDGE_ADDRESS,
   ETHEREUM_WALLET_BYTES32,
   GOVERNANCE_EMITTER_ADDRESS,
-  GUARDIAN_KEYS,
-  GUARDIAN_SET_INDEX,
+  PHYLAX_KEYS,
+  PHYLAX_SET_INDEX,
   LOCALHOST,
   TOKEN_BRIDGE_ADDRESS,
 } from "./helpers/consts";
@@ -46,7 +46,7 @@ describe("Wormhole (Core Bridge)", () => {
   const wallet = new NodeWallet(web3.Keypair.generate());
 
   // for signing wormhole messages
-  const phylaxs = new MockPhylaxs(GUARDIAN_SET_INDEX, GUARDIAN_KEYS);
+  const phylaxs = new MockPhylaxs(PHYLAX_SET_INDEX, PHYLAX_KEYS);
 
   const localVariables: any = {};
 

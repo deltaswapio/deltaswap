@@ -42,7 +42,7 @@ module wormhole::vaa {
     /// Signature does not match expected Phylax public key.
     const E_INVALID_SIGNATURE: u64 = 2;
     /// Prior phylax set is no longer valid.
-    const E_GUARDIAN_SET_EXPIRED: u64 = 3;
+    const E_PHYLAX_SET_EXPIRED: u64 = 3;
     /// Phylax signature is encoded out of sequence.
     const E_NON_INCREASING_SIGNERS: u64 = 4;
 
@@ -285,7 +285,7 @@ module wormhole::vaa {
         // Phylax set must be active (not expired).
         assert!(
             phylax_set::is_active(set, the_clock),
-            E_GUARDIAN_SET_EXPIRED
+            E_PHYLAX_SET_EXPIRED
         );
 
         // Number of signatures must be at least quorum.

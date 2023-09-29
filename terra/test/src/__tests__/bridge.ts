@@ -23,7 +23,7 @@ const GOVERNANCE_ADDRESS =
 const FOREIGN_CHAIN = 1;
 const FOREIGN_TOKEN_BRIDGE =
   "000000000000000000000000000000000000000000000000000000000000ffff";
-const GUARDIAN_SET_INDEX = 0;
+const PHYLAX_SET_INDEX = 0;
 const CONSISTENCY_LEVEL = 0;
 
 const WASM_WORMHOLE = "../artifacts/wormhole.wasm";
@@ -148,7 +148,7 @@ describe("Bridge Tests", () => {
           sequence,
           vaaPayload,
           TEST_SIGNER_PKS,
-          GUARDIAN_SET_INDEX,
+          PHYLAX_SET_INDEX,
           CONSISTENCY_LEVEL
         );
         console.info("signedVaa", signedVaa);
@@ -287,7 +287,7 @@ describe("Bridge Tests", () => {
           sequence,
           vaaPayload,
           TEST_SIGNER_PKS,
-          GUARDIAN_SET_INDEX,
+          PHYLAX_SET_INDEX,
           CONSISTENCY_LEVEL
         );
         console.info("signedVaa", signedVaa);
@@ -487,7 +487,7 @@ describe("Bridge Tests", () => {
           sequence,
           vaaPayload,
           TEST_SIGNER_PKS,
-          GUARDIAN_SET_INDEX,
+          PHYLAX_SET_INDEX,
           CONSISTENCY_LEVEL
         );
         console.info("signedVaa", signedVaa);
@@ -610,7 +610,7 @@ describe("Bridge Tests", () => {
           sequence,
           vaaPayload,
           TEST_SIGNER_PKS,
-          GUARDIAN_SET_INDEX,
+          PHYLAX_SET_INDEX,
           CONSISTENCY_LEVEL
         );
         console.info("signedVaa", signedVaa);

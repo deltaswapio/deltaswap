@@ -16,12 +16,12 @@ NETWORK=$1 || usage
 if [ "$NETWORK" = mainnet ]; then
     DEPLOYER_ADDR=0x0108bc32f7de18a5f6e1e7d6ee7aff9f5fc858d0d87ac0da94dd8d2a5d267d6b
 
-    GUARDIAN_ADDR=0x58CC3AE5C097b213cE3c81979e1B9f9570746AA5
+    PHYLAX_ADDR=0x58CC3AE5C097b213cE3c81979e1B9f9570746AA5
 
 elif [ "$NETWORK" = testnet ]; then
     DEPLOYER_ADDR=0x0108bc32f7de18a5f6e1e7d6ee7aff9f5fc858d0d87ac0da94dd8d2a5d267d6b
 
-    GUARDIAN_ADDR=0x13947Bd48b18E53fdAeEe77F3473391aC727C638
+    PHYLAX_ADDR=0x13947Bd48b18E53fdAeEe77F3473391aC727C638
 
 elif [ "$NETWORK" = devnet ]; then
     DEPLOYER_ADDR=0x277fa055b6a73c42c0662d5236c65c864ccbf2d4abd21f174a30c8b786eab84b
@@ -29,7 +29,7 @@ elif [ "$NETWORK" = devnet ]; then
     DOTENV=$(dirname $0)/../.env
     [[ -f "$DOTENV" ]] && . "$DOTENV"
 
-    GUARDIAN_ADDR="${INIT_SIGNERS_CSV:-0xbeFA429d57cD18b7F8A4d91A2da9AB4AF05d0FBe}"
+    PHYLAX_ADDR="${INIT_SIGNERS_CSV:-0xbeFA429d57cD18b7F8A4d91A2da9AB4AF05d0FBe}"
 
     worm aptos faucet
 else
@@ -48,8 +48,8 @@ worm aptos deploy --network "$NETWORK" ../deployer --named-addresses "$NAMED_ADD
 echo "[2/6] Deploying wormhole contract at $WORMHOLE_ADDR..."
 worm aptos deploy-resource wormhole --network "$NETWORK" ../wormhole --named-addresses "$NAMED_ADDRS"
 
-echo "[3/6] Initialising wormhole with phylax(s) $GUARDIAN_ADDR..."
-worm aptos init-wormhole --network "$NETWORK" -g $GUARDIAN_ADDR
+echo "[3/6] Initialising wormhole with phylax(s) $PHYLAX_ADDR..."
+worm aptos init-wormhole --network "$NETWORK" -g $PHYLAX_ADDR
 
 echo "[4/6] Deploying token bridge contract at $TOKEN_BRIDGE_ADDR..."
 worm aptos deploy-resource token_bridge --network "$NETWORK" ../token_bridge --named-addresses "$NAMED_ADDRS"

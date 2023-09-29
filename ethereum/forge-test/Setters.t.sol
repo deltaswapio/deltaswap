@@ -17,13 +17,13 @@ contract TestSetters is TestUtils {
         public
         unchangedStorage(address(setters), storageSlot)
     {
-        vm.assume(storageSlot != GUARDIANSETINDEX_STORAGE_INDEX);
+        vm.assume(storageSlot != PHYLAXSETINDEX_STORAGE_INDEX);
 
-        bytes32 originalSlot = vm.load(address(setters), GUARDIANSETINDEX_STORAGE_INDEX);
+        bytes32 originalSlot = vm.load(address(setters), PHYLAXSETINDEX_STORAGE_INDEX);
 
         setters.updatePhylaxSetIndex_external(index);
 
-        bytes32 updatedSlot = vm.load(address(setters), GUARDIANSETINDEX_STORAGE_INDEX);
+        bytes32 updatedSlot = vm.load(address(setters), PHYLAXSETINDEX_STORAGE_INDEX);
         bytes32 mask = bytes32(0xffffffffffffffffffffffffffffffffffffffffffffffffffffffff00000000);
         bytes32 expectedSlot = bytes32(uint256(index)) | (mask & originalSlot);
 
@@ -41,7 +41,7 @@ contract TestSetters is TestUtils {
         public
         unchangedStorage(address(setters), storageSlot)
     {
-        bytes32 storageLocation = hashedLocationOffset(index,GUARDIANSETS_STORAGE_INDEX,1);
+        bytes32 storageLocation = hashedLocationOffset(index,PHYLAXSETS_STORAGE_INDEX,1);
         vm.assume(storageSlot != storageLocation);
         vm.assume(timestamp <= MAX_UINT32 - 86400);
 

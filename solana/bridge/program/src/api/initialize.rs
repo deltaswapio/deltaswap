@@ -7,7 +7,7 @@ use crate::{
         PhylaxSetDerivationData,
     },
     error::Error::TooManyPhylaxs,
-    MAX_LEN_GUARDIAN_KEYS,
+    MAX_LEN_PHYLAX_KEYS,
 };
 use solana_program::sysvar::clock::Clock;
 use solitaire::{
@@ -56,7 +56,7 @@ pub fn initialize(
 ) -> Result<()> {
     let index = 0;
 
-    if data.initial_phylaxs.len() > MAX_LEN_GUARDIAN_KEYS {
+    if data.initial_phylaxs.len() > MAX_LEN_PHYLAX_KEYS {
         return Err(TooManyPhylaxs.into());
     }
 

@@ -24,8 +24,8 @@ import { NodeWallet } from "../../../sdk/js/src/solana/utils";
 import {
   CORE_BRIDGE_ADDRESS,
   GOVERNANCE_EMITTER_ADDRESS,
-  GUARDIAN_KEYS,
-  GUARDIAN_SET_INDEX,
+  PHYLAX_KEYS,
+  PHYLAX_SET_INDEX,
   LOCALHOST,
   NFT_BRIDGE_ADDRESS,
   TOKEN_BRIDGE_ADDRESS,
@@ -51,7 +51,7 @@ describe("Deploy and Upgrade Programs", () => {
   );
 
   // for signing wormhole messages
-  const phylaxs = new MockPhylaxs(GUARDIAN_SET_INDEX, GUARDIAN_KEYS);
+  const phylaxs = new MockPhylaxs(PHYLAX_SET_INDEX, PHYLAX_KEYS);
 
   // for generating governance wormhole messages
   const governance = new GovernanceEmitter(
@@ -103,7 +103,7 @@ describe("Deploy and Upgrade Programs", () => {
 
       // verify data
       const info = await getWormholeBridgeData(connection, CORE_BRIDGE_ADDRESS);
-      expect(info.phylaxSetIndex).to.equal(GUARDIAN_SET_INDEX);
+      expect(info.phylaxSetIndex).to.equal(PHYLAX_SET_INDEX);
       expect(info.config.phylaxSetExpirationTime).to.equal(
         phylaxSetExpirationTime
       );
@@ -113,7 +113,7 @@ describe("Deploy and Upgrade Programs", () => {
         CORE_BRIDGE_ADDRESS,
         0
       );
-      expect(phylaxSet.index).to.equal(GUARDIAN_SET_INDEX);
+      expect(phylaxSet.index).to.equal(PHYLAX_SET_INDEX);
       expect(phylaxSet.expirationTime).to.equal(0);
       expect(phylaxSet.keys).has.length(1);
       expect(

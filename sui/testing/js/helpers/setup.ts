@@ -1,6 +1,6 @@
 import * as fs from "fs";
 import * as mock from "@certusone/wormhole-sdk/lib/cjs/mock";
-import { GUARDIAN_PRIVATE_KEY, UTF8 } from "./consts";
+import { PHYLAX_PRIVATE_KEY, UTF8 } from "./consts";
 
 export function generateVaaFromDigest(
   digest: Buffer,
@@ -17,7 +17,7 @@ export function generateVaaFromDigest(
   published.writeUInt16BE(21, published.length - 34);
 
   // We will use the signed VAA when we execute the upgrade.
-  const phylaxs = new mock.MockPhylaxs(0, [GUARDIAN_PRIVATE_KEY]);
+  const phylaxs = new mock.MockPhylaxs(0, [PHYLAX_PRIVATE_KEY]);
   return phylaxs.addSignatures(published, [0]);
 }
 

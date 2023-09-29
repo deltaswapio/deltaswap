@@ -35,8 +35,8 @@ const GOVERNANCE_ADDRESS =
 const FOREIGN_CHAIN = 2;
 const FOREIGN_TOKEN_BRIDGE =
   "0000000000000000000000000290FB167208Af455bB137780163b7B7a9a10C16";
-const GUARDIAN_SET_INDEX = 0;
-const GUARDIAN_ADDRESS = Buffer.from(
+const PHYLAX_SET_INDEX = 0;
+const PHYLAX_ADDRESS = Buffer.from(
   "beFA429d57cD18b7F8A4d91A2da9AB4AF05d0FBe",
   "hex"
 ).toString("base64");
@@ -152,7 +152,7 @@ test("Deploy Contracts", (done) => {
           initial_phylax_set: {
             addresses: [
               {
-                bytes: GUARDIAN_ADDRESS,
+                bytes: PHYLAX_ADDRESS,
               },
             ],
             expiration_time: 0,
@@ -430,7 +430,7 @@ function passOnceTests(shutdownMode: boolean, pass: number) {
             sequence,
             vaaPayload,
             TEST_SIGNER_PKS,
-            GUARDIAN_SET_INDEX,
+            PHYLAX_SET_INDEX,
             CONSISTENCY_LEVEL
           );
 
@@ -732,7 +732,7 @@ function failInShutdownModeTests(shutdownMode: boolean, pass: number) {
             sequence,
             vaaPayload,
             TEST_SIGNER_PKS,
-            GUARDIAN_SET_INDEX,
+            PHYLAX_SET_INDEX,
             CONSISTENCY_LEVEL
           );
 
@@ -1011,7 +1011,7 @@ function failInShutdownModeTests(shutdownMode: boolean, pass: number) {
             sequence,
             vaaPayload,
             TEST_SIGNER_PKS,
-            GUARDIAN_SET_INDEX,
+            PHYLAX_SET_INDEX,
             CONSISTENCY_LEVEL
           );
 
@@ -1137,7 +1137,7 @@ function failInShutdownModeTests(shutdownMode: boolean, pass: number) {
             sequence,
             vaaPayload,
             TEST_SIGNER_PKS,
-            GUARDIAN_SET_INDEX,
+            PHYLAX_SET_INDEX,
             CONSISTENCY_LEVEL
           );
 
@@ -1331,7 +1331,7 @@ function alwaysPassTests(shutdownMode: boolean, pass: number) {
           });
           expect(result.phylax_set_index).toBe(0);
           expect(result.addresses.length).toBe(1);
-          expect(result.addresses[0].bytes).toBe(GUARDIAN_ADDRESS);
+          expect(result.addresses[0].bytes).toBe(PHYLAX_ADDRESS);
           done();
         } catch (e) {
           console.error(e);

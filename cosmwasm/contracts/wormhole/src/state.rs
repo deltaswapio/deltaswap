@@ -14,7 +14,7 @@ use sha3::{Digest, Keccak256};
 type HumanAddr = String;
 
 pub static CONFIG_KEY: &[u8] = b"config";
-pub static GUARDIAN_SET_KEY: &[u8] = b"phylax_set";
+pub static PHYLAX_SET_KEY: &[u8] = b"phylax_set";
 pub static SEQUENCE_KEY: &[u8] = b"sequence";
 pub static WRAPPED_ASSET_KEY: &[u8] = b"wrapped_asset";
 pub static WRAPPED_ASSET_ADDRESS_KEY: &[u8] = b"wrapped_asset_address";
@@ -114,7 +114,7 @@ impl ParsedVAA {
     pub const HEADER_LEN: usize = 6;
     pub const SIGNATURE_LEN: usize = 66;
 
-    pub const GUARDIAN_SET_INDEX_POS: usize = 1;
+    pub const PHYLAX_SET_INDEX_POS: usize = 1;
     pub const LEN_SIGNER_POS: usize = 5;
 
     pub const VAA_NONCE_POS: usize = 4;
@@ -135,7 +135,7 @@ impl ParsedVAA {
         let version = data.get_u8(0);
 
         // Load 4 bytes starting from index 1
-        let phylax_set_index: u32 = data.get_u32(Self::GUARDIAN_SET_INDEX_POS);
+        let phylax_set_index: u32 = data.get_u32(Self::PHYLAX_SET_INDEX_POS);
         let len_signers = data.get_u8(Self::LEN_SIGNER_POS) as usize;
         let body_offset: usize = Self::HEADER_LEN + Self::SIGNATURE_LEN * len_signers;
 
@@ -244,11 +244,11 @@ pub fn phylax_set_set(
     index: u32,
     data: &PhylaxSetInfo,
 ) -> StdResult<()> {
-    bucket(storage, GUARDIAN_SET_KEY).save(&index.to_be_bytes(), data)
+    bucket(storage, PHYLAX_SET_KEY).save(&index.to_be_bytes(), data)
 }
 
 pub fn phylax_set_get(storage: &dyn Storage, index: u32) -> StdResult<PhylaxSetInfo> {
-    bucket_read(storage, GUARDIAN_SET_KEY).load(&index.to_be_bytes())
+    bucket_read(storage, PHYLAX_SET_KEY).load(&index.to_be_bytes())
 }
 
 pub fn sequence_set(storage: &mut dyn Storage, emitter: &[u8], sequence: u64) -> StdResult<()> {
@@ -262,11 +262,11 @@ pub fn sequence_read(storage: &dyn Storage, emitter: &[u8]) -> u64 {
 }
 
 pub fn vaa_archive_add(storage: &mut dyn Storage, hash: &[u8]) -> StdResult<()> {
-    bucket(storage, GUARDIAN_SET_KEY).save(hash, &true)
+    bucket(storage, PHYLAX_SET_KEY).save(hash, &true)
 }
 
 pub fn vaa_archive_check(storage: &dyn Storage, hash: &[u8]) -> bool {
-    bucket_read(storage, GUARDIAN_SET_KEY)
+    bucket_read(storage, PHYLAX_SET_KEY)
         .load(hash)
         .unwrap_or(false)
 }

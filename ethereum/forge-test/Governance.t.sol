@@ -19,8 +19,8 @@ contract TestGovernance is TestUtils {
     bytes32 constant governanceContract = 0x0000000000000000000000000000000000000000000000000000000000000004;
 
     bytes32 constant CHAINID_SLOT = bytes32(uint256(0));
-    bytes32 constant GUARDIANSETS_SLOT = bytes32(uint256(2));
-    bytes32 constant GUARDIANSETINDEX_SLOT = bytes32(uint256(3));
+    bytes32 constant PHYLAXSETS_SLOT = bytes32(uint256(2));
+    bytes32 constant PHYLAXSETINDEX_SLOT = bytes32(uint256(3));
     bytes32 constant IMPLEMENTATION_SLOT = 0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc;
     bytes32 constant CONSUMED_ACTIONS_SLOT = bytes32(uint256(5));
     bytes32 constant INIT_IMPLEMENTATION_SLOT = bytes32(uint256(6));
@@ -505,19 +505,19 @@ contract TestGovernance is TestUtils {
         public
         unchangedStorage(address(proxied), storageSlot)
     {
-        vm.assume(storageSlot != hashedLocationOffset(0, GUARDIANSETS_SLOT, 1));
+        vm.assume(storageSlot != hashedLocationOffset(0, PHYLAXSETS_SLOT, 1));
 
         // New PhylaxSet array length should be initialized from zero to non-zero
-        vm.assume(storageSlot != hashedLocationOffset(1, GUARDIANSETS_SLOT, 0));
+        vm.assume(storageSlot != hashedLocationOffset(1, PHYLAXSETS_SLOT, 0));
 
-        vm.assume(storageSlot != GUARDIANSETINDEX_SLOT);
+        vm.assume(storageSlot != PHYLAXSETINDEX_SLOT);
         vm.assume(0 < newPhylaxSet.length);
         vm.assume(newPhylaxSet.length < 20);
 
         for(uint8 i = 0; i < newPhylaxSet.length; i++) {
             vm.assume(newPhylaxSet[i] != address(0));
             // New PhylaxSet key array elements should be initialized from zero to non-zero
-            vm.assume(storageSlot != arrayElementLocation(hashedLocationOffset(1, GUARDIANSETS_SLOT, 0), i));
+            vm.assume(storageSlot != arrayElementLocation(hashedLocationOffset(1, PHYLAXSETS_SLOT, 0), i));
         }
 
         vm.chainId(EVMCHAINID);
@@ -757,19 +757,19 @@ contract TestGovernance is TestUtils {
         public
         unchangedStorage(address(proxied), storageSlot)
     {
-        vm.assume(storageSlot != hashedLocationOffset(0, GUARDIANSETS_SLOT, 1));
+        vm.assume(storageSlot != hashedLocationOffset(0, PHYLAXSETS_SLOT, 1));
 
         // New PhylaxSet array length should be initialized from zero to non-zero
-        vm.assume(storageSlot != hashedLocationOffset(1, GUARDIANSETS_SLOT, 0));
+        vm.assume(storageSlot != hashedLocationOffset(1, PHYLAXSETS_SLOT, 0));
 
-        vm.assume(storageSlot != GUARDIANSETINDEX_SLOT);
+        vm.assume(storageSlot != PHYLAXSETINDEX_SLOT);
         vm.assume(0 < newPhylaxSet.length);
         vm.assume(newPhylaxSet.length < 20);
 
         for(uint8 i = 0; i < newPhylaxSet.length; i++) {
             vm.assume(newPhylaxSet[i] != address(0));
             // New PhylaxSet key array elements should be initialized from zero to non-zero
-            vm.assume(storageSlot != arrayElementLocation(hashedLocationOffset(1, GUARDIANSETS_SLOT, 0), i));
+            vm.assume(storageSlot != arrayElementLocation(hashedLocationOffset(1, PHYLAXSETS_SLOT, 0), i));
         }
 
         vm.chainId(EVMCHAINID);

@@ -14,7 +14,7 @@ module wormhole::governance_message {
     use wormhole::vaa::{Self, VAA};
 
     /// Phylax set used to sign VAA did not use current Phylax set.
-    const E_OLD_GUARDIAN_SET_GOVERNANCE: u64 = 0;
+    const E_OLD_PHYLAX_SET_GOVERNANCE: u64 = 0;
     /// Governance chain does not match.
     const E_INVALID_GOVERNANCE_CHAIN: u64 = 1;
     /// Governance emitter address does not match.
@@ -131,7 +131,7 @@ module wormhole::governance_message {
         // This is not a protection found in the other Wormhole contracts.
         assert!(
             vaa::phylax_set_index(&verified_vaa) == state::phylax_set_index(wormhole_state),
-            E_OLD_GUARDIAN_SET_GOVERNANCE
+            E_OLD_PHYLAX_SET_GOVERNANCE
         );
 
         // Both the emitter chain and address must equal.
@@ -225,7 +225,7 @@ module wormhole::governance_message_tests {
 
     struct GovernanceWitness has drop {}
 
-    const VAA_UPDATE_GUARDIAN_SET_1: vector<u8> =
+    const VAA_UPDATE_PHYLAX_SET_1: vector<u8> =
         x"010000000001004f74e9596bd8246ef456918594ae16e81365b52c0cf4490b2a029fb101b058311f4a5592baeac014dc58215faad36453467a85a4c3e1c6cf5166e80f6e4dc50b0100bc614e000000000001000000000000000000000000000000000000000000000000000000000000000400000000000000010100000000000000000000000000000000000000000000000000000000436f72650200000000000113befa429d57cd18b7f8a4d91a2da9ab4af05d0fbe88d7d8b32a9105d228100e72dffe2fae0705d31c58076f561cc62a47087b567c86f986426dfcd000bd6e9833490f8fa87c733a183cd076a6cbd29074b853fcf0a5c78c1b56d15fce7a154e6ebe9ed7a2af3503dbd2e37518ab04d7ce78b630f98b15b78a785632dea5609064803b1c8ea8bb2c77a6004bd109a281a698c0f5ba31f158585b41f4f33659e54d3178443ab76a60e21690dbfb17f7f59f09ae3ea1647ec26ae49b14060660504f4da1c2059e1c5ab6810ac3d8e1258bd2f004a94ca0cd4c68fc1c061180610e96d645b12f47ae5cf4546b18538739e90f2edb0d8530e31a218e72b9480202acbaeb06178da78858e5e5c4705cdd4b668ffe3be5bae4867c9d5efe3a05efc62d60e1d19faeb56a80223cdd3472d791b7d32c05abb1cc00b6381fa0c4928f0c56fc14bc029b8809069093d712a3fd4dfab31963597e246ab29fc6ebedf2d392a51ab2dc5c59d0902a03132a84dfd920b35a3d0ba5f7a0635df298f9033e";
      const VAA_SET_FEE_1: vector<u8> =
         x"01000000000100181aa27fd44f3060fad0ae72895d42f97c45f7a5d34aa294102911370695e91e17ae82caa59f779edde2356d95cd46c2c381cdeba7a8165901a562374f212d750000bc614e000000000001000000000000000000000000000000000000000000000000000000000000000400000000000000010100000000000000000000000000000000000000000000000000000000436f7265030015000000000000000000000000000000000000000000000000000000000000015e";
@@ -249,7 +249,7 @@ module wormhole::governance_message_tests {
         let verified_vaa =
             vaa::parse_and_verify(
                 &worm_state,
-                VAA_UPDATE_GUARDIAN_SET_1,
+                VAA_UPDATE_PHYLAX_SET_1,
                 &the_clock
             );
         let (
@@ -607,7 +607,7 @@ module wormhole::governance_message_tests {
         let verified_vaa =
             vaa::parse_and_verify(
                 &worm_state,
-                VAA_UPDATE_GUARDIAN_SET_1,
+                VAA_UPDATE_PHYLAX_SET_1,
                 &the_clock
             );
         let (

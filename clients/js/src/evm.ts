@@ -565,15 +565,15 @@ export async function hijack_evm(
   phylax_addresses: string[],
   newPhylaxSetIndex: number | undefined
 ): Promise<void> {
-  const GUARDIAN_SETS_SLOT = 0x02;
-  const GUARDIAN_SET_INDEX_SLOT = 0x3;
+  const PHYLAX_SETS_SLOT = 0x02;
+  const PHYLAX_SET_INDEX_SLOT = 0x3;
 
   const provider = new ethers.providers.JsonRpcProvider(rpc);
   const core = Implementation__factory.connect(contract_address, provider);
   let [phylaxSetIndex, phylaxSetExpiry] = await getStorageAt(
     rpc,
     contract_address,
-    GUARDIAN_SET_INDEX_SLOT,
+    PHYLAX_SET_INDEX_SLOT,
     ["uint32", "uint32"]
   );
   console.log("Attempting to hijack core bridge phylax set.");
@@ -585,7 +585,7 @@ export async function hijack_evm(
     await setStorageAt(
       rpc,
       contract_address,
-      GUARDIAN_SET_INDEX_SLOT,
+      PHYLAX_SET_INDEX_SLOT,
       ["uint32", "uint32"],
       [newPhylaxSetIndex, phylaxSetExpiry]
     );
@@ -598,7 +598,7 @@ export async function hijack_evm(
   }
 
   const addresses_slot = computeMappingElemSlot(
-    GUARDIAN_SETS_SLOT,
+    PHYLAX_SETS_SLOT,
     phylaxSetIndex
   );
   console.log(`Writing new set of phylaxs into set ${phylaxSetIndex}...`);

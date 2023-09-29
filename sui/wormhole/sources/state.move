@@ -37,7 +37,7 @@ module wormhole::state {
     friend wormhole::vaa;
 
     /// Cannot initialize state with zero phylaxs.
-    const E_ZERO_GUARDIANS: u64 = 0;
+    const E_ZERO_PHYLAXS: u64 = 0;
     /// Build digest does not agree with current implementation.
     const E_INVALID_BUILD_DIGEST: u64 = 1;
 
@@ -94,7 +94,7 @@ module wormhole::state {
         ctx: &mut TxContext
     ): State {
         // We need at least one phylax.
-        assert!(vector::length(&initial_phylaxs) > 0, E_ZERO_GUARDIANS);
+        assert!(vector::length(&initial_phylaxs) > 0, E_ZERO_PHYLAXS);
 
         let state = State {
             id: object::new(ctx),

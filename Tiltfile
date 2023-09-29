@@ -563,7 +563,7 @@ if ci_tests:
         ],
     )
 
-    k8s_yaml_with_ns(encode_yaml_stream(set_env_in_jobs(read_yaml_stream("devnet/tests.yaml"), "NUM_GUARDIANS", str(num_phylaxs))))
+    k8s_yaml_with_ns(encode_yaml_stream(set_env_in_jobs(read_yaml_stream("devnet/tests.yaml"), "NUM_PHYLAXS", str(num_phylaxs))))
 
     # separate resources to parallelize docker builds
     k8s_resource(

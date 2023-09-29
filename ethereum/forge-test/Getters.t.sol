@@ -19,13 +19,13 @@ contract TestGetters is TestUtils {
         public
         unchangedStorage(address(getters), storageSlot)
     {
-        vm.assume(storageSlot != GUARDIANSETINDEX_STORAGE_INDEX);
+        vm.assume(storageSlot != PHYLAXSETINDEX_STORAGE_INDEX);
 
         bytes32 mask = bytes32(0xffffffffffffffffffffffffffffffffffffffffffffffffffffffff00000000);
-        bytes32 updatedStorage = storeWithMask(address(getters), GUARDIANSETINDEX_STORAGE_INDEX, bytes32(uint256(index)), mask);
+        bytes32 updatedStorage = storeWithMask(address(getters), PHYLAXSETINDEX_STORAGE_INDEX, bytes32(uint256(index)), mask);
 
         assertEq(index, getters.getCurrentPhylaxSetIndex());
-        assertEq(updatedStorage, vm.load(address(getters), GUARDIANSETINDEX_STORAGE_INDEX));
+        assertEq(updatedStorage, vm.load(address(getters), PHYLAXSETINDEX_STORAGE_INDEX));
     }
 
     function testGetPhylaxSetIndex_KEVM(uint32 index, bytes32 storageSlot)
@@ -39,7 +39,7 @@ contract TestGetters is TestUtils {
         public
         unchangedStorage(address(getters), storageSlot)
     {
-        bytes32 storageLocation = hashedLocationOffset(index,GUARDIANSETS_STORAGE_INDEX,1);
+        bytes32 storageLocation = hashedLocationOffset(index,PHYLAXSETS_STORAGE_INDEX,1);
         vm.assume(storageSlot != storageLocation);
 
         bytes32 mask = bytes32(0xffffffffffffffffffffffffffffffffffffffffffffffffffffffff00000000);

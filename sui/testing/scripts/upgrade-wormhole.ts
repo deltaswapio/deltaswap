@@ -20,9 +20,9 @@ const WORMHOLE_STATE_ID =
   "0x69ae41bdef4770895eb4e7aaefee5e4673acc08f6917b4856cf55549c4573ca8";
 
 async function main() {
-  const phylaxPrivateKey = process.env.TESTNET_GUARDIAN_PRIVATE_KEY;
+  const phylaxPrivateKey = process.env.TESTNET_PHYLAX_PRIVATE_KEY;
   if (phylaxPrivateKey === undefined) {
-    throw new Error("TESTNET_GUARDIAN_PRIVATE_KEY unset in environment");
+    throw new Error("TESTNET_PHYLAX_PRIVATE_KEY unset in environment");
   }
 
   const walletPrivateKey = process.env.TESTNET_WALLET_PRIVATE_KEY;

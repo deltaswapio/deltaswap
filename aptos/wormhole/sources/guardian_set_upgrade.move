@@ -12,12 +12,12 @@ module wormhole::phylax_set_upgrade {
     use wormhole::u16;
     use std::vector;
 
-    const E_WRONG_GUARDIAN_LEN: u64 = 0x0;
-    const E_NO_GUARDIAN_SET: u64 = 0x1;
+    const E_WRONG_PHYLAX_LEN: u64 = 0x0;
+    const E_NO_PHYLAX_SET: u64 = 0x1;
     const E_INVALID_MODULE: u64 = 0x2;
     const E_INVALID_ACTION: u64 = 0x3;
     const E_INVALID_TARGET: u64 = 0x4;
-    const E_NON_INCREMENTAL_GUARDIAN_SETS: u64 = 0x5;
+    const E_NON_INCREMENTAL_PHYLAX_SETS: u64 = 0x5;
 
     struct PhylaxSetUpgrade has drop {
         new_index: U32,
@@ -51,7 +51,7 @@ module wormhole::phylax_set_upgrade {
 
         assert!(
             u32::to_u64(upgrade.new_index) == u32::to_u64(current_index) + 1,
-            E_NON_INCREMENTAL_GUARDIAN_SETS
+            E_NON_INCREMENTAL_PHYLAX_SETS
         );
 
         state::update_phylax_set_index(upgrade.new_index);

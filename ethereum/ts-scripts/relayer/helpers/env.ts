@@ -251,17 +251,17 @@ export function loadCreate2Factories(): Deployment[] {
 //As the index gets encoded into the signature.
 export function loadPhylaxKeys(): string[] {
   const output = [];
-  const NUM_GUARDIANS = get_env_var("NUM_GUARDIANS");
-  const phylaxKey = get_env_var("GUARDIAN_KEY");
-  const phylaxKey2 = get_env_var("GUARDIAN_KEY2");
+  const NUM_PHYLAXS = get_env_var("NUM_PHYLAXS");
+  const phylaxKey = get_env_var("PHYLAX_KEY");
+  const phylaxKey2 = get_env_var("PHYLAX_KEY2");
 
   let numPhylaxs: number = 0;
-  console.log("NUM_GUARDIANS variable : " + NUM_GUARDIANS);
+  console.log("NUM_PHYLAXS variable : " + NUM_PHYLAXS);
 
-  if (!NUM_GUARDIANS) {
+  if (!NUM_PHYLAXS) {
     numPhylaxs = 1;
   } else {
-    numPhylaxs = parseInt(NUM_GUARDIANS);
+    numPhylaxs = parseInt(NUM_PHYLAXS);
   }
 
   if (!phylaxKey) {

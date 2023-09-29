@@ -26,12 +26,12 @@ module wormhole::vaa {
     const E_NO_QUORUM: u64 = 0x0;
     const E_TOO_MANY_SIGNATURES: u64 = 0x1;
     const E_INVALID_SIGNATURE: u64 = 0x2;
-    const E_GUARDIAN_SET_EXPIRED: u64 = 0x3;
+    const E_PHYLAX_SET_EXPIRED: u64 = 0x3;
     const E_INVALID_GOVERNANCE_CHAIN: u64 = 0x4;
     const E_INVALID_GOVERNANCE_EMITTER: u64 = 0x5;
     const E_WRONG_VERSION: u64 = 0x6;
     const E_NON_INCREASING_SIGNERS: u64 = 0x7;
-    const E_OLD_GUARDIAN_SET_GOVERNANCE: u64 = 0x8;
+    const E_OLD_PHYLAX_SET_GOVERNANCE: u64 = 0x8;
 
     struct VAA {
         /// Header
@@ -161,7 +161,7 @@ module wormhole::vaa {
     /// It's private, because there's no point calling it externally, since VAAs
     /// external to this module have already been verified (by construction).
     fun verify(vaa: &VAA, phylax_set: &PhylaxSet) {
-        assert!(state::phylax_set_is_active(phylax_set), E_GUARDIAN_SET_EXPIRED);
+        assert!(state::phylax_set_is_active(phylax_set), E_PHYLAX_SET_EXPIRED);
 
         let phylaxs = get_phylaxs(phylax_set);
         let hash = vaa.hash;
@@ -208,7 +208,7 @@ module wormhole::vaa {
     /// emitter on the governance chain)
     public fun assert_governance(vaa: &VAA) {
         let latest_phylax_set_index = state::get_current_phylax_set_index();
-        assert!(vaa.phylax_set_index == latest_phylax_set_index, E_OLD_GUARDIAN_SET_GOVERNANCE);
+        assert!(vaa.phylax_set_index == latest_phylax_set_index, E_OLD_PHYLAX_SET_GOVERNANCE);
         assert!(vaa.emitter_chain == state::get_governance_chain(), E_INVALID_GOVERNANCE_CHAIN);
         assert!(vaa.emitter_address == state::get_governance_contract(), E_INVALID_GOVERNANCE_EMITTER);
     }
@@ -286,7 +286,7 @@ module wormhole::vaa_test {
     }
 
     #[test]
-    #[expected_failure(abort_code = 3, location = wormhole::vaa)] // E_GUARDIAN_SET_EXPIRED
+    #[expected_failure(abort_code = 3, location = wormhole::vaa)] // E_PHYLAX_SET_EXPIRED
     /// Ensures that the GOV_VAA can no longer be verified after the phylax set
     /// upgrade after expiry
     public fun test_phylax_set_expired() {
@@ -305,7 +305,7 @@ module wormhole::vaa_test {
     }
 
     #[test]
-    #[expected_failure(abort_code = 8, location = wormhole::vaa)] // E_OLD_GUARDIAN_SET_GOVERNANCE
+    #[expected_failure(abort_code = 8, location = wormhole::vaa)] // E_OLD_PHYLAX_SET_GOVERNANCE
     /// Ensures that governance GOV_VAAs can only be verified by the latest phylax
     /// set, even if the signer hasn't expired yet
     public fun test_governance_phylax_set_latest() {

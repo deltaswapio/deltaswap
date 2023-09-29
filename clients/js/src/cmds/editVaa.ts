@@ -13,7 +13,7 @@
 //     --wormscanurl https://api.wormscan.io/api/v1/observations/1/0000000000000000000000000000000000000000000000000000000000000004/651169458827220885
 //
 // Sign a VAA using the testnet phylax key:
-//   worm edit-vaa --vaa $VAA --gs $TESTNET_GUARDIAN_SECRET
+//   worm edit-vaa --vaa $VAA --gs $TESTNET_PHYLAX_SECRET
 //
 
 import { Implementation__factory } from "@certusone/wormhole-sdk/lib/esm/ethers-contracts";

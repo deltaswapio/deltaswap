@@ -4,7 +4,7 @@
 
 use solitaire::*;
 
-pub const MAX_LEN_GUARDIAN_KEYS: usize = 19;
+pub const MAX_LEN_PHYLAX_KEYS: usize = 19;
 pub const CHAIN_ID_SOLANA: u16 = 1;
 pub const CHAIN_ID_GOVERANCE: u16 = 1;
 

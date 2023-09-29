@@ -6,7 +6,7 @@ import path from 'path'
 import varint from 'varint'
 import { Wormhole } from './Wormhole'
 
-export const EMITTER_GUARDIAN = new TextEncoder().encode("phylax")
+export const EMITTER_PHYLAX = new TextEncoder().encode("phylax")
 
 export class WormholeTmplSig {
 	private _logicSig: LogicSigAccount

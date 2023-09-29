@@ -256,7 +256,7 @@ fn main() {
                 .arg(
                     Arg::with_name("phylax")
                         .validator(is_hex)
-                        .value_name("GUARDIAN_ADDRESS")
+                        .value_name("PHYLAX_ADDRESS")
                         .takes_value(true)
                         .index(2)
                         .required(true)
@@ -266,7 +266,7 @@ fn main() {
                 .arg(
                     Arg::with_name("phylax_set_expiration")
                         .validator(is_u32)
-                        .value_name("GUARDIAN_SET_EXPIRATION")
+                        .value_name("PHYLAX_SET_EXPIRATION")
                         .takes_value(true)
                         .index(3)
                         .required(true)

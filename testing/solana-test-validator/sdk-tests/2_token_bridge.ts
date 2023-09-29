@@ -80,8 +80,8 @@ import {
   TOKEN_BRIDGE_ADDRESS,
   ETHEREUM_TOKEN_BRIDGE_ADDRESS,
   GOVERNANCE_EMITTER_ADDRESS,
-  GUARDIAN_KEYS,
-  GUARDIAN_SET_INDEX,
+  PHYLAX_KEYS,
+  PHYLAX_SET_INDEX,
   LOCALHOST,
   WETH_ADDRESS,
   DEADBEEF_ADDRESS,
@@ -106,7 +106,7 @@ describe("Token Bridge", () => {
   const wallet = new NodeWallet(web3.Keypair.generate());
 
   // for signing wormhole messages
-  const phylaxs = new MockPhylaxs(GUARDIAN_SET_INDEX + 1, GUARDIAN_KEYS);
+  const phylaxs = new MockPhylaxs(PHYLAX_SET_INDEX + 1, PHYLAX_KEYS);
 
   const localVariables: any = {};
 

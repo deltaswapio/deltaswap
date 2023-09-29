@@ -170,14 +170,14 @@ var PurgePythNetVaasCmd = &cobra.Command{
 }
 
 var SignExistingVaaCmd = &cobra.Command{
-	Use:   "sign-existing-vaa [VAA] [NEW_GUARDIANS] [NEW_GUARDIAN_SET_INDEX]",
+	Use:   "sign-existing-vaa [VAA] [NEW_PHYLAXS] [NEW_PHYLAX_SET_INDEX]",
 	Short: "Signs an existing VAA for a new phylax set using the local phylax key. This only works if the new VAA would have quorum.",
 	Run:   runSignExistingVaa,
 	Args:  cobra.ExactArgs(3),
 }
 
 var SignExistingVaasFromCSVCmd = &cobra.Command{
-	Use:   "sign-existing-vaas-csv [IN_FILE] [OUT_FILE] [NEW_GUARDIANS] [NEW_GUARDIAN_SET_INDEX]",
+	Use:   "sign-existing-vaas-csv [IN_FILE] [OUT_FILE] [NEW_PHYLAXS] [NEW_PHYLAX_SET_INDEX]",
 	Short: "Signs a CSV [VAA_ID,VAA_HEX] of existing VAAs for a new phylax set using the local phylax key and writes it to a new CSV. VAAs that don't have quorum on the new set will be dropped.",
 	Run:   runSignExistingVaasFromCSV,
 	Args:  cobra.ExactArgs(4),

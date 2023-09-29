@@ -41,7 +41,7 @@ elif [ "$NETWORK" = testnet ]; then
   echo "Testnet not supported yet"
   exit 1
 elif [ "$NETWORK" = devnet ]; then
-  GUARDIAN_ADDR=befa429d57cd18b7f8a4d91a2da9ab4af05d0fbe
+  PHYLAX_ADDR=befa429d57cd18b7f8a4d91a2da9ab4af05d0fbe
 else
   usage
 fi
@@ -80,7 +80,7 @@ echo "$WORMHOLE_PUBLISH_OUTPUT"
 
 echo -e "\n[2/4] Initializing core bridge..."
 WORMHOLE_PACKAGE_ID=$(echo "$WORMHOLE_PUBLISH_OUTPUT" | grep -oP 'Published to +\K.*')
-WORMHOLE_INIT_OUTPUT=$($(echo worm sui init-wormhole -n "$NETWORK" --initial-phylax "$GUARDIAN_ADDR" -p "$WORMHOLE_PACKAGE_ID" "$PRIVATE_KEY_ARG"))
+WORMHOLE_INIT_OUTPUT=$($(echo worm sui init-wormhole -n "$NETWORK" --initial-phylax "$PHYLAX_ADDR" -p "$WORMHOLE_PACKAGE_ID" "$PRIVATE_KEY_ARG"))
 WORMHOLE_STATE_OBJECT_ID=$(echo "$WORMHOLE_INIT_OUTPUT" | grep -oP 'Wormhole state object ID +\K.*')
 echo "$WORMHOLE_INIT_OUTPUT"
 

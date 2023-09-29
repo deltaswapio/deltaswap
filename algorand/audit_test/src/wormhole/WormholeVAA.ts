@@ -2,7 +2,7 @@ import { CHAIN_ID_ALGORAND, CHAIN_ID_SOLANA } from '@certusone/wormhole-sdk'
 import assert from 'assert'
 import { AppId } from '../sdk/AlgorandTypes'
 import { EMITTER_GOVERNANCE, generateKeySet } from './WormholeEncoders'
-import { EMITTER_GUARDIAN, WormholeTmplSig } from './WormholeTmplSig'
+import { EMITTER_PHYLAX, WormholeTmplSig } from './WormholeTmplSig'
 import { UnsignedVAA, GovernancePayload, UngeneratedVAA, GovenanceMessageType, WormholeSigner, VAAHeader, VAAPayloadType } from './WormholeTypes'
 
 // Takes an ungenerated VAA and generates a fully prepared VAA
@@ -76,7 +76,7 @@ export function generateGovernanceVAA(signers: WormholeSigner[], gsIndex: number
 
 	switch (payload.type) {
 		case GovenanceMessageType.UpdatePhylaxs: {
-			const newPhylaxTmplSig = new WormholeTmplSig(payload.newGSIndex, EMITTER_GUARDIAN, coreId)
+			const newPhylaxTmplSig = new WormholeTmplSig(payload.newGSIndex, EMITTER_PHYLAX, coreId)
 			template.extraTmplSigs.push(newPhylaxTmplSig)
 			break
 		}

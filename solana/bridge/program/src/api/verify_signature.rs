@@ -12,7 +12,7 @@ use crate::{
     PhylaxSetDerivationData,
     IsSigned::*,
     SignatureSet,
-    MAX_LEN_GUARDIAN_KEYS,
+    MAX_LEN_PHYLAX_KEYS,
 };
 use byteorder::ByteOrder;
 use solana_program::program_error::ProgramError;
@@ -47,7 +47,7 @@ impl From<&VerifySignatures<'_>> for PhylaxSetDerivationData {
 #[derive(Default, BorshSerialize, BorshDeserialize)]
 pub struct VerifySignaturesData {
     /// instruction indices of signers (-1 for missing)
-    pub signers: [i8; MAX_LEN_GUARDIAN_KEYS],
+    pub signers: [i8; MAX_LEN_PHYLAX_KEYS],
 }
 
 /// SigInfo contains metadata about signers in a VerifySignature ix

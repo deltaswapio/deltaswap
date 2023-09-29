@@ -8,7 +8,7 @@ contract MockWormhole is IWormhole {
     using BytesLib for bytes;
 
     uint256 private constant VM_VERSION_SIZE = 1;
-    uint256 private constant VM_GUARDIAN_SET_SIZE = 4;
+    uint256 private constant VM_PHYLAX_SET_SIZE = 4;
     uint256 private constant VM_SIGNATURE_COUNT_SIZE = 1;
     uint256 private constant VM_TIMESTAMP_SIZE = 4;
     uint256 private constant VM_NONCE_SIZE = 4;
@@ -16,16 +16,16 @@ contract MockWormhole is IWormhole {
     uint256 private constant VM_EMITTER_ADDRESS_SIZE = 32;
     uint256 private constant VM_SEQUENCE_SIZE = 8;
     uint256 private constant VM_CONSISTENCY_LEVEL_SIZE = 1;
-    uint256 private constant VM_SIZE_MINIMUM = VM_VERSION_SIZE + VM_GUARDIAN_SET_SIZE
+    uint256 private constant VM_SIZE_MINIMUM = VM_VERSION_SIZE + VM_PHYLAX_SET_SIZE
         + VM_SIGNATURE_COUNT_SIZE + VM_TIMESTAMP_SIZE + VM_NONCE_SIZE + VM_EMITTER_CHAIN_ID_SIZE
         + VM_EMITTER_ADDRESS_SIZE + VM_SEQUENCE_SIZE + VM_CONSISTENCY_LEVEL_SIZE;
 
-    uint256 private constant SIGNATURE_GUARDIAN_INDEX_SIZE = 1;
+    uint256 private constant SIGNATURE_PHYLAX_INDEX_SIZE = 1;
     uint256 private constant SIGNATURE_R_SIZE = 32;
     uint256 private constant SIGNATURE_S_SIZE = 32;
     uint256 private constant SIGNATURE_V_SIZE = 1;
     uint256 private constant SIGNATURE_SIZE_TOTAL =
-        SIGNATURE_GUARDIAN_INDEX_SIZE + SIGNATURE_R_SIZE + SIGNATURE_S_SIZE + SIGNATURE_V_SIZE;
+        SIGNATURE_PHYLAX_INDEX_SIZE + SIGNATURE_R_SIZE + SIGNATURE_S_SIZE + SIGNATURE_V_SIZE;
 
     mapping(address => uint64) public sequences;
     // Dictionary of VMs that must be mocked as invalid.

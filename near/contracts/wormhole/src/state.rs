@@ -46,7 +46,7 @@ impl ParsedVAA {
     pub const HEADER_LEN: usize = 6;
     pub const SIGNATURE_LEN: usize = 66;
 
-    pub const GUARDIAN_SET_INDEX_POS: usize = 1;
+    pub const PHYLAX_SET_INDEX_POS: usize = 1;
     pub const LEN_SIGNER_POS: usize = 5;
 
     pub const VAA_NONCE_POS: usize = 4;
@@ -67,7 +67,7 @@ impl ParsedVAA {
         let version = data.get_u8(0);
 
         // Load 4 bytes starting from index 1
-        let phylax_set_index: u32 = data.get_u32(Self::GUARDIAN_SET_INDEX_POS);
+        let phylax_set_index: u32 = data.get_u32(Self::PHYLAX_SET_INDEX_POS);
         let len_signers = data.get_u8(Self::LEN_SIGNER_POS) as usize;
         let body_offset: usize = Self::HEADER_LEN + Self::SIGNATURE_LEN * len_signers as usize;
 

@@ -17,7 +17,7 @@ import {
 import { isBytes, ParsedVaa, parseVaa, SignedVaa } from "../../../vaa";
 import { createReadOnlyWormholeProgramInterface } from "../program";
 
-const MAX_LEN_GUARDIAN_KEYS = 19;
+const MAX_LEN_PHYLAX_KEYS = 19;
 
 /**
  * This is used in {@link createPostSignedVaaTransactions}'s initial transactions.
@@ -71,7 +71,7 @@ export async function createVerifySignaturesInstructions(
     const start = i * batchSize;
     const end = Math.min(phylaxSignatures.length, (i + 1) * batchSize);
 
-    const signatureStatus = new Array(MAX_LEN_GUARDIAN_KEYS).fill(-1);
+    const signatureStatus = new Array(MAX_LEN_PHYLAX_KEYS).fill(-1);
     const signatures: Buffer[] = [];
     const keys: Buffer[] = [];
     for (let j = 0; j < end - start; ++j) {

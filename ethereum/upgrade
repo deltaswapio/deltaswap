@@ -10,7 +10,7 @@ secret=$MNEMONIC
 phylax_secret=""
 
 if [ "$network" = testnet ]; then
-  phylax_secret=$GUARDIAN_MNEMONIC
+  phylax_secret=$PHYLAX_MNEMONIC
 fi
 
 SCRIPT=""
