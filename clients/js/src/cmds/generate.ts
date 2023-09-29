@@ -23,7 +23,7 @@ import {
   sign,
   TokenBridgeAttestMeta,
   VAA,
-  WormholeRelayerSetDefaultDeliveryProvider,
+  DeltaswapRelayerSetDefaultDeliveryProvider,
 } from "../vaa";
 
 function makeVAA(
@@ -80,7 +80,7 @@ export const builder = function (y: typeof yargs) {
             .option("module", {
               alias: "m",
               describe: "Module to register",
-              choices: ["NFTBridge", "TokenBridge", "WormholeRelayer"],
+              choices: ["NFTBridge", "TokenBridge", "DeltaswapRelayer"],
               demandOption: true,
             } as const),
         (argv) => {
@@ -123,7 +123,7 @@ export const builder = function (y: typeof yargs) {
             .option("module", {
               alias: "m",
               describe: "Module to upgrade",
-              choices: ["Core", "NFTBridge", "TokenBridge", "WormholeRelayer"],
+              choices: ["Core", "NFTBridge", "TokenBridge", "DeltaswapRelayer"],
               demandOption: true,
             } as const),
         (argv) => {
@@ -275,8 +275,8 @@ export const builder = function (y: typeof yargs) {
         },
         (argv) => {
           assertChain(argv.chain);
-          const payload: WormholeRelayerSetDefaultDeliveryProvider = {
-            module: "WormholeRelayer",
+          const payload: DeltaswapRelayerSetDefaultDeliveryProvider = {
+            module: "DeltaswapRelayer",
             type: "SetDefaultDeliveryProvider",
             chain: toChainId(argv["chain"]),
             relayProviderAddress: parseAddress(

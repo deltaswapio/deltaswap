@@ -119,7 +119,7 @@ export const submit = async (
 
       break;
     }
-    case "WormholeRelayer":
+    case "DeltaswapRelayer":
       throw Error("Wormhole Relayer not supported on Sei");
     default:
       target_contract = impossible(payload);

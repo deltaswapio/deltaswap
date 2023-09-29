@@ -140,7 +140,7 @@ export async function execute_injective(
 
       break;
     }
-    case "WormholeRelayer":
+    case "DeltaswapRelayer":
       throw Error("Wormhole Relayer not supported on Injective");
     default:
       action = impossible(payload);

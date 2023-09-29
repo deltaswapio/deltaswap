@@ -4,7 +4,7 @@ import {
   TransactionInstruction,
 } from "@solana/web3.js";
 import { createReadOnlyTokenBridgeProgramInterface } from "../program";
-import { getPostMessageAccounts } from "../../wormhole";
+import { getPostMessageAccounts } from "../../deltaswap";
 import {
   deriveTokenMetadataKey,
   deriveTokenBridgeConfigKey,
@@ -13,7 +13,7 @@ import {
 
 export function createAttestTokenInstruction(
   tokenBridgeProgramId: PublicKeyInitData,
-  wormholeProgramId: PublicKeyInitData,
+  deltaswapProgramId: PublicKeyInitData,
   payer: PublicKeyInitData,
   mint: PublicKeyInitData,
   message: PublicKeyInitData,
@@ -28,7 +28,7 @@ export function createAttestTokenInstruction(
   return methods._ixFn(...methods._args, {
     accounts: getAttestTokenAccounts(
       tokenBridgeProgramId,
-      wormholeProgramId,
+      deltaswapProgramId,
       payer,
       mint,
       message
@@ -46,34 +46,34 @@ export interface AttestTokenAccounts {
   mint: PublicKey;
   wrappedMeta: PublicKey;
   splMetadata: PublicKey;
-  wormholeBridge: PublicKey;
-  wormholeMessage: PublicKey;
-  wormholeEmitter: PublicKey;
-  wormholeSequence: PublicKey;
-  wormholeFeeCollector: PublicKey;
+ deltaswapBridge: PublicKey;
+ deltaswapMessage: PublicKey;
+  deltaswapEmitter: PublicKey;
+  deltaswapSequence: PublicKey;
+  deltaswapFeeCollector: PublicKey;
   clock: PublicKey;
   rent: PublicKey;
   systemProgram: PublicKey;
-  wormholeProgram: PublicKey;
+  deltaswapProgram: PublicKey;
 }
 
 export function getAttestTokenAccounts(
   tokenBridgeProgramId: PublicKeyInitData,
-  wormholeProgramId: PublicKeyInitData,
+  deltaswapProgramId: PublicKeyInitData,
   payer: PublicKeyInitData,
   mint: PublicKeyInitData,
   message: PublicKeyInitData
 ): AttestTokenAccounts {
   const {
-    bridge: wormholeBridge,
-    emitter: wormholeEmitter,
-    sequence: wormholeSequence,
-    feeCollector: wormholeFeeCollector,
+    bridge:deltaswapBridge,
+    emitter: deltaswapEmitter,
+    sequence: deltaswapSequence,
+    feeCollector: deltaswapFeeCollector,
     clock,
     rent,
     systemProgram,
   } = getPostMessageAccounts(
-    wormholeProgramId,
+    deltaswapProgramId,
     payer,
     tokenBridgeProgramId,
     message
@@ -84,14 +84,14 @@ export function getAttestTokenAccounts(
     mint: new PublicKey(mint),
     wrappedMeta: deriveWrappedMetaKey(tokenBridgeProgramId, mint),
     splMetadata: deriveTokenMetadataKey(mint),
-    wormholeBridge,
-    wormholeMessage: new PublicKey(message),
-    wormholeEmitter,
-    wormholeSequence,
-    wormholeFeeCollector,
+   deltaswapBridge,
+   deltaswapMessage: new PublicKey(message),
+    deltaswapEmitter,
+    deltaswapSequence,
+    deltaswapFeeCollector,
     clock,
     rent,
     systemProgram,
-    wormholeProgram: new PublicKey(wormholeProgramId),
+    deltaswapProgram: new PublicKey(deltaswapProgramId),
   };
 }

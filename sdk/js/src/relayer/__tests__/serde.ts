@@ -14,7 +14,7 @@ import {
   VaaKey,
 } from "../structs";
 
-describe("Wormhole Relayer Serde Tests", () => {
+describe("Deltaswap Relayer Serde Tests", () => {
   test("Parse VaaKey", async () => {
     const vaaKey: VaaKey = {
       chainId: 16,

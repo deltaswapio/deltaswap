@@ -9,15 +9,15 @@ use serde_bytes::Bytes;
 
 use crate::Error;
 
-pub(crate) const TOKEN: &str = "$serde_wormhole::private::RawMessage";
+pub(crate) const TOKEN: &str = "$serde_deltaswap::private::RawMessage";
 
 /// Reference to a range of bytes in the input data.
 ///
 /// A `RawMessage` can be used to defer parsing parts of the input data until later, or to avoid
 /// parsing it at all if it needs to be passed on verbatim to a different output object.
 ///
-/// When used to deserialize data in the wormhole data format, `RawMessage` will consume all the
-/// remaining data in the input since the wormhole wire format is not self-describing.  However when
+/// When used to deserialize data in the deltaswap data format, `RawMessage` will consume all the
+/// remaining data in the input since the deltaswap wire format is not self-describing.  However when
 /// used with self-describing formats like JSON, `RawMessage` will expect either a sequence of bytes
 /// or a base64-encoded string.
 ///
@@ -29,7 +29,7 @@ pub(crate) const TOKEN: &str = "$serde_wormhole::private::RawMessage";
 /// Defer parsing the payload of a VAA body:
 ///
 /// ```
-/// # fn example() -> Result<(), serde_wormhole::Error> {
+/// # fn example() -> Result<(), serde_deltaswap::Error> {
 /// #     let data = [
 /// #         0x62, 0xb9, 0xf7, 0x91, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00,
 /// #         0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf1, 0x9a, 0x2a, 0x01, 0xb7, 0x05, 0x19, 0xf6,
@@ -40,7 +40,7 @@ pub(crate) const TOKEN: &str = "$serde_wormhole::private::RawMessage";
 /// #     ];
 /// #
 ///       use serde::{Serialize, Deserialize};
-///       use serde_wormhole::{from_slice, RawMessage};
+///       use serde_deltaswap::{from_slice, RawMessage};
 ///
 ///       #[derive(Serialize, Deserialize, Debug)]
 ///       struct Body<'a> {
@@ -69,7 +69,7 @@ pub(crate) const TOKEN: &str = "$serde_wormhole::private::RawMessage";
 ///
 /// ```
 /// # use serde::Deserialize;
-/// # use serde_wormhole::RawMessage;
+/// # use serde_deltaswap::RawMessage;
 /// #
 /// #[derive(Deserialize)]
 /// struct MyStruct<'a> {
@@ -78,7 +78,7 @@ pub(crate) const TOKEN: &str = "$serde_wormhole::private::RawMessage";
 /// }
 /// ```
 ///
-/// The borrowed form is suitable for use with `serde_wormhole::from_slice` because it supports
+/// The borrowed form is suitable for use with `serde_deltaswap::from_slice` because it supports
 /// borrowing from the input data without memory allocation.  If the value is encoded as a string,
 /// deserializing to the borrowed form may or may not succeed depending on the deserializer
 /// implementation.  In the case where the deserialization is successful, the contents of the string
@@ -88,13 +88,13 @@ pub(crate) const TOKEN: &str = "$serde_wormhole::private::RawMessage";
 /// should only use the borrowed form if you know the input data contains raw bytes.  Otherwise, the
 /// boxed form is a safer choice.
 ///
-/// When deserializing through `serde_wormhole::from_reader` or when the value is encoded as a
+/// When deserializing through `serde_deltaswap::from_reader` or when the value is encoded as a
 /// base64 string, it is necessary to use the boxed form.  This involves either copying the data
 /// from the IO stream or decoding the base64 string and then storing it in memory.
 ///
 /// ```
 /// # use serde::Deserialize;
-/// # use serde_wormhole::RawMessage;
+/// # use serde_deltaswap::RawMessage;
 /// #
 /// #[derive(Deserialize)]
 /// struct MyStruct {

@@ -17,13 +17,13 @@ import {
 import {
   createPostVaaInstruction,
   createVerifySignaturesInstructions,
-} from "./wormhole";
-import { isBytes, ParsedVaa, parseVaa, SignedVaa } from "../vaa/wormhole";
+} from "./deltaswap";
+import { isBytes, ParsedVaa, parseVaa, SignedVaa } from "../vaa/deltaswap";
 
 export async function postVaaWithRetry(
   connection: Connection,
   signTransaction: SignTransaction,
-  wormholeProgramId: PublicKeyInitData,
+  deltaswapProgramId: PublicKeyInitData,
   payer: PublicKeyInitData,
   vaa: Buffer,
   maxRetries?: number,
@@ -32,7 +32,7 @@ export async function postVaaWithRetry(
   const { unsignedTransactions, signers } =
     await createPostSignedVaaTransactions(
       connection,
-      wormholeProgramId,
+      deltaswapProgramId,
       payer,
       vaa,
       commitment
@@ -63,7 +63,7 @@ export async function postVaaWithRetry(
 export async function postVaa(
   connection: Connection,
   signTransaction: SignTransaction,
-  wormholeProgramId: PublicKeyInitData,
+  deltaswapProgramId: PublicKeyInitData,
   payer: PublicKeyInitData,
   vaa: Buffer,
   options?: ConfirmOptions,
@@ -72,7 +72,7 @@ export async function postVaa(
   const { unsignedTransactions, signers } =
     await createPostSignedVaaTransactions(
       connection,
-      wormholeProgramId,
+      deltaswapProgramId,
       payer,
       vaa,
       options?.commitment
@@ -121,7 +121,7 @@ export async function postVaa(
  * and 1 to post VAA data to an account).
  *
  * @param {Connection} connection - Solana web3 connection
- * @param {PublicKeyInitData} wormholeProgramId - wormhole program address
+ * @param {PublicKeyInitData} deltaswapProgramId - deltaswap program address
  * @param {web3.Keypair} payer - transaction signer address
  * @param {Buffer} signedVaa - bytes of signed VAA
  * @param {Commitment} [options] - Solana commitment
@@ -129,7 +129,7 @@ export async function postVaa(
  */
 export async function createPostSignedVaaTransactions(
   connection: Connection,
-  wormholeProgramId: PublicKeyInitData,
+  deltaswapProgramId: PublicKeyInitData,
   payer: PublicKeyInitData,
   vaa: SignedVaa | ParsedVaa,
   commitment?: Commitment
@@ -139,7 +139,7 @@ export async function createPostSignedVaaTransactions(
 
   const verifySignaturesInstructions = await createVerifySignaturesInstructions(
     connection,
-    wormholeProgramId,
+    deltaswapProgramId,
     payer,
     parsed,
     signatureSet.publicKey,
@@ -156,7 +156,7 @@ export async function createPostSignedVaaTransactions(
   unsignedTransactions.push(
     new Transaction().add(
       createPostVaaInstruction(
-        wormholeProgramId,
+        deltaswapProgramId,
         payer,
         parsed,
         signatureSet.publicKey

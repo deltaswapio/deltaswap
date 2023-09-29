@@ -17,7 +17,7 @@ import {
   tryNativeToHexString,
 } from "../utils";
 import { fromUint8Array } from "js-base64";
-import { WormholeWrappedInfo } from "./getOriginalAsset";
+import { DeltaswapWrappedInfo } from "./getOriginalAsset";
 
 /**
  * Creates attestation message
@@ -122,7 +122,7 @@ export async function getIsTransferCompletedInjective(
  * @param tokenBridgeAddress The address of the Injective token bridge contract
  * @param client Connection/wallet information
  * @param assetAddress Address of the asset in Injective format
- * @returns true if asset is a wormhole wrapped asset
+ * @returns true if asset is a deltaswap wrapped asset
  */
 export async function getIsWrappedAssetInjective(
   tokenBridgeAddress: string,
@@ -144,14 +144,14 @@ export async function getIsWrappedAssetInjective(
 
 /**
  * Returns information about the asset
- * @param wrappedAddress Address of the asset in wormhole wrapped format (hex string)
+ * @param wrappedAddress Address of the asset in deltaswap wrapped format (hex string)
  * @param client WASM api client
  * @returns Information about the asset
  */
 export async function getOriginalAssetInjective(
   wrappedAddress: string,
   client: ChainGrpcWasmApi
-): Promise<WormholeWrappedInfo> {
+): Promise<DeltaswapWrappedInfo> {
   const chainId = CHAIN_ID_INJECTIVE;
   if (isNativeCosmWasmDenom(chainId, wrappedAddress)) {
     return {

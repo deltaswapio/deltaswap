@@ -14,7 +14,7 @@
             "type": "uint32"
           }
         ],
-        "internalType": "struct Wormhole.PhylaxSet",
+        "internalType": "struct Deltaswap.PhylaxSet",
         "name": "initial_phylax_set",
         "type": "tuple"
       },
@@ -152,7 +152,7 @@
             "type": "uint32"
           }
         ],
-        "internalType": "struct Wormhole.PhylaxSet",
+        "internalType": "struct Deltaswap.PhylaxSet",
         "name": "gs",
         "type": "tuple"
       }
@@ -328,7 +328,7 @@
             "type": "bytes"
           }
         ],
-        "internalType": "struct Wormhole.ParsedVAA",
+        "internalType": "struct Deltaswap.ParsedVAA",
         "name": "parsed_vaa",
         "type": "tuple"
       }

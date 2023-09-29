@@ -138,7 +138,7 @@ export async function execute_xpla(
 
       break;
     }
-    case "WormholeRelayer":
+    case "DeltaswapRelayer":
       throw Error("Wormhole Relayer not supported on Xpla");
     default:
       target_contract = impossible(payload);

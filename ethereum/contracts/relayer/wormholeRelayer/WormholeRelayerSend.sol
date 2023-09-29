@@ -9,8 +9,8 @@ import {
     DeliveryProviderCannotReceivePayment,
     MessageKey,
     VaaKey,
-    IWormholeRelayerSend
-} from "../../interfaces/relayer/IWormholeRelayerTyped.sol";
+    IDeltaswapRelayerSend
+} from "../../interfaces/relayer/IDeltaswapRelayerTyped.sol";
 import {IDeliveryProvider} from "../../interfaces/relayer/IDeliveryProviderTyped.sol";
 
 import {toWormholeFormat, fromWormholeFormat} from "../../relayer/libraries/Utils.sol";
@@ -18,14 +18,14 @@ import {
     DeliveryInstruction,
     RedeliveryInstruction
 } from "../../relayer/libraries/RelayerInternalStructs.sol";
-import {WormholeRelayerSerde} from "./WormholeRelayerSerde.sol";
-import {getDefaultDeliveryProviderState} from "./WormholeRelayerStorage.sol";
-import {WormholeRelayerBase} from "./WormholeRelayerBase.sol";
+import {DeltaswapRelayerSerde} from "./DeltaswapRelayerSerde.sol";
+import {getDefaultDeliveryProviderState} from "./DeltaswapRelayerStorage.sol";
+import {DeltaswapRelayerBase} from "./DeltaswapRelayerBase.sol";
 import "../../interfaces/relayer/TypedUnits.sol";
 import "../../relayer/libraries/ExecutionParameters.sol";
 
-abstract contract WormholeRelayerSend is WormholeRelayerBase, IWormholeRelayerSend {
-    using WormholeRelayerSerde for *;
+abstract contract DeltaswapRelayerSend is DeltaswapRelayerBase, IDeltaswapRelayerSend {
+    using DeltaswapRelayerSerde for *;
     using WeiLib for Wei;
     using GasLib for Gas;
     using TargetNativeLib for TargetNative;
@@ -225,7 +225,7 @@ abstract contract WormholeRelayerSend is WormholeRelayerBase, IWormholeRelayerSe
                 refundChain,
                 refundAddress,
                 deliveryProviderAddress,
-                WormholeRelayerSerde.vaaKeyArrayToMessageKeyArray(vaaKeys),
+                DeltaswapRelayerSerde.vaaKeyArrayToMessageKeyArray(vaaKeys),
                 consistencyLevel
             )
         );

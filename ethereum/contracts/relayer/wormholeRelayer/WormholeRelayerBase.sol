@@ -10,20 +10,20 @@ import {
     DeliveryProviderDoesNotSupportTargetChain,
     VaaKey,
     InvalidMsgValue,
-    IWormholeRelayerBase
-} from "../../interfaces/relayer/IWormholeRelayerTyped.sol";
+    IDeltaswapRelayerBase
+} from "../../interfaces/relayer/IDeltaswapRelayerTyped.sol";
 import {DeliveryInstruction} from "../../relayer/libraries/RelayerInternalStructs.sol";
 import {
     DeliveryTmpState,
     getDeliveryTmpState,
     getDeliverySuccessState,
     getDeliveryFailureState,
-    getRegisteredWormholeRelayersState,
+    getRegisteredDeltaswapRelayersState,
     getReentrancyGuardState
-} from "./WormholeRelayerStorage.sol";
+} from "./DeltaswapRelayerStorage.sol";
 import "../../interfaces/relayer/TypedUnits.sol";
 
-abstract contract WormholeRelayerBase is IWormholeRelayerBase {
+abstract contract DeltaswapRelayerBase is IDeltaswapRelayerBase {
     using WeiLib for Wei;
     using GasLib for Gas;
     using WeiPriceLib for WeiPrice;
@@ -44,8 +44,8 @@ abstract contract WormholeRelayerBase is IWormholeRelayerBase {
         chainId_ = uint16(wormhole_.chainId());
     }
 
-    function getRegisteredWormholeRelayerContract(uint16 chainId) public view returns (bytes32) {
-        return getRegisteredWormholeRelayersState().registeredWormholeRelayers[chainId];
+    function getRegisteredDeltaswapRelayerContract(uint16 chainId) public view returns (bytes32) {
+        return getRegisteredDeltaswapRelayersState().registeredDeltaswapRelayers[chainId];
     }
 
     function deliveryAttempted(bytes32 deliveryHash) public view returns (bool attempted) {

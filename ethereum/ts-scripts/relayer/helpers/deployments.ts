@@ -2,13 +2,13 @@ import { DeliveryProviderProxy__factory } from "../../../ethers-contracts";
 import { DeliveryProviderSetup__factory } from "../../../ethers-contracts";
 import { DeliveryProviderImplementation__factory } from "../../../ethers-contracts";
 import { MockRelayerIntegration__factory } from "../../../ethers-contracts";
-import { WormholeRelayer__factory } from "../../../ethers-contracts";
+import { DeltaswapRelayer__factory } from "../../../ethers-contracts";
 
 import {
   ChainInfo,
   Deployment,
   getSigner,
-  getWormholeRelayerAddress,
+  getDeltaswapRelayerAddress,
   getCreate2Factory,
 } from "./env";
 import { ethers } from "ethers";
@@ -107,7 +107,7 @@ export async function deployMockIntegration(
   );
   const contract = await factory.deploy(
     chain.wormholeAddress,
-    await getWormholeRelayerAddress(chain)
+    await getDeltaswapRelayerAddress(chain)
   );
   return await contract.deployed().then((result) => {
     console.log("Successfully deployed contract at " + result.address);
@@ -127,12 +127,12 @@ export async function deployCreate2Factory(
   return { address: result.address, chainId: chain.chainId };
 }
 
-export async function deployWormholeRelayerImplementation(
+export async function deployDeltaswapRelayerImplementation(
   chain: ChainInfo
 ): Promise<Deployment> {
-  console.log("deployWormholeRelayerImplementation " + chain.chainId);
+  console.log("deployDeltaswapRelayerImplementation " + chain.chainId);
 
-  const result = await new WormholeRelayer__factory(getSigner(chain))
+  const result = await new DeltaswapRelayer__factory(getSigner(chain))
     .deploy(chain.wormholeAddress)
     .then(deployed);
 
@@ -140,16 +140,16 @@ export async function deployWormholeRelayerImplementation(
   return { address: result.address, chainId: chain.chainId };
 }
 
-export async function deployWormholeRelayerProxy(
+export async function deployDeltaswapRelayerProxy(
   chain: ChainInfo,
   coreRelayerImplementationAddress: string,
   defaultDeliveryProvider: string
 ): Promise<Deployment> {
-  console.log("deployWormholeRelayerProxy " + chain.chainId);
+  console.log("deployDeltaswapRelayerProxy " + chain.chainId);
 
   const create2Factory = getCreate2Factory(chain);
 
-  const initData = WormholeRelayer__factory.createInterface().encodeFunctionData(
+  const initData = DeltaswapRelayer__factory.createInterface().encodeFunctionData(
     "initialize",
     [ethers.utils.getAddress(defaultDeliveryProvider)]
   );

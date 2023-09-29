@@ -125,10 +125,10 @@ func TestBodyDeltachainMigrateContractSerialize(t *testing.T) {
 	assert.Equal(t, expected, hex.EncodeToString(actual.Serialize()))
 }
 
-func TestBodyCircleIntegrationUpdateWormholeFinalitySerialize(t *testing.T) {
+func TestBodyCircleIntegrationUpdateDeltaswapFinalitySerialize(t *testing.T) {
 	expected := "000000000000000000000000000000436972636c65496e746567726174696f6e0100022a"
-	bodyCircleIntegrationUpdateWormholeFinality := BodyCircleIntegrationUpdateWormholeFinality{TargetChainID: ChainIDEthereum, Finality: 42}
-	assert.Equal(t, expected, hex.EncodeToString(bodyCircleIntegrationUpdateWormholeFinality.Serialize()))
+	bodyCircleIntegrationUpdateDeltaswapFinality := BodyCircleIntegrationUpdateDeltaswapFinality{TargetChainID: ChainIDEthereum, Finality: 42}
+	assert.Equal(t, expected, hex.EncodeToString(bodyCircleIntegrationUpdateDeltaswapFinality.Serialize()))
 }
 
 func TestBodyCircleIntegrationRegisterEmitterAndDomainSerialize(t *testing.T) {
@@ -201,13 +201,13 @@ func FuzzLeftPadBytes(f *testing.F) {
 	})
 }
 
-func TestBodyWormholeRelayerSetDefaultDeliveryProviderSerialize(t *testing.T) {
+func TestBodyDeltaswapRelayerSetDefaultDeliveryProviderSerialize(t *testing.T) {
 	expected := "0000000000000000000000000000000000576f726d686f6c6552656c617965720300040000000000000000000000000000000000000000000000000000000000000004"
-	bodyWormholeRelayerSetDefaultDeliveryProvider := BodyWormholeRelayerSetDefaultDeliveryProvider{
+	bodyDeltaswapRelayerSetDefaultDeliveryProvider := BodyDeltaswapRelayerSetDefaultDeliveryProvider{
 		ChainID:                           4,
 		NewDefaultDeliveryProviderAddress: addr,
 	}
-	assert.Equal(t, expected, hex.EncodeToString(bodyWormholeRelayerSetDefaultDeliveryProvider.Serialize()))
+	assert.Equal(t, expected, hex.EncodeToString(bodyDeltaswapRelayerSetDefaultDeliveryProvider.Serialize()))
 }
 
 func TestBodyGatewayIbcComposabilityMwContractSerialize(t *testing.T) {

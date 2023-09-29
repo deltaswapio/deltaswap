@@ -181,7 +181,7 @@ export async function attestFromAlgorand(
       .accountInformation(assetInfo.params.creator)
       .do();
     if (creatorAcctInfo["auth-addr"] === tbAddr) {
-      throw new Error("Cannot re-attest wormhole assets");
+      throw new Error("Cannot re-attest deltaswap assets");
     }
   }
 
@@ -262,7 +262,7 @@ export async function attestTokenFromNear(
   if (!getIsWrappedAssetNear(tokenBridge, asset)) {
     const { isRegistered } = await hashAccount(provider, tokenBridge, asset);
     if (!isRegistered) {
-      // The account has not been registered. The first user to attest a non-wormhole token pays for the space
+      // The account has not been registered. The first user to attest a non-deltaswap token pays for the space
       options.push({
         contractId: tokenBridge,
         methodName: "register_account",

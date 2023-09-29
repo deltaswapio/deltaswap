@@ -10,8 +10,8 @@ import {DeliveryProviderImplementation} from
     "../../contracts/relayer/deliveryProvider/DeliveryProviderImplementation.sol";
 import {DeliveryProviderProxy} from
     "../../contracts/relayer/deliveryProvider/DeliveryProviderProxy.sol";
-import {IWormholeRelayer} from "../../contracts/interfaces/relayer/IWormholeRelayerTyped.sol";
-import {WormholeRelayer} from "../../contracts/relayer/wormholeRelayer/WormholeRelayer.sol";
+import {IDeltaswapRelayer} from "../../contracts/interfaces/relayer/IDeltaswapRelayerTyped.sol";
+import {DeltaswapRelayer} from "../../contracts/relayer/wormholeRelayer/DeltaswapRelayer.sol";
 import {Create2Factory} from "../../contracts/relayer/create2Factory/Create2Factory.sol";
 import {MockGenericRelayer} from "./MockGenericRelayer.sol";
 import {MockWormhole} from "./MockWormhole.sol";
@@ -37,8 +37,8 @@ contract TestHelpers {
         (, helperWormholeSimulator) = setUpWormhole(1);
     }
 
-    function registerWormholeRelayerContract(
-        WormholeRelayer governance,
+    function registerDeltaswapRelayerContract(
+        DeltaswapRelayer governance,
         IWormhole wormhole,
         uint16 currentChainId,
         uint16 chainId,
@@ -64,7 +64,7 @@ contract TestHelpers {
         });
 
         bytes memory signed = helperWormholeSimulator.encodeAndSignMessage(preSignedMessage);
-        governance.registerWormholeRelayerContract(signed);
+        governance.registerDeltaswapRelayerContract(signed);
     }
 
     function setUpWormhole(uint16 chainId)
@@ -108,21 +108,21 @@ contract TestHelpers {
         deliveryProvider = DeliveryProvider(address(myDeliveryProvider));
     }
 
-    function setUpWormholeRelayer(
+    function setUpDeltaswapRelayer(
         IWormhole wormhole,
         address defaultDeliveryProvider
-    ) public returns (IWormholeRelayer coreRelayer) {
+    ) public returns (IDeltaswapRelayer coreRelayer) {
         Create2Factory create2Factory = new Create2Factory();
 
         address proxyAddressComputed =
             create2Factory.computeProxyAddress(address(this), "0xGenericRelayer");
 
-        WormholeRelayer coreRelayerImplementation = new WormholeRelayer(address(wormhole));
+        DeltaswapRelayer coreRelayerImplementation = new DeltaswapRelayer(address(wormhole));
 
         bytes memory initCall =
-            abi.encodeCall(WormholeRelayer.initialize, (defaultDeliveryProvider));
+            abi.encodeCall(DeltaswapRelayer.initialize, (defaultDeliveryProvider));
 
-        coreRelayer = IWormholeRelayer(
+        coreRelayer = IDeltaswapRelayer(
             create2Factory.create2Proxy(
                 "0xGenericRelayer", address(coreRelayerImplementation), initCall
             )

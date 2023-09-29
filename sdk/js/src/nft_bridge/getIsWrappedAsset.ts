@@ -5,7 +5,7 @@ import { Bridge__factory } from "../ethers-contracts";
 import { getWrappedMeta } from "../solana/nftBridge";
 
 /**
- * Returns whether or not an asset address on Ethereum is a wormhole wrapped asset
+ * Returns whether or not an asset address on Ethereum is a deltaswap wrapped asset
  * @param nftBridgeAddress
  * @param provider
  * @param assetAddress
@@ -22,7 +22,7 @@ export async function getIsWrappedAssetEth(
 }
 
 /**
- * Returns whether or not an asset on Solana is a wormhole wrapped asset
+ * Returns whether or not an asset on Solana is a deltaswap wrapped asset
  * @param connection
  * @param nftBridgeAddress
  * @param mintAddress

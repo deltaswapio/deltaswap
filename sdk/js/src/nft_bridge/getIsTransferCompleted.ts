@@ -8,8 +8,8 @@ import { ensureHexPrefix, TERRA_REDEEMED_CHECK_WALLET_ADDRESS } from "..";
 import { NftBridgeState } from "../aptos/types";
 import { getSignedVAAHash } from "../bridge";
 import { NFTBridge__factory } from "../ethers-contracts";
-import { getClaim } from "../solana/wormhole";
-import { parseVaa, SignedVaa } from "../vaa/wormhole";
+import { getClaim } from "../solana/deltaswap";
+import { parseVaa, SignedVaa } from "../vaa/deltaswap";
 
 export async function getIsTransferCompletedEth(
   nftBridgeAddress: string,

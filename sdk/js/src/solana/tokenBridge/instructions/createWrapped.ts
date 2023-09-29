@@ -13,7 +13,7 @@ import {
   SignedVaa,
 } from "../../../vaa";
 import { TOKEN_METADATA_PROGRAM_ID } from "../../utils";
-import { deriveClaimKey, derivePostedVaaKey } from "../../wormhole";
+import { deriveClaimKey, derivePostedVaaKey } from "../../deltaswap";
 import {
   deriveEndpointKey,
   deriveMintAuthorityKey,
@@ -26,7 +26,7 @@ import { createReadOnlyTokenBridgeProgramInterface } from "../program";
 
 export function createCreateWrappedInstruction(
   tokenBridgeProgramId: PublicKeyInitData,
-  wormholeProgramId: PublicKeyInitData,
+  deltaswapProgramId: PublicKeyInitData,
   payer: PublicKeyInitData,
   vaa: SignedVaa | ParsedAttestMetaVaa
 ): TransactionInstruction {
@@ -39,7 +39,7 @@ export function createCreateWrappedInstruction(
   return methods._ixFn(...methods._args, {
     accounts: getCreateWrappedAccounts(
       tokenBridgeProgramId,
-      wormholeProgramId,
+      deltaswapProgramId,
       payer,
       vaa
     ) as any,
@@ -64,12 +64,12 @@ export interface CreateWrappedAccounts {
   systemProgram: PublicKey;
   tokenProgram: PublicKey;
   splMetadataProgram: PublicKey;
-  wormholeProgram: PublicKey;
+  deltaswapProgram: PublicKey;
 }
 
 export function getCreateWrappedAccounts(
   tokenBridgeProgramId: PublicKeyInitData,
-  wormholeProgramId: PublicKeyInitData,
+  deltaswapProgramId: PublicKeyInitData,
   payer: PublicKeyInitData,
   vaa: SignedVaa | ParsedAttestMetaVaa
 ): CreateWrappedAccounts {
@@ -87,7 +87,7 @@ export function getCreateWrappedAccounts(
       parsed.emitterChain,
       parsed.emitterAddress
     ),
-    vaa: derivePostedVaaKey(wormholeProgramId, parsed.hash),
+    vaa: derivePostedVaaKey(deltaswapProgramId, parsed.hash),
     claim: deriveClaimKey(
       tokenBridgeProgramId,
       parsed.emitterAddress,
@@ -102,6 +102,6 @@ export function getCreateWrappedAccounts(
     systemProgram: SystemProgram.programId,
     tokenProgram: TOKEN_PROGRAM_ID,
     splMetadataProgram: TOKEN_METADATA_PROGRAM_ID,
-    wormholeProgram: new PublicKey(wormholeProgramId),
+    deltaswapProgram: new PublicKey(deltaswapProgramId),
   };
 }

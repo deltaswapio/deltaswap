@@ -78,14 +78,14 @@ export const handler = async (
     ]);
   }
 
-  const info = await relayer.getWormholeRelayerInfo(chain, argv.tx, {
+  const info = await relayer.getDeltaswapRelayerInfo(chain, argv.tx, {
     environment: network,
     sourceChainProvider,
     targetChainProviders,
     targetChainBlockRanges,
   });
 
-  console.log(relayer.stringifyWormholeRelayerInfo(info));
+  console.log(relayer.stringifyDeltaswapRelayerInfo(info));
   if (
     info.targetChainStatus.events[0].status ===
     relayer.DeliveryStatus.DeliveryDidntHappenWithinRange

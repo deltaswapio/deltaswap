@@ -1,6 +1,6 @@
 import { BN } from "@project-serum/anchor";
 import { ParsedGovernanceVaa, parseGovernanceVaa } from "./governance";
-import { ParsedVaa, parseVaa, SignedVaa } from "./wormhole";
+import { ParsedVaa, parseVaa, SignedVaa } from "./deltaswap";
 
 export enum TokenBridgePayload {
   Transfer = 1,

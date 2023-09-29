@@ -6,7 +6,7 @@ import {
   SystemProgram,
 } from "@solana/web3.js";
 import {
-  deriveWormholeBridgeDataKey,
+  deriveDeltaswapBridgeDataKey,
   deriveFeeCollectorKey,
   getEmitterKeys,
 } from "../accounts";
@@ -25,22 +25,22 @@ export interface PostMessageAccounts {
 }
 
 export function getPostMessageAccounts(
-  wormholeProgramId: PublicKeyInitData,
+  deltaswapProgramId: PublicKeyInitData,
   payer: PublicKeyInitData,
   emitterProgramId: PublicKeyInitData,
   message: PublicKeyInitData
 ): PostMessageAccounts {
   const { emitter, sequence } = getEmitterKeys(
     emitterProgramId,
-    wormholeProgramId
+    deltaswapProgramId
   );
   return {
-    bridge: deriveWormholeBridgeDataKey(wormholeProgramId),
+    bridge: deriveDeltaswapBridgeDataKey(deltaswapProgramId),
     message: new PublicKey(message),
     emitter,
     sequence,
     payer: new PublicKey(payer),
-    feeCollector: deriveFeeCollectorKey(wormholeProgramId),
+    feeCollector: deriveFeeCollectorKey(deltaswapProgramId),
     clock: SYSVAR_CLOCK_PUBKEY,
     rent: SYSVAR_RENT_PUBKEY,
     systemProgram: SystemProgram.programId,

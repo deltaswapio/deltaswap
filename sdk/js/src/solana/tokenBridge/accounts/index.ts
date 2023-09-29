@@ -4,4 +4,4 @@ export * from "./endpoint";
 export * from "./transferWithPayload";
 export * from "./signer";
 export * from "./wrapped";
-export { deriveUpgradeAuthorityKey } from "../../wormhole";
+export { deriveUpgradeAuthorityKey } from "../../deltaswap";

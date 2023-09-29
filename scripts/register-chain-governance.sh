@@ -36,7 +36,7 @@ Usage:
 
   where:
     -h  show this help text
-    -m  module (TokenBridge, NFTBridge, WormholeRelayer)
+    -m  module (TokenBridge, NFTBridge, DeltaswapRelayer)
     -c  chain name
     -a  emitter address (optional, derived by worm CLI by default)
     -o  multi-mode output directory
@@ -124,10 +124,10 @@ phylaxd template token-bridge-register-chain \\
   --chain-id $chain --module \"NFTBridge\" \\
   --new-address $address"
     ;;
-  WormholeRelayer)
+  DeltaswapRelayer)
     echo "\
 phylaxd template token-bridge-register-chain \\
-  --chain-id $chain --module \"WormholeRelayer\" \\
+  --chain-id $chain --module \"DeltaswapRelayer\" \\
   --new-address $address"
     ;;
   *) echo "unknown module $module" >&2

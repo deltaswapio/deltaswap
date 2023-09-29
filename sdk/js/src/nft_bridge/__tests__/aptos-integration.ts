@@ -409,7 +409,7 @@ describe("Aptos NFT SDK tests", () => {
     );
     assertIsNotNull(tokenData);
     expect(tokenData.token_data_id.collection).toBe(
-      "Wormhole Bridged Solana-NFT" // this will change if SPL cache is deprecated in favor of separate collections
+      "Deltaswap Bridged Solana-NFT" // this will change if SPL cache is deprecated in favor of separate collections
     );
 
     // check if token is in user's account

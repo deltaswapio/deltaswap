@@ -36,7 +36,7 @@ import {
   transferFromEth,
   uint8ArrayToHex,
   updateWrappedOnEth,
-  WormholeWrappedInfo,
+  DeltaswapWrappedInfo,
 } from "../..";
 import { TokenImplementation__factory } from "../../ethers-contracts";
 import { _parseVAAAlgorand } from "../../algorand";
@@ -769,7 +769,7 @@ describe("Algorand tests", () => {
         expect(assetIdCreatedEndBal - assetIdCreatedFinBal).toBe(
           TransferBackAmount
         );
-        const info: WormholeWrappedInfo = await getOriginalAssetAlgorand(
+        const info: DeltaswapWrappedInfo = await getOriginalAssetAlgorand(
           client,
           TOKEN_BRIDGE_ID,
           assetIdCreated

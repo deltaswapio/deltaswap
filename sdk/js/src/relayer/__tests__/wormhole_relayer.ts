@@ -43,9 +43,9 @@ type TestChain = {
   name: ChainName;
   provider: ethers.providers.Provider;
   wallet: ethers.Wallet;
-  wormholeRelayerAddress: string;
+  deltaswapRelayerAddress: string;
   mockIntegrationAddress: string;
-  wormholeRelayer: ethers_contracts.WormholeRelayer;
+  deltaswapRelayer: ethers_contracts.DeltaswapRelayer;
   mockIntegration: ethers_contracts.MockRelayerIntegration;
 };
 
@@ -53,8 +53,8 @@ const createTestChain = (name: ChainName) => {
   const provider = getDefaultProvider(network, name, ci);
   const addressInfo = getAddressInfo(name, network);
   if (process.env.DEV) {
-    // Via ir is off -> different wormhole relayer address
-    addressInfo.wormholeRelayerAddress =
+    // Via ir is off -> different deltaswap relayer address
+    addressInfo.deltaswapRelayerAddress =
       "0x53855d4b64E9A3CF59A84bc768adA716B5536BC5";
   }
   if (network == "MAINNET")
@@ -64,13 +64,13 @@ const createTestChain = (name: ChainName) => {
     addressInfo.mockDeliveryProviderAddress =
       "0x7A0a53847776f7e94Cc35742971aCb2217b0Db81";
 
-  if (!addressInfo.wormholeRelayerAddress)
+  if (!addressInfo.deltaswapRelayerAddress)
     throw Error(`No core relayer address for ${name}`);
   if (!addressInfo.mockIntegrationAddress)
     throw Error(`No mock relayer integration address for ${name}`);
   const wallet = new ethers.Wallet(PRIVATE_KEY, provider);
-  const wormholeRelayer = ethers_contracts.WormholeRelayer__factory.connect(
-    addressInfo.wormholeRelayerAddress,
+  const deltaswapRelayer = ethers_contracts.DeltaswapRelayer__factory.connect(
+    addressInfo.deltaswapRelayerAddress,
     wallet
   );
   const mockIntegration =
@@ -83,9 +83,9 @@ const createTestChain = (name: ChainName) => {
     name,
     provider,
     wallet,
-    wormholeRelayerAddress: addressInfo.wormholeRelayerAddress,
+    deltaswapRelayerAddress: addressInfo.deltaswapRelayerAddress,
     mockIntegrationAddress: addressInfo.mockIntegrationAddress,
-    wormholeRelayer,
+    deltaswapRelayer,
     mockIntegration,
   };
   return result;
@@ -101,19 +101,19 @@ const optionalParams = {
   environment: network,
   sourceChainProvider: source.provider,
   targetChainProviders: myMap,
-  wormholeRelayerAddress: source.wormholeRelayerAddress,
+  deltaswapRelayerAddress: source.deltaswapRelayerAddress,
 };
 const optionalParamsTarget = {
   environment: network,
   sourceChainProvider: target.provider,
   targetChainProviders: myMap,
-  wormholeRelayerAddress: target.wormholeRelayerAddress,
+  deltaswapRelayerAddress: target.deltaswapRelayerAddress,
 };
 
-// for signing wormhole messages
+// for signing deltaswap messages
 const phylaxs = new MockPhylaxs(PHYLAX_SET_INDEX, PHYLAX_KEYS);
 
-// for generating governance wormhole messages
+// for generating governance deltaswap messages
 const governance = new GovernanceEmitter(GOVERNANCE_EMITTER_ADDRESS);
 
 const phylaxIndices = ci ? [0, 1] : [0];
@@ -121,23 +121,23 @@ const phylaxIndices = ci ? [0, 1] : [0];
 const REASONABLE_GAS_LIMIT = 500000;
 const TOO_LOW_GAS_LIMIT = 10000;
 
-const wormholeRelayerAddresses = new Map<ChainName, string>();
-wormholeRelayerAddresses.set(sourceChain, source.wormholeRelayerAddress);
-wormholeRelayerAddresses.set(targetChain, target.wormholeRelayerAddress);
+const deltaswapRelayerAddresses = new Map<ChainName, string>();
+deltaswapRelayerAddresses.set(sourceChain, source.deltaswapRelayerAddress);
+deltaswapRelayerAddresses.set(targetChain, target.deltaswapRelayerAddress);
 
 const getStatus = async (
   txHash: string,
   _sourceChain?: ChainName,
   index?: number
 ): Promise<string> => {
-  const info = (await relayer.getWormholeRelayerInfo(
+  const info = (await relayer.getDeltaswapRelayerInfo(
     _sourceChain || sourceChain,
     txHash,
     {
       environment: network,
       targetChainProviders: myMap,
       sourceChainProvider: myMap.get(_sourceChain || sourceChain),
-      wormholeRelayerAddresses,
+      deltaswapRelayerAddresses,
     }
   )) as relayer.DeliveryInfo;
   return info.targetChainStatus.events[index ? index : 0].status;
@@ -169,7 +169,7 @@ const testSend = async (
   return tx.wait();
 };
 
-describe("Wormhole Relayer Tests", () => {
+describe("Deltaswap Relayer Tests", () => {
   test("Executes a Delivery Success", async () => {
     const arbitraryPayload = getArbitraryBytes32();
     console.log(`Sent message: ${arbitraryPayload}`);
@@ -191,12 +191,12 @@ describe("Wormhole Relayer Tests", () => {
     const arbitraryPayload = getArbitraryBytes32();
     console.log(`Sent message: ${arbitraryPayload}`);
 
-    const wormhole = Implementation__factory.connect(
+    const deltaswap = Implementation__factory.connect(
       CONTRACTS[network][sourceChain].core || "",
       source.wallet
     );
-    const deliverySeq = await wormhole.nextSequence(source.wallet.address);
-    const msgTx = await wormhole.publishMessage(0, arbitraryPayload, 200);
+    const deliverySeq = await deltaswap.nextSequence(source.wallet.address);
+    const msgTx = await deltaswap.publishMessage(0, arbitraryPayload, 200);
     await msgTx.wait();
 
     const value = await relayer.getPrice(
@@ -235,7 +235,7 @@ describe("Wormhole Relayer Tests", () => {
     console.log("Checking if message was relayed");
     const message = (await target.mockIntegration.getDeliveryData())
       .additionalVaas[0];
-    const parsedMessage = await wormhole.parseVM(message);
+    const parsedMessage = await deltaswap.parseVM(message);
     expect(parsedMessage.payload).toBe(arbitraryPayload);
   });
 
@@ -246,7 +246,7 @@ describe("Wormhole Relayer Tests", () => {
     const deliverySeq = await Implementation__factory.connect(
       CONTRACTS[network][sourceChain].core || "",
       source.provider
-    ).nextSequence(source.wormholeRelayerAddress);
+    ).nextSequence(source.deltaswapRelayerAddress);
 
     const rx = await testSend(arbitraryPayload, false, true);
 
@@ -268,15 +268,15 @@ describe("Wormhole Relayer Tests", () => {
       optionalParams
     );
 
-    const info = (await relayer.getWormholeRelayerInfo(
+    const info = (await relayer.getDeltaswapRelayerInfo(
       sourceChain,
       rx.transactionHash,
-      { wormholeRelayerAddresses, ...optionalParams }
+      { deltaswapRelayerAddresses, ...optionalParams }
     )) as relayer.DeliveryInfo;
 
     const rpc = getPhylaxRPC(network, ci);
     const emitterAddress = Buffer.from(
-      tryNativeToUint8Array(source.wormholeRelayerAddress, "ethereum")
+      tryNativeToUint8Array(source.deltaswapRelayerAddress, "ethereum")
     );
     const deliveryVaa = await getSignedVAAWithRetry(
       [rpc],
@@ -347,7 +347,7 @@ describe("Wormhole Relayer Tests", () => {
       source.wallet,
       sourceChain,
       targetChain,
-      target.wormholeRelayerAddress, // This is an address that exists but doesn't implement the IWormhole interface, so should result in Receiver Failure
+      target.deltaswapRelayerAddress, // This is an address that exists but doesn't implement the IDeltaswap interface, so should result in Receiver Failure
       Buffer.from("hi!"),
       REASONABLE_GAS_LIMIT,
       { value, gasLimit: REASONABLE_GAS_LIMIT },
@@ -364,8 +364,8 @@ describe("Wormhole Relayer Tests", () => {
     const status = await getStatus(tx.hash);
     expect(status).toBe("Receiver Failure");
 
-    const info = (await relayer.getWormholeRelayerInfo(sourceChain, tx.hash, {
-      wormholeRelayerAddresses,
+    const info = (await relayer.getDeltaswapRelayerInfo(sourceChain, tx.hash, {
+      deltaswapRelayerAddresses,
       ...optionalParams,
     })) as relayer.DeliveryInfo;
 
@@ -374,7 +374,7 @@ describe("Wormhole Relayer Tests", () => {
     const newEndingBalance = await source.wallet.getBalance();
 
     console.log("Checking status of refund using SDK");
-    console.log(relayer.stringifyWormholeRelayerInfo(info));
+    console.log(relayer.stringifyDeltaswapRelayerInfo(info));
     const statusOfRefund = await getStatus(
       info.targetChainStatus.events[0].transactionHash || "",
       targetChain
@@ -435,10 +435,10 @@ describe("Wormhole Relayer Tests", () => {
       optionalParams
     );
 
-    const info = (await relayer.getWormholeRelayerInfo(
+    const info = (await relayer.getDeltaswapRelayerInfo(
       sourceChain,
       rx.transactionHash,
-      { wormholeRelayerAddresses, ...optionalParams }
+      { deltaswapRelayerAddresses, ...optionalParams }
     )) as relayer.DeliveryInfo;
 
     console.log("Redelivering message");
@@ -450,20 +450,20 @@ describe("Wormhole Relayer Tests", () => {
       relayer.createVaaKey(
         source.chainId,
         Buffer.from(
-          tryNativeToUint8Array(source.wormholeRelayerAddress, "ethereum")
+          tryNativeToUint8Array(source.deltaswapRelayerAddress, "ethereum")
         ),
         info.sourceDeliverySequenceNumber
       ),
       REASONABLE_GAS_LIMIT,
       0,
-      await source.wormholeRelayer.getDefaultDeliveryProvider(),
+      await source.deltaswapRelayer.getDefaultDeliveryProvider(),
       [getPhylaxRPC(network, ci)],
       {
         value: value,
         gasLimit: REASONABLE_GAS_LIMIT,
       },
       { transport: NodeHttpTransport() },
-      { wormholeRelayerAddress: source.wormholeRelayerAddress }
+      { deltaswapRelayerAddress: source.deltaswapRelayerAddress }
     );
 
     console.log("redelivery tx:", redeliveryReceipt.hash);
@@ -485,7 +485,7 @@ describe("Wormhole Relayer Tests", () => {
     const chain = 24;
 
     const currentAddress =
-      await source.wormholeRelayer.getRegisteredWormholeRelayerContract(chain);
+      await source.deltaswapRelayer.getRegisteredDeltaswapRelayerContract(chain);
     console.log(
       `For Chain ${source.chainId}, registered chain ${chain} address: ${currentAddress}`
     );
@@ -496,7 +496,7 @@ describe("Wormhole Relayer Tests", () => {
     const timestamp = (await source.wallet.provider.getBlock("latest"))
       .timestamp;
 
-    const firstMessage = governance.publishWormholeRelayerRegisterChain(
+    const firstMessage = governance.publishDeltaswapRelayerRegisterChain(
       timestamp,
       chain,
       expectedNewRegisteredAddress
@@ -506,14 +506,14 @@ describe("Wormhole Relayer Tests", () => {
       phylaxIndices
     );
 
-    let tx = await source.wormholeRelayer.registerWormholeRelayerContract(
+    let tx = await source.deltaswapRelayer.registerDeltaswapRelayerContract(
       firstSignedVaa,
       { gasLimit: REASONABLE_GAS_LIMIT }
     );
     await tx.wait();
 
     const newRegisteredAddress =
-      await source.wormholeRelayer.getRegisteredWormholeRelayerContract(chain);
+      await source.deltaswapRelayer.getRegisteredDeltaswapRelayerContract(chain);
 
     expect(newRegisteredAddress).toBe(expectedNewRegisteredAddress);
   });
@@ -522,7 +522,7 @@ describe("Wormhole Relayer Tests", () => {
     "Governance: Test Setting Default Relay Provider",
     async () => {
       const currentAddress =
-        await source.wormholeRelayer.getDefaultDeliveryProvider();
+        await source.deltaswapRelayer.getDefaultDeliveryProvider();
       console.log(
         `For Chain ${source.chainId}, default relay provider: ${currentAddress}`
       );
@@ -534,7 +534,7 @@ describe("Wormhole Relayer Tests", () => {
         .timestamp;
       const chain = source.chainId;
       const firstMessage =
-        governance.publishWormholeRelayerSetDefaultDeliveryProvider(
+        governance.publishDeltaswapRelayerSetDefaultDeliveryProvider(
           timestamp,
           chain,
           expectedNewDefaultDeliveryProvider
@@ -544,20 +544,20 @@ describe("Wormhole Relayer Tests", () => {
         phylaxIndices
       );
 
-      let tx = await source.wormholeRelayer.setDefaultDeliveryProvider(
+      let tx = await source.deltaswapRelayer.setDefaultDeliveryProvider(
         firstSignedVaa
       );
       await tx.wait();
 
       const newDefaultDeliveryProvider =
-        await source.wormholeRelayer.getDefaultDeliveryProvider();
+        await source.deltaswapRelayer.getDefaultDeliveryProvider();
 
       expect(newDefaultDeliveryProvider).toBe(
         expectedNewDefaultDeliveryProvider
       );
 
       const inverseFirstMessage =
-        governance.publishWormholeRelayerSetDefaultDeliveryProvider(
+        governance.publishDeltaswapRelayerSetDefaultDeliveryProvider(
           timestamp,
           chain,
           currentAddress
@@ -567,13 +567,13 @@ describe("Wormhole Relayer Tests", () => {
         phylaxIndices
       );
 
-      tx = await source.wormholeRelayer.setDefaultDeliveryProvider(
+      tx = await source.deltaswapRelayer.setDefaultDeliveryProvider(
         inverseFirstSignedVaa
       );
       await tx.wait();
 
       const originalDefaultDeliveryProvider =
-        await source.wormholeRelayer.getDefaultDeliveryProvider();
+        await source.deltaswapRelayer.getDefaultDeliveryProvider();
 
       expect(originalDefaultDeliveryProvider).toBe(currentAddress);
     }
@@ -585,7 +585,7 @@ describe("Wormhole Relayer Tests", () => {
 
     const getImplementationAddress = () =>
       source.provider.getStorageAt(
-        source.wormholeRelayer.address,
+        source.deltaswapRelayer.address,
         IMPLEMENTATION_STORAGE_SLOT
       );
 
@@ -593,37 +593,37 @@ describe("Wormhole Relayer Tests", () => {
       `Current Implementation address: ${await getImplementationAddress()}`
     );
 
-    const wormholeAddress = CONTRACTS[network][sourceChain].core || "";
+    const deltaswapAddress = CONTRACTS[network][sourceChain].core || "";
 
-    const newWormholeRelayerImplementationAddress = (
-      await new ethers_contracts.WormholeRelayer__factory(source.wallet)
-        .deploy(wormholeAddress)
+    const newDeltaswapRelayerImplementationAddress = (
+      await new ethers_contracts.DeltaswapRelayer__factory(source.wallet)
+        .deploy(deltaswapAddress)
         .then((x) => x.deployed())
     ).address;
 
     console.log(`Deployed!`);
     console.log(
-      `New core relayer implementation: ${newWormholeRelayerImplementationAddress}`
+      `New core relayer implementation: ${newDeltaswapRelayerImplementationAddress}`
     );
 
     const timestamp = (await source.wallet.provider.getBlock("latest"))
       .timestamp;
     const chain = source.chainId;
-    const firstMessage = governance.publishWormholeRelayerUpgradeContract(
+    const firstMessage = governance.publishDeltaswapRelayerUpgradeContract(
       timestamp,
       chain,
-      newWormholeRelayerImplementationAddress
+      newDeltaswapRelayerImplementationAddress
     );
     const firstSignedVaa = phylaxs.addSignatures(
       firstMessage,
       phylaxIndices
     );
 
-    let tx = await source.wormholeRelayer.submitContractUpgrade(firstSignedVaa);
+    let tx = await source.deltaswapRelayer.submitContractUpgrade(firstSignedVaa);
 
     expect(
       ethers.utils.getAddress((await getImplementationAddress()).substring(26))
-    ).toBe(ethers.utils.getAddress(newWormholeRelayerImplementationAddress));
+    ).toBe(ethers.utils.getAddress(newDeltaswapRelayerImplementationAddress));
   });
 });
 

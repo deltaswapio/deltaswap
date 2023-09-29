@@ -55,7 +55,7 @@ import { isValidSuiType } from "../sui";
  * The Terra implementation instead supports Terra-native denoms without
  * wrapping to CW-20 token first. As these denoms don't have an address, they
  * are encoded in the Portal payloads by the setting the first byte to 1.  This
- * encoding is safe, because the first 12 bytes of the 32-byte wormhole address
+ * encoding is safe, because the first 12 bytes of the 32-byte deltaswap address
  * space are not used on Terra otherwise, as cosmos addresses are 20 bytes wide.
  */
 export const isHexNativeTerra = (h: string): boolean => h.startsWith("01");
@@ -76,7 +76,7 @@ export const hexToUint8Array = (h: string): Uint8Array => {
 
 /**
  *
- * Convert an address in a wormhole's 32-byte array representation into a chain's
+ * Convert an address in a deltaswap's 32-byte array representation into a chain's
  * native string representation.
  *
  * @throws if address is not the right length for the given chain
@@ -110,7 +110,7 @@ export const tryUint8ArrayToNative = (
   } else if (chainId == CHAIN_ID_WORMCHAIN) {
     const h = uint8ArrayToHex(a);
     return humanAddress(
-      "wormhole",
+      "deltaswap",
       isLikely20ByteCosmwasm(h) ? a.slice(-20) : a
     );
   } else if (chainId === CHAIN_ID_XPLA) {
@@ -158,7 +158,7 @@ export const tryHexToNativeStringNear = async (
 
 /**
  *
- * Convert an address in a wormhole's 32-byte hex representation into a chain's native
+ * Convert an address in a deltaswap's 32-byte hex representation into a chain's native
  * string representation.
  *
  * @throws if address is not the right length for the given chain
@@ -171,7 +171,7 @@ export const tryHexToNativeAssetString = (h: string, c: ChainId): string =>
 
 /**
  *
- * Convert an address in a wormhole's 32-byte hex representation into a chain's native
+ * Convert an address in a deltaswap's 32-byte hex representation into a chain's native
  * string representation.
  *
  * @deprecated since 0.3.0, use [[tryHexToNativeString]] instead.
@@ -192,7 +192,7 @@ export const hexToNativeAssetString = (
 
 /**
  *
- * Convert an address in a wormhole's 32-byte hex representation into a chain's native
+ * Convert an address in a deltaswap's 32-byte hex representation into a chain's native
  * string representation.
  *
  * @throws if address is not the right length for the given chain
@@ -204,7 +204,7 @@ export const tryHexToNativeString = (
 
 /**
  *
- * Convert an address in a wormhole's 32-byte hex representation into a chain's native
+ * Convert an address in a deltaswap's 32-byte hex representation into a chain's native
  * string representation.
  *
  * @deprecated since 0.3.0, use [[tryHexToNativeString]] instead.
@@ -227,7 +227,7 @@ export const hexToNativeString = (
 /**
  *
  * Convert an address in a chain's native representation into a 32-byte hex string
- * understood by wormhole.
+ * understood by deltaswap.
  *
  * @throws if address is a malformed string for the given chain id
  */
@@ -301,7 +301,7 @@ export const tryNativeToHexString = (
 /**
  *
  * Convert an address in a chain's native representation into a 32-byte hex string
- * understood by wormhole.
+ * understood by deltaswap.
  *
  * @deprecated since 0.3.0, use [[tryNativeToHexString]] instead.
  * @throws if address is a malformed string for the given chain id
@@ -319,7 +319,7 @@ export const nativeToHexString = (
 /**
  *
  * Convert an address in a chain's native representation into a 32-byte array
- * understood by wormhole.
+ * understood by deltaswap.
  *
  * @throws if address is a malformed string for the given chain id
  */
@@ -334,7 +334,7 @@ export function tryNativeToUint8Array(
 /**
  *
  * Convert an address in a chain's native representation into a 32-byte hex string
- * understood by wormhole.
+ * understood by deltaswap.
  *
  * @deprecated since 0.3.0, use [[tryUint8ArrayToNative]] instead.
  * @throws if address is a malformed string for the given chain id

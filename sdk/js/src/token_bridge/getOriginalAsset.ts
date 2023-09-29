@@ -52,14 +52,14 @@ import {
 } from "./getIsWrappedAsset";
 
 // TODO: remove `as ChainId` and return number in next minor version as we can't ensure it will match our type definition
-export interface WormholeWrappedInfo {
+export interface DeltaswapWrappedInfo {
   isWrapped: boolean;
   chainId: ChainId;
   assetAddress: Uint8Array;
 }
 
 /**
- * Returns a origin chain and asset address on {originChain} for a provided Wormhole wrapped address
+ * Returns a origin chain and asset address on {originChain} for a provided Deltaswap wrapped address
  * @param tokenBridgeAddress
  * @param provider
  * @param wrappedAddress
@@ -70,7 +70,7 @@ export async function getOriginalAssetEth(
   provider: ethers.Signer | ethers.providers.Provider,
   wrappedAddress: string,
   lookupChain: ChainId | ChainName
-): Promise<WormholeWrappedInfo> {
+): Promise<DeltaswapWrappedInfo> {
   const isWrapped = await getIsWrappedAssetEth(
     tokenBridgeAddress,
     provider,
@@ -114,7 +114,7 @@ export async function getOriginalAssetCosmWasm(
   client: TerraLCDClient | XplaLCDClient,
   wrappedAddress: string,
   lookupChain: CosmWasmChainId | CosmWasmChainName
-): Promise<WormholeWrappedInfo> {
+): Promise<DeltaswapWrappedInfo> {
   const chainId = coalesceCosmWasmChainId(lookupChain);
   if (isNativeCosmWasmDenom(chainId, wrappedAddress)) {
     return {
@@ -155,7 +155,7 @@ export async function getOriginalAssetCosmWasm(
 }
 
 /**
- * Returns a origin chain and asset address on {originChain} for a provided Wormhole wrapped address
+ * Returns a origin chain and asset address on {originChain} for a provided Deltaswap wrapped address
  * @param connection
  * @param tokenBridgeAddress
  * @param mintAddress
@@ -167,7 +167,7 @@ export async function getOriginalAssetSolana(
   tokenBridgeAddress: PublicKeyInitData,
   mintAddress: PublicKeyInitData,
   commitment?: Commitment
-): Promise<WormholeWrappedInfo> {
+): Promise<DeltaswapWrappedInfo> {
   try {
     const mint = new PublicKey(mintAddress);
 
@@ -205,18 +205,18 @@ export async function getOriginalAssetSolana(
 export const getOriginalAssetSol = getOriginalAssetSolana;
 
 /**
- * Returns an origin chain and asset address on {originChain} for a provided Wormhole wrapped address
+ * Returns an origin chain and asset address on {originChain} for a provided Deltaswap wrapped address
  * @param client Algodv2 client
  * @param tokenBridgeId Application ID of the token bridge
  * @param assetId Algorand asset index
- * @returns wrapped wormhole information structure
+ * @returns wrapped deltaswap information structure
  */
 export async function getOriginalAssetAlgorand(
   client: Algodv2,
   tokenBridgeId: bigint,
   assetId: bigint
-): Promise<WormholeWrappedInfo> {
-  let retVal: WormholeWrappedInfo = {
+): Promise<DeltaswapWrappedInfo> {
+  let retVal: DeltaswapWrappedInfo = {
     isWrapped: false,
     chainId: CHAIN_ID_ALGORAND,
     assetAddress: new Uint8Array(),
@@ -243,8 +243,8 @@ export async function getOriginalAssetNear(
   provider: Provider,
   tokenAccount: string,
   assetAccount: string
-): Promise<WormholeWrappedInfo> {
-  const retVal: WormholeWrappedInfo = {
+): Promise<DeltaswapWrappedInfo> {
+  const retVal: DeltaswapWrappedInfo = {
     isWrapped: false,
     chainId: CHAIN_ID_NEAR,
     assetAddress: new Uint8Array(),
@@ -283,7 +283,7 @@ export async function getOriginalAssetAptos(
   client: AptosClient,
   tokenBridgePackageId: string,
   fullyQualifiedType: string
-): Promise<WormholeWrappedInfo> {
+): Promise<DeltaswapWrappedInfo> {
   if (!isValidAptosType(fullyQualifiedType)) {
     throw new Error("Invalid qualified type");
   }
@@ -330,7 +330,7 @@ export async function getOriginalAssetSui(
   provider: JsonRpcProvider,
   tokenBridgeStateObjectId: string,
   coinType: string
-): Promise<WormholeWrappedInfo> {
+): Promise<DeltaswapWrappedInfo> {
   if (!isValidSuiType(coinType)) {
     throw new Error(`Invalid Sui type: ${coinType}`);
   }

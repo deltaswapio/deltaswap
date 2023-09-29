@@ -2,13 +2,13 @@ import {
   init,
   loadChains,
   ChainInfo,
-  getWormholeRelayer,
+  getDeltaswapRelayer,
   getOperatingChains,
 } from "../helpers/env";
 import { wait } from "../helpers/utils";
 import { createRegisterChainVAA } from "../helpers/vaa";
 
-const processName = "registerChainsWormholeRelayerSelfSign";
+const processName = "registerChainsDeltaswapRelayerSelfSign";
 init();
 const operatingChains = getOperatingChains();
 const chains = loadChains();
@@ -17,22 +17,22 @@ async function run() {
   console.log("Start! " + processName);
 
   for (const operatingChain of operatingChains) {
-    await registerChainsWormholeRelayer(operatingChain);
-    await registerOnExistingChainsWormholeRelayer(operatingChain);
+    await registerChainsDeltaswapRelayer(operatingChain);
+    await registerOnExistingChainsDeltaswapRelayer(operatingChain);
   }
 }
 
-async function registerChainsWormholeRelayer(chain: ChainInfo) {
+async function registerChainsDeltaswapRelayer(chain: ChainInfo) {
   console.log(
     "Registering all the wormhole relayers onto Wormhole Relayer " +
       chain.chainId
   );
 
-  const coreRelayer = await getWormholeRelayer(chain);
+  const coreRelayer = await getDeltaswapRelayer(chain);
   for (const targetChain of chains) {
     try {
       await coreRelayer
-        .registerWormholeRelayerContract(createRegisterChainVAA(targetChain))
+        .registerDeltaswapRelayerContract(createRegisterChainVAA(targetChain))
         .then(wait);
     } catch (e) {
       console.log(
@@ -46,7 +46,7 @@ async function registerChainsWormholeRelayer(chain: ChainInfo) {
   );
 }
 
-async function registerOnExistingChainsWormholeRelayer(chain: ChainInfo) {
+async function registerOnExistingChainsDeltaswapRelayer(chain: ChainInfo) {
   console.log(
     "Registering Wormhole Relayer " +
       chain.chainId +
@@ -57,10 +57,10 @@ async function registerOnExistingChainsWormholeRelayer(chain: ChainInfo) {
     if (operatingChainIds.find((x) => x === targetChain.chainId)) {
       continue;
     }
-    const coreRelayer = await getWormholeRelayer(targetChain);
+    const coreRelayer = await getDeltaswapRelayer(targetChain);
     try {
       await coreRelayer
-        .registerWormholeRelayerContract(createRegisterChainVAA(chain))
+        .registerDeltaswapRelayerContract(createRegisterChainVAA(chain))
         .then(wait);
     } catch (e) {
       console.log(

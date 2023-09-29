@@ -11,7 +11,7 @@ import {
 } from "../../utils";
 
 export function derivePhylaxSetKey(
-  wormholeProgramId: PublicKeyInitData,
+  deltaswapProgramId: PublicKeyInitData,
   index: number
 ): PublicKey {
   return deriveAddress(
@@ -23,18 +23,18 @@ export function derivePhylaxSetKey(
         return buf;
       })(),
     ],
-    wormholeProgramId
+    deltaswapProgramId
   );
 }
 
 export async function getPhylaxSet(
   connection: Connection,
-  wormholeProgramId: PublicKeyInitData,
+  deltaswapProgramId: PublicKeyInitData,
   index: number,
   commitment?: Commitment
 ): Promise<PhylaxSetData> {
   return connection
-    .getAccountInfo(derivePhylaxSetKey(wormholeProgramId, index), commitment)
+    .getAccountInfo(derivePhylaxSetKey(deltaswapProgramId, index), commitment)
     .then((info) => PhylaxSetData.deserialize(getAccountData(info)));
 }
 

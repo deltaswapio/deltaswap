@@ -18,7 +18,7 @@ import (
 )
 
 type (
-	// VAA is a verifiable action approval of the Wormhole protocol
+	// VAA is a verifiable action approval of the Deltaswap protocol
 	VAA struct {
 		// Version of the VAA schema
 		Version uint8
@@ -64,12 +64,12 @@ type (
 		Observations []*Observation
 	}
 
-	// ChainID of a Wormhole chain
+	// ChainID of a Deltaswap chain
 	ChainID uint16
 	// Action of a VAA
 	Action uint8
 
-	// Address is a Wormhole protocol address, it contains the native chain's address. If the address data type of a
+	// Address is a Deltaswap protocol address, it contains the native chain's address. If the address data type of a
 	// chain is < 32bytes the value is zero-padded on the left.
 	Address [32]byte
 
@@ -412,7 +412,7 @@ const (
 	// BODY: 4 + 4 + 2 + 32 + 8  + 1 + 0 = 51
 	// BATCH: 1 + 32 + 1 + 1 + 1 + 51 = 88
 	//
-	// More details here: https://docs.wormholenetwork.com/wormhole/vaas
+	// More details here: https://docs.deltaswapnetwork.com/deltaswap/vaas
 	minHeadlessVAALength = 51 // HEADER
 	minVAALength         = 57 // HEADER + BODY
 	minBatchVAALength    = 94 // HEADER + BATCH

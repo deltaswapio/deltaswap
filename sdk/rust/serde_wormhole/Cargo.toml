@@ -1,5 +1,5 @@
 [package]
-name = "serde_wormhole"
+name = "serde_deltaswap"
 version = "0.1.0"
 edition = "2021"
 description = "Serde data format for VAA payloads"

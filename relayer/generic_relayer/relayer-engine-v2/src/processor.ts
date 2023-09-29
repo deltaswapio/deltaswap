@@ -3,11 +3,11 @@ import { Next, ParsedVaaWithBytes, sleep } from "relayer-engine";
 import {
   VaaKeyType,
   RelayerPayloadId,
-  parseWormholeRelayerPayloadType,
-  parseWormholeRelayerSend,
+  parseDeltaswapRelayerPayloadType,
+  parseDeltaswapRelayerSend,
   deliveryInstructionsPrintable,
   vaaKeyPrintable,
-  parseWormholeRelayerResend,
+  parseDeltaswapRelayerResend,
   RedeliveryInstruction,
   DeliveryInstruction,
   packOverrides,
@@ -17,7 +17,7 @@ import {
 import { EVMChainId } from "@certusone/wormhole-sdk";
 import { GRContext } from "./app";
 import { BigNumber, ethers } from "ethers";
-import { WormholeRelayer__factory } from "@certusone/wormhole-sdk/lib/cjs/ethers-contracts";
+import { DeltaswapRelayer__factory } from "@certusone/wormhole-sdk/lib/cjs/ethers-contracts";
 import {
   DeliveryExecutionRecord,
   addFatalError,
@@ -34,7 +34,7 @@ export async function processGenericRelayerVaa(ctx: GRContext, next: Next) {
     executionRecord.rawVaaHex = ctx.vaaBytes!.toString("hex");
     executionRecord.rawVaaPayloadHex = ctx.vaa!.payload.toString("hex");
 
-    const payloadId = parseWormholeRelayerPayloadType(ctx.vaa!.payload);
+    const payloadId = parseDeltaswapRelayerPayloadType(ctx.vaa!.payload);
 
     executionRecord.payloadType = RelayerPayloadId[payloadId];
 
@@ -68,7 +68,7 @@ async function processDelivery(
   ctx: GRContext,
   executionRecord: DeliveryExecutionRecord
 ) {
-  const deliveryVaa = parseWormholeRelayerSend(ctx.vaa!.payload);
+  const deliveryVaa = parseDeltaswapRelayerSend(ctx.vaa!.payload);
   executionRecord.didParse = true;
   const sourceDeliveryProvider = ethers.utils.getAddress(
     wh.tryUint8ArrayToNative(deliveryVaa.sourceDeliveryProvider, "ethereum")
@@ -92,7 +92,7 @@ async function processRedelivery(
   executionRecord: DeliveryExecutionRecord
 ) {
   executionRecord.redeliveryRecord = {};
-  const redeliveryVaa = parseWormholeRelayerResend(ctx.vaa!.payload);
+  const redeliveryVaa = parseDeltaswapRelayerResend(ctx.vaa!.payload);
   const sourceDeliveryProvider = ethers.utils.getAddress(
     wh.tryUint8ArrayToNative(
       redeliveryVaa.newSourceDeliveryProvider,
@@ -154,7 +154,7 @@ async function processRedelivery(
   executionRecord.redeliveryRecord.originalVaaFetchTimeEnd = Date.now();
 
   ctx.logger.info("Retrieved original VAA!");
-  const delivery = parseWormholeRelayerSend(originalVaa.payload);
+  const delivery = parseDeltaswapRelayerSend(originalVaa.payload);
   const validityCheck = isValidRedelivery(ctx, delivery, redeliveryVaa); //TODO better name?
   if (!validityCheck.isValid) {
     ctx.logger.info("Exiting redelivery process");
@@ -311,7 +311,7 @@ async function processDeliveryInstruction(
       executionRecord.deliveryRecord!.walletNonce =
         await wallet.getTransactionCount();
 
-      const wormholeRelayer = WormholeRelayer__factory.connect(
+      const wormholeRelayer = DeltaswapRelayer__factory.connect(
         ctx.wormholeRelayers[chainId],
         wallet
       );
@@ -402,7 +402,7 @@ function logResults(
     return x.address === ctx.wormholeRelayers[chainId];
   });
   if (relayerContractLog) {
-    const parsedLog = WormholeRelayer__factory.createInterface().parseLog(
+    const parsedLog = DeltaswapRelayer__factory.createInterface().parseLog(
       relayerContractLog!
     );
     const logArgs = {

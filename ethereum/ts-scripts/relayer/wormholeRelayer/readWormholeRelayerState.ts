@@ -1,14 +1,14 @@
 import {
   init,
   ChainInfo,
-  getWormholeRelayerAddress,
+  getDeltaswapRelayerAddress,
   getProvider,
   writeOutputFiles,
-  getWormholeRelayer,
+  getDeltaswapRelayer,
   getOperatingChains,
 } from "../helpers/env";
 
-const processName = "readWormholeRelayerContractState";
+const processName = "readDeltaswapRelayerContractState";
 init();
 const chains = getOperatingChains();
 
@@ -28,7 +28,7 @@ async function run() {
   writeOutputFiles(states, processName);
 }
 
-type WormholeRelayerContractState = {
+type DeltaswapRelayerContractState = {
   chainId: number;
   contractAddress: string;
   defaultProvider: string;
@@ -37,16 +37,16 @@ type WormholeRelayerContractState = {
 
 async function readState(
   chain: ChainInfo
-): Promise<WormholeRelayerContractState | null> {
+): Promise<DeltaswapRelayerContractState | null> {
   console.log(
     "Gathering core relayer contract status for chain " + chain.chainId
   );
 
   try {
-    const contractAddress = await getWormholeRelayerAddress(chain);
+    const contractAddress = await getDeltaswapRelayerAddress(chain);
     console.log("Querying " + contractAddress);
 
-    const coreRelayer = await getWormholeRelayer(chain, getProvider(chain));
+    const coreRelayer = await getDeltaswapRelayer(chain, getProvider(chain));
 
     console.log("Querying default provider for code");
     const provider = getProvider(chain);
@@ -59,7 +59,7 @@ async function readState(
       registeredContracts.push({
         chainId: chainInfo.chainId,
         contract: (
-          await coreRelayer.getRegisteredWormholeRelayerContract(
+          await coreRelayer.getRegisteredDeltaswapRelayerContract(
             chainInfo.chainId
           )
         ).toString(),
@@ -81,16 +81,16 @@ async function readState(
   return null;
 }
 
-function printState(state: WormholeRelayerContractState) {
+function printState(state: DeltaswapRelayerContractState) {
   console.log("");
-  console.log("WormholeRelayer: ");
+  console.log("DeltaswapRelayer: ");
   printFixed("Chain ID: ", state.chainId.toString());
   printFixed("Contract Address:", state.contractAddress);
   printFixed("Default Provider:", state.defaultProvider);
 
   console.log("");
 
-  printFixed("Registered WormholeRelayers", "");
+  printFixed("Registered DeltaswapRelayers", "");
   state.registeredContracts.forEach((x) => {
     printFixed("  Chain: " + x.chainId, x.contract);
   });

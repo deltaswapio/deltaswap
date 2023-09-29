@@ -1,4 +1,4 @@
-import { GetSignedVAAResponse } from "@certusone/wormhole-sdk-proto-web/lib/cjs/publicrpc/v1/publicrpc";
+import { GetSignedVAAResponse } from "@deltaswapio/deltaswap-sdk-proto-web/lib/cjs/publicrpc/v1/publicrpc";
 import { NodeHttpTransport } from "@improbable-eng/grpc-web-node-http-transport";
 import { TransactionResponse } from "@solana/web3.js";
 import { AptosClient, Types } from "aptos";

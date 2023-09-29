@@ -19,11 +19,11 @@ import {
 import { TokenBridgeState } from "../aptos/types";
 import { getSignedVAAHash } from "../bridge";
 import { Bridge__factory } from "../ethers-contracts";
-import { getClaim } from "../solana/wormhole";
+import { getClaim } from "../solana/deltaswap";
 import { getObjectFields, getTableKeyType } from "../sui/utils";
 import { safeBigIntToNumber } from "../utils/bigint";
 import { callFunctionNear } from "../utils/near";
-import { SignedVaa, parseVaa } from "../vaa/wormhole";
+import { SignedVaa, parseVaa } from "../vaa/deltaswap";
 
 export async function getIsTransferCompletedEth(
   tokenBridgeAddress: string,

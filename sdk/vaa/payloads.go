@@ -47,18 +47,18 @@ var IbcTranslatorModule = [32]byte{
 }
 var IbcTranslatorModuleStr = string(IbcTranslatorModule[:])
 
-// WormholeRelayerModule is the identifier of the Wormhole Relayer module (which is used for governance messages).
-// It is the hex representation of "WormholeRelayer" left padded with zeroes.
-var WormholeRelayerModule = [32]byte{
+// DeltaswapRelayerModule is the identifier of the Deltaswap Relayer module (which is used for governance messages).
+// It is the hex representation of "DeltaswapRelayer" left padded with zeroes.
+var DeltaswapRelayerModule = [32]byte{
 	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
 	0x00, 0x57, 0x6f, 0x72, 0x6d, 0x68, 0x6f, 0x6c, 0x65, 0x52, 0x65, 0x6c, 0x61, 0x79, 0x65, 0x72,
 }
-var WormholeRelayerModuleStr = string(WormholeRelayerModule[:])
+var DeltaswapRelayerModuleStr = string(DeltaswapRelayerModule[:])
 
 type GovernanceAction uint8
 
 var (
-	// Wormhole core governance actions
+	// Deltaswap core governance actions
 	// See e.g. GovernanceStructs.sol for semantic meaning of these
 	ActionContractUpgrade    GovernanceAction = 1
 	ActionPhylaxSetUpdate    GovernanceAction = 2
@@ -81,13 +81,13 @@ var (
 	// Accountant goverance actions
 	ActionModifyBalance GovernanceAction = 1
 
-	// Wormhole tokenbridge governance actions
+	// Deltaswap tokenbridge governance actions
 	ActionRegisterChain             GovernanceAction = 1
 	ActionUpgradeTokenBridge        GovernanceAction = 2
 	ActionTokenBridgeRecoverChainId GovernanceAction = 3
 
 	// Circle Integration governance actions
-	CircleIntegrationActionUpdateWormholeFinality        GovernanceAction = 1
+	CircleIntegrationActionUpdateDeltaswapFinality       GovernanceAction = 1
 	CircleIntegrationActionRegisterEmitterAndDomain      GovernanceAction = 2
 	CircleIntegrationActionUpgradeContractImplementation GovernanceAction = 3
 
@@ -97,8 +97,8 @@ var (
 	// Ibc Translator governance actions
 	IbcTranslatorActionUpdateChannelChain GovernanceAction = 1
 
-	// Wormhole relayer governance actions
-	WormholeRelayerSetDefaultDeliveryProvider GovernanceAction = 3
+	// Deltaswap relayer governance actions
+	DeltaswapRelayerSetDefaultDeliveryProvider GovernanceAction = 3
 )
 
 type (
@@ -173,8 +173,8 @@ type (
 		ContractAddr [32]byte
 	}
 
-	// BodyCircleIntegrationUpdateWormholeFinality is a governance message to update the wormhole finality for Circle Integration.
-	BodyCircleIntegrationUpdateWormholeFinality struct {
+	// BodyCircleIntegrationUpdateDeltaswapFinality is a governance message to update the deltaswap finality for Circle Integration.
+	BodyCircleIntegrationUpdateDeltaswapFinality struct {
 		TargetChainID ChainID
 		Finality      uint8
 	}
@@ -204,8 +204,8 @@ type (
 		ChainId   ChainID
 	}
 
-	// BodyWormholeRelayerSetDefaultDeliveryProvider is a governance message to set the default relay provider for the Wormhole Relayer.
-	BodyWormholeRelayerSetDefaultDeliveryProvider struct {
+	// BodyDeltaswapRelayerSetDefaultDeliveryProvider is a governance message to set the default relay provider for the Deltaswap Relayer.
+	BodyDeltaswapRelayerSetDefaultDeliveryProvider struct {
 		ChainID                           ChainID
 		NewDefaultDeliveryProviderAddress Address
 	}
@@ -342,8 +342,8 @@ func (r *BodyGatewayScheduleUpgrade) Deserialize(bz []byte) {
 	r.Height = binary.BigEndian.Uint64(bz[len(bz)-8:])
 }
 
-func (r BodyCircleIntegrationUpdateWormholeFinality) Serialize() []byte {
-	return serializeBridgeGovernanceVaa(CircleIntegrationModuleStr, CircleIntegrationActionUpdateWormholeFinality, r.TargetChainID, []byte{r.Finality})
+func (r BodyCircleIntegrationUpdateDeltaswapFinality) Serialize() []byte {
+	return serializeBridgeGovernanceVaa(CircleIntegrationModuleStr, CircleIntegrationActionUpdateDeltaswapFinality, r.TargetChainID, []byte{r.Finality})
 }
 
 func (r BodyCircleIntegrationRegisterEmitterAndDomain) Serialize() []byte {
@@ -371,10 +371,10 @@ func (r BodyIbcUpdateChannelChain) Serialize(module string) []byte {
 	return serializeBridgeGovernanceVaa(module, IbcReceiverActionUpdateChannelChain, r.TargetChainId, payload.Bytes())
 }
 
-func (r BodyWormholeRelayerSetDefaultDeliveryProvider) Serialize() []byte {
+func (r BodyDeltaswapRelayerSetDefaultDeliveryProvider) Serialize() []byte {
 	payload := &bytes.Buffer{}
 	payload.Write(r.NewDefaultDeliveryProviderAddress[:])
-	return serializeBridgeGovernanceVaa(WormholeRelayerModuleStr, WormholeRelayerSetDefaultDeliveryProvider, r.ChainID, payload.Bytes())
+	return serializeBridgeGovernanceVaa(DeltaswapRelayerModuleStr, DeltaswapRelayerSetDefaultDeliveryProvider, r.ChainID, payload.Bytes())
 }
 
 func EmptyPayloadVaa(module string, actionId GovernanceAction, chainId ChainID) []byte {

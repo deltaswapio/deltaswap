@@ -5,7 +5,7 @@ import {
 } from "@solana/web3.js";
 import { TOKEN_PROGRAM_ID } from "@solana/spl-token";
 import { createReadOnlyTokenBridgeProgramInterface } from "../program";
-import { getPostMessageCpiAccounts } from "../../wormhole";
+import { getPostMessageCpiAccounts } from "../../deltaswap";
 import {
   deriveAuthoritySignerKey,
   deriveSenderAccountKey,
@@ -16,7 +16,7 @@ import {
 
 export function createTransferWrappedWithPayloadInstruction(
   tokenBridgeProgramId: PublicKeyInitData,
-  wormholeProgramId: PublicKeyInitData,
+  deltaswapProgramId: PublicKeyInitData,
   payer: PublicKeyInitData,
   message: PublicKeyInitData,
   from: PublicKeyInitData,
@@ -44,7 +44,7 @@ export function createTransferWrappedWithPayloadInstruction(
   return methods._ixFn(...methods._args, {
     accounts: getTransferWrappedWithPayloadAccounts(
       tokenBridgeProgramId,
-      wormholeProgramId,
+      deltaswapProgramId,
       payer,
       message,
       from,
@@ -67,22 +67,22 @@ export interface TransferWrappedWithPayloadAccounts {
   mint: PublicKey;
   wrappedMeta: PublicKey;
   authoritySigner: PublicKey;
-  wormholeBridge: PublicKey;
-  wormholeMessage: PublicKey;
-  wormholeEmitter: PublicKey;
-  wormholeSequence: PublicKey;
-  wormholeFeeCollector: PublicKey;
+ deltaswapBridge: PublicKey;
+ deltaswapMessage: PublicKey;
+  deltaswapEmitter: PublicKey;
+  deltaswapSequence: PublicKey;
+  deltaswapFeeCollector: PublicKey;
   clock: PublicKey;
   sender: PublicKey;
   rent: PublicKey;
   systemProgram: PublicKey;
   tokenProgram: PublicKey;
-  wormholeProgram: PublicKey;
+  deltaswapProgram: PublicKey;
 }
 
 export function getTransferWrappedWithPayloadAccounts(
   tokenBridgeProgramId: PublicKeyInitData,
-  wormholeProgramId: PublicKeyInitData,
+  deltaswapProgramId: PublicKeyInitData,
   payer: PublicKeyInitData,
   message: PublicKeyInitData,
   from: PublicKeyInitData,
@@ -97,17 +97,17 @@ export function getTransferWrappedWithPayloadAccounts(
     tokenAddress
   );
   const {
-    wormholeBridge,
-    wormholeMessage,
-    wormholeEmitter,
-    wormholeSequence,
-    wormholeFeeCollector,
+   deltaswapBridge,
+   deltaswapMessage,
+    deltaswapEmitter,
+    deltaswapSequence,
+    deltaswapFeeCollector,
     clock,
     rent,
     systemProgram,
   } = getPostMessageCpiAccounts(
     tokenBridgeProgramId,
-    wormholeProgramId,
+    deltaswapProgramId,
     payer,
     message
   );
@@ -119,18 +119,18 @@ export function getTransferWrappedWithPayloadAccounts(
     mint: mint,
     wrappedMeta: deriveWrappedMetaKey(tokenBridgeProgramId, mint),
     authoritySigner: deriveAuthoritySignerKey(tokenBridgeProgramId),
-    wormholeBridge,
-    wormholeMessage: wormholeMessage,
-    wormholeEmitter,
-    wormholeSequence,
-    wormholeFeeCollector,
+   deltaswapBridge,
+   deltaswapMessage:deltaswapMessage,
+    deltaswapEmitter,
+    deltaswapSequence,
+    deltaswapFeeCollector,
     clock,
     sender: new PublicKey(
       cpiProgramId === undefined ? payer : deriveSenderAccountKey(cpiProgramId)
     ),
     rent,
     systemProgram,
-    wormholeProgram: new PublicKey(wormholeProgramId),
+    deltaswapProgram: new PublicKey(deltaswapProgramId),
     tokenProgram: TOKEN_PROGRAM_ID,
   };
 }

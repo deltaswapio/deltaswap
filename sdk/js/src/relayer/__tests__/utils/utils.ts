@@ -58,8 +58,8 @@ export const getPhylaxRPC = (network: Network, ci: boolean) => {
       : network == "DEVNET"
       ? "http://localhost:7071"
       : network == "TESTNET"
-      ? "https://wormhole-v2-testnet-api.certus.one"
-      : "https://wormhole-v2-mainnet-api.certus.one")
+      ? "https://deltaswap-v2-testnet-api.certus.one"
+      : "https://deltaswap-v2-mainnet-api.certus.one")
   );
 };
 

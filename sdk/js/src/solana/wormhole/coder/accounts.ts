@@ -1,7 +1,7 @@
 import { AccountsCoder, Idl } from "@project-serum/anchor";
 import { accountSize, IdlTypeDef } from "../../anchor";
 
-export class WormholeAccountsCoder<A extends string = string>
+export class DeltaswapAccountsCoder<A extends string = string>
   implements AccountsCoder
 {
   constructor(private idl: Idl) {}

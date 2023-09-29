@@ -1,24 +1,24 @@
 import { Coder, Idl } from "@project-serum/anchor";
-import { WormholeAccountsCoder } from "./accounts";
-import { WormholeEventsCoder } from "./events";
-import { WormholeInstructionCoder } from "./instruction";
-import { WormholeStateCoder } from "./state";
-import { WormholeTypesCoder } from "./types";
+import { DeltaswapAccountsCoder } from "./accounts";
+import { DeltaswapEventsCoder } from "./events";
+import { DeltaswapInstructionCoder } from "./instruction";
+import { DeltaswapStateCoder } from "./state";
+import { DeltaswapTypesCoder } from "./types";
 
-export { WormholeInstruction } from "./instruction";
+export { DeltaswapInstruction } from "./instruction";
 
-export class WormholeCoder implements Coder {
-  readonly instruction: WormholeInstructionCoder;
-  readonly accounts: WormholeAccountsCoder;
-  readonly state: WormholeStateCoder;
-  readonly events: WormholeEventsCoder;
-  readonly types: WormholeTypesCoder;
+export class DeltaswapCoder implements Coder {
+  readonly instruction: DeltaswapInstructionCoder;
+  readonly accounts: DeltaswapAccountsCoder;
+  readonly state: DeltaswapStateCoder;
+  readonly events: DeltaswapEventsCoder;
+  readonly types: DeltaswapTypesCoder;
 
   constructor(idl: Idl) {
-    this.instruction = new WormholeInstructionCoder(idl);
-    this.accounts = new WormholeAccountsCoder(idl);
-    this.state = new WormholeStateCoder(idl);
-    this.events = new WormholeEventsCoder(idl);
-    this.types = new WormholeTypesCoder(idl);
+    this.instruction = new DeltaswapInstructionCoder(idl);
+    this.accounts = new DeltaswapAccountsCoder(idl);
+    this.state = new DeltaswapStateCoder(idl);
+    this.events = new DeltaswapEventsCoder(idl);
+    this.types = new DeltaswapTypesCoder(idl);
   }
 }

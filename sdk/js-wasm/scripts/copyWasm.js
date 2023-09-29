@@ -49,19 +49,19 @@ const fs = require("fs");
     `${buildPath}/token-node/token_bridge_bg.wasm.d.ts`
   );
   fs.copyFileSync(
-    `src/migration/wormhole_migration_bg.wasm`,
-    `${buildPath}/migration/wormhole_migration_bg.wasm`
+    `src/migration/deltaswap_migration_bg.wasm`,
+    `${buildPath}/migration/deltaswap_migration_bg.wasm`
   );
   fs.copyFileSync(
-    `src/migration-node/wormhole_migration_bg.wasm`,
-    `${buildPath}/migration-node/wormhole_migration_bg.wasm`
+    `src/migration-node/deltaswap_migration_bg.wasm`,
+    `${buildPath}/migration-node/deltaswap_migration_bg.wasm`
   );
   fs.copyFileSync(
-    `src/migration/wormhole_migration_bg.wasm.d.ts`,
-    `${buildPath}/migration/wormhole_migration_bg.wasm.d.ts`
+    `src/migration/deltaswap_migration_bg.wasm.d.ts`,
+    `${buildPath}/migration/deltaswap_migration_bg.wasm.d.ts`
   );
   fs.copyFileSync(
-    `src/migration-node/wormhole_migration_bg.wasm.d.ts`,
-    `${buildPath}/migration-node/wormhole_migration_bg.wasm.d.ts`
+    `src/migration-node/deltaswap_migration_bg.wasm.d.ts`,
+    `${buildPath}/migration-node/deltaswap_migration_bg.wasm.d.ts`
   );
 });

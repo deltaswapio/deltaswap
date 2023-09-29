@@ -2,7 +2,7 @@ import { PublicKey, PublicKeyInitData } from "@solana/web3.js";
 import { deriveAddress } from "../../utils";
 
 export function deriveFeeCollectorKey(
-  wormholeProgramId: PublicKeyInitData
+  deltaswapProgramId: PublicKeyInitData
 ): PublicKey {
-  return deriveAddress([Buffer.from("fee_collector")], wormholeProgramId);
+  return deriveAddress([Buffer.from("fee_collector")], deltaswapProgramId);
 }

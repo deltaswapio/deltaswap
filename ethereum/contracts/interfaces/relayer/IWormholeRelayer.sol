@@ -3,12 +3,12 @@
 pragma solidity ^0.8.0;
 
 /**
- * @title WormholeRelayer
+ * @title DeltaswapRelayer
  * @author 
  * @notice This project allows developers to build cross-chain applications powered by Wormhole without needing to 
  * write and run their own relaying infrastructure
  * 
- * We implement the IWormholeRelayer interface that allows users to request a delivery provider to relay a payload (and/or additional messages) 
+ * We implement the IDeltaswapRelayer interface that allows users to request a delivery provider to relay a payload (and/or additional messages)
  * to a chain and address of their choice.
  */
 
@@ -34,12 +34,12 @@ struct MessageKey {
 }
 
 
-interface IWormholeRelayerBase {
+interface IDeltaswapRelayerBase {
     event SendEvent(
         uint64 indexed sequence, uint256 deliveryQuote, uint256 paymentForExtraReceiverValue
     );
 
-    function getRegisteredWormholeRelayerContract(uint16 chainId) external view returns (bytes32);
+    function getRegisteredDeltaswapRelayerContract(uint16 chainId) external view returns (bytes32);
 
     /**
      * @notice Returns true if a delivery has been attempted for the given deliveryHash
@@ -59,10 +59,10 @@ interface IWormholeRelayerBase {
 }
 
 /**
- * @title IWormholeRelayerSend
+ * @title IDeltaswapRelayerSend
  * @notice The interface to request deliveries
  */
-interface IWormholeRelayerSend is IWormholeRelayerBase {
+interface IDeltaswapRelayerSend is IDeltaswapRelayerBase {
 
     /**
      * @notice Publishes an instruction for the default delivery provider
@@ -499,10 +499,10 @@ interface IWormholeRelayerSend is IWormholeRelayerBase {
 }
 
 /**
- * @title IWormholeRelayerDelivery
+ * @title IDeltaswapRelayerDelivery
  * @notice The interface to execute deliveries. Only relevant for Delivery Providers 
  */
-interface IWormholeRelayerDelivery is IWormholeRelayerBase {
+interface IDeltaswapRelayerDelivery is IDeltaswapRelayerBase {
     enum DeliveryStatus {
         SUCCESS,
         RECEIVER_FAILURE
@@ -560,14 +560,14 @@ interface IWormholeRelayerDelivery is IWormholeRelayerBase {
      *
      * The messages will be relayed to the target address (with the specified gas limit and receiver value) iff the following checks are met:
      * - the delivery VAA has a valid signature
-     * - the delivery VAA's emitter is one of these WormholeRelayer contracts
+     * - the delivery VAA's emitter is one of these DeltaswapRelayer contracts
      * - the delivery provider passed in at least enough of this chain's currency as msg.value (enough meaning the maximum possible refund)     
      * - the instruction's target chain is this chain
      * - the relayed signed VAAs match the descriptions in container.messages (the VAA hashes match, or the emitter address, sequence number pair matches, depending on the description given)
      *
      * @param encodedVMs - An array of signed wormhole messages (all from the same source chain
      *     transaction)
-     * @param encodedDeliveryVAA - Signed wormhole message from the source chain's WormholeRelayer
+     * @param encodedDeliveryVAA - Signed wormhole message from the source chain's DeltaswapRelayer
      *     contract with payload being the encoded delivery instruction container
      * @param relayerRefundAddress - The address to which any refunds to the delivery provider
      *     should be sent
@@ -582,10 +582,10 @@ interface IWormholeRelayerDelivery is IWormholeRelayerBase {
     ) external payable;
 }
 
-interface IWormholeRelayer is IWormholeRelayerDelivery, IWormholeRelayerSend {}
+interface IDeltaswapRelayer is IDeltaswapRelayerDelivery, IDeltaswapRelayerSend {}
 
 /*
- *  Errors thrown by IWormholeRelayer contract
+ *  Errors thrown by IDeltaswapRelayer contract
  */
 
 // Bound chosen by the following formula: `memoryWord * 4 + selectorSize`.
@@ -612,13 +612,13 @@ error TooManyMessageKeys(uint256 numMessageKeys);
 
 error InvalidDeliveryVaa(string reason);
 //When the delivery VAA (signed wormhole message with delivery instructions) was not emitted by the
-//  registered WormholeRelayer contract
+//  registered DeltaswapRelayer contract
 error InvalidEmitter(bytes32 emitter, bytes32 registered, uint16 chainId);
 error MessageKeysLengthDoesNotMatchMessagesLength(uint256 keys, uint256 vaas);
 error VaaKeysDoNotMatchVaas(uint8 index);
-//When someone tries to call an external function of the WormholeRelayer that is only intended to be
-//  called by the WormholeRelayer itself (to allow retroactive reverts for atomicity)
-error RequesterNotWormholeRelayer();
+//When someone tries to call an external function of the DeltaswapRelayer that is only intended to be
+//  called by the DeltaswapRelayer itself (to allow retroactive reverts for atomicity)
+error RequesterNotDeltaswapRelayer();
 
 //When trying to relay a `DeliveryInstruction` to any other chain but the one it was specified for
 error TargetChainIsNotThisChain(uint16 targetChain);

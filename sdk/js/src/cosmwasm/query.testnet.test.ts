@@ -202,7 +202,7 @@ test.skip("testnet - injective attest native asset", async () => {
   const emitterAddress = await getEmitterAddressInjective(
     CONTRACTS.TESTNET.injective.token_bridge
   );
-  const rpc: string[] = ["https://wormhole-v2-testnet-api.certus.one"];
+  const rpc: string[] = ["https://deltaswap-v2-testnet-api.certus.one"];
   const { vaaBytes: nativeAssetVaa } = await getSignedVAAWithRetry(
     rpc,
     CHAIN_ID_INJECTIVE,
@@ -369,7 +369,7 @@ test.skip("testnet - injective submit a vaa", async () => {
 
     // Attestation on Algorand is complete.  Get the VAA
     // Phylax part
-    const rpc: string[] = ["https://wormhole-v2-testnet-api.certus.one"];
+    const rpc: string[] = ["https://deltaswap-v2-testnet-api.certus.one"];
     const emitterAddr = getEmitterAddressAlgorand(BigInt(TokenBridgeID));
     const { vaaBytes } = await getSignedVAAWithRetry(
       rpc,
@@ -688,7 +688,7 @@ test.skip("Attest and transfer token from Injective to Algorand", async () => {
   const emitterAddress = await getEmitterAddressInjective(
     CONTRACTS.TESTNET.injective.token_bridge
   );
-  const rpc: string[] = ["https://wormhole-v2-testnet-api.certus.one"];
+  const rpc: string[] = ["https://deltaswap-v2-testnet-api.certus.one"];
   const { vaaBytes: attestSignedVaa } = await getSignedVAAWithRetry(
     rpc,
     CHAIN_ID_INJECTIVE,

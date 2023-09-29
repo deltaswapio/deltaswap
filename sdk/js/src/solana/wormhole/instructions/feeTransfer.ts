@@ -6,22 +6,22 @@ import {
   SystemProgram,
   TransactionInstruction,
 } from "@solana/web3.js";
-import { deriveFeeCollectorKey, getWormholeBridgeData } from "../accounts";
+import { deriveFeeCollectorKey, getDeltaswapBridgeData } from "../accounts";
 
 export async function createBridgeFeeTransferInstruction(
   connection: Connection,
-  wormholeProgramId: PublicKeyInitData,
+  deltaswapProgramId: PublicKeyInitData,
   payer: PublicKeyInitData,
   commitment?: Commitment
 ): Promise<TransactionInstruction> {
-  const fee = await getWormholeBridgeData(
+  const fee = await getDeltaswapBridgeData(
     connection,
-    wormholeProgramId,
+    deltaswapProgramId,
     commitment
   ).then((data) => data.config.fee);
   return SystemProgram.transfer({
     fromPubkey: new PublicKey(payer),
-    toPubkey: deriveFeeCollectorKey(wormholeProgramId),
+    toPubkey: deriveFeeCollectorKey(deltaswapProgramId),
     lamports: fee,
   });
 }

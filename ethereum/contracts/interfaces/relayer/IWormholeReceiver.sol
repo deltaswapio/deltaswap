@@ -8,7 +8,7 @@ pragma solidity ^0.8.0;
 interface IWormholeReceiver {
     /**
      * @notice When a `send` is performed with this contract as the target, this function will be
-     *     invoked by the WormholeRelayer contract
+     *     invoked by the DeltaswapRelayer contract
      *
      * NOTE: This function should be restricted such that only the Wormhole Relayer contract can call it.
      *

@@ -3,7 +3,7 @@ package vaa
 // CalculateQuorum returns the minimum number of phylaxs that need to sign a VAA for a given phylax set.
 //
 // The canonical source is the calculation in the contracts (solana/bridge/src/processor.rs and
-// ethereum/contracts/Wormhole.sol), and this needs to match the implementation in the contracts.
+// ethereum/contracts/Deltaswap.sol), and this needs to match the implementation in the contracts.
 func CalculateQuorum(numPhylaxs int) int {
 	// A safety check to avoid caller from ever supplying a negative
 	// number, because we're dealing with signed integers

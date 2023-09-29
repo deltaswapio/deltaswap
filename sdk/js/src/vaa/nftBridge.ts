@@ -6,7 +6,7 @@ import {
   TokenBridgeRegisterChain,
   TokenBridgeUpgradeContract,
 } from "./tokenBridge";
-import { ParsedVaa, parseVaa, SignedVaa } from "./wormhole";
+import { ParsedVaa, parseVaa, SignedVaa } from "./deltaswap";
 
 export enum NftBridgePayload {
   Transfer = 1,

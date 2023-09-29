@@ -6,19 +6,19 @@ import {
 } from "@solana/web3.js";
 import { deriveAddress, getAccountData } from "../../utils";
 
-export function deriveWormholeBridgeDataKey(
-  wormholeProgramId: PublicKeyInitData
+export function deriveDeltaswapBridgeDataKey(
+  deltaswapProgramId: PublicKeyInitData
 ): PublicKey {
-  return deriveAddress([Buffer.from("Bridge")], wormholeProgramId);
+  return deriveAddress([Buffer.from("Bridge")], deltaswapProgramId);
 }
 
-export async function getWormholeBridgeData(
+export async function getDeltaswapBridgeData(
   connection: Connection,
-  wormholeProgramId: PublicKeyInitData,
+  deltaswapProgramId: PublicKeyInitData,
   commitment?: Commitment
 ): Promise<BridgeData> {
   return connection
-    .getAccountInfo(deriveWormholeBridgeDataKey(wormholeProgramId), commitment)
+    .getAccountInfo(deriveDeltaswapBridgeDataKey(deltaswapProgramId), commitment)
     .then((info) => BridgeData.deserialize(getAccountData(info)));
 }
 

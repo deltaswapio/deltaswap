@@ -1,14 +1,14 @@
-import { deployWormholeRelayerImplementation } from "../helpers/deployments";
+import { deployDeltaswapRelayerImplementation } from "../helpers/deployments";
 import {
   init,
   ChainInfo,
-  getWormholeRelayer,
+  getDeltaswapRelayer,
   writeOutputFiles,
   getOperatingChains,
 } from "../helpers/env";
-import { createWormholeRelayerUpgradeVAA } from "../helpers/vaa";
+import { createDeltaswapRelayerUpgradeVAA } from "../helpers/vaa";
 
-const processName = "upgradeWormholeRelayerSelfSign";
+const processName = "upgradeDeltaswapRelayerSelfSign";
 init();
 const chains = getOperatingChains();
 
@@ -19,10 +19,10 @@ async function run() {
   };
 
   for (const chain of chains) {
-    const coreRelayerImplementation = await deployWormholeRelayerImplementation(
+    const coreRelayerImplementation = await deployDeltaswapRelayerImplementation(
       chain
     );
-    await upgradeWormholeRelayer(chain, coreRelayerImplementation.address);
+    await upgradeDeltaswapRelayer(chain, coreRelayerImplementation.address);
 
     output.wormholeRelayerImplementations.push(coreRelayerImplementation);
   }
@@ -30,16 +30,16 @@ async function run() {
   writeOutputFiles(output, processName);
 }
 
-async function upgradeWormholeRelayer(
+async function upgradeDeltaswapRelayer(
   chain: ChainInfo,
   newImplementationAddress: string
 ) {
-  console.log("upgradeWormholeRelayer " + chain.chainId);
+  console.log("upgradeDeltaswapRelayer " + chain.chainId);
 
-  const coreRelayer = await getWormholeRelayer(chain);
+  const coreRelayer = await getDeltaswapRelayer(chain);
 
   const tx = await coreRelayer.submitContractUpgrade(
-    createWormholeRelayerUpgradeVAA(chain, newImplementationAddress)
+    createDeltaswapRelayerUpgradeVAA(chain, newImplementationAddress)
   );
 
   await tx.wait();

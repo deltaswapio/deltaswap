@@ -21,7 +21,7 @@ test("terra address conversion", () => {
 });
 
 test("deltachain address conversion", () => {
-  const human = "wormhole1ap5vgur5zlgys8whugfegnn43emka567dtq0jl";
+  const human = "delta1ap5vgur5zlgys8whugfegnn43emka567dtq0jl";
   const canonical =
     "000000000000000000000000e868c4707417d0481dd7e213944e758e776ed35e";
   const native = tryUint8ArrayToNative(
@@ -35,7 +35,7 @@ test("deltachain address conversion", () => {
 
 test("deltachain address conversion2", () => {
   const human =
-    "wormhole1466nf3zuxpya8q9emxukd7vftaf6h4psr0a07srl5zw74zh84yjq4lyjmh";
+    "delta1466nf3zuxpya8q9emxukd7vftaf6h4psr0a07srl5zw74zh84yjq4lyjmh";
   const canonical =
     "aeb534c45c3049d380b9d9b966f9895f53abd4301bfaff407fa09dea8ae7a924";
   const native = tryUint8ArrayToNative(
@@ -48,7 +48,7 @@ test("deltachain address conversion2", () => {
 });
 
 test("deltachain address conversion no leading 0s", () => {
-  const human = "wormhole1yre8d0ek4vp0wjlec407525zjctq7t32z930fp";
+  const human = "delta1yre8d0ek4vp0wjlec407525zjctq7t32z930fp";
   const canonical = "20f276bf36ab02f74bf9c55fea2a8296160f2e2a";
   const native = tryUint8ArrayToNative(
     new Uint8Array(Buffer.from(canonical, "hex")),

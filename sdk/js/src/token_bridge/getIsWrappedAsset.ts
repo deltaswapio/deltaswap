@@ -11,7 +11,7 @@ import { coalesceModuleAddress, ensureHexPrefix } from "../utils";
 import { safeBigIntToNumber } from "../utils/bigint";
 
 /**
- * Returns whether or not an asset address on Ethereum is a wormhole wrapped asset
+ * Returns whether or not an asset address on Ethereum is a deltaswap wrapped asset
  * @param tokenBridgeAddress
  * @param provider
  * @param assetAddress
@@ -37,7 +37,7 @@ export async function getIsWrappedAssetTerra(
 }
 
 /**
- * Returns whether or not an asset on Solana is a wormhole wrapped asset
+ * Returns whether or not an asset on Solana is a deltaswap wrapped asset
  * @param connection
  * @param tokenBridgeAddress
  * @param mintAddress
@@ -61,7 +61,7 @@ export async function getIsWrappedAssetSolana(
 export const getIsWrappedAssetSol = getIsWrappedAssetSolana;
 
 /**
- * Returns whethor or not an asset on Algorand is a wormhole wrapped asset
+ * Returns whethor or not an asset on Algorand is a deltaswap wrapped asset
  * @param client Algodv2 client
  * @param tokenBridgeId token bridge ID
  * @param assetId Algorand asset index
@@ -79,8 +79,8 @@ export async function getIsWrappedAssetAlgorand(
   const assetInfo = await client.getAssetByID(safeBigIntToNumber(assetId)).do();
   const creatorAddr = assetInfo.params.creator;
   const creatorAcctInfo = await client.accountInformation(creatorAddr).do();
-  const wormhole: boolean = creatorAcctInfo["auth-addr"] === tbAddr;
-  return wormhole;
+  const deltaswap: boolean = creatorAcctInfo["auth-addr"] === tbAddr;
+  return deltaswap;
 }
 
 export function getIsWrappedAssetNear(

@@ -1,4 +1,4 @@
-import { ParsedVaa, parseVaa, SignedVaa } from "./wormhole";
+import { ParsedVaa, parseVaa, SignedVaa } from "./deltaswap";
 
 export interface Governance {
   module: string;

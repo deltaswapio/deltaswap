@@ -5,7 +5,7 @@ const DST_IDL = __dirname + "/../src/anchor-idl";
 const TS = __dirname + "/../src/solana/types";
 
 const programs = {
-    "wormhole.json": "Wormhole",
+    "deltaswap.json": "Deltaswap",
     "token_bridge.json": "TokenBridge",
     "nft_bridge.json": "NftBridge",
 };

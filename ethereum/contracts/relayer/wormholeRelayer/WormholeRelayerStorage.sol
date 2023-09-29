@@ -44,18 +44,18 @@ function getDefaultDeliveryProviderState()
     }
 }
 
-struct RegisteredWormholeRelayersState {
+struct RegisteredDeltaswapRelayersState {
     // chainId => wormhole address mapping of relayer contracts on other chains
-    mapping(uint16 => bytes32) registeredWormholeRelayers;
+    mapping(uint16 => bytes32) registeredDeltaswapRelayers;
 }
 
 //keccak256("RegisteredCoreRelayersState") - 1
 bytes32 constant REGISTERED_CORE_RELAYERS_STORAGE_SLOT =
     0x9e4e57806ba004485cfae8ca22fb13380f01c10b1b0ccf48c20464961643cf6d;
 
-function getRegisteredWormholeRelayersState()
+function getRegisteredDeltaswapRelayersState()
     pure
-    returns (RegisteredWormholeRelayersState storage state)
+    returns (RegisteredDeltaswapRelayersState storage state)
 {
     assembly ("memory-safe") {
         state.slot := REGISTERED_CORE_RELAYERS_STORAGE_SLOT

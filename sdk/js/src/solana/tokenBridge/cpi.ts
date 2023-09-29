@@ -14,8 +14,8 @@ import {
 import {
   deriveClaimKey,
   derivePostedVaaKey,
-  getWormholeDerivedAccounts,
-} from "../wormhole";
+  getDeltaswapDerivedAccounts,
+} from "../deltaswap";
 import {
   deriveAuthoritySignerKey,
   deriveCustodyKey,
@@ -59,21 +59,21 @@ export interface TokenBridgeBaseSenderDerivedAccounts
    */
   tokenBridgeSender: PublicKey;
   /**
-   * seeds = ["Bridge"], seeds::program = wormholeProgram
+   * seeds = ["Bridge"], seeds::program = deltaswapProgram
    */
-  wormholeBridge: PublicKey;
+ deltaswapBridge: PublicKey;
   /**
    * seeds = ["emitter"], seeds::program = tokenBridgeProgram
    */
   tokenBridgeEmitter: PublicKey;
   /**
-   * seeds = ["Sequence", tokenBridgeEmitter], seeds::program = wormholeProgram
+   * seeds = ["Sequence", tokenBridgeEmitter], seeds::program = deltaswapProgram
    */
   tokenBridgeSequence: PublicKey;
   /**
-   * seeds = ["fee_collector"], seeds::program = wormholeProgram
+   * seeds = ["fee_collector"], seeds::program = deltaswapProgram
    */
-  wormholeFeeCollector: PublicKey;
+  deltaswapFeeCollector: PublicKey;
 }
 
 export interface TokenBridgeNativeSenderDerivedAccounts
@@ -114,20 +114,20 @@ export interface TokenBridgeDerivedAccounts
  *
  * @param cpiProgramId
  * @param tokenBridgeProgramId
- * @param wormholeProgramId
+ * @param deltaswapProgramId
  * @returns
  */
 export function getTokenBridgeDerivedAccounts(
   cpiProgramId: PublicKeyInitData,
   tokenBridgeProgramId: PublicKeyInitData,
-  wormholeProgramId: PublicKeyInitData
+  deltaswapProgramId: PublicKeyInitData
 ): TokenBridgeDerivedAccounts {
   const {
-    wormholeEmitter: tokenBridgeEmitter,
-    wormholeBridge,
-    wormholeFeeCollector,
-    wormholeSequence: tokenBridgeSequence,
-  } = getWormholeDerivedAccounts(tokenBridgeProgramId, wormholeProgramId);
+    deltaswapEmitter: tokenBridgeEmitter,
+   deltaswapBridge,
+    deltaswapFeeCollector,
+    deltaswapSequence: tokenBridgeSequence,
+  } = getDeltaswapDerivedAccounts(tokenBridgeProgramId, deltaswapProgramId);
   return {
     tokenBridgeConfig: deriveTokenBridgeConfigKey(tokenBridgeProgramId),
     tokenBridgeAuthoritySigner: deriveAuthoritySignerKey(tokenBridgeProgramId),
@@ -135,9 +135,9 @@ export function getTokenBridgeDerivedAccounts(
     tokenBridgeMintAuthority: deriveMintAuthorityKey(tokenBridgeProgramId),
     tokenBridgeSender: deriveSenderAccountKey(cpiProgramId),
     tokenBridgeRedeemer: deriveRedeemerAccountKey(cpiProgramId),
-    wormholeBridge,
+   deltaswapBridge,
     tokenBridgeEmitter,
-    wormholeFeeCollector,
+    deltaswapFeeCollector,
     tokenBridgeSequence,
   };
 }
@@ -154,12 +154,12 @@ export interface TransferNativeWithPayloadCpiAccounts
    */
   fromTokenAccount: PublicKey;
   mint: PublicKey;
-  wormholeMessage: PublicKey;
+ deltaswapMessage: PublicKey;
   clock: PublicKey;
   rent: PublicKey;
   systemProgram: PublicKey;
   tokenProgram: PublicKey;
-  wormholeProgram: PublicKey;
+  deltaswapProgram: PublicKey;
 }
 
 /**
@@ -168,7 +168,7 @@ export interface TransferNativeWithPayloadCpiAccounts
  *
  * @param cpiProgramId
  * @param tokenBridgeProgramId
- * @param wormholeProgramId
+ * @param deltaswapProgramId
  * @param payer
  * @param message
  * @param fromTokenAccount
@@ -178,7 +178,7 @@ export interface TransferNativeWithPayloadCpiAccounts
 export function getTransferNativeWithPayloadCpiAccounts(
   cpiProgramId: PublicKeyInitData,
   tokenBridgeProgramId: PublicKeyInitData,
-  wormholeProgramId: PublicKeyInitData,
+  deltaswapProgramId: PublicKeyInitData,
   payer: PublicKeyInitData,
   message: PublicKeyInitData,
   fromTokenAccount: PublicKeyInitData,
@@ -186,7 +186,7 @@ export function getTransferNativeWithPayloadCpiAccounts(
 ): TransferNativeWithPayloadCpiAccounts {
   const accounts = getTransferNativeWithPayloadAccounts(
     tokenBridgeProgramId,
-    wormholeProgramId,
+    deltaswapProgramId,
     payer,
     message,
     fromTokenAccount,
@@ -201,17 +201,17 @@ export function getTransferNativeWithPayloadCpiAccounts(
     tokenBridgeCustody: accounts.custody,
     tokenBridgeAuthoritySigner: accounts.authoritySigner,
     tokenBridgeCustodySigner: accounts.custodySigner,
-    wormholeBridge: accounts.wormholeBridge,
-    wormholeMessage: accounts.wormholeMessage,
-    tokenBridgeEmitter: accounts.wormholeEmitter,
-    tokenBridgeSequence: accounts.wormholeSequence,
-    wormholeFeeCollector: accounts.wormholeFeeCollector,
+   deltaswapBridge: accounts.deltaswapBridge,
+   deltaswapMessage: accounts.deltaswapMessage,
+    tokenBridgeEmitter: accounts.deltaswapEmitter,
+    tokenBridgeSequence: accounts.deltaswapSequence,
+    deltaswapFeeCollector: accounts.deltaswapFeeCollector,
     clock: accounts.clock,
     tokenBridgeSender: accounts.sender,
     rent: accounts.rent,
     systemProgram: accounts.systemProgram,
     tokenProgram: accounts.tokenProgram,
-    wormholeProgram: accounts.wormholeProgram,
+    deltaswapProgram: accounts.deltaswapProgram,
   };
 }
 
@@ -234,12 +234,12 @@ export interface TransferWrappedWithPayloadCpiAccounts
    * seeds = ["meta", mint], seeds::program = tokenBridgeProgram
    */
   tokenBridgeWrappedMeta: PublicKey;
-  wormholeMessage: PublicKey;
+ deltaswapMessage: PublicKey;
   clock: PublicKey;
   rent: PublicKey;
   systemProgram: PublicKey;
   tokenProgram: PublicKey;
-  wormholeProgram: PublicKey;
+  deltaswapProgram: PublicKey;
 }
 
 /**
@@ -248,7 +248,7 @@ export interface TransferWrappedWithPayloadCpiAccounts
  *
  * @param cpiProgramId
  * @param tokenBridgeProgramId
- * @param wormholeProgramId
+ * @param deltaswapProgramId
  * @param payer
  * @param message
  * @param fromTokenAccount
@@ -260,7 +260,7 @@ export interface TransferWrappedWithPayloadCpiAccounts
 export function getTransferWrappedWithPayloadCpiAccounts(
   cpiProgramId: PublicKeyInitData,
   tokenBridgeProgramId: PublicKeyInitData,
-  wormholeProgramId: PublicKeyInitData,
+  deltaswapProgramId: PublicKeyInitData,
   payer: PublicKeyInitData,
   message: PublicKeyInitData,
   fromTokenAccount: PublicKeyInitData,
@@ -270,7 +270,7 @@ export function getTransferWrappedWithPayloadCpiAccounts(
 ): TransferWrappedWithPayloadCpiAccounts {
   const accounts = getTransferWrappedWithPayloadAccounts(
     tokenBridgeProgramId,
-    wormholeProgramId,
+    deltaswapProgramId,
     payer,
     message,
     fromTokenAccount,
@@ -287,17 +287,17 @@ export function getTransferWrappedWithPayloadCpiAccounts(
     tokenBridgeWrappedMint: accounts.mint,
     tokenBridgeWrappedMeta: accounts.wrappedMeta,
     tokenBridgeAuthoritySigner: accounts.authoritySigner,
-    wormholeBridge: accounts.wormholeBridge,
-    wormholeMessage: accounts.wormholeMessage,
-    tokenBridgeEmitter: accounts.wormholeEmitter,
-    tokenBridgeSequence: accounts.wormholeSequence,
-    wormholeFeeCollector: accounts.wormholeFeeCollector,
+   deltaswapBridge: accounts.deltaswapBridge,
+   deltaswapMessage: accounts.deltaswapMessage,
+    tokenBridgeEmitter: accounts.deltaswapEmitter,
+    tokenBridgeSequence: accounts.deltaswapSequence,
+    deltaswapFeeCollector: accounts.deltaswapFeeCollector,
     clock: accounts.clock,
     tokenBridgeSender: accounts.sender,
     rent: accounts.rent,
     systemProgram: accounts.systemProgram,
     tokenProgram: accounts.tokenProgram,
-    wormholeProgram: accounts.wormholeProgram,
+    deltaswapProgram: accounts.deltaswapProgram,
   };
 }
 
@@ -305,7 +305,7 @@ export interface CompleteTransferNativeWithPayloadCpiAccounts
   extends TokenBridgeNativeRedeemerDerivedAccounts {
   payer: PublicKey;
   /**
-   * seeds = ["PostedVAA", vaa_hash], seeds::program = wormholeProgram
+   * seeds = ["PostedVAA", vaa_hash], seeds::program = deltaswapProgram
    */
   vaa: PublicKey;
   /**
@@ -329,7 +329,7 @@ export interface CompleteTransferNativeWithPayloadCpiAccounts
   rent: PublicKey;
   systemProgram: PublicKey;
   tokenProgram: PublicKey;
-  wormholeProgram: PublicKey;
+  deltaswapProgram: PublicKey;
 }
 
 /**
@@ -341,7 +341,7 @@ export interface CompleteTransferNativeWithPayloadCpiAccounts
  * instruction for the `toFeesTokenAccount`.
  *
  * @param tokenBridgeProgramId
- * @param wormholeProgramId
+ * @param deltaswapProgramId
  * @param payer
  * @param vaa
  * @param toTokenAccount
@@ -349,7 +349,7 @@ export interface CompleteTransferNativeWithPayloadCpiAccounts
  */
 export function getCompleteTransferNativeWithPayloadCpiAccounts(
   tokenBridgeProgramId: PublicKeyInitData,
-  wormholeProgramId: PublicKeyInitData,
+  deltaswapProgramId: PublicKeyInitData,
   payer: PublicKeyInitData,
   vaa: SignedVaa | ParsedTokenTransferVaa,
   toTokenAccount: PublicKeyInitData
@@ -361,7 +361,7 @@ export function getCompleteTransferNativeWithPayloadCpiAccounts(
   return {
     payer: new PublicKey(payer),
     tokenBridgeConfig: deriveTokenBridgeConfigKey(tokenBridgeProgramId),
-    vaa: derivePostedVaaKey(wormholeProgramId, parsed.hash),
+    vaa: derivePostedVaaKey(deltaswapProgramId, parsed.hash),
     tokenBridgeClaim: deriveClaimKey(
       tokenBridgeProgramId,
       parsed.emitterAddress,
@@ -382,7 +382,7 @@ export function getCompleteTransferNativeWithPayloadCpiAccounts(
     rent: SYSVAR_RENT_PUBKEY,
     systemProgram: SystemProgram.programId,
     tokenProgram: TOKEN_PROGRAM_ID,
-    wormholeProgram: new PublicKey(wormholeProgramId),
+    deltaswapProgram: new PublicKey(deltaswapProgramId),
   };
 }
 
@@ -390,7 +390,7 @@ export interface CompleteTransferWrappedWithPayloadCpiAccounts
   extends TokenBridgeWrappedRedeemerDerivedAccounts {
   payer: PublicKey;
   /**
-   * seeds = ["PostedVAA", vaa_hash], seeds::program = wormholeProgram
+   * seeds = ["PostedVAA", vaa_hash], seeds::program = deltaswapProgram
    */
   vaa: PublicKey;
   /**
@@ -417,7 +417,7 @@ export interface CompleteTransferWrappedWithPayloadCpiAccounts
   rent: PublicKey;
   systemProgram: PublicKey;
   tokenProgram: PublicKey;
-  wormholeProgram: PublicKey;
+  deltaswapProgram: PublicKey;
 }
 
 /**
@@ -430,14 +430,14 @@ export interface CompleteTransferWrappedWithPayloadCpiAccounts
  *
  * @param cpiProgramId
  * @param tokenBridgeProgramId
- * @param wormholeProgramId
+ * @param deltaswapProgramId
  * @param payer
  * @param vaa
  * @returns
  */
 export function getCompleteTransferWrappedWithPayloadCpiAccounts(
   tokenBridgeProgramId: PublicKeyInitData,
-  wormholeProgramId: PublicKeyInitData,
+  deltaswapProgramId: PublicKeyInitData,
   payer: PublicKeyInitData,
   vaa: SignedVaa | ParsedTokenTransferVaa,
   toTokenAccount: PublicKeyInitData
@@ -452,7 +452,7 @@ export function getCompleteTransferWrappedWithPayloadCpiAccounts(
   return {
     payer: new PublicKey(payer),
     tokenBridgeConfig: deriveTokenBridgeConfigKey(tokenBridgeProgramId),
-    vaa: derivePostedVaaKey(wormholeProgramId, parsed.hash),
+    vaa: derivePostedVaaKey(deltaswapProgramId, parsed.hash),
     tokenBridgeClaim: deriveClaimKey(
       tokenBridgeProgramId,
       parsed.emitterAddress,
@@ -473,6 +473,6 @@ export function getCompleteTransferWrappedWithPayloadCpiAccounts(
     rent: SYSVAR_RENT_PUBKEY,
     systemProgram: SystemProgram.programId,
     tokenProgram: TOKEN_PROGRAM_ID,
-    wormholeProgram: new PublicKey(wormholeProgramId),
+    deltaswapProgram: new PublicKey(deltaswapProgramId),
   };
 }

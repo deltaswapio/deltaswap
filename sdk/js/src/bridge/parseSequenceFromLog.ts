@@ -158,7 +158,7 @@ export function parseSequenceFromLogNear(
     for (const l of o.outcome.logs) {
       if (l.startsWith(NEAR_EVENT_PREFIX)) {
         const body = JSON.parse(l.slice(NEAR_EVENT_PREFIX.length));
-        if (body.standard === "wormhole" && body.event === "publish") {
+        if (body.standard === "deltaswap" && body.event === "publish") {
           return body.seq.toString();
         }
       }
@@ -168,8 +168,8 @@ export function parseSequenceFromLogNear(
 }
 
 /**
- * Given a transaction result, return the first WormholeMessage event sequence
- * @param coreBridgeAddress Wormhole Core bridge address
+ * Given a transaction result, return the first DeltaswapMessage event sequence
+ * @param coreBridgeAddress Deltaswap Core bridge address
  * @param result the result of client.waitForTransactionWithResult(txHash)
  * @returns sequence
  */
@@ -179,7 +179,7 @@ export function parseSequenceFromLogAptos(
 ): string | null {
   if (result.success) {
     const event = result.events.find(
-      (e) => e.type === `${coreBridgeAddress}::state::WormholeMessage`
+      (e) => e.type === `${coreBridgeAddress}::state::DeltaswapMessage`
     );
     return event?.data.sequence || null;
   }
@@ -194,7 +194,7 @@ export function parseSequenceFromLogSui(
   const event = response.events?.find(
     (e) =>
       e.type ===
-      `${originalCoreBridgePackageId}::publish_message::WormholeMessage`
+      `${originalCoreBridgePackageId}::publish_message::DeltaswapMessage`
   );
   return event?.parsedJson?.sequence || null;
 }

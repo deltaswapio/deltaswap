@@ -10,7 +10,7 @@ import {
     MessageKey,
     VAA_KEY_TYPE,
     VaaKey
-} from "../../interfaces/relayer/IWormholeRelayerTyped.sol";
+} from "../../interfaces/relayer/IDeltaswapRelayerTyped.sol";
 import {
     DeliveryOverride,
     DeliveryInstruction,
@@ -19,7 +19,7 @@ import {
 import {BytesParsing} from "../../relayer/libraries/BytesParsing.sol";
 import "../../interfaces/relayer/TypedUnits.sol";
 
-library WormholeRelayerSerde {
+library DeltaswapRelayerSerde {
     using BytesParsing for bytes;
     using WeiLib for Wei;
     using GasLib for Gas;

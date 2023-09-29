@@ -1,10 +1,10 @@
 import { ethers, BigNumber } from "ethers";
 import { ChainId, ChainName, CHAINS, Network } from "../../utils";
 import { parseVaa } from "../../vaa";
-import { getWormholeRelayer } from "../consts";
+import { getDeltaswapRelayer } from "../consts";
 import {
   VaaKey,
-  parseWormholeRelayerSend,
+  parseDeltaswapRelayerSend,
   parseEVMExecutionInfoV1,
 } from "../structs";
 import { vaaKeyToVaaKeyStruct, getDeliveryProvider } from "./helpers";
@@ -20,20 +20,20 @@ export async function resendRaw(
   newReceiverValue: BigNumber | number,
   deliveryProviderAddress: string,
   overrides?: ethers.PayableOverrides,
-  wormholeRelayerAddress?: string
+  deltaswapRelayerAddress?: string
 ): Promise<ethers.providers.TransactionResponse> {
   const provider = signer.provider;
 
   if (!provider) throw Error("No provider on signer");
 
-  const wormholeRelayer = getWormholeRelayer(
+  const deltaswapRelayer = getDeltaswapRelayer(
     sourceChain,
     environment,
     signer,
-    wormholeRelayerAddress
+    deltaswapRelayerAddress
   );
 
-  return wormholeRelayer.resendToEvm(
+  return deltaswapRelayer.resendToEvm(
     vaaKeyToVaaKeyStruct(vaaKey),
     CHAINS[targetChain],
     newReceiverValue,
@@ -44,7 +44,7 @@ export async function resendRaw(
 }
 
 type ResendOptionalParams = {
-  wormholeRelayerAddress?: string;
+  deltaswapRelayerAddress?: string;
 };
 
 export async function resend(
@@ -56,14 +56,14 @@ export async function resend(
   newGasLimit: BigNumber | number,
   newReceiverValue: BigNumber | number,
   deliveryProviderAddress: string,
-  wormholeRPCs: string[],
+  deltaswapRPCs: string[],
   overrides: ethers.PayableOverrides,
   extraGrpcOpts = {},
   optionalParams?: ResendOptionalParams
 ): Promise<ethers.providers.TransactionResponse> {
   const targetChainId = CHAINS[targetChain];
   const originalVAA = await getSignedVAAWithRetry(
-    wormholeRPCs,
+    deltaswapRPCs,
     vaaKey.chainId as ChainId,
     vaaKey.emitterAddress.toString("hex"),
     vaaKey.sequence.toBigInt().toString(),
@@ -74,7 +74,7 @@ export async function resend(
 
   if (!originalVAA.vaaBytes) throw Error("original VAA not found");
 
-  const originalVAAparsed = parseWormholeRelayerSend(
+  const originalVAAparsed = parseDeltaswapRelayerSend(
     parseVaa(Buffer.from(originalVAA.vaaBytes)).payload
   );
   if (!originalVAAparsed) throw Error("original VAA not a valid delivery VAA.");
@@ -106,15 +106,15 @@ export async function resend(
     );
   }
 
-  const wormholeRelayer = getWormholeRelayer(
+  const deltaswapRelayer = getDeltaswapRelayer(
     sourceChain,
     environment,
     signer,
-    optionalParams?.wormholeRelayerAddress
+    optionalParams?.deltaswapRelayerAddress
   );
 
   const [deliveryPrice, refundPerUnitGas]: [BigNumber, BigNumber] =
-    await wormholeRelayer[
+    await deltaswapRelayer[
       "quoteEVMDeliveryPrice(uint16,uint256,uint256,address)"
     ](
       targetChainId,
@@ -145,6 +145,6 @@ export async function resend(
     newReceiverValue,
     deliveryProviderAddress,
     overrides,
-    optionalParams?.wormholeRelayerAddress
+    optionalParams?.deltaswapRelayerAddress
   );
 }

@@ -1,11 +1,11 @@
-//! The `core` module provides all the pure Rust Wormhole primitives.
+//! The `core` module provides all the pure Rust Deltaswap primitives.
 //!
-//! This crate provides chain-agnostic types from Wormhole for consumption in on-chain contracts
-//! and within other chain-specific Wormhole Rust SDK's. It includes:
+//! This crate provides chain-agnostic types from Deltaswap for consumption in on-chain contracts
+//! and within other chain-specific Deltaswap Rust SDK's. It includes:
 //!
 //! - Constants containing known network data/addresses.
 //! - Parsers for VAA's and Payloads.
-//! - Data types for Wormhole primitives such as PhylaxSets and signatures.
+//! - Data types for Deltaswap primitives such as PhylaxSets and signatures.
 //! - Verification Primitives for securely checking payloads.
 
 #![deny(warnings)]
@@ -28,7 +28,7 @@ pub mod vaa;
 
 pub use {chain::Chain, vaa::Vaa};
 
-/// The `GOVERNANCE_EMITTER` is a special address Wormhole phylaxs trust to observe governance
+/// The `GOVERNANCE_EMITTER` is a special address Deltaswap phylaxs trust to observe governance
 /// actions from. The value is "0000000000000000000000000000000000000000000000000000000000000004".
 pub const GOVERNANCE_EMITTER: Address = Address([
     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
@@ -40,7 +40,7 @@ pub const GOVERNANCE_EMITTER: Address = Address([
 )]
 pub struct PhylaxAddress(pub [u8; 20]);
 
-/// Wormhole specifies addresses as 32 bytes. Addresses that are shorter, for example 20 byte
+/// Deltaswap specifies addresses as 32 bytes. Addresses that are shorter, for example 20 byte
 /// Ethereum addresses, are left zero padded to 32.
 #[derive(
     Serialize, Deserialize, Debug, Default, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash,
@@ -57,13 +57,13 @@ impl fmt::Display for Address {
     }
 }
 
-/// Wormhole specifies an amount as a uint256 encoded in big-endian order.
+/// Deltaswap specifies an amount as a uint256 encoded in big-endian order.
 #[derive(
     Serialize, Deserialize, Debug, Default, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash,
 )]
 pub struct Amount(pub [u8; 32]);
 
-/// A `PhylaxSet` is a versioned set of keys that can sign Wormhole messages.
+/// A `PhylaxSet` is a versioned set of keys that can sign Deltaswap messages.
 #[derive(Serialize, Deserialize, Debug, Default, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct PhylaxSetInfo {
     /// The set of phylaxs public keys, in Ethereum's compressed format.

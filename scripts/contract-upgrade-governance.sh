@@ -237,7 +237,7 @@ phylaxd template token-bridge-upgrade-contract \\
   wormhole_relayer)
     echo "\
 phylaxd template token-bridge-upgrade-contract \\
-  --chain-id $chain --module \"WormholeRelayer\" \\
+  --chain-id $chain --module \"DeltaswapRelayer\" \\
   --new-address $address"
     ;;
   *) echo "unknown module $module" >&2

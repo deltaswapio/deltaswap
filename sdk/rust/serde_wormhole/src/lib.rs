@@ -5,11 +5,11 @@
 //! While the rest of this document talks about how various types are represented on the wire this
 //! should be seen as an explanation of how things are implemented *in this crate* and not as
 //! official documentation. In cases where the serialization of a payload produced by this crate
-//! differs from the one use by the wormhole contracts, the serialization used by the actual
+//! differs from the one use by the deltaswap contracts, the serialization used by the actual
 //! contract is considered the canonical serialization.
 //!
-//! Unless you want to interact with existing wormhole VAA payloads, this crate is probably not what
-//! you are looking for. If you are simply using the wormhole bridge to send your own payloads then
+//! Unless you want to interact with existing deltaswap VAA payloads, this crate is probably not what
+//! you are looking for. If you are simply using the deltaswap bridge to send your own payloads then
 //! using a schema with auto-generated code (like protobufs or flatbuffers) is probably a better
 //! choice.
 //!
@@ -111,7 +111,7 @@
 //!     },
 //! }
 //!
-//! assert!(matches!(serde_wormhole::from_slice(&[19]).unwrap(), TestEnum::Unit));
+//! assert!(matches!(serde_deltaswap::from_slice(&[19]).unwrap(), TestEnum::Unit));
 //! ```
 //!
 //! ### Map types

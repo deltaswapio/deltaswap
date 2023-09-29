@@ -3,7 +3,7 @@ import * as wh from "@certusone/wormhole-sdk";
 //import { Implementation__factory, LogMessagePublishedEvent } from "@certusone/wormhole-sdk"
 import {
   ChainInfo,
-  getWormholeRelayer,
+  getDeltaswapRelayer,
   getMockIntegration,
   getMockIntegrationAddress,
 } from "../helpers/env";
@@ -19,7 +19,7 @@ export async function sendMessage(
     `Sending message from chain ${sourceChain.chainId} to ${targetChain.chainId}...`
   );
 
-  const sourceRelayer = await getWormholeRelayer(sourceChain);
+  const sourceRelayer = await getDeltaswapRelayer(sourceChain);
   const sourceProvider = await sourceRelayer.getDefaultDeliveryProvider();
 
   const relayQuote = await await sourceRelayer[

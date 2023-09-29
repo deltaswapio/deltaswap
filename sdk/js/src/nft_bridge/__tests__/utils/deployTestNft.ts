@@ -18,7 +18,7 @@ export const deployTestNftOnAptos = async (
     account,
     collectionName,
     "collection description",
-    "https://www.wormhole.com"
+    "https://www.deltaswap.io"
   );
   await client.waitForTransaction(collectionHash);
 
@@ -28,7 +28,7 @@ export const deployTestNftOnAptos = async (
     tokenName,
     "token description",
     10,
-    "https://www.wormhole.com"
+    "https://www.deltaswap.io"
   );
   return client.waitForTransactionWithResult(
     tokenHash

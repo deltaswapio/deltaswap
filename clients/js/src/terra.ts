@@ -142,7 +142,7 @@ export async function execute_terra(
 
       break;
     }
-    case "WormholeRelayer":
+    case "DeltaswapRelayer":
       throw Error("Wormhole Relayer not supported on Terra");
     default:
       target_contract = impossible(payload);

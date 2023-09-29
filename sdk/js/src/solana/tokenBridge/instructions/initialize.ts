@@ -11,11 +11,11 @@ import { deriveTokenBridgeConfigKey } from "../accounts";
 export function createInitializeInstruction(
   tokenBridgeProgramId: PublicKeyInitData,
   payer: PublicKeyInitData,
-  wormholeProgramId: PublicKeyInitData
+  deltaswapProgramId: PublicKeyInitData
 ): TransactionInstruction {
   const methods = createReadOnlyTokenBridgeProgramInterface(
     tokenBridgeProgramId
-  ).methods.initialize(wormholeProgramId as any);
+  ).methods.initialize(deltaswapProgramId as any);
 
   // @ts-ignore
   return methods._ixFn(...methods._args, {

@@ -465,7 +465,7 @@ impl<'de, 'a> MapAccess<'de> for BoundedSequence<'de, 'a> {
 ///     },
 /// }
 /// #
-/// # assert!(matches!(serde_wormhole::from_slice(&[19]).unwrap(), TestEnum::Unit));
+/// # assert!(matches!(serde_deltaswap::from_slice(&[19]).unwrap(), TestEnum::Unit));
 /// ```
 struct Enum<'de, 'a> {
     de: &'a mut Deserializer<'de>,

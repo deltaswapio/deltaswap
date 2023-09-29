@@ -2,12 +2,12 @@
 pragma solidity ^0.8.17;
 
 import "../../contracts/relayer/libraries/BytesParsing.sol";
-import "../../contracts/interfaces/relayer/IWormholeRelayerTyped.sol";
+import "../../contracts/interfaces/relayer/IDeltaswapRelayerTyped.sol";
 import {
     EvmDeliveryInstruction
 } from "../../contracts/relayer/libraries/RelayerInternalStructs.sol";
-import {WormholeRelayerDelivery} from "../../contracts/relayer/wormholeRelayer/WormholeRelayerDelivery.sol";
-import {WormholeRelayerBase} from "../../contracts/relayer/wormholeRelayer/WormholeRelayerBase.sol";
+import {DeltaswapRelayerDelivery} from "../../contracts/relayer/wormholeRelayer/DeltaswapRelayerDelivery.sol";
+import {DeltaswapRelayerBase} from "../../contracts/relayer/wormholeRelayer/DeltaswapRelayerBase.sol";
 import {IWormholeReceiver} from "../../contracts/interfaces/relayer/IWormholeReceiver.sol";
 import {toWormholeFormat, fromWormholeFormat} from "../../contracts/relayer/libraries/Utils.sol";
 import {MockWormhole} from "./MockWormhole.sol";
@@ -49,8 +49,8 @@ contract BigRevertBufferIntegration is IWormholeReceiver {
     }
 }
 
-contract ExecuteInstructionHarness is WormholeRelayerDelivery {
-    constructor(address _wormhole) WormholeRelayerBase(_wormhole) {}
+contract ExecuteInstructionHarness is DeltaswapRelayerDelivery {
+    constructor(address _wormhole) DeltaswapRelayerBase(_wormhole) {}
 
     function executeInstruction_harness(EvmDeliveryInstruction memory instruction)
         public
@@ -82,7 +82,7 @@ contract TestBigBuffers is Test {
         bytes memory payload = abi.encode(sizeRequested);
         bytes32 userAddress = toWormholeFormat(address(0x8080));
 
-        WormholeRelayerDelivery.DeliveryResults memory results = harness.executeInstruction_harness(
+        DeltaswapRelayerDelivery.DeliveryResults memory results = harness.executeInstruction_harness(
             EvmDeliveryInstruction({
                 sourceChain: 6,
                 targetAddress: targetIntegration,
@@ -96,7 +96,7 @@ contract TestBigBuffers is Test {
             })
         );
 
-        assertTrue(uint8(results.status) == uint8(IWormholeRelayerDelivery.DeliveryStatus.RECEIVER_FAILURE));
+        assertTrue(uint8(results.status) == uint8(IDeltaswapRelayerDelivery.DeliveryStatus.RECEIVER_FAILURE));
         assertTrue(results.gasUsed <= gasLimit);
         assertEq(
             results.additionalStatusInfo,

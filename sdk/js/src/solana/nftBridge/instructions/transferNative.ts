@@ -5,7 +5,7 @@ import {
   TransactionInstruction,
 } from "@solana/web3.js";
 import { TOKEN_METADATA_PROGRAM_ID, deriveTokenMetadataKey } from "../../utils";
-import { getPostMessageAccounts } from "../../wormhole";
+import { getPostMessageAccounts } from "../../deltaswap";
 import {
   deriveAuthoritySignerKey,
   deriveCustodyKey,
@@ -16,7 +16,7 @@ import { createReadOnlyNftBridgeProgramInterface } from "../program";
 
 export function createTransferNativeInstruction(
   nftBridgeProgramId: PublicKeyInitData,
-  wormholeProgramId: PublicKeyInitData,
+  deltaswapProgramId: PublicKeyInitData,
   payer: PublicKeyInitData,
   message: PublicKeyInitData,
   from: PublicKeyInitData,
@@ -37,7 +37,7 @@ export function createTransferNativeInstruction(
   return methods._ixFn(...methods._args, {
     accounts: getTransferNativeAccounts(
       nftBridgeProgramId,
-      wormholeProgramId,
+      deltaswapProgramId,
       payer,
       message,
       from,
@@ -59,38 +59,38 @@ export interface TransferNativeAccounts {
   custody: PublicKey;
   authoritySigner: PublicKey;
   custodySigner: PublicKey;
-  wormholeBridge: PublicKey;
-  wormholeMessage: PublicKey;
-  wormholeEmitter: PublicKey;
-  wormholeSequence: PublicKey;
-  wormholeFeeCollector: PublicKey;
+ deltaswapBridge: PublicKey;
+ deltaswapMessage: PublicKey;
+  deltaswapEmitter: PublicKey;
+  deltaswapSequence: PublicKey;
+  deltaswapFeeCollector: PublicKey;
   clock: PublicKey;
   rent: PublicKey;
   systemProgram: PublicKey;
   tokenProgram: PublicKey;
   splMetadataProgram: PublicKey;
-  wormholeProgram: PublicKey;
+  deltaswapProgram: PublicKey;
 }
 
 export function getTransferNativeAccounts(
   nftBridgeProgramId: PublicKeyInitData,
-  wormholeProgramId: PublicKeyInitData,
+  deltaswapProgramId: PublicKeyInitData,
   payer: PublicKeyInitData,
   message: PublicKeyInitData,
   from: PublicKeyInitData,
   mint: PublicKeyInitData
 ): TransferNativeAccounts {
   const {
-    bridge: wormholeBridge,
-    message: wormholeMessage,
-    emitter: wormholeEmitter,
-    sequence: wormholeSequence,
-    feeCollector: wormholeFeeCollector,
+    bridge:deltaswapBridge,
+    message:deltaswapMessage,
+    emitter: deltaswapEmitter,
+    sequence: deltaswapSequence,
+    feeCollector: deltaswapFeeCollector,
     clock,
     rent,
     systemProgram,
   } = getPostMessageAccounts(
-    wormholeProgramId,
+    deltaswapProgramId,
     payer,
     nftBridgeProgramId,
     message
@@ -104,16 +104,16 @@ export function getTransferNativeAccounts(
     custody: deriveCustodyKey(nftBridgeProgramId, mint),
     authoritySigner: deriveAuthoritySignerKey(nftBridgeProgramId),
     custodySigner: deriveCustodySignerKey(nftBridgeProgramId),
-    wormholeBridge,
-    wormholeMessage,
-    wormholeEmitter,
-    wormholeSequence,
-    wormholeFeeCollector,
+   deltaswapBridge,
+   deltaswapMessage,
+    deltaswapEmitter,
+    deltaswapSequence,
+    deltaswapFeeCollector,
     clock,
     rent,
     systemProgram,
     tokenProgram: TOKEN_PROGRAM_ID,
     splMetadataProgram: TOKEN_METADATA_PROGRAM_ID,
-    wormholeProgram: new PublicKey(wormholeProgramId),
+    deltaswapProgram: new PublicKey(deltaswapProgramId),
   };
 }

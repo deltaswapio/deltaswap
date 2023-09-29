@@ -80,8 +80,8 @@ func init() {
 	AdminClientTokenBridgeUpgradeContractCmd.Flags().AddFlagSet(moduleFlagSet)
 	TemplateCmd.AddCommand(AdminClientTokenBridgeUpgradeContractCmd)
 
-	AdminClientWormholeRelayerSetDefaultDeliveryProviderCmd.Flags().AddFlagSet(governanceFlagSet)
-	TemplateCmd.AddCommand(AdminClientWormholeRelayerSetDefaultDeliveryProviderCmd)
+	AdminClientDeltaswapRelayerSetDefaultDeliveryProviderCmd.Flags().AddFlagSet(governanceFlagSet)
+	TemplateCmd.AddCommand(AdminClientDeltaswapRelayerSetDefaultDeliveryProviderCmd)
 
 	circleIntegrationChainIDFlagSet := pflag.NewFlagSet("circle-integ", pflag.ExitOnError)
 	circleIntegrationChainID = circleIntegrationChainIDFlagSet.String("chain-id", "", "Target chain ID")
@@ -268,10 +268,10 @@ var AdminClientIbcTranslatorUpdateChannelChainCmd = &cobra.Command{
 	Run:   runIbcTranslatorUpdateChannelChainTemplate,
 }
 
-var AdminClientWormholeRelayerSetDefaultDeliveryProviderCmd = &cobra.Command{
+var AdminClientDeltaswapRelayerSetDefaultDeliveryProviderCmd = &cobra.Command{
 	Use:   "wormhole-relayer-set-default-delivery-provider",
 	Short: "Generate a 'set default delivery provider' template for specified chain and address",
-	Run:   runWormholeRelayerSetDefaultDeliveryProviderTemplate,
+	Run:   runDeltaswapRelayerSetDefaultDeliveryProviderTemplate,
 }
 
 func runPhylaxSetTemplate(cmd *cobra.Command, args []string) {
@@ -839,7 +839,7 @@ func runIbcUpdateChannelChainTemplate(module nodev1.IbcUpdateChannelChainModule)
 
 }
 
-func runWormholeRelayerSetDefaultDeliveryProviderTemplate(cmd *cobra.Command, args []string) {
+func runDeltaswapRelayerSetDefaultDeliveryProviderTemplate(cmd *cobra.Command, args []string) {
 	address, err := parseAddress(*address)
 	if err != nil {
 		log.Fatal(err)
@@ -855,8 +855,8 @@ func runWormholeRelayerSetDefaultDeliveryProviderTemplate(cmd *cobra.Command, ar
 			{
 				Sequence: rand.Uint64(),
 				Nonce:    rand.Uint32(),
-				Payload: &nodev1.GovernanceMessage_WormholeRelayerSetDefaultDeliveryProvider{
-					WormholeRelayerSetDefaultDeliveryProvider: &nodev1.WormholeRelayerSetDefaultDeliveryProvider{
+				Payload: &nodev1.GovernanceMessage_DeltaswapRelayerSetDefaultDeliveryProvider{
+					DeltaswapRelayerSetDefaultDeliveryProvider: &nodev1.DeltaswapRelayerSetDefaultDeliveryProvider{
 						ChainId:                           uint32(chainID),
 						NewDefaultDeliveryProviderAddress: address,
 					},

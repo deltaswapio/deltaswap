@@ -166,15 +166,15 @@ parseSmartContractStateResponse
 
 ### Added
 
-Methods to create transaction instructions for Wormhole (Core Bridge), Token Bridge and NFT Bridge
+Methods to create transaction instructions for Deltaswap (Core Bridge), Token Bridge and NFT Bridge
 
-Methods to generate PDAs for Wormhole (Core Bridge), Token Bridge and NFT Bridge
+Methods to generate PDAs for Deltaswap (Core Bridge), Token Bridge and NFT Bridge
 
-Methods to deserialize account data for Wormhole (Core Bridge), Token Bridge and NFT Bridge
+Methods to deserialize account data for Deltaswap (Core Bridge), Token Bridge and NFT Bridge
 
 Other Solana utility objects and methods
 
-VAA (Verified Wormhole Message) deserializers
+VAA (Verified Deltaswap Message) deserializers
 
 Optional Confirmation arguments for account retrieval and wherever they are relevant
 
@@ -186,7 +186,7 @@ Use FQTs in Aptos SDK
 
 ### Removed
 
-Dependency: @certusone/wormhole-sdk-wasm
+Dependency: @deltaswapio/deltaswap-sdk-wasm
 
 Removed support for Ropsten since the chain has been deprecated.
 
@@ -243,7 +243,7 @@ getGovernorIsVAAEnqueued function
 
 ### Added
 
-Wormhole chain devnet support
+Deltaswap chain devnet support
 
 human-readable part parameter to `humanAddress` function
 
@@ -268,7 +268,7 @@ Chain ids for Injective, Osmosis, Sui, and Aptos
 
 ### Changed
 
-Use `@certusone/wormhole-sdk-proto-web` and `@certusone/wormhole-sdk-wasm` packages
+Use `@deltaswapio/deltaswap-sdk-proto-web` and `@deltaswapio/deltaswap-sdk-wasm` packages
 
 ## 0.4.5
 

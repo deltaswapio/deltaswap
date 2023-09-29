@@ -3,9 +3,9 @@ import {
   BridgeImplementation__factory,
   Implementation__factory,
   NFTBridgeImplementation__factory,
-  WormholeRelayer__factory,
+  DeltaswapRelayer__factory,
 } from "@certusone/wormhole-sdk/lib/esm/ethers-contracts";
-import { getWormholeRelayerAddress } from "@certusone/wormhole-sdk/lib/esm/relayer";
+import { getDeltaswapRelayerAddress } from "@certusone/wormhole-sdk/lib/esm/relayer";
 import {
   CHAINS,
   CONTRACTS,
@@ -448,16 +448,16 @@ export async function execute_evm(
 
       break;
     }
-    case "WormholeRelayer":
+    case "DeltaswapRelayer":
       contract_address = contract_address
         ? contract_address
-        : getWormholeRelayerAddress(chain, network);
+        : getDeltaswapRelayerAddress(chain, network);
       if (contract_address === undefined) {
         throw Error(
           `Unknown Wormhole Relayer contract on ${network} for ${chain}`
         );
       }
-      let rb = WormholeRelayer__factory.connect(contract_address, signer);
+      let rb = DeltaswapRelayer__factory.connect(contract_address, signer);
       switch (payload.type) {
         case "ContractUpgrade":
           console.log("Upgrading contract");
@@ -472,7 +472,7 @@ export async function execute_evm(
           console.log("Registering chain");
           console.log(
             "Hash: " +
-              (await rb.registerWormholeRelayerContract(vaa, overrides)).hash
+              (await rb.registerDeltaswapRelayerContract(vaa, overrides)).hash
           );
           break;
         case "SetDefaultDeliveryProvider":

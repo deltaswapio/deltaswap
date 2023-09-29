@@ -8,7 +8,7 @@ import {
   sha256,
   zeroPad,
 } from "ethers/lib/utils";
-import { deriveWormholeEmitterKey } from "../solana/wormhole";
+import { deriveDeltaswapEmitterKey } from "../solana/deltaswap";
 import { uint8ArrayToHex } from "../utils";
 
 export function getEmitterAddressEth(
@@ -18,7 +18,7 @@ export function getEmitterAddressEth(
 }
 
 export function getEmitterAddressSolana(programAddress: PublicKeyInitData) {
-  return deriveWormholeEmitterKey(programAddress).toBuffer().toString("hex");
+  return deriveDeltaswapEmitterKey(programAddress).toBuffer().toString("hex");
 }
 
 export async function getEmitterAddressTerra(programAddress: string) {

@@ -1,5 +1,5 @@
 import { ChainId, ChainName, coalesceChainId } from "../utils/consts";
-import { publicrpc } from "@certusone/wormhole-sdk-proto-web";
+import { publicrpc } from "@deltaswapio/deltaswap-sdk-proto-web";
 const { GrpcWebImpl, PublicRPCServiceClientImpl } = publicrpc;
 
 export async function getGovernorIsVAAEnqueued(

@@ -9,11 +9,11 @@ import { IdlCoder } from "./idl";
 // Inspired by  coral-xyz/anchor
 //
 // https://github.com/coral-xyz/anchor/blob/master/ts/packages/anchor/src/coder/borsh/instruction.ts
-export class WormholeInstructionCoder implements InstructionCoder {
+export class DeltaswapInstructionCoder implements InstructionCoder {
   private ixLayout: Map<string, Layout>;
 
   constructor(idl: Idl) {
-    this.ixLayout = WormholeInstructionCoder.parseIxLayout(idl);
+    this.ixLayout = DeltaswapInstructionCoder.parseIxLayout(idl);
   }
 
   private static parseIxLayout(idl: Idl): Map<string, Layout> {
@@ -55,14 +55,14 @@ export class WormholeInstructionCoder implements InstructionCoder {
     const len = layout.encode(ix, buffer);
     const data = buffer.slice(0, len);
 
-    return encodeWormholeInstructionData(
-      (WormholeInstruction as any)[upperFirst(methodName)],
+    return encodeDeltaswapInstructionData(
+      (DeltaswapInstruction as any)[upperFirst(methodName)],
       data
     );
   }
 
   encodeState(_ixName: string, _ix: any): Buffer {
-    throw new Error("Wormhole program does not have state");
+    throw new Error("Deltaswap program does not have state");
   }
 
   public decode(
@@ -75,7 +75,7 @@ export class WormholeInstructionCoder implements InstructionCoder {
     let discriminator = ix.slice(0, 1).readInt8();
     let data = ix.slice(1);
 
-    let name = camelCase(WormholeInstruction[discriminator]);
+    let name = camelCase(DeltaswapInstruction[discriminator]);
     let layout = this.ixLayout.get(name);
 
     if (!layout) {
@@ -89,7 +89,7 @@ export class WormholeInstructionCoder implements InstructionCoder {
  *
  * https://github.com/deltaswapio/deltaswap/blob/main/solana/bridge/program/src/lib.rs#L92
  */
-export enum WormholeInstruction {
+export enum DeltaswapInstruction {
   Initialize,
   PostMessage,
   PostVaa,
@@ -101,7 +101,7 @@ export enum WormholeInstruction {
   PostMessageUnreliable, // sounds useful
 }
 
-function encodeWormholeInstructionData(
+function encodeDeltaswapInstructionData(
   discriminator: number,
   data?: Buffer
 ): Buffer {

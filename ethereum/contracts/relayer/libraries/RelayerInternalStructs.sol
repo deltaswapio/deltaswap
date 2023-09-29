@@ -3,7 +3,7 @@
 pragma solidity ^0.8.19;
 
 import "../../interfaces/relayer/TypedUnits.sol";
-import "../../interfaces/relayer/IWormholeRelayerTyped.sol";
+import "../../interfaces/relayer/IDeltaswapRelayerTyped.sol";
 
 struct DeliveryInstruction {
     uint16 targetChain;
@@ -45,7 +45,7 @@ struct RedeliveryInstruction {
 
 /**
  * @notice When a user requests a `resend()`, a `RedeliveryInstruction` is emitted by the
- *     WormholeRelayer and in turn converted by the relay provider into an encoded (=serialized)
+ *     DeltaswapRelayer and in turn converted by the relay provider into an encoded (=serialized)
  *     `DeliveryOverride` struct which is then passed to `delivery()` to override the parameters of
  *     a previously failed delivery attempt.
  *

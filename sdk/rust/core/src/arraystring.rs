@@ -85,12 +85,12 @@ mod test {
 
         for i in 0..=32 {
             let expected = MyString(v[i..].into());
-            let buf = serde_wormhole::to_vec(&expected).unwrap();
+            let buf = serde_deltaswap::to_vec(&expected).unwrap();
 
             assert_eq!(&zeroes[..i], &buf[..i]);
             assert_eq!(v.as_bytes()[i..], buf[i..]);
 
-            let actual = serde_wormhole::from_slice(&buf).unwrap();
+            let actual = serde_deltaswap::from_slice(&buf).unwrap();
             assert_eq!(expected, actual);
         }
     }
@@ -98,7 +98,7 @@ mod test {
     #[test]
     fn value_too_large() {
         let v = MyString("61ddb8ede2a3f0cec9b550ef150c08096280d0480493365f".into());
-        let _ = serde_wormhole::to_vec(&v)
+        let _ = serde_deltaswap::to_vec(&v)
             .expect_err("successfully serialized string longer than 32 bytes");
     }
 
@@ -106,7 +106,7 @@ mod test {
     fn buffer_too_small() {
         let b = [0u8; 16];
 
-        let _ = serde_wormhole::from_slice::<MyString>(&b)
+        let _ = serde_deltaswap::from_slice::<MyString>(&b)
             .expect_err("successfully deserialized string from a buffer that's too small");
     }
 }

@@ -2,11 +2,11 @@
 //! used as a form of proof; by submitting a VAA to a target contract, the receiving contract can
 //! make assumptions about the validity of state on the source chain.
 //!
-//! Wormhole defines several VAA's for use within Token/NFT bridge implemenetations, as well as
-//! governance specific VAA's used within Wormhole's phylax network.
+//! Deltaswap defines several VAA's for use within Token/NFT bridge implemenetations, as well as
+//! governance specific VAA's used within Deltaswap's phylax network.
 //!
-//! This module provides definitions and parsers for all current Wormhole standard VAA's, and
-//! includes parsers for the core VAA type. Programs targetting wormhole can use this module to
+//! This module provides definitions and parsers for all current Deltaswap standard VAA's, and
+//! includes parsers for the core VAA type. Programs targetting deltaswap can use this module to
 //! parse and verify incoming VAA's securely.
 
 use std::io::{self, Write};
@@ -78,14 +78,14 @@ mod schemars_array {
 }
 
 /// The core VAA itself. This structure is what is received by a contract on the receiving side of
-/// a wormhole message passing flow.  The generic parameter `P` represents the user-defined payload
+/// a deltaswap message passing flow.  The generic parameter `P` represents the user-defined payload
 /// for the VAA.
 #[derive(Serialize, Deserialize, Debug, Default, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct Vaa<P> {
     // Implementation note: it would be nice if we could use `#[serde(flatten)]` and directly embed the
     // `Header` and `Body` structs. Unfortunately using flatten causes serde to serialize/deserialize
     // the struct as a map, which requires the underlying data format to encode field names on the
-    // wire, which the wormhole data format does not do.  So instead we have to duplicate the fields
+    // wire, which the deltaswap data format does not do.  So instead we have to duplicate the fields
     // and provide a conversion function to/from `Vaa` to `(Header, Body)`.
     pub version: u8,
     pub phylax_set_index: u32,
@@ -139,7 +139,7 @@ pub struct Digest {
 /// Calculates and returns the digest for `body` to be used in VAA operations.
 ///
 /// A VAA is distinguished by the unique 256bit Keccak256 hash of its body. This hash is
-/// utilised in all Wormhole components for identifying unique VAA's, including the bridge,
+/// utilised in all Deltaswap components for identifying unique VAA's, including the bridge,
 /// modules, and core phylax software. The `Digest` is documented with reasoning for
 /// each field.
 ///
@@ -237,19 +237,19 @@ impl<P: Serialize> Body<P> {
     /// Body Digest Components.
     ///
     /// A VAA is distinguished by the unique 256bit Keccak256 hash of its body. This hash is
-    /// utilised in all Wormhole components for identifying unique VAA's, including the bridge,
+    /// utilised in all Deltaswap components for identifying unique VAA's, including the bridge,
     /// modules, and core phylax software. The `Digest` is documented with reasoning for
     /// each field.
     ///
     /// NOTE: This function uses a library to do Keccak256 hashing, but on-chain this may not be
-    /// efficient. If efficiency is needed, consider calling `serde_wormhole::to_writer` instead
+    /// efficient. If efficiency is needed, consider calling `serde_deltaswap::to_writer` instead
     /// and hashing the result using on-chain primitives.
     #[inline]
     pub fn digest(&self) -> anyhow::Result<Digest> {
         // The `body` of the VAA is hashed to produce a `digest` of the VAA.
         let hash: [u8; 32] = {
             let mut h = sha3::Keccak256::default();
-            serde_wormhole::to_writer(&mut h, self).context("failed to serialize body")?;
+            serde_deltaswap::to_writer(&mut h, self).context("failed to serialize body")?;
             h.finalize().into()
         };
 
@@ -270,7 +270,7 @@ impl<P: Serialize> Body<P> {
 
 #[cfg(test)]
 mod test {
-    use serde_wormhole::RawMessage;
+    use serde_deltaswap::RawMessage;
 
     use crate::{
         token::{Action, GovernancePacket},
@@ -321,8 +321,8 @@ mod test {
             payload: RawMessage::new(&buf[123..]),
         };
 
-        assert_eq!(vaa, serde_wormhole::from_slice(&buf).unwrap());
-        assert_eq!(&buf[..], &serde_wormhole::to_vec(&vaa).unwrap());
+        assert_eq!(vaa, serde_deltaswap::from_slice(&buf).unwrap());
+        assert_eq!(&buf[..], &serde_deltaswap::to_vec(&vaa).unwrap());
     }
 
     #[test]
@@ -343,12 +343,12 @@ mod test {
 
         let d1 = body.digest().unwrap();
 
-        let data = serde_wormhole::to_vec(&body).unwrap();
+        let data = serde_deltaswap::to_vec(&body).unwrap();
         let d2 = digest(&data).unwrap();
 
         assert_eq!(d1, d2);
 
-        let partial = serde_wormhole::from_slice::<Body<&RawMessage>>(&data).unwrap();
+        let partial = serde_deltaswap::from_slice::<Body<&RawMessage>>(&data).unwrap();
         let d3 = partial.digest().unwrap();
 
         assert_eq!(d1, d3);
@@ -396,12 +396,12 @@ mod test {
             },
         };
 
-        let body = serde_wormhole::from_slice(&data).unwrap();
+        let body = serde_deltaswap::from_slice(&data).unwrap();
         assert_eq!(expected_body, body);
         assert_eq!(expected_digest, body.digest().unwrap().secp256k_hash);
 
         // Deferred parsing of the payload should still produce the same digest.
-        let body = serde_wormhole::from_slice::<Body<&RawMessage>>(&data).unwrap();
+        let body = serde_deltaswap::from_slice::<Body<&RawMessage>>(&data).unwrap();
         assert_eq!(&data[51..], body.payload.get());
         assert_eq!(expected_digest, body.digest().unwrap().secp256k_hash);
     }

@@ -381,8 +381,8 @@ mod test {
             },
         };
 
-        assert_eq!(buf.as_ref(), &serde_wormhole::to_vec(&vaa).unwrap());
-        assert_eq!(vaa, serde_wormhole::from_slice(&buf).unwrap());
+        assert_eq!(buf.as_ref(), &serde_deltaswap::to_vec(&vaa).unwrap());
+        assert_eq!(vaa, serde_deltaswap::from_slice(&buf).unwrap());
 
         let encoded = serde_json::to_string(&vaa).unwrap();
         assert_eq!(vaa, serde_json::from_str(&encoded).unwrap());
@@ -439,8 +439,8 @@ mod test {
             },
         };
 
-        assert_eq!(buf.as_ref(), &serde_wormhole::to_vec(&vaa).unwrap());
-        assert_eq!(vaa, serde_wormhole::from_slice(&buf).unwrap());
+        assert_eq!(buf.as_ref(), &serde_deltaswap::to_vec(&vaa).unwrap());
+        assert_eq!(vaa, serde_deltaswap::from_slice(&buf).unwrap());
 
         let encoded = serde_json::to_string(&vaa).unwrap();
         assert_eq!(vaa, serde_json::from_str(&encoded).unwrap());
@@ -688,8 +688,8 @@ mod test {
             },
         };
 
-        assert_eq!(buf.as_ref(), &serde_wormhole::to_vec(&vaa).unwrap());
-        assert_eq!(vaa, serde_wormhole::from_slice(&buf).unwrap());
+        assert_eq!(buf.as_ref(), &serde_deltaswap::to_vec(&vaa).unwrap());
+        assert_eq!(vaa, serde_deltaswap::from_slice(&buf).unwrap());
 
         let encoded = serde_json::to_string(&vaa).unwrap();
         assert_eq!(vaa, serde_json::from_str(&encoded).unwrap());

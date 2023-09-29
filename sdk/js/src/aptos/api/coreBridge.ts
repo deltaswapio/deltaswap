@@ -17,7 +17,7 @@ export const upgradePhylaxSet = (
 
 // Init WH
 
-export const initWormhole = (
+export const initDeltaswap = (
   coreBridgeAddress: string,
   chainId: ChainId,
   governanceChainId: number,
@@ -26,7 +26,7 @@ export const initWormhole = (
 ): Types.EntryFunctionPayload => {
   if (!coreBridgeAddress) throw new Error("Need core bridge address.");
   return {
-    function: `${coreBridgeAddress}::wormhole::init`,
+    function: `${coreBridgeAddress}::deltaswap::init`,
     type_arguments: [],
     arguments: [
       chainId,

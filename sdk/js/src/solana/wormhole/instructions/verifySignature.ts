@@ -12,10 +12,10 @@ import { createSecp256k1Instruction } from "../../utils";
 import {
   getPhylaxSet,
   derivePhylaxSetKey,
-  getWormholeBridgeData,
+  getDeltaswapBridgeData,
 } from "../accounts";
 import { isBytes, ParsedVaa, parseVaa, SignedVaa } from "../../../vaa";
-import { createReadOnlyWormholeProgramInterface } from "../program";
+import { createReadOnlyDeltaswapProgramInterface } from "../program";
 
 const MAX_LEN_PHYLAX_KEYS = 19;
 
@@ -34,7 +34,7 @@ const MAX_LEN_PHYLAX_KEYS = 19;
  *
  *
  * @param {Connection} connection - Solana web3 connection
- * @param {PublicKeyInitData} wormholeProgramId - wormhole program address
+ * @param {PublicKeyInitData} deltaswapProgramId - deltaswap program address
  * @param {PublicKeyInitData} payer - transaction signer address
  * @param {SignedVaa | ParsedVaa} vaa - either signed VAA bytes or parsed VAA (use {@link parseVaa} on signed VAA)
  * @param {PublicKeyInitData} signatureSet - address to account of verified signatures
@@ -42,7 +42,7 @@ const MAX_LEN_PHYLAX_KEYS = 19;
  */
 export async function createVerifySignaturesInstructions(
   connection: Connection,
-  wormholeProgramId: PublicKeyInitData,
+  deltaswapProgramId: PublicKeyInitData,
   payer: PublicKeyInitData,
   vaa: SignedVaa | ParsedVaa,
   signatureSet: PublicKeyInitData,
@@ -50,14 +50,14 @@ export async function createVerifySignaturesInstructions(
 ): Promise<TransactionInstruction[]> {
   const parsed = isBytes(vaa) ? parseVaa(vaa) : vaa;
   const phylaxSetIndex = parsed.phylaxSetIndex;
-  const info = await getWormholeBridgeData(connection, wormholeProgramId);
+  const info = await getDeltaswapBridgeData(connection, deltaswapProgramId);
   if (phylaxSetIndex != info.phylaxSetIndex) {
     throw new Error("phylaxSetIndex != config.phylaxSetIndex");
   }
 
   const phylaxSetData = await getPhylaxSet(
     connection,
-    wormholeProgramId,
+    deltaswapProgramId,
     phylaxSetIndex,
     commitment
   );
@@ -89,7 +89,7 @@ export async function createVerifySignaturesInstructions(
     );
     instructions.push(
       createVerifySignaturesInstruction(
-        wormholeProgramId,
+        deltaswapProgramId,
         payer,
         parsed,
         signatureSet,
@@ -109,7 +109,7 @@ export async function createVerifySignaturesInstructions(
  *
  * https://github.com/deltaswapio/deltaswap/blob/main/solana/bridge/program/src/api/verify_signature.rs
  *
- * @param {PublicKeyInitData} wormholeProgramId - wormhole program address
+ * @param {PublicKeyInitData} deltaswapProgramId - deltaswap program address
  * @param {PublicKeyInitData} payer - transaction signer address
  * @param {SignedVaa | ParsedVaa} vaa - either signed VAA (Buffer) or parsed VAA (use {@link parseVaa} on signed VAA)
  * @param {PublicKeyInitData} signatureSet - key for signature set account
@@ -117,21 +117,21 @@ export async function createVerifySignaturesInstructions(
  *
  */
 function createVerifySignaturesInstruction(
-  wormholeProgramId: PublicKeyInitData,
+  deltaswapProgramId: PublicKeyInitData,
   payer: PublicKeyInitData,
   vaa: SignedVaa | ParsedVaa,
   signatureSet: PublicKeyInitData,
   signatureStatus: number[]
 ): TransactionInstruction {
   const methods =
-    createReadOnlyWormholeProgramInterface(
-      wormholeProgramId
+    createReadOnlyDeltaswapProgramInterface(
+      deltaswapProgramId
     ).methods.verifySignatures(signatureStatus);
 
   // @ts-ignore
   return methods._ixFn(...methods._args, {
     accounts: getVerifySignatureAccounts(
-      wormholeProgramId,
+      deltaswapProgramId,
       payer,
       signatureSet,
       vaa
@@ -153,7 +153,7 @@ export interface VerifySignatureAccounts {
 }
 
 export function getVerifySignatureAccounts(
-  wormholeProgramId: PublicKeyInitData,
+  deltaswapProgramId: PublicKeyInitData,
   payer: PublicKeyInitData,
   signatureSet: PublicKeyInitData,
   vaa: SignedVaa | ParsedVaa
@@ -162,7 +162,7 @@ export function getVerifySignatureAccounts(
   return {
     payer: new PublicKey(payer),
     phylaxSet: derivePhylaxSetKey(
-      wormholeProgramId,
+      deltaswapProgramId,
       parsed.phylaxSetIndex
     ),
     signatureSet: new PublicKey(signatureSet),

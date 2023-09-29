@@ -16,7 +16,7 @@ export interface EmitterAccounts {
   sequence: PublicKey;
 }
 
-export function deriveWormholeEmitterKey(
+export function deriveDeltaswapEmitterKey(
   emitterProgramId: PublicKeyInitData
 ): PublicKey {
   return deriveAddress([Buffer.from("emitter")], emitterProgramId);
@@ -24,25 +24,25 @@ export function deriveWormholeEmitterKey(
 
 export function getEmitterKeys(
   emitterProgramId: PublicKeyInitData,
-  wormholeProgramId: PublicKeyInitData
+  deltaswapProgramId: PublicKeyInitData
 ): EmitterAccounts {
-  const emitter = deriveWormholeEmitterKey(emitterProgramId);
+  const emitter = deriveDeltaswapEmitterKey(emitterProgramId);
   return {
     emitter,
-    sequence: deriveEmitterSequenceKey(emitter, wormholeProgramId),
+    sequence: deriveEmitterSequenceKey(emitter, deltaswapProgramId),
   };
 }
 
 export async function getProgramSequenceTracker(
   connection: Connection,
   emitterProgramId: PublicKeyInitData,
-  wormholeProgramId: PublicKeyInitData,
+  deltaswapProgramId: PublicKeyInitData,
   commitment?: Commitment
 ): Promise<SequenceTracker> {
   return getSequenceTracker(
     connection,
-    deriveWormholeEmitterKey(emitterProgramId),
-    wormholeProgramId,
+    deriveDeltaswapEmitterKey(emitterProgramId),
+    deltaswapProgramId,
     commitment
   );
 }

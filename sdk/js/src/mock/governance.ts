@@ -1,6 +1,6 @@
 import { BN } from "@project-serum/anchor";
 import { ChainId, tryNativeToHexString } from "../utils";
-import { MockEmitter } from "./wormhole";
+import { MockEmitter } from "./deltaswap";
 
 const ETHEREUM_KEY_LENGTH = 20;
 
@@ -28,7 +28,7 @@ export class GovernanceEmitter extends MockEmitter {
     return this.publishMessage(0, serialized, 1, timestamp, uptickSequence);
   }
 
-  publishWormholeSetMessageFee(
+  publishDeltaswapSetMessageFee(
     timestamp: number,
     chain: number,
     amount: bigint,
@@ -47,7 +47,7 @@ export class GovernanceEmitter extends MockEmitter {
     );
   }
 
-  publishWormholeTransferFees(
+  publishDeltaswapTransferFees(
     timestamp: number,
     chain: number,
     amount: bigint,
@@ -68,7 +68,7 @@ export class GovernanceEmitter extends MockEmitter {
     );
   }
 
-  publishWormholePhylaxSetUpgrade(
+  publishDeltaswapPhylaxSetUpgrade(
     timestamp: number,
     newPhylaxSetIndex: number,
     publicKeys: Buffer[],
@@ -99,7 +99,7 @@ export class GovernanceEmitter extends MockEmitter {
     );
   }
 
-  publishWormholeUpgradeContract(
+  publishDeltaswapUpgradeContract(
     timestamp: number,
     chain: number,
     newContract: string,
@@ -203,7 +203,7 @@ export class GovernanceEmitter extends MockEmitter {
     );
   }
 
-  publishWormholeRelayerRegisterChain(
+  publishDeltaswapRelayerRegisterChain(
     timestamp: number,
     chain: number,
     address: string,
@@ -214,7 +214,7 @@ export class GovernanceEmitter extends MockEmitter {
     payload.write(tryNativeToHexString(address, chain as ChainId), 2, "hex");
     return this.publishGovernanceMessage(
       timestamp,
-      "WormholeRelayer",
+      "DeltaswapRelayer",
       payload,
       1,
       0,
@@ -222,7 +222,7 @@ export class GovernanceEmitter extends MockEmitter {
     );
   }
 
-  publishWormholeRelayerUpgradeContract(
+  publishDeltaswapRelayerUpgradeContract(
     timestamp: number,
     chain: number,
     newContract: string,
@@ -236,7 +236,7 @@ export class GovernanceEmitter extends MockEmitter {
     );
     return this.publishGovernanceMessage(
       timestamp,
-      "WormholeRelayer",
+      "DeltaswapRelayer",
       payload,
       2,
       chain,
@@ -244,7 +244,7 @@ export class GovernanceEmitter extends MockEmitter {
     );
   }
 
-  publishWormholeRelayerSetDefaultDeliveryProvider(
+  publishDeltaswapRelayerSetDefaultDeliveryProvider(
     timestamp: number,
     chain: number,
     newRelayProviderAddress: string,
@@ -258,7 +258,7 @@ export class GovernanceEmitter extends MockEmitter {
     );
     return this.publishGovernanceMessage(
       timestamp,
-      "WormholeRelayer",
+      "DeltaswapRelayer",
       payload,
       3,
       chain,

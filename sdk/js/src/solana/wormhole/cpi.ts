@@ -2,55 +2,55 @@ import { PublicKey, PublicKeyInitData } from "@solana/web3.js";
 import {
   deriveEmitterSequenceKey,
   deriveFeeCollectorKey,
-  deriveWormholeEmitterKey,
-  deriveWormholeBridgeDataKey,
+  deriveDeltaswapEmitterKey,
+  deriveDeltaswapBridgeDataKey,
   getEmitterKeys,
 } from "./accounts";
 import { getPostMessageAccounts } from "./instructions";
 
-export interface WormholeDerivedAccounts {
+export interface DeltaswapDerivedAccounts {
   /**
-   * seeds = ["Bridge"], seeds::program = wormholeProgram
+   * seeds = ["Bridge"], seeds::program = deltaswapProgram
    */
-  wormholeBridge: PublicKey;
+ deltaswapBridge: PublicKey;
   /**
    * seeds = ["emitter"], seeds::program = cpiProgramId
    */
-  wormholeEmitter: PublicKey;
+  deltaswapEmitter: PublicKey;
   /**
-   * seeds = ["Sequence", wormholeEmitter], seeds::program = wormholeProgram
+   * seeds = ["Sequence", deltaswapEmitter], seeds::program = deltaswapProgram
    */
-  wormholeSequence: PublicKey;
+  deltaswapSequence: PublicKey;
   /**
-   * seeds = ["fee_collector"], seeds::program = wormholeProgram
+   * seeds = ["fee_collector"], seeds::program = deltaswapProgram
    */
-  wormholeFeeCollector: PublicKey;
+  deltaswapFeeCollector: PublicKey;
 }
 
 /**
- * Generate Wormhole PDAs.
+ * Generate Deltaswap PDAs.
  *
  * @param cpiProgramId
- * @param wormholeProgramId
+ * @param deltaswapProgramId
  * @returns
  */
-export function getWormholeDerivedAccounts(
+export function getDeltaswapDerivedAccounts(
   cpiProgramId: PublicKeyInitData,
-  wormholeProgramId: PublicKeyInitData
-): WormholeDerivedAccounts {
-  const { emitter: wormholeEmitter, sequence: wormholeSequence } =
-    getEmitterKeys(cpiProgramId, wormholeProgramId);
+  deltaswapProgramId: PublicKeyInitData
+): DeltaswapDerivedAccounts {
+  const { emitter: deltaswapEmitter, sequence: deltaswapSequence } =
+    getEmitterKeys(cpiProgramId, deltaswapProgramId);
   return {
-    wormholeBridge: deriveWormholeBridgeDataKey(wormholeProgramId),
-    wormholeEmitter,
-    wormholeSequence,
-    wormholeFeeCollector: deriveFeeCollectorKey(wormholeProgramId),
+   deltaswapBridge: deriveDeltaswapBridgeDataKey(deltaswapProgramId),
+    deltaswapEmitter,
+    deltaswapSequence,
+    deltaswapFeeCollector: deriveFeeCollectorKey(deltaswapProgramId),
   };
 }
 
-export interface PostMessageCpiAccounts extends WormholeDerivedAccounts {
+export interface PostMessageCpiAccounts extends DeltaswapDerivedAccounts {
   payer: PublicKey;
-  wormholeMessage: PublicKey;
+ deltaswapMessage: PublicKey;
   clock: PublicKey;
   rent: PublicKey;
   systemProgram: PublicKey;
@@ -61,30 +61,30 @@ export interface PostMessageCpiAccounts extends WormholeDerivedAccounts {
  * as cross-program invocation.
  *
  * @param cpiProgramId
- * @param wormholeProgramId
+ * @param deltaswapProgramId
  * @param payer
  * @param message
  * @returns
  */
 export function getPostMessageCpiAccounts(
   cpiProgramId: PublicKeyInitData,
-  wormholeProgramId: PublicKeyInitData,
+  deltaswapProgramId: PublicKeyInitData,
   payer: PublicKeyInitData,
   message: PublicKeyInitData
 ): PostMessageCpiAccounts {
   const accounts = getPostMessageAccounts(
-    wormholeProgramId,
+    deltaswapProgramId,
     payer,
     cpiProgramId,
     message
   );
   return {
     payer: accounts.payer,
-    wormholeBridge: accounts.bridge,
-    wormholeMessage: accounts.message,
-    wormholeEmitter: accounts.emitter,
-    wormholeSequence: accounts.sequence,
-    wormholeFeeCollector: accounts.feeCollector,
+   deltaswapBridge: accounts.bridge,
+   deltaswapMessage: accounts.message,
+    deltaswapEmitter: accounts.emitter,
+    deltaswapSequence: accounts.sequence,
+    deltaswapFeeCollector: accounts.feeCollector,
     clock: accounts.clock,
     rent: accounts.rent,
     systemProgram: accounts.systemProgram,

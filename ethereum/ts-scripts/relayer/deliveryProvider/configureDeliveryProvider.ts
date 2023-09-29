@@ -5,7 +5,7 @@ import {
   loadChains,
   ChainInfo,
   loadScriptConfig,
-  getWormholeRelayerAddress,
+  getDeltaswapRelayerAddress,
   getDeliveryProvider,
   getDeliveryProviderAddress,
   getOperatingChains,
@@ -42,7 +42,7 @@ async function run() {
 async function configureChainsDeliveryProvider(chain: ChainInfo) {
   console.log("about to perform DeliveryProvider configuration for chain " + chain.chainId);
   const deliveryProvider = getDeliveryProvider(chain);
-  const coreRelayer = await getWormholeRelayerAddress(chain);
+  const coreRelayer = await getDeltaswapRelayerAddress(chain);
 
   const thisChainsConfigInfo = config.addresses.find(
     (x: any) => x.chainId == chain.chainId
@@ -60,7 +60,7 @@ async function configureChainsDeliveryProvider(chain: ChainInfo) {
   }
 
   const coreConfig: DeliveryProviderStructs.CoreConfigStruct = {
-    updateWormholeRelayer: true,
+    updateDeltaswapRelayer: true,
     updateRewardAddress: true,
     updateSupportedKeyTypes: true,
     coreRelayer,

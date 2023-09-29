@@ -110,7 +110,7 @@ message GovernanceMessage {
     // IBC Receiver Integration
     IbcUpdateChannelChain ibc_update_channel_chain = 21;
     // Wormhole Relayer module
-    WormholeRelayerSetDefaultDeliveryProvider wormhole_relayer_set_default_delivery_provider = 22;
+    DeltaswapRelayerSetDefaultDeliveryProvider wormhole_relayer_set_default_delivery_provider = 22;
   }
 }
 
@@ -296,7 +296,7 @@ message IbcUpdateChannelChain {
   IbcUpdateChannelChainModule module = 4;
 }
 
-message WormholeRelayerSetDefaultDeliveryProvider {
+message DeltaswapRelayerSetDefaultDeliveryProvider {
   // ID of the chain of the Wormhole Relayer contract where the default delivery provider should be updated (uint16).
   uint32 chain_id = 1;
 

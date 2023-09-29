@@ -1,4 +1,4 @@
-//! Provide Types and Data about Wormhole's supported chains.
+//! Provide Types and Data about Deltaswap's supported chains.
 
 use std::{fmt, str::FromStr};
 
@@ -7,7 +7,7 @@ use thiserror::Error;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub enum Chain {
-    /// In the wormhole wire format, 0 indicates that a message is for any destination chain, it is
+    /// In the deltaswap wire format, 0 indicates that a message is for any destination chain, it is
     /// represented here as `Any`.
     Any,
 

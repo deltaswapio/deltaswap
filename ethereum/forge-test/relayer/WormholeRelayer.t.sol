@@ -12,14 +12,14 @@ import {DeliveryProviderProxy} from
     "../../contracts/relayer/deliveryProvider/DeliveryProviderProxy.sol";
 import {DeliveryProviderStructs} from
     "../../contracts/relayer/deliveryProvider/DeliveryProviderStructs.sol";
-import "../../contracts/interfaces/relayer/IWormholeRelayerTyped.sol";
+import "../../contracts/interfaces/relayer/IDeltaswapRelayerTyped.sol";
 import {
     DeliveryInstruction,
     RedeliveryInstruction,
     DeliveryOverride,
     EvmDeliveryInstruction
 } from "../../contracts/relayer/libraries/RelayerInternalStructs.sol";
-import {WormholeRelayer} from "../../contracts/relayer/wormholeRelayer/WormholeRelayer.sol";
+import {DeltaswapRelayer} from "../../contracts/relayer/wormholeRelayer/DeltaswapRelayer.sol";
 import {MockGenericRelayer} from "./MockGenericRelayer.sol";
 import {MockWormhole} from "./MockWormhole.sol";
 import {IWormhole} from "../../contracts/interfaces/IWormhole.sol";
@@ -32,8 +32,8 @@ import {
 } from "../../contracts/mock/relayer/MockRelayerIntegration.sol";
 import {BigRevertBufferIntegration} from "./BigRevertBufferIntegration.sol";
 import {TestHelpers} from "./TestHelpers.sol";
-import {WormholeRelayerSerde} from
-    "../../contracts/relayer/wormholeRelayer/WormholeRelayerSerde.sol";
+import {DeltaswapRelayerSerde} from
+    "../../contracts/relayer/wormholeRelayer/DeltaswapRelayerSerde.sol";
 import {
     EvmExecutionInfoV1,
     ExecutionInfoVersion,
@@ -48,7 +48,7 @@ import "forge-std/Test.sol";
 import "forge-std/console.sol";
 import "forge-std/Vm.sol";
 
-contract WormholeRelayerTests is Test {
+contract DeltaswapRelayerTests is Test {
     using BytesParsing for bytes;
     using WeiLib for Wei;
     using GasLib for Gas;
@@ -258,8 +258,8 @@ contract WormholeRelayerTests is Test {
         IWormhole wormhole;
         WormholeSimulator wormholeSimulator;
         DeliveryProvider deliveryProvider;
-        IWormholeRelayer coreRelayer;
-        WormholeRelayer coreRelayerFull;
+        IDeltaswapRelayer coreRelayer;
+        DeltaswapRelayer coreRelayerFull;
         MockRelayerIntegration integration;
         address relayer;
         address payable rewardAddress;
@@ -276,9 +276,9 @@ contract WormholeRelayerTests is Test {
             mapEntry.deliveryProvider = helpers.setUpDeliveryProvider(i);
             mapEntry.deliveryProvider.updateSupportedMessageKeyTypes(VAA_KEY_TYPE, true);
             mapEntry.coreRelayer =
-                helpers.setUpWormholeRelayer(mapEntry.wormhole, address(mapEntry.deliveryProvider));
-            mapEntry.coreRelayerFull = WormholeRelayer(payable(address(mapEntry.coreRelayer)));
-            genericRelayer.setWormholeRelayerContract(i, address(mapEntry.coreRelayer));
+                helpers.setUpDeltaswapRelayer(mapEntry.wormhole, address(mapEntry.deliveryProvider));
+            mapEntry.coreRelayerFull = DeltaswapRelayer(payable(address(mapEntry.coreRelayer)));
+            genericRelayer.setDeltaswapRelayerContract(i, address(mapEntry.coreRelayer));
             mapEntry.integration =
             new MockRelayerIntegration(address(mapEntry.wormhole), address(mapEntry.coreRelayer));
             mapEntry.relayer =
@@ -303,7 +303,7 @@ contract WormholeRelayerTests is Test {
                     j, bytes32(uint256(uint160(address(map[j].deliveryProvider))))
                 );
                 map[i].deliveryProvider.updateRewardAddress(map[i].rewardAddress);
-                helpers.registerWormholeRelayerContract(
+                helpers.registerDeltaswapRelayerContract(
                     map[i].coreRelayerFull,
                     map[i].wormhole,
                     i,
@@ -328,16 +328,16 @@ contract WormholeRelayerTests is Test {
     function getDeliveryStatus(Vm.Log memory log)
         internal
         view
-        returns (IWormholeRelayerDelivery.DeliveryStatus status)
+        returns (IDeltaswapRelayerDelivery.DeliveryStatus status)
     {
         (uint256 parsed,) = log.data.asUint256(32);
         console.log(parsed);
-        status = IWormholeRelayerDelivery.DeliveryStatus(parsed);
+        status = IDeltaswapRelayerDelivery.DeliveryStatus(parsed);
     }
 
     function getDeliveryStatus()
         internal
-        returns (IWormholeRelayerDelivery.DeliveryStatus status)
+        returns (IDeltaswapRelayerDelivery.DeliveryStatus status)
     {
         Vm.Log[] memory logs = vm.getRecordedLogs();
         status = getDeliveryStatus(logs[logs.length - 1]);
@@ -346,13 +346,13 @@ contract WormholeRelayerTests is Test {
     function getRefundStatus(Vm.Log memory log)
         internal
         pure
-        returns (IWormholeRelayerDelivery.RefundStatus status)
+        returns (IDeltaswapRelayerDelivery.RefundStatus status)
     {
         (uint256 parsed,) = log.data.asUint256(32 + 32 + 32);
-        status = IWormholeRelayerDelivery.RefundStatus(parsed);
+        status = IDeltaswapRelayerDelivery.RefundStatus(parsed);
     }
 
-    function getRefundStatus() internal returns (IWormholeRelayerDelivery.RefundStatus status) {
+    function getRefundStatus() internal returns (IDeltaswapRelayerDelivery.RefundStatus status) {
         Vm.Log[] memory logs = vm.getRecordedLogs();
         status = getRefundStatus(logs[logs.length - 1]);
     }
@@ -466,7 +466,7 @@ contract WormholeRelayerTests is Test {
         genericRelayer.relay(setup.sourceChain);
 
         assertTrue(keccak256(setup.target.integration.getMessage()) == keccak256(message));
-        assertTrue(getDeliveryStatus() == IWormholeRelayerDelivery.DeliveryStatus.SUCCESS);
+        assertTrue(getDeliveryStatus() == IDeltaswapRelayerDelivery.DeliveryStatus.SUCCESS);
     }
 
     function testSendWithResponse(
@@ -515,7 +515,7 @@ contract WormholeRelayerTests is Test {
         genericRelayer.relay(setup.sourceChain);
 
         assertTrue(keccak256(setup.target.integration.getMessage()) != keccak256(message));
-        assertTrue(getDeliveryStatus() == IWormholeRelayerDelivery.DeliveryStatus.RECEIVER_FAILURE);
+        assertTrue(getDeliveryStatus() == IDeltaswapRelayerDelivery.DeliveryStatus.RECEIVER_FAILURE);
 
         resendMessageToTargetChain(
             setup, sequence, uint32(REASONABLE_GAS_LIMIT.unwrap()), 0, message
@@ -524,7 +524,7 @@ contract WormholeRelayerTests is Test {
         genericRelayer.relay(setup.sourceChain);
 
         assertTrue(keccak256(setup.target.integration.getMessage()) == keccak256(message));
-        assertTrue(getDeliveryStatus() == IWormholeRelayerDelivery.DeliveryStatus.SUCCESS);
+        assertTrue(getDeliveryStatus() == IDeltaswapRelayerDelivery.DeliveryStatus.SUCCESS);
     }
 
     /**
@@ -595,8 +595,8 @@ contract WormholeRelayerTests is Test {
         genericRelayer.relay(setup.sourceChain);
 
         assertTrue(keccak256(setup.target.integration.getMessage()) != keccak256(bytes("Hello!")));
-        assertTrue(getDeliveryStatus() == IWormholeRelayerDelivery.DeliveryStatus.RECEIVER_FAILURE);
-        console.log(uint256(IWormholeRelayerDelivery.DeliveryStatus.RECEIVER_FAILURE));
+        assertTrue(getDeliveryStatus() == IDeltaswapRelayerDelivery.DeliveryStatus.RECEIVER_FAILURE);
+        console.log(uint256(IDeltaswapRelayerDelivery.DeliveryStatus.RECEIVER_FAILURE));
     }
 
     function testMultipleForwards(
@@ -663,7 +663,7 @@ contract WormholeRelayerTests is Test {
         genericRelayer.relay(setup.sourceChain);
 
         assertTrue(keccak256(setup.target.integration.getMessage()) != keccak256(message));
-        assertTrue(getDeliveryStatus() == IWormholeRelayerDelivery.DeliveryStatus.RECEIVER_FAILURE);
+        assertTrue(getDeliveryStatus() == IDeltaswapRelayerDelivery.DeliveryStatus.RECEIVER_FAILURE);
 
         for (uint32 i = 2; i < 10; i++) {
             resendMessageToTargetChain(
@@ -672,7 +672,7 @@ contract WormholeRelayerTests is Test {
             genericRelayer.relay(setup.sourceChain);
             assertTrue(keccak256(setup.target.integration.getMessage()) != keccak256(message));
             assertTrue(
-                getDeliveryStatus() == IWormholeRelayerDelivery.DeliveryStatus.RECEIVER_FAILURE
+                getDeliveryStatus() == IDeltaswapRelayerDelivery.DeliveryStatus.RECEIVER_FAILURE
             );
         }
 
@@ -683,7 +683,7 @@ contract WormholeRelayerTests is Test {
         genericRelayer.relay(setup.sourceChain);
 
         assertTrue(keccak256(setup.target.integration.getMessage()) == keccak256(message));
-        assertTrue(getDeliveryStatus() == IWormholeRelayerDelivery.DeliveryStatus.SUCCESS);
+        assertTrue(getDeliveryStatus() == IDeltaswapRelayerDelivery.DeliveryStatus.SUCCESS);
     }
 
     /**
@@ -762,7 +762,7 @@ contract WormholeRelayerTests is Test {
         genericRelayer.relay(setup.sourceChain);
 
         assertTrue(keccak256(setup.target.integration.getMessage()) == keccak256("Hello!"));
-        assertTrue(getDeliveryStatus() == IWormholeRelayerDelivery.DeliveryStatus.SUCCESS);
+        assertTrue(getDeliveryStatus() == IDeltaswapRelayerDelivery.DeliveryStatus.SUCCESS);
 
         test.refundAddressAmount = setup.target.refundAddress.balance - test.refundAddressBalance;
         test.rewardAddressAmount = setup.source.rewardAddress.balance - test.rewardAddressBalance;
@@ -818,7 +818,7 @@ contract WormholeRelayerTests is Test {
         genericRelayer.relay(setup.sourceChain);
 
         assertTrue(keccak256(setup.target.integration.getMessage()) != keccak256(bytes("Hello!")));
-        assertTrue(getDeliveryStatus() == IWormholeRelayerDelivery.DeliveryStatus.RECEIVER_FAILURE);
+        assertTrue(getDeliveryStatus() == IDeltaswapRelayerDelivery.DeliveryStatus.RECEIVER_FAILURE);
 
         test.refundAddressAmount = setup.target.refundAddress.balance - test.refundAddressBalance;
         test.rewardAddressAmount = setup.source.rewardAddress.balance - test.rewardAddressBalance;
@@ -862,7 +862,7 @@ contract WormholeRelayerTests is Test {
         genericRelayer.relay(setup.sourceChain);
 
         assertTrue(keccak256(setup.target.integration.getMessage()) != keccak256(bytes("Hello!")));
-        assertTrue(getDeliveryStatus() == IWormholeRelayerDelivery.DeliveryStatus.RECEIVER_FAILURE);
+        assertTrue(getDeliveryStatus() == IDeltaswapRelayerDelivery.DeliveryStatus.RECEIVER_FAILURE);
 
         test.refundAddressAmount = setup.target.refundAddress.balance - test.refundAddressBalance;
         test.rewardAddressAmount = setup.source.rewardAddress.balance - test.rewardAddressBalance;
@@ -1033,7 +1033,7 @@ contract WormholeRelayerTests is Test {
         assertTrue(
             refundStatus
                 == uint8(
-                    IWormholeRelayerDelivery.RefundStatus.CROSS_CHAIN_REFUND_FAIL_PROVIDER_NOT_SUPPORTED
+                    IDeltaswapRelayerDelivery.RefundStatus.CROSS_CHAIN_REFUND_FAIL_PROVIDER_NOT_SUPPORTED
                 )
         );
     }
@@ -1086,7 +1086,7 @@ contract WormholeRelayerTests is Test {
 
         assertTrue(
             uint8(getRefundStatus())
-                == uint8(IWormholeRelayerDelivery.RefundStatus.CROSS_CHAIN_REFUND_FAIL_NOT_ENOUGH)
+                == uint8(IDeltaswapRelayerDelivery.RefundStatus.CROSS_CHAIN_REFUND_FAIL_NOT_ENOUGH)
         );
     }
 
@@ -1119,7 +1119,7 @@ contract WormholeRelayerTests is Test {
         MessageKey[] memory messageKeys = new MessageKey[](4);
         for (uint256 j = 0; j < 3; j++) {
             messageKeys[j] =
-                MessageKey(VAA_KEY_TYPE, WormholeRelayerSerde.encodeVaaKey(params.vaaKeysFixed[j]));
+                MessageKey(VAA_KEY_TYPE, DeltaswapRelayerSerde.encodeVaaKey(params.vaaKeysFixed[j]));
         }
         setup.source.deliveryProvider.updateSupportedMessageKeyTypes(RANDOM_KEY_TYPE, true);
         messageKeys[3] = MessageKey(RANDOM_KEY_TYPE, RANDOM_KEY_TYPE_BODY); // random keyType and encodedKey
@@ -1244,7 +1244,7 @@ contract WormholeRelayerTests is Test {
             decodedMessageKey.keyType, messageKey.keyType, "decodedMessageKey.keyType incorrect"
         );
         if (decodedMessageKey.keyType == VAA_KEY_TYPE) {
-            (VaaKey memory vaaKey,) = WormholeRelayerSerde.decodeVaaKey(messageKey.encodedKey, 0);
+            (VaaKey memory vaaKey,) = DeltaswapRelayerSerde.decodeVaaKey(messageKey.encodedKey, 0);
             index = checkVaaKey(data, index, vaaKey);
         } else if (decodedMessageKey.keyType == RANDOM_KEY_TYPE) {
             uint32 encodedKeyLen;
@@ -1451,7 +1451,7 @@ contract WormholeRelayerTests is Test {
 
         stack.relayerRefundAddress = payable(setup.target.relayer);
         stack.parsed = relayerWormhole.parseVM(stack.encodedDeliveryVAA);
-        stack.instruction = WormholeRelayerSerde.decodeDeliveryInstruction(stack.parsed.payload);
+        stack.instruction = DeltaswapRelayerSerde.decodeDeliveryInstruction(stack.parsed.payload);
         stack.deliveryVaaHash = stack.parsed.hash;
         EvmExecutionInfoV1 memory executionInfo =
             decodeEvmExecutionInfoV1(stack.instruction.encodedExecutionInfo);
@@ -1655,7 +1655,7 @@ contract WormholeRelayerTests is Test {
 
         assertTrue(
             getDeliveryStatus()
-                == IWormholeRelayerDelivery.DeliveryStatus.RECEIVER_FAILURE,
+                == IDeltaswapRelayerDelivery.DeliveryStatus.RECEIVER_FAILURE,
             "Should have failed due to Replay Protection"
         );
     }
@@ -1764,7 +1764,7 @@ contract WormholeRelayerTests is Test {
             stack.encodedVMs,
             stack.encodedDeliveryVAA,
             stack.relayerRefundAddress,
-            WormholeRelayerSerde.encode(deliveryOverride)
+            DeltaswapRelayerSerde.encode(deliveryOverride)
         );
         assertTrue(keccak256(setup.target.integration.getMessage()) == keccak256(message));
     }
@@ -1804,7 +1804,7 @@ contract WormholeRelayerTests is Test {
             stack.encodedVMs,
             stack.encodedDeliveryVAA,
             stack.relayerRefundAddress,
-            WormholeRelayerSerde.encode(deliveryOverride)
+            DeltaswapRelayerSerde.encode(deliveryOverride)
         );
     }
 
@@ -1839,7 +1839,7 @@ contract WormholeRelayerTests is Test {
             stack.encodedVMs,
             stack.encodedDeliveryVAA,
             stack.relayerRefundAddress,
-            WormholeRelayerSerde.encode(deliveryOverride)
+            DeltaswapRelayerSerde.encode(deliveryOverride)
         );
     }
 
@@ -1882,7 +1882,7 @@ contract WormholeRelayerTests is Test {
             stack.encodedVMs,
             stack.encodedDeliveryVAA,
             stack.relayerRefundAddress,
-            WormholeRelayerSerde.encode(deliveryOverride)
+            DeltaswapRelayerSerde.encode(deliveryOverride)
         );
     }
 
@@ -1918,7 +1918,7 @@ contract WormholeRelayerTests is Test {
             stack.encodedVMs,
             stack.encodedDeliveryVAA,
             stack.relayerRefundAddress,
-            WormholeRelayerSerde.encode(deliveryOverride)
+            DeltaswapRelayerSerde.encode(deliveryOverride)
         );
     }
 
@@ -2084,7 +2084,7 @@ contract WormholeRelayerTests is Test {
         Vm.Log[] memory logs = vm.getRecordedLogs();
         assertTrue(
             getDeliveryStatus(logs[logs.length - 1])
-                == IWormholeRelayerDelivery.DeliveryStatus.RECEIVER_FAILURE,
+                == IDeltaswapRelayerDelivery.DeliveryStatus.RECEIVER_FAILURE,
             "Outer delivery should have failed because inner call reverts"
         );
     }
@@ -2092,21 +2092,21 @@ contract WormholeRelayerTests is Test {
     function testEncodeAndDecodeVaaKey() public {
         VaaKey memory vaaKey = VaaKey({chainId: 1, emitterAddress: bytes32(""), sequence: 23});
         (VaaKey memory newVaaKey,) =
-            WormholeRelayerSerde.decodeVaaKey(WormholeRelayerSerde.encodeVaaKey(vaaKey), 0);
-        checkVaaKey(WormholeRelayerSerde.encodeVaaKey(newVaaKey), 0, vaaKey);
+            DeltaswapRelayerSerde.decodeVaaKey(DeltaswapRelayerSerde.encodeVaaKey(vaaKey), 0);
+        checkVaaKey(DeltaswapRelayerSerde.encodeVaaKey(newVaaKey), 0, vaaKey);
     }
 
     function testEncodeAndDecodeMessageKey() public {
         VaaKey memory vaaKey = VaaKey({chainId: 1, emitterAddress: bytes32(""), sequence: 23});
         MessageKey memory messageKey = MessageKey({
             keyType: VAA_KEY_TYPE,
-            encodedKey: WormholeRelayerSerde.encodeVaaKey(vaaKey)
+            encodedKey: DeltaswapRelayerSerde.encodeVaaKey(vaaKey)
         });
 
-        (MessageKey memory newMessageKey,) = WormholeRelayerSerde.decodeMessageKey(
-            WormholeRelayerSerde.encodeMessageKey(messageKey), 0
+        (MessageKey memory newMessageKey,) = DeltaswapRelayerSerde.decodeMessageKey(
+            DeltaswapRelayerSerde.encodeMessageKey(messageKey), 0
         );
-        checkMessageKey(WormholeRelayerSerde.encodeMessageKey(newMessageKey), 0, messageKey);
+        checkMessageKey(DeltaswapRelayerSerde.encodeMessageKey(newMessageKey), 0, messageKey);
     }
 
     function testRevertEncodeAndDecodeTooLongMessageKeyArray() public {
@@ -2117,7 +2117,7 @@ contract WormholeRelayerTests is Test {
                 MessageKey({keyType: RANDOM_KEY_TYPE, encodedKey: RANDOM_KEY_TYPE_BODY});
         }
         vm.expectRevert(abi.encodeWithSignature("TooManyMessageKeys(uint256)", len));
-        WormholeRelayerSerde.encodeMessageKeyArray(messageKeys);
+        DeltaswapRelayerSerde.encodeMessageKeyArray(messageKeys);
     }
 
     function testEncodeAndDecodeMessageKeyArray(uint8 len, uint8 idx) public {
@@ -2129,15 +2129,15 @@ contract WormholeRelayerTests is Test {
         }
         VaaKey memory vaaKey = VaaKey({chainId: 1, emitterAddress: bytes32(""), sequence: 23});
         if (len > 0) {
-            messageKeys[idx] = MessageKey(VAA_KEY_TYPE, WormholeRelayerSerde.encodeVaaKey(vaaKey));
+            messageKeys[idx] = MessageKey(VAA_KEY_TYPE, DeltaswapRelayerSerde.encodeVaaKey(vaaKey));
         }
 
-        (MessageKey[] memory newMessageKeys,) = WormholeRelayerSerde.decodeMessageKeyArray(
-            WormholeRelayerSerde.encodeMessageKeyArray(messageKeys), 0
+        (MessageKey[] memory newMessageKeys,) = DeltaswapRelayerSerde.decodeMessageKeyArray(
+            DeltaswapRelayerSerde.encodeMessageKeyArray(messageKeys), 0
         );
         for (uint256 i = 0; i < len; ++i) {
             checkMessageKey(
-                WormholeRelayerSerde.encodeMessageKey(newMessageKeys[i]), 0, messageKeys[i]
+                DeltaswapRelayerSerde.encodeMessageKey(newMessageKeys[i]), 0, messageKeys[i]
             );
         }
     }
@@ -2146,17 +2146,17 @@ contract WormholeRelayerTests is Test {
         MessageKey memory messageKey =
             MessageKey({keyType: VAA_KEY_TYPE, encodedKey: bytes("my USDC transfer")});
 
-        (MessageKey memory newMessageKey,) = WormholeRelayerSerde.decodeMessageKey(
-            WormholeRelayerSerde.encodeMessageKey(messageKey), 0
+        (MessageKey memory newMessageKey,) = DeltaswapRelayerSerde.decodeMessageKey(
+            DeltaswapRelayerSerde.encodeMessageKey(messageKey), 0
         );
-        checkMessageKey(WormholeRelayerSerde.encodeMessageKey(newMessageKey), 0, messageKey);
+        checkMessageKey(DeltaswapRelayerSerde.encodeMessageKey(newMessageKey), 0, messageKey);
     }
 
     function testEncodeAndDecodeDeliveryInstruction(bytes memory payload) public {
         MessageKey[] memory messageKeys = new MessageKey[](3);
         messageKeys[0] = MessageKey({
             keyType: VAA_KEY_TYPE,
-            encodedKey: WormholeRelayerSerde.encodeVaaKey(
+            encodedKey: DeltaswapRelayerSerde.encodeVaaKey(
                 VaaKey({chainId: 1, emitterAddress: bytes32(""), sequence: 23})
                 )
         });
@@ -2179,10 +2179,10 @@ contract WormholeRelayerTests is Test {
         });
 
         DeliveryInstruction memory newInstruction =
-            WormholeRelayerSerde.decodeDeliveryInstruction(WormholeRelayerSerde.encode(instruction));
+            DeltaswapRelayerSerde.decodeDeliveryInstruction(DeltaswapRelayerSerde.encode(instruction));
 
-        checkInstructionEquality(WormholeRelayerSerde.encode(instruction), newInstruction);
-        checkInstructionEquality(WormholeRelayerSerde.encode(newInstruction), instruction);
+        checkInstructionEquality(DeltaswapRelayerSerde.encode(instruction), newInstruction);
+        checkInstructionEquality(DeltaswapRelayerSerde.encode(newInstruction), instruction);
     }
 
     function testDeliveryData(

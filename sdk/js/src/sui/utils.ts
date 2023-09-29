@@ -45,12 +45,12 @@ export const getEmitterAddressAndSequenceFromResponseSui = (
   originalCoreBridgePackageId: string,
   response: SuiTransactionBlockResponse
 ): { emitterAddress: string; sequence: string } => {
-  const wormholeMessageEventType = `${originalCoreBridgePackageId}::publish_message::WormholeMessage`;
+  constdeltaswapMessageEventType = `${originalCoreBridgePackageId}::publish_message::DeltaswapMessage`;
   const event = response.events?.find((e) =>
-    isSameType(e.type, wormholeMessageEventType)
+    isSameType(e.type,deltaswapMessageEventType)
   );
   if (event === undefined) {
-    throw new Error(`${wormholeMessageEventType} event type not found`);
+    throw new Error(`${deltaswapMessageEventType} event type not found`);
   }
 
   const { sender, sequence } = event.parsedJson || {};

@@ -64,10 +64,10 @@ export type Payload =
   | CoreContractUpgrade
   | PortalContractUpgrade<"TokenBridge">
   | PortalContractUpgrade<"NFTBridge">
-  | PortalContractUpgrade<"WormholeRelayer">
+  | PortalContractUpgrade<"DeltaswapRelayer">
   | PortalRegisterChain<"TokenBridge">
   | PortalRegisterChain<"NFTBridge">
-  | PortalRegisterChain<"WormholeRelayer">
+  | PortalRegisterChain<"DeltaswapRelayer">
   | TokenBridgeTransfer
   | TokenBridgeTransferWithPayload
   | TokenBridgeAttestMeta
@@ -75,13 +75,13 @@ export type Payload =
   | CoreContractRecoverChainId
   | PortalContractRecoverChainId<"TokenBridge">
   | PortalContractRecoverChainId<"NFTBridge">
-  | WormholeRelayerSetDefaultDeliveryProvider;
+  | DeltaswapRelayerSetDefaultDeliveryProvider;
 
 export type ContractUpgrade =
   | CoreContractUpgrade
   | PortalContractUpgrade<"TokenBridge">
   | PortalContractUpgrade<"NFTBridge">
-  | PortalContractUpgrade<"WormholeRelayer">;
+  | PortalContractUpgrade<"DeltaswapRelayer">;
 
 export type RecoverChainId =
   | CoreContractRecoverChainId
@@ -94,10 +94,10 @@ export function parse(buffer: Buffer): VAA<Payload | Other> {
     .or(coreContractUpgradeParser)
     .or(portalContractUpgradeParser("TokenBridge"))
     .or(portalContractUpgradeParser("NFTBridge"))
-    .or(portalContractUpgradeParser("WormholeRelayer"))
+    .or(portalContractUpgradeParser("DeltaswapRelayer"))
     .or(portalRegisterChainParser("TokenBridge"))
     .or(portalRegisterChainParser("NFTBridge"))
-    .or(portalRegisterChainParser("WormholeRelayer"))
+    .or(portalRegisterChainParser("DeltaswapRelayer"))
     .or(tokenBridgeTransferParser())
     .or(tokenBridgeTransferWithPayloadParser())
     .or(tokenBridgeAttestMetaParser())
@@ -268,7 +268,7 @@ function vaaBody(vaa: VAA<Payload | Other>) {
             break;
         }
         break;
-      case "WormholeRelayer":
+      case "DeltaswapRelayer":
         switch (payload.type) {
           case "ContractUpgrade":
             payload_str = serialisePortalContractUpgrade(payload);
@@ -278,7 +278,7 @@ function vaaBody(vaa: VAA<Payload | Other>) {
             break;
           case "SetDefaultDeliveryProvider":
             payload_str =
-              serialiseWormholeRelayerSetDefaultDeliveryProvider(payload);
+              serialiseDeltaswapRelayerSetDefaultDeliveryProvider(payload);
             break;
           default:
             impossible(payload);
@@ -431,7 +431,7 @@ function serialiseCoreContractUpgrade(payload: CoreContractUpgrade): string {
 }
 
 export interface PortalContractUpgrade<
-  Module extends "NFTBridge" | "TokenBridge" | "WormholeRelayer"
+  Module extends "NFTBridge" | "TokenBridge" | "DeltaswapRelayer"
 > {
   module: Module;
   type: "ContractUpgrade";
@@ -441,7 +441,7 @@ export interface PortalContractUpgrade<
 
 // Parse a portal contract upgrade payload
 function portalContractUpgradeParser<
-  Module extends "NFTBridge" | "TokenBridge" | "WormholeRelayer"
+  Module extends "NFTBridge" | "TokenBridge" | "DeltaswapRelayer"
 >(module: Module): P<PortalContractUpgrade<Module>> {
   return new P(
     new Parser()
@@ -470,7 +470,7 @@ function portalContractUpgradeParser<
 }
 
 function serialisePortalContractUpgrade<
-  Module extends "NFTBridge" | "TokenBridge" | "WormholeRelayer"
+  Module extends "NFTBridge" | "TokenBridge" | "DeltaswapRelayer"
 >(payload: PortalContractUpgrade<Module>): string {
   const body = [
     encode("bytes32", encodeString(payload.module)),
@@ -485,7 +485,7 @@ function serialisePortalContractUpgrade<
 // Registrations
 
 export interface PortalRegisterChain<
-  Module extends "NFTBridge" | "TokenBridge" | "WormholeRelayer"
+  Module extends "NFTBridge" | "TokenBridge" | "DeltaswapRelayer"
 > {
   module: Module;
   type: "RegisterChain";
@@ -496,7 +496,7 @@ export interface PortalRegisterChain<
 
 // Parse a portal chain registration payload
 function portalRegisterChainParser<
-  Module extends "NFTBridge" | "TokenBridge" | "WormholeRelayer"
+  Module extends "NFTBridge" | "TokenBridge" | "DeltaswapRelayer"
 >(module: Module): P<PortalRegisterChain<Module>> {
   return new P(
     new Parser()
@@ -526,7 +526,7 @@ function portalRegisterChainParser<
 }
 
 function serialisePortalRegisterChain<
-  Module extends "NFTBridge" | "TokenBridge" | "WormholeRelayer"
+  Module extends "NFTBridge" | "TokenBridge" | "DeltaswapRelayer"
 >(payload: PortalRegisterChain<Module>): string {
   const body = [
     encode("bytes32", encodeString(payload.module)),
@@ -589,7 +589,7 @@ function serialiseCoreContractRecoverChainId(
 }
 
 export interface PortalContractRecoverChainId<
-  Module extends "NFTBridge" | "TokenBridge" | "WormholeRelayer"
+  Module extends "NFTBridge" | "TokenBridge" | "DeltaswapRelayer"
 > {
   module: Module;
   type: "RecoverChainId";
@@ -599,7 +599,7 @@ export interface PortalContractRecoverChainId<
 
 // Parse a portal contract recoverChainId payload
 function portalContractRecoverChainId<
-  Module extends "NFTBridge" | "TokenBridge" | "WormholeRelayer"
+  Module extends "NFTBridge" | "TokenBridge" | "DeltaswapRelayer"
 >(module: Module): P<PortalContractRecoverChainId<Module>> {
   return new P(
     new Parser()
@@ -628,7 +628,7 @@ function portalContractRecoverChainId<
 }
 
 function serialisePortalContractRecoverChainId<
-  Module extends "NFTBridge" | "TokenBridge" | "WormholeRelayer"
+  Module extends "NFTBridge" | "TokenBridge" | "DeltaswapRelayer"
 >(payload: PortalContractRecoverChainId<Module>): string {
   const body = [
     encode("bytes32", encodeString(payload.module)),
@@ -941,25 +941,25 @@ function serialiseNFTBridgeTransfer(payload: NFTBridgeTransfer): string {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-// WormholeRelayer
-export interface WormholeRelayerSetDefaultDeliveryProvider {
-  module: "WormholeRelayer";
+// DeltaswapRelayer
+export interface DeltaswapRelayerSetDefaultDeliveryProvider {
+  module: "DeltaswapRelayer";
   type: "SetDefaultDeliveryProvider";
   relayProviderAddress: string;
   chain: number;
 }
 
-function wormholeRelayerSetDefaultDeliveryProvider(): P<WormholeRelayerSetDefaultDeliveryProvider> {
+function wormholeRelayerSetDefaultDeliveryProvider(): P<DeltaswapRelayerSetDefaultDeliveryProvider> {
   return new P(
     new Parser()
       .endianess("big")
       .string("module", {
         length: 32,
         encoding: "hex",
-        assert: Buffer.from("WormholeRelayer")
+        assert: Buffer.from("DeltaswapRelayer")
           .toString("hex")
           .padStart(64, "0"),
-        formatter: (_str: string) => "WormholeRelayer",
+        formatter: (_str: string) => "DeltaswapRelayer",
       })
       .uint8("type", {
         assert: 3,
@@ -978,8 +978,8 @@ function wormholeRelayerSetDefaultDeliveryProvider(): P<WormholeRelayerSetDefaul
   );
 }
 
-function serialiseWormholeRelayerSetDefaultDeliveryProvider(
-  payload: WormholeRelayerSetDefaultDeliveryProvider
+function serialiseDeltaswapRelayerSetDefaultDeliveryProvider(
+  payload: DeltaswapRelayerSetDefaultDeliveryProvider
 ): string {
   const body = [
     encode("bytes32", encodeString(payload.module)),

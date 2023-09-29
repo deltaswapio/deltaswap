@@ -8,23 +8,23 @@ import { deriveAddress, getAccountData } from "../../utils";
 
 export function deriveEmitterSequenceKey(
   emitter: PublicKeyInitData,
-  wormholeProgramId: PublicKeyInitData
+  deltaswapProgramId: PublicKeyInitData
 ): PublicKey {
   return deriveAddress(
     [Buffer.from("Sequence"), new PublicKey(emitter).toBytes()],
-    wormholeProgramId
+    deltaswapProgramId
   );
 }
 
 export async function getSequenceTracker(
   connection: Connection,
   emitter: PublicKeyInitData,
-  wormholeProgramId: PublicKeyInitData,
+  deltaswapProgramId: PublicKeyInitData,
   commitment?: Commitment
 ): Promise<SequenceTracker> {
   return connection
     .getAccountInfo(
-      deriveEmitterSequenceKey(emitter, wormholeProgramId),
+      deriveEmitterSequenceKey(emitter, deltaswapProgramId),
       commitment
     )
     .then((info) => SequenceTracker.deserialize(getAccountData(info)));

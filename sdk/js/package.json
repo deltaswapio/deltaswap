@@ -1,8 +1,8 @@
 {
-  "name": "@certusone/wormhole-sdk",
+  "name": "@deltaswapio/deltaswap-sdk",
   "version": "0.10.3",
-  "description": "SDK for interacting with Wormhole",
-  "homepage": "https://wormhole.com",
+  "description": "SDK for interacting with Deltaswap",
+  "homepage": "https://deltaswap.io",
   "main": "./lib/cjs/index.js",
   "module": "./lib/esm/index.js",
   "files": [
@@ -12,7 +12,7 @@
   "repository": "https://github.com/deltaswapio/deltaswap/tree/main/sdk/js",
   "scripts": {
     "build-contracts": "cd ../../ethereum && make forge_dependencies && npm run build && cd ../sdk/js && node scripts/copyContracts.js",
-    "build-abis": "typechain --target=ethers-v5 --out-dir=src/ethers-contracts/abi src/abi/Wormhole.abi.json",
+    "build-abis": "typechain --target=ethers-v5 --out-dir=src/ethers-contracts/abi src/abi/Deltaswap.abi.json",
     "build-idl": "node scripts/compileAnchorIdls.js",
     "build-deps": "npm run build-abis && npm run build-contracts && npm run build-idl",
     "build-lib": "tsc -p tsconfig.json && tsc -p tsconfig-cjs.json && node scripts/copyEthersTypes.js",
@@ -31,7 +31,7 @@
     "postversion": "git push && git push --tags"
   },
   "keywords": [
-    "wormhole",
+    "deltaswap",
     "bridge",
     "token",
     "sdk",
@@ -68,8 +68,8 @@
     "web3": "^1.6.1"
   },
   "dependencies": {
-    "@certusone/wormhole-sdk-proto-web": "0.0.6",
-    "@certusone/wormhole-sdk-wasm": "^0.0.1",
+    "@deltaswapio/deltaswap-sdk-proto-web": "0.0.6",
+    "@deltaswapio/deltaswap-sdk-wasm": "^0.0.1",
     "@coral-xyz/borsh": "0.2.6",
     "@mysten/sui.js": "0.32.2",
     "@project-serum/anchor": "^0.25.0",

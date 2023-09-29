@@ -8,8 +8,8 @@ export {
   createVerifySignaturesInstructions as createVerifySignaturesInstructionsSolana,
   createPostVaaInstruction as createPostVaaInstructionSolana,
   createBridgeFeeTransferInstruction,
-  getPostMessageAccounts as getWormholeCpiAccounts,
-} from "./wormhole";
+  getPostMessageAccounts as getDeltaswapCpiAccounts,
+} from "./deltaswap";
 
-export * from "./wormhole/cpi";
+export * from "./deltaswap/cpi";
 export * from "./tokenBridge/cpi";

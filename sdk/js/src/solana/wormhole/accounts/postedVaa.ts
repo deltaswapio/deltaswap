@@ -22,20 +22,20 @@ export class PostedMessageData {
 export class PostedVaaData extends PostedMessageData {}
 
 export function derivePostedVaaKey(
-  wormholeProgramId: PublicKeyInitData,
+  deltaswapProgramId: PublicKeyInitData,
   hash: Buffer
 ): PublicKey {
-  return deriveAddress([Buffer.from("PostedVAA"), hash], wormholeProgramId);
+  return deriveAddress([Buffer.from("PostedVAA"), hash], deltaswapProgramId);
 }
 
 export async function getPostedVaa(
   connection: Connection,
-  wormholeProgramId: PublicKeyInitData,
+  deltaswapProgramId: PublicKeyInitData,
   hash: Buffer,
   commitment?: Commitment
 ): Promise<PostedVaaData> {
   return connection
-    .getAccountInfo(derivePostedVaaKey(wormholeProgramId, hash), commitment)
+    .getAccountInfo(derivePostedVaaKey(deltaswapProgramId, hash), commitment)
     .then((info) => PostedVaaData.deserialize(getAccountData(info)));
 }
 

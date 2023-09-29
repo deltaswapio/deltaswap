@@ -43,7 +43,7 @@ export type ChainId = typeof CHAINS[ChainName];
 
 /**
  *
- * All the EVM-based chain names that Wormhole supports
+ * All the EVM-based chain names that Deltaswap supports
  */
 export const EVMChainNames = [
   "ethereum",
@@ -70,7 +70,7 @@ export type EVMChainName = typeof EVMChainNames[number];
 
 /*
  *
- * All the Solana-based chain names that Wormhole supports
+ * All the Solana-based chain names that Deltaswap supports
  */
 export const SolanaChainNames = ["solana", "pythnet"] as const;
 export type SolanaChainName = typeof SolanaChainNames[number];
@@ -182,7 +182,7 @@ const MAINNET = {
     nft_bridge: "0xA6A377d75ca5c9052c9a77ED1e865Cc25Bd97bf3",
   },
   near: {
-    core: "contract.wormhole_crypto.near",
+    core: "contract.deltaswap_crypto.near",
     token_bridge: "contract.portalbridge.near",
     nft_bridge: undefined,
   },
@@ -273,9 +273,9 @@ const MAINNET = {
     nft_bridge: undefined,
   },
   deltachain: {
-    core: "wormhole1ufs3tlq4umljk0qfe8k5ya0x6hpavn897u2cnf9k0en9jr7qarqqaqfk2j",
+    core: "delta1ufs3tlq4umljk0qfe8k5ya0x6hpavn897u2cnf9k0en9jr7qarqqaqfk2j",
     token_bridge:
-      "wormhole1466nf3zuxpya8q9emxukd7vftaf6h4psr0a07srl5zw74zh84yjq4lyjmh",
+      "delta1466nf3zuxpya8q9emxukd7vftaf6h4psr0a07srl5zw74zh84yjq4lyjmh",
     nft_bridge: undefined,
   },
   sepolia: {
@@ -378,8 +378,8 @@ const TESTNET = {
     nft_bridge: "0xaCD8190F647a31E56A656748bC30F69259f245Db",
   },
   near: {
-    core: "wormhole.wormhole.testnet",
-    token_bridge: "token.wormhole.testnet",
+    core: "deltaswap.deltaswap.testnet",
+    token_bridge: "token.deltaswap.testnet",
     nft_bridge: undefined,
   },
   injective: {
@@ -468,9 +468,9 @@ const TESTNET = {
     nft_bridge: undefined,
   },
   deltachain: {
-    core: "wormhole16jzpxp0e8550c9aht6q9svcux30vtyyyyxv5w2l2djjra46580wsazcjwp",
+    core: "delta16jzpxp0e8550c9aht6q9svcux30vtyyyyxv5w2l2djjra46580wsazcjwp",
     token_bridge:
-      "wormhole1aaf9r6s7nxhysuegqrxv0wpm27ypyv4886medd3mrkrw6t4yfcnst3qpex",
+      "delta1aaf9r6s7nxhysuegqrxv0wpm27ypyv4886medd3mrkrw6t4yfcnst3qpex",
     nft_bridge: undefined,
   },
   sepolia: {
@@ -572,7 +572,7 @@ const DEVNET = {
     nft_bridge: undefined,
   },
   near: {
-    core: "wormhole.test.near",
+    core: "deltaswap.test.near",
     token_bridge: "token.test.near",
     nft_bridge: undefined,
   },
@@ -594,7 +594,7 @@ const DEVNET = {
       "0x46da3d4c569388af61f951bdd1153f4c875f90c2991f6b2d0a38e2161a40852c",
   },
   sui: {
-    core: "0x5a5160ca3c2037f4b4051344096ef7a48ebf4400b3f385e57ea90e1628a8bde0", // wormhole module State object ID
+    core: "0x5a5160ca3c2037f4b4051344096ef7a48ebf4400b3f385e57ea90e1628a8bde0", // deltaswap module State object ID
     token_bridge:
       "0xa6a3da85bbe05da5bfd953708d56f1a3a023e7fb58e5a824a3d4de3791e8f690", // token_bridge module State object ID
     nft_bridge: undefined,
@@ -661,9 +661,9 @@ const DEVNET = {
     nft_bridge: undefined,
   },
   deltachain: {
-    core: "wormhole17p9rzwnnfxcjp32un9ug7yhhzgtkhvl9jfksztgw5uh69wac2pgshdnj3k",
+    core: "delta17p9rzwnnfxcjp32un9ug7yhhzgtkhvl9jfksztgw5uh69wac2pgshdnj3k",
     token_bridge:
-      "wormhole1ghd753shjuwexxywmgs4xz7x2q732vcnkm6h2pyv9s6ah3hylvrqtm7t3h",
+      "delta1ghd753shjuwexxywmgs4xz7x2q732vcnkm6h2pyv9s6ah3hylvrqtm7t3h",
     nft_bridge: undefined,
   },
   sepolia: {
@@ -779,19 +779,19 @@ export const CHAIN_ID_TO_NAME: ChainIdToName = Object.entries(CHAINS).reduce(
 
 /**
  *
- * All the EVM-based chain ids that Wormhole supports
+ * All the EVM-based chain ids that Deltaswap supports
  */
 export type EVMChainId = typeof CHAINS[EVMChainName];
 
 /**
  *
- * All the Solana-based chain ids that Wormhole supports
+ * All the Solana-based chain ids that Deltaswap supports
  */
 export type SolanaChainId = typeof CHAINS[SolanaChainName];
 
 /**
  *
- * All the CosmWasm-based chain ids that Wormhole supports
+ * All the CosmWasm-based chain ids that Deltaswap supports
  */
 export type CosmWasmChainId = typeof CHAINS[CosmWasmChainName];
 

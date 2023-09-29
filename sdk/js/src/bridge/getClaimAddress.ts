@@ -1,6 +1,6 @@
 import { PublicKeyInitData } from "@solana/web3.js";
-import { deriveClaimKey } from "../solana/wormhole";
-import { parseVaa, SignedVaa } from "../vaa/wormhole";
+import { deriveClaimKey } from "../solana/deltaswap";
+import { parseVaa, SignedVaa } from "../vaa/deltaswap";
 
 export async function getClaimAddressSolana(
   programAddress: PublicKeyInitData,

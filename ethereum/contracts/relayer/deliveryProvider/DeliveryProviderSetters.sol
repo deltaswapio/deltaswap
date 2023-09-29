@@ -32,7 +32,7 @@ contract DeliveryProviderSetters is Context, DeliveryProviderState {
         _state.pricingWallet = newPricingWallet;
     }
 
-    function setWormholeRelayer(address payable coreRelayer) internal {
+    function setDeltaswapRelayer(address payable coreRelayer) internal {
         _state.coreRelayer = coreRelayer;
     }
 

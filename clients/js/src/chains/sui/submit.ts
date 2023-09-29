@@ -198,7 +198,7 @@ export const submit = async (
 
       break;
     }
-    case "WormholeRelayer":
+    case "DeltaswapRelayer":
       throw Error("Wormhole Relayer not supported on Sui");
     default:
       impossible(payload);

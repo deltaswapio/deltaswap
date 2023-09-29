@@ -83,10 +83,10 @@ function encodeTokenBridgeInstructionData(
   return instructionData;
 }
 
-function encodeInitialize({ wormhole }: any): Buffer {
+function encodeInitialize({ deltaswap }: any): Buffer {
   const serialized = Buffer.alloc(32);
   serialized.write(
-    new PublicKey(wormhole).toBuffer().toString("hex"),
+    new PublicKey(deltaswap).toBuffer().toString("hex"),
     0,
     "hex"
   );

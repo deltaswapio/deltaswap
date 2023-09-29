@@ -1,6 +1,6 @@
 import {
-  deployWormholeRelayerImplementation,
-  deployWormholeRelayerProxy,
+  deployDeltaswapRelayerImplementation,
+  deployDeltaswapRelayerProxy,
 } from "../helpers/deployments";
 import {
   init,
@@ -9,7 +9,7 @@ import {
   getOperatingChains,
 } from "../helpers/env";
 
-const processName = "deployWormholeRelayer";
+const processName = "deployDeltaswapRelayer";
 init();
 const chains = getOperatingChains();
 
@@ -23,10 +23,10 @@ async function run() {
 
   for (const chain of chains) {
     console.log(`Deploying for chain ${chain.chainId}...`);
-    const coreRelayerImplementation = await deployWormholeRelayerImplementation(
+    const coreRelayerImplementation = await deployDeltaswapRelayerImplementation(
       chain
     );
-    const coreRelayerProxy = await deployWormholeRelayerProxy(
+    const coreRelayerProxy = await deployDeltaswapRelayerProxy(
       chain,
       coreRelayerImplementation.address,
       getDeliveryProviderAddress(chain)

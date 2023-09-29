@@ -6,9 +6,9 @@ import {
   SYSVAR_RENT_PUBKEY,
   SystemProgram,
 } from "@solana/web3.js";
-import { createReadOnlyWormholeProgramInterface } from "../program";
+import { createReadOnlyDeltaswapProgramInterface } from "../program";
 import {
-  deriveWormholeBridgeDataKey,
+  deriveDeltaswapBridgeDataKey,
   derivePhylaxSetKey,
   derivePostedVaaKey,
 } from "../accounts";
@@ -24,20 +24,20 @@ import BN from "bn.js";
  *
  * https://github.com/deltaswapio/deltaswap/blob/main/solana/bridge/program/src/api/post_vaa.rs
  *
- * @param {PublicKeyInitData} wormholeProgramId - wormhole program address
+ * @param {PublicKeyInitData} deltaswapProgramId - deltaswap program address
  * @param {PublicKeyInitData} payer - transaction signer address
  * @param {SignedVaa | ParsedVaa} vaa - either signed VAA bytes or parsed VAA (use {@link parseVaa} on signed VAA)
  * @param {PublicKeyInitData} signatureSet - key for signature set account
  */
 export function createPostVaaInstruction(
-  wormholeProgramId: PublicKeyInitData,
+  deltaswapProgramId: PublicKeyInitData,
   payer: PublicKeyInitData,
   vaa: SignedVaa | ParsedVaa,
   signatureSet: PublicKeyInitData
 ): TransactionInstruction {
   const parsed = isBytes(vaa) ? parseVaa(vaa) : vaa;
-  const methods = createReadOnlyWormholeProgramInterface(
-    wormholeProgramId
+  const methods = createReadOnlyDeltaswapProgramInterface(
+    deltaswapProgramId
   ).methods.postVaa(
     parsed.version,
     parsed.phylaxSetIndex,
@@ -53,7 +53,7 @@ export function createPostVaaInstruction(
   // @ts-ignore
   return methods._ixFn(...methods._args, {
     accounts: getPostVaaAccounts(
-      wormholeProgramId,
+      deltaswapProgramId,
       payer,
       signatureSet,
       parsed
@@ -77,7 +77,7 @@ export interface PostVaaAccounts {
 }
 
 export function getPostVaaAccounts(
-  wormholeProgramId: PublicKeyInitData,
+  deltaswapProgramId: PublicKeyInitData,
   payer: PublicKeyInitData,
   signatureSet: PublicKeyInitData,
   vaa: SignedVaa | ParsedVaa
@@ -85,12 +85,12 @@ export function getPostVaaAccounts(
   const parsed = isBytes(vaa) ? parseVaa(vaa) : vaa;
   return {
     phylaxSet: derivePhylaxSetKey(
-      wormholeProgramId,
+      deltaswapProgramId,
       parsed.phylaxSetIndex
     ),
-    bridge: deriveWormholeBridgeDataKey(wormholeProgramId),
+    bridge: deriveDeltaswapBridgeDataKey(deltaswapProgramId),
     signatureSet: new PublicKey(signatureSet),
-    vaa: derivePostedVaaKey(wormholeProgramId, parsed.hash),
+    vaa: derivePostedVaaKey(deltaswapProgramId, parsed.hash),
     payer: new PublicKey(payer),
     clock: SYSVAR_CLOCK_PUBKEY,
     rent: SYSVAR_RENT_PUBKEY,

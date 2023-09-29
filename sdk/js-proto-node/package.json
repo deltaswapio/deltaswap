@@ -1,8 +1,8 @@
 {
-  "name": "@certusone/wormhole-sdk-proto-node",
+  "name": "@deltaswapio/deltaswap-sdk-proto-node",
   "version": "0.0.6",
-  "description": "NodeJS client protobuf for interacting with Wormhole",
-  "homepage": "https://wormhole.com",
+  "description": "NodeJS client protobuf for interacting with Deltaswap",
+  "homepage": "https://deltaswap.io",
   "main": "./lib/cjs/index.js",
   "module": "./lib/esm/index.js",
   "files": [
@@ -16,7 +16,7 @@
     "build": "npm run build-all"
   },
   "keywords": [
-    "wormhole",
+    "deltaswap",
     "sdk",
     "proto",
     "protobuf"

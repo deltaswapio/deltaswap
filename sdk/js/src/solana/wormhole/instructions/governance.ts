@@ -12,9 +12,9 @@ import {
   parseGovernanceVaa,
   SignedVaa,
 } from "../../../vaa";
-import { createReadOnlyWormholeProgramInterface } from "../program";
+import { createReadOnlyDeltaswapProgramInterface } from "../program";
 import {
-  deriveWormholeBridgeDataKey,
+  deriveDeltaswapBridgeDataKey,
   deriveClaimKey,
   deriveFeeCollectorKey,
   derivePhylaxSetKey,
@@ -24,16 +24,16 @@ import {
 import { BpfLoaderUpgradeable, deriveUpgradeableProgramKey } from "../../utils";
 
 export function createSetFeesInstruction(
-  wormholeProgramId: PublicKeyInitData,
+  deltaswapProgramId: PublicKeyInitData,
   payer: PublicKeyInitData,
   vaa: SignedVaa | ParsedGovernanceVaa
 ): TransactionInstruction {
   const methods =
-    createReadOnlyWormholeProgramInterface(wormholeProgramId).methods.setFees();
+    createReadOnlyDeltaswapProgramInterface(deltaswapProgramId).methods.setFees();
 
   // @ts-ignore
   return methods._ixFn(...methods._args, {
-    accounts: getSetFeesAccounts(wormholeProgramId, payer, vaa) as any,
+    accounts: getSetFeesAccounts(deltaswapProgramId, payer, vaa) as any,
     signers: undefined,
     remainingAccounts: undefined,
     preInstructions: undefined,
@@ -50,17 +50,17 @@ export interface SetFeesAccounts {
 }
 
 export function getSetFeesAccounts(
-  wormholeProgramId: PublicKeyInitData,
+  deltaswapProgramId: PublicKeyInitData,
   payer: PublicKeyInitData,
   vaa: SignedVaa | ParsedGovernanceVaa
 ): SetFeesAccounts {
   const parsed = isBytes(vaa) ? parseGovernanceVaa(vaa) : vaa;
   return {
     payer: new PublicKey(payer),
-    bridge: deriveWormholeBridgeDataKey(wormholeProgramId),
-    vaa: derivePostedVaaKey(wormholeProgramId, parsed.hash),
+    bridge: deriveDeltaswapBridgeDataKey(deltaswapProgramId),
+    vaa: derivePostedVaaKey(deltaswapProgramId, parsed.hash),
     claim: deriveClaimKey(
-      wormholeProgramId,
+      deltaswapProgramId,
       parsed.emitterAddress,
       parsed.emitterChain,
       parsed.sequence
@@ -70,20 +70,20 @@ export function getSetFeesAccounts(
 }
 
 export function createTransferFeesInstruction(
-  wormholeProgramId: PublicKeyInitData,
+  deltaswapProgramId: PublicKeyInitData,
   payer: PublicKeyInitData,
   recipient: PublicKeyInitData,
   vaa: SignedVaa | ParsedGovernanceVaa
 ): TransactionInstruction {
   const methods =
-    createReadOnlyWormholeProgramInterface(
-      wormholeProgramId
+    createReadOnlyDeltaswapProgramInterface(
+      deltaswapProgramId
     ).methods.transferFees();
 
   // @ts-ignore
   return methods._ixFn(...methods._args, {
     accounts: getTransferFeesAccounts(
-      wormholeProgramId,
+      deltaswapProgramId,
       payer,
       recipient,
       vaa
@@ -107,7 +107,7 @@ export interface TransferFeesAccounts {
 }
 
 export function getTransferFeesAccounts(
-  wormholeProgramId: PublicKeyInitData,
+  deltaswapProgramId: PublicKeyInitData,
   payer: PublicKeyInitData,
   recipient: PublicKeyInitData,
   vaa: SignedVaa | ParsedGovernanceVaa
@@ -115,15 +115,15 @@ export function getTransferFeesAccounts(
   const parsed = isBytes(vaa) ? parseGovernanceVaa(vaa) : vaa;
   return {
     payer: new PublicKey(payer),
-    bridge: deriveWormholeBridgeDataKey(wormholeProgramId),
-    vaa: derivePostedVaaKey(wormholeProgramId, parsed.hash),
+    bridge: deriveDeltaswapBridgeDataKey(deltaswapProgramId),
+    vaa: derivePostedVaaKey(deltaswapProgramId, parsed.hash),
     claim: deriveClaimKey(
-      wormholeProgramId,
+      deltaswapProgramId,
       parsed.emitterAddress,
       parsed.emitterChain,
       parsed.sequence
     ),
-    feeCollector: deriveFeeCollectorKey(wormholeProgramId),
+    feeCollector: deriveFeeCollectorKey(deltaswapProgramId),
     recipient: new PublicKey(recipient),
     rent: SYSVAR_RENT_PUBKEY,
     systemProgram: SystemProgram.programId,
@@ -131,19 +131,19 @@ export function getTransferFeesAccounts(
 }
 
 export function createUpgradePhylaxSetInstruction(
-  wormholeProgramId: PublicKeyInitData,
+  deltaswapProgramId: PublicKeyInitData,
   payer: PublicKeyInitData,
   vaa: SignedVaa | ParsedGovernanceVaa
 ): TransactionInstruction {
   const methods =
-    createReadOnlyWormholeProgramInterface(
-      wormholeProgramId
+    createReadOnlyDeltaswapProgramInterface(
+      deltaswapProgramId
     ).methods.upgradePhylaxSet();
 
   // @ts-ignore
   return methods._ixFn(...methods._args, {
     accounts: getUpgradePhylaxSetAccounts(
-      wormholeProgramId,
+      deltaswapProgramId,
       payer,
       vaa
     ) as any,
@@ -165,27 +165,27 @@ export interface UpgradePhylaxSetAccounts {
 }
 
 export function getUpgradePhylaxSetAccounts(
-  wormholeProgramId: PublicKeyInitData,
+  deltaswapProgramId: PublicKeyInitData,
   payer: PublicKeyInitData,
   vaa: SignedVaa | ParsedGovernanceVaa
 ): UpgradePhylaxSetAccounts {
   const parsed = isBytes(vaa) ? parseGovernanceVaa(vaa) : vaa;
   return {
     payer: new PublicKey(payer),
-    bridge: deriveWormholeBridgeDataKey(wormholeProgramId),
-    vaa: derivePostedVaaKey(wormholeProgramId, parsed.hash),
+    bridge: deriveDeltaswapBridgeDataKey(deltaswapProgramId),
+    vaa: derivePostedVaaKey(deltaswapProgramId, parsed.hash),
     claim: deriveClaimKey(
-      wormholeProgramId,
+      deltaswapProgramId,
       parsed.emitterAddress,
       parsed.emitterChain,
       parsed.sequence
     ),
     phylaxSetOld: derivePhylaxSetKey(
-      wormholeProgramId,
+      deltaswapProgramId,
       parsed.phylaxSetIndex
     ),
     phylaxSetNew: derivePhylaxSetKey(
-      wormholeProgramId,
+      deltaswapProgramId,
       parsed.phylaxSetIndex + 1
     ),
     systemProgram: SystemProgram.programId,
@@ -193,18 +193,18 @@ export function getUpgradePhylaxSetAccounts(
 }
 
 export function createUpgradeContractInstruction(
-  wormholeProgramId: PublicKeyInitData,
+  deltaswapProgramId: PublicKeyInitData,
   payer: PublicKeyInitData,
   vaa: SignedVaa | ParsedGovernanceVaa
 ): TransactionInstruction {
   const methods =
-    createReadOnlyWormholeProgramInterface(
-      wormholeProgramId
+    createReadOnlyDeltaswapProgramInterface(
+      deltaswapProgramId
     ).methods.upgradeContract();
 
   // @ts-ignore
   return methods._ixFn(...methods._args, {
-    accounts: getUpgradeContractAccounts(wormholeProgramId, payer, vaa) as any,
+    accounts: getUpgradeContractAccounts(deltaswapProgramId, payer, vaa) as any,
     signers: undefined,
     remainingAccounts: undefined,
     preInstructions: undefined,
@@ -221,7 +221,7 @@ export interface UpgradeContractAccounts {
   spill: PublicKey;
   implementation: PublicKey;
   programData: PublicKey;
-  wormholeProgram: PublicKey;
+  deltaswapProgram: PublicKey;
   rent: PublicKey;
   clock: PublicKey;
   bpfLoaderUpgradeable: PublicKey;
@@ -229,7 +229,7 @@ export interface UpgradeContractAccounts {
 }
 
 export function getUpgradeContractAccounts(
-  wormholeProgramId: PublicKeyInitData,
+  deltaswapProgramId: PublicKeyInitData,
   payer: PublicKeyInitData,
   vaa: SignedVaa | ParsedGovernanceVaa,
   spill?: PublicKeyInitData
@@ -241,19 +241,19 @@ export function getUpgradeContractAccounts(
   }
   return {
     payer: new PublicKey(payer),
-    bridge: deriveWormholeBridgeDataKey(wormholeProgramId),
-    vaa: derivePostedVaaKey(wormholeProgramId, parsed.hash),
+    bridge: deriveDeltaswapBridgeDataKey(deltaswapProgramId),
+    vaa: derivePostedVaaKey(deltaswapProgramId, parsed.hash),
     claim: deriveClaimKey(
-      wormholeProgramId,
+      deltaswapProgramId,
       parsed.emitterAddress,
       parsed.emitterChain,
       parsed.sequence
     ),
-    upgradeAuthority: deriveUpgradeAuthorityKey(wormholeProgramId),
+    upgradeAuthority: deriveUpgradeAuthorityKey(deltaswapProgramId),
     spill: new PublicKey(spill === undefined ? payer : spill),
     implementation: new PublicKey(implementation),
-    programData: deriveUpgradeableProgramKey(wormholeProgramId),
-    wormholeProgram: new PublicKey(wormholeProgramId),
+    programData: deriveUpgradeableProgramKey(deltaswapProgramId),
+    deltaswapProgram: new PublicKey(deltaswapProgramId),
     rent: SYSVAR_RENT_PUBKEY,
     clock: SYSVAR_CLOCK_PUBKEY,
     bpfLoaderUpgradeable: BpfLoaderUpgradeable.programId,

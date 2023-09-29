@@ -609,7 +609,7 @@ export async function transferFromAlgorand(
   txs.push(...emitterOptInTxs);
   let creator;
   let creatorAcctInfo: any;
-  let wormhole: boolean = false;
+  let deltaswap: boolean = false;
   if (assetId !== BigInt(0)) {
     const assetInfo: Record<string, any> = await client
       .getAssetByID(safeBigIntToNumber(assetId))
@@ -618,7 +618,7 @@ export async function transferFromAlgorand(
     creatorAcctInfo = await client.accountInformation(creator).do();
     const authAddr: string = creatorAcctInfo["auth-addr"];
     if (authAddr === tokenAddr) {
-      wormhole = true;
+      deltaswap = true;
     }
   }
 
@@ -634,7 +634,7 @@ export async function transferFromAlgorand(
       });
     txs.push({ tx: payTxn, signer: null });
   }
-  if (!wormhole) {
+  if (!deltaswap) {
     const bNat = Buffer.from("native", "binary").toString("hex");
     // "creator"
     const result = await optin(
@@ -757,7 +757,7 @@ export async function transferTokenFromNear(
     return [
       {
         contractId: tokenBridge,
-        methodName: "send_transfer_wormhole_token",
+        methodName: "send_transfer_deltaswap_token",
         args: {
           token: assetId,
           amount: qty.toString(10),

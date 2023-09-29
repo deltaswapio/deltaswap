@@ -265,7 +265,7 @@ type GovernanceMessage struct {
 	//	*GovernanceMessage_CircleIntegrationRegisterEmitterAndDomain
 	//	*GovernanceMessage_CircleIntegrationUpgradeContractImplementation
 	//	*GovernanceMessage_IbcUpdateChannelChain
-	//	*GovernanceMessage_WormholeRelayerSetDefaultDeliveryProvider
+	//	*GovernanceMessage_DeltaswapRelayerSetDefaultDeliveryProvider
 	Payload isGovernanceMessage_Payload `protobuf_oneof:"payload"`
 }
 
@@ -434,9 +434,9 @@ func (x *GovernanceMessage) GetIbcUpdateChannelChain() *IbcUpdateChannelChain {
 	return nil
 }
 
-func (x *GovernanceMessage) GetWormholeRelayerSetDefaultDeliveryProvider() *WormholeRelayerSetDefaultDeliveryProvider {
-	if x, ok := x.GetPayload().(*GovernanceMessage_WormholeRelayerSetDefaultDeliveryProvider); ok {
-		return x.WormholeRelayerSetDefaultDeliveryProvider
+func (x *GovernanceMessage) GetDeltaswapRelayerSetDefaultDeliveryProvider() *DeltaswapRelayerSetDefaultDeliveryProvider {
+	if x, ok := x.GetPayload().(*GovernanceMessage_DeltaswapRelayerSetDefaultDeliveryProvider); ok {
+		return x.DeltaswapRelayerSetDefaultDeliveryProvider
 	}
 	return nil
 }
@@ -513,9 +513,9 @@ type GovernanceMessage_IbcUpdateChannelChain struct {
 	IbcUpdateChannelChain *IbcUpdateChannelChain `protobuf:"bytes,21,opt,name=ibc_update_channel_chain,json=ibcUpdateChannelChain,proto3,oneof"`
 }
 
-type GovernanceMessage_WormholeRelayerSetDefaultDeliveryProvider struct {
+type GovernanceMessage_DeltaswapRelayerSetDefaultDeliveryProvider struct {
 	// Wormhole Relayer module
-	WormholeRelayerSetDefaultDeliveryProvider *WormholeRelayerSetDefaultDeliveryProvider `protobuf:"bytes,22,opt,name=wormhole_relayer_set_default_delivery_provider,json=wormholeRelayerSetDefaultDeliveryProvider,proto3,oneof"`
+	DeltaswapRelayerSetDefaultDeliveryProvider *DeltaswapRelayerSetDefaultDeliveryProvider `protobuf:"bytes,22,opt,name=wormhole_relayer_set_default_delivery_provider,json=wormholeRelayerSetDefaultDeliveryProvider,proto3,oneof"`
 }
 
 func (*GovernanceMessage_PhylaxSet) isGovernanceMessage_Payload() {}
@@ -551,7 +551,7 @@ func (*GovernanceMessage_CircleIntegrationUpgradeContractImplementation) isGover
 
 func (*GovernanceMessage_IbcUpdateChannelChain) isGovernanceMessage_Payload() {}
 
-func (*GovernanceMessage_WormholeRelayerSetDefaultDeliveryProvider) isGovernanceMessage_Payload() {}
+func (*GovernanceMessage_DeltaswapRelayerSetDefaultDeliveryProvider) isGovernanceMessage_Payload() {}
 
 type InjectGovernanceVAAResponse struct {
 	state         protoimpl.MessageState
@@ -1666,7 +1666,7 @@ func (x *IbcUpdateChannelChain) GetModule() IbcUpdateChannelChainModule {
 	return IbcUpdateChannelChainModule_IBC_UPDATE_CHANNEL_CHAIN_MODULE_UNSPECIFIED
 }
 
-type WormholeRelayerSetDefaultDeliveryProvider struct {
+type DeltaswapRelayerSetDefaultDeliveryProvider struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
@@ -1677,8 +1677,8 @@ type WormholeRelayerSetDefaultDeliveryProvider struct {
 	NewDefaultDeliveryProviderAddress string `protobuf:"bytes,2,opt,name=new_default_delivery_provider_address,json=newDefaultDeliveryProviderAddress,proto3" json:"new_default_delivery_provider_address,omitempty"`
 }
 
-func (x *WormholeRelayerSetDefaultDeliveryProvider) Reset() {
-	*x = WormholeRelayerSetDefaultDeliveryProvider{}
+func (x *DeltaswapRelayerSetDefaultDeliveryProvider) Reset() {
+	*x = DeltaswapRelayerSetDefaultDeliveryProvider{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_node_v1_node_proto_msgTypes[20]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -1686,13 +1686,13 @@ func (x *WormholeRelayerSetDefaultDeliveryProvider) Reset() {
 	}
 }
 
-func (x *WormholeRelayerSetDefaultDeliveryProvider) String() string {
+func (x *DeltaswapRelayerSetDefaultDeliveryProvider) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*WormholeRelayerSetDefaultDeliveryProvider) ProtoMessage() {}
+func (*DeltaswapRelayerSetDefaultDeliveryProvider) ProtoMessage() {}
 
-func (x *WormholeRelayerSetDefaultDeliveryProvider) ProtoReflect() protoreflect.Message {
+func (x *DeltaswapRelayerSetDefaultDeliveryProvider) ProtoReflect() protoreflect.Message {
 	mi := &file_node_v1_node_proto_msgTypes[20]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -1704,19 +1704,19 @@ func (x *WormholeRelayerSetDefaultDeliveryProvider) ProtoReflect() protoreflect.
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use WormholeRelayerSetDefaultDeliveryProvider.ProtoReflect.Descriptor instead.
-func (*WormholeRelayerSetDefaultDeliveryProvider) Descriptor() ([]byte, []int) {
+// Deprecated: Use DeltaswapRelayerSetDefaultDeliveryProvider.ProtoReflect.Descriptor instead.
+func (*DeltaswapRelayerSetDefaultDeliveryProvider) Descriptor() ([]byte, []int) {
 	return file_node_v1_node_proto_rawDescGZIP(), []int{20}
 }
 
-func (x *WormholeRelayerSetDefaultDeliveryProvider) GetChainId() uint32 {
+func (x *DeltaswapRelayerSetDefaultDeliveryProvider) GetChainId() uint32 {
 	if x != nil {
 		return x.ChainId
 	}
 	return 0
 }
 
-func (x *WormholeRelayerSetDefaultDeliveryProvider) GetNewDefaultDeliveryProviderAddress() string {
+func (x *DeltaswapRelayerSetDefaultDeliveryProvider) GetNewDefaultDeliveryProviderAddress() string {
 	if x != nil {
 		return x.NewDefaultDeliveryProviderAddress
 	}
@@ -3288,7 +3288,7 @@ var file_node_v1_node_proto_goTypes = []interface{}{
 	(*CircleIntegrationRegisterEmitterAndDomain)(nil),      // 20: node.v1.CircleIntegrationRegisterEmitterAndDomain
 	(*CircleIntegrationUpgradeContractImplementation)(nil), // 21: node.v1.CircleIntegrationUpgradeContractImplementation
 	(*IbcUpdateChannelChain)(nil),                          // 22: node.v1.IbcUpdateChannelChain
-	(*WormholeRelayerSetDefaultDeliveryProvider)(nil),      // 23: node.v1.WormholeRelayerSetDefaultDeliveryProvider
+	(*DeltaswapRelayerSetDefaultDeliveryProvider)(nil),      // 23: node.v1.DeltaswapRelayerSetDefaultDeliveryProvider
 	(*FindMissingMessagesRequest)(nil),                     // 24: node.v1.FindMissingMessagesRequest
 	(*FindMissingMessagesResponse)(nil),                    // 25: node.v1.FindMissingMessagesResponse
 	(*SendObservationRequestRequest)(nil),                  // 26: node.v1.SendObservationRequestRequest
@@ -3331,7 +3331,7 @@ var file_node_v1_node_proto_depIdxs = []int32{
 	20, // 14: node.v1.GovernanceMessage.circle_integration_register_emitter_and_domain:type_name -> node.v1.CircleIntegrationRegisterEmitterAndDomain
 	21, // 15: node.v1.GovernanceMessage.circle_integration_upgrade_contract_implementation:type_name -> node.v1.CircleIntegrationUpgradeContractImplementation
 	22, // 16: node.v1.GovernanceMessage.ibc_update_channel_chain:type_name -> node.v1.IbcUpdateChannelChain
-	23, // 17: node.v1.GovernanceMessage.wormhole_relayer_set_default_delivery_provider:type_name -> node.v1.WormholeRelayerSetDefaultDeliveryProvider
+	23, // 17: node.v1.GovernanceMessage.wormhole_relayer_set_default_delivery_provider:type_name -> node.v1.DeltaswapRelayerSetDefaultDeliveryProvider
 	44, // 18: node.v1.PhylaxSetUpdate.phylaxs:type_name -> node.v1.PhylaxSetUpdate.Phylax
 	0,  // 19: node.v1.AccountantModifyBalance.kind:type_name -> node.v1.ModificationKind
 	1,  // 20: node.v1.DeltachainWasmInstantiateAllowlist.action:type_name -> node.v1.DeltachainWasmInstantiateAllowlistAction
@@ -3614,7 +3614,7 @@ func file_node_v1_node_proto_init() {
 			}
 		}
 		file_node_v1_node_proto_msgTypes[20].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*WormholeRelayerSetDefaultDeliveryProvider); i {
+			switch v := v.(*DeltaswapRelayerSetDefaultDeliveryProvider); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -3895,7 +3895,7 @@ func file_node_v1_node_proto_init() {
 		(*GovernanceMessage_CircleIntegrationRegisterEmitterAndDomain)(nil),
 		(*GovernanceMessage_CircleIntegrationUpgradeContractImplementation)(nil),
 		(*GovernanceMessage_IbcUpdateChannelChain)(nil),
-		(*GovernanceMessage_WormholeRelayerSetDefaultDeliveryProvider)(nil),
+		(*GovernanceMessage_DeltaswapRelayerSetDefaultDeliveryProvider)(nil),
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{

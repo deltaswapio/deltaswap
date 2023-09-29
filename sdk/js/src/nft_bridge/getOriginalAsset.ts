@@ -8,7 +8,7 @@ import { LCDClient } from "@terra-money/terra.js";
 import { AptosClient, TokenTypes, Types } from "aptos";
 import { BigNumber, ethers } from "ethers";
 import { arrayify, zeroPad } from "ethers/lib/utils";
-import { WormholeWrappedInfo } from "..";
+import { DeltaswapWrappedInfo } from "..";
 import { OriginInfo } from "../aptos/types";
 import { canonicalAddress } from "../cosmos";
 import { TokenImplementation__factory } from "../ethers-contracts";
@@ -29,7 +29,7 @@ import {
 import { getIsWrappedAssetEth } from "./getIsWrappedAsset";
 
 // TODO: remove `as ChainId` and return number in next minor version as we can't ensure it will match our type definition
-export interface WormholeWrappedNFTInfo {
+export interface DeltaswapWrappedNFTInfo {
   isWrapped: boolean;
   chainId: ChainId;
   assetAddress: Uint8Array;
@@ -37,7 +37,7 @@ export interface WormholeWrappedNFTInfo {
 }
 
 /**
- * Returns a origin chain and asset address on {originChain} for a provided Wormhole wrapped address
+ * Returns a origin chain and asset address on {originChain} for a provided Deltaswap wrapped address
  * @param nftBridgeAddress
  * @param provider
  * @param wrappedAddress
@@ -49,7 +49,7 @@ export async function getOriginalAssetEth(
   wrappedAddress: string,
   tokenId: string,
   lookupChain: ChainId | ChainName
-): Promise<WormholeWrappedNFTInfo> {
+): Promise<DeltaswapWrappedNFTInfo> {
   const isWrapped = await getIsWrappedAssetEth(
     nftBridgeAddress,
     provider,
@@ -81,7 +81,7 @@ export async function getOriginalAssetEth(
 }
 
 /**
- * Returns a origin chain and asset address on {originChain} for a provided Wormhole wrapped address
+ * Returns a origin chain and asset address on {originChain} for a provided Deltaswap wrapped address
  * @param connection
  * @param nftBridgeAddress
  * @param mintAddress
@@ -93,7 +93,7 @@ export async function getOriginalAssetSolana(
   nftBridgeAddress: PublicKeyInitData,
   mintAddress: PublicKeyInitData,
   commitment?: Commitment
-): Promise<WormholeWrappedNFTInfo> {
+): Promise<DeltaswapWrappedNFTInfo> {
   try {
     const mint = new PublicKey(mintAddress);
 
@@ -160,7 +160,7 @@ export async function getOriginalAssetTerra(
   client: LCDClient,
   wrappedAddress: string,
   lookupChain: ChainId | ChainName
-): Promise<WormholeWrappedInfo> {
+): Promise<DeltaswapWrappedInfo> {
   try {
     const result: {
       asset_address: string;
@@ -194,14 +194,14 @@ export async function getOriginalAssetTerra(
  * @param tokenId An object containing creator address, collection name, token
  * name, and property version, which together uniquely identify a token on
  * Aptos. For wrapped assets, property version will be 0.
- * @returns Object containing origin chain and Wormhole compatible 32-byte asset
+ * @returns Object containing origin chain and Deltaswap compatible 32-byte asset
  * address.
  */
 export async function getOriginalAssetAptos(
   client: AptosClient,
   nftBridgeAddress: string,
   tokenId: TokenTypes.TokenId
-): Promise<WormholeWrappedNFTInfo> {
+): Promise<DeltaswapWrappedNFTInfo> {
   try {
     const originInfo = (
       await client.getAccountResource(

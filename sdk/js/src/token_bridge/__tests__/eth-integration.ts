@@ -156,7 +156,7 @@ describe("Ethereum to Solana and Back", () => {
           payerAddress,
           Buffer.from(signedVAA)
         );
-        // create wormhole wrapped token (mint and metadata) on solana
+        // create deltaswap wrapped token (mint and metadata) on solana
         const transaction = await createWrappedOnSolana(
           connection,
           CONTRACTS.DEVNET.solana.core,

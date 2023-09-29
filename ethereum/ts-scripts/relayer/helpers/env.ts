@@ -2,12 +2,12 @@ import { ChainId } from "@certusone/wormhole-sdk";
 import { ethers } from "ethers";
 import fs from "fs";
 
-import { WormholeRelayer } from "../../../ethers-contracts";
+import { DeltaswapRelayer } from "../../../ethers-contracts";
 import { DeliveryProvider } from "../../../ethers-contracts";
 import { MockRelayerIntegration } from "../../../ethers-contracts";
 
 import { DeliveryProvider__factory } from "../../../ethers-contracts";
-import { WormholeRelayer__factory } from "../../../ethers-contracts";
+import { DeltaswapRelayer__factory } from "../../../ethers-contracts";
 import { MockRelayerIntegration__factory } from "../../../ethers-contracts";
 import {
   Create2Factory,
@@ -175,7 +175,7 @@ export function loadDeliveryProviders(): Deployment[] {
   }
 }
 
-export function loadWormholeRelayers(dev: boolean): Deployment[] {
+export function loadDeltaswapRelayers(dev: boolean): Deployment[] {
   const contractsFile = fs.readFileSync(
     `./ts-scripts/relayer/config/${env}/contracts.json`
   );
@@ -185,7 +185,7 @@ export function loadWormholeRelayers(dev: boolean): Deployment[] {
   const contracts = JSON.parse(contractsFile.toString());
   if (contracts.useLastRun || lastRunOverride) {
     const lastRunFile = fs.readFileSync(
-      `./ts-scripts/relayer/output/${env}/deployWormholeRelayer/lastrun.json`
+      `./ts-scripts/relayer/output/${env}/deployDeltaswapRelayer/lastrun.json`
     );
     if (!lastRunFile) {
       throw Error("Failed to find last run file for the Core Relayer process!");
@@ -348,7 +348,7 @@ export function getDeliveryProvider(
 }
 
 const wormholeRelayerAddressesCache: Partial<Record<ChainId, string>> = {};
-export async function getWormholeRelayerAddress(
+export async function getDeltaswapRelayerAddress(
   chain: ChainInfo,
   forceCalculate?: boolean
 ): Promise<string> {
@@ -364,14 +364,14 @@ export async function getWormholeRelayerAddress(
   const contracts = JSON.parse(contractsFile.toString());
   //If useLastRun is false, then we want to bypass the calculations and just use what the contracts file says.
   if (!contracts.useLastRun && !lastRunOverride && !forceCalculate) {
-    const thisChainsRelayer = loadWormholeRelayers(dev).find(
+    const thisChainsRelayer = loadDeltaswapRelayers(dev).find(
       (x: any) => x.chainId == chain.chainId
     )?.address;
     if (thisChainsRelayer) {
       return thisChainsRelayer;
     } else {
       throw Error(
-        "Failed to find a WormholeRelayer contract address on chain " +
+        "Failed to find a DeltaswapRelayer contract address on chain " +
           chain.chainId
       );
     }
@@ -389,12 +389,12 @@ export async function getWormholeRelayerAddress(
   return wormholeRelayerAddressesCache[chain.chainId]!;
 }
 
-export async function getWormholeRelayer(
+export async function getDeltaswapRelayer(
   chain: ChainInfo,
   provider?: ethers.providers.StaticJsonRpcProvider
-): Promise<WormholeRelayer> {
-  const thisChainsRelayer = await getWormholeRelayerAddress(chain);
-  return WormholeRelayer__factory.connect(
+): Promise<DeltaswapRelayer> {
+  const thisChainsRelayer = await getDeltaswapRelayerAddress(chain);
+  return DeltaswapRelayer__factory.connect(
     thisChainsRelayer,
     provider || getSigner(chain)
   );

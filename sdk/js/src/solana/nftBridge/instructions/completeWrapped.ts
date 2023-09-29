@@ -16,7 +16,7 @@ import {
   SignedVaa,
 } from "../../../vaa";
 import { TOKEN_METADATA_PROGRAM_ID } from "../../utils";
-import { deriveClaimKey, derivePostedVaaKey } from "../../wormhole";
+import { deriveClaimKey, derivePostedVaaKey } from "../../deltaswap";
 import {
   deriveEndpointKey,
   deriveMintAuthorityKey,
@@ -28,7 +28,7 @@ import { createReadOnlyNftBridgeProgramInterface } from "../program";
 
 export function createCompleteTransferWrappedInstruction(
   nftBridgeProgramId: PublicKeyInitData,
-  wormholeProgramId: PublicKeyInitData,
+  deltaswapProgramId: PublicKeyInitData,
   payer: PublicKeyInitData,
   vaa: SignedVaa | ParsedNftTransferVaa,
   toAuthority?: PublicKeyInitData
@@ -42,7 +42,7 @@ export function createCompleteTransferWrappedInstruction(
   return methods._ixFn(...methods._args, {
     accounts: getCompleteTransferWrappedAccounts(
       nftBridgeProgramId,
-      wormholeProgramId,
+      deltaswapProgramId,
       payer,
       vaa,
       toAuthority
@@ -70,12 +70,12 @@ export interface CompleteTransferWrappedAccounts {
   tokenProgram: PublicKey;
   splMetadataProgram: PublicKey;
   associatedTokenProgram: PublicKey;
-  wormholeProgram: PublicKey;
+  deltaswapProgram: PublicKey;
 }
 
 export function getCompleteTransferWrappedAccounts(
   nftBridgeProgramId: PublicKeyInitData,
-  wormholeProgramId: PublicKeyInitData,
+  deltaswapProgramId: PublicKeyInitData,
   payer: PublicKeyInitData,
   vaa: SignedVaa | ParsedNftTransferVaa,
   toAuthority?: PublicKeyInitData
@@ -90,7 +90,7 @@ export function getCompleteTransferWrappedAccounts(
   return {
     payer: new PublicKey(payer),
     config: deriveNftBridgeConfigKey(nftBridgeProgramId),
-    vaa: derivePostedVaaKey(wormholeProgramId, parsed.hash),
+    vaa: derivePostedVaaKey(deltaswapProgramId, parsed.hash),
     claim: deriveClaimKey(
       nftBridgeProgramId,
       parsed.emitterAddress,
@@ -112,6 +112,6 @@ export function getCompleteTransferWrappedAccounts(
     tokenProgram: TOKEN_PROGRAM_ID,
     splMetadataProgram: TOKEN_METADATA_PROGRAM_ID,
     associatedTokenProgram: ASSOCIATED_TOKEN_PROGRAM_ID,
-    wormholeProgram: new PublicKey(wormholeProgramId),
+    deltaswapProgram: new PublicKey(deltaswapProgramId),
   };
 }

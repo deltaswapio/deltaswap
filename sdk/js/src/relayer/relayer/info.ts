@@ -10,7 +10,7 @@ import {
   ethers_contracts,
 } from "../..";
 import { BigNumber, ethers } from "ethers";
-import { getWormholeRelayerAddress } from "../consts";
+import { getDeltaswapRelayerAddress } from "../consts";
 import {
   RelayerPayloadId,
   DeliveryInstruction,
@@ -24,10 +24,10 @@ import {
 import {
   getDefaultProvider,
   printChain,
-  getWormholeRelayerLog,
-  parseWormholeLog,
+  getDeltaswapRelayerLog,
+  parseDeltaswapLog,
   getBlockRange,
-  getWormholeRelayerInfoBySourceSequence,
+  getDeltaswapRelayerInfoBySourceSequence,
 } from "./helpers";
 import { DeliveryInfo } from "./deliver";
 
@@ -39,14 +39,14 @@ export type InfoRequestParams = {
     ChainName,
     [ethers.providers.BlockTag, ethers.providers.BlockTag]
   >;
-  wormholeRelayerWhMessageIndex?: number;
-  wormholeRelayerAddresses?: Map<ChainName, string>;
+  deltaswapRelayerWhMessageIndex?: number;
+  deltaswapRelayerAddresses?: Map<ChainName, string>;
 };
 
 export type GetPriceOptParams = {
   environment?: Network;
   receiverValue?: ethers.BigNumberish;
-  wormholeRelayerAddress?: string;
+  deltaswapRelayerAddress?: string;
   deliveryProviderAddress?: string;
   sourceChainProvider?: ethers.providers.Provider;
 };
@@ -65,19 +65,19 @@ export async function getPriceAndRefundInfo(
     throw Error(
       "No default RPC for this chain; pass in your own provider (as sourceChainProvider)"
     );
-  const wormholeRelayerAddress =
-    optionalParams?.wormholeRelayerAddress ||
-    getWormholeRelayerAddress(sourceChain, environment);
-  const sourceWormholeRelayer =
-    ethers_contracts.IWormholeRelayer__factory.connect(
-      wormholeRelayerAddress,
+  const deltaswapRelayerAddress =
+    optionalParams?.deltaswapRelayerAddress ||
+    getDeltaswapRelayerAddress(sourceChain, environment);
+  const sourceDeltaswapRelayer =
+    ethers_contracts.IDeltaswapRelayer__factory.connect(
+      deltaswapRelayerAddress,
       sourceChainProvider
     );
   const deliveryProviderAddress =
     optionalParams?.deliveryProviderAddress ||
-    (await sourceWormholeRelayer.getDefaultDeliveryProvider());
+    (await sourceDeltaswapRelayer.getDefaultDeliveryProvider());
   const targetChainId = CHAINS[targetChain];
-  const priceAndRefundInfo = await sourceWormholeRelayer[
+  const priceAndRefundInfo = await sourceDeltaswapRelayer[
     "quoteEVMDeliveryPrice(uint16,uint256,uint256,address)"
   ](
     targetChainId,
@@ -103,7 +103,7 @@ export async function getPrice(
   return priceAndRefundInfo[0];
 }
 
-export async function getWormholeRelayerInfo(
+export async function getDeltaswapRelayerInfo(
   sourceChain: ChainName,
   sourceTransaction: string,
   infoRequest?: InfoRequestParams
@@ -121,24 +121,24 @@ export async function getWormholeRelayerInfo(
   );
   if (!receipt) throw Error("Transaction has not been mined");
   const bridgeAddress = CONTRACTS[environment][sourceChain].core;
-  const wormholeRelayerAddress =
-    infoRequest?.wormholeRelayerAddresses?.get(sourceChain) ||
-    getWormholeRelayerAddress(sourceChain, environment);
-  if (!bridgeAddress || !wormholeRelayerAddress) {
+  const deltaswapRelayerAddress =
+    infoRequest?.deltaswapRelayerAddresses?.get(sourceChain) ||
+    getDeltaswapRelayerAddress(sourceChain, environment);
+  if (!bridgeAddress || !deltaswapRelayerAddress) {
     throw Error(
       `Invalid chain ID or network: Chain ${sourceChain}, ${environment}`
     );
   }
-  const deliveryLog = getWormholeRelayerLog(
+  const deliveryLog = getDeltaswapRelayerLog(
     receipt,
     bridgeAddress,
-    tryNativeToHexString(wormholeRelayerAddress, "ethereum"),
-    infoRequest?.wormholeRelayerWhMessageIndex
-      ? infoRequest.wormholeRelayerWhMessageIndex
+    tryNativeToHexString(deltaswapRelayerAddress, "ethereum"),
+    infoRequest?.deltaswapRelayerWhMessageIndex
+      ? infoRequest.deltaswapRelayerWhMessageIndex
       : 0
   );
 
-  const { type, parsed } = parseWormholeLog(deliveryLog.log);
+  const { type, parsed } = parseDeltaswapLog(deliveryLog.log);
 
   const instruction = parsed as DeliveryInstruction;
 
@@ -158,7 +158,7 @@ export async function getWormholeRelayerInfo(
     infoRequest?.targetChainBlockRanges?.get(targetChain) ||
     getBlockRange(targetChainProvider);
 
-  const targetChainStatus = await getWormholeRelayerInfoBySourceSequence(
+  const targetChainStatus = await getDeltaswapRelayerInfoBySourceSequence(
     environment,
     targetChain,
     targetChainProvider,
@@ -166,8 +166,8 @@ export async function getWormholeRelayerInfo(
     BigNumber.from(deliveryLog.sequence),
     blockStartNumber,
     blockEndNumber,
-    infoRequest?.wormholeRelayerAddresses?.get(targetChain) ||
-      getWormholeRelayerAddress(targetChain, environment)
+    infoRequest?.deltaswapRelayerAddresses?.get(targetChain) ||
+      getDeltaswapRelayerAddress(targetChain, environment)
   );
 
   return {
@@ -182,11 +182,11 @@ export async function getWormholeRelayerInfo(
   };
 }
 
-export function printWormholeRelayerInfo(info: DeliveryInfo) {
-  console.log(stringifyWormholeRelayerInfo(info));
+export function printDeltaswapRelayerInfo(info: DeliveryInfo) {
+  console.log(stringifyDeltaswapRelayerInfo(info));
 }
 
-export function stringifyWormholeRelayerInfo(
+export function stringifyDeltaswapRelayerInfo(
   info: DeliveryInfo,
   excludeSourceInformation?: boolean,
   overrides?: DeliveryOverrideArgs
@@ -219,7 +219,7 @@ export function stringifyWormholeRelayerInfo(
       stringifiedInfo += `\nPayload to be relayed (as hex string): 0x${payload}`;
     }
     if (numMsgs > 0) {
-      stringifiedInfo += `\nThe following ${numMsgs} wormhole messages (VAAs) were ${
+      stringifiedInfo += `\nThe following ${numMsgs} deltaswap messages (VAAs) were ${
         payload.length > 0 ? "also " : ""
       }requested to be relayed:\n`;
       stringifiedInfo += info.deliveryInstruction.messageKeys

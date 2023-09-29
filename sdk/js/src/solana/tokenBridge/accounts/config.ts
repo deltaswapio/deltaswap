@@ -26,17 +26,17 @@ export async function getTokenBridgeConfig(
 }
 
 export class TokenBridgeConfig {
-  wormhole: PublicKey;
+  deltaswap: PublicKey;
 
-  constructor(wormholeProgramId: Buffer) {
-    this.wormhole = new PublicKey(wormholeProgramId);
+  constructor(deltaswapProgramId: Buffer) {
+    this.deltaswap = new PublicKey(deltaswapProgramId);
   }
 
   static deserialize(data: Buffer): TokenBridgeConfig {
     if (data.length != 32) {
       throw new Error("data.length != 32");
     }
-    const wormholeProgramId = data.subarray(0, 32);
-    return new TokenBridgeConfig(wormholeProgramId);
+    const deltaswapProgramId = data.subarray(0, 32);
+    return new TokenBridgeConfig(deltaswapProgramId);
   }
 }

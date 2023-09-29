@@ -2,20 +2,20 @@
 
 pragma solidity ^0.8.19;
 
-import {IWormholeRelayer} from "../../interfaces/relayer/IWormholeRelayerTyped.sol";
+import {IDeltaswapRelayer} from "../../interfaces/relayer/IDeltaswapRelayerTyped.sol";
 
-import {getDefaultDeliveryProviderState} from "./WormholeRelayerStorage.sol";
-import {WormholeRelayerGovernance} from "./WormholeRelayerGovernance.sol";
-import {WormholeRelayerSend} from "./WormholeRelayerSend.sol";
-import {WormholeRelayerDelivery} from "./WormholeRelayerDelivery.sol";
-import {WormholeRelayerBase} from "./WormholeRelayerBase.sol";
+import {getDefaultDeliveryProviderState} from "./DeltaswapRelayerStorage.sol";
+import {DeltaswapRelayerGovernance} from "./DeltaswapRelayerGovernance.sol";
+import {DeltaswapRelayerSend} from "./DeltaswapRelayerSend.sol";
+import {DeltaswapRelayerDelivery} from "./DeltaswapRelayerDelivery.sol";
+import {DeltaswapRelayerBase} from "./DeltaswapRelayerBase.sol";
 
-//WormholeRelayerGovernance inherits from ERC1967Upgrade, i.e. this is a proxy contract!
-contract WormholeRelayer is
-    WormholeRelayerGovernance,
-    WormholeRelayerSend,
-    WormholeRelayerDelivery,
-    IWormholeRelayer
+//DeltaswapRelayerGovernance inherits from ERC1967Upgrade, i.e. this is a proxy contract!
+contract DeltaswapRelayer is
+    DeltaswapRelayerGovernance,
+    DeltaswapRelayerSend,
+    DeltaswapRelayerDelivery,
+    IDeltaswapRelayer
 {
     //the only normal storage variable - everything else uses slot pattern
     //no point doing it for this one since it is entirely one-off and of no interest to the rest
@@ -23,7 +23,7 @@ contract WormholeRelayer is
     //  the inheritance hierarchy here
     bool private initialized;
 
-    constructor(address wormhole) WormholeRelayerBase(wormhole) {}
+    constructor(address wormhole) DeltaswapRelayerBase(wormhole) {}
 
     //needs to be called upon construction of the EC1967 proxy
     function initialize(address defaultDeliveryProvider) public {

@@ -1,7 +1,7 @@
 import { BN } from "@project-serum/anchor";
 import { PublicKey, PublicKeyInitData } from "@solana/web3.js";
 import { ChainId, tryNativeToHexString } from "../utils";
-import { MockEmitter } from "./wormhole";
+import { MockEmitter } from "./deltaswap";
 
 export class MockTokenBridge extends MockEmitter {
   consistencyLevel: number;

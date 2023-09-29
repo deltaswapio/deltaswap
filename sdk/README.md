@@ -1,7 +1,7 @@
-# Wormhole Software Development Kit
+# Deltaswap Software Development Kit
 
 This directory contains libraries in various languages for developing software that interacts with
-wormhole.
+deltaswap.
 
 # Directory Structure
 

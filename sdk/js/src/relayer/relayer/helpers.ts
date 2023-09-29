@@ -10,15 +10,15 @@ import {
 } from "../../";
 import { BigNumber, ContractReceipt, ethers } from "ethers";
 import {
-  getWormholeRelayer,
+  getDeltaswapRelayer,
   RPCS_BY_CHAIN,
   RELAYER_CONTRACTS,
 } from "../consts";
 import {
-  parseWormholeRelayerPayloadType,
+  parseDeltaswapRelayerPayloadType,
   parseOverrideInfoFromDeliveryEvent,
   RelayerPayloadId,
-  parseWormholeRelayerSend,
+  parseDeltaswapRelayerSend,
   DeliveryInstruction,
   DeliveryStatus,
   RefundStatus,
@@ -30,10 +30,10 @@ import {
   DeliveryProvider,
   DeliveryProvider__factory,
   Implementation__factory,
-  IWormholeRelayerDelivery__factory,
+  IDeltaswapRelayerDelivery__factory,
 } from "../../ethers-contracts/";
-import { DeliveryEvent } from "../../ethers-contracts/WormholeRelayer";
-import { VaaKeyStruct } from "../../ethers-contracts/IWormholeRelayer.sol/IWormholeRelayer";
+import { DeliveryEvent } from "../../ethers-contracts/DeltaswapRelayer";
+import { VaaKeyStruct } from "../../ethers-contracts/IDeltaswapRelayer.sol/IDeltaswapRelayer";
 
 export type DeliveryTargetInfo = {
   status: DeliveryStatus | string;
@@ -47,7 +47,7 @@ export type DeliveryTargetInfo = {
   overrides?: DeliveryOverrideArgs;
 };
 
-export function parseWormholeLog(log: ethers.providers.Log): {
+export function parseDeltaswapLog(log: ethers.providers.Log): {
   type: RelayerPayloadId;
   parsed: DeliveryInstruction | string;
 } {
@@ -57,11 +57,11 @@ export function parseWormholeLog(log: ethers.providers.Log): {
   const iface = new ethers.utils.Interface(abi);
   const parsed = iface.parseLog(log);
   const payload = Buffer.from(parsed.args.payload.substring(2), "hex");
-  const type = parseWormholeRelayerPayloadType(payload);
+  const type = parseDeltaswapRelayerPayloadType(payload);
   if (type == RelayerPayloadId.Delivery) {
-    return { type, parsed: parseWormholeRelayerSend(payload) };
+    return { type, parsed: parseDeltaswapRelayerSend(payload) };
   } else {
-    throw Error("Invalid wormhole log");
+    throw Error("Invalid deltaswap log");
   }
 }
 
@@ -105,7 +105,7 @@ export function getBlockRange(
   return [-2040, "latest"];
 }
 
-export async function getWormholeRelayerInfoBySourceSequence(
+export async function getDeltaswapRelayerInfoBySourceSequence(
   environment: Network,
   targetChain: ChainName,
   targetChainProvider: ethers.providers.Provider,
@@ -113,9 +113,9 @@ export async function getWormholeRelayerInfoBySourceSequence(
   sourceVaaSequence: BigNumber,
   blockStartNumber: ethers.providers.BlockTag,
   blockEndNumber: ethers.providers.BlockTag,
-  targetWormholeRelayerAddress: string
+  targetDeltaswapRelayerAddress: string
 ): Promise<{ chain: ChainName; events: DeliveryTargetInfo[] }> {
-  const deliveryEvents = await getWormholeRelayerDeliveryEventsBySourceSequence(
+  const deliveryEvents = await getDeltaswapRelayerDeliveryEventsBySourceSequence(
     environment,
     targetChain,
     targetChainProvider,
@@ -123,7 +123,7 @@ export async function getWormholeRelayerInfoBySourceSequence(
     sourceVaaSequence,
     blockStartNumber,
     blockEndNumber,
-    targetWormholeRelayerAddress
+    targetDeltaswapRelayerAddress
   );
   if (deliveryEvents.length == 0) {
     let status = `Delivery didn't happen on ${targetChain} within blocks ${blockStartNumber} to ${blockEndNumber}.`;
@@ -154,7 +154,7 @@ export async function getWormholeRelayerInfoBySourceSequence(
   return targetChainStatus;
 }
 
-export async function getWormholeRelayerDeliveryEventsBySourceSequence(
+export async function getDeltaswapRelayerDeliveryEventsBySourceSequence(
   environment: Network,
   targetChain: ChainName,
   targetChainProvider: ethers.providers.Provider,
@@ -162,25 +162,25 @@ export async function getWormholeRelayerDeliveryEventsBySourceSequence(
   sourceVaaSequence: BigNumber,
   blockStartNumber: ethers.providers.BlockTag,
   blockEndNumber: ethers.providers.BlockTag,
-  targetWormholeRelayerAddress: string
+  targetDeltaswapRelayerAddress: string
 ): Promise<DeliveryTargetInfo[]> {
   const sourceChainId = CHAINS[sourceChain];
   if (!sourceChainId) throw Error(`Invalid source chain: ${sourceChain}`);
-  const wormholeRelayer = getWormholeRelayer(
+  const deltaswapRelayer = getDeltaswapRelayer(
     targetChain,
     environment,
     targetChainProvider,
-    targetWormholeRelayerAddress
+    targetDeltaswapRelayerAddress
   );
 
-  const deliveryEvents = wormholeRelayer.filters.Delivery(
+  const deliveryEvents = deltaswapRelayer.filters.Delivery(
     null,
     sourceChainId,
     sourceVaaSequence
   );
 
   const deliveryEventsPreFilter: DeliveryEvent[] =
-    await wormholeRelayer.queryFilter(
+    await deltaswapRelayer.queryFilter(
       deliveryEvents,
       blockStartNumber,
       blockEndNumber
@@ -212,20 +212,20 @@ async function areSignaturesValid(
   const coreAddress = CONTRACTS[environment][targetChain].core;
   if (!coreAddress)
     throw Error(
-      `No Wormhole Address for chain ${targetChain}, network ${environment}`
+      `No Deltaswap Address for chain ${targetChain}, network ${environment}`
     );
 
-  const wormhole = Implementation__factory.connect(
+  const deltaswap = Implementation__factory.connect(
     coreAddress,
     targetChainProvider
   );
   const decodedData =
-    IWormholeRelayerDelivery__factory.createInterface().parseTransaction(
+    IDeltaswapRelayerDelivery__factory.createInterface().parseTransaction(
       await transaction
     );
 
   const vaaIsValid = async (vaa: ethers.utils.BytesLike): Promise<boolean> => {
-    const [, result, reason] = await wormhole.parseAndVerifyVM(vaa);
+    const [, result, reason] = await deltaswap.parseAndVerifyVM(vaa);
     if (!result) console.log(`Invalid vaa! Reason: ${reason}`);
     return result;
   };
@@ -294,7 +294,7 @@ async function transformDeliveryEvents(
   return events.map((x) => transformDeliveryLog(x));
 }
 
-export function getWormholeRelayerLog(
+export function getDeltaswapRelayerLog(
   receipt: ContractReceipt,
   bridgeAddress: string,
   emitterAddress: string,
@@ -324,7 +324,7 @@ export function getWormholeRelayerLog(
 
   if (filtered.length == 0) {
     throw Error(
-      "No WormholeRelayer contract interactions found for this transaction."
+      "No DeltaswapRelayer contract interactions found for this transaction."
     );
   }
 
@@ -360,33 +360,33 @@ export async function getDeliveryHash(
   const network: Network = optionalParams?.network || "MAINNET";
   const provider: ethers.providers.Provider =
     optionalParams?.provider || getDefaultProvider(network, sourceChain);
-  const wormholeAddress = CONTRACTS[network][sourceChain].core;
-  if (!wormholeAddress) {
-    throw Error(`No wormhole contract on ${sourceChain} for ${network}`);
+  const deltaswapAddress = CONTRACTS[network][sourceChain].core;
+  if (!deltaswapAddress) {
+    throw Error(`No deltaswap contract on ${sourceChain} for ${network}`);
   }
-  const wormholeRelayerAddress =
-    RELAYER_CONTRACTS[network][sourceChain]?.wormholeRelayerAddress;
-  if (!wormholeRelayerAddress) {
+  const deltaswapRelayerAddress =
+    RELAYER_CONTRACTS[network][sourceChain]?.deltaswapRelayerAddress;
+  if (!deltaswapRelayerAddress) {
     throw Error(
-      `No wormhole relayer contract on ${sourceChain} for ${network}`
+      `No deltaswap relayer contract on ${sourceChain} for ${network}`
     );
   }
   const logs = rx.logs.filter(
     (log) =>
-      log.address.toLowerCase() === wormholeAddress.toLowerCase() &&
+      log.address.toLowerCase() === deltaswapAddress.toLowerCase() &&
       log.topics[1].toLowerCase() ===
         "0x" +
-          tryNativeToHexString(wormholeRelayerAddress, "ethereum").toLowerCase()
+          tryNativeToHexString(deltaswapRelayerAddress, "ethereum").toLowerCase()
   );
   const index = optionalParams?.index || 0;
   if (logs.length === 0)
     throw Error(
-      `No wormhole relayer log found${
-        index > 0 ? ` (the ${index}-th wormhole relayer log was requested)` : ""
+      `No deltaswap relayer log found${
+        index > 0 ? ` (the ${index}-th deltaswap relayer log was requested)` : ""
       }`
     );
   const log = logs[index];
-  const wormholePublishedMessage =
+  const deltaswapPublishedMessage =
     Implementation__factory.createInterface().parseLog(log);
   const block = await provider.getBlock(rx.blockHash);
   const body = ethers.utils.solidityPack(
@@ -394,12 +394,12 @@ export async function getDeliveryHash(
 
     [
       block.timestamp,
-      wormholePublishedMessage.args["nonce"],
+      deltaswapPublishedMessage.args["nonce"],
       CHAINS[sourceChain],
       log.topics[1],
-      wormholePublishedMessage.args["sequence"],
-      wormholePublishedMessage.args["consistencyLevel"],
-      wormholePublishedMessage.args["payload"],
+      deltaswapPublishedMessage.args["sequence"],
+      deltaswapPublishedMessage.args["consistencyLevel"],
+      deltaswapPublishedMessage.args["payload"],
     ]
   );
   const deliveryHash = ethers.utils.keccak256(ethers.utils.keccak256(body));

@@ -8,7 +8,7 @@ import {
   Network,
   tryNativeToHexString,
 } from "../../utils";
-import { getWormholeRelayerAddress } from "../consts";
+import { getDeltaswapRelayerAddress } from "../consts";
 
 export type SendOptionalParams = {
   environment?: Network;
@@ -22,7 +22,7 @@ export type SendOptionalParams = {
     }
   ];
   deliveryProviderAddress?: string;
-  wormholeRelayerAddress?: string;
+  deltaswapRelayerAddress?: string;
   consistencyLevel?: ethers.BigNumberish;
   refundChainId?: ChainId;
   refundAddress?: string;
@@ -43,12 +43,12 @@ export async function sendToEvm(
   const targetChainId = CHAINS[targetChain];
 
   const environment = sendOptionalParams?.environment || "MAINNET";
-  const wormholeRelayerAddress =
-    sendOptionalParams?.wormholeRelayerAddress ||
-    getWormholeRelayerAddress(sourceChain, environment);
-  const sourceWormholeRelayer =
-    ethers_contracts.IWormholeRelayer__factory.connect(
-      wormholeRelayerAddress,
+  const deltaswapRelayerAddress =
+    sendOptionalParams?.deltaswapRelayerAddress ||
+    getDeltaswapRelayerAddress(sourceChain, environment);
+  const sourceDeltaswapRelayer =
+    ethers_contracts.IDeltaswapRelayer__factory.connect(
+      deltaswapRelayerAddress,
       signer
     );
 
@@ -56,13 +56,13 @@ export async function sendToEvm(
     sendOptionalParams?.refundChainId !== undefined &&
     sendOptionalParams?.refundAddress !== undefined;
   const defaultDeliveryProviderAddress =
-    await sourceWormholeRelayer.getDefaultDeliveryProvider();
+    await sourceDeltaswapRelayer.getDefaultDeliveryProvider();
 
-  // Using the most general 'send' function in IWormholeRelayer
+  // Using the most general 'send' function in IDeltaswapRelayer
   // Inputs:
   // targetChainId, targetAddress, refundChainId, refundAddress, maxTransactionFee, receiverValue, payload, vaaKeys,
   // consistencyLevel, deliveryProviderAddress, relayParameters
-  const [deliveryPrice]: [BigNumber, BigNumber] = await sourceWormholeRelayer[
+  const [deliveryPrice]: [BigNumber, BigNumber] = await sourceDeltaswapRelayer[
     "quoteEVMDeliveryPrice(uint16,uint256,uint256,address)"
   ](
     targetChainId,
@@ -80,7 +80,7 @@ export async function sendToEvm(
       `Expected a payment of ${totalPrice.toString()} wei; received ${value.toString()} wei`
     );
   }
-  const tx = sourceWormholeRelayer[
+  const tx = sourceDeltaswapRelayer[
     "sendToEvm(uint16,address,bytes,uint256,uint256,uint256,uint16,address,address,(uint16,bytes32,uint64)[],uint8)"
   ](
     targetChainId, // targetChainId

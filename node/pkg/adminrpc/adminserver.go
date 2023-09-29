@@ -516,9 +516,9 @@ func ibcUpdateChannelChain(
 	return v, nil
 }
 
-// wormholeRelayerSetDefaultDeliveryProvider converts a nodev1.WormholeRelayerSetDefaultDeliveryProvider message to its canonical VAA representation.
+// wormholeRelayerSetDefaultDeliveryProvider converts a nodev1.DeltaswapRelayerSetDefaultDeliveryProvider message to its canonical VAA representation.
 // Returns an error if the data is invalid.
-func wormholeRelayerSetDefaultDeliveryProvider(req *nodev1.WormholeRelayerSetDefaultDeliveryProvider, timestamp time.Time, phylaxSetIndex uint32, nonce uint32, sequence uint64) (*vaa.VAA, error) {
+func wormholeRelayerSetDefaultDeliveryProvider(req *nodev1.DeltaswapRelayerSetDefaultDeliveryProvider, timestamp time.Time, phylaxSetIndex uint32, nonce uint32, sequence uint64) (*vaa.VAA, error) {
 	if req.ChainId > math.MaxUint16 {
 		return nil, errors.New("invalid target_chain_id")
 	}
@@ -536,7 +536,7 @@ func wormholeRelayerSetDefaultDeliveryProvider(req *nodev1.WormholeRelayerSetDef
 	copy(NewDefaultDeliveryProviderAddress[:], b)
 
 	v := vaa.CreateGovernanceVAA(timestamp, nonce, sequence, phylaxSetIndex,
-		vaa.BodyWormholeRelayerSetDefaultDeliveryProvider{
+		vaa.BodyDeltaswapRelayerSetDefaultDeliveryProvider{
 			ChainID:                           vaa.ChainID(req.ChainId),
 			NewDefaultDeliveryProviderAddress: NewDefaultDeliveryProviderAddress,
 		}.Serialize())
@@ -583,8 +583,8 @@ func GovMsgToVaa(message *nodev1.GovernanceMessage, currentSetIndex uint32, time
 		v, err = circleIntegrationUpgradeContractImplementation(payload.CircleIntegrationUpgradeContractImplementation, timestamp, currentSetIndex, message.Nonce, message.Sequence)
 	case *nodev1.GovernanceMessage_IbcUpdateChannelChain:
 		v, err = ibcUpdateChannelChain(payload.IbcUpdateChannelChain, timestamp, currentSetIndex, message.Nonce, message.Sequence)
-	case *nodev1.GovernanceMessage_WormholeRelayerSetDefaultDeliveryProvider:
-		v, err = wormholeRelayerSetDefaultDeliveryProvider(payload.WormholeRelayerSetDefaultDeliveryProvider, timestamp, currentSetIndex, message.Nonce, message.Sequence)
+	case *nodev1.GovernanceMessage_DeltaswapRelayerSetDefaultDeliveryProvider:
+		v, err = wormholeRelayerSetDefaultDeliveryProvider(payload.DeltaswapRelayerSetDefaultDeliveryProvider, timestamp, currentSetIndex, message.Nonce, message.Sequence)
 	default:
 		panic(fmt.Sprintf("unsupported VAA type: %T", payload))
 	}

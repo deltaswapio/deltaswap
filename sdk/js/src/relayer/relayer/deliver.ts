@@ -1,16 +1,16 @@
 import { BigNumber, ethers, ContractReceipt } from "ethers";
-import { IWormholeRelayer__factory } from "../../ethers-contracts";
+import { IDeltaswapRelayer__factory } from "../../ethers-contracts";
 import { ChainName, toChainName, ChainId, Network } from "../../utils";
 import { SignedVaa, parseVaa } from "../../vaa";
-import { getWormholeRelayerAddress } from "../consts";
+import { getDeltaswapRelayerAddress } from "../consts";
 import {
   RelayerPayloadId,
   DeliveryInstruction,
   DeliveryOverrideArgs,
   packOverrides,
   parseEVMExecutionInfoV1,
-  parseWormholeRelayerPayloadType,
-  parseWormholeRelayerSend,
+  parseDeltaswapRelayerPayloadType,
+  parseDeltaswapRelayerSend,
   VaaKey,
   KeyType,
   parseVaaKey,
@@ -39,7 +39,7 @@ export type DeliveryArguments = {
 export async function deliver(
   deliveryVaa: SignedVaa,
   signer: ethers.Signer,
-  wormholeRPCs: string | string[],
+  deltaswapRPCs: string | string[],
   environment: Network = "MAINNET",
   overrides?: DeliveryOverrideArgs
 ): Promise<ContractReceipt> {
@@ -54,24 +54,24 @@ export async function deliver(
     }
     return parseVaaKey(key.key);
   });
-  const additionalVaas = await fetchAdditionalVaas(wormholeRPCs, vaaKeys);
+  const additionalVaas = await fetchAdditionalVaas(deltaswapRPCs, vaaKeys);
 
-  const wormholeRelayerAddress = getWormholeRelayerAddress(
+  const deltaswapRelayerAddress = getDeltaswapRelayerAddress(
     toChainName(deliveryInstruction.targetChainId as ChainId),
     environment
   );
-  const wormholeRelayer = IWormholeRelayer__factory.connect(
-    wormholeRelayerAddress,
+  const deltaswapRelayer = IDeltaswapRelayer__factory.connect(
+    deltaswapRelayerAddress,
     signer
   );
-  const gasEstimate = await wormholeRelayer.estimateGas.deliver(
+  const gasEstimate = await deltaswapRelayer.estimateGas.deliver(
     additionalVaas,
     deliveryVaa,
     signer.getAddress(),
     overrides ? packOverrides(overrides) : new Uint8Array(),
     { value: budget }
   );
-  const tx = await wormholeRelayer.deliver(
+  const tx = await deltaswapRelayer.deliver(
     additionalVaas,
     deliveryVaa,
     signer.getAddress(),
@@ -110,13 +110,13 @@ export function extractDeliveryArguments(
 ): DeliveryArguments {
   const parsedVaa = parseVaa(vaa);
 
-  const payloadType = parseWormholeRelayerPayloadType(parsedVaa.payload);
+  const payloadType = parseDeltaswapRelayerPayloadType(parsedVaa.payload);
   if (payloadType !== RelayerPayloadId.Delivery) {
     throw new Error(
       `Expected delivery payload type, got ${RelayerPayloadId[payloadType]}`
     );
   }
-  const deliveryInstruction = parseWormholeRelayerSend(parsedVaa.payload);
+  const deliveryInstruction = parseDeltaswapRelayerSend(parsedVaa.payload);
   const budget = deliveryBudget(deliveryInstruction, overrides);
   return {
     budget,
@@ -126,10 +126,10 @@ export function extractDeliveryArguments(
 }
 
 export async function fetchAdditionalVaas(
-  wormholeRPCs: string | string[],
+  deltaswapRPCs: string | string[],
   additionalVaaKeys: VaaKey[]
 ): Promise<SignedVaa[]> {
-  const rpcs = typeof wormholeRPCs === "string" ? [wormholeRPCs] : wormholeRPCs;
+  const rpcs = typeof deltaswapRPCs === "string" ? [deltaswapRPCs] : deltaswapRPCs;
   const vaas = await Promise.all(
     additionalVaaKeys.map(async (vaaKey) =>
       getSignedVAAWithRetry(

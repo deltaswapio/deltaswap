@@ -117,7 +117,7 @@ export enum VaaKeyType {
   VAAHASH = 1,
 }
 
-export function parseWormholeRelayerPayloadType(
+export function parseDeltaswapRelayerPayloadType(
   stringPayload: string | Buffer | Uint8Array
 ): RelayerPayloadId {
   const payload =
@@ -143,7 +143,7 @@ export function createVaaKey(
   };
 }
 
-export function parseWormholeRelayerSend(bytes: Buffer): DeliveryInstruction {
+export function parseDeltaswapRelayerSend(bytes: Buffer): DeliveryInstruction {
   let idx = 0;
   const payloadId = bytes.readUInt8(idx);
   if (payloadId !== RelayerPayloadId.Delivery) {
@@ -342,7 +342,7 @@ export function packEVMExecutionInfoV1(info: EVMExecutionInfoV1): string {
   );
 }
 
-export function parseWormholeRelayerResend(
+export function parseDeltaswapRelayerResend(
   bytes: Buffer
 ): RedeliveryInstruction {
   let idx = 0;

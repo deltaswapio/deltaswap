@@ -3,8 +3,8 @@ const coreWasms = {
   node: async () => await import("./core-node/bridge"),
 };
 const migrationWasms = {
-  bundler: async () => await import("./migration/wormhole_migration"),
-  node: async () => await import("./migration-node/wormhole_migration"),
+  bundler: async () => await import("./migration/deltaswap_migration"),
+  node: async () => await import("./migration-node/deltaswap_migration"),
 };
 const nftWasms = {
   bundler: async () => await import("./nft/nft_bridge"),

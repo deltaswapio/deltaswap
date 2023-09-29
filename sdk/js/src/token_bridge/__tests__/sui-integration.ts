@@ -45,7 +45,7 @@ import {
   updateWrappedOnSui,
 } from "../..";
 import { MockTokenBridge } from "../../mock/tokenBridge";
-import { MockPhylaxs } from "../../mock/wormhole";
+import { MockPhylaxs } from "../../mock/deltaswap";
 import {
   executeTransactionBlock,
   getEmitterAddressAndSequenceFromResponseSui,

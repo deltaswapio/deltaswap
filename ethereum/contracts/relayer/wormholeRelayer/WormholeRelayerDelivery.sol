@@ -13,15 +13,15 @@ import {
     InvalidOverrideGasLimit,
     InvalidOverrideReceiverValue,
     InvalidOverrideRefundPerGasUnused,
-    RequesterNotWormholeRelayer,
+    RequesterNotDeltaswapRelayer,
     DeliveryProviderCannotReceivePayment,
     MessageKey,
     VAA_KEY_TYPE,
     VaaKey,
-    IWormholeRelayerDelivery,
-    IWormholeRelayerSend,
+    IDeltaswapRelayerDelivery,
+    IDeltaswapRelayerSend,
     RETURNDATA_TRUNCATION_THRESHOLD
-} from "../../interfaces/relayer/IWormholeRelayerTyped.sol";
+} from "../../interfaces/relayer/IDeltaswapRelayerTyped.sol";
 import {IWormholeReceiver} from "../../interfaces/relayer/IWormholeReceiver.sol";
 import {IDeliveryProvider} from "../../interfaces/relayer/IDeliveryProviderTyped.sol";
 
@@ -32,19 +32,19 @@ import {
     EvmDeliveryInstruction
 } from "../../relayer/libraries/RelayerInternalStructs.sol";
 import {BytesParsing} from "../../relayer/libraries/BytesParsing.sol";
-import {WormholeRelayerSerde} from "./WormholeRelayerSerde.sol";
+import {DeltaswapRelayerSerde} from "./DeltaswapRelayerSerde.sol";
 import {
     DeliverySuccessState,
     DeliveryFailureState,
     getDeliverySuccessState,
     getDeliveryFailureState
-} from "./WormholeRelayerStorage.sol";
-import {WormholeRelayerBase} from "./WormholeRelayerBase.sol";
+} from "./DeltaswapRelayerStorage.sol";
+import {DeltaswapRelayerBase} from "./DeltaswapRelayerBase.sol";
 import "../../interfaces/relayer/TypedUnits.sol";
 import "../../relayer/libraries/ExecutionParameters.sol";
 
-abstract contract WormholeRelayerDelivery is WormholeRelayerBase, IWormholeRelayerDelivery {
-    using WormholeRelayerSerde for *; 
+abstract contract DeltaswapRelayerDelivery is DeltaswapRelayerBase, IDeltaswapRelayerDelivery {
+    using DeltaswapRelayerSerde for *;
     using BytesParsing for bytes;
     using WeiLib for Wei;
     using GasLib for Gas;
@@ -67,9 +67,9 @@ abstract contract WormholeRelayerDelivery is WormholeRelayerBase, IWormholeRelay
         }
 
         // Revert if the emitter of the VAA is not a Wormhole Relayer contract 
-        bytes32 registeredWormholeRelayer = getRegisteredWormholeRelayerContract(vm.emitterChainId);
-        if (vm.emitterAddress != registeredWormholeRelayer) {
-            revert InvalidEmitter(vm.emitterAddress, registeredWormholeRelayer, vm.emitterChainId);
+        bytes32 registeredDeltaswapRelayer = getRegisteredDeltaswapRelayerContract(vm.emitterChainId);
+        if (vm.emitterAddress != registeredDeltaswapRelayer) {
+            revert InvalidEmitter(vm.emitterAddress, registeredDeltaswapRelayer, vm.emitterChainId);
         }
     
         DeliveryInstruction memory instruction = vm.payload.decodeDeliveryInstruction();
@@ -479,7 +479,7 @@ abstract contract WormholeRelayerDelivery is WormholeRelayerBase, IWormholeRelay
         }
         
         // Request a 'send' with 'paymentForExtraReceiverValue' equal to the refund minus the 'empty delivery price'
-        try IWormholeRelayerSend(address(this)).send{value: refundAmount.unwrap()}(
+        try IDeltaswapRelayerSend(address(this)).send{value: refundAmount.unwrap()}(
             refundChain,
             bytes32(0),
             bytes(""),
@@ -510,7 +510,7 @@ abstract contract WormholeRelayerDelivery is WormholeRelayerBase, IWormholeRelay
         for (uint256 i = 0; i < len;) {
             if (messageKeys[i].keyType == VAA_KEY_TYPE) {
                 IWormhole.VM memory parsedVaa = getWormhole().parseVM(signedMessages[i]);
-                (VaaKey memory vaaKey,) = WormholeRelayerSerde.decodeVaaKey(messageKeys[i].encodedKey, 0);
+                (VaaKey memory vaaKey,) = DeltaswapRelayerSerde.decodeVaaKey(messageKeys[i].encodedKey, 0);
                 
                 if (
                     vaaKey.chainId != parsedVaa.emitterChainId

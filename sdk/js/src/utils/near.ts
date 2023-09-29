@@ -33,7 +33,7 @@ export async function hashAccount(
   tokenBridge: string,
   account: string
 ): Promise<{ isRegistered: boolean; accountHash: string }> {
-  // Near can have account names up to 64 bytes, but wormhole only supports 32
+  // Near can have account names up to 64 bytes, but deltaswap only supports 32
   // As a result, we have to hash our account names with sha256
   const [isRegistered, accountHash] = await callFunctionNear(
     provider,

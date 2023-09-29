@@ -46,7 +46,7 @@ contract DeliveryProviderStorage {
         mapping(uint16 => TargetNative) maximumBudget;
         // Dictionary of wormhole chain id -> assetConversion
         mapping(uint16 => AssetConversion) assetConversion;
-        // Reward address for the relayer. The WormholeRelayer contract transfers the reward for relaying messages here.
+        // Reward address for the relayer. The DeltaswapRelayer contract transfers the reward for relaying messages here.
         address payable rewardAddress;
     }
 }

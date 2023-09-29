@@ -5,9 +5,9 @@ pragma solidity ^0.8.0;
 
 import "../../libraries/external/BytesLib.sol";
 import "../../interfaces/IWormhole.sol";
-import "../../interfaces/relayer/IWormholeRelayerTyped.sol";
+import "../../interfaces/relayer/IDeltaswapRelayerTyped.sol";
 import "../../interfaces/relayer/IWormholeReceiver.sol";
-import "../../relayer/wormholeRelayer/WormholeRelayer.sol";
+import "../../relayer/wormholeRelayer/DeltaswapRelayer.sol";
 
 import {toWormholeFormat} from "../../relayer/libraries/Utils.sol";
 
@@ -32,7 +32,7 @@ contract MockRelayerIntegration is IWormholeReceiver {
     IWormhole immutable wormhole;
 
     // trusted relayer contract on this chain
-    WormholeRelayer immutable relayer;
+    DeltaswapRelayer immutable relayer;
 
     // deployer of this contract
     address immutable owner;
@@ -61,7 +61,7 @@ contract MockRelayerIntegration is IWormholeReceiver {
 
     constructor(address _wormholeCore, address _coreRelayer) {
         wormhole = IWormhole(_wormholeCore);
-        relayer = WormholeRelayer(_coreRelayer);
+        relayer = DeltaswapRelayer(_coreRelayer);
         owner = msg.sender;
     }
 

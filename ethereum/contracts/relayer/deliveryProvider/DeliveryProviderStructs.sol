@@ -121,11 +121,11 @@ abstract contract DeliveryProviderStructs {
     }
 
     struct CoreConfig {
-        bool updateWormholeRelayer;
+        bool updateDeltaswapRelayer;
         bool updateRewardAddress;
         bool updateSupportedKeyTypes;
         /**
-         * Address of the WormholeRelayer contract
+         * Address of the DeltaswapRelayer contract
          */
         address payable coreRelayer;
         /**

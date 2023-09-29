@@ -10,8 +10,8 @@ export async function getSignedVAAWithRetry(
   retryTimeout = 1000,
   retryAttempts?: number
 ) {
-  let currentWormholeRpcHost = -1;
-  const getNextRpcHost = () => ++currentWormholeRpcHost % hosts.length;
+  let currentDeltaswapRpcHost = -1;
+  const getNextRpcHost = () => ++currentDeltaswapRpcHost % hosts.length;
   let result;
   let attempts = 0;
   while (!result) {

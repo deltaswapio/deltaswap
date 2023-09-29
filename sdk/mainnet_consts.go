@@ -8,16 +8,16 @@ import (
 )
 
 // PublicRPCEndpoints is a list of known public RPC endpoints for mainnet, operated by
-// Wormhole phylax nodes.
+// Deltaswap phylax nodes.
 //
 // This list is duplicated a couple times across the codebase - make to to update all copies!
 var PublicRPCEndpoints = []string{
-	"https://wormhole-v2-mainnet-api.certus.one",
-	"https://wormhole.inotel.ro",
-	"https://wormhole-v2-mainnet-api.mcf.rocks",
-	"https://wormhole-v2-mainnet-api.chainlayer.network",
-	"https://wormhole-v2-mainnet-api.staking.fund",
-	"https://wormhole-v2-mainnet.01node.com",
+	"https://deltaswap-v2-mainnet-api.certus.one",
+	"https://deltaswap.inotel.ro",
+	"https://deltaswap-v2-mainnet-api.mcf.rocks",
+	"https://deltaswap-v2-mainnet-api.chainlayer.network",
+	"https://deltaswap-v2-mainnet-api.staking.fund",
+	"https://deltaswap-v2-mainnet.01node.com",
 }
 
 type (
@@ -55,7 +55,7 @@ type EmitterInfo struct {
 // KnownEmitters is a list of well-known mainnet emitters we want to take into account
 // when iterating over all emitters - like for finding and repairing missing messages.
 //
-// Wormhole is not permissioned - anyone can use it. Adding contracts to this list is
+// Deltaswap is not permissioned - anyone can use it. Adding contracts to this list is
 // entirely optional and at the core team's discretion.
 var KnownEmitters = buildKnownEmitters(knownTokenbridgeEmitters, knownNFTBridgeEmitters)
 
