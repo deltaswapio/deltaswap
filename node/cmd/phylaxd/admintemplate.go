@@ -655,11 +655,11 @@ func runDeltachainMigrateContractTemplate(cmd *cobra.Command, args []string) {
 }
 
 func runDeltachainAddWasmInstantiateAllowlistTemplate(cmd *cobra.Command, args []string) {
-	runDeltachainWasmInstantiateAllowlistTemplate(nodev1.DeltachainWasmInstantiateAllowlistAction_WORMCHAIN_WASM_INSTANTIATE_ALLOWLIST_ACTION_ADD)
+	runDeltachainWasmInstantiateAllowlistTemplate(nodev1.DeltachainWasmInstantiateAllowlistAction_DELTACHAIN_WASM_INSTANTIATE_ALLOWLIST_ACTION_ADD)
 }
 
 func runDeltachainDeleteWasmInstantiateAllowlistTemplate(cmd *cobra.Command, args []string) {
-	runDeltachainWasmInstantiateAllowlistTemplate(nodev1.DeltachainWasmInstantiateAllowlistAction_WORMCHAIN_WASM_INSTANTIATE_ALLOWLIST_ACTION_DELETE)
+	runDeltachainWasmInstantiateAllowlistTemplate(nodev1.DeltachainWasmInstantiateAllowlistAction_DELTACHAIN_WASM_INSTANTIATE_ALLOWLIST_ACTION_DELETE)
 }
 
 func runDeltachainWasmInstantiateAllowlistTemplate(action nodev1.DeltachainWasmInstantiateAllowlistAction) {

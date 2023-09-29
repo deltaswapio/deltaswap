@@ -329,9 +329,9 @@ func deltachainWasmInstantiateAllowlist(
 	}
 
 	var action vaa.GovernanceAction
-	if req.Action == nodev1.DeltachainWasmInstantiateAllowlistAction_WORMCHAIN_WASM_INSTANTIATE_ALLOWLIST_ACTION_ADD {
+	if req.Action == nodev1.DeltachainWasmInstantiateAllowlistAction_DELTACHAIN_WASM_INSTANTIATE_ALLOWLIST_ACTION_ADD {
 		action = vaa.ActionAddWasmInstantiateAllowlist
-	} else if req.Action == nodev1.DeltachainWasmInstantiateAllowlistAction_WORMCHAIN_WASM_INSTANTIATE_ALLOWLIST_ACTION_DELETE {
+	} else if req.Action == nodev1.DeltachainWasmInstantiateAllowlistAction_DELTACHAIN_WASM_INSTANTIATE_ALLOWLIST_ACTION_DELETE {
 		action = vaa.ActionDeleteWasmInstantiateAllowlist
 	} else {
 		return nil, fmt.Errorf("unrecognized wasm instantiate allowlist action")

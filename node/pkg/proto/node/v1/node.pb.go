@@ -73,22 +73,22 @@ func (ModificationKind) EnumDescriptor() ([]byte, []int) {
 type DeltachainWasmInstantiateAllowlistAction int32
 
 const (
-	DeltachainWasmInstantiateAllowlistAction_WORMCHAIN_WASM_INSTANTIATE_ALLOWLIST_ACTION_UNSPECIFIED DeltachainWasmInstantiateAllowlistAction = 0
-	DeltachainWasmInstantiateAllowlistAction_WORMCHAIN_WASM_INSTANTIATE_ALLOWLIST_ACTION_ADD         DeltachainWasmInstantiateAllowlistAction = 1
-	DeltachainWasmInstantiateAllowlistAction_WORMCHAIN_WASM_INSTANTIATE_ALLOWLIST_ACTION_DELETE      DeltachainWasmInstantiateAllowlistAction = 2
+	DeltachainWasmInstantiateAllowlistAction_DELTACHAIN_WASM_INSTANTIATE_ALLOWLIST_ACTION_UNSPECIFIED DeltachainWasmInstantiateAllowlistAction = 0
+	DeltachainWasmInstantiateAllowlistAction_DELTACHAIN_WASM_INSTANTIATE_ALLOWLIST_ACTION_ADD         DeltachainWasmInstantiateAllowlistAction = 1
+	DeltachainWasmInstantiateAllowlistAction_DELTACHAIN_WASM_INSTANTIATE_ALLOWLIST_ACTION_DELETE      DeltachainWasmInstantiateAllowlistAction = 2
 )
 
 // Enum value maps for DeltachainWasmInstantiateAllowlistAction.
 var (
 	DeltachainWasmInstantiateAllowlistAction_name = map[int32]string{
-		0: "WORMCHAIN_WASM_INSTANTIATE_ALLOWLIST_ACTION_UNSPECIFIED",
-		1: "WORMCHAIN_WASM_INSTANTIATE_ALLOWLIST_ACTION_ADD",
-		2: "WORMCHAIN_WASM_INSTANTIATE_ALLOWLIST_ACTION_DELETE",
+		0: "DELTACHAIN_WASM_INSTANTIATE_ALLOWLIST_ACTION_UNSPECIFIED",
+		1: "DELTACHAIN_WASM_INSTANTIATE_ALLOWLIST_ACTION_ADD",
+		2: "DELTACHAIN_WASM_INSTANTIATE_ALLOWLIST_ACTION_DELETE",
 	}
 	DeltachainWasmInstantiateAllowlistAction_value = map[string]int32{
-		"WORMCHAIN_WASM_INSTANTIATE_ALLOWLIST_ACTION_UNSPECIFIED": 0,
-		"WORMCHAIN_WASM_INSTANTIATE_ALLOWLIST_ACTION_ADD":         1,
-		"WORMCHAIN_WASM_INSTANTIATE_ALLOWLIST_ACTION_DELETE":      2,
+		"DELTACHAIN_WASM_INSTANTIATE_ALLOWLIST_ACTION_UNSPECIFIED": 0,
+		"DELTACHAIN_WASM_INSTANTIATE_ALLOWLIST_ACTION_ADD":         1,
+		"DELTACHAIN_WASM_INSTANTIATE_ALLOWLIST_ACTION_DELETE":      2,
 	}
 )
 
@@ -1264,7 +1264,7 @@ func (x *DeltachainWasmInstantiateAllowlist) GetAction() DeltachainWasmInstantia
 	if x != nil {
 		return x.Action
 	}
-	return DeltachainWasmInstantiateAllowlistAction_WORMCHAIN_WASM_INSTANTIATE_ALLOWLIST_ACTION_UNSPECIFIED
+	return DeltachainWasmInstantiateAllowlistAction_DELTACHAIN_WASM_INSTANTIATE_ALLOWLIST_ACTION_UNSPECIFIED
 }
 
 type GatewayIbcComposabilityMwSetContract struct {
