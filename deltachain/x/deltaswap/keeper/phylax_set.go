@@ -161,7 +161,7 @@ func (k Keeper) GetPhylaxSet(ctx sdk.Context, id uint32) (val types.PhylaxSet, f
 //
 // Note that this function is linear in the size of the consensus guardian set,
 // and it's eecuted on each endblocker when assigning voting power to validators.
-func (k Keeper) IsConsensusGuardian(ctx sdk.Context, addr sdk.ValAddress) (bool, error) {
+func (k Keeper) IsConsensusPhylax(ctx sdk.Context, addr sdk.ValAddress) (bool, error) {
 	// If there are no guardian sets, return true
 	// This is useful for testing, but the code path is never encountered when
 	// the chain is bootstrapped with a non-empty guardian set at gensis.
