@@ -4,13 +4,13 @@ import { BigNumber, ethers } from "ethers";
 import { solidityKeccak256 } from "ethers/lib/utils";
 
 export interface Signature {
-  guardianSetIndex: number;
+  phylaxSetIndex: number;
   signature: string;
 }
 
 export interface VAA<T> {
   version: number;
-  guardianSetIndex: number;
+  phylaxSetIndex: number;
   signatures: Signature[];
   timestamp: number;
   nonce: number;
@@ -90,7 +90,7 @@ export type RecoverChainId =
 
 export function parse(buffer: Buffer): VAA<Payload | Other> {
   const vaa = parseEnvelope(buffer);
-  const parser = guardianSetUpgradeParser
+  const parser = phylaxSetUpgradeParser
     .or(coreContractUpgradeParser)
     .or(portalContractUpgradeParser("TokenBridge"))
     .or(portalContractUpgradeParser("NFTBridge"))
@@ -142,7 +142,7 @@ export function parseEnvelope(buffer: Buffer): VAA<Buffer> {
 // Parse a signature
 const signatureParser = new Parser()
   .endianess("big")
-  .uint8("guardianSetIndex")
+  .uint8("phylaxSetIndex")
   .array("signature", {
     type: "uint8",
     lengthInBytes: 65,
@@ -150,7 +150,7 @@ const signatureParser = new Parser()
   });
 
 function serialiseSignature(sig: Signature): string {
-  const body = [encode("uint8", sig.guardianSetIndex), sig.signature];
+  const body = [encode("uint8", sig.phylaxSetIndex), sig.signature];
   return body.join("");
 }
 
@@ -158,7 +158,7 @@ function serialiseSignature(sig: Signature): string {
 const vaaParser = new Parser()
   .endianess("big")
   .uint8("version")
-  .uint32("guardianSetIndex")
+  .uint32("phylaxSetIndex")
   .uint8("signatureCount")
   .array("signatures", {
     type: signatureParser,
@@ -186,7 +186,7 @@ const vaaParser = new Parser()
 export function serialiseVAA(vaa: VAA<Payload>) {
   const body = [
     encode("uint8", vaa.version),
-    encode("uint32", vaa.guardianSetIndex),
+    encode("uint32", vaa.phylaxSetIndex),
     encode("uint8", vaa.signatures.length),
     ...vaa.signatures.map((sig) => serialiseSignature(sig)),
     vaaBody(vaa),
@@ -317,7 +317,7 @@ export function sign(signers: string[], vaa: VAA<Payload>): Signature[] {
       encode("uint8", signature.recoveryParam),
     ].join("");
     return {
-      guardianSetIndex: i,
+      phylaxSetIndex: i,
       signature: packed,
     };
   });
@@ -343,8 +343,8 @@ export interface PhylaxSetUpgrade {
   newPhylaxSet: string[];
 }
 
-// Parse a guardian set upgrade payload
-const guardianSetUpgradeParser: P<PhylaxSetUpgrade> = new P(
+// Parse a phylax set upgrade payload
+const phylaxSetUpgradeParser: P<PhylaxSetUpgrade> = new P(
   new Parser()
     .endianess("big")
     .string("module", {

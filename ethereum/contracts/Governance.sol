@@ -12,7 +12,7 @@ import "@openzeppelin/contracts/proxy/ERC1967/ERC1967Upgrade.sol";
 
 /**
  * @dev `Governance` defines a means to enacting changes to the core bridge contract,
- * guardianSets, message fees, and transfer fees
+ * phylaxSets, message fees, and transfer fees
  */
 abstract contract Governance is GovernanceStructs, Messages, Setters, ERC1967Upgrade {
     event ContractUpgraded(address indexed oldContract, address indexed newContract);
@@ -74,7 +74,7 @@ abstract contract Governance is GovernanceStructs, Messages, Setters, ERC1967Upg
     }
 
     /**
-     * @dev Deploys a new `guardianSet` via Governance VAA/VM
+     * @dev Deploys a new `phylaxSet` via Governance VAA/VM
      */
     function submitNewPhylaxSet(bytes memory _vm) public {
         Structs.VM memory vm = parseVM(_vm);
@@ -93,7 +93,7 @@ abstract contract Governance is GovernanceStructs, Messages, Setters, ERC1967Upg
 
         // Verify the Phylax Set keys are not empty, this guards
         // against the accidential upgrade to an empty PhylaxSet
-        require(upgrade.newPhylaxSet.keys.length > 0, "new guardian set is empty");
+        require(upgrade.newPhylaxSet.keys.length > 0, "new phylax set is empty");
 
         // Verify that the index is incrementing via a predictable +1 pattern
         require(upgrade.newPhylaxSetIndex == getCurrentPhylaxSetIndex() + 1, "index must increase in steps of 1");
@@ -101,13 +101,13 @@ abstract contract Governance is GovernanceStructs, Messages, Setters, ERC1967Upg
         // Record the governance action as consumed to prevent reentry
         setGovernanceActionConsumed(vm.hash);
 
-        // Trigger a time-based expiry of current guardianSet
+        // Trigger a time-based expiry of current phylaxSet
         expirePhylaxSet(getCurrentPhylaxSetIndex());
 
-        // Add the new guardianSet to guardianSets
+        // Add the new phylaxSet to phylaxSets
         storePhylaxSet(upgrade.newPhylaxSet, upgrade.newPhylaxSetIndex);
 
-        // Makes the new guardianSet effective
+        // Makes the new phylaxSet effective
         updatePhylaxSetIndex(upgrade.newPhylaxSetIndex);
     }
 
@@ -194,9 +194,9 @@ abstract contract Governance is GovernanceStructs, Messages, Setters, ERC1967Upg
             return (false, reason);
         }
 
-        // only current guardianset can sign governance packets
-        if (vm.guardianSetIndex != getCurrentPhylaxSetIndex()) {
-            return (false, "not signed by current guardian set");
+        // only current phylaxset can sign governance packets
+        if (vm.phylaxSetIndex != getCurrentPhylaxSetIndex()) {
+            return (false, "not signed by current phylax set");
         }
 
         // Verify the VAA is from the governance chain (Solana)

@@ -38,7 +38,7 @@ use crate::{
         set_fees,
         transfer_fees,
         upgrade_contract,
-        upgrade_guardian_set,
+        upgrade_phylax_set,
         verify_signatures,
     },
     types::{
@@ -121,7 +121,7 @@ pub fn post_vaa_ix(
     let vaa = VAA::deserialize(vaa.as_slice()).unwrap();
     let vaa = PostVAAData {
         version: vaa.version,
-        guardian_set_index: vaa.guardian_set_index,
+        phylax_set_index: vaa.phylax_set_index,
         timestamp: vaa.timestamp,
         nonce: vaa.nonce,
         emitter_chain: vaa.emitter_chain,
@@ -140,7 +140,7 @@ pub fn post_vaa_ix(
 }
 
 #[wasm_bindgen]
-pub fn update_guardian_set_ix(program_id: String, payer: String, vaa: Vec<u8>) -> JsValue {
+pub fn update_phylax_set_ix(program_id: String, payer: String, vaa: Vec<u8>) -> JsValue {
     let program_id = Pubkey::from_str(program_id.as_str()).unwrap();
     let vaa = VAA::deserialize(vaa.as_slice()).unwrap();
     let payload =
@@ -151,13 +151,13 @@ pub fn update_guardian_set_ix(program_id: String, payer: String, vaa: Vec<u8>) -
         },
         &program_id,
     );
-    let ix = upgrade_guardian_set(
+    let ix = upgrade_phylax_set(
         program_id,
         Pubkey::from_str(payer.as_str()).unwrap(),
         message_key,
         Pubkey::new(&vaa.emitter_address),
-        payload.new_guardian_set_index - 1,
-        payload.new_guardian_set_index,
+        payload.new_phylax_set_index - 1,
+        payload.new_phylax_set_index,
         vaa.sequence,
     );
     return JsValue::from_serde(&ix).unwrap();
@@ -238,8 +238,8 @@ pub fn upgrade_contract_ix(
 pub fn verify_signatures_ix(
     program_id: String,
     payer: String,
-    guardian_set_index: u32,
-    guardian_set: JsValue,
+    phylax_set_index: u32,
+    phylax_set: JsValue,
     signature_set: String,
     vaa_data: Vec<u8>,
 ) -> JsValue {
@@ -247,18 +247,18 @@ pub fn verify_signatures_ix(
     let payer = Pubkey::from_str(payer.as_str()).unwrap();
     let signature_set = Pubkey::from_str(signature_set.as_str()).unwrap();
 
-    let guardian_set: PhylaxSetData = guardian_set.into_serde().unwrap();
+    let phylax_set: PhylaxSetData = phylax_set.into_serde().unwrap();
     let vaa = VAA::deserialize(vaa_data.as_slice()).unwrap();
 
-    // Map signatures to guardian set
+    // Map signatures to phylax set
     let mut signature_items: Vec<SignatureItem> = Vec::new();
     for s in vaa.signatures.iter() {
         let mut item = SignatureItem {
             signature: s.signature.clone(),
             key: [0; 20],
-            index: s.guardian_index as u8,
+            index: s.phylax_index as u8,
         };
-        item.key = guardian_set.keys[s.guardian_index as usize];
+        item.key = phylax_set.keys[s.phylax_index as usize];
 
         signature_items.push(item);
     }
@@ -323,7 +323,7 @@ pub fn verify_signatures_ix(
         let verify_ix = match verify_signatures(
             program_id,
             payer,
-            guardian_set_index,
+            phylax_set_index,
             signature_set,
             payload,
         ) {
@@ -338,18 +338,18 @@ pub fn verify_signatures_ix(
 }
 
 #[wasm_bindgen]
-pub fn guardian_set_address(bridge: String, index: u32) -> Vec<u8> {
+pub fn phylax_set_address(bridge: String, index: u32) -> Vec<u8> {
     let program_id = Pubkey::from_str(bridge.as_str()).unwrap();
-    let guardian_key = PhylaxSet::<'_, { AccountState::Initialized }>::key(
+    let phylax_key = PhylaxSet::<'_, { AccountState::Initialized }>::key(
         &PhylaxSetDerivationData { index: index },
         &program_id,
     );
 
-    guardian_key.to_bytes().to_vec()
+    phylax_key.to_bytes().to_vec()
 }
 
 #[wasm_bindgen]
-pub fn parse_guardian_set(data: Vec<u8>) -> JsValue {
+pub fn parse_phylax_set(data: Vec<u8>) -> JsValue {
     JsValue::from_serde(&PhylaxSetData::try_from_slice(data.as_slice()).unwrap()).unwrap()
 }
 

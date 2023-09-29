@@ -2,7 +2,7 @@
 ///
 /// Contract upgrades are authorised by governance, which means that performing
 /// an upgrade requires a governance VAA signed by a supermajority of the
-/// wormhole guardians.
+/// wormhole phylaxs.
 ///
 /// Upgrades are performed in a commit-reveal scheme, where submitting the VAA
 /// authorises a particular contract hash. Then in a subsequent transaction, the

@@ -195,7 +195,7 @@ func (acct *Accountant) processPendingTransfer(xfer *WasmObservation) {
 		acct.publishTransferAlreadyLocked(pe)
 		transfersApproved.Inc()
 	} else {
-		// TODO: We could issue a reobservation request here since it looks like other guardians have seen this transfer but we haven't.
+		// TODO: We could issue a reobservation request here since it looks like other phylaxs have seen this transfer but we haven't.
 		acct.logger.Info("acctwatch: unknown transfer has been approved, ignoring it", zap.String("msgId", msgId))
 	}
 }

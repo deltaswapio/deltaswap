@@ -14,8 +14,8 @@ pub struct InstantiateMsg {
     pub gov_address: Binary,
 
     /// Phylax set to initialise the contract with.
-    pub initial_guardian_set: PhylaxSetInfo,
-    pub guardian_set_expirity: u64,
+    pub initial_phylax_set: PhylaxSetInfo,
+    pub phylax_set_expirity: u64,
 
     pub chain_id: u16,
     pub fee_denom: String,
@@ -44,7 +44,7 @@ pub enum QueryMsg {
 #[derive(Serialize, Deserialize, Clone, Debug, PartialEq, Eq, JsonSchema)]
 #[serde(rename_all = "snake_case")]
 pub struct PhylaxSetInfoResponse {
-    pub guardian_set_index: u32,         // Current guardian set index
+    pub phylax_set_index: u32,         // Current phylax set index
     pub addresses: Vec<PhylaxAddress>, // List of querdian addresses
 }
 

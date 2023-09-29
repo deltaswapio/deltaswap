@@ -8,7 +8,7 @@ import (
 )
 
 // PublicRPCEndpoints is a list of known public RPC endpoints for mainnet, operated by
-// Wormhole guardian nodes.
+// Wormhole phylax nodes.
 //
 // This list is duplicated a couple times across the codebase - make to to update all copies!
 var PublicRPCEndpoints = []string{

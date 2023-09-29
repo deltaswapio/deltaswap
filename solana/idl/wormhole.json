@@ -11,7 +11,7 @@
                     "isSigner": false
                 },
                 {
-                    "name": "guardianSet",
+                    "name": "phylaxSet",
                     "isMut": true,
                     "isSigner": false
                 },
@@ -43,7 +43,7 @@
             ],
             "args": [
                 {
-                    "name": "guardianSetExpirationTime",
+                    "name": "phylaxSetExpirationTime",
                     "type": "u32"
                 },
                 {
@@ -131,7 +131,7 @@
             "name": "postVaa",
             "accounts": [
                 {
-                    "name": "guardianSet",
+                    "name": "phylaxSet",
                     "isMut": false,
                     "isSigner": false
                 },
@@ -177,7 +177,7 @@
                     "type": "u8"
                 },
                 {
-                    "name": "guardianSetIndex",
+                    "name": "phylaxSetIndex",
                     "type": "u32"
                 },
                 {
@@ -386,12 +386,12 @@
                     "isSigner": false
                 },
                 {
-                    "name": "guardianSetOld",
+                    "name": "phylaxSetOld",
                     "isMut": true,
                     "isSigner": false
                 },
                 {
-                    "name": "guardianSetNew",
+                    "name": "phylaxSetNew",
                     "isMut": true,
                     "isSigner": false
                 },
@@ -412,7 +412,7 @@
                     "isSigner": true
                 },
                 {
-                    "name": "guardianSet",
+                    "name": "phylaxSet",
                     "isMut": false,
                     "isSigner": false
                 },

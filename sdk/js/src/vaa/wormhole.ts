@@ -9,8 +9,8 @@ export interface PhylaxSignature {
 
 export interface ParsedVaa {
   version: number;
-  guardianSetIndex: number;
-  guardianSignatures: PhylaxSignature[];
+  phylaxSetIndex: number;
+  phylaxSignatures: PhylaxSignature[];
   timestamp: number;
   nonce: number;
   emitterChain: number;
@@ -29,10 +29,10 @@ export function parseVaa(vaa: SignedVaa): ParsedVaa {
   const numSigners = signedVaa[5];
   const sigLength = 66;
 
-  const guardianSignatures: PhylaxSignature[] = [];
+  const phylaxSignatures: PhylaxSignature[] = [];
   for (let i = 0; i < numSigners; ++i) {
     const start = sigStart + i * sigLength;
-    guardianSignatures.push({
+    phylaxSignatures.push({
       index: signedVaa[start],
       signature: signedVaa.subarray(start + 1, start + 66),
     });
@@ -42,8 +42,8 @@ export function parseVaa(vaa: SignedVaa): ParsedVaa {
 
   return {
     version: signedVaa[0],
-    guardianSetIndex: signedVaa.readUInt32BE(1),
-    guardianSignatures,
+    phylaxSetIndex: signedVaa.readUInt32BE(1),
+    phylaxSignatures,
     timestamp: body.readUInt32BE(0),
     nonce: body.readUInt32BE(4),
     emitterChain: body.readUInt16BE(8),

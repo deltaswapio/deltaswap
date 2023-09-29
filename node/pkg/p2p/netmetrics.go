@@ -18,18 +18,18 @@ var (
 	wormholeNetworkNodeHeight = promauto.NewGaugeVec(
 		prometheus.GaugeOpts{
 			Name: "wormhole_network_node_height",
-			Help: "Network height of the given guardian node per network",
-		}, []string{"guardian_addr", "node_id", "node_name", "network"})
+			Help: "Network height of the given phylax node per network",
+		}, []string{"phylax_addr", "node_id", "node_name", "network"})
 	wormholeNetworkNodeErrors = promauto.NewGaugeVec(
 		prometheus.GaugeOpts{
 			Name: "wormhole_network_node_errors_count",
-			Help: "Number of errors the given guardian node encountered per network",
-		}, []string{"guardian_addr", "node_id", "node_name", "network"})
+			Help: "Number of errors the given phylax node encountered per network",
+		}, []string{"phylax_addr", "node_id", "node_name", "network"})
 	wormholeNetworkVersion = promauto.NewGaugeVec(
 		prometheus.GaugeOpts{
 			Name: "wormhole_network_node_version",
-			Help: "Network version of the given guardian node per network",
-		}, []string{"guardian_addr", "node_id", "node_name", "network", "version"})
+			Help: "Network version of the given phylax node per network",
+		}, []string{"phylax_addr", "node_id", "node_name", "network", "version"})
 )
 
 func collectNodeMetrics(addr common.Address, peerId peer.ID, hb *gossipv1.Heartbeat) {

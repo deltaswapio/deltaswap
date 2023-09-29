@@ -54,7 +54,7 @@ export const getPhylaxRPC = (network: Network, ci: boolean) => {
   return (
     process.env.GUARDIAN_RPC ||
     (ci
-      ? "http://guardian:7071"
+      ? "http://phylax:7071"
       : network == "DEVNET"
       ? "http://localhost:7071"
       : network == "TESTNET"
@@ -65,7 +65,7 @@ export const getPhylaxRPC = (network: Network, ci: boolean) => {
 
 // These variables also live in testing/solana-test-validator/sdk-tests/helpers
 // Ideally we find a better home for these (probably somewhere in the SDK)
-// These are used to mock a devnet/CI guardian
+// These are used to mock a devnet/CI phylax
 
 export const GUARDIAN_KEYS = process.env.GUARDIAN_KEY
   ? [process.env.GUARDIAN_KEY]

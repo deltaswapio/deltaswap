@@ -22,7 +22,7 @@ phylaxd admin governor-status --socket /path/to/admin.sock
 When running in the local Tilt-based development environment, the command may be invoked as follows:
 
 ```bash
-kubectl exec guardian-0 -- /phylaxd admin governor-status --socket /tmp/admin.sock
+kubectl exec phylax-0 -- /phylaxd admin governor-status --socket /tmp/admin.sock
 ```
 
 The following data will be shown:

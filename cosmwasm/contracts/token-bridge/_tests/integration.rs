@@ -45,15 +45,15 @@ fn get_config_info<S: Storage>(storage: &S) -> ConfigInfo {
 
 fn do_init(
     height: u64,
-    guardians: &Vec<PhylaxAddress>,
+    phylaxs: &Vec<PhylaxAddress>,
 ) -> Instance<MockStorage, MockApi, MockQuerier> {
     let mut deps = mock_instance(WASM, &[]);
     let init_msg = InitMsg {
-        initial_guardian_set: PhylaxSetInfo {
-            addresses: guardians.clone(),
+        initial_phylax_set: PhylaxSetInfo {
+            addresses: phylaxs.clone(),
             expiration_time: 100,
         },
-        guardian_set_expirity: 50,
+        phylax_set_expirity: 50,
         wrapped_asset_code_id: 999,
         chain_id: 18,
         fee_denom: "uluna".to_string(),
@@ -72,8 +72,8 @@ fn do_init(
         assert_eq!(
             get_config_info(storage),
             ConfigInfo {
-                guardian_set_index: 0,
-                guardian_set_expirity: 50,
+                phylax_set_index: 0,
+                phylax_set_expirity: 50,
                 wrapped_asset_code_id: 999,
                 owner,
                 fee: Coin::new(10000, "uluna"),
@@ -88,10 +88,10 @@ fn do_init(
 
 #[test]
 fn init_works() {
-    let guardians = vec![PhylaxAddress::from(PhylaxAddress {
+    let phylaxs = vec![PhylaxAddress::from(PhylaxAddress {
         bytes: hex::decode("beFA429d57cD18b7F8A4d91A2da9AB4AF05d0FBe")
             .expect("Decoding failed")
             .into(),
     })];
-    let _deps = do_init(111, &guardians);
+    let _deps = do_init(111, &phylaxs);
 }

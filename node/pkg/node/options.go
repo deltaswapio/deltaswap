@@ -452,7 +452,7 @@ func PhylaxOptionPublicWeb(listenAddr string, publicGRPCSocketPath string, tlsHo
 		}}
 }
 
-// PhylaxOptionDatabase configures the main database to be used for this guardian node.
+// PhylaxOptionDatabase configures the main database to be used for this phylax node.
 // Dependencies: none
 func PhylaxOptionDatabase(db *db.Database) *PhylaxOption {
 	return &PhylaxOption{

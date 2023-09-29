@@ -50,7 +50,7 @@ const GOVERNANCE_KEY: [u8; 64] = [
 
 struct Context {
     /// Phylax secret keys.
-    guardian_keys: Vec<SecretKey>,
+    phylax_keys: Vec<SecretKey>,
 
     /// Address of the core bridge contract.
     bridge: Pubkey,
@@ -75,12 +75,12 @@ struct Context {
 }
 
 async fn set_up() -> Result<Context, TransportError> {
-    let (guardians, guardian_keys) = common::generate_keys(6);
+    let (phylaxs, phylax_keys) = common::generate_keys(6);
 
     let (mut client, payer, bridge, nft_bridge) = common::setup().await;
 
     // Setup a Bridge to test against.
-    common::initialize_bridge(&mut client, bridge, &payer, &guardians).await?;
+    common::initialize_bridge(&mut client, bridge, &payer, &phylaxs).await?;
 
     // Context for test environment.
     let mint = Keypair::new();
@@ -101,7 +101,7 @@ async fn set_up() -> Result<Context, TransportError> {
 
     // Token Bridge Meta
     let mut context = Context {
-        guardian_keys,
+        phylax_keys,
         bridge,
         client,
         payer,
@@ -212,7 +212,7 @@ async fn register_chain(context: &mut Context) {
         ref mut client,
         ref bridge,
         ref nft_bridge,
-        ref guardian_keys,
+        ref phylax_keys,
         ..
     } = context;
 
@@ -225,7 +225,7 @@ async fn register_chain(context: &mut Context) {
     let message = payload.try_to_vec().unwrap();
 
     let (vaa, body, _) = common::generate_vaa(emitter.pubkey().to_bytes(), 1, message, nonce, 0);
-    let signature_set = common::verify_signatures(client, bridge, payer, body, guardian_keys, 0)
+    let signature_set = common::verify_signatures(client, bridge, payer, body, phylax_keys, 0)
         .await
         .unwrap();
     common::post_vaa(client, *bridge, payer, signature_set, vaa.clone())
@@ -264,7 +264,7 @@ async fn transfer_native_in() {
         ref mint,
         ref token_account,
         ref token_authority,
-        ref guardian_keys,
+        ref phylax_keys,
         ..
     } = context;
 
@@ -307,7 +307,7 @@ async fn transfer_native_in() {
     let message = payload.try_to_vec().unwrap();
 
     let (vaa, body, _) = common::generate_vaa([0u8; 32], 2, message, nonce, 1);
-    let signature_set = common::verify_signatures(client, &bridge, payer, body, guardian_keys, 0)
+    let signature_set = common::verify_signatures(client, &bridge, payer, body, phylax_keys, 0)
         .await
         .unwrap();
     common::post_vaa(client, bridge, payer, signature_set, vaa.clone())
@@ -348,7 +348,7 @@ async fn transfer_wrapped() {
         mint: _,
         token_account: _,
         ref token_authority,
-        ref guardian_keys,
+        ref phylax_keys,
         metadata_account: _,
         ..
     } = context;
@@ -389,7 +389,7 @@ async fn transfer_wrapped() {
 
     let (vaa, body, _) =
         common::generate_vaa([0u8; 32], 2, message, nonce, rand::thread_rng().gen());
-    let signature_set = common::verify_signatures(client, &bridge, payer, body, guardian_keys, 0)
+    let signature_set = common::verify_signatures(client, &bridge, payer, body, phylax_keys, 0)
         .await
         .unwrap();
     common::post_vaa(client, bridge, payer, signature_set, vaa.clone())

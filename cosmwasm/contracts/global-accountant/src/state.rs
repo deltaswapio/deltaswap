@@ -20,7 +20,7 @@ pub struct Data {
     digest: Binary,
     tx_hash: Binary,
     signatures: u128,
-    guardian_set_index: u32,
+    phylax_set_index: u32,
     emitter_chain: u16,
 }
 
@@ -29,13 +29,13 @@ impl Data {
         digest: Binary,
         tx_hash: Binary,
         emitter_chain: u16,
-        guardian_set_index: u32,
+        phylax_set_index: u32,
     ) -> Self {
         Self {
             digest,
             tx_hash,
             signatures: 0,
-            guardian_set_index,
+            phylax_set_index,
             emitter_chain,
         }
     }
@@ -52,8 +52,8 @@ impl Data {
         self.emitter_chain
     }
 
-    pub fn guardian_set_index(&self) -> u32 {
-        self.guardian_set_index
+    pub fn phylax_set_index(&self) -> u32 {
+        self.phylax_set_index
     }
 
     pub fn signatures(&self) -> u128 {

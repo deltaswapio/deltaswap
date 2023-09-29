@@ -234,7 +234,7 @@ contract("Wormhole", function () {
         assert.equal(result.vm.emitterChainId, emitterChainId);
         assert.equal(result.vm.emitterAddress, emitterAddress);
         assert.equal(result.vm.payload, data);
-        assert.equal(result.vm.guardianSetIndex, 0);
+        assert.equal(result.vm.phylaxSetIndex, 0);
         assert.equal(result.vm.sequence, 1337);
         assert.equal(result.vm.consistencyLevel, 2);
 
@@ -299,7 +299,7 @@ contract("Wormhole", function () {
         assert.equal(result[2], "VM signature invalid")
     })
 
-    it("should error on VMs with invalid guardian set index", async function () {
+    it("should error on VMs with invalid phylax set index", async function () {
         const initialized = new web3.eth.Contract(ImplementationFullABI, Wormhole.address);
 
         const timestamp = 1000;
@@ -324,7 +324,7 @@ contract("Wormhole", function () {
 
         let result = await initialized.methods.parseAndVerifyVM("0x" + vm).call();
         assert.equal(result[1], false)
-        assert.equal(result[2], "invalid guardian set")
+        assert.equal(result[2], "invalid phylax set")
     })
 
     it("should revert on VMs with duplicate non-monotonic signature indexes", async function () {
@@ -490,7 +490,7 @@ contract("Wormhole", function () {
         assert.equal(receiverAfter - receiverBefore, 11);
     })
 
-    it("should revert when submitting a new guardian set with the zero address", async function () {
+    it("should revert when submitting a new phylax set with the zero address", async function () {
         const initialized = new web3.eth.Contract(ImplementationFullABI, Wormhole.address);
         const accounts = await web3.eth.getAccounts();
 
@@ -529,7 +529,7 @@ contract("Wormhole", function () {
             2
         );
 
-        // try to submit a new guardian set including the zero address
+        // try to submit a new phylax set including the zero address
         failed = false;
         try {
             await initialized.methods.submitNewPhylaxSet("0x" + vm).send({
@@ -545,7 +545,7 @@ contract("Wormhole", function () {
         assert.ok(failed);
     })
 
-    it("should accept a new guardian set", async function () {
+    it("should accept a new phylax set", async function () {
         const initialized = new web3.eth.Contract(ImplementationFullABI, Wormhole.address);
         const accounts = await web3.eth.getAccounts();
 
@@ -595,20 +595,20 @@ contract("Wormhole", function () {
 
         assert.equal(index, 1);
 
-        let guardians = await initialized.methods.getPhylaxSet(index).call();
+        let phylaxs = await initialized.methods.getPhylaxSet(index).call();
 
-        assert.equal(guardians.expirationTime, 0);
+        assert.equal(phylaxs.expirationTime, 0);
 
-        assert.lengthOf(guardians[0], 3);
-        assert.equal(guardians[0][0], testSigner1.address);
-        assert.equal(guardians[0][1], testSigner2.address);
-        assert.equal(guardians[0][2], testSigner3.address);
+        assert.lengthOf(phylaxs[0], 3);
+        assert.equal(phylaxs[0][0], testSigner1.address);
+        assert.equal(phylaxs[0][1], testSigner2.address);
+        assert.equal(phylaxs[0][2], testSigner3.address);
 
         let oldPhylaxs = await initialized.methods.getPhylaxSet(oldIndex).call();
 
         const time = (await web3.eth.getBlock("latest")).timestamp;
 
-        // old guardian set expiry is set
+        // old phylax set expiry is set
         assert.ok(
             oldPhylaxs.expirationTime > Number(time) + 86000
             && oldPhylaxs.expirationTime < Number(time) + 88000
@@ -723,7 +723,7 @@ contract("Wormhole", function () {
         }
     })
 
-    it("should revert governance packets from old guardian set", async function () {
+    it("should revert governance packets from old phylax set", async function () {
         const initialized = new web3.eth.Contract(ImplementationFullABI, Wormhole.address);
         const accounts = await web3.eth.getAccounts();
 
@@ -761,13 +761,13 @@ contract("Wormhole", function () {
                 from: accounts[0],
                 gasLimit: 1000000
             });
-            assert.fail("governance packet of old guardian set accepted")
+            assert.fail("governance packet of old phylax set accepted")
         } catch (e) {
-            assert.include(e.message, "revert not signed by current guardian set")
+            assert.include(e.message, "revert not signed by current phylax set")
         }
     })
 
-    it("should time out old guardians", async function () {
+    it("should time out old phylaxs", async function () {
         const initialized = new web3.eth.Contract(ImplementationFullABI, Wormhole.address);
 
         const timestamp = 1000;
@@ -1123,7 +1123,7 @@ const signAndEncodeVM = async function (
     sequence,
     data,
     signers,
-    guardianSetIndex,
+    phylaxSetIndex,
     consistencyLevel
 ) {
     const body = [
@@ -1157,7 +1157,7 @@ const signAndEncodeVM = async function (
 
     const vm = [
         web3.eth.abi.encodeParameter("uint8", 1).substring(2 + (64 - 2)),
-        web3.eth.abi.encodeParameter("uint32", guardianSetIndex).substring(2 + (64 - 8)),
+        web3.eth.abi.encodeParameter("uint32", phylaxSetIndex).substring(2 + (64 - 8)),
         web3.eth.abi.encodeParameter("uint8", signers.length).substring(2 + (64 - 2)),
 
         signatures,
@@ -1175,7 +1175,7 @@ const signAndEncodeVMFixedIndex = async function (
     sequence,
     data,
     signers,
-    guardianSetIndex,
+    phylaxSetIndex,
     consistencyLevel
 ) {
     const body = [
@@ -1210,7 +1210,7 @@ const signAndEncodeVMFixedIndex = async function (
 
     const vm = [
         web3.eth.abi.encodeParameter("uint8", 1).substring(2 + (64 - 2)),
-        web3.eth.abi.encodeParameter("uint32", guardianSetIndex).substring(2 + (64 - 8)),
+        web3.eth.abi.encodeParameter("uint32", phylaxSetIndex).substring(2 + (64 - 8)),
         web3.eth.abi.encodeParameter("uint8", signers.length).substring(2 + (64 - 2)),
 
         signatures,

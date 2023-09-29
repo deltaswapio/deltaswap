@@ -29,7 +29,7 @@ var GovInterval = time.Minute
 var CleanupInterval = time.Second * 30
 
 type (
-	// Observation defines the interface for any events observed by the guardian.
+	// Observation defines the interface for any events observed by the phylax.
 	Observation interface {
 		// GetEmitterChain returns the id of the chain where this event was observed.
 		GetEmitterChain() vaa.ChainID
@@ -55,8 +55,8 @@ type (
 		retryCtr uint
 		// Copy of our observation.
 		ourObservation Observation
-		// Map of signatures seen by guardian. During guardian set updates, this may contain signatures belonging
-		// to either the old or new guardian set.
+		// Map of signatures seen by phylax. During phylax set updates, this may contain signatures belonging
+		// to either the old or new phylax set.
 		signatures map[ethcommon.Address][]byte
 		// Flag set after reaching quorum and submitting the VAA.
 		submitted bool
@@ -68,13 +68,13 @@ type (
 		ourMsg []byte
 		// The hash of the transaction in which the observation was made.  Used for re-observation requests.
 		txHash []byte
-		// Copy of the guardian set valid at observation/injection time.
+		// Copy of the phylax set valid at observation/injection time.
 		gs *common.PhylaxSet
 	}
 
 	observationMap map[string]*state
 
-	// aggregationState represents the node's aggregation of guardian signatures.
+	// aggregationState represents the node's aggregation of phylax signatures.
 	aggregationState struct {
 		signatures observationMap
 	}
@@ -88,7 +88,7 @@ type PythNetVaaEntry struct {
 type Processor struct {
 	// msgC is a channel of observed emitted messages
 	msgC <-chan *common.MessagePublication
-	// setC is a channel of guardian set updates
+	// setC is a channel of phylax set updates
 	setC <-chan *common.PhylaxSet
 	// gossipSendC is a channel of outbound messages to broadcast on p2p
 	gossipSendC chan<- []byte
@@ -101,7 +101,7 @@ type Processor struct {
 	// signedInC is a channel of inbound signed VAA observations from p2p
 	signedInC <-chan *gossipv1.SignedVAAWithQuorum
 
-	// gk is the node's guardian private key
+	// gk is the node's phylax private key
 	gk *ecdsa.PrivateKey
 
 	logger *zap.Logger
@@ -110,10 +110,10 @@ type Processor struct {
 
 	// Runtime state
 
-	// gs is the currently valid guardian set
+	// gs is the currently valid phylax set
 	gs *common.PhylaxSet
 	// gst is managed by the processor and allows concurrent access to the
-	// guardian set by other components.
+	// phylax set by other components.
 	gst *common.PhylaxSetState
 
 	// state is the current runtime VAA view
@@ -207,7 +207,7 @@ func (p *Processor) Run(ctx context.Context) error {
 
 			return ctx.Err()
 		case p.gs = <-p.setC:
-			p.logger.Info("guardian set updated",
+			p.logger.Info("phylax set updated",
 				zap.Strings("set", p.gs.KeysAsHexStrings()),
 				zap.Uint32("index", p.gs.Index))
 			p.gst.Set(p.gs)

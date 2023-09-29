@@ -47,15 +47,15 @@ use std::io::{
 impl From<&PostVAAData> for PhylaxSetDerivationData {
     fn from(data: &PostVAAData) -> Self {
         PhylaxSetDerivationData {
-            index: data.guardian_set_index,
+            index: data.phylax_set_index,
         }
     }
 }
 
 #[derive(FromAccounts)]
 pub struct PostVAA<'b> {
-    /// Information about the current guardian set.
-    pub guardian_set: PhylaxSet<'b, { AccountState::Initialized }>,
+    /// Information about the current phylax set.
+    pub phylax_set: PhylaxSet<'b, { AccountState::Initialized }>,
 
     /// Bridge Info
     pub bridge_info: Bridge<'b, { AccountState::Initialized }>,
@@ -87,7 +87,7 @@ pub type ForeignAddress = [u8; 32];
 pub struct PostVAAData {
     // Header part
     pub version: u8,
-    pub guardian_set_index: u32,
+    pub phylax_set_index: u32,
 
     // Body part
     pub timestamp: u32,
@@ -106,7 +106,7 @@ pub fn post_vaa(ctx: &ExecutionContext, accs: &mut PostVAA, vaa: PostVAAData) ->
 
     accs.message
         .verify_derivation(ctx.program_id, &msg_derivation)?;
-    accs.guardian_set
+    accs.phylax_set
         .verify_derivation(ctx.program_id, &(&vaa).into())?;
 
     if accs.message.is_initialized() {
@@ -114,8 +114,8 @@ pub fn post_vaa(ctx: &ExecutionContext, accs: &mut PostVAA, vaa: PostVAAData) ->
     }
 
     // Verify any required invariants before we process the instruction.
-    check_active(&accs.guardian_set, &accs.clock)?;
-    check_valid_sigs(&accs.guardian_set, &accs.signature_set)?;
+    check_active(&accs.phylax_set, &accs.clock)?;
+    check_valid_sigs(&accs.phylax_set, &accs.signature_set)?;
     check_integrity(&vaa, &accs.signature_set)?;
 
     // Count the number of signatures currently present.
@@ -124,7 +124,7 @@ pub fn post_vaa(ctx: &ExecutionContext, accs: &mut PostVAA, vaa: PostVAAData) ->
     // Calculate how many signatures are required to reach consensus. This calculation is in
     // expanded form to ease auditing.
     let required_consensus_count = {
-        let len = accs.guardian_set.keys.len();
+        let len = accs.phylax_set.keys.len();
         // Fixed point number transformation with one decimal to deal with rounding.
         let len = (len * 10) / 3;
         // Multiplication by two to get a 2/3 quorum.
@@ -153,19 +153,19 @@ pub fn post_vaa(ctx: &ExecutionContext, accs: &mut PostVAA, vaa: PostVAAData) ->
     Ok(())
 }
 
-/// A guardian set must not have expired.
+/// A phylax set must not have expired.
 #[inline(always)]
 fn check_active<'r>(
-    guardian_set: &PhylaxSet<'r, { AccountState::Initialized }>,
+    phylax_set: &PhylaxSet<'r, { AccountState::Initialized }>,
     clock: &Sysvar<'r, Clock>,
 ) -> Result<()> {
     // IMPORTANT - this is a fix for mainnet wormhole
-    // The initial guardian set was never expired so we block it here.
-    if guardian_set.index == 0 && guardian_set.creation_time == 1628099186 {
+    // The initial phylax set was never expired so we block it here.
+    if phylax_set.index == 0 && phylax_set.creation_time == 1628099186 {
         return Err(PostVAAPhylaxSetExpired.into());
     }
-    if guardian_set.expiration_time != 0
-        && (guardian_set.expiration_time as i64) < clock.unix_timestamp
+    if phylax_set.expiration_time != 0
+        && (phylax_set.expiration_time as i64) < clock.unix_timestamp
     {
         return Err(PostVAAPhylaxSetExpired.into());
     }
@@ -192,13 +192,13 @@ static INVALID_SIGNATURES: &[&str; 16] = &[
     "FixSiDfTxvoy5Zgjp5KdFU8U23ChwCxPWY3WTkmMW2fU",
 ];
 
-/// The signatures in this instruction must be from the right guardian set.
+/// The signatures in this instruction must be from the right phylax set.
 #[inline(always)]
 fn check_valid_sigs<'r>(
-    guardian_set: &PhylaxSet<'r, { AccountState::Initialized }>,
+    phylax_set: &PhylaxSet<'r, { AccountState::Initialized }>,
     signatures: &SignatureSet<'r, { AccountState::Initialized }>,
 ) -> Result<()> {
-    if signatures.guardian_set_index != guardian_set.index {
+    if signatures.phylax_set_index != phylax_set.index {
         return Err(PhylaxSetMismatch.into());
     }
 

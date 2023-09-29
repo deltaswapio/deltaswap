@@ -15,7 +15,7 @@ import (
 const telemetryLogLevel = zap.InfoLevel
 
 type Telemetry struct {
-	encoder *guardianTelemetryEncoder
+	encoder *phylaxTelemetryEncoder
 }
 
 type ExternalLogger interface {
@@ -23,14 +23,14 @@ type ExternalLogger interface {
 	close() error
 }
 
-// guardianTelemetryEncoder is a wrapper around zapcore.jsonEncoder that logs to cloud based logging
-type guardianTelemetryEncoder struct {
+// phylaxTelemetryEncoder is a wrapper around zapcore.jsonEncoder that logs to cloud based logging
+type phylaxTelemetryEncoder struct {
 	zapcore.Encoder // zapcore.jsonEncoder
 	logger          ExternalLogger
 	skipPrivateLogs bool
 }
 
-func (enc *guardianTelemetryEncoder) EncodeEntry(entry zapcore.Entry, fields []zapcore.Field) (*buffer.Buffer, error) {
+func (enc *phylaxTelemetryEncoder) EncodeEntry(entry zapcore.Entry, fields []zapcore.Field) (*buffer.Buffer, error) {
 	buf, err := enc.Encoder.EncodeEntry(entry, fields)
 	if err != nil {
 		return nil, err
@@ -55,9 +55,9 @@ func (enc *guardianTelemetryEncoder) EncodeEntry(entry zapcore.Entry, fields []z
 }
 
 // Clone() clones the encoder. This function is not used by the Phylax itself, but it is used by zapcore.
-// Without this implementation, a guardianTelemetryEncoder could get silently converted into the underlying zapcore.Encoder at some point, leading to missing telemetry logs.
-func (enc *guardianTelemetryEncoder) Clone() zapcore.Encoder {
-	return &guardianTelemetryEncoder{
+// Without this implementation, a phylaxTelemetryEncoder could get silently converted into the underlying zapcore.Encoder at some point, leading to missing telemetry logs.
+func (enc *phylaxTelemetryEncoder) Clone() zapcore.Encoder {
+	return &phylaxTelemetryEncoder{
 		Encoder:         enc.Encoder.Clone(),
 		logger:          enc.logger,
 		skipPrivateLogs: enc.skipPrivateLogs,
@@ -66,7 +66,7 @@ func (enc *guardianTelemetryEncoder) Clone() zapcore.Encoder {
 
 func NewExternalLogger(skipPrivateLogs bool, externalLogger ExternalLogger) (*Telemetry, error) {
 	return &Telemetry{
-		encoder: &guardianTelemetryEncoder{
+		encoder: &phylaxTelemetryEncoder{
 			Encoder:         zapcore.NewJSONEncoder(zapdriver.NewProductionEncoderConfig()),
 			logger:          externalLogger,
 			skipPrivateLogs: skipPrivateLogs,

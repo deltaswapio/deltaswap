@@ -3,7 +3,7 @@
   "title": "WormholeQuery",
   "oneOf": [
     {
-      "description": "Verifies that `data` has been signed by a quorum of guardians from `guardian_set_index`.",
+      "description": "Verifies that `data` has been signed by a quorum of phylaxs from `phylax_set_index`.",
       "type": "object",
       "required": [
         "verify_quorum"
@@ -13,14 +13,14 @@
           "type": "object",
           "required": [
             "data",
-            "guardian_set_index",
+            "phylax_set_index",
             "signatures"
           ],
           "properties": {
             "data": {
               "$ref": "#/definitions/Binary"
             },
-            "guardian_set_index": {
+            "phylax_set_index": {
               "type": "integer",
               "format": "uint32",
               "minimum": 0.0
@@ -38,7 +38,7 @@
       "additionalProperties": false
     },
     {
-      "description": "Verifies that `data` has been signed by a guardian from `guardian_set_index`.",
+      "description": "Verifies that `data` has been signed by a phylax from `phylax_set_index`.",
       "type": "object",
       "required": [
         "verify_signature"
@@ -48,14 +48,14 @@
           "type": "object",
           "required": [
             "data",
-            "guardian_set_index",
+            "phylax_set_index",
             "signature"
           ],
           "properties": {
             "data": {
               "$ref": "#/definitions/Binary"
             },
-            "guardian_set_index": {
+            "phylax_set_index": {
               "type": "integer",
               "format": "uint32",
               "minimum": 0.0
@@ -70,7 +70,7 @@
       "additionalProperties": false
     },
     {
-      "description": "Returns the number of signatures necessary for quorum for the given guardian set index.",
+      "description": "Returns the number of signatures necessary for quorum for the given phylax set index.",
       "type": "object",
       "required": [
         "calculate_quorum"
@@ -79,10 +79,10 @@
         "calculate_quorum": {
           "type": "object",
           "required": [
-            "guardian_set_index"
+            "phylax_set_index"
           ],
           "properties": {
-            "guardian_set_index": {
+            "phylax_set_index": {
               "type": "integer",
               "format": "uint32",
               "minimum": 0.0
@@ -107,7 +107,7 @@
       ],
       "properties": {
         "index": {
-          "description": "The index of the guardian in the guardian set.",
+          "description": "The index of the phylax in the phylax set.",
           "type": "integer",
           "format": "uint8",
           "minimum": 0.0

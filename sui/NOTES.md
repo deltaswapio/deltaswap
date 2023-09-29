@@ -40,7 +40,7 @@ brew install cmake
 # getting into the sui k8s node (if you need to crawl around)
 
    kubectl exec -it sui-0 -c sui-node -- /bin/bash
-   kubectl exec -it guardian-0 -c phylaxd -- /bin/bash
+   kubectl exec -it phylax-0 -c phylaxd -- /bin/bash
 
 # setup the client.yaml
 
@@ -107,7 +107,7 @@ curl -s -X POST -d '{"jsonrpc":"2.0", "id": 1, "method": "sui_getEvents", "param
 "txhash": "0x70bfae585115710ae40223b138999a2bb26694e25d137ffc5f92456c9c01c424", "txhash_b58": "8b8Bn8MUqAWeVz2BE5hMicC9KaRkV6UM4v1JLWGUjxcT", "
 Digest: cL+uWFEVcQrkAiOxOJmaK7JmlOJdE3/8X5JFbJwBxCQ=
 
-  kubectl exec -it guardian-0 -- /phylaxd admin send-observation-request --socket /tmp/admin.sock 21 70bfae585115710ae40223b138999a2bb26694e25d137ffc5f92456c9c01c424
+  kubectl exec -it phylax-0 -- /phylaxd admin send-observation-request --socket /tmp/admin.sock 21 70bfae585115710ae40223b138999a2bb26694e25d137ffc5f92456c9c01c424
 
 // curl -s -X POST -d '{"jsonrpc":"2.0", "id": 1, "method": "sui_getCommitteeInfo", "params": []}' -H 'Content-Type: application/json' http://127.0.0.1:9002 | jq
 

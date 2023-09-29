@@ -15,10 +15,10 @@ import {
 //const AlgorandLib = require('../../sdk/js/src/token_bridge/Algorand.ts')
 //const algorandLib = new AlgorandLib.AlgorandLib()
 
-const guardianKeys = [
+const phylaxKeys = [
     "beFA429d57cD18b7F8A4d91A2da9AB4AF05d0FBe"
 ]
-const guardianPrivKeys = [
+const phylaxPrivKeys = [
     "cfb12303a19cde580bb4dd771639b0d26bc68353645571a8cff516ab2ee113a0"
 ]
 
@@ -42,12 +42,12 @@ async function firstTransaction() {
         let accountInfo = await algodClient.accountInformation(myAccount.addr).do();
         console.log("Account balance: %d microAlgos", accountInfo.amount);
 
-//        let vaa = testLib.genPhylaxSetUpgrade(guardianPrivKeys, 0, 1, 1, 1, guardianKeys)
+//        let vaa = testLib.genPhylaxSetUpgrade(phylaxPrivKeys, 0, 1, 1, 1, phylaxKeys)
 //        console.log(vaa)
 //        console.log(parseVAA(new Uint8Array(Buffer.from(vaa, "hex"))))
 //        process.exit(0)
 
-        let  vaa = testLib.createSignedVAA(0, guardianPrivKeys, 1, 1, 1, PYTH_EMITTER, 0, 0, PYTH_PAYLOAD)
+        let  vaa = testLib.createSignedVAA(0, phylaxPrivKeys, 1, 1, 1, PYTH_EMITTER, 0, 0, PYTH_PAYLOAD)
         console.log(vaa)
         let evaa = new Uint8Array(Buffer.from(vaa, "hex"))
 

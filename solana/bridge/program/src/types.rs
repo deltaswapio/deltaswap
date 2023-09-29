@@ -87,18 +87,18 @@ impl DeserializeGovernancePayload for GovernancePayloadUpgrade {
 
 pub struct GovernancePayloadPhylaxSetChange {
     // New PhylaxSetIndex
-    pub new_guardian_set_index: u32,
+    pub new_phylax_set_index: u32,
 
     // New PhylaxSet
-    pub new_guardian_set: Vec<[u8; 20]>,
+    pub new_phylax_set: Vec<[u8; 20]>,
 }
 
 impl SerializePayload for GovernancePayloadPhylaxSetChange {
     fn serialize<W: Write>(&self, v: &mut W) -> std::result::Result<(), SolitaireError> {
         use byteorder::WriteBytesExt;
-        v.write_u32::<BigEndian>(self.new_guardian_set_index)?;
-        v.write_u8(self.new_guardian_set.len() as u8)?;
-        for key in self.new_guardian_set.iter() {
+        v.write_u32::<BigEndian>(self.new_phylax_set_index)?;
+        v.write_u8(self.new_phylax_set.len() as u8)?;
+        for key in self.new_phylax_set.iter() {
             v.write_all(key)?;
         }
         Ok(())
@@ -128,8 +128,8 @@ where
         }
 
         Ok(GovernancePayloadPhylaxSetChange {
-            new_guardian_set_index: new_index,
-            new_guardian_set: keys,
+            new_phylax_set_index: new_index,
+            new_phylax_set: keys,
         })
     }
 }

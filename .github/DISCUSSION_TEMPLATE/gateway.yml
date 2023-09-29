@@ -118,8 +118,8 @@ body:
       label: Technical requirements for running a node 
       description: "Any extra requirements for Phylaxs"
       value: |
-        If there are no extra requirements for guardians, please use the message below: 
-        None - [chain] will emit messages to Gateway via IBC. Phylaxs should not have to run anything additional (except for guardians who may run IBC relayers).
+        If there are no extra requirements for phylaxs, please use the message below: 
+        None - [chain] will emit messages to Gateway via IBC. Phylaxs should not have to run anything additional (except for phylaxs who may run IBC relayers).
     validations:
       required: true
 

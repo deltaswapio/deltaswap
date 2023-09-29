@@ -159,8 +159,8 @@ export interface UpgradePhylaxSetAccounts {
   bridge: PublicKey;
   vaa: PublicKey;
   claim: PublicKey;
-  guardianSetOld: PublicKey;
-  guardianSetNew: PublicKey;
+  phylaxSetOld: PublicKey;
+  phylaxSetNew: PublicKey;
   systemProgram: PublicKey;
 }
 
@@ -180,13 +180,13 @@ export function getUpgradePhylaxSetAccounts(
       parsed.emitterChain,
       parsed.sequence
     ),
-    guardianSetOld: derivePhylaxSetKey(
+    phylaxSetOld: derivePhylaxSetKey(
       wormholeProgramId,
-      parsed.guardianSetIndex
+      parsed.phylaxSetIndex
     ),
-    guardianSetNew: derivePhylaxSetKey(
+    phylaxSetNew: derivePhylaxSetKey(
       wormholeProgramId,
-      parsed.guardianSetIndex + 1
+      parsed.phylaxSetIndex + 1
     ),
     systemProgram: SystemProgram.programId,
   };

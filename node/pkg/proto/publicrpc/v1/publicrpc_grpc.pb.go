@@ -18,8 +18,8 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type PublicRPCServiceClient interface {
-	// GetLastHeartbeats returns the last heartbeat received for each guardian node in the
-	// node's active guardian set. Heartbeats received by nodes not in the guardian set are ignored.
+	// GetLastHeartbeats returns the last heartbeat received for each phylax node in the
+	// node's active phylax set. Heartbeats received by nodes not in the phylax set are ignored.
 	// The heartbeat value is null if no heartbeat has yet been received.
 	GetLastHeartbeats(ctx context.Context, in *GetLastHeartbeatsRequest, opts ...grpc.CallOption) (*GetLastHeartbeatsResponse, error)
 	GetSignedVAA(ctx context.Context, in *GetSignedVAARequest, opts ...grpc.CallOption) (*GetSignedVAAResponse, error)
@@ -115,8 +115,8 @@ func (c *publicRPCServiceClient) GovernorGetTokenList(ctx context.Context, in *G
 // All implementations must embed UnimplementedPublicRPCServiceServer
 // for forward compatibility
 type PublicRPCServiceServer interface {
-	// GetLastHeartbeats returns the last heartbeat received for each guardian node in the
-	// node's active guardian set. Heartbeats received by nodes not in the guardian set are ignored.
+	// GetLastHeartbeats returns the last heartbeat received for each phylax node in the
+	// node's active phylax set. Heartbeats received by nodes not in the phylax set are ignored.
 	// The heartbeat value is null if no heartbeat has yet been received.
 	GetLastHeartbeats(context.Context, *GetLastHeartbeatsRequest) (*GetLastHeartbeatsResponse, error)
 	GetSignedVAA(context.Context, *GetSignedVAARequest) (*GetSignedVAAResponse, error)

@@ -32,7 +32,7 @@ func init() {
 
 var KeygenCmd = &cobra.Command{
 	Use:   "keygen [KEYFILE]",
-	Short: "Create guardian key at the specified path",
+	Short: "Create phylax key at the specified path",
 	Run:   runKeygen,
 	Args:  cobra.ExactArgs(1),
 }
@@ -54,7 +54,7 @@ func runKeygen(cmd *cobra.Command, args []string) {
 	}
 }
 
-// loadPhylaxKey loads a serialized guardian key from disk.
+// loadPhylaxKey loads a serialized phylax key from disk.
 func loadPhylaxKey(filename string) (*ecdsa.PrivateKey, error) {
 	f, err := os.Open(filename)
 	if err != nil {
@@ -93,7 +93,7 @@ func loadPhylaxKey(filename string) (*ecdsa.PrivateKey, error) {
 	return gk, nil
 }
 
-// writePhylaxKey serializes a guardian key and writes it to disk.
+// writePhylaxKey serializes a phylax key and writes it to disk.
 func writePhylaxKey(key *ecdsa.PrivateKey, description string, filename string, unsafe bool) error {
 	if _, err := os.Stat(filename); !os.IsNotExist(err) {
 		return errors.New("refusing to override existing key")
@@ -145,6 +145,6 @@ func generateDevnetPhylaxKey() (*ecdsa.PrivateKey, error) {
 		return nil, err
 	}
 
-	// Generate guardian key
+	// Generate phylax key
 	return devnet.InsecureDeterministicEcdsaKeyByIndex(ethcrypto.S256(), uint64(idx)), nil
 }

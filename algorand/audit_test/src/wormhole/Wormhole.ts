@@ -158,11 +158,11 @@ export class Wormhole {
 		const dedupTmplSig = new WormholeTmplSig(sequence, deduplicationEmitter, this.coreId)
 		console.log(`TmplSig address: ${dedupTmplSig.address}, base64: ${Buffer.from(decodeAddress(dedupTmplSig.address).publicKey).toString('base64')}`)
 
-		// Generate guardian template sig
-		const guardianTmplSig = new WormholeTmplSig(vaa.gsIndex, EMITTER_GUARDIAN, this.coreId)
+		// Generate phylax template sig
+		const phylaxTmplSig = new WormholeTmplSig(vaa.gsIndex, EMITTER_GUARDIAN, this.coreId)
 
 		// Opt-in tmplsig
-		const templateSigs = [dedupTmplSig, guardianTmplSig].concat(vaa.extraTmplSigs)
+		const templateSigs = [dedupTmplSig, phylaxTmplSig].concat(vaa.extraTmplSigs)
 		const logicSigMap: Map<Address, LogicSigAccount> = new Map()
 		for (const sig of templateSigs) {
 			await sig.optin(this.deployer, this.owner, this.coreId, this.signCallback, dryrunDebug)
@@ -175,7 +175,7 @@ export class Wormhole {
 		console.log(`VAA Verify address: ${vaaVerify.address()}, base64: ${Buffer.from(decodeAddress(vaaVerify.address()).publicKey).toString('base64')}`)
 
 		// Generate init transaction group
-		const accounts = [dedupTmplSig.address, guardianTmplSig.address].concat(vaa.extraTmplSigs.map((tmplSig) => tmplSig.address))
+		const accounts = [dedupTmplSig.address, phylaxTmplSig.address].concat(vaa.extraTmplSigs.map((tmplSig) => tmplSig.address))
 		let txns: Transaction[]
 		switch (vaa.command) {
 			case 'init': {
@@ -212,20 +212,20 @@ export class Wormhole {
 						console.log(`Data matched expected for entry ${i}`)
 					}
 
-					let guardianCounter = 0
+					let phylaxCounter = 0
 					const endPointer = offset + sigLength
 					const keyBuffers: Uint8Array[] = []
 					while (offset < endPointer) {
-						const guardian = sigs[offset]
-						if (guardian !== guardianCounter) {
+						const phylax = sigs[offset]
+						if (phylax !== phylaxCounter) {
 							// TODO: This is broken and does not generate the same output as the contract!
-							console.log(`Expected ${guardianCounter}, got ${guardian}`)
+							console.log(`Expected ${phylaxCounter}, got ${phylax}`)
 						}
-						const guardianKey = keyData[i].slice(guardian * 20, guardian * 20 + 20)
-						keyBuffers.push(guardianKey)
+						const phylaxKey = keyData[i].slice(phylax * 20, phylax * 20 + 20)
+						keyBuffers.push(phylaxKey)
 
 						offset += 66
-						guardianCounter++
+						phylaxCounter++
 					}
 
 					const allKeyData = concatArrays(keyBuffers)

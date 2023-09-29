@@ -1446,7 +1446,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "increase(wormhole_observations_signed_by_guardian_total{instance=~\"$instance\", instance=~\"$instance\"}[$__rate_interval])",
+          "expr": "increase(wormhole_observations_signed_by_phylax_total{instance=~\"$instance\", instance=~\"$instance\"}[$__rate_interval])",
           "interval": "",
           "legendFormat": "{{ addr }}",
           "queryType": "randomWalk",

@@ -77,7 +77,7 @@ clean:
 .PHONY: reset-force
 reset-force: build
 	-echo cleaning and restarting state
-	-minikube kubectl -- delete pod guardian-0 --force &
+	-minikube kubectl -- delete pod phylax-0 --force &
 	-minikube kubectl -- delete pod algorand-0 --force &
 	-minikube kubectl -- delete pod near-0 --force &
 	-echo done
@@ -85,7 +85,7 @@ reset-force: build
 .PHONY: reset
 reset: build
 	-echo cleaning and restarting state
-	-minikube kubectl -- delete pod guardian-0 &
+	-minikube kubectl -- delete pod phylax-0 &
 	-minikube kubectl -- delete pod algorand-0 &
 	-minikube kubectl -- delete pod near-0 &
 	-echo done

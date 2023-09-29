@@ -3,7 +3,7 @@
 //! make assumptions about the validity of state on the source chain.
 //!
 //! Wormhole defines several VAA's for use within Token/NFT bridge implemenetations, as well as
-//! governance specific VAA's used within Wormhole's guardian network.
+//! governance specific VAA's used within Wormhole's phylax network.
 //!
 //! This module provides definitions and parsers for all current Wormhole standard VAA's, and
 //! includes parsers for the core VAA type. Programs targetting wormhole can use this module to
@@ -88,7 +88,7 @@ pub struct Vaa<P> {
     // wire, which the wormhole data format does not do.  So instead we have to duplicate the fields
     // and provide a conversion function to/from `Vaa` to `(Header, Body)`.
     pub version: u8,
-    pub guardian_set_index: u32,
+    pub phylax_set_index: u32,
     pub signatures: Vec<Signature>,
     pub timestamp: u32,
     pub nonce: u32,
@@ -103,7 +103,7 @@ pub struct Vaa<P> {
 #[derive(Serialize, Deserialize, Debug, Default, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct Header {
     pub version: u8,
-    pub guardian_set_index: u32,
+    pub phylax_set_index: u32,
     pub signatures: Vec<Signature>,
 }
 
@@ -130,7 +130,7 @@ pub struct Digest {
 
     /// The secp256k_hash is the hash of the hash of the VAA. The reason we provide this is because
     /// of how secp256k works internally. It hashes its payload before signing. This means that
-    /// when verifying secp256k signatures, we're actually checking if a guardian has signed the
+    /// when verifying secp256k signatures, we're actually checking if a phylax has signed the
     /// hash of the hash of the VAA. Functions such as `ecrecover` expect the secp256k hash rather
     /// than the original payload.
     pub secp256k_hash: [u8; 32],
@@ -140,7 +140,7 @@ pub struct Digest {
 ///
 /// A VAA is distinguished by the unique 256bit Keccak256 hash of its body. This hash is
 /// utilised in all Wormhole components for identifying unique VAA's, including the bridge,
-/// modules, and core guardian software. The `Digest` is documented with reasoning for
+/// modules, and core phylax software. The `Digest` is documented with reasoning for
 /// each field.
 ///
 /// NOTE: This function uses a library to do Keccak256 hashing, but on-chain this may not be
@@ -179,7 +179,7 @@ impl<P> From<Vaa<P>> for (Header, Body<P>) {
         (
             Header {
                 version: v.version,
-                guardian_set_index: v.guardian_set_index,
+                phylax_set_index: v.phylax_set_index,
                 signatures: v.signatures,
             },
             Body {
@@ -199,7 +199,7 @@ impl<P> From<(Header, Body<P>)> for Vaa<P> {
     fn from((hdr, body): (Header, Body<P>)) -> Self {
         Vaa {
             version: hdr.version,
-            guardian_set_index: hdr.guardian_set_index,
+            phylax_set_index: hdr.phylax_set_index,
             signatures: hdr.signatures,
             timestamp: body.timestamp,
             nonce: body.nonce,
@@ -238,7 +238,7 @@ impl<P: Serialize> Body<P> {
     ///
     /// A VAA is distinguished by the unique 256bit Keccak256 hash of its body. This hash is
     /// utilised in all Wormhole components for identifying unique VAA's, including the bridge,
-    /// modules, and core guardian software. The `Digest` is documented with reasoning for
+    /// modules, and core phylax software. The `Digest` is documented with reasoning for
     /// each field.
     ///
     /// NOTE: This function uses a library to do Keccak256 hashing, but on-chain this may not be
@@ -297,7 +297,7 @@ mod test {
 
         let vaa = Vaa {
             version: 1,
-            guardian_set_index: 0,
+            phylax_set_index: 0,
             signatures: vec![Signature {
                 index: 0,
                 signature: [

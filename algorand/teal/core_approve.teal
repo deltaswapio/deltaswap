@@ -312,7 +312,7 @@ btoi
 store 26
 txna Accounts 3
 load 26
-bytec_2 // "guardian"
+bytec_2 // "phylax"
 callsub getsigaddress_9
 ==
 intc 11 // 252
@@ -360,7 +360,7 @@ txna Accounts 2
 bnz main_l25
 main_l24:
 pushint 3 // 3
-bytec_2 // "guardian"
+bytec_2 // "phylax"
 callsub meta_5
 b main_l20
 main_l25:
@@ -424,14 +424,14 @@ txna Accounts 2
 txna ApplicationArgs 1
 extract 1 4
 btoi
-bytec_2 // "guardian"
+bytec_2 // "phylax"
 callsub getsigaddress_9
 ==
 pushint 380 // 380
 &&
 assert
 intc_3 // 2
-bytec_2 // "guardian"
+bytec_2 // "phylax"
 callsub checkMeta_6
 intc_3 // 2
 intc_1 // 0
@@ -944,7 +944,7 @@ btoi
 store 6
 txna Accounts 3
 load 6
-bytec_2 // "guardian"
+bytec_2 // "phylax"
 callsub getsigaddress_9
 ==
 intc 11 // 252
@@ -992,7 +992,7 @@ txna Accounts 2
 bnz main_l64
 main_l63:
 pushint 3 // 3
-bytec_2 // "guardian"
+bytec_2 // "phylax"
 callsub meta_5
 b main_l59
 main_l64:

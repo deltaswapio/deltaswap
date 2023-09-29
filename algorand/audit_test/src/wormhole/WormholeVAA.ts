@@ -50,7 +50,7 @@ export function generateInitVAA(signers: WormholeSigner[], coreId: AppId): Unsig
 		targetChainId: CHAIN_ID_ALGORAND,
 		oldGSIndex: 0,
 		newGSIndex: 1,
-		guardians: generateKeySet(signers),
+		phylaxs: generateKeySet(signers),
 	}
 
 	const result = generateGovernanceVAA(signers, 0, coreId, header, payload)

@@ -1,12 +1,12 @@
 let elliptic    = require('elliptic');
 const web3Utils = require("web3-utils");
 
-const guardianKey = "beFA429d57cD18b7F8A4d91A2da9AB4AF05d0FBe";
+const phylaxKey = "beFA429d57cD18b7F8A4d91A2da9AB4AF05d0FBe";
 
-const guardianPrivKeys = "cfb12303a19cde580bb4dd771639b0d26bc68353645571a8cff516ab2ee113a0";
+const phylaxPrivKeys = "cfb12303a19cde580bb4dd771639b0d26bc68353645571a8cff516ab2ee113a0";
 
 let ec      = new elliptic.ec('secp256k1');
-let keyPair = ec.keyFromPrivate(guardianPrivKeys);
+let keyPair = ec.keyFromPrivate(phylaxPrivKeys);
 let privKey = keyPair.getPrivate("hex");
 let pubKey  = keyPair.getPublic();
 
@@ -33,7 +33,7 @@ console.log("Public key      :", pubKey.encode("hex").substring(2, 130));
 console.log("Recovered pubKey:", pk);
 
 console.log("keccak256  :", web3Utils.keccak256("0x" + pk.substring(2, 130)).substring(26))
-console.log("guardianKey:", guardianKey);
+console.log("phylaxKey:", phylaxKey);
 
 let validSig = ec.verify(msgHash, signature, pubKeyRecovered);
 console.log("Signature valid?", validSig);

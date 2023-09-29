@@ -427,7 +427,7 @@ class AlgoTest(PortalCore):
         print("woah! optin succeeded")
 
     def simple_test(self):
-#        q = bytes.fromhex(gt.genAssetMeta(gt.guardianPrivKeys, 1, 1, 1, bytes.fromhex("4523c3F29447d1f32AEa95BEBD00383c4640F1b4"), 1, 8, b"USDC", b"CircleCoin"))
+#        q = bytes.fromhex(gt.genAssetMeta(gt.phylaxPrivKeys, 1, 1, 1, bytes.fromhex("4523c3F29447d1f32AEa95BEBD00383c4640F1b4"), 1, 8, b"USDC", b"CircleCoin"))
 #        pprint.pprint(self.parseVAA(q))
 #        sys.exit(0)
 

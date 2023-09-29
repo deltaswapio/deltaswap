@@ -262,7 +262,7 @@ mod test {
     fn happy_path() {
         let buf = [
             // version
-            0x01, // guardian set index
+            0x01, // phylax set index
             0x00, // signatures
             0x00, 0x00, 0x00, 0x01, 0x00, 0xb0, 0x72, 0x50, 0x5b, 0x5b, 0x99, 0x9c, 0x1d, 0x08,
             0x90, 0x5c, 0x02, 0xe2, 0xb6, 0xb2, 0x83, 0x2e, 0xf7, 0x2c, 0x0b, 0xa6, 0xc8, 0xdb,
@@ -296,7 +296,7 @@ mod test {
 
         let vaa = Vaa {
             version: 1,
-            guardian_set_index: 0,
+            phylax_set_index: 0,
             signatures: vec![Signature {
                 index: 0,
                 signature: [

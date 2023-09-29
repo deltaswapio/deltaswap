@@ -58,7 +58,7 @@ contract TestHelpers {
             sequence: 0,
             consistencyLevel: 200,
             payload: message,
-            guardianSetIndex: 0,
+            phylaxSetIndex: 0,
             signatures: new IWormhole.Signature[](0),
             hash: bytes32("")
         });

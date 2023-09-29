@@ -2,16 +2,16 @@
 
 /// This module implements a container that keeps track of a list of Phylax
 /// public keys and which Phylax set index this list of Phylaxs represents.
-/// Each guardian set is unique and there should be no two sets that have the
+/// Each phylax set is unique and there should be no two sets that have the
 /// same Phylax set index (which requirement is handled in `wormhole::state`).
 ///
 /// If the current Phylax set is not the latest one, its `expiration_time` is
 /// configured, which defines how long the past Phylax set can be active.
-module wormhole::guardian_set {
+module wormhole::phylax_set {
     use std::vector::{Self};
     use sui::clock::{Self, Clock};
 
-    use wormhole::guardian::{Self, Phylax};
+    use wormhole::phylax::{Self, Phylax};
 
     // Needs `set_expiration`.
     friend wormhole::state;
@@ -26,28 +26,28 @@ module wormhole::guardian_set {
         index: u32,
 
         /// List of Phylaxs. This order should not change.
-        guardians: vector<Phylax>,
+        phylaxs: vector<Phylax>,
 
         /// At what point in time the Phylax set is no longer active (in ms).
         expiration_timestamp_ms: u64,
     }
 
     /// Create new `PhylaxSet`.
-    public fun new(index: u32, guardians: vector<Phylax>): PhylaxSet {
-        // Ensure that there are no duplicate guardians.
-        let (i, n) = (0, vector::length(&guardians));
+    public fun new(index: u32, phylaxs: vector<Phylax>): PhylaxSet {
+        // Ensure that there are no duplicate phylaxs.
+        let (i, n) = (0, vector::length(&phylaxs));
         while (i < n - 1) {
-            let left = guardian::pubkey(vector::borrow(&guardians, i));
+            let left = phylax::pubkey(vector::borrow(&phylaxs, i));
             let j = i + 1;
             while (j < n) {
-                let right = guardian::pubkey(vector::borrow(&guardians, j));
+                let right = phylax::pubkey(vector::borrow(&phylaxs, j));
                 assert!(left != right, E_DUPLICATE_GUARDIAN);
                 j = j + 1;
             };
             i = i + 1;
         };
 
-        PhylaxSet { index, guardians, expiration_timestamp_ms: 0 }
+        PhylaxSet { index, phylaxs, expiration_timestamp_ms: 0 }
     }
 
     /// Retrieve the Phylax set index.
@@ -62,13 +62,13 @@ module wormhole::guardian_set {
     }
 
     /// Retrieve list of Phylaxs.
-    public fun guardians(self: &PhylaxSet): &vector<Phylax> {
-        &self.guardians
+    public fun phylaxs(self: &PhylaxSet): &vector<Phylax> {
+        &self.phylaxs
     }
 
     /// Retrieve specific Phylax by index (in the array representing the set).
-    public fun guardian_at(self: &PhylaxSet, index: u64): &Phylax {
-        vector::borrow(&self.guardians, index)
+    public fun phylax_at(self: &PhylaxSet, index: u64): &Phylax {
+        vector::borrow(&self.phylaxs, index)
     }
 
     /// Retrieve when the Phylax set is no longer active.
@@ -85,14 +85,14 @@ module wormhole::guardian_set {
         )
     }
 
-    /// Retrieve how many guardians exist in the Phylax set.
-    public fun num_guardians(self: &PhylaxSet): u64 {
-        vector::length(&self.guardians)
+    /// Retrieve how many phylaxs exist in the Phylax set.
+    public fun num_phylaxs(self: &PhylaxSet): u64 {
+        vector::length(&self.phylaxs)
     }
 
     /// Returns the minimum number of signatures required for a VAA to be valid.
     public fun quorum(self: &PhylaxSet): u64 {
-        (num_guardians(self) * 2) / 3 + 1
+        (num_phylaxs(self) * 2) / 3 + 1
     }
 
     /// Configure this Phylax set to expire from some amount of time based on
@@ -111,31 +111,31 @@ module wormhole::guardian_set {
 
     #[test_only]
     public fun destroy(set: PhylaxSet) {
-        use wormhole::guardian::{Self};
+        use wormhole::phylax::{Self};
 
         let PhylaxSet {
             index: _,
-            guardians,
+            phylaxs,
             expiration_timestamp_ms: _
         } = set;
-        while (!vector::is_empty(&guardians)) {
-            guardian::destroy(vector::pop_back(&mut guardians));
+        while (!vector::is_empty(&phylaxs)) {
+            phylax::destroy(vector::pop_back(&mut phylaxs));
         };
 
-        vector::destroy_empty(guardians);
+        vector::destroy_empty(phylaxs);
     }
 }
 
 #[test_only]
-module wormhole::guardian_set_tests {
+module wormhole::phylax_set_tests {
     use std::vector::{Self};
 
-    use wormhole::guardian::{Self};
-    use wormhole::guardian_set::{Self};
+    use wormhole::phylax::{Self};
+    use wormhole::phylax_set::{Self};
 
     #[test]
     fun test_new() {
-        let guardians = vector::empty();
+        let phylaxs = vector::empty();
 
         let pubkeys = vector[
             x"8888888888888888888888888888888888888888",
@@ -149,21 +149,21 @@ module wormhole::guardian_set_tests {
         ];
         while (!vector::is_empty(&pubkeys)) {
             vector::push_back(
-                &mut guardians,
-                guardian::new(vector::pop_back(&mut pubkeys))
+                &mut phylaxs,
+                phylax::new(vector::pop_back(&mut pubkeys))
             );
         };
 
-        let set = guardian_set::new(69, guardians);
+        let set = phylax_set::new(69, phylaxs);
 
         // Clean up.
-        guardian_set::destroy(set);
+        phylax_set::destroy(set);
     }
 
     #[test]
-    #[expected_failure(abort_code = guardian_set::E_DUPLICATE_GUARDIAN)]
-    fun test_cannot_new_duplicate_guardian() {
-        let guardians = vector::empty();
+    #[expected_failure(abort_code = phylax_set::E_DUPLICATE_GUARDIAN)]
+    fun test_cannot_new_duplicate_phylax() {
+        let phylaxs = vector::empty();
 
         let pubkeys = vector[
             x"8888888888888888888888888888888888888888",
@@ -178,15 +178,15 @@ module wormhole::guardian_set_tests {
         ];
         while (!vector::is_empty(&pubkeys)) {
             vector::push_back(
-                &mut guardians,
-                guardian::new(vector::pop_back(&mut pubkeys))
+                &mut phylaxs,
+                phylax::new(vector::pop_back(&mut pubkeys))
             );
         };
 
-        let set = guardian_set::new(69, guardians);
+        let set = phylax_set::new(69, phylaxs);
 
         // Clean up.
-        guardian_set::destroy(set);
+        phylax_set::destroy(set);
 
         abort 42
     }

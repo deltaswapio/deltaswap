@@ -79,8 +79,8 @@ type CommmandResult = Result<Option<Transaction>, Error>;
 fn command_deploy_bridge(
     config: &Config,
     bridge: &Pubkey,
-    initial_guardians: Vec<[u8; 20]>,
-    guardian_expiration: u32,
+    initial_phylaxs: Vec<[u8; 20]>,
+    phylax_expiration: u32,
     message_fee: u64,
 ) -> CommmandResult {
     println!("Initializing Wormhole bridge {}", bridge);
@@ -93,8 +93,8 @@ fn command_deploy_bridge(
         *bridge,
         config.owner.pubkey(),
         message_fee,
-        guardian_expiration,
-        initial_guardians.as_slice(),
+        phylax_expiration,
+        initial_phylaxs.as_slice(),
     )
     .unwrap();
     println!("config account: {}, ", ix.accounts[0].pubkey);
@@ -254,23 +254,23 @@ fn main() {
                         .help("Specify the bridge program address"),
                 )
                 .arg(
-                    Arg::with_name("guardian")
+                    Arg::with_name("phylax")
                         .validator(is_hex)
                         .value_name("GUARDIAN_ADDRESS")
                         .takes_value(true)
                         .index(2)
                         .required(true)
                         .require_delimiter(true)
-                        .help("Addresses of the initial guardians, comma delimited."),
+                        .help("Addresses of the initial phylaxs, comma delimited."),
                 )
                 .arg(
-                    Arg::with_name("guardian_set_expiration")
+                    Arg::with_name("phylax_set_expiration")
                         .validator(is_u32)
                         .value_name("GUARDIAN_SET_EXPIRATION")
                         .takes_value(true)
                         .index(3)
                         .required(true)
-                        .help("Time in seconds after which a guardian set expires after an update"),
+                        .help("Time in seconds after which a phylax set expires after an update"),
                 )
                 .arg(
                     Arg::with_name("message_fee")
@@ -362,23 +362,23 @@ fn main() {
     let _ = match matches.subcommand() {
         ("create-bridge", Some(arg_matches)) => {
             let bridge = pubkey_of(arg_matches, "bridge").unwrap();
-            let initial_guardians = values_of::<String>(arg_matches, "guardian").unwrap();
-            let initial_data = initial_guardians
+            let initial_phylaxs = values_of::<String>(arg_matches, "phylax").unwrap();
+            let initial_data = initial_phylaxs
                 .into_iter()
                 .map(|key| hex::decode(key).unwrap());
-            let guardians: Vec<[u8; 20]> = initial_data
+            let phylaxs: Vec<[u8; 20]> = initial_data
                 .into_iter()
                 .map(|key| {
-                    let mut guardian = [0u8; 20];
-                    guardian.copy_from_slice(&key);
-                    guardian
+                    let mut phylax = [0u8; 20];
+                    phylax.copy_from_slice(&key);
+                    phylax
                 })
                 .collect::<Vec<[u8; 20]>>();
-            let guardian_expiration: u32 =
-                value_of(arg_matches, "guardian_set_expiration").unwrap();
+            let phylax_expiration: u32 =
+                value_of(arg_matches, "phylax_set_expiration").unwrap();
             let msg_fee: u64 = value_of(arg_matches, "message_fee").unwrap();
 
-            command_deploy_bridge(&config, &bridge, guardians, guardian_expiration, msg_fee)
+            command_deploy_bridge(&config, &bridge, phylaxs, phylax_expiration, msg_fee)
         }
         ("upgrade-authority", Some(arg_matches)) => {
             let bridge = pubkey_of(arg_matches, "bridge").unwrap();

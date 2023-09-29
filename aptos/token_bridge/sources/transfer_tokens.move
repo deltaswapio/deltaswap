@@ -222,7 +222,7 @@ module token_bridge::transfer_tokens_test {
     /// Registration VAA for the ethereum token bridge 0xdeadbeef
     /// +------------------------------------------------------------------------------+
     /// | Wormhole VAA v1         | nonce: 1                | time: 1                  |
-    /// | guardian set #0         | #23663022               | consistency: 0           |
+    /// | phylax set #0         | #23663022               | consistency: 0           |
     /// |------------------------------------------------------------------------------|
     /// | Signature:                                                                   |
     /// |   #0: 15d405c74be6d93c3c33ed6b48d8db70dfb31e0981f8098b2a6c7583083e...        |
@@ -238,7 +238,7 @@ module token_bridge::transfer_tokens_test {
     /// Attestation VAA sent from the ethereum token bridge 0xdeadbeef
     /// +------------------------------------------------------------------------------+
     /// | Wormhole VAA v1         | nonce: 1                | time: 1                  |
-    /// | guardian set #0         | #22080291               | consistency: 0           |
+    /// | phylax set #0         | #22080291               | consistency: 0           |
     /// |------------------------------------------------------------------------------|
     /// | Signature:                                                                   |
     /// |   #0: 80366065746148420220f25a6275097370e8db40984529a6676b7a5fc9fe...        |

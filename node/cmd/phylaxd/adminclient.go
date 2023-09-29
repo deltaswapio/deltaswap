@@ -93,7 +93,7 @@ var AdminCmd = &cobra.Command{
 }
 
 var AdminClientSignWormchainAddress = &cobra.Command{
-	Use:   "sign-deltachain-address [/path/to/guardianKey] [deltachain-validator-address]",
+	Use:   "sign-deltachain-address [/path/to/phylaxKey] [deltachain-validator-address]",
 	Short: "Sign a deltachain validator address.  Only sign the address that you control the key for and will be for your validator.",
 	RunE:  runSignWormchainValidatorAddress,
 	Args:  cobra.ExactArgs(2),
@@ -171,21 +171,21 @@ var PurgePythNetVaasCmd = &cobra.Command{
 
 var SignExistingVaaCmd = &cobra.Command{
 	Use:   "sign-existing-vaa [VAA] [NEW_GUARDIANS] [NEW_GUARDIAN_SET_INDEX]",
-	Short: "Signs an existing VAA for a new guardian set using the local guardian key. This only works if the new VAA would have quorum.",
+	Short: "Signs an existing VAA for a new phylax set using the local phylax key. This only works if the new VAA would have quorum.",
 	Run:   runSignExistingVaa,
 	Args:  cobra.ExactArgs(3),
 }
 
 var SignExistingVaasFromCSVCmd = &cobra.Command{
 	Use:   "sign-existing-vaas-csv [IN_FILE] [OUT_FILE] [NEW_GUARDIANS] [NEW_GUARDIAN_SET_INDEX]",
-	Short: "Signs a CSV [VAA_ID,VAA_HEX] of existing VAAs for a new guardian set using the local guardian key and writes it to a new CSV. VAAs that don't have quorum on the new set will be dropped.",
+	Short: "Signs a CSV [VAA_ID,VAA_HEX] of existing VAAs for a new phylax set using the local phylax key and writes it to a new CSV. VAAs that don't have quorum on the new set will be dropped.",
 	Run:   runSignExistingVaasFromCSV,
 	Args:  cobra.ExactArgs(4),
 }
 
 var DumpRPCs = &cobra.Command{
 	Use:   "dump-rpcs",
-	Short: "Displays the RPCs in use by the guardian",
+	Short: "Displays the RPCs in use by the phylax",
 	Run:   runDumpRPCs,
 	Args:  cobra.ExactArgs(0),
 }
@@ -220,14 +220,14 @@ func getPublicRPCServiceClient(ctx context.Context, addr string) (*grpc.ClientCo
 }
 
 func runSignWormchainValidatorAddress(cmd *cobra.Command, args []string) error {
-	guardianKeyPath := args[0]
+	phylaxKeyPath := args[0]
 	deltachainAddress := args[1]
 	if !strings.HasPrefix(deltachainAddress, "wormhole") || strings.HasPrefix(deltachainAddress, "wormholeval") {
 		return fmt.Errorf("must provide a bech32 address that has 'wormhole' prefix")
 	}
-	gk, err := loadPhylaxKey(guardianKeyPath)
+	gk, err := loadPhylaxKey(phylaxKeyPath)
 	if err != nil {
-		return fmt.Errorf("failed to load guardian key: %w", err)
+		return fmt.Errorf("failed to load phylax key: %w", err)
 	}
 	addr, err := types.GetFromBech32(deltachainAddress, "wormhole")
 	if err != nil {
@@ -565,7 +565,7 @@ func runSignExistingVaa(cmd *cobra.Command, args []string) {
 
 	newGsIndex, err := strconv.ParseUint(args[2], 10, 32)
 	if err != nil {
-		log.Fatalf("invalid new guardian set index")
+		log.Fatalf("invalid new phylax set index")
 	}
 
 	ctx, cancel := context.WithCancel(context.Background())
@@ -608,7 +608,7 @@ func runSignExistingVaasFromCSV(cmd *cobra.Command, args []string) {
 
 	newGsIndex, err := strconv.ParseUint(args[3], 10, 32)
 	if err != nil {
-		log.Fatalf("invalid new guardian set index")
+		log.Fatalf("invalid new phylax set index")
 	}
 
 	ctx, cancel := context.WithCancel(context.Background())

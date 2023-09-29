@@ -540,18 +540,18 @@ class SubmitVAAState {
   vaaMap: ParsedVAA;
   accounts: string[];
   txs: TransactionSignerPair[];
-  guardianAddr: string;
+  phylaxAddr: string;
 
   constructor(
     vaaMap: ParsedVAA,
     accounts: string[],
     txs: TransactionSignerPair[],
-    guardianAddr: string
+    phylaxAddr: string
   ) {
     this.vaaMap = vaaMap;
     this.accounts = accounts;
     this.txs = txs;
-    this.guardianAddr = guardianAddr;
+    this.phylaxAddr = phylaxAddr;
   }
 }
 
@@ -588,25 +588,25 @@ export async function submitVAAHeader(
     chainRaw + em
   );
   txs.push(...seqOptInTxs);
-  const guardianPgmName = textToHexString("guardian");
+  const phylaxPgmName = textToHexString("phylax");
   // And then the signatures to help us verify the vaa_s
-  // "guardianAddr"
-  const { addr: guardianAddr, txs: guardianOptInTxs } = await optin(
+  // "phylaxAddr"
+  const { addr: phylaxAddr, txs: phylaxOptInTxs } = await optin(
     client,
     senderAddr,
     bridgeId,
     BigInt(index),
-    guardianPgmName
+    phylaxPgmName
   );
-  txs.push(...guardianOptInTxs);
-  let accts: string[] = [seqAddr, guardianAddr];
+  txs.push(...phylaxOptInTxs);
+  let accts: string[] = [seqAddr, phylaxAddr];
 
   // When we attest for a new token, we need some place to store the info... later we will need to
   // mirror the other way as well
   const keys: Uint8Array = await decodeLocalState(
     client,
     bridgeId,
-    guardianAddr
+    phylaxAddr
   );
 
   const params: algosdk.SuggestedParams = await client
@@ -635,7 +635,7 @@ export async function submitVAAHeader(
       sigs = sigs.slice(0, BSIZE);
     }
 
-    // The keyset is the set of guardians that correspond
+    // The keyset is the set of phylaxs that correspond
     // to the current set of signatures in this loop.
     // Each signature in 20 bytes and comes from decodeLocalState()
     const PhylaxKeyLen: number = 20;
@@ -644,7 +644,7 @@ export async function submitVAAHeader(
     let keySet: Uint8Array = new Uint8Array(arraySize);
     for (let i = 0; i < numSigsThisTxn; i++) {
       // The first byte of the sig is the relative index of that signature in the signatures array
-      // Use that index to get the appropriate guardian key
+      // Use that index to get the appropriate phylax key
       const idx = sigs[i * SIG_LEN];
       const key = keys.slice(
         idx * PhylaxKeyLen + 1,
@@ -682,7 +682,7 @@ export async function submitVAAHeader(
   appTxn.fee = appTxn.fee * (1 + numTxns);
   txs.push({ tx: appTxn, signer: null });
 
-  return new SubmitVAAState(parsedVAA, accts, txs, guardianAddr);
+  return new SubmitVAAState(parsedVAA, accts, txs, phylaxAddr);
 }
 
 /**
@@ -713,21 +713,21 @@ export async function _submitVAAAlgorand(
   let accts = sstate.accounts;
   let txs = sstate.txs;
 
-  // If this happens to be setting up a new guardian set, we probably need it as well...
+  // If this happens to be setting up a new phylax set, we probably need it as well...
   if (
     parsedVAA.Meta === "CoreGovernance" &&
     parsedVAA.action === 2 &&
     parsedVAA.NewPhylaxSetIndex !== undefined
   ) {
     const ngsi = parsedVAA.NewPhylaxSetIndex;
-    const guardianPgmName = textToHexString("guardian");
+    const phylaxPgmName = textToHexString("phylax");
     // "newPhylaxAddr"
     const { addr: newPhylaxAddr, txs: newPhylaxOptInTxs } = await optin(
       client,
       senderAddr,
       bridgeId,
       BigInt(ngsi),
-      guardianPgmName
+      phylaxPgmName
     );
     accts.push(newPhylaxAddr);
     txs.unshift(...newPhylaxOptInTxs);

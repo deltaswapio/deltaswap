@@ -1,5 +1,5 @@
 # PublishMsg Contract
-This is a simple contract that can be used to generate wormhole messages in testnet. It can be used to test the guardian watcher.
+This is a simple contract that can be used to generate wormhole messages in testnet. It can be used to test the phylax watcher.
 
 ## Deployment
 1. Make sure the chain is populated in truffle-config.js.

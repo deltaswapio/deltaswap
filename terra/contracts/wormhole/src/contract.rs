@@ -14,7 +14,7 @@ use crate::{
         InstantiateMsg, MigrateMsg, QueryMsg,
     },
     state::{
-        config, config_read, guardian_set_get, guardian_set_set, sequence_read, sequence_set,
+        config, config_read, phylax_set_get, phylax_set_set, sequence_read, sequence_set,
         vaa_archive_add, vaa_archive_check, ConfigInfo, ContractUpgrade, GovernancePacket,
         PhylaxAddress, PhylaxSetInfo, PhylaxSetUpgrade, ParsedVAA, SetFee, TransferFee,
     },
@@ -57,17 +57,17 @@ pub fn instantiate(
     let state = ConfigInfo {
         gov_chain: msg.gov_chain,
         gov_address: msg.gov_address.as_slice().to_vec(),
-        guardian_set_index: 0,
-        guardian_set_expirity: msg.guardian_set_expirity,
+        phylax_set_index: 0,
+        phylax_set_expirity: msg.phylax_set_expirity,
         fee: Coin::new(FEE_AMOUNT, FEE_DENOMINATION), // 0.01 Luna (or 10000 uluna) fee by default
     };
     config(deps.storage).save(&state)?;
 
-    // Add initial guardian set to storage
-    guardian_set_set(
+    // Add initial phylax set to storage
+    phylax_set_set(
         deps.storage,
-        state.guardian_set_index,
-        &msg.initial_guardian_set,
+        state.phylax_set_index,
+        &msg.initial_phylax_set,
     )?;
 
     Ok(Response::default())
@@ -96,9 +96,9 @@ fn handle_submit_vaa(
     vaa_archive_add(deps.storage, vaa.hash.as_slice())?;
 
     if state.gov_chain == vaa.emitter_chain && state.gov_address == vaa.emitter_address {
-        if state.guardian_set_index != vaa.guardian_set_index {
+        if state.phylax_set_index != vaa.phylax_set_index {
             return Err(StdError::generic_err(
-                "governance VAAs must be signed by the current guardian set",
+                "governance VAAs must be signed by the current phylax set",
             ));
         }
         return handle_governance_payload(deps, env, &vaa.payload);
@@ -125,7 +125,7 @@ fn handle_governance_payload(deps: DepsMut, env: Env, data: &[u8]) -> StdResult<
 
     match gov_packet.action {
         1u8 => vaa_update_contract(deps, env, &gov_packet.payload),
-        2u8 => vaa_update_guardian_set(deps, env, &gov_packet.payload),
+        2u8 => vaa_update_phylax_set(deps, env, &gov_packet.payload),
         3u8 => handle_set_fee(deps, env, &gov_packet.payload),
         4u8 => handle_transfer_fee(deps, env, &gov_packet.payload),
         _ => ContractError::InvalidVAAAction.std_err(),
@@ -133,7 +133,7 @@ fn handle_governance_payload(deps: DepsMut, env: Env, data: &[u8]) -> StdResult<
 }
 
 /// Parses raw VAA data into a struct and verifies whether it contains sufficient signatures of an
-/// active guardian set i.e. is valid according to Wormhole consensus rules
+/// active phylax set i.e. is valid according to Wormhole consensus rules
 fn parse_and_verify_vaa(
     storage: &dyn Storage,
     data: &[u8],
@@ -150,19 +150,19 @@ fn parse_and_verify_vaa(
         return ContractError::VaaAlreadyExecuted.std_err();
     }
 
-    // Load and check guardian set
-    let guardian_set = guardian_set_get(storage, vaa.guardian_set_index);
-    let guardian_set: PhylaxSetInfo =
-        guardian_set.or_else(|_| ContractError::InvalidPhylaxSetIndex.std_err())?;
+    // Load and check phylax set
+    let phylax_set = phylax_set_get(storage, vaa.phylax_set_index);
+    let phylax_set: PhylaxSetInfo =
+        phylax_set.or_else(|_| ContractError::InvalidPhylaxSetIndex.std_err())?;
 
-    if guardian_set.expiration_time != 0 && guardian_set.expiration_time < block_time {
+    if phylax_set.expiration_time != 0 && phylax_set.expiration_time < block_time {
         return ContractError::PhylaxSetExpired.std_err();
     }
-    if (vaa.len_signers as usize) < guardian_set.quorum() {
+    if (vaa.len_signers as usize) < phylax_set.quorum() {
         return ContractError::NoQuorum.std_err();
     }
 
-    // Verify guardian signatures
+    // Verify phylax signatures
     let mut last_index: i32 = -1;
     let mut pos = ParsedVAA::HEADER_LEN;
 
@@ -191,10 +191,10 @@ fn parse_and_verify_vaa(
             .or_else(|_| ContractError::CannotRecoverKey.std_err())?;
 
         let index = index as usize;
-        if index >= guardian_set.addresses.len() {
+        if index >= phylax_set.addresses.len() {
             return ContractError::TooManySignatures.std_err();
         }
-        if !keys_equal(&verify_key, &guardian_set.addresses[index]) {
+        if !keys_equal(&verify_key, &phylax_set.addresses[index]) {
             return ContractError::PhylaxSignatureError.std_err();
         }
         pos += ParsedVAA::SIGNATURE_LEN;
@@ -203,40 +203,40 @@ fn parse_and_verify_vaa(
     Ok(vaa)
 }
 
-fn vaa_update_guardian_set(deps: DepsMut, env: Env, data: &[u8]) -> StdResult<Response> {
+fn vaa_update_phylax_set(deps: DepsMut, env: Env, data: &[u8]) -> StdResult<Response> {
     /* Payload format
     0   uint32 new_index
     4   uint8 len(keys)
-    5   [][20]uint8 guardian addresses
+    5   [][20]uint8 phylax addresses
     */
 
     let mut state = config_read(deps.storage).load()?;
 
     let PhylaxSetUpgrade {
-        new_guardian_set_index,
-        new_guardian_set,
+        new_phylax_set_index,
+        new_phylax_set,
     } = PhylaxSetUpgrade::deserialize(data)?;
 
-    if new_guardian_set_index != state.guardian_set_index + 1 {
+    if new_phylax_set_index != state.phylax_set_index + 1 {
         return ContractError::PhylaxSetIndexIncreaseError.std_err();
     }
 
-    let old_guardian_set_index = state.guardian_set_index;
+    let old_phylax_set_index = state.phylax_set_index;
 
-    state.guardian_set_index = new_guardian_set_index;
+    state.phylax_set_index = new_phylax_set_index;
 
-    guardian_set_set(deps.storage, state.guardian_set_index, &new_guardian_set)?;
+    phylax_set_set(deps.storage, state.phylax_set_index, &new_phylax_set)?;
 
     config(deps.storage).save(&state)?;
 
-    let mut old_guardian_set = guardian_set_get(deps.storage, old_guardian_set_index)?;
-    old_guardian_set.expiration_time = env.block.time.seconds() + state.guardian_set_expirity;
-    guardian_set_set(deps.storage, old_guardian_set_index, &old_guardian_set)?;
+    let mut old_phylax_set = phylax_set_get(deps.storage, old_phylax_set_index)?;
+    old_phylax_set.expiration_time = env.block.time.seconds() + state.phylax_set_expirity;
+    phylax_set_set(deps.storage, old_phylax_set_index, &old_phylax_set)?;
 
     Ok(Response::new()
-        .add_attribute("action", "guardian_set_change")
-        .add_attribute("old", old_guardian_set_index.to_string())
-        .add_attribute("new", state.guardian_set_index.to_string()))
+        .add_attribute("action", "phylax_set_change")
+        .add_attribute("old", old_phylax_set_index.to_string())
+        .add_attribute("new", state.phylax_set_index.to_string()))
 }
 
 fn vaa_update_contract(_deps: DepsMut, env: Env, data: &[u8]) -> StdResult<Response> {
@@ -309,7 +309,7 @@ fn handle_post_message(
 #[cfg_attr(not(feature = "library"), entry_point)]
 pub fn query(deps: Deps, _env: Env, msg: QueryMsg) -> StdResult<Binary> {
     match msg {
-        QueryMsg::PhylaxSetInfo {} => to_binary(&query_guardian_set_info(deps)?),
+        QueryMsg::PhylaxSetInfo {} => to_binary(&query_phylax_set_info(deps)?),
         QueryMsg::VerifyVAA { vaa, block_time } => to_binary(&query_parse_and_verify_vaa(
             deps,
             vaa.as_slice(),
@@ -320,12 +320,12 @@ pub fn query(deps: Deps, _env: Env, msg: QueryMsg) -> StdResult<Binary> {
     }
 }
 
-pub fn query_guardian_set_info(deps: Deps) -> StdResult<PhylaxSetInfoResponse> {
+pub fn query_phylax_set_info(deps: Deps) -> StdResult<PhylaxSetInfoResponse> {
     let state = config_read(deps.storage).load()?;
-    let guardian_set = guardian_set_get(deps.storage, state.guardian_set_index)?;
+    let phylax_set = phylax_set_get(deps.storage, state.phylax_set_index)?;
     let res = PhylaxSetInfoResponse {
-        guardian_set_index: state.guardian_set_index,
-        addresses: guardian_set.addresses,
+        phylax_set_index: state.phylax_set_index,
+        addresses: phylax_set.addresses,
     };
     Ok(res)
 }

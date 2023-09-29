@@ -61,15 +61,15 @@ func (acct *Accountant) handleBatch(ctx context.Context) error {
 
 	gs := acct.gst.Get()
 	if gs == nil {
-		return fmt.Errorf("failed to get guardian set")
+		return fmt.Errorf("failed to get phylax set")
 	}
 
-	guardianIndex, found := gs.KeyIndex(acct.guardianAddr)
+	phylaxIndex, found := gs.KeyIndex(acct.phylaxAddr)
 	if !found {
-		return fmt.Errorf("failed to get guardian index")
+		return fmt.Errorf("failed to get phylax index")
 	}
 
-	acct.submitObservationsToContract(msgs, gs.Index, uint32(guardianIndex))
+	acct.submitObservationsToContract(msgs, gs.Index, uint32(phylaxIndex))
 	transfersSubmitted.Add(float64(len(msgs)))
 	return nil
 }
@@ -120,8 +120,8 @@ type (
 		// A serialized `Vec<Observation>`. Multiple observations can be submitted together to reduce  transaction overhead.
 		Observations []byte `json:"observations"`
 
-		// The index of the guardian set used to sign the observations.
-		PhylaxSetIndex uint32 `json:"guardian_set_index"`
+		// The index of the phylax set used to sign the observations.
+		PhylaxSetIndex uint32 `json:"phylax_set_index"`
 
 		// A signature for `observations`.
 		Signature SignatureType `json:"signature"`
@@ -192,8 +192,8 @@ func (sb SignatureBytes) MarshalJSON() ([]byte, error) {
 
 // submitObservationsToContract makes a call to the smart contract to submit a batch of observation requests.
 // It should be called from a go routine because it can block.
-func (acct *Accountant) submitObservationsToContract(msgs []*common.MessagePublication, gsIndex uint32, guardianIndex uint32) {
-	txResp, err := SubmitObservationsToContract(acct.ctx, acct.logger, acct.gk, gsIndex, guardianIndex, acct.deltachainConn, acct.contract, msgs)
+func (acct *Accountant) submitObservationsToContract(msgs []*common.MessagePublication, gsIndex uint32, phylaxIndex uint32) {
+	txResp, err := SubmitObservationsToContract(acct.ctx, acct.logger, acct.gk, gsIndex, phylaxIndex, acct.deltachainConn, acct.contract, msgs)
 	if err != nil {
 		// This means the whole batch failed. They will all get retried the next audit cycle.
 		acct.logger.Error("failed to submit any observations in batch", zap.Int("numMsgs", len(msgs)), zap.Error(err))
@@ -294,7 +294,7 @@ func SubmitObservationsToContract(
 	logger *zap.Logger,
 	gk *ecdsa.PrivateKey,
 	gsIndex uint32,
-	guardianIndex uint32,
+	phylaxIndex uint32,
 	deltachainConn AccountantWormchainConn,
 	contract string,
 	msgs []*common.MessagePublication,
@@ -340,7 +340,7 @@ func SubmitObservationsToContract(
 		return nil, fmt.Errorf("failed to sign accountant Observation request: %w", err)
 	}
 
-	sig := SignatureType{Index: guardianIndex, Signature: sigBytes}
+	sig := SignatureType{Index: phylaxIndex, Signature: sigBytes}
 
 	msgData := SubmitObservationsMsg{
 		Params: SubmitObservationsParams{
@@ -365,7 +365,7 @@ func SubmitObservationsToContract(
 	logger.Debug("in SubmitObservationsToContract, sending broadcast",
 		zap.Int("numObs", len(obs)),
 		zap.String("observations", string(bytes)),
-		zap.Uint32("gsIndex", gsIndex), zap.Uint32("guardianIndex", guardianIndex),
+		zap.Uint32("gsIndex", gsIndex), zap.Uint32("phylaxIndex", phylaxIndex),
 	)
 
 	start := time.Now()

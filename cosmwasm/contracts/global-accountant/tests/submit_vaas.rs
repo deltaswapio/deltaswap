@@ -152,7 +152,7 @@ fn invalid_transfer() {
 fn no_quorum() {
     let (wh, mut contract) = proper_instantiate();
     register_emitters(&wh, &mut contract, 4);
-    let index = wh.guardian_set_index();
+    let index = wh.phylax_set_index();
     let quorum = wh
         .calculate_quorum(index, contract.app().block_info().height)
         .unwrap() as usize;
@@ -270,7 +270,7 @@ fn transfer_with_payload() {
     let signatures = wh.sign(&data);
     let header = Header {
         version: 1,
-        guardian_set_index: wh.guardian_set_index(),
+        phylax_set_index: wh.phylax_set_index(),
         signatures,
     };
 
@@ -325,7 +325,7 @@ fn reobservation() {
         .submit_vaas(vec![data])
         .expect("failed to submit VAA");
 
-    // Now try submitting the same transfer as an observation.  This can happen when a guardian
+    // Now try submitting the same transfer as an observation.  This can happen when a phylax
     // re-observes a tx.
     let o = Observation {
         tx_hash: vec![0x55u8; 20].into(),
@@ -340,7 +340,7 @@ fn reobservation() {
     let key = transfer::Key::new(o.emitter_chain, o.emitter_address.into(), o.sequence);
 
     let obs = to_binary(&vec![o]).unwrap();
-    let index = wh.guardian_set_index();
+    let index = wh.phylax_set_index();
     let signatures = sign_observations(&wh, &obs);
     for s in signatures {
         let resp = contract.submit_observations(obs.clone(), index, s).unwrap();
@@ -379,7 +379,7 @@ fn digest_mismatch() {
 
     let key = transfer::Key::new(o.emitter_chain, o.emitter_address.into(), o.sequence);
     let obs = to_binary(&vec![o]).unwrap();
-    let index = wh.guardian_set_index();
+    let index = wh.phylax_set_index();
     let signatures = sign_observations(&wh, &obs);
     for s in signatures {
         let resp = contract.submit_observations(obs.clone(), index, s).unwrap();

@@ -115,9 +115,9 @@ the previous step, an unsigned governance VAA can be generated
 ```
 
 This will write to the `token-bridge-upgrade-59614.prototxt` file, which can
-now be shared with the guardians to vote on.
+now be shared with the phylaxs to vote on.
 
-Once the guardians have reached quorum, the VAA may be submitted from any
+Once the phylaxs have reached quorum, the VAA may be submitted from any
 funded wallet: TODO - make this easier and more unified
 
 ```sh

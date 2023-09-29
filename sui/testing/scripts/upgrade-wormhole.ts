@@ -20,8 +20,8 @@ const WORMHOLE_STATE_ID =
   "0x69ae41bdef4770895eb4e7aaefee5e4673acc08f6917b4856cf55549c4573ca8";
 
 async function main() {
-  const guardianPrivateKey = process.env.TESTNET_GUARDIAN_PRIVATE_KEY;
-  if (guardianPrivateKey === undefined) {
+  const phylaxPrivateKey = process.env.TESTNET_GUARDIAN_PRIVATE_KEY;
+  if (phylaxPrivateKey === undefined) {
     throw new Error("TESTNET_GUARDIAN_PRIVATE_KEY unset in environment");
   }
 
@@ -49,7 +49,7 @@ async function main() {
     buildForBytecodeAndDigest(dstWormholePath);
 
   // We will use the signed VAA when we execute the upgrade.
-  const guardians = new mock.MockPhylaxs(0, [guardianPrivateKey]);
+  const phylaxs = new mock.MockPhylaxs(0, [phylaxPrivateKey]);
 
   const timestamp = 12345678;
   const governance = new mock.GovernanceEmitter(GOVERNANCE_EMITTER);
@@ -60,7 +60,7 @@ async function main() {
   );
   published.writeUInt16BE(21, published.length - 34);
 
-  const signedVaa = guardians.addSignatures(published, [0]);
+  const signedVaa = phylaxs.addSignatures(published, [0]);
   console.log("Upgrade VAA:", signedVaa.toString("hex"));
 
   // And execute upgrade with governance VAA.

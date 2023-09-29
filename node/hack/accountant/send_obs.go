@@ -35,7 +35,7 @@ func main() {
 	deltachainURL := string("localhost:9090")
 	deltachainKeyPath := string("./dev.deltachain.key")
 	contract := "wormhole14hj2tavq8fpesdwxxcu44rty3hh90vhujrvcmstl4zr3txmfvw9srrg465"
-	guardianKeyPath := string("./dev.guardian.key")
+	phylaxKeyPath := string("./dev.phylax.key")
 
 	deltachainKey, err := wormconn.LoadWormchainPrivKey(deltachainKeyPath, "test0000")
 	if err != nil {
@@ -53,10 +53,10 @@ func main() {
 		zap.String("senderAddress", deltachainConn.SenderAddress()),
 	)
 
-	logger.Info("Loading guardian key", zap.String("guardianKeyPath", guardianKeyPath))
-	gk, err := loadPhylaxKey(guardianKeyPath)
+	logger.Info("Loading phylax key", zap.String("phylaxKeyPath", phylaxKeyPath))
+	gk, err := loadPhylaxKey(phylaxKeyPath)
 	if err != nil {
-		logger.Fatal("failed to load guardian key", zap.Error(err))
+		logger.Fatal("failed to load phylax key", zap.Error(err))
 	}
 
 	sequence := uint64(time.Now().Unix())
@@ -444,16 +444,16 @@ func submit(
 	msgs []*common.MessagePublication,
 ) (*sdktx.BroadcastTxResponse, error) {
 	gsIndex := uint32(0)
-	guardianIndex := uint32(0)
+	phylaxIndex := uint32(0)
 
-	return accountant.SubmitObservationsToContract(ctx, logger, gk, gsIndex, guardianIndex, deltachainConn, contract, msgs)
+	return accountant.SubmitObservationsToContract(ctx, logger, gk, gsIndex, phylaxIndex, deltachainConn, contract, msgs)
 }
 
 const (
 	PhylaxKeyArmoredBlock = "WORMHOLE GUARDIAN PRIVATE KEY"
 )
 
-// loadPhylaxKey loads a serialized guardian key from disk.
+// loadPhylaxKey loads a serialized phylax key from disk.
 func loadPhylaxKey(filename string) (*ecdsa.PrivateKey, error) {
 	f, err := os.Open(filename)
 	if err != nil {

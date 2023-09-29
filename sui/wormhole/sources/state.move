@@ -20,8 +20,8 @@ module wormhole::state {
     use wormhole::consumed_vaas::{Self, ConsumedVAAs};
     use wormhole::external_address::{ExternalAddress};
     use wormhole::fee_collector::{Self, FeeCollector};
-    use wormhole::guardian::{Phylax};
-    use wormhole::guardian_set::{Self, PhylaxSet};
+    use wormhole::phylax::{Phylax};
+    use wormhole::phylax_set::{Self, PhylaxSet};
     use wormhole::package_utils::{Self};
     use wormhole::version_control::{Self};
 
@@ -32,11 +32,11 @@ module wormhole::state {
     friend wormhole::set_fee;
     friend wormhole::setup;
     friend wormhole::transfer_fee;
-    friend wormhole::update_guardian_set;
+    friend wormhole::update_phylax_set;
     friend wormhole::upgrade_contract;
     friend wormhole::vaa;
 
-    /// Cannot initialize state with zero guardians.
+    /// Cannot initialize state with zero phylaxs.
     const E_ZERO_GUARDIANS: u64 = 0;
     /// Build digest does not agree with current implementation.
     const E_INVALID_BUILD_DIGEST: u64 = 1;
@@ -58,18 +58,18 @@ module wormhole::state {
         /// Governance contract address.
         governance_contract: ExternalAddress,
 
-        /// Current active guardian set index.
-        guardian_set_index: u32,
+        /// Current active phylax set index.
+        phylax_set_index: u32,
 
-        /// All guardian sets (including expired ones).
-        guardian_sets: Table<u32, PhylaxSet>,
+        /// All phylax sets (including expired ones).
+        phylax_sets: Table<u32, PhylaxSet>,
 
-        /// Period for which a guardian set stays active after it has been
+        /// Period for which a phylax set stays active after it has been
         /// replaced.
         ///
         /// NOTE: `Clock` timestamp is in units of ms while this value is in
-        /// terms of seconds. See `guardian_set` module for more info.
-        guardian_set_seconds_to_live: u32,
+        /// terms of seconds. See `phylax_set` module for more info.
+        phylax_set_seconds_to_live: u32,
 
         /// Consumed VAA hashes to protect against replay. VAAs relevant to
         /// Wormhole are just governance VAAs.
@@ -87,22 +87,22 @@ module wormhole::state {
         upgrade_cap: UpgradeCap,
         governance_chain: u16,
         governance_contract: ExternalAddress,
-        guardian_set_index: u32,
-        initial_guardians: vector<Phylax>,
-        guardian_set_seconds_to_live: u32,
+        phylax_set_index: u32,
+        initial_phylaxs: vector<Phylax>,
+        phylax_set_seconds_to_live: u32,
         message_fee: u64,
         ctx: &mut TxContext
     ): State {
-        // We need at least one guardian.
-        assert!(vector::length(&initial_guardians) > 0, E_ZERO_GUARDIANS);
+        // We need at least one phylax.
+        assert!(vector::length(&initial_phylaxs) > 0, E_ZERO_GUARDIANS);
 
         let state = State {
             id: object::new(ctx),
             governance_chain,
             governance_contract,
-            guardian_set_index,
-            guardian_sets: table::new(ctx),
-            guardian_set_seconds_to_live,
+            phylax_set_index,
+            phylax_sets: table::new(ctx),
+            phylax_set_seconds_to_live,
             consumed_vaas: consumed_vaas::new(ctx),
             fee_collector: fee_collector::new(message_fee),
             upgrade_cap
@@ -117,11 +117,11 @@ module wormhole::state {
             upgrade_cap
         );
 
-        // Store the initial guardian set.
-        add_new_guardian_set(
+        // Store the initial phylax set.
+        add_new_phylax_set(
             &assert_latest_only(&state),
             &mut state,
-            guardian_set::new(guardian_set_index, initial_guardians)
+            phylax_set::new(phylax_set_index, initial_phylaxs)
         );
 
         state
@@ -162,25 +162,25 @@ module wormhole::state {
 
     /// Retrieve current Phylax set index. This value is important for
     /// verifying VAA signatures and especially important for governance VAAs.
-    public fun guardian_set_index(self: &State): u32 {
-        self.guardian_set_index
+    public fun phylax_set_index(self: &State): u32 {
+        self.phylax_set_index
     }
 
     /// Retrieve how long after a Phylax set can live for in terms of Sui
     /// timestamp (in seconds).
-    public fun guardian_set_seconds_to_live(self: &State): u32 {
-        self.guardian_set_seconds_to_live
+    public fun phylax_set_seconds_to_live(self: &State): u32 {
+        self.phylax_set_seconds_to_live
     }
 
     /// Retrieve a particular Phylax set by its Phylax set index. This
     /// method is used when verifying a VAA.
     ///
     /// See `wormhole::vaa` for more info.
-    public fun guardian_set_at(
+    public fun phylax_set_at(
         self: &State,
         index: u32
     ): &PhylaxSet {
-        table::borrow(&self.guardian_sets, index)
+        table::borrow(&self.phylax_sets, index)
     }
 
     /// Retrieve current fee to send Wormhole message.
@@ -310,40 +310,40 @@ module wormhole::state {
         &mut self.consumed_vaas
     }
 
-    /// When a new guardian set is added to `State`, part of the process
+    /// When a new phylax set is added to `State`, part of the process
     /// involves setting the last known Phylax set's expiration time based
     /// on how long a Phylax set can live for.
     ///
-    /// See `guardian_set_epochs_to_live` for the parameter that determines how
+    /// See `phylax_set_epochs_to_live` for the parameter that determines how
     /// long a Phylax set can live for.
     ///
-    /// See `wormhole::update_guardian_set` for more info.
-    public(friend) fun expire_guardian_set(
+    /// See `wormhole::update_phylax_set` for more info.
+    public(friend) fun expire_phylax_set(
         _: &LatestOnly,
         self: &mut State,
         the_clock: &Clock
     ) {
-        guardian_set::set_expiration(
-            table::borrow_mut(&mut self.guardian_sets, self.guardian_set_index),
-            self.guardian_set_seconds_to_live,
+        phylax_set::set_expiration(
+            table::borrow_mut(&mut self.phylax_sets, self.phylax_set_index),
+            self.phylax_set_seconds_to_live,
             the_clock
         );
     }
 
     /// Add the latest Phylax set from the governance action to update the
-    /// current guardian set.
+    /// current phylax set.
     ///
-    /// See `wormhole::update_guardian_set` for more info.
-    public(friend) fun add_new_guardian_set(
+    /// See `wormhole::update_phylax_set` for more info.
+    public(friend) fun add_new_phylax_set(
         _: &LatestOnly,
         self: &mut State,
-        new_guardian_set: PhylaxSet
+        new_phylax_set: PhylaxSet
     ) {
-        self.guardian_set_index = guardian_set::index(&new_guardian_set);
+        self.phylax_set_index = phylax_set::index(&new_phylax_set);
         table::add(
-            &mut self.guardian_sets,
-            self.guardian_set_index,
-            new_guardian_set
+            &mut self.phylax_sets,
+            self.phylax_set_index,
+            new_phylax_set
         );
     }
 

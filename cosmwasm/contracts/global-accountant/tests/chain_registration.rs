@@ -170,7 +170,7 @@ fn duplicate() {
 #[test]
 fn no_quorum() {
     let (wh, mut contract) = proper_instantiate();
-    let index = wh.guardian_set_index();
+    let index = wh.phylax_set_index();
     let quorum = wh
         .calculate_quorum(index, contract.app().block_info().height)
         .unwrap() as usize;

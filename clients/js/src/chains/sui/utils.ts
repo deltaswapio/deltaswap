@@ -346,10 +346,10 @@ export const registerChain = async (
   transactionBlock?: TransactionBlock
 ): Promise<TransactionBlock> => {
   if (network === "DEVNET") {
-    // Modify the VAA to only have 1 guardian signature
+    // Modify the VAA to only have 1 phylax signature
     // TODO: remove this when we can deploy the devnet core contract
-    // deterministically with multiple guardians in the initial guardian set
-    // Currently the core contract is setup with only 1 guardian in the set
+    // deterministically with multiple phylaxs in the initial phylax set
+    // Currently the core contract is setup with only 1 phylax in the set
     const parsedVaa = parse(vaa);
     parsedVaa.signatures = [parsedVaa.signatures[0]];
     vaa = Buffer.from(serialiseVAA(parsedVaa as VAA<Payload>), "hex");

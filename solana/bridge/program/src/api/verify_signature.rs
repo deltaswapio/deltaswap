@@ -27,7 +27,7 @@ pub struct VerifySignatures<'b> {
     pub payer: Mut<Signer<Info<'b>>>,
 
     /// Phylax set of the signatures
-    pub guardian_set: PhylaxSet<'b, { AccountState::Initialized }>,
+    pub phylax_set: PhylaxSet<'b, { AccountState::Initialized }>,
 
     /// Signature Account
     pub signature_set: Mut<Signer<SignatureSet<'b, { AccountState::MaybeInitialized }>>>,
@@ -39,7 +39,7 @@ pub struct VerifySignatures<'b> {
 impl From<&VerifySignatures<'_>> for PhylaxSetDerivationData {
     fn from(data: &VerifySignatures<'_>) -> Self {
         PhylaxSetDerivationData {
-            index: data.guardian_set.index,
+            index: data.phylax_set.index,
         }
     }
 }
@@ -52,7 +52,7 @@ pub struct VerifySignaturesData {
 
 /// SigInfo contains metadata about signers in a VerifySignature ix
 struct SigInfo {
-    /// index of the signer in the guardianset
+    /// index of the signer in the phylaxset
     signer_index: u8,
     /// index of the signature in the secp instruction
     sig_index: u8,
@@ -69,7 +69,7 @@ pub fn verify_signatures(
     accs: &mut VerifySignatures,
     data: VerifySignaturesData,
 ) -> Result<()> {
-    accs.guardian_set
+    accs.phylax_set
         .verify_derivation(ctx.program_id, &(&*accs).into())?;
 
     let sig_infos: Vec<SigInfo> = data
@@ -169,8 +169,8 @@ pub fn verify_signatures(
     msg_hash.copy_from_slice(message);
 
     if !accs.signature_set.is_initialized() {
-        accs.signature_set.signatures = vec![false; accs.guardian_set.keys.len()];
-        accs.signature_set.guardian_set_index = accs.guardian_set.index;
+        accs.signature_set.signatures = vec![false; accs.phylax_set.keys.len()];
+        accs.signature_set.phylax_set_index = accs.phylax_set.index;
         accs.signature_set.hash = msg_hash;
 
         let size = accs.signature_set.size();
@@ -185,7 +185,7 @@ pub fn verify_signatures(
         )?;
     } else {
         // If the account already existed, check that the parameters match
-        if accs.signature_set.guardian_set_index != accs.guardian_set.index {
+        if accs.signature_set.phylax_set_index != accs.phylax_set.index {
             return Err(PhylaxSetMismatch.into());
         }
 
@@ -196,7 +196,7 @@ pub fn verify_signatures(
 
     // Write sigs of checked addresses into sig_state
     for s in sig_infos {
-        if s.signer_index > accs.guardian_set.num_guardians() {
+        if s.signer_index > accs.phylax_set.num_phylaxs() {
             return Err(ProgramError::InvalidArgument.into());
         }
 
@@ -204,7 +204,7 @@ pub fn verify_signatures(
             return Err(ProgramError::InvalidArgument.into());
         }
 
-        let key = accs.guardian_set.keys[s.signer_index as usize];
+        let key = accs.phylax_set.keys[s.signer_index as usize];
         // Check key in ix
         if key != secp_ixs[s.sig_index as usize].address {
             return Err(ProgramError::InvalidArgument.into());

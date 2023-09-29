@@ -2,7 +2,7 @@
 FROM cli-gen as cli-export
 FROM node:18-alpine@sha256:44aaf1ccc80eaed6572a0f2ef7d6b5a2982d54481e4255480041ac92221e2f11 as const-build
 
-# fetch scripts/guardian-set-init.sh deps
+# fetch scripts/phylax-set-init.sh deps
 RUN apk update && apk add bash g++ make python3 curl jq findutils
 
 # Support additional root CAs
@@ -22,14 +22,14 @@ WORKDIR /
 COPY scripts ./scripts
 COPY ethereum/.env.test ./ethereum/.env.test
 
-ARG num_guardians
-ENV NUM_GUARDIANS=$num_guardians
+ARG num_phylaxs
+ENV NUM_GUARDIANS=$num_phylaxs
 
 # run distribute-devnet-consts.sh to copy devnet-consts.json to chain dirs for use
 RUN ./scripts/distribute-devnet-consts.sh
 
-# run guardian-set-init.sh to create env files with the init state for NUM_GUARDIANS
-RUN ./scripts/guardian-set-init.sh $NUM_GUARDIANS
+# run phylax-set-init.sh to create env files with the init state for NUM_GUARDIANS
+RUN ./scripts/phylax-set-init.sh $NUM_GUARDIANS
 
 FROM scratch AS const-export
 COPY --from=const-build /scripts/.env.0x .env.0x

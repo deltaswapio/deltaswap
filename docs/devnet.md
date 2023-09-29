@@ -55,6 +55,6 @@ front rifle urge write push dynamic oil vital section blast protect suffer shoul
 DEVKPY5JA6IJED3KBS7Z6J2ZXAUVWIJLABNAYVVLOXXIVSBH32FA2Z4BWY
 fat pet option agree father glue range ancient curtain pottery search raven club save crane sting gift seven butter decline image toward kidney above balance
 
-### devnet guardian addresses
+### devnet phylax addresses
 
 see [../scripts/devnet-consts.json](../scripts/devnet-consts.json)

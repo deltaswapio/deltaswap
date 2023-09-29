@@ -30,18 +30,18 @@ module wormhole::vaa {
     use wormhole::consumed_vaas::{Self, ConsumedVAAs};
     use wormhole::cursor::{Self};
     use wormhole::external_address::{Self, ExternalAddress};
-    use wormhole::guardian::{Self};
-    use wormhole::guardian_set::{Self, PhylaxSet};
-    use wormhole::guardian_signature::{Self, PhylaxSignature};
+    use wormhole::phylax::{Self};
+    use wormhole::phylax_set::{Self, PhylaxSet};
+    use wormhole::phylax_signature::{Self, PhylaxSignature};
     use wormhole::state::{Self, State};
 
     /// Incorrect VAA version.
     const E_WRONG_VERSION: u64 = 0;
-    /// Not enough guardians attested to this Wormhole observation.
+    /// Not enough phylaxs attested to this Wormhole observation.
     const E_NO_QUORUM: u64 = 1;
     /// Signature does not match expected Phylax public key.
     const E_INVALID_SIGNATURE: u64 = 2;
-    /// Prior guardian set is no longer valid.
+    /// Prior phylax set is no longer valid.
     const E_GUARDIAN_SET_EXPIRED: u64 = 3;
     /// Phylax signature is encoded out of sequence.
     const E_NON_INCREASING_SIGNERS: u64 = 4;
@@ -53,7 +53,7 @@ module wormhole::vaa {
     struct VAA {
         /// Phylax set index of Phylaxs that attested to observing the
         /// Wormhole message.
-        guardian_set_index: u32,
+        phylax_set_index: u32,
         /// Time when Wormhole message was emitted or observed.
         timestamp: u32,
         /// A.K.A. Batch ID.
@@ -74,8 +74,8 @@ module wormhole::vaa {
         digest: Bytes32
     }
 
-    public fun guardian_set_index(self: &VAA): u32 {
-        self.guardian_set_index
+    public fun phylax_set_index(self: &VAA): u32 {
+        self.phylax_set_index
     }
 
     public fun timestamp(self: &VAA): u32 {
@@ -135,7 +135,7 @@ module wormhole::vaa {
         vaa: VAA
     ): (u16, ExternalAddress, vector<u8>) {
         let VAA {
-            guardian_set_index: _,
+            phylax_set_index: _,
             timestamp: _,
             nonce: _,
             emitter_chain,
@@ -163,12 +163,12 @@ module wormhole::vaa {
         // Deserialize VAA buffer (and return `VAA` after verifying signatures).
         let (signatures, vaa) = parse(buf);
 
-        // Fetch the guardian set which this VAA was supposedly signed with and
-        // verify signatures using guardian set.
+        // Fetch the phylax set which this VAA was supposedly signed with and
+        // verify signatures using phylax set.
         verify_signatures(
-            state::guardian_set_at(
+            state::phylax_set_at(
                 wormhole_state,
-                vaa.guardian_set_index
+                vaa.phylax_set_index
             ),
             signatures,
             bytes32::to_bytes(compute_message_hash(&vaa)),
@@ -216,20 +216,20 @@ module wormhole::vaa {
             E_WRONG_VERSION
         );
 
-        let guardian_set_index = bytes::take_u32_be(&mut cur);
+        let phylax_set_index = bytes::take_u32_be(&mut cur);
 
-        // Deserialize guardian signatures.
+        // Deserialize phylax signatures.
         let num_signatures = bytes::take_u8(&mut cur);
         let signatures = vector::empty();
         let i = 0;
         while (i < num_signatures) {
-            let guardian_index = bytes::take_u8(&mut cur);
+            let phylax_index = bytes::take_u8(&mut cur);
             let r = bytes32::take_bytes(&mut cur);
             let s = bytes32::take_bytes(&mut cur);
             let recovery_id = bytes::take_u8(&mut cur);
             vector::push_back(
                 &mut signatures,
-                guardian_signature::new(r, s, recovery_id, guardian_index)
+                phylax_signature::new(r, s, recovery_id, phylax_index)
             );
             i = i + 1;
         };
@@ -247,7 +247,7 @@ module wormhole::vaa {
         let payload = cursor::take_rest(cur);
 
         let parsed = VAA {
-            guardian_set_index,
+            phylax_set_index,
             timestamp,
             nonce,
             emitter_chain,
@@ -284,40 +284,40 @@ module wormhole::vaa {
     ) {
         // Phylax set must be active (not expired).
         assert!(
-            guardian_set::is_active(set, the_clock),
+            phylax_set::is_active(set, the_clock),
             E_GUARDIAN_SET_EXPIRED
         );
 
         // Number of signatures must be at least quorum.
         assert!(
-            vector::length(&signatures) >= guardian_set::quorum(set),
+            vector::length(&signatures) >= phylax_set::quorum(set),
             E_NO_QUORUM
         );
 
         // Drain `Cursor` by checking each signature.
         let cur = cursor::new(signatures);
-        let last_guardian_index = option::none();
+        let last_phylax_index = option::none();
         while (!cursor::is_empty(&cur)) {
             let signature = cursor::poke(&mut cur);
-            let guardian_index = guardian_signature::index_as_u64(&signature);
+            let phylax_index = phylax_signature::index_as_u64(&signature);
 
             // Ensure that the provided signatures are strictly increasing.
             // This check makes sure that no duplicate signers occur. The
-            // increasing order is guaranteed by the guardians, or can always be
+            // increasing order is guaranteed by the phylaxs, or can always be
             // reordered by the client.
             assert!(
                 (
-                    option::is_none(&last_guardian_index) ||
-                    guardian_index > *option::borrow(&last_guardian_index)
+                    option::is_none(&last_phylax_index) ||
+                    phylax_index > *option::borrow(&last_phylax_index)
                 ),
                 E_NON_INCREASING_SIGNERS
             );
 
-            // If the guardian pubkey cannot be recovered using the signature
+            // If the phylax pubkey cannot be recovered using the signature
             // and message hash, revert.
             assert!(
-                guardian::verify(
-                    guardian_set::guardian_at(set, guardian_index),
+                phylax::verify(
+                    phylax_set::phylax_at(set, phylax_index),
                     signature,
                     message_hash
                 ),
@@ -325,7 +325,7 @@ module wormhole::vaa {
             );
 
             // Continue.
-            option::swap_or_fill(&mut last_guardian_index, guardian_index);
+            option::swap_or_fill(&mut last_phylax_index, phylax_index);
         };
 
         // Done.
@@ -374,16 +374,16 @@ module wormhole::vaa_tests {
     use wormhole::bytes32::{Self};
     use wormhole::cursor::{Self};
     use wormhole::external_address::{Self};
-    use wormhole::guardian_signature::{Self};
+    use wormhole::phylax_signature::{Self};
     use wormhole::state::{Self};
     use wormhole::vaa::{Self};
     use wormhole::version_control::{Self};
     use wormhole::wormhole_scenario::{
-        guardians,
+        phylaxs,
         person,
         return_clock,
         return_state,
-        set_up_wormhole_with_guardians,
+        set_up_wormhole_with_phylaxs,
         take_clock,
         take_state
         //upgrade_wormhole
@@ -402,7 +402,7 @@ module wormhole::vaa_tests {
 
         let expected_signatures =
             vector[
-                guardian_signature::new(
+                phylax_signature::new(
                     bytes32::new(
                         x"9bafff633087a9587d9afb6d29bd74a3483b7a8d5619323a416fe9ca43b482cd"
                     ), // r
@@ -412,7 +412,7 @@ module wormhole::vaa_tests {
                     0, // recovery_id
                     0 // index
                 ),
-                guardian_signature::new(
+                phylax_signature::new(
                     bytes32::new(
                         x"c9367884940a43a1a4d86531ea33ccb41e52bd7d1679c106fdff756f3da2ca74"
                     ), // r
@@ -422,7 +422,7 @@ module wormhole::vaa_tests {
                     1, // recovery_id
                     2 // index
                 ),
-                guardian_signature::new(
+                phylax_signature::new(
                     bytes32::new(
                         x"5a493b65bf12ab9b98aa4db3bfcb73df20ab854d8e5998a1552f3b3e57ea7cd3"
                     ), // r
@@ -432,7 +432,7 @@ module wormhole::vaa_tests {
                     1, // recovery_id
                     3 // index
                 ),
-                guardian_signature::new(
+                phylax_signature::new(
                     bytes32::new(
                         x"758e265101353923661f6df67cec3c38528ed1b68825099b5bb2ce3fb2e735c5"
                     ), // r
@@ -442,7 +442,7 @@ module wormhole::vaa_tests {
                     0, // recovery_id
                     4 // index
                 ),
-                guardian_signature::new(
+                phylax_signature::new(
                     bytes32::new(
                         x"87777306dd174e266c313f711e881086355b6ce66cf2bf1f5da58273a10be778"
                     ), // r
@@ -452,7 +452,7 @@ module wormhole::vaa_tests {
                     1, // recovery_id
                     5 // index
                 ),
-                guardian_signature::new(
+                phylax_signature::new(
                     bytes32::new(
                         x"ed23ba8264146c3e3cc0601c93260c25058bcdd25213a7834e51679afdc4b501"
                     ), // r
@@ -462,7 +462,7 @@ module wormhole::vaa_tests {
                     0, // recovery_id
                     8 // index
                 ),
-                guardian_signature::new(
+                phylax_signature::new(
                     bytes32::new(
                         x"c2352cb46ef1d2ef9e185764650403aee87a1be071555b31cdcee0c346991da8"
                     ), // r
@@ -472,7 +472,7 @@ module wormhole::vaa_tests {
                     1, // recovery_id
                     9 // index
                 ),
-                guardian_signature::new(
+                phylax_signature::new(
                     bytes32::new(
                         x"e470b1573989f387f7c54a86325cc05978bbcbc13267e90e2fa2efb0e18bccb7"
                     ), // r
@@ -482,7 +482,7 @@ module wormhole::vaa_tests {
                     0, // recovery_id
                     10 // index
                 ),
-                guardian_signature::new(
+                phylax_signature::new(
                     bytes32::new(
                         x"a0e8770298d4e3567488f455455a33f1e723e1e629ba4f87928016aeaa587556"
                     ), // r
@@ -492,7 +492,7 @@ module wormhole::vaa_tests {
                     0, // recovery_id
                     11 // index
                 ),
-                guardian_signature::new(
+                phylax_signature::new(
                     bytes32::new(
                         x"eeedc956cff4489ac55b52ca38233cdc11e88767e5cc82f664bd1d7c28dfb5a1"
                     ), // r
@@ -502,7 +502,7 @@ module wormhole::vaa_tests {
                     0, // recovery_id
                     14 // index
                 ),
-                guardian_signature::new(
+                phylax_signature::new(
                     bytes32::new(
                         x"18d447c9608a076c066b30ee770910e3c133087d33e329ad0101f08f88d88e14"
                     ), // r
@@ -512,7 +512,7 @@ module wormhole::vaa_tests {
                     1, // recovery_id
                     15 // index
                 ),
-                guardian_signature::new(
+                phylax_signature::new(
                     bytes32::new(
                         x"905fc99dc650d9b1b33c313e9b31dfdbc85ce57e9f31abc4841d5791a239f20e"
                     ), // r
@@ -522,7 +522,7 @@ module wormhole::vaa_tests {
                     0, // recovery_id
                     17 // index
                 ),
-                guardian_signature::new(
+                phylax_signature::new(
                     bytes32::new(
                         x"7b46f2fbbbf12efb10c2e662b4449de404f6a408ad7f38c7ea40a46300930e9a"
                     ), // r
@@ -545,7 +545,7 @@ module wormhole::vaa_tests {
         cursor::destroy_empty(left);
         cursor::destroy_empty(right);
 
-        assert!(vaa::guardian_set_index(&parsed) == 0, 0);
+        assert!(vaa::phylax_set_index(&parsed) == 0, 0);
         assert!(vaa::timestamp(&parsed) == 9000, 0);
 
         let expected_batch_id = 12;
@@ -565,7 +565,7 @@ module wormhole::vaa_tests {
         assert!(vaa::finality(&parsed) == expected_finality, 0);
         assert!(vaa::consistency_level(&parsed) == expected_finality, 0);
 
-        // The message Wormhole guardians sign is a hash of the actual message
+        // The message Wormhole phylaxs sign is a hash of the actual message
         // body. So the hash we need to check against is keccak256 of this
         // message.
         let body_buf = {
@@ -612,9 +612,9 @@ module wormhole::vaa_tests {
         let my_scenario = test_scenario::begin(caller);
         let scenario = &mut my_scenario;
 
-        // Initialize Wormhole with 19 guardians.
+        // Initialize Wormhole with 19 phylaxs.
         let wormhole_fee = 350;
-        set_up_wormhole_with_guardians(scenario, wormhole_fee, guardians());
+        set_up_wormhole_with_phylaxs(scenario, wormhole_fee, phylaxs());
 
         // Prepare test to execute `parse_and_verify`.
         test_scenario::next_tx(scenario, caller);
@@ -650,9 +650,9 @@ module wormhole::vaa_tests {
         let my_scenario = test_scenario::begin(caller);
         let scenario = &mut my_scenario;
 
-        // Initialize Wormhole with 19 guardians.
+        // Initialize Wormhole with 19 phylaxs.
         let wormhole_fee = 350;
-        set_up_wormhole_with_guardians(scenario, wormhole_fee, guardians());
+        set_up_wormhole_with_phylaxs(scenario, wormhole_fee, phylaxs());
 
         // Prepare test to execute `parse_and_verify`.
         test_scenario::next_tx(scenario, caller);
@@ -680,9 +680,9 @@ module wormhole::vaa_tests {
         let my_scenario = test_scenario::begin(caller);
         let scenario = &mut my_scenario;
 
-        // Initialize Wormhole with 19 guardians.
+        // Initialize Wormhole with 19 phylaxs.
         let wormhole_fee = 350;
-        set_up_wormhole_with_guardians(scenario, wormhole_fee, guardians());
+        set_up_wormhole_with_phylaxs(scenario, wormhole_fee, phylaxs());
 
         // Prepare test to execute `parse_and_verify`.
         test_scenario::next_tx(scenario, caller);
@@ -711,16 +711,16 @@ module wormhole::vaa_tests {
         let my_scenario = test_scenario::begin(caller);
         let scenario = &mut my_scenario;
 
-        // Initialize Wormhole with 19 guardians. But reverse the order so the
+        // Initialize Wormhole with 19 phylaxs. But reverse the order so the
         // signatures will not match.
-        let initial_guardians = guardians();
-        std::vector::reverse(&mut initial_guardians);
+        let initial_phylaxs = phylaxs();
+        std::vector::reverse(&mut initial_phylaxs);
 
         let wormhole_fee = 350;
-        set_up_wormhole_with_guardians(
+        set_up_wormhole_with_phylaxs(
             scenario,
             wormhole_fee,
-            initial_guardians
+            initial_phylaxs
         );
 
         // Prepare test to execute `parse_and_verify`.
@@ -749,9 +749,9 @@ module wormhole::vaa_tests {
         let my_scenario = test_scenario::begin(caller);
         let scenario = &mut my_scenario;
 
-        // Initialize Wormhole with 19 guardians.
+        // Initialize Wormhole with 19 phylaxs.
         let wormhole_fee = 350;
-        set_up_wormhole_with_guardians(scenario, wormhole_fee, guardians());
+        set_up_wormhole_with_phylaxs(scenario, wormhole_fee, phylaxs());
 
         // Prepare test to execute `parse_and_verify`.
         test_scenario::next_tx(scenario, caller);

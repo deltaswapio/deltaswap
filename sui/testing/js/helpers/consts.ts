@@ -20,7 +20,7 @@ export const CREATOR_PRIVATE_KEY = Buffer.from(KEYSTORE[2], "base64").subarray(
   1
 );
 
-// guardian signer
+// phylax signer
 export const GUARDIAN_PRIVATE_KEY =
   "cfb12303a19cde580bb4dd771639b0d26bc68353645571a8cff516ab2ee113a0";
 

@@ -384,9 +384,9 @@ func main() {
 					continue
 				}
 				log.Println("txhash", txhash.String(), "sequence number", seq)
-				// send observation request to guardian
+				// send observation request to phylax
 				if *dryRun {
-					log.Println("Would have sent txhash", txhash, "to the guardian to re-observe")
+					log.Println("Would have sent txhash", txhash, "to the phylax to re-observe")
 				} else {
 					txHashAsByteArray, err := cosmwasm.StringToHash(txhash.String())
 					if err != nil {

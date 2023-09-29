@@ -16,8 +16,8 @@ pub enum Action {
     ContractUpgrade { new_contract: Address },
     #[serde(rename = "2")]
     PhylaxSetUpgrade {
-        new_guardian_set_index: u32,
-        new_guardian_set: PhylaxSetInfo,
+        new_phylax_set_index: u32,
+        new_phylax_set: PhylaxSetInfo,
     },
     #[serde(rename = "3")]
     SetFee { amount: Amount },
@@ -93,8 +93,8 @@ mod governance_packet_impl {
 
     #[derive(Serialize, Deserialize)]
     struct PhylaxSetUpgrade {
-        new_guardian_set_index: u32,
-        new_guardian_set: PhylaxSetInfo,
+        new_phylax_set_index: u32,
+        new_phylax_set: PhylaxSetInfo,
     }
 
     #[derive(Serialize, Deserialize)]
@@ -125,16 +125,16 @@ mod governance_packet_impl {
                     seq.serialize_field("payload", &ContractUpgrade { new_contract })?;
                 }
                 Action::PhylaxSetUpgrade {
-                    new_guardian_set_index,
-                    ref new_guardian_set,
+                    new_phylax_set_index,
+                    ref new_phylax_set,
                 } => {
                     seq.serialize_field("action", &2u8)?;
                     seq.serialize_field("chain", &self.chain)?;
                     seq.serialize_field(
                         "payload",
                         &PhylaxSetUpgrade {
-                            new_guardian_set_index,
-                            new_guardian_set: new_guardian_set.clone(),
+                            new_phylax_set_index,
+                            new_phylax_set: new_phylax_set.clone(),
                         },
                     )?;
                 }
@@ -190,15 +190,15 @@ mod governance_packet_impl {
                 }
                 2 => {
                     let PhylaxSetUpgrade {
-                        new_guardian_set_index,
-                        new_guardian_set,
+                        new_phylax_set_index,
+                        new_phylax_set,
                     } = seq
                         .next_element()?
                         .ok_or_else(|| Error::invalid_length(3, &EXPECTING))?;
 
                     Action::PhylaxSetUpgrade {
-                        new_guardian_set_index,
-                        new_guardian_set,
+                        new_phylax_set_index,
+                        new_phylax_set,
                     }
                 }
                 3 => {
@@ -283,13 +283,13 @@ mod governance_packet_impl {
                             }
                             2 => {
                                 let PhylaxSetUpgrade {
-                                    new_guardian_set_index,
-                                    new_guardian_set,
+                                    new_phylax_set_index,
+                                    new_phylax_set,
                                 } = map.next_value()?;
 
                                 Action::PhylaxSetUpgrade {
-                                    new_guardian_set_index,
-                                    new_guardian_set,
+                                    new_phylax_set_index,
+                                    new_phylax_set,
                                 }
                             }
                             3 => {
@@ -359,7 +359,7 @@ mod test {
 
         let vaa = Vaa {
             version: 1,
-            guardian_set_index: 0,
+            phylax_set_index: 0,
             signatures: vec![Signature {
                 index: 0,
                 signature: [
@@ -396,7 +396,7 @@ mod test {
     }
 
     #[test]
-    fn guardian_set_upgrade() {
+    fn phylax_set_upgrade() {
         let buf = [
             0x01, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x7a, 0xc3, 0x1b, 0x28, 0x2c, 0x2a, 0xee,
             0xeb, 0x37, 0xf3, 0x38, 0x5e, 0xe0, 0xde, 0x5f, 0x8e, 0x42, 0x1d, 0x30, 0xb9, 0xe5,
@@ -441,7 +441,7 @@ mod test {
 
         let vaa = Vaa {
             version: 1,
-            guardian_set_index: 0,
+            phylax_set_index: 0,
             signatures: vec![Signature {
                 index: 0,
                 signature: [
@@ -461,8 +461,8 @@ mod test {
             payload: GovernancePacket {
                 chain: Chain::Aptos,
                 action: Action::PhylaxSetUpgrade {
-                    new_guardian_set_index: 1,
-                    new_guardian_set: PhylaxSetInfo {
+                    new_phylax_set_index: 1,
+                    new_phylax_set: PhylaxSetInfo {
                         addresses: vec![
                             PhylaxAddress([
                                 0x58, 0xcc, 0x3a, 0xe5, 0xc0, 0x97, 0xb2, 0x13, 0xce, 0x3c, 0x81,

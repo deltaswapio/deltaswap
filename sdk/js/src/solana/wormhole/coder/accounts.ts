@@ -46,7 +46,7 @@ export class WormholeAccountsCoder<A extends string = string>
 
 export interface PostVAAData {
   version: number;
-  guardianSetIndex: number;
+  phylaxSetIndex: number;
   timestamp: number;
   nonce: number;
   emitterChain: number;
@@ -60,7 +60,7 @@ function encodePostVaaData(account: PostVAAData): Buffer {
   const payload = account.payload;
   const serialized = Buffer.alloc(60 + payload.length);
   serialized.writeUInt8(account.version, 0);
-  serialized.writeUInt32LE(account.guardianSetIndex, 1);
+  serialized.writeUInt32LE(account.phylaxSetIndex, 1);
   serialized.writeUInt32LE(account.timestamp, 5);
   serialized.writeUInt32LE(account.nonce, 9);
   serialized.writeUInt16LE(account.emitterChain, 13);

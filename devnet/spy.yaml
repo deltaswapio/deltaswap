@@ -45,7 +45,7 @@ spec:
             - "[::]:7072"
             # Hardcoded devnet bootstrap (generated from deterministic key in phylaxd)
             - --bootstrap
-            - /dns4/guardian-0.guardian/udp/8999/quic/p2p/12D3KooWL3XJ9EMCyZvmmGXL2LMiVBtrVa2BuESsJiXkSj7333Jw
+            - /dns4/phylax-0.phylax/udp/8999/quic/p2p/12D3KooWL3XJ9EMCyZvmmGXL2LMiVBtrVa2BuESsJiXkSj7333Jw
             - --logLevel=warn
           ports:
             - containerPort: 7072

@@ -68,16 +68,16 @@ contract TestUtils is Test, KEVMCheats {
         assertEq(initialStorage, finalStorage);
     }
 
-    function validVmHeader(uint32 guardianSetIndex) internal pure returns (bytes memory vmH) {
+    function validVmHeader(uint32 phylaxSetIndex) internal pure returns (bytes memory vmH) {
         uint8 version = 1;
         uint8 signersLen = 1;
-        uint8 guardianIndex = 0;
+        uint8 phylaxIndex = 0;
 
         vmH = abi.encodePacked(
                 version,
-                guardianSetIndex,
+                phylaxSetIndex,
                 signersLen,
-                guardianIndex
+                phylaxIndex
             );
     }
 
@@ -145,7 +145,7 @@ contract TestUtils is Test, KEVMCheats {
     
 
     function validVm(
-        uint32 guardianSetIndex,
+        uint32 phylaxSetIndex,
         uint32 timestamp,
         uint32 nonce,
         uint16 emitterChainId,
@@ -157,7 +157,7 @@ contract TestUtils is Test, KEVMCheats {
         internal pure
             returns (bytes memory _vm, bytes32 hash)
     {
-        bytes memory header = validVmHeader(guardianSetIndex);
+        bytes memory header = validVmHeader(phylaxSetIndex);
 
         bytes memory body = abi.encodePacked(
                 timestamp,

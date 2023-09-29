@@ -19,7 +19,7 @@ pub enum ContractError {
     #[error("NoQuorum")]
     NoQuorum,
 
-    /// Wrong guardian index order, order must be ascending
+    /// Wrong phylax index order, order must be ascending
     #[error("WrongPhylaxIndexOrder")]
     WrongPhylaxIndexOrder,
 
@@ -31,7 +31,7 @@ pub enum ContractError {
     #[error("CannotRecoverKey")]
     CannotRecoverKey,
 
-    /// Recovered pubkey from signature does not match guardian address
+    /// Recovered pubkey from signature does not match phylax address
     #[error("PhylaxSignatureError")]
     PhylaxSignatureError,
 
@@ -39,7 +39,7 @@ pub enum ContractError {
     #[error("InvalidVAAAction")]
     InvalidVAAAction,
 
-    /// VAA guardian set is not current
+    /// VAA phylax set is not current
     #[error("NotCurrentPhylaxSet")]
     NotCurrentPhylaxSet,
 
@@ -79,7 +79,7 @@ pub enum ContractError {
     #[error("WrongTargetAddressFormat")]
     WrongTargetAddressFormat,
 
-    /// More signatures than active guardians found
+    /// More signatures than active phylaxs found
     #[error("TooManySignatures")]
     TooManySignatures,
 

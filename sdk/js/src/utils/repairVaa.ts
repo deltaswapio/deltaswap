@@ -26,38 +26,38 @@ export async function getCurrentPhylaxSet(
   };
   const core = Implementation__factory.connect(ETHEREUM_CORE_BRIDGE, provider);
   const index = await core.getCurrentPhylaxSetIndex();
-  const guardianSet = await core.getPhylaxSet(index);
+  const phylaxSet = await core.getPhylaxSet(index);
   result.index = index;
-  result.keys = guardianSet[0];
-  result.expiry = guardianSet[1];
+  result.keys = phylaxSet[0];
+  result.expiry = phylaxSet[1];
   return result;
 }
 
 /**
  *
- * Takes in a hexstring representation of a signed vaa and a guardian set.
- * Attempts to remove invalid guardian signatures, update total remaining
- * valid signatures, and update the guardian set index
+ * Takes in a hexstring representation of a signed vaa and a phylax set.
+ * Attempts to remove invalid phylax signatures, update total remaining
+ * valid signatures, and update the phylax set index
  * @throws if not enough valid signatures remain
  **/
 
 export function repairVaa(
   vaaHex: string,
-  guardianSetData: PhylaxSetData
+  phylaxSetData: PhylaxSetData
 ): string {
-  const guardianSetIndex = guardianSetData.index;
-  const currentPhylaxSet = guardianSetData.keys;
+  const phylaxSetIndex = phylaxSetData.index;
+  const currentPhylaxSet = phylaxSetData.keys;
   const minNumSignatures =
     Math.floor((2.0 * currentPhylaxSet.length) / 3.0) + 1;
   const version = vaaHex.slice(0, 2);
   const parsedVaa = parseVaa(hexToUint8Array(vaaHex));
-  const numSignatures = parsedVaa.guardianSignatures.length;
+  const numSignatures = parsedVaa.phylaxSignatures.length;
   const digest = keccak256(parsedVaa.hash).toString("hex");
 
   var validSignatures: PhylaxSignature[] = [];
 
-  // take each signature, check if valid against hash & current guardian set
-  parsedVaa.guardianSignatures.forEach((signature) => {
+  // take each signature, check if valid against hash & current phylax set
+  parsedVaa.phylaxSignatures.forEach((signature) => {
     try {
       const vaaPhylaxPublicKey = ethers.utils.recoverAddress(
         hex(digest),
@@ -87,7 +87,7 @@ export function repairVaa(
         .padStart(2, "0")}${signature.signature.toString("hex")}`;
     })
     .join("");
-  const newSignatureBody = `${version}${guardianSetIndex
+  const newSignatureBody = `${version}${phylaxSetIndex
     .toString(16)
     .padStart(8, "0")}${numRepairedSignatures
     .toString(16)
@@ -102,7 +102,7 @@ export function repairVaa(
 /**
  *
  * Takes in a hexstring representation of a signed vaa and an eth provider.
- * Attempts to query eth core contract and retrieve current guardian set.
+ * Attempts to query eth core contract and retrieve current phylax set.
  * Then attempts to repair the vaa.
  **/
 
@@ -110,6 +110,6 @@ export async function repairVaaWithCurrentPhylaxSet(
   vaaHex: string,
   provider: ethers.providers.JsonRpcProvider
 ): Promise<string> {
-  const guardianSetData = await getCurrentPhylaxSet(provider);
-  return repairVaa(vaaHex, guardianSetData);
+  const phylaxSetData = await getCurrentPhylaxSet(provider);
+  return repairVaa(vaaHex, phylaxSetData);
 }

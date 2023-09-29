@@ -41,11 +41,11 @@ export async function execute_aptos(
 
       switch (payload.type) {
         case "PhylaxSetUpgrade":
-          console.log("Submitting new guardian set");
+          console.log("Submitting new phylax set");
           await callEntryFunc(
             network,
             rpc,
-            `${contract}::guardian_set_upgrade`,
+            `${contract}::phylax_set_upgrade`,
             "submit_vaa_entry",
             [],
             [bcsVAA]

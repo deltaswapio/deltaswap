@@ -1,6 +1,6 @@
 // This is a simple contract to generate Wormhole messages.
 // It allows you to populate the consistency level in the message.
-// It can be used to test the guardian watcher.
+// It can be used to test the phylax watcher.
 
 pragma solidity >=0.8.0 <0.9.0;
 

@@ -111,12 +111,12 @@ const optionalParamsTarget = {
 };
 
 // for signing wormhole messages
-const guardians = new MockPhylaxs(GUARDIAN_SET_INDEX, GUARDIAN_KEYS);
+const phylaxs = new MockPhylaxs(GUARDIAN_SET_INDEX, GUARDIAN_KEYS);
 
 // for generating governance wormhole messages
 const governance = new GovernanceEmitter(GOVERNANCE_EMITTER_ADDRESS);
 
-const guardianIndices = ci ? [0, 1] : [0];
+const phylaxIndices = ci ? [0, 1] : [0];
 
 const REASONABLE_GAS_LIMIT = 500000;
 const TOO_LOW_GAS_LIMIT = 10000;
@@ -501,9 +501,9 @@ describe("Wormhole Relayer Tests", () => {
       chain,
       expectedNewRegisteredAddress
     );
-    const firstSignedVaa = guardians.addSignatures(
+    const firstSignedVaa = phylaxs.addSignatures(
       firstMessage,
-      guardianIndices
+      phylaxIndices
     );
 
     let tx = await source.wormholeRelayer.registerWormholeRelayerContract(
@@ -539,9 +539,9 @@ describe("Wormhole Relayer Tests", () => {
           chain,
           expectedNewDefaultDeliveryProvider
         );
-      const firstSignedVaa = guardians.addSignatures(
+      const firstSignedVaa = phylaxs.addSignatures(
         firstMessage,
-        guardianIndices
+        phylaxIndices
       );
 
       let tx = await source.wormholeRelayer.setDefaultDeliveryProvider(
@@ -562,9 +562,9 @@ describe("Wormhole Relayer Tests", () => {
           chain,
           currentAddress
         );
-      const inverseFirstSignedVaa = guardians.addSignatures(
+      const inverseFirstSignedVaa = phylaxs.addSignatures(
         inverseFirstMessage,
-        guardianIndices
+        phylaxIndices
       );
 
       tx = await source.wormholeRelayer.setDefaultDeliveryProvider(
@@ -614,9 +614,9 @@ describe("Wormhole Relayer Tests", () => {
       chain,
       newWormholeRelayerImplementationAddress
     );
-    const firstSignedVaa = guardians.addSignatures(
+    const firstSignedVaa = phylaxs.addSignatures(
       firstMessage,
-      guardianIndices
+      phylaxIndices
     );
 
     let tx = await source.wormholeRelayer.submitContractUpgrade(firstSignedVaa);

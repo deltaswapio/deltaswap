@@ -232,7 +232,7 @@ def approve_token_bridge(seed_amt: int, tmpl_sig: TmplSig, devMode: bool):
         return Seq([
             checkForDuplicate(),
 
-            # All governance must be done with the most recent guardian set...
+            # All governance must be done with the most recent phylax set...
             set.store(governanceSet()),
             idx.store(Extract(Txn.application_args[1], Int(1), Int(4))),
             MagicAssert(Btoi(idx.load()) == set.load()),

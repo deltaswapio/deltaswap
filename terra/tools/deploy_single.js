@@ -152,8 +152,8 @@ async function instantiate(codeId, inst_msg) {
 // const contractAddress = await instantiate("wormhole.wasm", {
 //   gov_chain: govChain,
 //   gov_address: Buffer.from(govAddress, "hex").toString("base64"),
-//   guardian_set_expirity: 86400,
-//   initial_guardian_set: {
+//   phylax_set_expirity: 86400,
+//   initial_phylax_set: {
 //     addresses: [
 //       {
 //         bytes: Buffer.from(

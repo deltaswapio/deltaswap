@@ -102,8 +102,8 @@ async function initTest() {
 
 async function test() {
 
-    const guardianKey = "beFA429d57cD18b7F8A4d91A2da9AB4AF05d0FBe";
-    const guardianPrivKeys = "cfb12303a19cde580bb4dd771639b0d26bc68353645571a8cff516ab2ee113a0";
+    const phylaxKey = "beFA429d57cD18b7F8A4d91A2da9AB4AF05d0FBe";
+    const phylaxPrivKeys = "cfb12303a19cde580bb4dd771639b0d26bc68353645571a8cff516ab2ee113a0";
 
     const message = Buffer.from("Hello there").toString("hex");
 
@@ -112,7 +112,7 @@ async function test() {
 
     
     const ec = new elliptic.ec("secp256k1");
-    const key = ec.keyFromPrivate(guardianPrivKeys);
+    const key = ec.keyFromPrivate(phylaxPrivKeys);
     const signature = key.sign(hash, { canonical: true });
 
 //    const key.recoverPubKey(hash, signature, signature.recoveryParam, "hex")
@@ -120,7 +120,7 @@ async function test() {
     const sig = signature.r.toString(16) + signature.s.toString(16);
     console.log("hash: " + hash);
     console.log("sig: " + sig);
-    console.log("originalKey: " + guardianKey);
+    console.log("originalKey: " + phylaxKey);
 
     await initNear();
     const { wormholeUseContract } = await initTest();
@@ -128,7 +128,7 @@ async function test() {
     let ret = await wormholeUseContract.recover_key({ args: { digest: hash, sig: sig, recovery: signature.recoveryParam } });
 
     console.log(ret);
-    console.log(guardianKey);
+    console.log(phylaxKey);
 }
 
 test();

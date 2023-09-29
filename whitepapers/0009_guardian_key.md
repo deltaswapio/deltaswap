@@ -1,7 +1,7 @@
 # Phylax Key Usage
 
 ## Objective
-* Describe how guardian keys are used and how message confusion is avoided.
+* Describe how phylax keys are used and how message confusion is avoided.
 
 
 ## Background

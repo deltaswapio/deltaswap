@@ -11,10 +11,10 @@ import (
 var GovernanceEmitter = Address{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4}
 var GovernanceChain = ChainIDSolana
 
-func CreateGovernanceVAA(timestamp time.Time, nonce uint32, sequence uint64, guardianSetIndex uint32, payload []byte) *VAA {
+func CreateGovernanceVAA(timestamp time.Time, nonce uint32, sequence uint64, phylaxSetIndex uint32, payload []byte) *VAA {
 	vaa := &VAA{
 		Version:          SupportedVAAVersion,
-		PhylaxSetIndex:   guardianSetIndex,
+		PhylaxSetIndex:   phylaxSetIndex,
 		Signatures:       nil,
 		Timestamp:        timestamp,
 		Nonce:            nonce,

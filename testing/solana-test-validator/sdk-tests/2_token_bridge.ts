@@ -106,7 +106,7 @@ describe("Token Bridge", () => {
   const wallet = new NodeWallet(web3.Keypair.generate());
 
   // for signing wormhole messages
-  const guardians = new MockPhylaxs(GUARDIAN_SET_INDEX + 1, GUARDIAN_KEYS);
+  const phylaxs = new MockPhylaxs(GUARDIAN_SET_INDEX + 1, GUARDIAN_KEYS);
 
   const localVariables: any = {};
 
@@ -236,7 +236,7 @@ describe("Token Bridge", () => {
         timestamp
       );
 
-      const signedVaa = guardians.addSignatures(
+      const signedVaa = phylaxs.addSignatures(
         message,
         [0, 1, 2, 3, 5, 7, 8, 9, 10, 12, 15, 16, 18]
       );
@@ -304,7 +304,7 @@ describe("Token Bridge", () => {
         timestamp
       );
 
-      const signedVaa = guardians.addSignatures(
+      const signedVaa = phylaxs.addSignatures(
         message,
         [0, 1, 2, 3, 5, 7, 8, 9, 10, 12, 15, 16, 18]
       );
@@ -458,7 +458,7 @@ describe("Token Bridge", () => {
         2,
         ETHEREUM_TOKEN_BRIDGE_ADDRESS
       );
-      const signedVaa = guardians.addSignatures(
+      const signedVaa = phylaxs.addSignatures(
         message,
         [0, 1, 2, 3, 5, 7, 8, 9, 10, 12, 15, 16, 18]
       );
@@ -504,7 +504,7 @@ describe("Token Bridge", () => {
         name,
         nonce
       );
-      const signedVaa = guardians.addSignatures(
+      const signedVaa = phylaxs.addSignatures(
         message,
         [0, 1, 2, 3, 5, 7, 8, 9, 10, 12, 15, 16, 18]
       );
@@ -561,7 +561,7 @@ describe("Token Bridge", () => {
         chain,
         implementation.toString()
       );
-      const signedVaa = guardians.addSignatures(message, [0]);
+      const signedVaa = phylaxs.addSignatures(message, [0]);
 
       const accounts = getUpgradeContractAccounts(
         TOKEN_BRIDGE_ADDRESS,
@@ -741,7 +741,7 @@ describe("Token Bridge", () => {
       );
       expect(message[51]).to.equal(3);
 
-      const signedVaa = guardians.addSignatures(
+      const signedVaa = phylaxs.addSignatures(
         message,
         [0, 1, 2, 3, 5, 7, 8, 9, 10, 12, 15, 16, 18]
       );
@@ -815,7 +815,7 @@ describe("Token Bridge", () => {
       );
       expect(message[51]).to.equal(3);
 
-      const signedVaa = guardians.addSignatures(
+      const signedVaa = phylaxs.addSignatures(
         message,
         [0, 1, 2, 3, 5, 7, 8, 9, 10, 12, 15, 16, 18]
       );
@@ -993,7 +993,7 @@ describe("Token Bridge", () => {
           2,
           ETHEREUM_TOKEN_BRIDGE_ADDRESS
         );
-        const signedVaa = guardians.addSignatures(
+        const signedVaa = phylaxs.addSignatures(
           message,
           [0, 1, 2, 3, 5, 7, 8, 9, 10, 12, 15, 16, 18]
         );
@@ -1251,7 +1251,7 @@ describe("Token Bridge", () => {
           nonce
         );
 
-        const signedVaa = guardians.addSignatures(
+        const signedVaa = phylaxs.addSignatures(
           message,
           [0, 1, 2, 3, 5, 7, 8, 9, 10, 12, 15, 16, 18]
         );
@@ -1464,7 +1464,7 @@ describe("Token Bridge", () => {
           name,
           nonce
         );
-        const signedVaa = guardians.addSignatures(
+        const signedVaa = phylaxs.addSignatures(
           message,
           [0, 1, 2, 3, 5, 7, 8, 9, 10, 12, 15, 16, 18]
         );
@@ -1600,7 +1600,7 @@ describe("Token Bridge", () => {
           name,
           nonce
         );
-        const signedVaa = guardians.addSignatures(
+        const signedVaa = phylaxs.addSignatures(
           message,
           [0, 1, 2, 3, 5, 7, 8, 9, 10, 12, 15, 16, 18]
         );
@@ -1738,7 +1738,7 @@ describe("Token Bridge", () => {
           name,
           nonce
         );
-        const signedVaa = guardians.addSignatures(
+        const signedVaa = phylaxs.addSignatures(
           message,
           [0, 1, 2, 3, 5, 7, 8, 9, 10, 12, 15, 16, 18]
         );
@@ -1868,7 +1868,7 @@ describe("Token Bridge", () => {
           nonce
         );
 
-        const signedVaa = guardians.addSignatures(
+        const signedVaa = phylaxs.addSignatures(
           message,
           [0, 1, 2, 3, 5, 7, 8, 9, 10, 12, 15, 16, 18]
         );
@@ -2370,7 +2370,7 @@ describe("Token Bridge", () => {
           nonce
         );
 
-        const signedVaa = guardians.addSignatures(
+        const signedVaa = phylaxs.addSignatures(
           message,
           [0, 1, 2, 3, 5, 7, 8, 9, 10, 12, 15, 16, 18]
         );

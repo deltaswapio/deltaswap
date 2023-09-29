@@ -106,7 +106,7 @@ func createCoinGeckoQuery(ids string) string {
 func (gov *ChainGovernor) PriceQuery(ctx context.Context) error {
 	// Do a query immediately, then once each interval.
 	// We ignore the error because an error would already have been logged, and we don't want to bring down the
-	// guardian due to a CoinGecko error. The prices would already have been reverted to the config values.
+	// phylax due to a CoinGecko error. The prices would already have been reverted to the config values.
 	_ = gov.queryCoinGecko()
 
 	ticker := time.NewTicker(time.Duration(coinGeckoQueryIntervalInMins) * time.Minute)

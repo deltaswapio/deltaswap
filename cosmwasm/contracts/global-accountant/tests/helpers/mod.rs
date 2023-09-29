@@ -54,7 +54,7 @@ impl Contract {
     pub fn submit_observations(
         &mut self,
         observations: Binary,
-        guardian_set_index: u32,
+        phylax_set_index: u32,
         signature: Signature,
     ) -> anyhow::Result<AppResponse> {
         self.app.execute_contract(
@@ -62,7 +62,7 @@ impl Contract {
             self.addr(),
             &ExecuteMsg::SubmitObservations {
                 observations,
-                guardian_set_index,
+                phylax_set_index,
                 signature,
             },
             &[],
@@ -242,13 +242,13 @@ impl Contract {
 
     pub fn query_missing_observations(
         &self,
-        guardian_set: u32,
+        phylax_set: u32,
         index: u8,
     ) -> StdResult<MissingObservationsResponse> {
         self.app.wrap().query_wasm_smart(
             self.addr(),
             &QueryMsg::MissingObservations {
-                guardian_set,
+                phylax_set,
                 index,
             },
         )
@@ -336,7 +336,7 @@ pub fn sign_vaa_body<P: Serialize>(wh: &fake::WormholeKeeper, body: Body<P>) -> 
 
     let header = Header {
         version: 1,
-        guardian_set_index: wh.guardian_set_index(),
+        phylax_set_index: wh.phylax_set_index(),
         signatures,
     };
 

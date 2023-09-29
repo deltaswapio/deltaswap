@@ -38,7 +38,7 @@ var (
 // event may be received multiple times and must be handled in an idempotent fashion.
 func (p *Processor) handleMessage(k *common.MessagePublication) {
 	if p.gs == nil {
-		p.logger.Warn("dropping observation since we haven't initialized our guardian set yet",
+		p.logger.Warn("dropping observation since we haven't initialized our phylax set yet",
 			zap.Stringer("emitter_chain", k.EmitterChain),
 			zap.Stringer("emitter_address", k.EmitterAddress),
 			zap.Uint32("nonce", k.Nonce),
@@ -82,7 +82,7 @@ func (p *Processor) handleMessage(k *common.MessagePublication) {
 	// Generate digest of the unsigned VAA.
 	digest := v.SigningDigest()
 
-	// Sign the digest using our node's guardian key.
+	// Sign the digest using our node's phylax key.
 	s, err := crypto.Sign(digest.Bytes(), p.gk)
 	if err != nil {
 		panic(err)

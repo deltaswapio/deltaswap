@@ -82,7 +82,7 @@ export async function execute_solana(
       }
       switch (v.payload.type) {
         case "PhylaxSetUpgrade":
-          console.log("Submitting new guardian set");
+          console.log("Submitting new phylax set");
           ix = createUpgradePhylaxSetInstruction(
             bridgeId,
             from.publicKey,

@@ -138,7 +138,7 @@ func (p *Processor) handleCleanup(ctx context.Context) {
 			// We could delete submitted observations right away, but then we'd lose context about additional (late)
 			// observation that come in. Therefore, keep it for a reasonable amount of time.
 			// If a very late observation arrives after cleanup, a nil aggregation state will be created
-			// and then expired after a while (as noted in observation.go, this can be abused by a byzantine guardian).
+			// and then expired after a while (as noted in observation.go, this can be abused by a byzantine phylax).
 			p.logger.Debug("expiring submitted observation", zap.String("digest", hash), zap.Duration("delta", delta))
 			delete(p.state.signatures, hash)
 			aggregationStateExpiration.Inc()
@@ -152,7 +152,7 @@ func (p *Processor) handleCleanup(ctx context.Context) {
 			// If we have previously submitted an observation, and it was reliable, we can make another attempt to get
 			// it over the finish line by sending a re-observation request to the network and rebroadcasting our
 			// sig. If we do not have an observation, it means we either never observed it, or it got
-			// revived by a malfunctioning guardian node, in which case, we can't do anything about it
+			// revived by a malfunctioning phylax node, in which case, we can't do anything about it
 			// and just delete it to keep our state nice and lean.
 			if s.ourMsg != nil {
 				// Unreliable observations cannot be resubmitted and can be considered failed after 5 minutes
@@ -191,7 +191,7 @@ func (p *Processor) handleCleanup(ctx context.Context) {
 				}
 			} else {
 				// For nil state entries, we log the quorum to determine whether the
-				// network reached consensus without us. We don't know the correct guardian
+				// network reached consensus without us. We don't know the correct phylax
 				// set, so we simply use the most recent one.
 				hasSigs := len(s.signatures)
 				wantSigs := vaa.CalculateQuorum(len(p.gs.Keys))

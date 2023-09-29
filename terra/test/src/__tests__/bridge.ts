@@ -78,8 +78,8 @@ describe("Bridge Tests", () => {
         const wormhole = await deploy(client, wallet, WASM_WORMHOLE, {
           gov_chain: GOVERNANCE_CHAIN,
           gov_address: governanceAddress,
-          guardian_set_expirity: 86400,
-          initial_guardian_set: {
+          phylax_set_expirity: 86400,
+          initial_phylax_set: {
             addresses: [
               {
                 bytes: Buffer.from(

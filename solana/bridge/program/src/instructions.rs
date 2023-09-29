@@ -51,11 +51,11 @@ pub fn initialize(
     program_id: Pubkey,
     payer: Pubkey,
     fee: u64,
-    guardian_set_expiration_time: u32,
-    initial_guardians: &[[u8; 20]],
+    phylax_set_expiration_time: u32,
+    initial_phylaxs: &[[u8; 20]],
 ) -> solitaire::Result<Instruction> {
     let bridge = Bridge::<'_, { AccountState::Uninitialized }>::key(None, &program_id);
-    let guardian_set = PhylaxSet::<'_, { AccountState::Uninitialized }>::key(
+    let phylax_set = PhylaxSet::<'_, { AccountState::Uninitialized }>::key(
         &PhylaxSetDerivationData { index: 0 },
         &program_id,
     );
@@ -65,7 +65,7 @@ pub fn initialize(
         program_id,
         accounts: vec![
             AccountMeta::new(bridge, false),
-            AccountMeta::new(guardian_set, false),
+            AccountMeta::new(phylax_set, false),
             AccountMeta::new(fee_collector, false),
             AccountMeta::new(payer, true),
             AccountMeta::new_readonly(sysvar::clock::id(), false),
@@ -75,9 +75,9 @@ pub fn initialize(
         data: (
             crate::instruction::Instruction::Initialize,
             InitializeData {
-                initial_guardians: initial_guardians.to_vec(),
+                initial_phylaxs: initial_phylaxs.to_vec(),
                 fee,
-                guardian_set_expiration_time,
+                phylax_set_expiration_time,
             },
         )
             .try_to_vec()?,
@@ -173,13 +173,13 @@ pub fn post_message_unreliable(
 pub fn verify_signatures(
     program_id: Pubkey,
     payer: Pubkey,
-    guardian_set_index: u32,
+    phylax_set_index: u32,
     signature_set: Pubkey,
     data: VerifySignaturesData,
 ) -> solitaire::Result<Instruction> {
-    let guardian_set = PhylaxSet::<'_, { AccountState::Uninitialized }>::key(
+    let phylax_set = PhylaxSet::<'_, { AccountState::Uninitialized }>::key(
         &PhylaxSetDerivationData {
-            index: guardian_set_index,
+            index: phylax_set_index,
         },
         &program_id,
     );
@@ -189,7 +189,7 @@ pub fn verify_signatures(
 
         accounts: vec![
             AccountMeta::new(payer, true),
-            AccountMeta::new_readonly(guardian_set, false),
+            AccountMeta::new_readonly(phylax_set, false),
             AccountMeta::new(signature_set, true),
             AccountMeta::new_readonly(sysvar::instructions::id(), false),
             AccountMeta::new_readonly(sysvar::rent::id(), false),
@@ -207,9 +207,9 @@ pub fn post_vaa(
     vaa: PostVAAData,
 ) -> Instruction {
     let bridge = Bridge::<'_, { AccountState::Uninitialized }>::key(None, &program_id);
-    let guardian_set = PhylaxSet::<'_, { AccountState::Uninitialized }>::key(
+    let phylax_set = PhylaxSet::<'_, { AccountState::Uninitialized }>::key(
         &PhylaxSetDerivationData {
-            index: vaa.guardian_set_index,
+            index: vaa.phylax_set_index,
         },
         &program_id,
     );
@@ -225,7 +225,7 @@ pub fn post_vaa(
         program_id,
 
         accounts: vec![
-            AccountMeta::new_readonly(guardian_set, false),
+            AccountMeta::new_readonly(phylax_set, false),
             AccountMeta::new_readonly(bridge, false),
             AccountMeta::new_readonly(signature_set, false),
             AccountMeta::new(message, false),
@@ -295,7 +295,7 @@ pub fn upgrade_contract(
     }
 }
 
-pub fn upgrade_guardian_set(
+pub fn upgrade_phylax_set(
     program_id: Pubkey,
     payer: Pubkey,
     payload_message: Pubkey,
@@ -314,12 +314,12 @@ pub fn upgrade_guardian_set(
         &program_id,
     );
 
-    let guardian_set_old = PhylaxSet::<'_, { AccountState::Initialized }>::key(
+    let phylax_set_old = PhylaxSet::<'_, { AccountState::Initialized }>::key(
         &PhylaxSetDerivationData { index: old_index },
         &program_id,
     );
 
-    let guardian_set_new = PhylaxSet::<'_, { AccountState::Uninitialized }>::key(
+    let phylax_set_new = PhylaxSet::<'_, { AccountState::Uninitialized }>::key(
         &PhylaxSetDerivationData { index: new_index },
         &program_id,
     );
@@ -332,8 +332,8 @@ pub fn upgrade_guardian_set(
             AccountMeta::new(bridge, false),
             AccountMeta::new_readonly(payload_message, false),
             AccountMeta::new(claim, false),
-            AccountMeta::new(guardian_set_old, false),
-            AccountMeta::new(guardian_set_new, false),
+            AccountMeta::new(phylax_set_old, false),
+            AccountMeta::new(phylax_set_new, false),
             AccountMeta::new_readonly(solana_program::system_program::id(), false),
         ],
 

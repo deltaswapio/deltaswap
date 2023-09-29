@@ -95,8 +95,8 @@ pub enum ExecuteMsg {
         // A serialized `Vec<Observation>`. Multiple observations can be submitted together to reduce
         // transaction overhead.
         observations: Binary,
-        // The index of the guardian set used to sign the observations.
-        guardian_set_index: u32,
+        // The index of the phylax set used to sign the observations.
+        phylax_set_index: u32,
         // A signature for `observations`.
         signature: Signature,
     },
@@ -145,7 +145,7 @@ pub enum QueryMsg {
     #[returns(ChainRegistrationResponse)]
     ChainRegistration { chain: u16 },
     #[returns(MissingObservationsResponse)]
-    MissingObservations { guardian_set: u32, index: u8 },
+    MissingObservations { phylax_set: u32, index: u8 },
     #[returns(TransferStatus)]
     TransferStatus(transfer::Key),
     #[returns(BatchTransferStatusResponse)]

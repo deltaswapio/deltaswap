@@ -24,7 +24,7 @@ published needs to be defined clearly for chain endpoints to be built.
 ## Overview
 
 The core Wormhole contracts on every chain will have a method for posting messages to Wormhole, which will emit an event
-that needs to be observable by guardians running a full node on a given chain.
+that needs to be observable by phylaxs running a full node on a given chain.
 
 The fees will be payable in the respective chain's native currency. Fees can be
 claimed by the protocol and collected in a fee pool on Solana where they can be distributed according to protocol rules.
@@ -36,25 +36,25 @@ contracts)
 to publish a message via Wormhole.
 
 This method has to perform verification on the payload for the maximum size limitation of **750 bytes**. The message
-should be emitted such that it can be picked up by guardians in a way that allows offline nodes to replay missed blocks.
+should be emitted such that it can be picked up by phylaxs in a way that allows offline nodes to replay missed blocks.
 
-The Wormhole contract will also need to make the emitter of the published message available to the guardians. The
+The Wormhole contract will also need to make the emitter of the published message available to the phylaxs. The
 emitter is either a parameter to the postMessage method if the chain allows proving that the caller controls or is
 authorized by said address (i.e. Solana PDAs), or it is the sender of the transaction.
 
 Additionally, the Wormhole contract will keep track of a sequence number per emitter that is incremented for each
 message submitted.
 
-The timestamp is derived by the guardian software using the finalized timestamp of the block the message was published
+The timestamp is derived by the phylax software using the finalized timestamp of the block the message was published
 in.
 
-When a message is posted, the emitter can specify for how many confirmations the guardians should wait before an
+When a message is posted, the emitter can specify for how many confirmations the phylaxs should wait before an
 attestation is produced. This allows latency sensitive applications to make sacrifices on safety while critical
 applications can sacrifice latency over safety. Chains with instant finality can omit the argument.
 
 **Fees:**
 
-In order to incentivize guardians and prevent spamming of the Wormhole network, publishing a message will require a fee
+In order to incentivize phylaxs and prevent spamming of the Wormhole network, publishing a message will require a fee
 payment.
 
 This fee is supposed to be paid in any of the chain's native fee currencies when publishing a message. This assumes that
@@ -117,7 +117,7 @@ To [32]uint8
 ## Caveats
 
 A governance decision is required for the collection of fees. This means a lot of manual intervention in the
-distribution of fees to stakers and guardians. The lack of a token bridge makes it hard to automate this in the early
+distribution of fees to stakers and phylaxs. The lack of a token bridge makes it hard to automate this in the early
 days of the protocol. Also, a transfer primitive is unlikely to support token bridges (which may require smart contract
 calls), so a contract will be required.
 

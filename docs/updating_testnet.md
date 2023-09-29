@@ -32,7 +32,7 @@ The EVM contracts do not allow updating a registration for a chain that is alrea
 4. Run `./upgrade_all_test`. This should upgrade each EVM chain and submit the contract upgrade VAA for it.
 5. Deal with any chains that fail, on a case by case basis. If you need to rerun a single chain, do something like this:
 ```bash
-MNEMONIC=<deployerMnemonic> GUARDIAN_MNEMONIC=<guardianSecretKey> ./upgrade testnet TokenBridge acala
+MNEMONIC=<deployerMnemonic> GUARDIAN_MNEMONIC=<phylaxSecretKey> ./upgrade testnet TokenBridge acala
 ```
 
 ## Upgrading Cosmwasm Contracts
@@ -59,7 +59,7 @@ node deployment/xpla/tools/deploy_single.js --network testnet --artifact artifac
 ```
 2. Generate the contract upgrade VAA.
 ```
-export UPGRADE_VAA=`worm generate upgrade --guardian-secret <guardianSecretKey> --chain xpla --module TokenBridge --contract-address <codeIdFromDeploy>`
+export UPGRADE_VAA=`worm generate upgrade --phylax-secret <phylaxSecretKey> --chain xpla --module TokenBridge --contract-address <codeIdFromDeploy>`
 ```
 3. Submit the contract upgrade VAA.
 ```
@@ -69,7 +69,7 @@ worm submit $UPGRADE_VAA --network testnet --chain xpla
 ## Submitting the Chain Registration on each Chain
 1. Generate the new chain registration VAA using the new emitter address (which for Sui is different from the contract address) and update the entry in the Testnet V2 notion page:
 ```bash
-export VAA=`worm generate registration --guardian-secret <guardianSecretKey> --chain sui --module TokenBridge --contract-address <newEmitterAddress>`
+export VAA=`worm generate registration --phylax-secret <phylaxSecretKey> --chain sui --module TokenBridge --contract-address <newEmitterAddress>`
 ```
 2. Submit the VAA to each chain like this:
 ```bash

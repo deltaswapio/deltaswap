@@ -37,7 +37,7 @@ fn missing_observations() {
     let (wh, mut contract) = proper_instantiate();
     register_emitters(&wh, &mut contract, 3);
 
-    let index = wh.guardian_set_index();
+    let index = wh.phylax_set_index();
     let quorum = wh
         .calculate_quorum(index, contract.app().block_info().height)
         .unwrap() as usize;
@@ -89,7 +89,7 @@ fn different_observations() {
     let (wh, mut contract) = proper_instantiate();
     register_emitters(&wh, &mut contract, 3);
 
-    let index = wh.guardian_set_index();
+    let index = wh.phylax_set_index();
     let quorum = wh
         .calculate_quorum(index, contract.app().block_info().height)
         .unwrap() as usize;
@@ -157,11 +157,11 @@ fn different_observations() {
 }
 
 #[test]
-fn guardian_set_change() {
+fn phylax_set_change() {
     let (wh, mut contract) = proper_instantiate();
     register_emitters(&wh, &mut contract, 3);
 
-    let first_set = wh.guardian_set_index();
+    let first_set = wh.phylax_set_index();
     let quorum = wh
         .calculate_quorum(first_set, contract.app().block_info().height)
         .unwrap() as usize;
@@ -177,7 +177,7 @@ fn guardian_set_change() {
             .unwrap();
     }
 
-    // Update the guardian set index and submit a different set of signatures.
+    // Update the phylax set index and submit a different set of signatures.
     let second_set = first_set + 1;
     wh.set_index(second_set);
     for s in signatures.iter().rev().take(quorum - 1) {
@@ -198,7 +198,7 @@ fn guardian_set_change() {
             .missing;
 
         if i < num_signatures - quorum + 1 {
-            // We should be missing signatures for the new guardian set.
+            // We should be missing signatures for the new phylax set.
             assert!(first_missing.is_empty());
 
             assert_eq!(second_missing.len(), 1);
@@ -207,7 +207,7 @@ fn guardian_set_change() {
             assert_eq!(o.emitter_chain, missing.chain_id);
             assert_eq!(o.tx_hash, missing.tx_hash);
         } else if i >= quorum - 1 {
-            // We should be missing signatures for the old guardian set.
+            // We should be missing signatures for the old phylax set.
             assert!(second_missing.is_empty());
 
             assert_eq!(first_missing.len(), 1);

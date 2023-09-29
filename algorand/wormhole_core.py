@@ -179,7 +179,7 @@ def getCoreContracts(   genTeal, approve_name, clear_name,
                 seq.store(Itob(Btoi(blob.read(Int(1), Int(0), Int(8))) + Int(1))),
                 Pop(blob.write(Int(1), Int(0), seq.load())),
 
-                # Log it so that we can look for this on the guardian network
+                # Log it so that we can look for this on the phylax network
                 Log(seq.load()),
 
                 blob.meta(Int(1), Bytes("publishMessage")),
@@ -201,7 +201,7 @@ def getCoreContracts(   genTeal, approve_name, clear_name,
 
             return Seq([
 
-                # All governance must be done with the most recent guardian set
+                # All governance must be done with the most recent phylax set
                 set.store(App.globalGet(Bytes("currentPhylaxSetIndex"))),
                 If(set.load() != Int(0), Seq([
                         idx.store(Extract(Txn.application_args[1], Int(1), Int(4))),
@@ -237,7 +237,7 @@ def getCoreContracts(   genTeal, approve_name, clear_name,
                         App.globalPut(Bytes("validUpdateApproveHash"), Extract(Txn.application_args[1], off.load(), Int(32)))
                     ])],
                     [a.load() == Int(2), Seq([
-                        # We are updating the guardian set
+                        # We are updating the phylax set
 
                         # This should point at all chains
 
@@ -249,7 +249,7 @@ def getCoreContracts(   genTeal, approve_name, clear_name,
                         idx.store(Btoi(v.load())),
 
                         # Lets see if the user handed us the correct memory... no hacky hacky
-                        MagicAssert(Txn.accounts[3] == get_sig_address(idx.load(), Bytes("guardian"))), 
+                        MagicAssert(Txn.accounts[3] == get_sig_address(idx.load(), Bytes("phylax"))),
 
                         # Make sure it is different and we can only walk forward
                         If(isBoot == Int(0), Seq(
@@ -264,14 +264,14 @@ def getCoreContracts(   genTeal, approve_name, clear_name,
                         off.store(off.load() + Int(4)),
                         len.store(Btoi(Extract(Txn.application_args[1], off.load(), Int(1)))),
 
-                        # Lets not let us get bricked by somebody submitting a stupid guardian set...
+                        # Lets not let us get bricked by somebody submitting a stupid phylax set...
                         MagicAssert(len.load() > Int(0)),  
 
                         Pop(blob.write(Int(3), Int(0), Extract(Txn.application_args[1], off.load(), Int(1) + (Int(20) * len.load())))),
 
                         If(Txn.accounts[3] != Txn.accounts[2],
                            Pop(blob.write(Int(2), Int(1000), Itob(Global.latest_timestamp() + Int(86400))))),
-                        blob.meta(Int(3), Bytes("guardian"))
+                        blob.meta(Int(3), Bytes("phylax"))
                     ])],
                     [a.load() == Int(3), Seq([
                         off.store(off.load() + Int(1)),
@@ -365,27 +365,27 @@ def getCoreContracts(   genTeal, approve_name, clear_name,
         def verifyVAA():
             i = ScratchVar()
             a = ScratchVar()
-            total_guardians = ScratchVar()
-            guardian_keys = ScratchVar()
+            total_phylaxs = ScratchVar()
+            phylax_keys = ScratchVar()
             num_sigs = ScratchVar()
             off = ScratchVar()
             digest = ScratchVar()
             hits = ScratchVar()
             s = ScratchVar()
             eoff = ScratchVar()
-            guardian = ScratchVar()
+            phylax = ScratchVar()
 
             return Seq([
-                # We have a guardian set?  We have OUR guardian set?
-                MagicAssert(Txn.accounts[2] == get_sig_address(Btoi(Extract(Txn.application_args[1], Int(1), Int(4))), Bytes("guardian"))),
-                blob.checkMeta(Int(2), Bytes("guardian")),
+                # We have a phylax set?  We have OUR phylax set?
+                MagicAssert(Txn.accounts[2] == get_sig_address(Btoi(Extract(Txn.application_args[1], Int(1), Int(4))), Bytes("phylax"))),
+                blob.checkMeta(Int(2), Bytes("phylax")),
                 # Lets grab the total keyset
-                total_guardians.store(blob.get_byte(Int(2), Int(0))),
-                MagicAssert(total_guardians.load() > Int(0)),
+                total_phylaxs.store(blob.get_byte(Int(2), Int(0))),
+                MagicAssert(total_phylaxs.load() > Int(0)),
 
-                guardian_keys.store(blob.read(Int(2), Int(1), Int(1) + Int(20) * total_guardians.load())),
+                phylax_keys.store(blob.read(Int(2), Int(1), Int(1) + Int(20) * total_phylaxs.load())),
 
-                # I wonder if this is an expired guardian set
+                # I wonder if this is an expired phylax set
                 s.store(Btoi(blob.read(Int(2), Int(1000), Int(1008)))),
                 If(s.load() != Int(0),
                    MagicAssert(Global.latest_timestamp() < s.load())),
@@ -401,9 +401,9 @@ def getCoreContracts(   genTeal, approve_name, clear_name,
 
                 # We have enough signatures?
                 MagicAssert(And(
-                    total_guardians.load() > Int(0),
-                    num_sigs.load() <= total_guardians.load(),
-                    num_sigs.load() > ((total_guardians.load() * Int(2)) / Int(3)),
+                    total_phylaxs.load() > Int(0),
+                    num_sigs.load() <= total_phylaxs.load(),
+                    num_sigs.load() > ((total_phylaxs.load() * Int(2)) / Int(3)),
                     )),
 
 
@@ -480,13 +480,13 @@ def getCoreContracts(   genTeal, approve_name, clear_name,
                                     s.store(Bytes("")),
 
                                     While(off.load() < eoff.load()).Do(Seq( [
-                                            # Lets see if we ever reuse the same signature more then once (same guardian over and over)
-                                            guardian.store(Btoi(Extract(Txn.application_args[1], off.load(), Int(1)))),
-                                            MagicAssert(GetBit(hits.load(), guardian.load()) == Int(0)),
-                                            hits.store(SetBit(hits.load(), guardian.load(), Int(1))),
+                                            # Lets see if we ever reuse the same signature more then once (same phylax over and over)
+                                            phylax.store(Btoi(Extract(Txn.application_args[1], off.load(), Int(1)))),
+                                            MagicAssert(GetBit(hits.load(), phylax.load()) == Int(0)),
+                                            hits.store(SetBit(hits.load(), phylax.load(), Int(1))),
 
-                                            # This extracts out of the keys THIS guardian's public key
-                                            s.store(Concat(s.load(), Extract(guardian_keys.load(), guardian.load() * Int(20), Int(20)))),
+                                            # This extracts out of the keys THIS phylax's public key
+                                            s.store(Concat(s.load(), Extract(phylax_keys.load(), phylax.load() * Int(20), Int(20)))),
 
                                             off.store(off.load() + Int(66))
                                     ])),

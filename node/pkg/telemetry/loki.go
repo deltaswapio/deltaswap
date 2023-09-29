@@ -118,7 +118,7 @@ func NewLokiCloudLogger(ctx context.Context, logger *zap.Logger, url string, pro
 	}
 
 	return &Telemetry{
-		encoder: &guardianTelemetryEncoder{
+		encoder: &phylaxTelemetryEncoder{
 			Encoder: zapcore.NewJSONEncoder(zapdriver.NewProductionEncoderConfig()),
 			logger: &ExternalLoggerLoki{
 				c:           c,

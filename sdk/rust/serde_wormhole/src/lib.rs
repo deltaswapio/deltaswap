@@ -253,7 +253,7 @@ mod tests {
     #[derive(Debug, Serialize, Deserialize, PartialEq, Eq)]
     struct Header {
         version: u8,
-        guardian_set_index: u32,
+        phylax_set_index: u32,
     }
 
     #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
@@ -297,9 +297,9 @@ mod tests {
 
     #[derive(Debug, Serialize, Deserialize, PartialEq, Eq)]
     struct PhylaxSetUpgrade<'a> {
-        new_guardian_set_index: u32,
+        new_phylax_set_index: u32,
         #[serde(borrow)]
-        new_guardian_set: PhylaxSetInfo<'a>,
+        new_phylax_set: PhylaxSetInfo<'a>,
     }
 
     #[derive(Debug, Serialize, Deserialize, PartialEq, Eq)]
@@ -338,7 +338,7 @@ mod tests {
         let vaa = Vaa {
             header: Header {
                 version: 3,
-                guardian_set_index: 0x97a5_6966,
+                phylax_set_index: 0x97a5_6966,
             },
             signatures: Cow::Borrowed(&[
                 Signature {

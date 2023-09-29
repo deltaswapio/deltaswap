@@ -70,7 +70,7 @@ describe('Wormhole', () => {
 
 		ptr += 34
 		// = 1254 + 48 = 1302
-		// NOTE: This assumes 19 guardians
+		// NOTE: This assumes 19 phylaxs
 		expect(ptr).toBe(1302)
 
 		const sequence = decodeUint64(signedVAA.data.slice(ptr, ptr + 8))
@@ -131,7 +131,7 @@ describe('Wormhole', () => {
 		// TODO: Perform the update here
 	})
 
-	it('Can upgrade guardian set', async () => {
+	it('Can upgrade phylax set', async () => {
         // const ec = new elliptic.ec("secp256k1")
 		// signers = [...Array(19)].map(() => ec.genKeyPair())
 
@@ -140,7 +140,7 @@ describe('Wormhole', () => {
 		//     targetChainId: CHAIN_ID_ALGORAND,
 		//     oldGSIndex: 1,
 		//     newGSIndex: 2,
-		//     guardians: generateKeySet(signers)
+		//     phylaxs: generateKeySet(signers)
 		// }
 
 		// const unsignedVaa = generateGovernanceVAA(signers, 1, wormhole.coreId, { sequence: 3 }, payload)

@@ -38,21 +38,21 @@ The number of messages within a batch is constrained by the the maximum `uint8` 
 We will add support for two new VAA payload types to the Wormhole core contract to allow handling of these:
 
 - The VAAv2 payload that holds the batch-signatures, an array of the signed hashes and an array of observations (the [Structs](#structs) section of this paper defines `observation`). This VAAv2 payload can be verified using a new Wormhole core contract endpoint `verifyBatchVM`. This payload will also be produced for individual messages with a nonce greater than zero to offer integrators flexibility when deciding which Wormhole core endpoint to verify messages with.
-- The VAAv3 payload, which is a “headless” payload that only carries an observation. This payload can only be verified when its hash is cached by the Wormhole core contract during VAAv2 signature verification. This payload type is created when a VAAv2 is parsed using the Wormhole core endpoint `parseBatchVM` by prepending the version type to the observation bytes. Although the payload format for VAAv3 is new, it will be parsed and verified using the existing Wormhole core endpoints and parsed into the existing `VM` struct (`signatures[]` and `guardianSetIndex` will be null) to ensure backwards compatibility.
+- The VAAv3 payload, which is a “headless” payload that only carries an observation. This payload can only be verified when its hash is cached by the Wormhole core contract during VAAv2 signature verification. This payload type is created when a VAAv2 is parsed using the Wormhole core endpoint `parseBatchVM` by prepending the version type to the observation bytes. Although the payload format for VAAv3 is new, it will be parsed and verified using the existing Wormhole core endpoints and parsed into the existing `VM` struct (`signatures[]` and `phylaxSetIndex` will be null) to ensure backwards compatibility.
 
 ## Detailed Design
 
 ### VAAv2
 
-To create a VAAv2 payload (which is eventually parsed into the `VM2` struct) an xDapp will invoke the `publishMessage` method at least one time with a nonce greater than zero. The guardian will then produce a VAAv2 payload by grouping messages with the same `nonce` (in the same transaction) and create a batch-signature by signing the payload version (`uint8(2)` for batches) and hash of all hashes of the observations:
+To create a VAAv2 payload (which is eventually parsed into the `VM2` struct) an xDapp will invoke the `publishMessage` method at least one time with a nonce greater than zero. The phylax will then produce a VAAv2 payload by grouping messages with the same `nonce` (in the same transaction) and create a batch-signature by signing the payload version (`uint8(2)` for batches) and hash of all hashes of the observations:
 
 `hash(version, hash(hash(Observation1), hash(Observation2), ...))`
 
-Once the batch is signed by the guardian, the VAAv2 can be parsed and verified by calling the new Wormhole core endpoint `parseAndVerifyBatchVM`. This method parses the VAAv2 into the `VM2` struct by calling `parseBatchVM`, calls `verifyBatchVM` to verify the batch-signatures, and stores the hash of each observation in a cache when specified by the caller (for reasons explained in the [VAAv3](#vaav3) section of this detailed design). `verifyBatchVM` also independently computes the hash of each observation and validates that each hash is stored in the `hashes` array, which is included in the VAAv2 payload. The structure of the VAAv2 payload can be found in the [Payloads](#payloads-encoded-messages) section of this design.
+Once the batch is signed by the phylax, the VAAv2 can be parsed and verified by calling the new Wormhole core endpoint `parseAndVerifyBatchVM`. This method parses the VAAv2 into the `VM2` struct by calling `parseBatchVM`, calls `verifyBatchVM` to verify the batch-signatures, and stores the hash of each observation in a cache when specified by the caller (for reasons explained in the [VAAv3](#vaav3) section of this detailed design). `verifyBatchVM` also independently computes the hash of each observation and validates that each hash is stored in the `hashes` array, which is included in the VAAv2 payload. The structure of the VAAv2 payload can be found in the [Payloads](#payloads-encoded-messages) section of this design.
 
 ### VAAv3
 
-When a VAAv2 payload is parsed into a `VM2` struct, each observation is stored as bytes in the `observations` byte array. The `uint8(3)` version type is prepended to the bytes to specify that they are considered a VAAv3 payload. Each VAAv3 payload can be parsed into the existing `VM` struct with `parseVM` to ensure backwards compatibility with existing smart contract integrations. Since VAAv3 payloads are considered “headless” and do not contain signatures, the `Signatures[]` and `guardianSetIndex` fields are left as null in the `VM` struct.
+When a VAAv2 payload is parsed into a `VM2` struct, each observation is stored as bytes in the `observations` byte array. The `uint8(3)` version type is prepended to the bytes to specify that they are considered a VAAv3 payload. Each VAAv3 payload can be parsed into the existing `VM` struct with `parseVM` to ensure backwards compatibility with existing smart contract integrations. Since VAAv3 payloads are considered “headless” and do not contain signatures, the `Signatures[]` and `phylaxSetIndex` fields are left as null in the `VM` struct.
 
 A parsed VAAv3 payload can then be verified by calling the existing method `verifyVM`. This method will check that the hash of the VAAv3 payload (hash of the observation) is stored in the `verifiedHashCache` and bypass signature verification (allowing for cheap verification of individual messages). The VAAv3 payload hash will only be stored in the `verifiedHashCache` if the caller sets the `cache` argument to `true` when verifying the associated VAAv2 payload with `verifyBatchVM`.
 
@@ -71,7 +71,7 @@ function clearBatchCache(bytes32[] memory hashesToClear)
 
 ```solidity
 struct Header {
-    uint32 guardianSetIndex;
+    uint32 phylaxSetIndex;
     Signature[] signatures;
     bytes32 hash;
 }
@@ -91,7 +91,7 @@ struct VM {
     // End of observation
 
     // Inlined Header
-    uint32 guardianSetIndex;
+    uint32 phylaxSetIndex;
     Signature[] signatures;
 
     // Hash of the observation
@@ -102,7 +102,7 @@ struct VM2 {
     uint8 version; // Version = 2
 
     // Inlined header
-    uint32 guardianSetIndex;
+    uint32 phylaxSetIndex;
     Signature[] signatures;
 
     // Array of observation hashes
@@ -124,7 +124,7 @@ VAAv2:
 // Version uint8 = 2;
 uint8 version;
 // Phylax set index
-uint32 guardianSetIndex;
+uint32 phylaxSetIndex;
 // Number of signatures
 uint8 signersLen;
 // Signatures: 66 bytes per signature

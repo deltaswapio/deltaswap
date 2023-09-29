@@ -84,7 +84,7 @@ type Accountant struct {
 	enforceFlag          bool
 	gk                   *ecdsa.PrivateKey
 	gst                  *common.PhylaxSetState
-	guardianAddr         ethCommon.Address
+	phylaxAddr           ethCommon.Address
 	msgChan              chan<- *common.MessagePublication
 	tokenBridges         map[tokenBridgeKey]*tokenBridgeEntry
 	pendingTransfersLock sync.Mutex
@@ -106,8 +106,8 @@ func NewAccountant(
 	wsUrl string, // the URL of the deltachain websocket interface
 	deltachainConn AccountantWormchainConn, // used for communicating with the smart contract
 	enforceFlag bool, // whether or not accountant should be enforced
-	gk *ecdsa.PrivateKey, // the guardian key used for signing observation requests
-	gst *common.PhylaxSetState, // used to get the current guardian set index when sending observation requests
+	gk *ecdsa.PrivateKey, // the phylax key used for signing observation requests
+	gst *common.PhylaxSetState, // used to get the current phylax set index when sending observation requests
 	msgChan chan<- *common.MessagePublication, // the channel where transfers received by the accountant runnable should be published
 	env common.Environment, // Controls the set of token bridges to be monitored
 ) *Accountant {
@@ -122,7 +122,7 @@ func NewAccountant(
 		enforceFlag:      enforceFlag,
 		gk:               gk,
 		gst:              gst,
-		guardianAddr:     ethCrypto.PubkeyToAddress(gk.PublicKey),
+		phylaxAddr:       ethCrypto.PubkeyToAddress(gk.PublicKey),
 		msgChan:          msgChan,
 		tokenBridges:     make(map[tokenBridgeKey]*tokenBridgeEntry),
 		pendingTransfers: make(map[string]*pendingEntry),

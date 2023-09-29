@@ -35,7 +35,7 @@ See [DEVELOP.md](./DEVELOP.md) for more information on how to run the developmen
 
 The answer is... maybe? The following things are needed in order to fully support a chain in Wormhole:
 
-- The Wormhole mainnet is governed by a DAO. Wormhole's design is symmetric - every guardian node needs to run
+- The Wormhole mainnet is governed by a DAO. Wormhole's design is symmetric - every phylax node needs to run
   a node or light client for every chain supported by Wormhole. This adds up, and the barrier to support new
   chains is pretty high. Your proposal should clearly outline the value proposition of supporting the new chain.
   **Convincing the DAO to run nodes for your chain is the first step in supporting a new chain.**

@@ -40,7 +40,7 @@ export const executeTransactionBlock = async (
 
 // TODO: can we pass in the latest core bridge package Id after an upgrade?
 // or do we have to use the first one?
-// this is the same type that the guardian will look for
+// this is the same type that the phylax will look for
 export const getEmitterAddressAndSequenceFromResponseSui = (
   originalCoreBridgePackageId: string,
   response: SuiTransactionBlockResponse

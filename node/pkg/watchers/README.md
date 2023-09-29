@@ -1,6 +1,6 @@
-# Guidelines / Skeleton for guardian watcher
+# Guidelines / Skeleton for phylax watcher
 
-All of the watchers in the guardian should be written similarly so that if one understands the structure and function of one watcher, then that knowledge is directly applicable to the other watchers. If a bug is found in one watcher, it should be fairly simple to see if that bug exists in the other watchers. To that end this document intends to give guidelines for a watcher written in go.
+All of the watchers in the phylax should be written similarly so that if one understands the structure and function of one watcher, then that knowledge is directly applicable to the other watchers. If a bug is found in one watcher, it should be fairly simple to see if that bug exists in the other watchers. To that end this document intends to give guidelines for a watcher written in go.
 
 ### Responsibilities of a watcher:
 
@@ -72,7 +72,7 @@ var (
 
 ### Functions:
 
-The Run function is what is called by the guardian to start this watcher. It should do the following:
+The Run function is what is called by the phylax to start this watcher. It should do the following:
 
 1. Create a connection to the blockchain with an appropriate subscription to listen to events from the core contract.
 2. Signal readiness (This indicates this watcher is fully initialized and ready to work)

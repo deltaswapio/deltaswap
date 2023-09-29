@@ -19,12 +19,12 @@ export async function getSignatureSetData(
 export class SignatureSetData {
   signatures: boolean[];
   hash: Buffer;
-  guardianSetIndex: number;
+  phylaxSetIndex: number;
 
-  constructor(signatures: boolean[], hash: Buffer, guardianSetIndex: number) {
+  constructor(signatures: boolean[], hash: Buffer, phylaxSetIndex: number) {
     this.signatures = signatures;
     this.hash = hash;
-    this.guardianSetIndex = guardianSetIndex;
+    this.phylaxSetIndex = phylaxSetIndex;
   }
 
   static deserialize(data: Buffer): SignatureSetData {
@@ -34,7 +34,7 @@ export class SignatureSetData {
     );
     const hashIndex = 4 + numSignatures;
     const hash = data.subarray(hashIndex, hashIndex + 32);
-    const guardianSetIndex = data.readUInt32LE(hashIndex + 32);
-    return new SignatureSetData(signatures, hash, guardianSetIndex);
+    const phylaxSetIndex = data.readUInt32LE(hashIndex + 32);
+    return new SignatureSetData(signatures, hash, phylaxSetIndex);
   }
 }

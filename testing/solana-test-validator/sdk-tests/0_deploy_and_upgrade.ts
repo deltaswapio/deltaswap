@@ -51,7 +51,7 @@ describe("Deploy and Upgrade Programs", () => {
   );
 
   // for signing wormhole messages
-  const guardians = new MockPhylaxs(GUARDIAN_SET_INDEX, GUARDIAN_KEYS);
+  const phylaxs = new MockPhylaxs(GUARDIAN_SET_INDEX, GUARDIAN_KEYS);
 
   // for generating governance wormhole messages
   const governance = new GovernanceEmitter(
@@ -82,9 +82,9 @@ describe("Deploy and Upgrade Programs", () => {
       );
 
       // initialize
-      const guardianSetExpirationTime = 86400;
+      const phylaxSetExpirationTime = 86400;
       const fee = 100n;
-      const initialPhylaxs = guardians.getPublicKeys().slice(0, 1);
+      const initialPhylaxs = phylaxs.getPublicKeys().slice(0, 1);
 
       const initializeTx = await web3.sendAndConfirmTransaction(
         connection,
@@ -92,7 +92,7 @@ describe("Deploy and Upgrade Programs", () => {
           createWormholeInitializeInstruction(
             CORE_BRIDGE_ADDRESS,
             wallet.key(),
-            guardianSetExpirationTime,
+            phylaxSetExpirationTime,
             fee,
             initialPhylaxs
           )
@@ -103,21 +103,21 @@ describe("Deploy and Upgrade Programs", () => {
 
       // verify data
       const info = await getWormholeBridgeData(connection, CORE_BRIDGE_ADDRESS);
-      expect(info.guardianSetIndex).to.equal(GUARDIAN_SET_INDEX);
-      expect(info.config.guardianSetExpirationTime).to.equal(
-        guardianSetExpirationTime
+      expect(info.phylaxSetIndex).to.equal(GUARDIAN_SET_INDEX);
+      expect(info.config.phylaxSetExpirationTime).to.equal(
+        phylaxSetExpirationTime
       );
       expect(info.config.fee).to.equal(fee);
-      const guardianSet = await getPhylaxSet(
+      const phylaxSet = await getPhylaxSet(
         connection,
         CORE_BRIDGE_ADDRESS,
         0
       );
-      expect(guardianSet.index).to.equal(GUARDIAN_SET_INDEX);
-      expect(guardianSet.expirationTime).to.equal(0);
-      expect(guardianSet.keys).has.length(1);
+      expect(phylaxSet.index).to.equal(GUARDIAN_SET_INDEX);
+      expect(phylaxSet.expirationTime).to.equal(0);
+      expect(phylaxSet.keys).has.length(1);
       expect(
-        Buffer.compare(initialPhylaxs[0], guardianSet.keys.at(0)!)
+        Buffer.compare(initialPhylaxs[0], phylaxSet.keys.at(0)!)
       ).to.equal(0);
     });
 
@@ -140,7 +140,7 @@ describe("Deploy and Upgrade Programs", () => {
         chain,
         implementation.toString()
       );
-      const signedVaa = guardians.addSignatures(message, [0]);
+      const signedVaa = phylaxs.addSignatures(message, [0]);
       // console.log(`signedVaa: ${signedVaa.toString("base64")}`);
 
       const txSignatures = await postVaa(
@@ -233,7 +233,7 @@ describe("Deploy and Upgrade Programs", () => {
         chain,
         implementation.toString()
       );
-      const signedVaa = guardians.addSignatures(message, [0]);
+      const signedVaa = phylaxs.addSignatures(message, [0]);
       // console.log(`signedVaa: ${signedVaa.toString("base64")}`);
 
       const txSignatures = await postVaa(
@@ -324,7 +324,7 @@ describe("Deploy and Upgrade Programs", () => {
         chain,
         implementation.toString()
       );
-      const signedVaa = guardians.addSignatures(message, [0]);
+      const signedVaa = phylaxs.addSignatures(message, [0]);
       // console.log(`signedVaa: ${signedVaa.toString("base64")}`);
 
       const txSignatures = await postVaa(

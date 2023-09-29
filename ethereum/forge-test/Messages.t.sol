@@ -24,16 +24,16 @@ contract TestMessages is Test {
 
   ExportedMessages messages;
 
-  Structs.PhylaxSet guardianSet;
+  Structs.PhylaxSet phylaxSet;
 
   function setUp() public {
     messages = new ExportedMessages();
 
-    // initialize guardian set with one guardian
+    // initialize phylax set with one phylax
     address[] memory keys = new address[](1);
     keys[0] = vm.addr(testPhylax);
-    guardianSet = Structs.PhylaxSet(keys, 0);
-    require(messages.quorum(guardianSet.keys.length) == 1, "Quorum should be 1");
+    phylaxSet = Structs.PhylaxSet(keys, 0);
+    require(messages.quorum(phylaxSet.keys.length) == 1, "Quorum should be 1");
   }
 
   function testQuorum() public {
@@ -58,14 +58,14 @@ contract TestMessages is Test {
     vm.assume(numPhylaxs > 0);
 
     if (numPhylaxs >= 256) {
-      vm.expectRevert("too many guardians");
+      vm.expectRevert("too many phylaxs");
     }
-    // test that quorums is never greater than the number of guardians
+    // test that quorums is never greater than the number of phylaxs
     assert(messages.quorum(numPhylaxs) <= numPhylaxs);
   }
 
   // This test ensures that submitting more signatures than expected will
-  // trigger a "guardian index out of bounds" error.
+  // trigger a "phylax index out of bounds" error.
   function testCannotVerifySignaturesWithOutOfBoundsSignature(bytes memory encoded) public {
     vm.assume(encoded.length > 0);
 
@@ -79,15 +79,15 @@ contract TestMessages is Test {
     // Reuse legitimate signature above for the next signature. This will
     // bypass the "invalid signature" revert.
     Structs.Signature memory outOfBoundsSignature = goodSignature;
-    outOfBoundsSignature.guardianIndex = 1;
+    outOfBoundsSignature.phylaxIndex = 1;
 
     // Attempt to verify signatures.
     Structs.Signature[] memory sigs = new Structs.Signature[](2);
     sigs[0] = goodSignature;
     sigs[1] = outOfBoundsSignature;
 
-    vm.expectRevert("guardian index out of bounds");
-    messages.verifySignatures(message, sigs, guardianSet);
+    vm.expectRevert("phylax index out of bounds");
+    messages.verifySignatures(message, sigs, phylaxSet);
   }
 
   // This test ensures that submitting an invalid signature fails when
@@ -106,7 +106,7 @@ contract TestMessages is Test {
     sigs[0] = badSignature;
 
     vm.expectRevert("ecrecover failed with signature");
-    messages.verifySignatures(message, sigs, guardianSet);
+    messages.verifySignatures(message, sigs, phylaxSet);
   }
 
   function testVerifySignatures(bytes memory encoded) public {
@@ -118,24 +118,24 @@ contract TestMessages is Test {
     Structs.Signature memory goodSignature;
     (goodSignature.v, goodSignature.r, goodSignature.s) = vm.sign(testPhylax, message);
     assertEq(ecrecover(message, goodSignature.v, goodSignature.r, goodSignature.s), vm.addr(testPhylax));
-    goodSignature.guardianIndex = 0;
+    goodSignature.phylaxIndex = 0;
 
     // Attempt to verify signatures.
     Structs.Signature[] memory sigs = new Structs.Signature[](1);
     sigs[0] = goodSignature;
 
-    (bool valid, string memory reason) = messages.verifySignatures(message, sigs, guardianSet);
+    (bool valid, string memory reason) = messages.verifySignatures(message, sigs, phylaxSet);
     assertEq(valid, true);
     assertEq(bytes(reason).length, 0);
   }
 
   // This test checks the possibility of getting a unsigned message verified through verifyVM
   function testHashMismatchedVMIsNotVerified() public {
-    // Set the initial guardian set
+    // Set the initial phylax set
     address[] memory initialPhylaxs = new address[](1);
     initialPhylaxs[0] = testPhylaxPub;
 
-    // Create a guardian set
+    // Create a phylax set
     Structs.PhylaxSet memory initialPhylaxSet = Structs.PhylaxSet({
       keys: initialPhylaxs,
       expirationTime: 0

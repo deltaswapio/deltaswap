@@ -17,7 +17,7 @@ contract Setup is Setters, ERC1967Upgrade {
         bytes32 governanceContract,
         uint256 evmChainId
     ) public {
-        require(initialPhylaxs.length > 0, "no guardians specified");
+        require(initialPhylaxs.length > 0, "no phylaxs specified");
 
         Structs.PhylaxSet memory initialPhylaxSet = Structs.PhylaxSet({
             keys : initialPhylaxs,
@@ -25,7 +25,7 @@ contract Setup is Setters, ERC1967Upgrade {
         });
 
         storePhylaxSet(initialPhylaxSet, 0);
-        // initial guardian set index is 0, which is the default value of the storage slot anyways
+        // initial phylax set index is 0, which is the default value of the storage slot anyways
 
         setChainId(chainId);
 

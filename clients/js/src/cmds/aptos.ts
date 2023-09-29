@@ -97,10 +97,10 @@ export const builder = (y: typeof yargs) =>
             default: GOVERNANCE_EMITTER,
             demandOption: false,
           })
-          .option("guardian-address", {
+          .option("phylax-address", {
             alias: "g",
             demandOption: true,
-            describe: "Initial guardian's addresses (CSV)",
+            describe: "Initial phylax's addresses (CSV)",
             type: "string",
           }),
       async (argv) => {
@@ -108,24 +108,24 @@ export const builder = (y: typeof yargs) =>
         assertNetwork(network);
 
         const contract_address = evm_address(CONTRACTS[network].aptos.core);
-        const guardian_addresses = argv["guardian-address"]
+        const phylax_addresses = argv["phylax-address"]
           .split(",")
           .map((address) => evm_address(address).substring(24));
         const chain_id = argv["chain-id"];
         const governance_address = evm_address(argv["governance-address"]);
         const governance_chain_id = argv["governance-chain-id"];
 
-        const guardians_serializer = new BCS.Serializer();
-        guardians_serializer.serializeU32AsUleb128(guardian_addresses.length);
-        guardian_addresses.forEach((address) =>
-          guardians_serializer.serializeBytes(Buffer.from(address, "hex"))
+        const phylaxs_serializer = new BCS.Serializer();
+        phylaxs_serializer.serializeU32AsUleb128(phylax_addresses.length);
+        phylax_addresses.forEach((address) =>
+          phylaxs_serializer.serializeBytes(Buffer.from(address, "hex"))
         );
 
         const args = [
           BCS.bcsSerializeUint64(chain_id),
           BCS.bcsSerializeUint64(governance_chain_id),
           BCS.bcsSerializeBytes(Buffer.from(governance_address, "hex")),
-          guardians_serializer.getBytes(),
+          phylaxs_serializer.getBytes(),
         ];
         const rpc = argv.rpc ?? NETWORKS[network].aptos.rpc;
         await callEntryFunc(

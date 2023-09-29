@@ -7,10 +7,10 @@ module=$2
 chain=$3
 
 secret=$MNEMONIC
-guardian_secret=""
+phylax_secret=""
 
 if [ "$network" = testnet ]; then
-  guardian_secret=$GUARDIAN_MNEMONIC
+  phylax_secret=$GUARDIAN_MNEMONIC
 fi
 
 SCRIPT=""
@@ -76,7 +76,7 @@ else
 fi
 
 if [ "$network" = testnet ]; then
-  worm submit $(worm generate upgrade -c "$chain" -a "$new_implementation" -m "$module" -g "$guardian_secret") -n "$network"
+  worm submit $(worm generate upgrade -c "$chain" -a "$new_implementation" -m "$module" -g "$phylax_secret") -n "$network"
 else
   echo "./scripts/contract-upgrade-governance.sh -c $chain -m $verify_module -a $new_implementation"
 fi

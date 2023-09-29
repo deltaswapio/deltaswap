@@ -399,7 +399,7 @@ Celo support
 
 ### Changed
 
-postVaa uses guardian_set_index from the vaa
+postVaa uses phylax_set_index from the vaa
 
 ## 0.2.4
 
@@ -585,7 +585,7 @@ NFT Bridge
 
 Fixed number overflow
 
-Fixed guardian set index
+Fixed phylax set index
 
 ## 0.0.2
 

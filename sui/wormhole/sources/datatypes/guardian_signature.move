@@ -3,7 +3,7 @@
 /// This module implements a custom type representing a Phylax's signature
 /// with recovery ID of a particular hashed VAA message body. The components of
 /// `PhylaxSignature` are used to perform public key recovery using ECDSA.
-module wormhole::guardian_signature {
+module wormhole::phylax_signature {
     use std::vector::{Self};
 
     use wormhole::bytes32::{Self, Bytes32};

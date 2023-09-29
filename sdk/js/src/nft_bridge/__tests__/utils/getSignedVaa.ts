@@ -48,7 +48,7 @@ export async function getSignedVaaAptos(
     state.data as NftBridgeState
   ).emitter_cap.emitter.padStart(64, "0");
 
-  // poll until the guardian(s) witness and sign the vaa
+  // poll until the phylax(s) witness and sign the vaa
   return getSignedVaa(CHAIN_ID_APTOS, emitterAddress, sequence);
 }
 
@@ -64,7 +64,7 @@ export async function getSignedVaaEthereum(
     CONTRACTS.DEVNET.ethereum.nft_bridge
   );
 
-  // poll until the guardian(s) witness and sign the vaa
+  // poll until the phylax(s) witness and sign the vaa
   return getSignedVaa(CHAIN_ID_ETH, emitterAddress, sequence);
 }
 
@@ -77,7 +77,7 @@ export async function getSignedVaaSolana(
     CONTRACTS.DEVNET.solana.nft_bridge
   );
 
-  // poll until the guardian(s) witness and sign the vaa
+  // poll until the phylax(s) witness and sign the vaa
   return getSignedVaa(CHAIN_ID_SOLANA, emitterAddress, sequence);
 }
 

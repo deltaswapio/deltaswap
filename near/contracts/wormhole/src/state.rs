@@ -7,7 +7,7 @@ use {
 
 pub struct ParsedVAA {
     pub version:            u8,
-    pub guardian_set_index: u32,
+    pub phylax_set_index: u32,
     pub timestamp:          u32,
     pub nonce:              u32,
     pub len_signers:        usize,
@@ -26,11 +26,11 @@ impl ParsedVAA {
 
     header (length 6):
     0   uint8   version (0x01)
-    1   uint32  guardian set index
+    1   uint32  phylax set index
     5   uint8   len signatures
 
     per signature (length 66):
-    0   uint8       index of the signer (in guardian keys)
+    0   uint8       index of the signer (in phylax keys)
     1   [65]uint8   signature
 
     body:
@@ -67,7 +67,7 @@ impl ParsedVAA {
         let version = data.get_u8(0);
 
         // Load 4 bytes starting from index 1
-        let guardian_set_index: u32 = data.get_u32(Self::GUARDIAN_SET_INDEX_POS);
+        let phylax_set_index: u32 = data.get_u32(Self::GUARDIAN_SET_INDEX_POS);
         let len_signers = data.get_u8(Self::LEN_SIGNER_POS) as usize;
         let body_offset: usize = Self::HEADER_LEN + Self::SIGNATURE_LEN * len_signers as usize;
 
@@ -96,7 +96,7 @@ impl ParsedVAA {
 
         ParsedVAA {
             version,
-            guardian_set_index,
+            phylax_set_index,
             timestamp,
             nonce,
             len_signers: len_signers as usize,

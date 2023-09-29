@@ -143,10 +143,10 @@ export function loadPhylaxSetIndex(): number {
     `./ts-scripts/relayer/config/${env}/chains.json`
   );
   const chains = JSON.parse(chainFile.toString());
-  if (chains.guardianSetIndex == undefined) {
-    throw Error("Failed to pull guardian set index from the chains file!");
+  if (chains.phylaxSetIndex == undefined) {
+    throw Error("Failed to pull phylax set index from the chains file!");
   }
-  return chains.guardianSetIndex;
+  return chains.phylaxSetIndex;
 }
 
 export function loadDeliveryProviders(): Deployment[] {
@@ -252,8 +252,8 @@ export function loadCreate2Factories(): Deployment[] {
 export function loadPhylaxKeys(): string[] {
   const output = [];
   const NUM_GUARDIANS = get_env_var("NUM_GUARDIANS");
-  const guardianKey = get_env_var("GUARDIAN_KEY");
-  const guardianKey2 = get_env_var("GUARDIAN_KEY2");
+  const phylaxKey = get_env_var("GUARDIAN_KEY");
+  const phylaxKey2 = get_env_var("GUARDIAN_KEY2");
 
   let numPhylaxs: number = 0;
   console.log("NUM_GUARDIANS variable : " + NUM_GUARDIANS);
@@ -264,16 +264,16 @@ export function loadPhylaxKeys(): string[] {
     numPhylaxs = parseInt(NUM_GUARDIANS);
   }
 
-  if (!guardianKey) {
-    throw Error("Failed to find guardian key for this process!");
+  if (!phylaxKey) {
+    throw Error("Failed to find phylax key for this process!");
   }
-  output.push(guardianKey);
+  output.push(phylaxKey);
 
   if (numPhylaxs >= 2) {
-    if (!guardianKey2) {
-      throw Error("Failed to find guardian key 2 for this process!");
+    if (!phylaxKey2) {
+      throw Error("Failed to find phylax key 2 for this process!");
     }
-    output.push(guardianKey2);
+    output.push(phylaxKey2);
   }
 
   return output;
@@ -332,7 +332,7 @@ export function loadPhylaxRpc(): string {
     throw Error("Failed to find contracts file for this process!");
   }
   const chain = JSON.parse(chainFile.toString());
-  return chain.guardianRPC;
+  return chain.phylaxRPC;
 }
 
 export function getDeliveryProvider(

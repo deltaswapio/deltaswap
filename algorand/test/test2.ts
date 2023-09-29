@@ -27,10 +27,10 @@ import {
 } from "@certusone/wormhole-sdk/lib/cjs/algorand/Helpers";
 
 
-const guardianKeys = [
+const phylaxKeys = [
     "beFA429d57cD18b7F8A4d91A2da9AB4AF05d0FBe"
 ]
-const guardianPrivKeys = [
+const phylaxPrivKeys = [
     "cfb12303a19cde580bb4dd771639b0d26bc68353645571a8cff516ab2ee113a0"
 ]
 
@@ -53,7 +53,7 @@ class AlgoTests {
         let accounts = await getTempAccounts();
         let player = accounts[0]
 
-        let t = testLib.genAssetMeta(guardianPrivKeys, 0, seq, seq, "4523c3F29447d1f32AEa95BEBD00383c4640F1b4", 1, 8, "USDC", "CircleCoin")
+        let t = testLib.genAssetMeta(phylaxPrivKeys, 0, seq, seq, "4523c3F29447d1f32AEa95BEBD00383c4640F1b4", 1, 8, "USDC", "CircleCoin")
         console.log(t)
         console.log(parseVAA(hexStringToUint8Array(t)))
 
@@ -65,7 +65,7 @@ class AlgoTests {
 //        self.submitVAA(attestVAA, client, player, self.tokenid)
 
 
-        t = testLib.genTransfer(guardianPrivKeys, 1, 1, 1, 1, "4523c3F29447d1f32AEa95BEBD00383c4640F1b4", 2, uint8ArrayToHexString(algosdk.decodeAddress(player.addr).publicKey, false), 8, 0)
+        t = testLib.genTransfer(phylaxPrivKeys, 1, 1, 1, 1, "4523c3F29447d1f32AEa95BEBD00383c4640F1b4", 2, uint8ArrayToHexString(algosdk.decodeAddress(player.addr).publicKey, false), 8, 0)
         console.log(t)
         console.log(parseVAA(hexStringToUint8Array(t)))
 
@@ -73,8 +73,8 @@ class AlgoTests {
 
         console.log("seq = ", seq);
 
-        console.log("XXX upgrading the the guardian set using untrusted account...", seq)
-        let upgradeVAA = testLib.genPhylaxSetUpgrade(guardianPrivKeys, 0, 1, seq, seq, guardianKeys)
+        console.log("XXX upgrading the the phylax set using untrusted account...", seq)
+        let upgradeVAA = testLib.genPhylaxSetUpgrade(phylaxPrivKeys, 0, 1, seq, seq, phylaxKeys)
         console.log(upgradeVAA)
         console.log(parseVAA(hexStringToUint8Array(upgradeVAA))) 
 
@@ -97,28 +97,28 @@ class AlgoTests {
         seq = seq + 1
 
         console.log("XXX upgrading again...", seq)
-        upgradeVAA = testLib.genPhylaxSetUpgrade(guardianPrivKeys, 1, 2, seq, seq, guardianKeys)
+        upgradeVAA = testLib.genPhylaxSetUpgrade(phylaxPrivKeys, 1, 2, seq, seq, phylaxKeys)
         console.log(upgradeVAA)
         await submitVAA(hexStringToUint8Array(upgradeVAA), client, player, CORE_ID)
 
         seq = seq + 1
 
         console.log("XXX registering chain 2", seq)
-        let reg = testLib.genRegisterChain(guardianPrivKeys, 2, 1, seq, 2)
+        let reg = testLib.genRegisterChain(phylaxPrivKeys, 2, 1, seq, 2)
         console.log(reg)
         await submitVAA(hexStringToUint8Array(reg), client, player, TOKEN_BRIDGE_ID)
 
         seq = seq + 1
 
         console.log("XXX gen asset meta", seq)
-        let a = testLib.genAssetMeta(guardianPrivKeys, 2, seq, seq, "4523c3F29447d1f32AEa95BEBD00383c4640F1b4", 2, 8, "USDC", "CircleCoin")
+        let a = testLib.genAssetMeta(phylaxPrivKeys, 2, seq, seq, "4523c3F29447d1f32AEa95BEBD00383c4640F1b4", 2, 8, "USDC", "CircleCoin")
         console.log(a)
         await submitVAA(hexStringToUint8Array(a), client, player, TOKEN_BRIDGE_ID)
 
         seq = seq + 1
 
         console.log("XXX Transfer the asset ")
-        let transferVAA = testLib.genTransfer(guardianPrivKeys, 2, 1, seq, 1, "4523c3F29447d1f32AEa95BEBD00383c4640F1b4", 2, uint8ArrayToHexString(algosdk.decodeAddress(player.addr).publicKey, false), 8, 0)
+        let transferVAA = testLib.genTransfer(phylaxPrivKeys, 2, 1, seq, 1, "4523c3F29447d1f32AEa95BEBD00383c4640F1b4", 2, uint8ArrayToHexString(algosdk.decodeAddress(player.addr).publicKey, false), 8, 0)
         await submitVAA(hexStringToUint8Array(transferVAA), client, player, TOKEN_BRIDGE_ID)
 
         seq = seq + 1

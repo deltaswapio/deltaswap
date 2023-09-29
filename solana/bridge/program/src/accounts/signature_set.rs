@@ -21,8 +21,8 @@ pub struct SignatureSetData {
     /// Hash of the data
     pub hash: [u8; 32],
 
-    /// Index of the guardian set
-    pub guardian_set_index: u32,
+    /// Index of the phylax set
+    pub phylax_set_index: u32,
 }
 
 impl Owned for SignatureSetData {

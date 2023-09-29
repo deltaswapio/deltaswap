@@ -78,7 +78,7 @@ describe("Solana to Ethereum", () => {
         const emitterAddress = await getEmitterAddressSolana(
           CONTRACTS.DEVNET.solana.token_bridge
         );
-        // poll until the guardian(s) witness and sign the vaa
+        // poll until the phylax(s) witness and sign the vaa
         const { vaaBytes: signedVAA } = await getSignedVAAWithRetry(
           WORMHOLE_RPC_HOSTS,
           CHAIN_ID_SOLANA,
@@ -213,7 +213,7 @@ describe("Solana to Ethereum", () => {
         const emitterAddress = await getEmitterAddressSolana(
           CONTRACTS.DEVNET.solana.token_bridge
         );
-        // poll until the guardian(s) witness and sign the vaa
+        // poll until the phylax(s) witness and sign the vaa
         const { vaaBytes: signedVAA } = await getSignedVAAWithRetry(
           WORMHOLE_RPC_HOSTS,
           CHAIN_ID_SOLANA,
@@ -307,7 +307,7 @@ describe("Solana to Ethereum", () => {
         const emitterAddress = await getEmitterAddressSolana(
           CONTRACTS.DEVNET.solana.token_bridge
         );
-        // poll until the guardian(s) witness and sign the vaa
+        // poll until the phylax(s) witness and sign the vaa
         const { vaaBytes: signedVAA } = await getSignedVAAWithRetry(
           WORMHOLE_RPC_HOSTS,
           CHAIN_ID_SOLANA,
@@ -405,7 +405,7 @@ describe("Solana to Ethereum", () => {
         const emitterAddress = await getEmitterAddressSolana(
           CONTRACTS.DEVNET.solana.token_bridge
         );
-        // poll until the guardian(s) witness and sign the vaa
+        // poll until the phylax(s) witness and sign the vaa
         const { vaaBytes: signedVAA } = await getSignedVAAWithRetry(
           WORMHOLE_RPC_HOSTS,
           CHAIN_ID_SOLANA,

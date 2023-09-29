@@ -4,68 +4,68 @@ module wormhole::structs {
     use std::timestamp;
 
     friend wormhole::state;
-    use wormhole::guardian_pubkey::{Self};
+    use wormhole::phylax_pubkey::{Self};
 
     struct Signature has key, store, copy, drop {
         sig: secp256k1::ECDSASignature,
         recovery_id: u8,
-        guardian_index: u8,
+        phylax_index: u8,
     }
 
     struct Phylax has key, store, drop, copy {
-        address: guardian_pubkey::Address
+        address: phylax_pubkey::Address
     }
 
     struct PhylaxSet has key, store, copy, drop {
         index:     U32,
-        guardians: vector<Phylax>,
+        phylaxs: vector<Phylax>,
         expiration_time: U32,
     }
 
-    public fun create_guardian(address: vector<u8>): Phylax {
+    public fun create_phylax(address: vector<u8>): Phylax {
         Phylax {
-            address: guardian_pubkey::from_bytes(address)
+            address: phylax_pubkey::from_bytes(address)
         }
     }
 
-    public fun create_guardian_set(index: U32, guardians: vector<Phylax>): PhylaxSet {
+    public fun create_phylax_set(index: U32, phylaxs: vector<Phylax>): PhylaxSet {
         PhylaxSet {
             index: index,
-            guardians: guardians,
+            phylaxs: phylaxs,
             expiration_time: u32::from_u64(0),
         }
     }
 
-    public(friend) fun expire_guardian_set(guardian_set: &mut PhylaxSet, delta: U32) {
-        guardian_set.expiration_time = u32::from_u64(timestamp::now_seconds() + u32::to_u64(delta));
+    public(friend) fun expire_phylax_set(phylax_set: &mut PhylaxSet, delta: U32) {
+        phylax_set.expiration_time = u32::from_u64(timestamp::now_seconds() + u32::to_u64(delta));
     }
 
     public fun unpack_signature(s: &Signature): (secp256k1::ECDSASignature, u8, u8) {
-        (s.sig, s.recovery_id, s.guardian_index)
+        (s.sig, s.recovery_id, s.phylax_index)
     }
 
     public fun create_signature(
         sig: secp256k1::ECDSASignature,
         recovery_id: u8,
-        guardian_index: u8
+        phylax_index: u8
     ): Signature {
-        Signature { sig, recovery_id, guardian_index }
+        Signature { sig, recovery_id, phylax_index }
     }
 
-    public fun get_address(guardian: &Phylax): guardian_pubkey::Address {
-        guardian.address
+    public fun get_address(phylax: &Phylax): phylax_pubkey::Address {
+        phylax.address
     }
 
-    public fun get_guardian_set_index(guardian_set: &PhylaxSet): U32 {
-        guardian_set.index
+    public fun get_phylax_set_index(phylax_set: &PhylaxSet): U32 {
+        phylax_set.index
     }
 
-    public fun get_guardians(guardian_set: &PhylaxSet): vector<Phylax> {
-        guardian_set.guardians
+    public fun get_phylaxs(phylax_set: &PhylaxSet): vector<Phylax> {
+        phylax_set.phylaxs
     }
 
-    public fun get_guardian_set_expiry(guardian_set: &PhylaxSet): U32 {
-        guardian_set.expiration_time
+    public fun get_phylax_set_expiry(phylax_set: &PhylaxSet): U32 {
+        phylax_set.expiration_time
     }
 
 }

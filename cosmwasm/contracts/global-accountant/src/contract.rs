@@ -71,9 +71,9 @@ pub fn execute(
     match msg {
         ExecuteMsg::SubmitObservations {
             observations,
-            guardian_set_index,
+            phylax_set_index,
             signature,
-        } => submit_observations(deps, info, observations, guardian_set_index, signature),
+        } => submit_observations(deps, info, observations, phylax_set_index, signature),
 
         ExecuteMsg::SubmitVaas { vaas } => submit_vaas(deps, info, vaas),
     }
@@ -83,11 +83,11 @@ fn submit_observations(
     mut deps: DepsMut<WormholeQuery>,
     info: MessageInfo,
     observations: Binary,
-    guardian_set_index: u32,
+    phylax_set_index: u32,
     signature: Signature,
 ) -> Result<Response, AnyError> {
     // We need to prepend an observation prefix to `observations`, which is the
-    // same prefix used by the guardians to sign these observations. This
+    // same prefix used by the phylaxs to sign these observations. This
     // prefix specifies this type as global accountant observations.
 
     deps.querier
@@ -95,7 +95,7 @@ fn submit_observations(
             &WormholeQuery::VerifyMessageSignature {
                 prefix: SUBMITTED_OBSERVATIONS_PREFIX.into(),
                 data: observations.clone(),
-                guardian_set_index,
+                phylax_set_index,
                 signature,
             }
             .into(),
@@ -104,7 +104,7 @@ fn submit_observations(
 
     let quorum = deps
         .querier
-        .query::<u32>(&WormholeQuery::CalculateQuorum { guardian_set_index }.into())
+        .query::<u32>(&WormholeQuery::CalculateQuorum { phylax_set_index }.into())
         .context("failed to calculate quorum")?;
 
     let observations: Vec<Observation> =
@@ -114,7 +114,7 @@ fn submit_observations(
     let mut events = Vec::with_capacity(observations.len());
     for o in observations {
         let key = transfer::Key::new(o.emitter_chain, o.emitter_address.into(), o.sequence);
-        match handle_observation(deps.branch(), o, guardian_set_index, quorum, signature) {
+        match handle_observation(deps.branch(), o, phylax_set_index, quorum, signature) {
             Ok((status, event)) => {
                 responses.push(SubmitObservationResponse { key, status });
                 if let Some(evt) = event {
@@ -149,7 +149,7 @@ fn submit_observations(
 fn handle_observation(
     mut deps: DepsMut<WormholeQuery>,
     o: Observation,
-    guardian_set_index: u32,
+    phylax_set_index: u32,
     quorum: u32,
     sig: Signature,
 ) -> anyhow::Result<(ObservationStatus, Option<Event>)> {
@@ -185,7 +185,7 @@ fn handle_observation(
         .map(Option::unwrap_or_default)
         .context("failed to load `PendingTransfer`")?;
     let data = match pending.iter_mut().find(|d| {
-        d.guardian_set_index() == guardian_set_index
+        d.phylax_set_index() == phylax_set_index
             && d.digest() == &digest
             && d.tx_hash() == &o.tx_hash
     }) {
@@ -195,7 +195,7 @@ fn handle_observation(
                 digest.clone(),
                 o.tx_hash.clone(),
                 o.emitter_chain,
-                guardian_set_index,
+                phylax_set_index,
             ));
             let back = pending.len() - 1;
             &mut pending[back]
@@ -522,10 +522,10 @@ pub fn query(deps: Deps<WormholeQuery>, _env: Env, msg: QueryMsg) -> StdResult<B
             query_chain_registration(deps, chain).and_then(|resp| to_binary(&resp))
         }
         QueryMsg::MissingObservations {
-            guardian_set,
+            phylax_set,
             index,
         } => {
-            query_missing_observations(deps, guardian_set, index).and_then(|resp| to_binary(&resp))
+            query_missing_observations(deps, phylax_set, index).and_then(|resp| to_binary(&resp))
         }
         QueryMsg::TransferStatus(key) => {
             query_transfer_status(deps, &key).and_then(|resp| to_binary(&resp))
@@ -672,14 +672,14 @@ fn query_chain_registration(
 
 fn query_missing_observations(
     deps: Deps<WormholeQuery>,
-    guardian_set: u32,
+    phylax_set: u32,
     index: u8,
 ) -> StdResult<MissingObservationsResponse> {
     let mut missing = Vec::new();
     for pending in PENDING_TRANSFERS.range(deps.storage, None, None, Order::Ascending) {
         let (_, v) = pending?;
         for data in v {
-            if data.guardian_set_index() == guardian_set && !data.has_signature(index) {
+            if data.phylax_set_index() == phylax_set && !data.has_signature(index) {
                 missing.push(MissingObservation {
                     chain_id: data.emitter_chain(),
                     tx_hash: data.tx_hash().clone(),

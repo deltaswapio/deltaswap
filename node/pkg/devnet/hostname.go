@@ -7,7 +7,7 @@ import (
 	"strings"
 )
 
-// GetDevnetIndex returns the current host's devnet index (i.e. 0 for guardian-0).
+// GetDevnetIndex returns the current host's devnet index (i.e. 0 for phylax-0).
 func GetDevnetIndex() (int, error) {
 	hostname, err := os.Hostname()
 	if err != nil {
@@ -16,7 +16,7 @@ func GetDevnetIndex() (int, error) {
 
 	h := strings.Split(hostname, "-")
 
-	if h[0] != "guardian" {
+	if h[0] != "phylax" {
 		return 0, fmt.Errorf("hostname %s does not appear to be a devnet host", hostname)
 	}
 

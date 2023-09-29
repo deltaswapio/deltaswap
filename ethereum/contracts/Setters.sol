@@ -7,11 +7,11 @@ import "./State.sol";
 
 contract Setters is State {
     function updatePhylaxSetIndex(uint32 newIndex) internal {
-        _state.guardianSetIndex = newIndex;
+        _state.phylaxSetIndex = newIndex;
     }
 
     function expirePhylaxSet(uint32 index) internal {
-        _state.guardianSets[index].expirationTime = uint32(block.timestamp) + 86400;
+        _state.phylaxSets[index].expirationTime = uint32(block.timestamp) + 86400;
     }
 
     function storePhylaxSet(Structs.PhylaxSet memory set, uint32 index) internal {
@@ -19,7 +19,7 @@ contract Setters is State {
         for (uint i = 0; i < setLength; i++) {
             require(set.keys[i] != address(0), "Invalid key");
         }
-        _state.guardianSets[index] = set;
+        _state.phylaxSets[index] = set;
     }
 
     function setInitialized(address implementatiom) internal {

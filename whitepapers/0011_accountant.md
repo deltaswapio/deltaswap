@@ -44,7 +44,7 @@ The `global-accountant` contract on deltachain acts as an [Integrity Checker](00
 
 `global-accountant`keeps track of the tokens locked and minted on each connected blockchain.
 
-Once a Token Bridge message has reached a quorum of pre-observations (i.e. 13 guardians have submitted a pre-observation), it attempts to apply the transfer to the account balances for each chain.  If the transfer doesn't result in a negative account balance, it is allowed to proceed.
+Once a Token Bridge message has reached a quorum of pre-observations (i.e. 13 phylaxs have submitted a pre-observation), it attempts to apply the transfer to the account balances for each chain.  If the transfer doesn't result in a negative account balance, it is allowed to proceed.
 
 ## Detailed Design
 
@@ -52,65 +52,65 @@ Once a Token Bridge message has reached a quorum of pre-observations (i.e. 13 gu
 
 #### Query methods for signature verification
 
-The global-accountant is a cosmwasm-based smart contract rather than a built-in native cosmos-sdk module.  It needs to expose query methods from the native wormhole module to cosmwasm (like getting the members of a guardian set).  Luckily, extending the contract interface is [fairly straightforward](https://docs.cosmwasm.com/docs/1.0/integration#extending-the-contract-interface).  The `x/wormhole` native module will expose the following query methods:
+The global-accountant is a cosmwasm-based smart contract rather than a built-in native cosmos-sdk module.  It needs to expose query methods from the native wormhole module to cosmwasm (like getting the members of a phylax set).  Luckily, extending the contract interface is [fairly straightforward](https://docs.cosmwasm.com/docs/1.0/integration#extending-the-contract-interface).  The `x/wormhole` native module will expose the following query methods:
 
 ```rust
 #[cw_serde]
 #[derive(QueryResponses)]
 pub enum WormholeQuery {
-    /// Verifies that `vaa` has been signed by a quorum of guardians from valid guardian set.
+    /// Verifies that `vaa` has been signed by a quorum of phylaxs from valid phylax set.
     #[returns(Empty)]
     VerifyVaa {
         vaa: Binary,
     },
 
-    /// Verifies that `data` has been signed by a guardian from `guardian_set_index` using a correct `prefix`.
+    /// Verifies that `data` has been signed by a phylax from `phylax_set_index` using a correct `prefix`.
     #[returns(Empty)]
     VerifyMessageSignature {
         prefix: Binary,
         data: Binary,
-        guardian_set_index: u32,
+        phylax_set_index: u32,
         signature: Signature,
     },
 
-    /// Returns the number of signatures necessary for quorum for the given guardian set index.
+    /// Returns the number of signatures necessary for quorum for the given phylax set index.
     #[returns(u32)]
-    CalculateQuorum { guardian_set_index: u32 },
+    CalculateQuorum { phylax_set_index: u32 },
 }
 ```
 
 #### Submitting observations to deltachain
 
-When a guardian observes a token transfer message from the registered tokenbridge on a particular chain, it submits the observation directly to the accountant.  The contract keeps track of pending token transfers and emits an event once it has received a quorum of observations.  If a quorum of guardians submit their observations within a single tendermint block then the token transfer only needs to wait for one round of tendermint consensus and one round of guardian consensus.
+When a phylax observes a token transfer message from the registered tokenbridge on a particular chain, it submits the observation directly to the accountant.  The contract keeps track of pending token transfers and emits an event once it has received a quorum of observations.  If a quorum of phylaxs submit their observations within a single tendermint block then the token transfer only needs to wait for one round of tendermint consensus and one round of phylax consensus.
 
-When a guardian submits a transfer (observation) to the contract, the contract will perform several checks:
+When a phylax submits a transfer (observation) to the contract, the contract will perform several checks:
 
-- Check that the signature is valid and from a guardian in the current guardian set.
-- If the transfer does not yet have a quorum of signatures, return a `Pending` status and mark the transfer as having a signature from the guardian.
+- Check that the signature is valid and from a phylax in the current phylax set.
+- If the transfer does not yet have a quorum of signatures, return a `Pending` status and mark the transfer as having a signature from the phylax.
 - If a transfer with the same `(emitter_chain, emitter_address, sequence)` tuple has already been committed, then check that the digest of the transfer matches the digest of the committed transfer.  If they match return a `Committed` status; otherwise return an `Error` status and emit an `Error` event.
 - If the transfer has a quorum of signatures, parse the tokenbridge payload and commit the transfer.
 - If committing the transfer fails (for example, if one of the accounts does not have a sufficient balance), return an `Error` status and emit an `Error` event.  Otherwise return a `Committed` status and emit a `Committed` event.
 
-If the guardian receives a `Committed` status for a transfer then it can immediately proceed to signing the VAA.  If it receives an `Error` status, then it should halt further processing of the transfer (see the [Handling Rejections](#handling-rejections) section for more details).  If it receives a `Pending` status, then it should add the observation to a local database of pending transfers and wait for an event from the accountant.
+If the phylax receives a `Committed` status for a transfer then it can immediately proceed to signing the VAA.  If it receives an `Error` status, then it should halt further processing of the transfer (see the [Handling Rejections](#handling-rejections) section for more details).  If it receives a `Pending` status, then it should add the observation to a local database of pending transfers and wait for an event from the accountant.
 
 #### Observing Events from Wormchain
 
-Each guardian sets up a watcher for the accountant watching for events emitted signalling a determination on a transfer.  An event for a transfer is emitted when there is a quorum of pre-observations.
+Each phylax sets up a watcher for the accountant watching for events emitted signalling a determination on a transfer.  An event for a transfer is emitted when there is a quorum of pre-observations.
 
-There are 2 types of events that the guardian must handle:
+There are 2 types of events that the phylax must handle:
 
-- Transfer committed - This indicates that an observation has reached quorum and the transfer has been committed.  The guardian must verify the contents of the event and then sign the VAA if they match.  See [Threat Model](#threat-model) for more details.
-- Error - This indicates that the accountant ran into an error while processing an observation.  The guardian should halt further processing of the transfer.  See the [Handling Rejections](#handling-rejections) section for more details
+- Transfer committed - This indicates that an observation has reached quorum and the transfer has been committed.  The phylax must verify the contents of the event and then sign the VAA if they match.  See [Threat Model](#threat-model) for more details.
+- Error - This indicates that the accountant ran into an error while processing an observation.  The phylax should halt further processing of the transfer.  See the [Handling Rejections](#handling-rejections) section for more details
 
 #### Handling stuck transfers
 
-It may be possible that some transfers don't receive enough observations to reach quorum.  This can happen if a number of guardians miss the transaction on the origin chain.  Since the accountant runs before the peer to peer gossip layer, it cannot take advantage of the existing automatic retry mechanisms that the guardian network uses.  To deal with this the accountant contract provides a `MissingObservations` query that returns a list of pending transfers for which the accountant does not have an observation from a particular guardian.
+It may be possible that some transfers don't receive enough observations to reach quorum.  This can happen if a number of phylaxs miss the transaction on the origin chain.  Since the accountant runs before the peer to peer gossip layer, it cannot take advantage of the existing automatic retry mechanisms that the phylax network uses.  To deal with this the accountant contract provides a `MissingObservations` query that returns a list of pending transfers for which the accountant does not have an observation from a particular phylax.
 
 Phylaxs are expected to periodically run this query and re-observe transactions for which the accountant is missing observations from them.
 
 #### Contract Upgrades
 
-Upgrading the contract is performed with a migrate contract governance action from the guardian network. Once quorum+1 guardians (13) have signed the migrate contract governance VAA, the [deltachain client migrate command](https://github.com/deltaswapio/deltaswap/blob/a846036b6ebff3af6f12ff375f5c3801ada20291/deltachain/x/wormhole/client/cli/tx_wasmd.go#L148) can be ran by anyone with an authorized wallet to submit the valid governance vaa and updated wasm contract to deltachain.
+Upgrading the contract is performed with a migrate contract governance action from the phylax network. Once quorum+1 phylaxs (13) have signed the migrate contract governance VAA, the [deltachain client migrate command](https://github.com/deltaswapio/deltaswap/blob/a846036b6ebff3af6f12ff375f5c3801ada20291/deltachain/x/wormhole/client/cli/tx_wasmd.go#L148) can be ran by anyone with an authorized wallet to submit the valid governance vaa and updated wasm contract to deltachain.
 
 ### Account Management
 
@@ -127,7 +127,7 @@ Each account is identified via a `(chain_id, token_chain, token_address)` tuple.
 
 #### Governance
 
-Account balances recorded by the accountant may end up inaccurate due to bugs in the program or exploits of the token bridge.  In these cases, the guardians may issue governance actions to manually modify the balances of the accounts.  These governance actions must be signed by a quorum of guardians.
+Account balances recorded by the accountant may end up inaccurate due to bugs in the program or exploits of the token bridge.  In these cases, the phylaxs may issue governance actions to manually modify the balances of the accounts.  These governance actions must be signed by a quorum of phylaxs.
 
 #### Examples
 
@@ -137,7 +137,7 @@ Example 2: A user sends wrapped SOL from ethereum to solana.  In this transactio
 
 Example 3: An attacker exploits a bug in the solana contract to print fake wrapped ETH and transfers it over the bridge. This could drain real ETH from the ethereum contract. Thanks to the accounting contract, the total amount drained is limited by the total number of wrapped ETH issued by the solana token bridge contract.  Since the token bridge is still liable for all the legitimately issued wrapped ETH the account balances no longer reflect reality.
 
-Wormhole decides to cover the cost of the hack and transfers the ETH equivalent to the stolen amount to the token bridge contract on ethereum.  To update the accounts, the guardians must issue 2 governance actions: one to increase the balance of the `(Ethereum, Ethereum, ETH)` custody account and one to increase the balance of the `(Solana, Ethereum, ETH)` wrapped account.
+Wormhole decides to cover the cost of the hack and transfers the ETH equivalent to the stolen amount to the token bridge contract on ethereum.  To update the accounts, the phylaxs must issue 2 governance actions: one to increase the balance of the `(Ethereum, Ethereum, ETH)` custody account and one to increase the balance of the `(Solana, Ethereum, ETH)` wrapped account.
 
 Example 4: A user sends wrapped SOL from ethereum to polygon.  Even though SOL is not native to either chain, the transaction is still recorded the same way: the `(Ethereum, Solana, SOL)` wrapped account is debited and the `(Polygon, Solana, SOL)` wrapped account is credited.  The total liability of the token bridge has not changed and instead we have just moved some liability from ethereum to polygon.
 
@@ -154,7 +154,7 @@ Since users can send any arbitrary token over the token bridge, the accountant s
 
 In order for the accountant to have accurate values for the balances of the various accounts it needs to replay all transactions since the initial launch of the token bridge.  Similarly, it may be necessary to backfill missing transfers if the accountant is disabled for any period of time.
 
-To handle both issues, the accountant has the ability to directly process tokenbridge transfer VAAs.  As long as the VAAs are signed by a quorum of guardians from the latest guardian set, the accountant uses them to update its on-chain state of token balances.
+To handle both issues, the accountant has the ability to directly process tokenbridge transfer VAAs.  As long as the VAAs are signed by a quorum of phylaxs from the latest phylax set, the accountant uses them to update its on-chain state of token balances.
 
 Submitting VAAs does not disable any core checks: a VAA causing the balance of an account to become negative will still be rejected even if it has a quorum of signatures.  This can be used to catch problematic transfers after the fact.
 
@@ -164,14 +164,14 @@ Legitimate transactions should never be rejected so a rejection implies either a
 
 #### Alerting
 
-Whenever a guardian observes an error (either via an observation response or via an error event), it will increase a prometheus error counter.  Phylaxs will be encouraged to set up alerts whenever these metrics change so that they can be notified when an error occurs.
+Whenever a phylax observes an error (either via an observation response or via an error event), it will increase a prometheus error counter.  Phylaxs will be encouraged to set up alerts whenever these metrics change so that they can be notified when an error occurs.
 
 ## Deployment Plan
 
-- Deploy deltachain and have a quorum of guardians bring their nodes online.
+- Deploy deltachain and have a quorum of phylaxs bring their nodes online.
 - Deploy the accountant contract to deltachain and backfill it with all the tokenbridge transfer VAAs that have been emitted since inception.
-- Enable the accountant in log-only mode.  In this mode, each guardian will submit its observations to the accountant but will not wait for the transfer to commit before signing the VAA.  This allows time to shake out any remaining implementation issues without impacting the network.
-- After confidence is achieved the accountant is running correctly in log-only mode, switch to enforcing mode.  In this mode, guardians will not sign VAAs for token transfers until the transfer is committed by the accountant.  As long as at least a quorum of guardians submit their observations to the accountant, only a super-minority (1/3) is needed to turn on enforcing-mode for it to be effective.
+- Enable the accountant in log-only mode.  In this mode, each phylax will submit its observations to the accountant but will not wait for the transfer to commit before signing the VAA.  This allows time to shake out any remaining implementation issues without impacting the network.
+- After confidence is achieved the accountant is running correctly in log-only mode, switch to enforcing mode.  In this mode, phylaxs will not sign VAAs for token transfers until the transfer is committed by the accountant.  As long as at least a quorum of phylaxs submit their observations to the accountant, only a super-minority (1/3) is needed to turn on enforcing-mode for it to be effective.
 
 ## Security Considerations
 
@@ -181,10 +181,10 @@ Since the Global Accountant is implemented as an Integrity Checker, it inherits 
 
 ### Susceptibility to deltachain downtime
 
-Once all token transfers are gated on approval from the accountant, the uptime of the guardian network for those transfers becomes dependent on the uptime of deltachain itself.  Any downtime for deltachain would halt all token transfers until the network is back online (or 2/3+ of the guardians choose to disable the accountant).
+Once all token transfers are gated on approval from the accountant, the uptime of the phylax network for those transfers becomes dependent on the uptime of deltachain itself.  Any downtime for deltachain would halt all token transfers until the network is back online (or 2/3+ of the phylaxs choose to disable the accountant).
 
 In practice, cosmos chains are stable and deltachain is not particularly complex.  However, once the accountant is live, attacking deltachain could shut down all token transfers for the bridge.
 
 ### Token Bridge messages cannot reach quorum if 7 or more, but less than 13 Phylaxs decide to disable Accountant
 
-Due to the nature of the accountant, a guardian that chooses to enable it in enforcing-mode will refuse to sign a token transfer until it sees that the transfer is committed by the accountant.  If a super-minority of guardians choose to not enable the accountant at all (i.e. stop sending their observations to the contract) then we will end up with a stalemate: the guardians with the feature disabled will be unable to reach quorum because they don't have enough signatures while the guardians in enforcing-mode will never observe the transfer being committed by the accountant (and so will never sign the observation).  This is very different from [the governor feature](0007_governor.md), where only a super-minority of guardians have to enable it to be effective.
+Due to the nature of the accountant, a phylax that chooses to enable it in enforcing-mode will refuse to sign a token transfer until it sees that the transfer is committed by the accountant.  If a super-minority of phylaxs choose to not enable the accountant at all (i.e. stop sending their observations to the contract) then we will end up with a stalemate: the phylaxs with the feature disabled will be unable to reach quorum because they don't have enough signatures while the phylaxs in enforcing-mode will never observe the transfer being committed by the accountant (and so will never sign the observation).  This is very different from [the governor feature](0007_governor.md), where only a super-minority of phylaxs have to enable it to be effective.

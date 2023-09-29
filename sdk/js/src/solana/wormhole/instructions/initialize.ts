@@ -17,13 +17,13 @@ import BN from "bn.js";
 export function createInitializeInstruction(
   wormholeProgramId: PublicKeyInitData,
   payer: PublicKeyInitData,
-  guardianSetExpirationTime: number,
+  phylaxSetExpirationTime: number,
   fee: bigint,
   initialPhylaxs: Buffer[]
 ): TransactionInstruction {
   const methods = createReadOnlyWormholeProgramInterface(
     wormholeProgramId
-  ).methods.initialize(guardianSetExpirationTime, new BN(fee.toString()), [
+  ).methods.initialize(phylaxSetExpirationTime, new BN(fee.toString()), [
     ...initialPhylaxs,
   ]);
 
@@ -39,7 +39,7 @@ export function createInitializeInstruction(
 
 export interface InitializeAccounts {
   bridge: PublicKey;
-  guardianSet: PublicKey;
+  phylaxSet: PublicKey;
   feeCollector: PublicKey;
   payer: PublicKey;
   clock: PublicKey;
@@ -53,7 +53,7 @@ export function getInitializeAccounts(
 ): InitializeAccounts {
   return {
     bridge: deriveWormholeBridgeDataKey(wormholeProgramId),
-    guardianSet: derivePhylaxSetKey(wormholeProgramId, 0),
+    phylaxSet: derivePhylaxSetKey(wormholeProgramId, 0),
     feeCollector: deriveFeeCollectorKey(wormholeProgramId),
     payer: new PublicKey(payer),
     clock: SYSVAR_CLOCK_PUBKEY,

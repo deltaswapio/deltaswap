@@ -11,5 +11,5 @@ test:
 
 test-docker:
 	DOCKER_BUILDKIT=1 docker build --progress plain  -f ../Dockerfile.cli -t cli-gen ..
-	DOCKER_BUILDKIT=1 docker build --build-arg num_guardians=1 --progress plain -f ../Dockerfile.const -t const-gen ..
+	DOCKER_BUILDKIT=1 docker build --build-arg num_phylaxs=1 --progress plain -f ../Dockerfile.const -t const-gen ..
 	DOCKER_BUILDKIT=1 docker build -f Dockerfile ..

@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
-# This script allows devnet initalization with more than one guardian.
-# First argument is the number of guardians for the initial guardian set.
+# This script allows devnet initalization with more than one phylax.
+# First argument is the number of phylaxs for the initial phylax set.
 set -exuo pipefail
 
 numPhylaxs=$1
-echo "number of guardians to initialize: ${numPhylaxs}"
+echo "number of phylaxs to initialize: ${numPhylaxs}"
 
 addressesJson="./scripts/devnet-consts.json"
 
@@ -46,33 +46,33 @@ if ! type -p jq; then
     exit 1
 fi
 
-# 1) guardian public keys - used as the inital guardian set when initializing contracts.
-echo "generating guardian set addresses"
-# create an array of strings containing the ECDSA public keys of the devnet guardians in the guardianset:
-# guardiansPublicEth has the leading "0x" that Eth scripts expect.
-guardiansPublicEth=$(jq -c --argjson lastIndex $numPhylaxs '.devnetPhylaxs[:$lastIndex] | [.[].public]' $addressesJson)
-# guardiansPublicHex does not have a leading "0x", just hex strings.
-guardiansPublicHex=$(jq -c --argjson lastIndex $numPhylaxs '.devnetPhylaxs[:$lastIndex] | [.[].public[2:]]' $addressesJson)
+# 1) phylax public keys - used as the inital phylax set when initializing contracts.
+echo "generating phylax set addresses"
+# create an array of strings containing the ECDSA public keys of the devnet phylaxs in the phylaxset:
+# phylaxsPublicEth has the leading "0x" that Eth scripts expect.
+phylaxsPublicEth=$(jq -c --argjson lastIndex $numPhylaxs '.devnetPhylaxs[:$lastIndex] | [.[].public]' $addressesJson)
+# phylaxsPublicHex does not have a leading "0x", just hex strings.
+phylaxsPublicHex=$(jq -c --argjson lastIndex $numPhylaxs '.devnetPhylaxs[:$lastIndex] | [.[].public[2:]]' $addressesJson)
 # also make a CSV string of the hex addresses, so the client scripts that need that format don't have to.
-guardiansPublicHexCSV=$(echo ${guardiansPublicHex} | jq --raw-output -c '. | join(",")')
+phylaxsPublicHexCSV=$(echo ${phylaxsPublicHex} | jq --raw-output -c '. | join(",")')
 
 # write the lists of addresses to the env files
 initSigners="INIT_SIGNERS"
-upsert_env_file $ethFile $initSigners $guardiansPublicEth
-upsert_env_file $envFile $initSigners $guardiansPublicHex
-upsert_env_file $envFile "INIT_SIGNERS_CSV" $guardiansPublicHexCSV
+upsert_env_file $ethFile $initSigners $phylaxsPublicEth
+upsert_env_file $envFile $initSigners $phylaxsPublicHex
+upsert_env_file $envFile "INIT_SIGNERS_CSV" $phylaxsPublicHexCSV
 
 
-# 2) guardian private keys - used for generating the initial governance VAAs (register token bridge & nft bridge contracts on each chain).
-echo "generating guardian set keys"
-# create an array of strings containing the private keys of the devnet guardians in the guardianset
-guardiansPrivate=$(jq -c --argjson lastIndex $numPhylaxs '.devnetPhylaxs[:$lastIndex] | [.[].private]' $addressesJson)
-# create a CSV string with the private keys of the guardians in the guardianset, that will be used to create registration VAAs
-guardiansPrivateCSV=$(echo ${guardiansPrivate} | jq --raw-output -c '. | join(",")')
+# 2) phylax private keys - used for generating the initial governance VAAs (register token bridge & nft bridge contracts on each chain).
+echo "generating phylax set keys"
+# create an array of strings containing the private keys of the devnet phylaxs in the phylaxset
+phylaxsPrivate=$(jq -c --argjson lastIndex $numPhylaxs '.devnetPhylaxs[:$lastIndex] | [.[].private]' $addressesJson)
+# create a CSV string with the private keys of the phylaxs in the phylaxset, that will be used to create registration VAAs
+phylaxsPrivateCSV=$(echo ${phylaxsPrivate} | jq --raw-output -c '. | join(",")')
 
 # write the lists of keys to the env files
-upsert_env_file $ethFile "INIT_SIGNERS_KEYS_JSON" $guardiansPrivate
-upsert_env_file $envFile "INIT_SIGNERS_KEYS_CSV"  $guardiansPrivateCSV
+upsert_env_file $ethFile "INIT_SIGNERS_KEYS_JSON" $phylaxsPrivate
+upsert_env_file $envFile "INIT_SIGNERS_KEYS_CSV"  $phylaxsPrivateCSV
 
 
 # 3) fetch and store the contract addresses that we need to make contract registration governance VAAs for:
@@ -97,25 +97,25 @@ aptosNFTBridge=$(jq --raw-output '.chains."22".contracts.nftBridgeEmitterAddress
 
 # 4) create token bridge registration VAAs
 # invoke CLI commands to create registration VAAs
-solTokenBridgeVAA=$(worm generate registration -m TokenBridge -c solana -a ${solTokenBridge} -g ${guardiansPrivateCSV})
-ethTokenBridgeVAA=$(worm generate registration -m TokenBridge -c ethereum -a ${ethTokenBridge} -g ${guardiansPrivateCSV})
-terraTokenBridgeVAA=$(worm generate registration -m TokenBridge -c terra -a ${terraTokenBridge} -g ${guardiansPrivateCSV})
-bscTokenBridgeVAA=$(worm generate registration -m TokenBridge -c bsc -a ${bscTokenBridge} -g ${guardiansPrivateCSV})
-algoTokenBridgeVAA=$(worm generate registration -m TokenBridge -c algorand -a ${algoTokenBridge} -g ${guardiansPrivateCSV})
-nearTokenBridgeVAA=$(worm generate registration -m TokenBridge -c near -a ${nearTokenBridge} -g ${guardiansPrivateCSV})
-terra2TokenBridgeVAA=$(worm generate registration -m TokenBridge -c terra2 -a ${terra2TokenBridge} -g ${guardiansPrivateCSV})
-suiTokenBridgeVAA=$(worm generate registration -m TokenBridge -c sui -a ${suiTokenBridge} -g ${guardiansPrivateCSV})
-aptosTokenBridgeVAA=$(worm generate registration -m TokenBridge -c aptos -a ${aptosTokenBridge} -g ${guardiansPrivateCSV})
-deltachainTokenBridgeVAA=$(worm generate registration -m TokenBridge -c deltachain -a ${deltachainTokenBridge} -g ${guardiansPrivateCSV})
+solTokenBridgeVAA=$(worm generate registration -m TokenBridge -c solana -a ${solTokenBridge} -g ${phylaxsPrivateCSV})
+ethTokenBridgeVAA=$(worm generate registration -m TokenBridge -c ethereum -a ${ethTokenBridge} -g ${phylaxsPrivateCSV})
+terraTokenBridgeVAA=$(worm generate registration -m TokenBridge -c terra -a ${terraTokenBridge} -g ${phylaxsPrivateCSV})
+bscTokenBridgeVAA=$(worm generate registration -m TokenBridge -c bsc -a ${bscTokenBridge} -g ${phylaxsPrivateCSV})
+algoTokenBridgeVAA=$(worm generate registration -m TokenBridge -c algorand -a ${algoTokenBridge} -g ${phylaxsPrivateCSV})
+nearTokenBridgeVAA=$(worm generate registration -m TokenBridge -c near -a ${nearTokenBridge} -g ${phylaxsPrivateCSV})
+terra2TokenBridgeVAA=$(worm generate registration -m TokenBridge -c terra2 -a ${terra2TokenBridge} -g ${phylaxsPrivateCSV})
+suiTokenBridgeVAA=$(worm generate registration -m TokenBridge -c sui -a ${suiTokenBridge} -g ${phylaxsPrivateCSV})
+aptosTokenBridgeVAA=$(worm generate registration -m TokenBridge -c aptos -a ${aptosTokenBridge} -g ${phylaxsPrivateCSV})
+deltachainTokenBridgeVAA=$(worm generate registration -m TokenBridge -c deltachain -a ${deltachainTokenBridge} -g ${phylaxsPrivateCSV})
 
 
 # 5) create nft bridge registration VAAs
 echo "generating contract registration VAAs for nft bridges"
-solNFTBridgeVAA=$(worm generate registration -m NFTBridge -c solana -a ${solNFTBridge} -g ${guardiansPrivateCSV})
-ethNFTBridgeVAA=$(worm generate registration -m NFTBridge -c ethereum -a ${ethNFTBridge} -g ${guardiansPrivateCSV})
-terraNFTBridgeVAA=$(worm generate registration -m NFTBridge -c terra -a ${terraNFTBridge} -g ${guardiansPrivateCSV})
-nearNFTBridgeVAA=$(worm generate registration -m NFTBridge -c near -a ${nearNFTBridge} -g ${guardiansPrivateCSV})
-aptosNFTBridgeVAA=$(worm generate registration -m NFTBridge -c aptos -a ${aptosNFTBridge} -g ${guardiansPrivateCSV})
+solNFTBridgeVAA=$(worm generate registration -m NFTBridge -c solana -a ${solNFTBridge} -g ${phylaxsPrivateCSV})
+ethNFTBridgeVAA=$(worm generate registration -m NFTBridge -c ethereum -a ${ethNFTBridge} -g ${phylaxsPrivateCSV})
+terraNFTBridgeVAA=$(worm generate registration -m NFTBridge -c terra -a ${terraNFTBridge} -g ${phylaxsPrivateCSV})
+nearNFTBridgeVAA=$(worm generate registration -m NFTBridge -c near -a ${nearNFTBridge} -g ${phylaxsPrivateCSV})
+aptosNFTBridgeVAA=$(worm generate registration -m NFTBridge -c aptos -a ${aptosNFTBridge} -g ${phylaxsPrivateCSV})
 
 
 # 6) write the registration VAAs to env files
@@ -221,4 +221,4 @@ for envDest in "${paths[@]}"; do
     fi
 done
 
-echo "guardian set init complete!"
+echo "phylax set init complete!"

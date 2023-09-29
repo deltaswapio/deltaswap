@@ -62,7 +62,7 @@ export async function execute_injective(
       };
       switch (payload.type) {
         case "PhylaxSetUpgrade":
-          console.log("Submitting new guardian set");
+          console.log("Submitting new phylax set");
           break;
         case "ContractUpgrade":
           console.log("Upgrading core contract");

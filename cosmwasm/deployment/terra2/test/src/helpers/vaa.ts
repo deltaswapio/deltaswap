@@ -79,7 +79,7 @@ export function signAndEncodeVaa(
   sequence: number,
   data: string,
   signers: string[],
-  guardianSetIndex: number,
+  phylaxSetIndex: number,
   consistencyLevel: number
 ): string {
   const body: string[] = [
@@ -115,7 +115,7 @@ export function signAndEncodeVaa(
 
   const vm = [
     abi.encodeParameter("uint8", 1).substring(2 + (64 - 2)),
-    abi.encodeParameter("uint32", guardianSetIndex).substring(2 + (64 - 8)),
+    abi.encodeParameter("uint32", phylaxSetIndex).substring(2 + (64 - 8)),
     abi.encodeParameter("uint8", signers.length).substring(2 + (64 - 2)),
 
     signatures,

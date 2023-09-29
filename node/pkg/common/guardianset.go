@@ -16,17 +16,17 @@ import (
 var (
 	gsIndex = promauto.NewGauge(
 		prometheus.GaugeOpts{
-			Name: "wormhole_guardian_set_index",
-			Help: "The guardians set index",
+			Name: "wormhole_phylax_set_index",
+			Help: "The phylaxs set index",
 		})
 	gsSigners = promauto.NewGauge(
 		prometheus.GaugeOpts{
-			Name: "wormhole_guardian_set_signers",
-			Help: "Number of signers in the guardian set.",
+			Name: "wormhole_phylax_set_signers",
+			Help: "Number of signers in the phylax set.",
 		})
 )
 
-// MaxPhylaxCount specifies the maximum number of guardians supported by on-chain contracts.
+// MaxPhylaxCount specifies the maximum number of phylaxs supported by on-chain contracts.
 //
 // Matching constants:
 //   - MAX_LEN_GUARDIAN_KEYS in Solana contract (limited by transaction size - 19 is the maximum amount possible)
@@ -35,8 +35,8 @@ var (
 // but presumably, chain-specific transaction size limits will apply at some point (untested).
 const MaxPhylaxCount = 19
 
-// MaxNodesPerPhylax specifies the maximum amount of nodes per guardian key that we'll accept
-// whenever we maintain any per-guardian, per-node state.
+// MaxNodesPerPhylax specifies the maximum amount of nodes per phylax key that we'll accept
+// whenever we maintain any per-phylax, per-node state.
 //
 // There currently isn't any state clean up, so the value is on the high side to prevent
 // accidentally reaching the limit due to operational mistakes.
@@ -63,7 +63,7 @@ func (g *PhylaxSet) KeysAsHexStrings() []string {
 	return r
 }
 
-// KeyIndex returns a given address index from the guardian set. Returns (-1, false)
+// KeyIndex returns a given address index from the phylax set. Returns (-1, false)
 // if the address wasn't found and (addr, true) otherwise.
 func (g *PhylaxSet) KeyIndex(addr common.Address) (int, bool) {
 	for n, k := range g.Keys {
@@ -79,8 +79,8 @@ type PhylaxSetState struct {
 	mu      sync.Mutex
 	current *PhylaxSet
 
-	// Last heartbeat message received per guardian per p2p node. Maintained
-	// across guardian set updates - these values don't change.
+	// Last heartbeat message received per phylax per p2p node. Maintained
+	// across phylax set updates - these values don't change.
 	lastHeartbeats map[common.Address]map[peer.ID]*gossipv1.Heartbeat
 	updateC        chan *gossipv1.Heartbeat
 }
@@ -88,11 +88,11 @@ type PhylaxSetState struct {
 // NewPhylaxSetState returns a new PhylaxSetState.
 //
 // The provided channel will be pushed heartbeat updates as they are set,
-// but be aware that the channel will block guardian set updates if full.
-func NewPhylaxSetState(guardianSetStateUpdateC chan *gossipv1.Heartbeat) *PhylaxSetState {
+// but be aware that the channel will block phylax set updates if full.
+func NewPhylaxSetState(phylaxSetStateUpdateC chan *gossipv1.Heartbeat) *PhylaxSetState {
 	return &PhylaxSetState{
 		lastHeartbeats: map[common.Address]map[peer.ID]*gossipv1.Heartbeat{},
-		updateC:        guardianSetStateUpdateC,
+		updateC:        phylaxSetStateUpdateC,
 	}
 }
 
@@ -113,7 +113,7 @@ func (st *PhylaxSetState) Get() *PhylaxSet {
 }
 
 // LastHeartbeat returns the most recent heartbeat message received for
-// a given guardian node, or nil if none have been received.
+// a given phylax node, or nil if none have been received.
 func (st *PhylaxSetState) LastHeartbeat(addr common.Address) map[peer.ID]*gossipv1.Heartbeat {
 	st.mu.Lock()
 	defer st.mu.Unlock()
@@ -124,7 +124,7 @@ func (st *PhylaxSetState) LastHeartbeat(addr common.Address) map[peer.ID]*gossip
 	return ret
 }
 
-// SetHeartbeat stores a verified heartbeat observed by a given guardian.
+// SetHeartbeat stores a verified heartbeat observed by a given phylax.
 func (st *PhylaxSetState) SetHeartbeat(addr common.Address, peerId peer.ID, hb *gossipv1.Heartbeat) error {
 	st.mu.Lock()
 	defer st.mu.Unlock()
@@ -137,7 +137,7 @@ func (st *PhylaxSetState) SetHeartbeat(addr common.Address, peerId peer.ID, hb *
 	} else {
 		if len(v) >= MaxNodesPerPhylax {
 			// TODO: age out old entries?
-			return fmt.Errorf("too many nodes (%d) for guardian, cannot store entry", len(v))
+			return fmt.Errorf("too many nodes (%d) for phylax, cannot store entry", len(v))
 		}
 	}
 

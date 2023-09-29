@@ -122,13 +122,13 @@ afterAll(async () => {
   await ethProvider.destroy();
 });
 
-// Modify the VAA to only have 1 guardian signature
+// Modify the VAA to only have 1 phylax signature
 // TODO: remove this when we can deploy the devnet core contract
-// deterministically with multiple guardians in the initial guardian set
-// Currently the core contract is setup with only 1 guardian in the set
+// deterministically with multiple phylaxs in the initial phylax set
+// Currently the core contract is setup with only 1 phylax in the set
 function sliceVAASignatures(vaa: Uint8Array) {
   const parsedVAA = parse(Buffer.from([...vaa]));
-  parsedVAA.guardianSetIndex = 0;
+  parsedVAA.phylaxSetIndex = 0;
   parsedVAA.signatures = [parsedVAA.signatures[0]];
   return hexToUint8Array(serialiseVAA(parsedVAA as VAA<Payload>));
 }

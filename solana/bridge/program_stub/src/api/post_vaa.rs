@@ -25,8 +25,8 @@ use solitaire::{
 
 #[derive(FromAccounts)]
 pub struct PostVAA<'b> {
-    /// Information about the current guardian set.
-    pub guardian_set: Info<'b>,
+    /// Information about the current phylax set.
+    pub phylax_set: Info<'b>,
 
     /// Bridge Info
     pub bridge_info: Bridge<'b, { AccountState::Initialized }>,

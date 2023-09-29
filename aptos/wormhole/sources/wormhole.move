@@ -3,7 +3,7 @@ module wormhole::wormhole {
     use aptos_framework::account;
     use aptos_framework::coin::{Self, Coin};
     use aptos_framework::aptos_coin::{AptosCoin};
-    use wormhole::structs::{create_guardian, create_guardian_set, Phylax};
+    use wormhole::structs::{create_phylax, create_phylax_set, Phylax};
     use wormhole::state;
     use deployer::deployer;
     use wormhole::u16;
@@ -58,18 +58,18 @@ module wormhole::wormhole {
         chain_id: u64,
         governance_chain_id: u64,
         governance_contract: vector<u8>,
-        initial_guardians: vector<vector<u8>>
+        initial_phylaxs: vector<vector<u8>>
     ) {
         // account::SignerCapability can't be copied, so once it's stored into
         // state, the init function can no longer be called (since
         // the deployer signer capability must have been unlocked).
         let signer_cap = deployer::claim_signer_capability(deployer, @wormhole);
         let message_fee = 0;
-        let guardians: vector<Phylax> = vector[];
+        let phylaxs: vector<Phylax> = vector[];
 
-        vector::reverse(&mut initial_guardians);
-        while (!vector::is_empty(&initial_guardians)) {
-           vector::push_back(&mut guardians, create_guardian(vector::pop_back(&mut initial_guardians)));
+        vector::reverse(&mut initial_phylaxs);
+        while (!vector::is_empty(&initial_phylaxs)) {
+           vector::push_back(&mut phylaxs, create_phylax(vector::pop_back(&mut initial_phylaxs)));
         };
 
         init_internal(
@@ -77,7 +77,7 @@ module wormhole::wormhole {
             chain_id,
             governance_chain_id,
             governance_contract,
-            guardians,
+            phylaxs,
             u32::from_u64(86400),
             message_fee
         )
@@ -88,8 +88,8 @@ module wormhole::wormhole {
         chain_id: u64,
         governance_chain_id: u64,
         governance_contract: vector<u8>,
-        initial_guardians: vector<Phylax>,
-        guardian_set_expiry: U32,
+        initial_phylaxs: vector<Phylax>,
+        phylax_set_expiry: U32,
         message_fee: u64,
     ) {
         let wormhole = account::create_signer_with_capability(&signer_cap);
@@ -98,15 +98,15 @@ module wormhole::wormhole {
             u16::from_u64(chain_id),
             u16::from_u64(governance_chain_id),
             external_address::from_bytes(governance_contract),
-            guardian_set_expiry,
+            phylax_set_expiry,
             message_fee,
             signer_cap
         );
         state::init_message_handles(&wormhole);
-        state::store_guardian_set(
-            create_guardian_set(
+        state::store_phylax_set(
+            create_phylax_set(
                 u32::from_u64(0),
-                initial_guardians
+                initial_phylaxs
             )
         );
         // register wormhole to be able to receive fees
@@ -125,7 +125,7 @@ module wormhole::wormhole {
         chain_id: u64,
         governance_chain_id: u64,
         governance_contract: vector<u8>,
-        initial_guardian: vector<u8>,
+        initial_phylax: vector<u8>,
         message_fee: u64,
     ): signer {
         let deployer = account::create_account_for_test(@deployer);
@@ -135,7 +135,7 @@ module wormhole::wormhole {
             chain_id,
             governance_chain_id,
             governance_contract,
-            vector[create_guardian(initial_guardian)],
+            vector[create_phylax(initial_phylax)],
             u32::from_u64(86400),
             message_fee
         );

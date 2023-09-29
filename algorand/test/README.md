@@ -15,7 +15,7 @@ and are simply in `test.py`. See `Usage`.
 
 `--loops` defines how many times the tests should run
 
-`--bigset` defines if it should use the big guardian set
+`--bigset` defines if it should use the big phylax set
 
 For example, to run the tests with 10 loops and a big validator set.
 Note the `--loop` flag will not affect previous tests.

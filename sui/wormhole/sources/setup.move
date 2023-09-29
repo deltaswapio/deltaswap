@@ -47,9 +47,9 @@ module wormhole::setup {
         upgrade_cap: UpgradeCap,
         governance_chain: u16,
         governance_contract: vector<u8>,
-        guardian_set_index: u32,
-        initial_guardians: vector<vector<u8>>,
-        guardian_set_seconds_to_live: u32,
+        phylax_set_index: u32,
+        initial_phylaxs: vector<vector<u8>>,
+        phylax_set_seconds_to_live: u32,
         message_fee: u64,
         ctx: &mut TxContext
     ) {
@@ -63,13 +63,13 @@ module wormhole::setup {
         let DeployerCap { id } = deployer;
         object::delete(id);
 
-        let guardians = {
+        let phylaxs = {
             let out = vector::empty();
-            let cur = cursor::new(initial_guardians);
+            let cur = cursor::new(initial_phylaxs);
             while (!cursor::is_empty(&cur)) {
                 vector::push_back(
                     &mut out,
-                    wormhole::guardian::new(cursor::poke(&mut cur))
+                    wormhole::phylax::new(cursor::poke(&mut cur))
                 );
             };
             cursor::destroy_empty(cur);
@@ -84,9 +84,9 @@ module wormhole::setup {
                 wormhole::external_address::new_nonzero(
                     wormhole::bytes32::from_bytes(governance_contract)
                 ),
-                guardian_set_index,
-                guardians,
-                guardian_set_seconds_to_live,
+                phylax_set_index,
+                phylaxs,
+                phylax_set_seconds_to_live,
                 message_fee,
                 ctx
             )
@@ -105,8 +105,8 @@ module wormhole::setup_tests {
     use wormhole::bytes32::{Self};
     use wormhole::cursor::{Self};
     use wormhole::external_address::{Self};
-    use wormhole::guardian::{Self};
-    use wormhole::guardian_set::{Self};
+    use wormhole::phylax::{Self};
+    use wormhole::phylax_set::{Self};
     use wormhole::setup::{Self, DeployerCap};
     use wormhole::state::{Self, State};
     use wormhole::wormhole_scenario::{person};
@@ -156,14 +156,14 @@ module wormhole::setup_tests {
         let governance_chain = 1234;
         let governance_contract =
             x"deadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef";
-        let guardian_set_index = 0;
-        let initial_guardians =
+        let phylax_set_index = 0;
+        let initial_phylaxs =
             vector[
                 x"1337133713371337133713371337133713371337",
                 x"c0dec0dec0dec0dec0dec0dec0dec0dec0dec0de",
                 x"ba5edba5edba5edba5edba5edba5edba5edba5ed"
             ];
-        let guardian_set_seconds_to_live = 5678;
+        let phylax_set_seconds_to_live = 5678;
         let message_fee = 350;
 
         // Take the `DeployerCap` and move it to `init_and_share_state`.
@@ -188,9 +188,9 @@ module wormhole::setup_tests {
             upgrade_cap,
             governance_chain,
             governance_contract,
-            guardian_set_index,
-            initial_guardians,
-            guardian_set_seconds_to_live,
+            phylax_set_index,
+            initial_phylaxs,
+            phylax_set_seconds_to_live,
             message_fee,
             test_scenario::ctx(scenario)
         );
@@ -223,23 +223,23 @@ module wormhole::setup_tests {
             0
         );
 
-        assert!(state::guardian_set_index(&worm_state) == 0, 0);
+        assert!(state::phylax_set_index(&worm_state) == 0, 0);
         assert!(
-            state::guardian_set_seconds_to_live(&worm_state) == guardian_set_seconds_to_live,
+            state::phylax_set_seconds_to_live(&worm_state) == phylax_set_seconds_to_live,
             0
         );
 
-        let guardians =
-            guardian_set::guardians(
-                state::guardian_set_at(&worm_state, 0)
+        let phylaxs =
+            phylax_set::phylaxs(
+                state::phylax_set_at(&worm_state, 0)
             );
-        let num_guardians = vector::length(guardians);
-        assert!(num_guardians == vector::length(&initial_guardians), 0);
+        let num_phylaxs = vector::length(phylaxs);
+        assert!(num_phylaxs == vector::length(&initial_phylaxs), 0);
 
         let i = 0;
-        while (i < num_guardians) {
-            let left = guardian::as_bytes(vector::borrow(guardians, i));
-            let right = *vector::borrow(&initial_guardians, i);
+        while (i < num_phylaxs) {
+            let left = phylax::as_bytes(vector::borrow(phylaxs, i));
+            let right = *vector::borrow(&initial_phylaxs, i);
             assert!(left == right, 0);
             i = i + 1;
         };
@@ -287,10 +287,10 @@ module wormhole::setup_tests {
         let governance_chain = 1234;
         let governance_contract =
             x"deadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef";
-        let guardian_set_index = 0;
-        let initial_guardians =
+        let phylax_set_index = 0;
+        let initial_phylaxs =
             vector[x"1337133713371337133713371337133713371337"];
-        let guardian_set_seconds_to_live = 5678;
+        let phylax_set_seconds_to_live = 5678;
         let message_fee = 350;
 
         // Take the `DeployerCap` and move it to `init_and_share_state`.
@@ -314,9 +314,9 @@ module wormhole::setup_tests {
             upgrade_cap,
             governance_chain,
             governance_contract,
-            guardian_set_index,
-            initial_guardians,
-            guardian_set_seconds_to_live,
+            phylax_set_index,
+            initial_phylaxs,
+            phylax_set_seconds_to_live,
             message_fee,
             test_scenario::ctx(scenario)
         );

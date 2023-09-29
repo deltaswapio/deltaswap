@@ -23,11 +23,11 @@ export async function getWormholeBridgeData(
 }
 
 export class BridgeConfig {
-  guardianSetExpirationTime: number;
+  phylaxSetExpirationTime: number;
   fee: bigint;
 
-  constructor(guardianSetExpirationTime: number, fee: bigint) {
-    this.guardianSetExpirationTime = guardianSetExpirationTime;
+  constructor(phylaxSetExpirationTime: number, fee: bigint) {
+    this.phylaxSetExpirationTime = phylaxSetExpirationTime;
     this.fee = fee;
   }
 
@@ -35,23 +35,23 @@ export class BridgeConfig {
     if (data.length != 12) {
       throw new Error("data.length != 12");
     }
-    const guardianSetExpirationTime = data.readUInt32LE(0);
+    const phylaxSetExpirationTime = data.readUInt32LE(0);
     const fee = data.readBigUInt64LE(4);
-    return new BridgeConfig(guardianSetExpirationTime, fee);
+    return new BridgeConfig(phylaxSetExpirationTime, fee);
   }
 }
 
 export class BridgeData {
-  guardianSetIndex: number;
+  phylaxSetIndex: number;
   lastLamports: bigint;
   config: BridgeConfig;
 
   constructor(
-    guardianSetIndex: number,
+    phylaxSetIndex: number,
     lastLamports: bigint,
     config: BridgeConfig
   ) {
-    this.guardianSetIndex = guardianSetIndex;
+    this.phylaxSetIndex = phylaxSetIndex;
     this.lastLamports = lastLamports;
     this.config = config;
   }
@@ -60,9 +60,9 @@ export class BridgeData {
     if (data.length != 24) {
       throw new Error("data.length != 24");
     }
-    const guardianSetIndex = data.readUInt32LE(0);
+    const phylaxSetIndex = data.readUInt32LE(0);
     const lastLamports = data.readBigUInt64LE(4);
     const config = BridgeConfig.deserialize(data.subarray(12));
-    return new BridgeData(guardianSetIndex, lastLamports, config);
+    return new BridgeData(phylaxSetIndex, lastLamports, config);
   }
 }

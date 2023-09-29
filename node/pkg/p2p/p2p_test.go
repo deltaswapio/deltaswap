@@ -42,7 +42,7 @@ func TestSignedHeartbeat(t *testing.T) {
 			heartbeatPhylaxAddr: gAddr.String(),
 			expectSuccess:       true,
 		},
-		// guardian signed a heartbeat for another guardian
+		// phylax signed a heartbeat for another phylax
 		{
 			timestamp:           time.Now().UnixNano(),
 			gk:                  gk,

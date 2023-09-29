@@ -294,7 +294,7 @@ func (gwr *GatewayRelayer) worker(ctx context.Context) error {
 		case v2p := <-gwr.subChan:
 			if err := gwr.submitVAAToContract(v2p); err != nil {
 				gwr.logger.Error("failed to submit vaa to contract", zap.String("msgId", v2p.V.MessageID()), zap.String("contract", v2p.ContractAddress), zap.Uint8("vaaType", uint8(v2p.VType)), zap.Error(err))
-				// TODO: For now we don't want to restart because this will happen if the VAA has already been submitted by another guardian.
+				// TODO: For now we don't want to restart because this will happen if the VAA has already been submitted by another phylax.
 				//return fmt.Errorf("failed to submit vaa to contract: %w", err)
 			}
 		}

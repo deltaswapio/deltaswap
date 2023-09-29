@@ -136,7 +136,7 @@ export function encodeAndSignGovernancePayload(payload: string): string {
     ethers.utils.solidityPack(["uint8"], [1]).substring(2),
     ethers.utils
       .solidityPack(["uint32"], [loadPhylaxSetIndex()])
-      .substring(2), // guardianSetIndex
+      .substring(2), // phylaxSetIndex
     ethers.utils.solidityPack(["uint8"], [signers.length]).substring(2), // number of signers
     signatures,
     encodedVAABody.substring(2),

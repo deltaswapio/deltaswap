@@ -16,7 +16,7 @@ import (
 )
 
 // How to test in container:
-//    kubectl exec guardian-0 -- /phylaxd admin list-nodes --socket /tmp/admin.sock
+//    kubectl exec phylax-0 -- /phylaxd admin list-nodes --socket /tmp/admin.sock
 
 var (
 	showDetails bool
@@ -30,7 +30,7 @@ func init() {
 
 var AdminClientListNodes = &cobra.Command{
 	Use:   "list-nodes",
-	Short: "Fetches an aggregated list of guardian nodes",
+	Short: "Fetches an aggregated list of phylax nodes",
 	Run:   runListNodes,
 }
 
@@ -49,10 +49,10 @@ func runListNodes(cmd *cobra.Command, args []string) {
 
 	gs, err := c.GetCurrentPhylaxSet(ctx, &publicrpcv1.GetCurrentPhylaxSetRequest{})
 	if err != nil {
-		log.Fatalf("failed to list current guardian get: %v", err)
+		log.Fatalf("failed to list current phylax get: %v", err)
 	}
 
-	log.Printf("current guardian set index: %d (%d guardians)",
+	log.Printf("current phylax set index: %d (%d phylaxs)",
 		gs.PhylaxSet.Index, len(gs.PhylaxSet.Addresses))
 
 	nodes := lastHeartbeats.Entries
@@ -64,7 +64,7 @@ func runListNodes(cmd *cobra.Command, args []string) {
 		return nodes[i].RawHeartbeat.NodeName < nodes[j].RawHeartbeat.NodeName
 	})
 
-	log.Printf("%d nodes in guardian state set", len(nodes))
+	log.Printf("%d nodes in phylax state set", len(nodes))
 
 	w := tabwriter.NewWriter(os.Stdout, 0, 8, 2, ' ', 0)
 
@@ -200,7 +200,7 @@ func runListNodes(cmd *cobra.Command, args []string) {
 		}
 
 		if !found {
-			fmt.Printf("Missing guardian: %s\n", addr)
+			fmt.Printf("Missing phylax: %s\n", addr)
 		}
 	}
 

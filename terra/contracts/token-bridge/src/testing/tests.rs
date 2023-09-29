@@ -129,7 +129,7 @@ fn deserialize_transfer_vaa() -> StdResult<()> {
 fn deserialize_transfer_with_payload_vaa() -> StdResult<()> {
     // ┌──────────────────────────────────────────────────────────────────────────────┐
     // │ Wormhole VAA v1         │ nonce: 2080370133       │ time: 0                  │
-    // │ guardian set #0         │ #4568529024235897313    │ consistency: 32          │
+    // │ phylax set #0         │ #4568529024235897313    │ consistency: 32          │
     // ├──────────────────────────────────────────────────────────────────────────────┤
     // │ Signature:                                                                   │
     // │   #0: 2565e7ae10421624fd81118855acda893e752aeeef31c13fbfc417591ada...        │

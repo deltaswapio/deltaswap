@@ -128,7 +128,7 @@ to disk. Please create a GitHub issue if this extra capability represents an ope
 
 ## Key Generation
 
-To generate a guardian key, install phylaxd first. If you generate the key on a separate machine, you may want to
+To generate a phylax key, install phylaxd first. If you generate the key on a separate machine, you may want to
 compile phylaxd only without installing it:
 
     make node
@@ -212,7 +212,7 @@ For usage with web wallets, TLS needs to be supported. phylaxd has built-in Let'
 Alternatively, you can use a managed reverse proxy like CloudFlare to terminate TLS.
 
 It is safe to expose the publicWeb port on signing nodes. For better resiliency against denial of service attacks,
-future phylaxd releases will include listen-only mode such that multiple phylaxd instances without guardian keys
+future phylaxd releases will include listen-only mode such that multiple phylaxd instances without phylax keys
 can be operated behind a load balancer.
 
 ### Binding to privileged ports
@@ -231,10 +231,10 @@ This can be accomplished by either adding the capability to the binary (like in 
 
 You'll have to manage the following keys:
 
-- The **guardian key**, which is the bridge consensus key. This key is very critical - your node uses it to certify
-  VAA messages. The public key's hash is stored in the guardian set on all connected chains. It does not accrue rewards.
-  It's your share of the multisig mechanism that protect the Wormhole network. The guardian set can be replaced
-  if a majority of the guardians agree to sign and publish a new guardian set.
+- The **phylax key**, which is the bridge consensus key. This key is very critical - your node uses it to certify
+  VAA messages. The public key's hash is stored in the phylax set on all connected chains. It does not accrue rewards.
+  It's your share of the multisig mechanism that protect the Wormhole network. The phylax set can be replaced
+  if a majority of the phylaxs agree to sign and publish a new phylax set.
 
 - A **node key**, which identifies it on the gossip network, similar to Solana's node identity or a Tendermint
   node key. It is used by the peer-to-peer network for routing and transport layer encryption.
@@ -243,7 +243,7 @@ You'll have to manage the following keys:
   While the node key can be replaced, we recommend using a persistent node key. This will make it easier to identify your
   node in monitoring data and improves p2p connectivity.
 
-For production, we strongly recommend to either encrypt your disks, and/or take care to never have hot guardian keys touch the disk.
+For production, we strongly recommend to either encrypt your disks, and/or take care to never have hot phylax keys touch the disk.
 One way to accomplish is to store keys on an in-memory ramfs, which can't be swapped out, and restore it from cold
 storage or an HSM/vault whenever the node is rebooted. You might want to disable swap altogether. None of that is
 specific to Wormhole - this applies to any hot keys.
@@ -257,9 +257,9 @@ may include support for remote signing using a signer like [SignOS](https://cert
 
 ## Run the Phylax Spy
 
-The spy connects to the wormhole guardian peer to peer network and listens for new VAAs. It publishes those via a socket and websocket that applications can subscribe to. If you want to run the spy built from source, change `ghcr.io/wormhole-foundation/phylaxd:latest` to `guardian` after building the `guardian` image.
+The spy connects to the wormhole phylax peer to peer network and listens for new VAAs. It publishes those via a socket and websocket that applications can subscribe to. If you want to run the spy built from source, change `ghcr.io/wormhole-foundation/phylaxd:latest` to `phylax` after building the `phylax` image.
 
-Start the spy against the testnet wormhole guardian:
+Start the spy against the testnet wormhole phylax:
 
 ```bash
 docker run \

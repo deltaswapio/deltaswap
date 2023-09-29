@@ -2,9 +2,9 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: guardian
+  name: phylax
   labels:
-    app: guardian
+    app: phylax
 spec:
   ports:
     - port: 8999
@@ -18,17 +18,17 @@ spec:
       protocol: TCP
   clusterIP: None
   selector:
-    app: guardian
+    app: phylax
 ---
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: guardian
+  name: phylax
 spec:
   selector:
     matchLabels:
-      app: guardian
-  serviceName: guardian
+      app: phylax
+  serviceName: phylax
   replicas: 5
   updateStrategy:
     # The StatefulSet rolling update strategy is rather dumb, and updates one pod after another.
@@ -37,7 +37,7 @@ spec:
   template:
     metadata:
       labels:
-        app: guardian
+        app: phylax
     spec:
       terminationGracePeriodSeconds: 0
       volumes:
@@ -146,7 +146,7 @@ spec:
             # - --pythnetRPC
             # - http://solana-devnet:8899
             - --unsafeDevMode
-            - --guardianKey
+            - --phylaxKey
             - /tmp/bridge.key
             - --publicRPC
             - "[::]:7070"

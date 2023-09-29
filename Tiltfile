@@ -37,7 +37,7 @@ update_settings(max_parallel_updates = 10)
 config.define_bool("ci", False, "We are running in CI")
 config.define_bool("manual", False, "Set TRIGGER_MODE_MANUAL by default")
 
-config.define_string("num", False, "Number of guardian nodes to run")
+config.define_string("num", False, "Number of phylax nodes to run")
 
 # You do not usually need to set this argument - this argument is for debugging only. If you do use a different
 # namespace, note that the "wormhole" namespace is hardcoded in tests and don't forget specifying the argument
@@ -75,7 +75,7 @@ config.define_bool("generic_relayer", False, "Enable the generic relayer off-cha
 
 
 cfg = config.parse()
-num_guardians = int(cfg.get("num", "1"))
+num_phylaxs = int(cfg.get("num", "1"))
 namespace = cfg.get("namespace", "wormhole")
 webHost = cfg.get("webHost", "localhost")
 ci = cfg.get("ci", False)
@@ -127,7 +127,7 @@ docker_build(
     ref = "const-gen",
     context = ".",
     dockerfile = "Dockerfile.const",
-    build_args={"num_guardians": '%s' % (num_guardians)},
+    build_args={"num_phylaxs": '%s' % (num_phylaxs)},
 )
 
 # node
@@ -156,10 +156,10 @@ def command_with_dlv(argv):
 def build_node_yaml():
     node_yaml = read_yaml_stream("devnet/node.yaml")
 
-    node_yaml_with_replicas = set_replicas_in_statefulset(node_yaml, "guardian", num_guardians)
+    node_yaml_with_replicas = set_replicas_in_statefulset(node_yaml, "phylax", num_phylaxs)
 
     for obj in node_yaml_with_replicas:
-        if obj["kind"] == "StatefulSet" and obj["metadata"]["name"] == "guardian":
+        if obj["kind"] == "StatefulSet" and obj["metadata"]["name"] == "phylax":
             container = obj["spec"]["template"]["spec"]["containers"][0]
             if container["name"] != "phylaxd":
                 fail("container 0 is not phylaxd")
@@ -308,47 +308,47 @@ def build_node_yaml():
 
 k8s_yaml_with_ns(build_node_yaml())
 
-guardian_resource_deps = ["eth-devnet"]
+phylax_resource_deps = ["eth-devnet"]
 if evm2:
-    guardian_resource_deps = guardian_resource_deps + ["eth-devnet2"]
+    phylax_resource_deps = phylax_resource_deps + ["eth-devnet2"]
 if solana or pythnet:
-    guardian_resource_deps = guardian_resource_deps + ["solana-devnet"]
+    phylax_resource_deps = phylax_resource_deps + ["solana-devnet"]
 if near:
-    guardian_resource_deps = guardian_resource_deps + ["near"]
+    phylax_resource_deps = phylax_resource_deps + ["near"]
 if terra_classic:
-    guardian_resource_deps = guardian_resource_deps + ["terra-terrad"]
+    phylax_resource_deps = phylax_resource_deps + ["terra-terrad"]
 if terra2:
-    guardian_resource_deps = guardian_resource_deps + ["terra2-terrad"]
+    phylax_resource_deps = phylax_resource_deps + ["terra2-terrad"]
 if algorand:
-    guardian_resource_deps = guardian_resource_deps + ["algorand"]
+    phylax_resource_deps = phylax_resource_deps + ["algorand"]
 if aptos:
-    guardian_resource_deps = guardian_resource_deps + ["aptos"]
+    phylax_resource_deps = phylax_resource_deps + ["aptos"]
 if deltachain:
-    guardian_resource_deps = guardian_resource_deps + ["deltachain", "deltachain-deploy"]
+    phylax_resource_deps = phylax_resource_deps + ["deltachain", "deltachain-deploy"]
 if sui:
-    guardian_resource_deps = guardian_resource_deps + ["sui"]
+    phylax_resource_deps = phylax_resource_deps + ["sui"]
 
 k8s_resource(
-    "guardian",
-    resource_deps = guardian_resource_deps,
+    "phylax",
+    resource_deps = phylax_resource_deps,
     port_forwards = [
         port_forward(6060, name = "Debug/Status Server [:6060]", host = webHost),
         port_forward(7070, name = "Public gRPC [:7070]", host = webHost),
         port_forward(7071, name = "Public REST [:7071]", host = webHost),
         port_forward(2345, name = "Debugger [:2345]", host = webHost),
     ],
-    labels = ["guardian"],
+    labels = ["phylax"],
     trigger_mode = trigger_mode,
 )
 
-# guardian set update - triggered by "tilt args" changes
-if num_guardians >= 2 and ci == False:
+# phylax set update - triggered by "tilt args" changes
+if num_phylaxs >= 2 and ci == False:
     local_resource(
-        name = "guardian-set-update",
-        resource_deps = guardian_resource_deps + ["guardian"],
+        name = "phylax-set-update",
+        resource_deps = phylax_resource_deps + ["phylax"],
         deps = ["scripts/send-vaa.sh", "clients/eth"],
-        cmd = './scripts/update-guardian-set.sh %s %s %s' % (num_guardians, webHost, namespace),
-        labels = ["guardian"],
+        cmd = './scripts/update-phylax-set.sh %s %s %s' % (num_phylaxs, webHost, namespace),
+        labels = ["phylax"],
         trigger_mode = trigger_mode,
     )
 
@@ -374,11 +374,11 @@ if node_metrics:
 
     k8s_resource(
         "prometheus-server",
-        resource_deps = ["guardian"],
+        resource_deps = ["phylax"],
         port_forwards = [
             port_forward(9099, name = "Prometheus [:9099]", host = webHost),
         ],
-        labels = ["guardian"],
+        labels = ["phylax"],
         trigger_mode = trigger_mode,
     )
 
@@ -388,7 +388,7 @@ if node_metrics:
         port_forwards = [
             port_forward(3033, name = "Grafana UI [:3033]", host = webHost),
         ],
-        labels = ["guardian"],
+        labels = ["phylax"],
         trigger_mode = trigger_mode,
     )
 
@@ -398,12 +398,12 @@ k8s_yaml_with_ns("devnet/spy.yaml")
 
 k8s_resource(
     "spy",
-    resource_deps = ["guardian"],
+    resource_deps = ["phylax"],
     port_forwards = [
         port_forward(6061, container_port = 6060, name = "Debug/Status Server [:6061]", host = webHost),
         port_forward(7072, name = "Spy gRPC [:7072]", host = webHost),
     ],
-    labels = ["guardian"],
+    labels = ["phylax"],
     trigger_mode = trigger_mode,
 )
 
@@ -452,7 +452,7 @@ docker_build(
 
     # ignore local node_modules (in case they're present)
     ignore = ["./node_modules"],
-    build_args = {"num_guardians": str(num_guardians), "dev": str(not ci)},
+    build_args = {"num_phylaxs": str(num_phylaxs), "dev": str(not ci)},
   
     # sync external scripts for incremental development
     # (everything else needs to be restarted from scratch for determinism)
@@ -501,7 +501,7 @@ if generic_relayer:
 if generic_relayer:
     k8s_resource(
         "relayer-engine",
-        resource_deps = ["guardian", "redis-relayer", "spy"],
+        resource_deps = ["phylax", "redis-relayer", "spy"],
         port_forwards = [
             port_forward(3003, container_port=3000, name = "Bullmq UI [:3003]", host = webHost),
         ],
@@ -563,7 +563,7 @@ if ci_tests:
         ],
     )
 
-    k8s_yaml_with_ns(encode_yaml_stream(set_env_in_jobs(read_yaml_stream("devnet/tests.yaml"), "NUM_GUARDIANS", str(num_guardians))))
+    k8s_yaml_with_ns(encode_yaml_stream(set_env_in_jobs(read_yaml_stream("devnet/tests.yaml"), "NUM_GUARDIANS", str(num_phylaxs))))
 
     # separate resources to parallelize docker builds
     k8s_resource(
@@ -582,7 +582,7 @@ if ci_tests:
         "accountant-ci-tests",
         labels = ["ci"],
         trigger_mode = trigger_mode,
-        resource_deps = [], # uses devnet-consts.json, but deltachain/contracts/tools/test_accountant.sh handles waiting for guardian, not having deps gets the build earlier
+        resource_deps = [], # uses devnet-consts.json, but deltachain/contracts/tools/test_accountant.sh handles waiting for phylax, not having deps gets the build earlier
     )
 
 if terra_classic:
@@ -759,7 +759,7 @@ if deltachain:
         ref = "deltachaind-image",
         context = ".",
         dockerfile = "./deltachain/Dockerfile",
-        build_args = {"num_guardians": str(num_guardians)},
+        build_args = {"num_phylaxs": str(num_phylaxs)},
         only = [],
         ignore = ["./deltachain/testing", "./deltachain/ts-sdk", "./deltachain/design", "./deltachain/vue", "./deltachain/build/deltachaind"],
     )
@@ -780,7 +780,7 @@ if deltachain:
     def build_deltachain_yaml(yaml_path, num_instances):
         deltachain_yaml = read_yaml_stream(yaml_path)
 
-        # set the number of replicas in the StatefulSet to be num_guardians
+        # set the number of replicas in the StatefulSet to be num_phylaxs
         deltachain_set = set_replicas_in_statefulset(deltachain_yaml, "deltachain", num_instances)
 
         # add a Service for each deltachain instance
@@ -810,9 +810,9 @@ if deltachain:
         return encode_yaml_stream(deltachain_set + services)
 
     deltachain_path = "devnet/deltachain.yaml"
-    if num_guardians >= 2:
+    if num_phylaxs >= 2:
         # update deltachain's k8s config to spin up multiple instances
-        k8s_yaml_with_ns(build_deltachain_yaml(deltachain_path, num_guardians))
+        k8s_yaml_with_ns(build_deltachain_yaml(deltachain_path, num_phylaxs))
     else:
         k8s_yaml_with_ns(deltachain_path)
 

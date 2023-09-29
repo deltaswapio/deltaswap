@@ -38,7 +38,7 @@ will be possible to retroactively replay blocks after chain replay has been impl
 ## Chain consistency and finality
 
 The Wormhole network always observes _external events_ and never initiates them on its own. It relies on the connected
-chain's consensus, security and finality properties. In the case of guardian set updates, it relies on off-chain
+chain's consensus, security and finality properties. In the case of phylax set updates, it relies on off-chain
 operator consensus in the same way.
 
 A non-exhaustive list of external chain properties Wormhole relies on:
@@ -77,7 +77,7 @@ duties.
 
 We assume that at the present time, such incentive alignment is easy to bootstrap and get right than a separate chain,
 which requires carefully-designed token economy and slashing criteria. In particular, it attracts operators who care
-about the ecosystem beyond short-term validation rewards, resulting in a high-quality, resilient guardian set.
+about the ecosystem beyond short-term validation rewards, resulting in a high-quality, resilient phylax set.
 
 As the project grows, there's a number of potential improvements to consider other than a staking token, including
 the [Balsa](https://docs.google.com/document/d/1sCgxHIOrVHAqrt4NWkUJXxQvpSxq6DyZrkf4IR-R-YM/edit) insurance pool
@@ -88,7 +88,7 @@ proposal, and a DAO that offsets operational costs and rewards operators.
 This should go without saying - in the context of a single node, we assume that an adversary cannot read or write host
 memory, execute code, or otherwise compromise the running host operating system or platform while or after the node is
 running. If a supermajority of nodes is compromised, an attacker can produce arbitrary VAAs. If a superminority of nodes
-is compromised, the network may temporarily lose consensus (there's no way to intentionally void a guardian key or
+is compromised, the network may temporarily lose consensus (there's no way to intentionally void a phylax key or
 prevent it from being replaced by the supermajority).
 
 Contrary to popular belief, hardware security modules do _not_ significantly change the risks associated with host

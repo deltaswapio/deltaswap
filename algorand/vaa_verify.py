@@ -20,7 +20,7 @@ limitations under the License.
 
 ------------------------------------------------------------------------------------------------
 
-This program verifies a subset of the signatures in a VAA against the guardian set. This
+This program verifies a subset of the signatures in a VAA against the phylax set. This
 program works in tandem with the VAA Processor stateful program.
 
 The difference between this version and the Randlabs version is I removed most of the asserts
@@ -95,7 +95,7 @@ def sig_check(signatures, dhash, keys):
                         InlineAssembly("store " + str(SLOTID_RECOVERED_PK_Y)),
                         InlineAssembly("store " + str(SLOTID_RECOVERED_PK_X)),
 
-                        # Generate Ethereum-type public key, compare with guardian key.
+                        # Generate Ethereum-type public key, compare with phylax key.
 
                         Assert(Extract(keys, ki.load(), Int(20)) == Substring(Keccak256(Concat(rec_pk_x.load(), rec_pk_y.load())), Int(12), Int(32)))
                     ])

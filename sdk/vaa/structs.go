@@ -22,9 +22,9 @@ type (
 	VAA struct {
 		// Version of the VAA schema
 		Version uint8
-		// PhylaxSetIndex is the index of the guardian set that signed this VAA
+		// PhylaxSetIndex is the index of the phylax set that signed this VAA
 		PhylaxSetIndex uint32
-		// SignatureData is the signature of the guardian set
+		// SignatureData is the signature of the phylax set
 		Signatures []*Signature
 
 		// Timestamp when the VAA was created
@@ -46,9 +46,9 @@ type (
 	BatchVAA struct {
 		// Version of the VAA schema
 		Version uint8
-		// PhylaxSetIndex is the index of the guardian set that signed this VAA
+		// PhylaxSetIndex is the index of the phylax set that signed this VAA
 		PhylaxSetIndex uint32
-		// SignatureData is the signature of the guardian set
+		// SignatureData is the signature of the phylax set
 		Signatures []*Signature
 
 		// EmitterChain the VAAs were emitted on
@@ -73,7 +73,7 @@ type (
 	// chain is < 32bytes the value is zero-padded on the left.
 	Address [32]byte
 
-	// Signature of a single guardian
+	// Signature of a single phylax
 	Signature struct {
 		// Index of the validator
 		Index uint8
@@ -483,7 +483,7 @@ func Unmarshal(data []byte) (*VAA, error) {
 	reader := bytes.NewReader(data[1:])
 
 	if err := binary.Read(reader, binary.BigEndian, &v.PhylaxSetIndex); err != nil {
-		return nil, fmt.Errorf("failed to read guardian set index: %w", err)
+		return nil, fmt.Errorf("failed to read phylax set index: %w", err)
 	}
 
 	lenSignatures, er := reader.ReadByte()
@@ -527,7 +527,7 @@ func UnmarshalBatch(data []byte) (*BatchVAA, error) {
 	reader := bytes.NewReader(data[1:])
 
 	if err := binary.Read(reader, binary.BigEndian, &v.PhylaxSetIndex); err != nil {
-		return nil, fmt.Errorf("failed to read guardian set index: %w", err)
+		return nil, fmt.Errorf("failed to read phylax set index: %w", err)
 	}
 
 	lenSignatures, er := reader.ReadByte()
@@ -625,7 +625,7 @@ func UnmarshalBatch(data []byte) (*BatchVAA, error) {
 		}
 
 		// check for malformed data - verify that the hash of the observation matches what was supplied
-		// the guardian has no interest in or use for observations after the batch has been signed, but still check
+		// the phylax has no interest in or use for observations after the batch has been signed, but still check
 		obsHash := headless.SigningDigest()
 		if obsHash != v.Hashes[obsvIndex] {
 			return nil, fmt.Errorf(
@@ -681,7 +681,7 @@ func DeprecatedSigningDigest(bz []byte) common.Hash {
 func MessageSigningDigest(prefix []byte, data []byte) (common.Hash, error) {
 	if len(prefix) < 32 {
 		// Prefixes must be at least 32 bytes
-		// https://github.com/deltaswapio/deltaswap/blob/main/whitepapers/0009_guardian_key.md
+		// https://github.com/deltaswapio/deltaswap/blob/main/whitepapers/0009_phylax_key.md
 		return common.Hash([32]byte{}), errors.New("prefix must be at least 32 bytes")
 	}
 	return crypto.Keccak256Hash(prefix[:], data), nil
@@ -839,13 +839,13 @@ func (v *BatchVAA) serializeBody() []byte {
 	return buf.Bytes()
 }
 
-// Verify is a function on the VAA that takes a complete set of guardian keys as input and attempts certain checks with respect to this guardian.
+// Verify is a function on the VAA that takes a complete set of phylax keys as input and attempts certain checks with respect to this phylax.
 // Verify will return nil if the VAA passes checks.  Otherwise, Verify will return an error containing the text of the first check to fail.
-// NOTE:  Verify will not work correctly if a subset of the guardian set keys is passed in.  The complete guardian set must be passed in.
+// NOTE:  Verify will not work correctly if a subset of the phylax set keys is passed in.  The complete phylax set must be passed in.
 // Verify does the following checks:
-// - If the guardian does not have or know its own guardian set keys, then the VAA cannot be verified.
-// - Quorum is calculated on the guardian set passed in and checks if the VAA has enough signatures.
-// - The signatures in the VAA is verified against the guardian set keys.
+// - If the phylax does not have or know its own phylax set keys, then the VAA cannot be verified.
+// - Quorum is calculated on the phylax set passed in and checks if the VAA has enough signatures.
+// - The signatures in the VAA is verified against the phylax set keys.
 func (v *VAA) Verify(addresses []common.Address) error {
 	if addresses == nil {
 		return errors.New("no addresses were provided")

@@ -22,12 +22,12 @@
           "submit_observations": {
             "type": "object",
             "required": [
-              "guardian_set_index",
+              "phylax_set_index",
               "observations",
               "signature"
             ],
             "properties": {
-              "guardian_set_index": {
+              "phylax_set_index": {
                 "type": "integer",
                 "format": "uint32",
                 "minimum": 0.0
@@ -54,12 +54,12 @@
           "modify_balance": {
             "type": "object",
             "required": [
-              "guardian_set_index",
+              "phylax_set_index",
               "modification",
               "signatures"
             ],
             "properties": {
-              "guardian_set_index": {
+              "phylax_set_index": {
                 "type": "integer",
                 "format": "uint32",
                 "minimum": 0.0
@@ -88,12 +88,12 @@
           "upgrade_contract": {
             "type": "object",
             "required": [
-              "guardian_set_index",
+              "phylax_set_index",
               "signatures",
               "upgrade"
             ],
             "properties": {
-              "guardian_set_index": {
+              "phylax_set_index": {
                 "type": "integer",
                 "format": "uint32",
                 "minimum": 0.0
@@ -394,11 +394,11 @@
           "missing_observations": {
             "type": "object",
             "required": [
-              "guardian_set",
+              "phylax_set",
               "index"
             ],
             "properties": {
-              "guardian_set": {
+              "phylax_set": {
                 "type": "integer",
                 "format": "uint32",
                 "minimum": 0.0
@@ -693,7 +693,7 @@
           "required": [
             "digest",
             "emitter_chain",
-            "guardian_set_index",
+            "phylax_set_index",
             "signatures",
             "tx_hash"
           ],
@@ -706,7 +706,7 @@
               "format": "uint16",
               "minimum": 0.0
             },
-            "guardian_set_index": {
+            "phylax_set_index": {
               "type": "integer",
               "format": "uint32",
               "minimum": 0.0
@@ -919,7 +919,7 @@
           "required": [
             "digest",
             "emitter_chain",
-            "guardian_set_index",
+            "phylax_set_index",
             "signatures",
             "tx_hash"
           ],
@@ -932,7 +932,7 @@
               "format": "uint16",
               "minimum": 0.0
             },
-            "guardian_set_index": {
+            "phylax_set_index": {
               "type": "integer",
               "format": "uint32",
               "minimum": 0.0
@@ -1219,7 +1219,7 @@
           "required": [
             "digest",
             "emitter_chain",
-            "guardian_set_index",
+            "phylax_set_index",
             "signatures",
             "tx_hash"
           ],
@@ -1232,7 +1232,7 @@
               "format": "uint16",
               "minimum": 0.0
             },
-            "guardian_set_index": {
+            "phylax_set_index": {
               "type": "integer",
               "format": "uint32",
               "minimum": 0.0

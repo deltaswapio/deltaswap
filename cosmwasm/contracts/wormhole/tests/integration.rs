@@ -20,16 +20,16 @@ fn get_config_info<S: Storage>(storage: &S) -> ConfigInfo {
     from_slice(&data).expect("invalid data")
 }
 
-fn do_init(guardians: &[PhylaxAddress]) -> OwnedDeps<MockStorage, MockApi, MockQuerier> {
+fn do_init(phylaxs: &[PhylaxAddress]) -> OwnedDeps<MockStorage, MockApi, MockQuerier> {
     let mut deps = mock_dependencies();
     let init_msg = InstantiateMsg {
         gov_chain: 0,
         gov_address: GOV_ADDR.into(),
-        initial_guardian_set: PhylaxSetInfo {
-            addresses: guardians.to_vec(),
+        initial_phylax_set: PhylaxSetInfo {
+            addresses: phylaxs.to_vec(),
             expiration_time: 100,
         },
-        guardian_set_expirity: 50,
+        phylax_set_expirity: 50,
         chain_id: 18,
         fee_denom: "uluna".to_string(),
     };
@@ -42,8 +42,8 @@ fn do_init(guardians: &[PhylaxAddress]) -> OwnedDeps<MockStorage, MockApi, MockQ
     assert_eq!(
         get_config_info(&deps.storage),
         ConfigInfo {
-            guardian_set_index: 0,
-            guardian_set_expirity: 50,
+            phylax_set_index: 0,
+            phylax_set_expirity: 50,
             gov_chain: 0,
             gov_address: GOV_ADDR.to_vec(),
             fee: Coin::new(0, "uluna"),
@@ -56,10 +56,10 @@ fn do_init(guardians: &[PhylaxAddress]) -> OwnedDeps<MockStorage, MockApi, MockQ
 
 #[test]
 fn init_works() {
-    let guardians = [PhylaxAddress {
+    let phylaxs = [PhylaxAddress {
         bytes: hex::decode("beFA429d57cD18b7F8A4d91A2da9AB4AF05d0FBe")
             .expect("Decoding failed")
             .into(),
     }];
-    let _deps = do_init(&guardians);
+    let _deps = do_init(&phylaxs);
 }

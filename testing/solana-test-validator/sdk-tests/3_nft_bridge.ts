@@ -86,7 +86,7 @@ describe("NFT Bridge", () => {
   const wallet = new NodeWallet(web3.Keypair.generate());
 
   // for signing wormhole messages
-  const guardians = new MockPhylaxs(GUARDIAN_SET_INDEX + 1, GUARDIAN_KEYS);
+  const phylaxs = new MockPhylaxs(GUARDIAN_SET_INDEX + 1, GUARDIAN_KEYS);
 
   const erc721Token = makeErc721Token(
     WETH_ADDRESS,
@@ -225,7 +225,7 @@ describe("NFT Bridge", () => {
         timestamp
       );
 
-      const signedVaa = guardians.addSignatures(
+      const signedVaa = phylaxs.addSignatures(
         message,
         [0, 1, 2, 3, 5, 7, 8, 9, 10, 12, 15, 16, 18]
       );
@@ -299,7 +299,7 @@ describe("NFT Bridge", () => {
         timestamp
       );
 
-      const signedVaa = guardians.addSignatures(
+      const signedVaa = phylaxs.addSignatures(
         message,
         [0, 1, 2, 3, 5, 7, 8, 9, 10, 12, 15, 16, 18]
       );
@@ -378,7 +378,7 @@ describe("NFT Bridge", () => {
         timestamp
       );
 
-      const signedVaa = guardians.addSignatures(
+      const signedVaa = phylaxs.addSignatures(
         message,
         [0, 1, 2, 3, 5, 7, 8, 9, 10, 12, 15, 16, 18]
       );
@@ -548,7 +548,7 @@ describe("NFT Bridge", () => {
         2,
         ETHEREUM_NFT_BRIDGE_ADDRESS
       );
-      const signedVaa = guardians.addSignatures(
+      const signedVaa = phylaxs.addSignatures(
         message,
         [0, 1, 2, 3, 5, 7, 8, 9, 10, 12, 15, 16, 18]
       );
@@ -591,7 +591,7 @@ describe("NFT Bridge", () => {
         chain,
         implementation.toString()
       );
-      const signedVaa = guardians.addSignatures(message, [0]);
+      const signedVaa = phylaxs.addSignatures(message, [0]);
 
       const accounts = getUpgradeContractAccounts(
         NFT_BRIDGE_ADDRESS,
@@ -647,7 +647,7 @@ describe("NFT Bridge", () => {
           2,
           ETHEREUM_NFT_BRIDGE_ADDRESS
         );
-        const signedVaa = guardians.addSignatures(
+        const signedVaa = phylaxs.addSignatures(
           message,
           [0, 1, 2, 3, 5, 7, 8, 9, 10, 12, 15, 16, 18]
         );
@@ -824,7 +824,7 @@ describe("NFT Bridge", () => {
           nonce
         );
 
-        const signedVaa = guardians.addSignatures(
+        const signedVaa = phylaxs.addSignatures(
           message,
           [0, 1, 2, 3, 5, 7, 8, 9, 10, 12, 15, 16, 18]
         );
@@ -949,7 +949,7 @@ describe("NFT Bridge", () => {
           nonce
         );
 
-        const signedVaa = guardians.addSignatures(
+        const signedVaa = phylaxs.addSignatures(
           message,
           [0, 1, 2, 3, 5, 7, 8, 9, 10, 12, 15, 16, 18]
         );

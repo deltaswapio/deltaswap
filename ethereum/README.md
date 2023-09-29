@@ -23,7 +23,7 @@ To deploy you can either use the bytecode from the `build/contracts` folder or t
 
 You first need to deploy one `Wrapped Asset` and initialize it using dummy data.
 
-Then deploy the `Wormhole` using the initial guardian key (`key_x,y_parity,0`) and the address of the previously deployed
+Then deploy the `Wormhole` using the initial phylax key (`key_x,y_parity,0`) and the address of the previously deployed
 `WrappedAsset`. The wrapped asset contract will be used as proxy library to all the creation of cheap proxy wrapped 
 assets.
 

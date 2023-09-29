@@ -260,7 +260,7 @@ async function test() {
   await initNear();
   const { wormholeUseContract } = await initTest();
 
-  console.log("Booting guardian set with index 0");
+  console.log("Booting phylax set with index 0");
 
   console.log(ts.singlePhylaxKey);
 

@@ -10,7 +10,7 @@ rm -rf my_proposal
 ./register-chain-governance.sh -m TokenBridge -c fantom -o my_proposal > governance.md
 ./register-chain-governance.sh -m TokenBridge -c aurora -o my_proposal > governance.md
 
-# These are already on the current guardian set.
+# These are already on the current phylax set.
 # ./register-chain-governance.sh -m TokenBridge -c karura -o my_proposal > governance.md
 # ./register-chain-governance.sh -m TokenBridge -c klaytn -o my_proposal > governance.md
 # ./register-chain-governance.sh -m TokenBridge -c celo -o my_proposal > governance.md
@@ -28,7 +28,7 @@ rm -rf my_proposal
 ./register-chain-governance.sh -m NFTBridge -c fantom -o my_proposal > governance.md
 ./register-chain-governance.sh -m NFTBridge -c aurora -o my_proposal > governance.md
 
-# These are already on the current guardian set.
+# These are already on the current phylax set.
 # ./register-chain-governance.sh -m NFTBridge -c karura -o my_proposal > governance.md
 # ./register-chain-governance.sh -m NFTBridge -c klaytn -o my_proposal > governance.md
 # ./register-chain-governance.sh -m NFTBridge -c celo -o my_proposal > governance.md

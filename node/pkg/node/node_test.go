@@ -65,7 +65,7 @@ const WAIT_FOR_METRICS = false
 // The level at which logs will be written to console; During testing, logs are produced and buffered at Info level, because some tests need to look for certain entries.
 var CONSOLE_LOG_LEVEL = zap.InfoLevel
 
-const guardianSetIndex = 5 // index of the active guardian set (can be anything, just needs to be set to something)
+const phylaxSetIndex = 5 // index of the active phylax set (can be anything, just needs to be set to something)
 
 var TEST_ID_CTR atomic.Uint32
 
@@ -78,13 +78,13 @@ type mockPhylax struct {
 	MockObservationC chan *common.MessagePublication
 	MockSetC         chan *common.PhylaxSet
 	gk               *ecdsa.PrivateKey
-	guardianAddr     eth_common.Address
+	phylaxAddr       eth_common.Address
 	ready            bool
-	config           *guardianConfig
+	config           *phylaxConfig
 	db               *db.Database
 }
 
-type guardianConfig struct {
+type phylaxConfig struct {
 	publicSocket string
 	adminSocket  string
 	publicRpc    string
@@ -93,11 +93,11 @@ type guardianConfig struct {
 	p2pPort      uint
 }
 
-func createPhylaxConfig(t testing.TB, testId uint, mockPhylaxIndex uint) *guardianConfig {
+func createPhylaxConfig(t testing.TB, testId uint, mockPhylaxIndex uint) *phylaxConfig {
 	t.Helper()
-	return &guardianConfig{
-		publicSocket: fmt.Sprintf("/tmp/test_guardian_%d_public.socket", mockPhylaxIndex+testId*20),
-		adminSocket:  fmt.Sprintf("/tmp/test_guardian_%d_admin.socket", mockPhylaxIndex+testId*20), // TODO consider using os.CreateTemp("/tmp", "test_guardian_adminXXXXX.socket"),
+	return &phylaxConfig{
+		publicSocket: fmt.Sprintf("/tmp/test_phylax_%d_public.socket", mockPhylaxIndex+testId*20),
+		adminSocket:  fmt.Sprintf("/tmp/test_phylax_%d_admin.socket", mockPhylaxIndex+testId*20), // TODO consider using os.CreateTemp("/tmp", "test_phylax_adminXXXXX.socket"),
 		publicRpc:    fmt.Sprintf("127.0.0.1:%d", mockPhylaxIndex+LOCAL_RPC_PORTRANGE_START+testId*20),
 		publicWeb:    fmt.Sprintf("127.0.0.1:%d", mockPhylaxIndex+LOCAL_PUBLICWEB_PORTRANGE_START+testId*20),
 		statusPort:   mockPhylaxIndex + LOCAL_STATUS_PORTRANGE_START + testId*20,
@@ -110,7 +110,7 @@ func newMockPhylaxSet(t testing.TB, testId uint, n int) []*mockPhylax {
 	gs := make([]*mockPhylax, n)
 
 	for i := 0; i < n; i++ {
-		// generate guardian key
+		// generate phylax key
 		gk, err := ecdsa.GenerateKey(eth_crypto.S256(), rand.Reader)
 		if err != nil {
 			panic(err)
@@ -121,7 +121,7 @@ func newMockPhylaxSet(t testing.TB, testId uint, n int) []*mockPhylax {
 			MockObservationC: make(chan *common.MessagePublication),
 			MockSetC:         make(chan *common.PhylaxSet),
 			gk:               gk,
-			guardianAddr:     ethcrypto.PubkeyToAddress(gk.PublicKey),
+			phylaxAddr:       ethcrypto.PubkeyToAddress(gk.PublicKey),
 			config:           createPhylaxConfig(t, testId, uint(i)),
 		}
 	}
@@ -133,12 +133,12 @@ func mockPhylaxSetToPhylaxAddrList(t testing.TB, gs []*mockPhylax) []eth_common.
 	t.Helper()
 	result := make([]eth_common.Address, len(gs))
 	for i, g := range gs {
-		result[i] = g.guardianAddr
+		result[i] = g.phylaxAddr
 	}
 	return result
 }
 
-// mockPhylaxRunnable returns a runnable that first sets up a mock guardian an then runs it.
+// mockPhylaxRunnable returns a runnable that first sets up a mock phylax an then runs it.
 func mockPhylaxRunnable(t testing.TB, gs []*mockPhylax, mockPhylaxIndex uint, obsDb mock.ObservationDb) supervisor.Runnable {
 	t.Helper()
 	return func(ctx context.Context) error {
@@ -184,7 +184,7 @@ func mockPhylaxRunnable(t testing.TB, gs []*mockPhylax, mockPhylaxIndex uint, ob
 		cfg := gs[mockPhylaxIndex].config
 
 		// assemble all the options
-		guardianOptions := []*PhylaxOption{
+		phylaxOptions := []*PhylaxOption{
 			PhylaxOptionDatabase(db),
 			PhylaxOptionWatchers(watcherConfigs, nil),
 			PhylaxOptionNoAccountant(), // disable accountant
@@ -199,12 +199,12 @@ func mockPhylaxRunnable(t testing.TB, gs []*mockPhylax, mockPhylaxIndex uint, ob
 			PhylaxOptionProcessor(),
 		}
 
-		guardianNode := NewPhylaxNode(
+		phylaxNode := NewPhylaxNode(
 			env,
 			gs[mockPhylaxIndex].gk,
 		)
 
-		if err = supervisor.Run(ctx, "g", guardianNode.Run(ctxCancel, guardianOptions...)); err != nil {
+		if err = supervisor.Run(ctx, "g", phylaxNode.Run(ctxCancel, phylaxOptions...)); err != nil {
 			panic(err)
 		}
 
@@ -229,7 +229,7 @@ func setupLogsCapture(t testing.TB, options ...zap.Option) (*zap.Logger, *observ
 func waitForHeartbeatsInLogs(t testing.TB, zapObserver *observer.ObservedLogs, gs []*mockPhylax) {
 	t.Helper()
 	// example log entry that we're looking for:
-	// 		INFO	root.g-2.g.p2p	p2p/p2p.go:465	valid signed heartbeat received	{"value": "node_name:\"g-0\"  timestamp:1685677055425243683  version:\"development\"  guardian_addr:\"0xeF2a03eAec928DD0EEAf35aD31e34d2b53152c07\"  boot_timestamp:1685677040424855922  p2p_node_id:\"\\x00$\\x08\\x01\\x12 \\x97\\xf3\\xbd\\x87\\x13\\x15(\\x1e\\x8b\\x83\\xedǩ\\xfd\\x05A\\x06aTD\\x90p\\xcc\\xdb<\\xddB\\xcfi\\xccވ\"", "from": "12D3KooWL3XJ9EMCyZvmmGXL2LMiVBtrVa2BuESsJiXkSj7333Jw"}
+	// 		INFO	root.g-2.g.p2p	p2p/p2p.go:465	valid signed heartbeat received	{"value": "node_name:\"g-0\"  timestamp:1685677055425243683  version:\"development\"  phylax_addr:\"0xeF2a03eAec928DD0EEAf35aD31e34d2b53152c07\"  boot_timestamp:1685677040424855922  p2p_node_id:\"\\x00$\\x08\\x01\\x12 \\x97\\xf3\\xbd\\x87\\x13\\x15(\\x1e\\x8b\\x83\\xedǩ\\xfd\\x05A\\x06aTD\\x90p\\xcc\\xdb<\\xddB\\xcfi\\xccވ\"", "from": "12D3KooWL3XJ9EMCyZvmmGXL2LMiVBtrVa2BuESsJiXkSj7333Jw"}
 	re := regexp.MustCompile("g-[0-9]+")
 
 	for readyCounter := 0; readyCounter < len(gs); {
@@ -241,12 +241,12 @@ func waitForHeartbeatsInLogs(t testing.TB, zapObserver *observer.ObservedLogs, g
 					assert.True(t, ok)
 					match := re.FindStringSubmatch(s.String())
 					assert.NotZero(t, len(match))
-					guardianId, err := strconv.Atoi(match[0][2:])
+					phylaxId, err := strconv.Atoi(match[0][2:])
 					assert.NoError(t, err)
-					assert.True(t, guardianId < len(gs))
+					assert.True(t, phylaxId < len(gs))
 
-					if gs[guardianId].ready == false {
-						gs[guardianId].ready = true
+					if gs[phylaxId].ready == false {
+						gs[phylaxId].ready = true
 						readyCounter++
 					}
 				}
@@ -256,8 +256,8 @@ func waitForHeartbeatsInLogs(t testing.TB, zapObserver *observer.ObservedLogs, g
 	}
 }
 
-// waitForPromMetricGte waits until prometheus metric `metric` >= `min` on all guardians in `gs`.
-// WARNING: Currently, there is only a global registry for all prometheus metrics, leading to all guardian nodes writing to the same one.
+// waitForPromMetricGte waits until prometheus metric `metric` >= `min` on all phylaxs in `gs`.
+// WARNING: Currently, there is only a global registry for all prometheus metrics, leading to all phylax nodes writing to the same one.
 //
 //	As long as this is the case, you probably don't want to use this function.
 func waitForPromMetricGte(t testing.TB, ctx context.Context, gs []*mockPhylax, metric string, min int) {
@@ -355,7 +355,7 @@ type testCase struct {
 	// if true, the test environment will inject a reobservation request signed by Phylax 1,
 	// as if that Phylax had made a manual reobservation request through an admin command
 	performManualReobservationRequest bool
-	// if true, we will put the VAA into each guardian's DB
+	// if true, we will put the VAA into each phylax's DB
 	prePopulateVAA bool
 	// if true, assert that a VAA eventually exists for this message
 	mustReachQuorum bool
@@ -511,7 +511,7 @@ func waitForStatusServer(ctx context.Context, logger *zap.Logger, statusAddr str
 }
 
 func TestMain(m *testing.M) {
-	readiness.NoPanic = true // otherwise we'd panic when running multiple guardians
+	readiness.NoPanic = true // otherwise we'd panic when running multiple phylaxs
 	os.Exit(m.Run())
 }
 
@@ -535,7 +535,7 @@ func createGovernanceMsgAndVaa(t testing.TB) (*common.MessagePublication, *nodev
 			},
 		},
 	}
-	govVaa, err := adminrpc.GovMsgToVaa(govMsg, guardianSetIndex, msgGov.Timestamp)
+	govVaa, err := adminrpc.GovMsgToVaa(govMsg, phylaxSetIndex, msgGov.Timestamp)
 	require.NoError(t, err)
 	msgGov.Payload = govVaa.Payload
 	msgGov.ConsistencyLevel = govVaa.ConsistencyLevel
@@ -543,13 +543,13 @@ func createGovernanceMsgAndVaa(t testing.TB) (*common.MessagePublication, *nodev
 	return msgGov, govMsg
 }
 
-// TestConsensus tests that a set of guardians can form consensus on certain messages and reject certain other messages
+// TestConsensus tests that a set of phylaxs can form consensus on certain messages and reject certain other messages
 func TestConsensus(t *testing.T) {
 	// adjust processor time intervals to make tests pass faster
 	processor.FirstRetryMinWait = time.Second * 3
 	processor.CleanupInterval = time.Second * 1
 
-	const numPhylaxs = 4 // Quorum will be 3 out of 4 guardians.
+	const numPhylaxs = 4 // Quorum will be 3 out of 4 phylaxs.
 
 	msgZeroEmitter := someMessage()
 	msgZeroEmitter.EmitterAddress = vaa.Address{}
@@ -600,7 +600,7 @@ func TestConsensus(t *testing.T) {
 			numPhylaxsObserve:  numPhylaxs,
 			mustNotReachQuorum: true,
 		},
-		{ // vanilla case, where only a quorum of guardians gets the message
+		{ // vanilla case, where only a quorum of phylaxs gets the message
 			msg:               someMessage(),
 			numPhylaxsObserve: numPhylaxs*2/3 + 1,
 			mustReachQuorum:   true,
@@ -634,11 +634,11 @@ func TestConsensus(t *testing.T) {
 	runConsensusTests(t, testCases, numPhylaxs)
 }
 
-// runConsensusTests spins up `numPhylaxs` guardians and runs & verifies the testCases
+// runConsensusTests spins up `numPhylaxs` phylaxs and runs & verifies the testCases
 func runConsensusTests(t *testing.T, testCases []testCase, numPhylaxs int) {
 	const testTimeout = time.Second * 30
-	const vaaCheckPhylaxIndex uint = 0 // we will query this guardian's publicrpc for VAAs
-	const adminRpcPhylaxIndex uint = 0 // we will query this guardian's adminRpc
+	const vaaCheckPhylaxIndex uint = 0 // we will query this phylax's publicrpc for VAAs
+	const adminRpcPhylaxIndex uint = 0 // we will query this phylax's adminRpc
 	testId := getTestId()
 
 	// Test's main lifecycle context.
@@ -655,12 +655,12 @@ func runConsensusTests(t *testing.T, testCases []testCase, numPhylaxs int) {
 
 		obsDb := makeObsDb(testCases)
 
-		// run the guardians
+		// run the phylaxs
 		for i := 0; i < numPhylaxs; i++ {
 			gRun := mockPhylaxRunnable(t, gs, uint(i), obsDb)
 			err := supervisor.Run(ctx, fmt.Sprintf("g-%d", i), gRun)
 			if i == 0 && numPhylaxs > 1 {
-				time.Sleep(time.Second) // give the bootstrap guardian some time to start up
+				time.Sleep(time.Second) // give the bootstrap phylax some time to start up
 			}
 			assert.NoError(t, err)
 		}
@@ -670,10 +670,10 @@ func runConsensusTests(t *testing.T, testCases []testCase, numPhylaxs int) {
 		// Inform them of the Phylax Set
 		commonPhylaxSet := common.PhylaxSet{
 			Keys:  mockPhylaxSetToPhylaxAddrList(t, gs),
-			Index: guardianSetIndex,
+			Index: phylaxSetIndex,
 		}
 		for i, g := range gs {
-			logger.Info("Sending guardian set update", zap.Int("guardian_index", i))
+			logger.Info("Sending phylax set update", zap.Int("phylax_index", i))
 			g.MockSetC <- &commonPhylaxSet
 		}
 
@@ -686,7 +686,7 @@ func runConsensusTests(t *testing.T, testCases []testCase, numPhylaxs int) {
 		// pre-populate VAAs
 		for _, testCase := range testCases {
 			if testCase.prePopulateVAA {
-				v := testCase.msg.CreateVAA(guardianSetIndex)
+				v := testCase.msg.CreateVAA(phylaxSetIndex)
 				v.Signatures = []*vaa.Signature{{Index: 0}}
 				err := gs[0].db.StoreSignedVAA(v)
 				assert.NoError(t, err)
@@ -711,13 +711,13 @@ func runConsensusTests(t *testing.T, testCases []testCase, numPhylaxs int) {
 			case <-ctx.Done():
 				return nil
 			default:
-				// make the first testCase.numPhylaxsObserve guardians observe it
-				for guardianIndex, g := range gs {
-					if guardianIndex >= testCase.numPhylaxsObserve {
+				// make the first testCase.numPhylaxsObserve phylaxs observe it
+				for phylaxIndex, g := range gs {
+					if phylaxIndex >= testCase.numPhylaxsObserve {
 						break
 					}
 					msgCopy := *testCase.msg
-					logger.Info("requesting mock observation for guardian", msgCopy.ZapFields(zap.Int("guardian_index", guardianIndex))...)
+					logger.Info("requesting mock observation for phylax", msgCopy.ZapFields(zap.Int("phylax_index", phylaxIndex))...)
 					g.MockObservationC <- &msgCopy
 				}
 			}
@@ -756,10 +756,10 @@ func runConsensusTests(t *testing.T, testCases []testCase, numPhylaxs int) {
 
 				for j := 0; j < testCase.numPhylaxsInjectGov; j++ {
 					require.NotNil(t, testCase.govMsg)
-					logger.Info("injecting message through admin rpc", zap.Int("test_case", i), zap.Int("guardian", j))
+					logger.Info("injecting message through admin rpc", zap.Int("test_case", i), zap.Int("phylax", j))
 					queryCtx, queryCancel := context.WithTimeout(ctx, time.Second)
 					_, err := adminCs[j].InjectGovernanceVAA(queryCtx, &nodev1.InjectGovernanceVAARequest{
-						CurrentSetIndex: guardianSetIndex,
+						CurrentSetIndex: phylaxSetIndex,
 						Messages:        []*nodev1.GovernanceMessage{testCase.govMsg},
 						Timestamp:       uint32(testCase.msg.Timestamp.Unix()),
 					})
@@ -815,7 +815,7 @@ func runConsensusTests(t *testing.T, testCases []testCase, numPhylaxs int) {
 
 				// Match all the fields
 				assert.Equal(t, returnedVaa.Version, uint8(1))
-				assert.Equal(t, returnedVaa.PhylaxSetIndex, uint32(guardianSetIndex))
+				assert.Equal(t, returnedVaa.PhylaxSetIndex, uint32(phylaxSetIndex))
 				assert.Equal(t, returnedVaa.Timestamp, msg.Timestamp)
 				assert.Equal(t, returnedVaa.Nonce, msg.Nonce)
 				assert.Equal(t, returnedVaa.Sequence, msg.Sequence)
@@ -848,7 +848,7 @@ type testCasePhylaxConfig struct {
 	err  string
 }
 
-// TestWatcherConfigs tries to instantiate a guardian with various invlid []watchers.WatcherConfig and asserts that it errors
+// TestWatcherConfigs tries to instantiate a phylax with various invlid []watchers.WatcherConfig and asserts that it errors
 func TestWatcherConfigs(t *testing.T) {
 	tc := []testCasePhylaxConfig{
 		{
@@ -924,7 +924,7 @@ func TestPhylaxConfigs(t *testing.T) {
 
 func runPhylaxConfigTests(t *testing.T, testCases []testCasePhylaxConfig) {
 	for _, tc := range testCases {
-		// because we're only instantiating the guardians and kill them right after they started running, 2s should be plenty of time
+		// because we're only instantiating the phylaxs and kill them right after they started running, 2s should be plenty of time
 		const testTimeout = time.Second * 2
 
 		// Test's main lifecycle context.
@@ -1145,7 +1145,7 @@ func runConsensusBenchmark(t *testing.B, name string, numPhylaxs int, numMessage
 		msgSeqStart := someMsgSequenceCounter
 
 		const testTimeout = time.Minute * 2
-		const guardianSetIndex = 5 // index of the active guardian set (can be anything, just needs to be set to something)
+		const phylaxSetIndex = 5 // index of the active phylax set (can be anything, just needs to be set to something)
 
 		// Test's main lifecycle context.
 		rootCtx, rootCtxCancel := context.WithTimeout(context.Background(), testTimeout)
@@ -1161,12 +1161,12 @@ func runConsensusBenchmark(t *testing.B, name string, numPhylaxs int, numMessage
 
 			var obsDb mock.ObservationDb = nil // TODO
 
-			// run the guardians
+			// run the phylaxs
 			for i := 0; i < numPhylaxs; i++ {
 				gRun := mockPhylaxRunnable(t, gs, uint(i), obsDb)
 				err := supervisor.Run(ctx, fmt.Sprintf("g-%d", i), gRun)
 				if i == 0 && numPhylaxs > 1 {
-					time.Sleep(time.Second) // give the bootstrap guardian some time to start up
+					time.Sleep(time.Second) // give the bootstrap phylax some time to start up
 				}
 				assert.NoError(t, err)
 			}
@@ -1176,10 +1176,10 @@ func runConsensusBenchmark(t *testing.B, name string, numPhylaxs int, numMessage
 			// Inform them of the Phylax Set
 			commonPhylaxSet := common.PhylaxSet{
 				Keys:  mockPhylaxSetToPhylaxAddrList(t, gs),
-				Index: guardianSetIndex,
+				Index: phylaxSetIndex,
 			}
 			for i, g := range gs {
-				logger.Info("Sending guardian set update", zap.Int("guardian_index", i))
+				logger.Info("Sending phylax set update", zap.Int("phylax_index", i))
 				g.MockSetC <- &commonPhylaxSet
 			}
 
@@ -1205,7 +1205,7 @@ func runConsensusBenchmark(t *testing.B, name string, numPhylaxs int, numMessage
 				logger.Info("publicrpc seems to be offline (according to logs). Waiting 100ms...")
 				time.Sleep(time.Microsecond * 100)
 			}
-			// now that it's online, connect to publicrpc of guardian-0
+			// now that it's online, connect to publicrpc of phylax-0
 			conn, err := grpc.DialContext(ctx, gs[vaaCheckPhylaxIndex].config.publicRpc, grpc.WithTransportCredentials(insecure.NewCredentials()))
 			require.NoError(t, err)
 			defer conn.Close()

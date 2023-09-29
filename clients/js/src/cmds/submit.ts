@@ -94,7 +94,7 @@ export const handler = async (
   // that target chain.
   //
   // If the VAA does not have a target (e.g. chain registration VAAs or
-  // guardian set upgrade VAAs), we require the '--chain' argument to be
+  // phylax set upgrade VAAs), we require the '--chain' argument to be
   // set on the command line.
   //
   // As a sanity check, in the event that the VAA does specify a target

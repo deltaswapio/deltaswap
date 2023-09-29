@@ -88,14 +88,14 @@ func signedObservationRequestDigest(b []byte) eth_common.Hash {
 }
 
 type Components struct {
-	// P2PIDInHeartbeat determines if the guardian will put it's libp2p node ID in the authenticated heartbeat payload
+	// P2PIDInHeartbeat determines if the phylax will put it's libp2p node ID in the authenticated heartbeat payload
 	P2PIDInHeartbeat           bool
 	ListeningAddressesPatterns []string
 	// Port on which the Phylax is going to bind
 	Port uint
 	// ConnMgr is the ConnectionManager that the Phylax is going to use
 	ConnMgr *connmgr.BasicConnMgr
-	// ProtectedHostByPhylaxKey is used to ensure that only one p2p peer can be protected by any given known guardian key
+	// ProtectedHostByPhylaxKey is used to ensure that only one p2p peer can be protected by any given known phylax key
 	ProtectedHostByPhylaxKey map[eth_common.Address]peer.ID
 	// ProtectedHostByPhylaxKeyLock is only useful to prevent a race condition in test as ProtectedHostByPhylaxKey
 	// is only accessed by a single routine at any given time in a running Phylax.
@@ -337,7 +337,7 @@ func Run(
 
 		bootTime := time.Now()
 
-		// Periodically run guardian state set cleanup.
+		// Periodically run phylax state set cleanup.
 		go func() {
 			ticker := time.NewTicker(15 * time.Second)
 			defer ticker.Stop()
@@ -464,7 +464,7 @@ func Run(
 						panic(err)
 					}
 
-					// Sign the observation request using our node's guardian key.
+					// Sign the observation request using our node's phylax key.
 					digest := signedObservationRequestDigest(b)
 					sig, err := ethcrypto.Sign(digest.Bytes(), gk)
 					if err != nil {
@@ -533,8 +533,8 @@ func Run(
 				s := m.SignedHeartbeat
 				gs := gst.Get()
 				if gs == nil {
-					// No valid guardian set yet - dropping heartbeat
-					logger.Log(components.SignedHeartbeatLogLevel, "skipping heartbeat - no guardian set",
+					// No valid phylax set yet - dropping heartbeat
+					logger.Log(components.SignedHeartbeatLogLevel, "skipping heartbeat - no phylax set",
 						zap.Any("value", s),
 						zap.String("from", envelope.GetFrom().String()))
 					break
@@ -565,23 +565,23 @@ func Run(
 									zap.Binary("raw", envelope.Data),
 									zap.String("from", envelope.GetFrom().String()))
 							} else {
-								guardianAddr := eth_common.BytesToAddress(s.PhylaxAddr)
-								if guardianAddr != ethcrypto.PubkeyToAddress(gk.PublicKey) {
-									prevPeerId, ok := components.ProtectedHostByPhylaxKey[guardianAddr]
+								phylaxAddr := eth_common.BytesToAddress(s.PhylaxAddr)
+								if phylaxAddr != ethcrypto.PubkeyToAddress(gk.PublicKey) {
+									prevPeerId, ok := components.ProtectedHostByPhylaxKey[phylaxAddr]
 									if ok {
 										if prevPeerId != peerId {
-											logger.Info("p2p_guardian_peer_changed",
-												zap.String("guardian_addr", guardianAddr.String()),
+											logger.Info("p2p_phylax_peer_changed",
+												zap.String("phylax_addr", phylaxAddr.String()),
 												zap.String("prevPeerId", prevPeerId.String()),
 												zap.String("newPeerId", peerId.String()),
 											)
 											components.ConnMgr.Unprotect(prevPeerId, "heartbeat")
 											components.ConnMgr.Protect(peerId, "heartbeat")
-											components.ProtectedHostByPhylaxKey[guardianAddr] = peerId
+											components.ProtectedHostByPhylaxKey[phylaxAddr] = peerId
 										}
 									} else {
 										components.ConnMgr.Protect(peerId, "heartbeat")
-										components.ProtectedHostByPhylaxKey[guardianAddr] = peerId
+										components.ProtectedHostByPhylaxKey[phylaxAddr] = peerId
 									}
 								}
 							}
@@ -620,7 +620,7 @@ func Run(
 				s := m.SignedObservationRequest
 				gs := gst.Get()
 				if gs == nil {
-					logger.Debug("dropping SignedObservationRequest - no guardian set",
+					logger.Debug("dropping SignedObservationRequest - no phylax set",
 						zap.Any("value", s),
 						zap.String("from", envelope.GetFrom().String()))
 					break
@@ -673,7 +673,7 @@ func createSignedHeartbeat(gk *ecdsa.PrivateKey, heartbeat *gossipv1.Heartbeat) 
 		panic(err)
 	}
 
-	// Sign the heartbeat using our node's guardian key.
+	// Sign the heartbeat using our node's phylax key.
 	digest := heartbeatDigest(b)
 	sig, err := ethcrypto.Sign(digest.Bytes(), gk)
 	if err != nil {
@@ -693,7 +693,7 @@ func processSignedHeartbeat(from peer.ID, s *gossipv1.SignedHeartbeat, gs *commo
 	var pk eth_common.Address
 	if !ok {
 		if !disableVerify {
-			return nil, fmt.Errorf("invalid message: %s not in guardian set", envelopeAddr)
+			return nil, fmt.Errorf("invalid message: %s not in phylax set", envelopeAddr)
 		}
 	} else {
 		pk = gs.Keys[idx]
@@ -701,7 +701,7 @@ func processSignedHeartbeat(from peer.ID, s *gossipv1.SignedHeartbeat, gs *commo
 
 	digest := heartbeatDigest(s.Heartbeat)
 
-	// SECURITY: see whitepapers/0009_guardian_key.md
+	// SECURITY: see whitepapers/0009_phylax_key.md
 	if len(heartbeatMessagePrefix)+len(s.Heartbeat) < 34 {
 		return nil, fmt.Errorf("invalid message: too short")
 	}
@@ -730,9 +730,9 @@ func processSignedHeartbeat(from peer.ID, s *gossipv1.SignedHeartbeat, gs *commo
 		return nil, fmt.Errorf("PhylaxAddr in heartbeat does not match signerAddr")
 	}
 
-	// Store verified heartbeat in global guardian set state.
+	// Store verified heartbeat in global phylax set state.
 	if err := gst.SetHeartbeat(signerAddr, from, &h); err != nil {
-		return nil, fmt.Errorf("failed to store in guardian set state: %w", err)
+		return nil, fmt.Errorf("failed to store in phylax set state: %w", err)
 	}
 
 	collectNodeMetrics(signerAddr, from, &h)
@@ -745,12 +745,12 @@ func processSignedObservationRequest(s *gossipv1.SignedObservationRequest, gs *c
 	idx, ok := gs.KeyIndex(envelopeAddr)
 	var pk eth_common.Address
 	if !ok {
-		return nil, fmt.Errorf("invalid message: %s not in guardian set", envelopeAddr)
+		return nil, fmt.Errorf("invalid message: %s not in phylax set", envelopeAddr)
 	} else {
 		pk = gs.Keys[idx]
 	}
 
-	// SECURITY: see whitepapers/0009_guardian_key.md
+	// SECURITY: see whitepapers/0009_phylax_key.md
 	if len(signedObservationRequestPrefix)+len(s.ObservationRequest) < 34 {
 		return nil, fmt.Errorf("invalid observation request: too short")
 	}
@@ -773,7 +773,7 @@ func processSignedObservationRequest(s *gossipv1.SignedObservationRequest, gs *c
 		return nil, fmt.Errorf("failed to unmarshal observation request: %w", err)
 	}
 
-	// TODO: implement per-guardian rate limiting
+	// TODO: implement per-phylax rate limiting
 
 	return &h, nil
 }

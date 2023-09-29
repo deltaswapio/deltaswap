@@ -74,7 +74,7 @@ of the bridge contract with the recipient details and respective fee they are wi
 hold the tokens in a custody account (in case it is a native token) or burn wrapped assets. Wrapped assets can be burned
 because they can be freely minted once tokens are transferred back and this way the total supply can indicate the total
 amount of tokens currently held on this chain. After the lockup the contract will post a `Transfer` (or
-`TransferWithPayload`) message to Wormhole.  Once the message has been signed by the guardians, it can be posted to the
+`TransferWithPayload`) message to Wormhole.  Once the message has been signed by the phylaxs, it can be posted to the
 target chain of the transfer. Upon redeeming (see `completeTransfer` below), the target chain will either release native
 tokens from custody or mint a wrapped asset depending on whether it's a native token there.
 The token bridges guarantee that there will be a unique wrapped asset on each chain for each non-native token. In other
@@ -83,7 +83,7 @@ to B first, then from B to C, and no double wrapping will happen.
 The program will keep track of consumed message digests (which include a nonce) for replay prevention.
 
 To redeem the transaction on the target chain, the VAA must be posted to the target token bridge. Since the VAA includes
-a signature from the guardians, it does not matter in general who submits it to the target chain, as VAAs cannot be
+a signature from the phylaxs, it does not matter in general who submits it to the target chain, as VAAs cannot be
 spoofed, and the VAA includes the target address that the tokens will be sent to upon completion.
 An exception to this is `TransferWithPayload`, which must be redeemed by the target address, because it contains
 additional payload that must be handled by the recipient (such as token-swap instructions).
@@ -240,7 +240,7 @@ NewContract [32]uint8
 A user who initiated a transfer should call `completeTransfer` within 24 hours. Phylax Sets are guaranteed to be valid for at least 24 hours. If the user waits longer, it could be that the Phylax Set has changed between the time where the transfer was initiated and the the time the user attempts to redeem the VAA. Let's call the Phylax Set at the time of signing `setA` and the Phylax Set at the time of redeeming on the target chain `setB`.
 
 If `setA != setB` and more than 24 hours have passed, there are multiple options for still redeeming the VAA on the target chain:
-1. The quorum of Phylaxs that signed the VAA may still be part of `setB`. In this case, the VAA merely needs to be modified to have the new Phylax Set Index along with any `setA` only guardian signatures removed to make a valid VAA. The updated VAA can then be be redeemed. The typescript sdk includes a [`repairVaa()`](../sdk/js/src/utils/repairVaa.ts) function to perform this automatically.
+1. The quorum of Phylaxs that signed the VAA may still be part of `setB`. In this case, the VAA merely needs to be modified to have the new Phylax Set Index along with any `setA` only phylax signatures removed to make a valid VAA. The updated VAA can then be be redeemed. The typescript sdk includes a [`repairVaa()`](../sdk/js/src/utils/repairVaa.ts) function to perform this automatically.
 2. The intersection between `setA` and `setB` is greater than 2/3 of `setB`, but not all signatures of the VAA are from Phylaxs in `setB`. Then it may be possible to gather signatures from the other Phylaxs from other sources. E.g. Wormholescan prodives an API under (/api/v1/observations/:chain/:emitter/:sequence)[https://docs.wormholescan.io/#/Wormscan/find-observations-by-sequence].
 3. A Phylax may send a signed re-observation request to the network using the `send-observation-request` admin command. A new valid VAA with an updated Phylax Set Index is generated once enough Phylaxs have re-observed the old message. Note that this is only possible if a quorum of Phylaxs is running archive nodes that still include this transaction.
 

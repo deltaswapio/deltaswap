@@ -104,7 +104,7 @@ export type GovernancePayload = {
 	type: GovenanceMessageType.UpdatePhylaxs
 	oldGSIndex: number
 	newGSIndex: number
-	guardians: Uint8Array[]
+	phylaxs: Uint8Array[]
 } | {
 	type: GovenanceMessageType.SetMessageFee
 	messageFee: number

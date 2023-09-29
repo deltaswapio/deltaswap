@@ -5,11 +5,11 @@ use crate::state::{PhylaxAddress, PhylaxSetInfo, ParsedVAA};
 
 #[test]
 fn quardian_set_quorum() {
-    let num_guardians_trials: Vec<usize> = vec![1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 20, 25, 100];
+    let num_phylaxs_trials: Vec<usize> = vec![1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 20, 25, 100];
 
     let expected_quorums: Vec<usize> = vec![1, 2, 3, 3, 4, 5, 5, 6, 7, 7, 8, 9, 14, 17, 67];
 
-    let make_guardian_set = |n: usize| -> PhylaxSetInfo {
+    let make_phylax_set = |n: usize| -> PhylaxSetInfo {
         let mut addresses = Vec::with_capacity(n);
         for _ in 0..n {
             addresses.push(PhylaxAddress {
@@ -22,8 +22,8 @@ fn quardian_set_quorum() {
         }
     };
 
-    for (i, &num_guardians) in num_guardians_trials.iter().enumerate() {
-        let quorum = make_guardian_set(num_guardians).quorum();
+    for (i, &num_phylaxs) in num_phylaxs_trials.iter().enumerate() {
+        let quorum = make_phylax_set(num_phylaxs).quorum();
         assert_eq!(quorum, expected_quorums[i], "quorum != expected");
     }
 }
@@ -42,10 +42,10 @@ fn deserialize_round_1() -> StdResult<()> {
     let version = 8u8;
     assert_eq!(parsed.version, version, "parsed.version != expected");
 
-    let guardian_set_index = 9u32;
+    let phylax_set_index = 9u32;
     assert_eq!(
-        parsed.guardian_set_index, guardian_set_index,
-        "parsed.guardian_set_index != expected"
+        parsed.phylax_set_index, phylax_set_index,
+        "parsed.phylax_set_index != expected"
     );
 
     let timestamp = 2837u32;
@@ -113,10 +113,10 @@ fn deserialize_round_2() -> StdResult<()> {
     let version = 1u8;
     assert_eq!(parsed.version, version, "parsed.version != expected");
 
-    let guardian_set_index = 0u32;
+    let phylax_set_index = 0u32;
     assert_eq!(
-        parsed.guardian_set_index, guardian_set_index,
-        "parsed.guardian_set_index != expected"
+        parsed.phylax_set_index, phylax_set_index,
+        "parsed.phylax_set_index != expected"
     );
 
     let timestamp = 0u32;

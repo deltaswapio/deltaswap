@@ -90,7 +90,7 @@ Options:
   -v, --vaa                        vaa in hex format         [string] [required]
   -n, --network                    Network
                             [required] [choices: "mainnet", "testnet", "devnet"]
-      --guardian-set-index, --gsi  guardian set index                   [number]
+      --phylax-set-index, --gsi  phylax set index                   [number]
       --signatures, --sigs         comma separated list of signatures   [string]
       --wormscanurl, --wsu         url to wormscan entry for the vaa that
                                    includes signatures                  [string]
@@ -106,7 +106,7 @@ Options:
       --timestamp, --ts            timestamp to be used in the vaa in unix
                                    seconds                              [number]
   -p, --payload                    payload in hex format                [string]
-      --guardian-secret, --gs      Phylax's secret key                [string]
+      --phylax-secret, --gs      Phylax's secret key                [string]
 ```
 </details>
 
@@ -124,7 +124,7 @@ Commands:
   worm evm chains                        Return all EVM chains
   worm evm info                          Query info about the on-chain state of
                                          the contract
-  worm evm hijack                        Override the guardian set of the core
+  worm evm hijack                        Override the phylax set of the core
                                          bridge contract during testing (anvil
                                          or hardhat)
   worm evm start-validator               Start a local EVM validator
@@ -153,7 +153,7 @@ Commands:
 Options:
       --help             Show help                                     [boolean]
       --version          Show version number                           [boolean]
-  -g, --guardian-secret  Phylaxs' secret keys (CSV)        [string] [required]
+  -g, --phylax-secret  Phylaxs' secret keys (CSV)        [string] [required]
 ```
 </details>
 
@@ -370,7 +370,7 @@ Use `generate` to create VAAs for testing. For example, to create an NFT bridge 
 $ worm generate registration --module NFTBridge \
     --chain bsc \
     --contract-address 0x706abc4E45D419950511e474C7B9Ed348A4a716c \
-    --guardian-secret cfb12303a19cde580bb4dd771639b0d26bc68353645571a8cff516ab2ee113a0
+    --phylax-secret cfb12303a19cde580bb4dd771639b0d26bc68353645571a8cff516ab2ee113a0
 ```
 
 Example creating a token attestation VAA:
@@ -383,7 +383,7 @@ $ worm generate attestation --emitter-chain ethereum \
     --decimals 6 \
     --symbol USDC \
     --name USDC \
-    --guardian-secret cfb12303a19cde580bb4dd771639b0d26bc68353645571a8cff516ab2ee113a0
+    --phylax-secret cfb12303a19cde580bb4dd771639b0d26bc68353645571a8cff516ab2ee113a0
 ```
 
 ### VAA parsing
@@ -439,28 +439,28 @@ what's the destination chain and module. For example, a contract upgrade contain
 
     worm submit $(cat my-nft-registration.txt) --network mainnet
 
-For VAAs that don't have a specific target chain (like registrations or guardian
+For VAAs that don't have a specific target chain (like registrations or phylax
 set upgrades), the script will ask you to specify the target chain.
-For example, to submit a guardian set upgrade on all chains, simply run:
+For example, to submit a phylax set upgrade on all chains, simply run:
 
 ```sh
-$ worm-fetch-governance 13940208096455381020 > guardian-upgrade.txt
-$ worm submit $(cat guardian-upgrade.txt) --network mainnet --chain oasis
-$ worm submit $(cat guardian-upgrade.txt) --network mainnet --chain aurora
-$ worm submit $(cat guardian-upgrade.txt) --network mainnet --chain fantom
-$ worm submit $(cat guardian-upgrade.txt) --network mainnet --chain karura
-$ worm submit $(cat guardian-upgrade.txt) --network mainnet --chain acala
-$ worm submit $(cat guardian-upgrade.txt) --network mainnet --chain klaytn
-$ worm submit $(cat guardian-upgrade.txt) --network mainnet --chain avalanche
-$ worm submit $(cat guardian-upgrade.txt) --network mainnet --chain polygon
-$ worm submit $(cat guardian-upgrade.txt) --network mainnet --chain bsc
-$ worm submit $(cat guardian-upgrade.txt) --network mainnet --chain solana
-$ worm submit $(cat guardian-upgrade.txt) --network mainnet --chain terra
-$ worm submit $(cat guardian-upgrade.txt) --network mainnet --chain ethereum
-$ worm submit $(cat guardian-upgrade.txt) --network mainnet --chain celo
+$ worm-fetch-governance 13940208096455381020 > phylax-upgrade.txt
+$ worm submit $(cat phylax-upgrade.txt) --network mainnet --chain oasis
+$ worm submit $(cat phylax-upgrade.txt) --network mainnet --chain aurora
+$ worm submit $(cat phylax-upgrade.txt) --network mainnet --chain fantom
+$ worm submit $(cat phylax-upgrade.txt) --network mainnet --chain karura
+$ worm submit $(cat phylax-upgrade.txt) --network mainnet --chain acala
+$ worm submit $(cat phylax-upgrade.txt) --network mainnet --chain klaytn
+$ worm submit $(cat phylax-upgrade.txt) --network mainnet --chain avalanche
+$ worm submit $(cat phylax-upgrade.txt) --network mainnet --chain polygon
+$ worm submit $(cat phylax-upgrade.txt) --network mainnet --chain bsc
+$ worm submit $(cat phylax-upgrade.txt) --network mainnet --chain solana
+$ worm submit $(cat phylax-upgrade.txt) --network mainnet --chain terra
+$ worm submit $(cat phylax-upgrade.txt) --network mainnet --chain ethereum
+$ worm submit $(cat phylax-upgrade.txt) --network mainnet --chain celo
 ```
 
-The VAA payload type (guardian set upgrade) specifies that this VAA should go to the core bridge, and the tool directs it there.
+The VAA payload type (phylax set upgrade) specifies that this VAA should go to the core bridge, and the tool directs it there.
 
 ### info
 

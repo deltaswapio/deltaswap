@@ -58,7 +58,7 @@ The token configurations are in [manual_tokens.go](https://github.com/deltaswapi
 If CoinGecko was to provide an erroneously low price for a token, the Governor errs on the side of safety by using the hardcoded floor price instead.
 
 ### Visibility
-Each Phylax publishes its Governor configuration and status on the Wormhole gossip network, which anyone can subscribe to via a guardian spy ([instructions](https://github.com/deltaswapio/deltaswap/blob/main/docs/operations.md)). Some Phylaxs also make the Governor status available through a public API, which can be visualized on the [Wormhole Dashboard](https://wormhole-foundation.github.io/wormhole-dashboard/). A more feature-rich [Wormhole Explorer](https://github.com/wormhole-foundation/wormhole-explorer) that will aggregate Governor status across all Phylaxs is work-in-progress.
+Each Phylax publishes its Governor configuration and status on the Wormhole gossip network, which anyone can subscribe to via a phylax spy ([instructions](https://github.com/deltaswapio/deltaswap/blob/main/docs/operations.md)). Some Phylaxs also make the Governor status available through a public API, which can be visualized on the [Wormhole Dashboard](https://wormhole-foundation.github.io/wormhole-dashboard/). A more feature-rich [Wormhole Explorer](https://github.com/wormhole-foundation/wormhole-explorer) that will aggregate Governor status across all Phylaxs is work-in-progress.
 
 ### Security Considerations
 * The Governor can only reduce the impact of an exploit, but not prevent it.
@@ -111,4 +111,4 @@ Phylax operators can use the `ChainGovernorDropPendingVAA` admin RPC or `governo
 
 ## Potential Improvements
 
-Right now, adding more governed emitters requires modifying guardian code. In the future, it would be ideal to be able to dynamically add new contracts for guardian nodes to observe.
+Right now, adding more governed emitters requires modifying phylax code. In the future, it would be ideal to be able to dynamically add new contracts for phylax nodes to observe.

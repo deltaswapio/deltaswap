@@ -56,7 +56,7 @@ func TestHandleInboundSignedVAAWithQuorum_NilPhylaxSet(t *testing.T) {
 	// because a `gs` is not defined on processor
 	assert.Equal(t, 1, observedLogs.Len())
 	firstLog := observedLogs.All()[0]
-	errorString := "dropping SignedVAAWithQuorum message since we haven't initialized our guardian set yet"
+	errorString := "dropping SignedVAAWithQuorum message since we haven't initialized our phylax set yet"
 	assert.Equal(t, errorString, firstLog.Message)
 }
 
@@ -73,7 +73,7 @@ func TestHandleInboundSignedVAAWithQuorum(t *testing.T) {
 		errString  string
 	}{
 		{label: "PhylaxSetNoKeys", keyOrder: []*ecdsa.PrivateKey{}, indexOrder: []uint8{}, addrs: []ethcommon.Address{},
-			errString: "dropping SignedVAAWithQuorum message since we have a guardian set without keys"},
+			errString: "dropping SignedVAAWithQuorum message since we have a phylax set without keys"},
 		{label: "VAANoSignatures", keyOrder: []*ecdsa.PrivateKey{}, indexOrder: []uint8{0}, addrs: []ethcommon.Address{goodAddr1},
 			errString: "dropping SignedVAAWithQuorum message because it failed verification: VAA was not signed"},
 		{label: "VAAInvalidSignatures", keyOrder: []*ecdsa.PrivateKey{badPrivateKey1}, indexOrder: []uint8{0}, addrs: []ethcommon.Address{goodAddr1},
@@ -89,7 +89,7 @@ func TestHandleInboundSignedVAAWithQuorum(t *testing.T) {
 			vaa := getVAA()
 
 			// Define a PhylaxSet from test addrs
-			guardianSet := common.PhylaxSet{
+			phylaxSet := common.PhylaxSet{
 				Keys:  tc.addrs,
 				Index: 1,
 			}
@@ -111,7 +111,7 @@ func TestHandleInboundSignedVAAWithQuorum(t *testing.T) {
 			ctx := context.Background()
 			signedVAAWithQuorum := &gossipv1.SignedVAAWithQuorum{Vaa: marshalVAA}
 			processor := Processor{}
-			processor.gs = &guardianSet
+			processor.gs = &phylaxSet
 			processor.logger = observedLogger
 
 			processor.handleInboundSignedVAAWithQuorum(ctx, signedVAAWithQuorum)

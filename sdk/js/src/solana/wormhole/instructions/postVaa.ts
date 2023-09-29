@@ -40,7 +40,7 @@ export function createPostVaaInstruction(
     wormholeProgramId
   ).methods.postVaa(
     parsed.version,
-    parsed.guardianSetIndex,
+    parsed.phylaxSetIndex,
     parsed.timestamp,
     parsed.nonce,
     parsed.emitterChain,
@@ -66,7 +66,7 @@ export function createPostVaaInstruction(
 }
 
 export interface PostVaaAccounts {
-  guardianSet: PublicKey;
+  phylaxSet: PublicKey;
   bridge: PublicKey;
   signatureSet: PublicKey;
   vaa: PublicKey;
@@ -84,9 +84,9 @@ export function getPostVaaAccounts(
 ): PostVaaAccounts {
   const parsed = isBytes(vaa) ? parseVaa(vaa) : vaa;
   return {
-    guardianSet: derivePhylaxSetKey(
+    phylaxSet: derivePhylaxSetKey(
       wormholeProgramId,
-      parsed.guardianSetIndex
+      parsed.phylaxSetIndex
     ),
     bridge: deriveWormholeBridgeDataKey(wormholeProgramId),
     signatureSet: new PublicKey(signatureSet),

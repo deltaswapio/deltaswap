@@ -1,9 +1,9 @@
 {
   "version": 1,
-  "guardianSetIndex": 0,
+  "phylaxSetIndex": 0,
   "signatures": [
     {
-      "guardianSetIndex": 0,
+      "phylaxSetIndex": 0,
       "signature": "e29d3ad180b153d68c3f445d75eaa62fcc99690945baaf4ad0463e9ce44f27f75da3d49f79722920aac81ba2be80f688895f174942fedc403bc4e5ce3555b77b00"
     }
   ],

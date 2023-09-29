@@ -37,7 +37,7 @@ Launch the devnet:
 
     tilt up
 
-By default this runs a network consisting of one guardian, two ganache (Eth) chains, a Solana test validator, an Algorand sandbox, and LocalTerra for both Terra Classic and Terra 2. If you want to work on non-consensus parts of the code, running with a single guardian is easiest since you won't have to wait for k8s to restart all pods. See the usage guide below for arguments to customize the tilt network.
+By default this runs a network consisting of one phylax, two ganache (Eth) chains, a Solana test validator, an Algorand sandbox, and LocalTerra for both Terra Classic and Terra 2. If you want to work on non-consensus parts of the code, running with a single phylax is easiest since you won't have to wait for k8s to restart all pods. See the usage guide below for arguments to customize the tilt network.
 
 ## Usage
 
@@ -45,16 +45,16 @@ Watch pod status in your cluster:
 
     kubectl get pod -A -w
 
-Get logs for single guardian node:
+Get logs for single phylax node:
 
-    kubectl logs guardian-0
+    kubectl logs phylax-0
 
 Restart a specific pod:
 
-    kubectl delete pod guardian-0
+    kubectl delete pod phylax-0
 
 Adjust number of nodes in running cluster: (this is only useful if you want to test scenarios where the number
-of nodes diverges from the guardian set - otherwise, `tilt down --delete-namespaces` and restart the cluster)
+of nodes diverges from the phylax set - otherwise, `tilt down --delete-namespaces` and restart the cluster)
 
     tilt args -- --num=2
 
@@ -160,7 +160,7 @@ To Solana as CPI instruction:
 
 ### Observation Requests
 
-    kubectl exec -it guardian-0 -- /phylaxd admin send-observation-request --socket /tmp/admin.sock 1 4636d8f7593c78a5092bed13dec765cc705752653db5eb1498168c92345cd389
+    kubectl exec -it phylax-0 -- /phylaxd admin send-observation-request --socket /tmp/admin.sock 1 4636d8f7593c78a5092bed13dec765cc705752653db5eb1498168c92345cd389
 
 ### IntelliJ Protobuf Autocompletion
 

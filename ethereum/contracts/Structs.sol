@@ -19,7 +19,7 @@ interface Structs {
 		bytes32 r;
 		bytes32 s;
 		uint8 v;
-		uint8 guardianIndex;
+		uint8 phylaxIndex;
 	}
 
 	struct VM {
@@ -32,7 +32,7 @@ interface Structs {
 		uint8 consistencyLevel;
 		bytes payload;
 
-		uint32 guardianSetIndex;
+		uint32 phylaxSetIndex;
 		Signature[] signatures;
 
 		bytes32 hash;

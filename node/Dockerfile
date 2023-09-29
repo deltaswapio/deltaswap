@@ -42,7 +42,7 @@ COPY --from=build /usr/lib/libwasmvm.x86_64.so /usr/lib/
 # Copy the shells as entrypoints, but no utilities are necessary
 COPY --from=build /bin/bash /bin/dash /bin/sh /bin/
 
-# finally copy the guardian executable
+# finally copy the phylax executable
 COPY --from=build /phylaxd .
 
 ENTRYPOINT ["/phylaxd"]

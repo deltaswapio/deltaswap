@@ -14,7 +14,7 @@ use sha3::{Digest, Keccak256};
 type HumanAddr = String;
 
 pub static CONFIG_KEY: &[u8] = b"config";
-pub static GUARDIAN_SET_KEY: &[u8] = b"guardian_set";
+pub static GUARDIAN_SET_KEY: &[u8] = b"phylax_set";
 pub static SEQUENCE_KEY: &[u8] = b"sequence";
 pub static WRAPPED_ASSET_KEY: &[u8] = b"wrapped_asset";
 pub static WRAPPED_ASSET_ADDRESS_KEY: &[u8] = b"wrapped_asset_address";
@@ -22,11 +22,11 @@ pub static WRAPPED_ASSET_ADDRESS_KEY: &[u8] = b"wrapped_asset_address";
 // Phylax set information
 #[derive(Serialize, Deserialize, Clone, Debug, PartialEq, JsonSchema)]
 pub struct ConfigInfo {
-    // Current active guardian set
-    pub guardian_set_index: u32,
+    // Current active phylax set
+    pub phylax_set_index: u32,
 
-    // Period for which a guardian set stays active after it has been replaced
-    pub guardian_set_expirity: u64,
+    // Period for which a phylax set stays active after it has been replaced
+    pub phylax_set_expirity: u64,
 
     // governance contract details
     pub gov_chain: u16,
@@ -40,7 +40,7 @@ pub struct ConfigInfo {
 #[derive(Serialize, Deserialize, Clone, Debug, PartialEq, Eq, JsonSchema)]
 pub struct ParsedVAA {
     pub version: u8,
-    pub guardian_set_index: u32,
+    pub phylax_set_index: u32,
     pub timestamp: u32,
     pub nonce: u32,
     pub len_signers: u8,
@@ -59,11 +59,11 @@ impl ParsedVAA {
 
     header (length 6):
     0   uint8   version (0x01)
-    1   uint32  guardian set index
+    1   uint32  phylax set index
     5   uint8   len signatures
 
     per signature (length 66):
-    0   uint8       index of the signer (in guardian keys)
+    0   uint8       index of the signer (in phylax keys)
     1   [65]uint8   signature
 
     body:
@@ -100,7 +100,7 @@ impl ParsedVAA {
         let version = data.get_u8(0);
 
         // Load 4 bytes starting from index 1
-        let guardian_set_index: u32 = data.get_u32(Self::GUARDIAN_SET_INDEX_POS);
+        let phylax_set_index: u32 = data.get_u32(Self::GUARDIAN_SET_INDEX_POS);
         let len_signers = data.get_u8(Self::LEN_SIGNER_POS) as usize;
         let body_offset: usize = Self::HEADER_LEN + Self::SIGNATURE_LEN * len_signers;
 
@@ -135,7 +135,7 @@ impl ParsedVAA {
 
         Ok(ParsedVAA {
             version,
-            guardian_set_index,
+            phylax_set_index,
             timestamp,
             nonce,
             len_signers: len_signers as u8,
@@ -172,7 +172,7 @@ impl PhylaxAddress {
 #[derive(Serialize, Deserialize, Clone, Debug, PartialEq, Eq, JsonSchema)]
 pub struct PhylaxSetInfo {
     pub addresses: Vec<PhylaxAddress>,
-    // List of guardian addresses
+    // List of phylax addresses
     pub expiration_time: u64, // Phylax set expiration time
 }
 
@@ -189,8 +189,8 @@ impl PhylaxSetInfo {
 // Wormhole contract generic information
 #[derive(Serialize, Deserialize, Clone, Debug, PartialEq, Eq, JsonSchema)]
 pub struct WormholeInfo {
-    // Period for which a guardian set stays active after it has been replaced
-    pub guardian_set_expirity: u64,
+    // Period for which a phylax set stays active after it has been replaced
+    pub phylax_set_expirity: u64,
 }
 
 pub fn config(storage: &mut dyn Storage) -> Singleton<ConfigInfo> {
@@ -201,7 +201,7 @@ pub fn config_read(storage: &dyn Storage) -> ReadonlySingleton<ConfigInfo> {
     singleton_read(storage, CONFIG_KEY)
 }
 
-pub fn guardian_set_set(
+pub fn phylax_set_set(
     storage: &mut dyn Storage,
     index: u32,
     data: &PhylaxSetInfo,
@@ -209,7 +209,7 @@ pub fn guardian_set_set(
     bucket(storage, GUARDIAN_SET_KEY).save(&index.to_be_bytes(), data)
 }
 
-pub fn guardian_set_get(storage: &dyn Storage, index: u32) -> StdResult<PhylaxSetInfo> {
+pub fn phylax_set_get(storage: &dyn Storage, index: u32) -> StdResult<PhylaxSetInfo> {
     bucket_read(storage, GUARDIAN_SET_KEY).load(&index.to_be_bytes())
 }
 
@@ -279,8 +279,8 @@ pub struct ContractUpgrade {
 
 // action 2
 pub struct PhylaxSetUpgrade {
-    pub new_guardian_set_index: u32,
-    pub new_guardian_set: PhylaxSetInfo,
+    pub new_phylax_set_index: u32,
+    pub new_phylax_set: PhylaxSetInfo,
 }
 
 impl ContractUpgrade {
@@ -294,13 +294,13 @@ impl PhylaxSetUpgrade {
     pub fn deserialize(data: &[u8]) -> StdResult<Self> {
         const ADDRESS_LEN: usize = 20;
 
-        let new_guardian_set_index = data.get_u32(0);
+        let new_phylax_set_index = data.get_u32(0);
 
-        let n_guardians = data.get_u8(4);
+        let n_phylaxs = data.get_u8(4);
 
         let mut addresses = vec![];
 
-        for i in 0..n_guardians {
+        for i in 0..n_phylaxs {
             let pos = 5 + (i as usize) * ADDRESS_LEN;
             if pos + ADDRESS_LEN > data.len() {
                 return ContractError::InvalidVAA.std_err();
@@ -311,14 +311,14 @@ impl PhylaxSetUpgrade {
             });
         }
 
-        let new_guardian_set = PhylaxSetInfo {
+        let new_phylax_set = PhylaxSetInfo {
             addresses,
             expiration_time: 0,
         };
 
         Ok(PhylaxSetUpgrade {
-            new_guardian_set_index,
-            new_guardian_set,
+            new_phylax_set_index,
+            new_phylax_set,
         })
     }
 }

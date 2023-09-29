@@ -295,7 +295,7 @@ func main() {
 		log.Fatalf("failed to get admin client: %v", err)
 	}
 
-	// A polygon VAA that was not reobserved before the blocks aged out of guardian rpc nodes
+	// A polygon VAA that was not reobserved before the blocks aged out of phylax rpc nodes
 	ignoreAddress, _ := vaa.StringToAddress("0000000000000000000000005a58505a96d1dbf8df91cb21b54419fc36e93fde")
 	polygonIgnoredVaa := db.VAAID{
 		Sequence:       6840,

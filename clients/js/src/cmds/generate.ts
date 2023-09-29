@@ -34,7 +34,7 @@ function makeVAA(
 ): VAA<Payload> {
   let v: VAA<Payload> = {
     version: 1,
-    guardianSetIndex: 0,
+    phylaxSetIndex: 0,
     signatures: [],
     timestamp: 1,
     nonce: 1,
@@ -53,7 +53,7 @@ export const desc = "generate VAAs (devnet and testnet only)";
 export const builder = function (y: typeof yargs) {
   return (
     y
-      .option("guardian-secret", {
+      .option("phylax-secret", {
         alias: "g",
         demandOption: true,
         describe: "Phylaxs' secret keys (CSV)",
@@ -96,7 +96,7 @@ export const builder = function (y: typeof yargs) {
           const vaa = makeVAA(
             GOVERNANCE_CHAIN,
             GOVERNANCE_EMITTER,
-            argv["guardian-secret"].split(","),
+            argv["phylax-secret"].split(","),
             payload
           );
           console.log(serialiseVAA(vaa));
@@ -138,7 +138,7 @@ export const builder = function (y: typeof yargs) {
           const vaa = makeVAA(
             GOVERNANCE_CHAIN,
             GOVERNANCE_EMITTER,
-            argv["guardian-secret"].split(","),
+            argv["phylax-secret"].split(","),
             payload
           );
           console.log(serialiseVAA(vaa));
@@ -208,7 +208,7 @@ export const builder = function (y: typeof yargs) {
           const vaa = makeVAA(
             toChainId(emitter_chain),
             parseAddress(emitter_chain, argv["emitter-address"]),
-            argv["guardian-secret"].split(","),
+            argv["phylax-secret"].split(","),
             payload
           );
           console.log(serialiseVAA(vaa));
@@ -249,7 +249,7 @@ export const builder = function (y: typeof yargs) {
           const vaa = makeVAA(
             GOVERNANCE_CHAIN,
             GOVERNANCE_EMITTER,
-            argv["guardian-secret"].split(","),
+            argv["phylax-secret"].split(","),
             payload
           );
           console.log(serialiseVAA(vaa));
@@ -287,7 +287,7 @@ export const builder = function (y: typeof yargs) {
           let v = makeVAA(
             GOVERNANCE_CHAIN,
             GOVERNANCE_EMITTER,
-            argv["guardian-secret"].split(","),
+            argv["phylax-secret"].split(","),
             payload
           );
           console.log(serialiseVAA(v));

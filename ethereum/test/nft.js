@@ -865,7 +865,7 @@ const signAndEncodeVM = async function (
     sequence,
     data,
     signers,
-    guardianSetIndex,
+    phylaxSetIndex,
     consistencyLevel
 ) {
     const body = [
@@ -899,7 +899,7 @@ const signAndEncodeVM = async function (
 
     const vm = [
         web3.eth.abi.encodeParameter("uint8", 1).substring(2 + (64 - 2)),
-        web3.eth.abi.encodeParameter("uint32", guardianSetIndex).substring(2 + (64 - 8)),
+        web3.eth.abi.encodeParameter("uint32", phylaxSetIndex).substring(2 + (64 - 8)),
         web3.eth.abi.encodeParameter("uint8", signers.length).substring(2 + (64 - 2)),
 
         signatures,

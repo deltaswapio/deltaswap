@@ -134,7 +134,7 @@ function (used by `transfer_nft::lock_or_burn` on the way out).
 ## Governance
 
 Outside of handling NFT transfers, the NFT bridge can perform two additional
-operations, both of which require a VAA signed by the Wormhole guardians.
+operations, both of which require a VAA signed by the Wormhole phylaxs.
 These are governance operations, as they alter the behaviour of the bridge.
 Both of these governance operations are identical to the token bridge implementation.
 
@@ -146,7 +146,7 @@ To ensure that such messages are accepted from a trusted set of contracts, the
 NFT bridge maintains a set of known "emitters". These are stored in a table
 `registered_emitters` in `state::State`, keyed by the chains' ids (i.e. at most
 one emitter per chain). This mapping can be updated by submitting registration
-VAAs (which are special VAAs that are signed manually by the guardians through a
+VAAs (which are special VAAs that are signed manually by the phylaxs through a
 governance ceremony), and handled in the `register_chain.move` module.
 
 ### Contract upgrades

@@ -124,7 +124,7 @@ pub fn post_message(
 }
 
 /// Post a message while reusing the message account. This saves the rent that would be required for
-/// allocating a new message account. When an account is reused and the guardians don't pick up the
+/// allocating a new message account. When an account is reused and the phylaxs don't pick up the
 /// message due to network instability or a bug there is NO way to recover the message if it has
 /// been overwritten. This makes this instruction useful for use-cases that require high number of
 /// messages to be published but don't require 100% delivery guarantee.

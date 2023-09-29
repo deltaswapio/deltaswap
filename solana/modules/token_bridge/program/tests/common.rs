@@ -185,7 +185,7 @@ mod helpers {
         client: &mut BanksClient,
         program: Pubkey,
         payer: &Keypair,
-        initial_guardians: &[[u8; 20]],
+        initial_phylaxs: &[[u8; 20]],
     ) -> Result<(), BanksClientError> {
         execute(
             client,
@@ -196,7 +196,7 @@ mod helpers {
                 payer.pubkey(),
                 50,
                 2_000_000_000,
-                initial_guardians,
+                initial_phylaxs,
             )
             .unwrap()],
             CommitmentLevel::Processed,
@@ -712,7 +712,7 @@ mod helpers {
     ) -> (PostVAAData, [u8; 32], [u8; 32]) {
         let vaa = PostVAAData {
             version: 0,
-            guardian_set_index: 0,
+            phylax_set_index: 0,
 
             // Body part
             emitter_chain,
@@ -763,7 +763,7 @@ mod helpers {
         payer: &Keypair,
         body: [u8; 32],
         secret_keys: &[SecretKey],
-        guardian_set_version: u32,
+        phylax_set_version: u32,
     ) -> Result<Pubkey, BanksClientError> {
         let signature_set = Keypair::new();
         let tx_signers = [payer, &signature_set];
@@ -782,7 +782,7 @@ mod helpers {
                     bridge::instructions::verify_signatures(
                         *program,
                         payer.pubkey(),
-                        guardian_set_version,
+                        phylax_set_version,
                         signature_set.pubkey(),
                         bridge::VerifySignaturesData { signers },
                     )

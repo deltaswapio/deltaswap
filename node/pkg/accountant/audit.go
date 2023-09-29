@@ -1,7 +1,7 @@
 // This code audits the set of pending transfers against the state reported by the smart contract. It has a runnable that is started when the accountant initializes.
-// It uses a ticker to periodically run the audit. The audit occurs in two phases that operate off of a temporary map of all pending transfers known to this guardian.
+// It uses a ticker to periodically run the audit. The audit occurs in two phases that operate off of a temporary map of all pending transfers known to this phylax.
 //
-// The first phase involves querying the smart contract for any observations that it thinks are missing for this guardian. The audit processes everything in the
+// The first phase involves querying the smart contract for any observations that it thinks are missing for this phylax. The audit processes everything in the
 // returned results and does one of the following:
 // - If the observation is in our temporary map, we resubmit an observation to the contract and delete it from our temporary map.
 // - If the observation is not in the temporary map, we request a reobservation from the local watcher.
@@ -92,7 +92,7 @@ type (
 		Digest         []byte `json:"digest"`
 		TxHash         []byte `json:"tx_hash"`
 		Signatures     string `json:"signatures"`
-		PhylaxSetIndex uint32 `json:"guardian_set_index"`
+		PhylaxSetIndex uint32 `json:"phylax_set_index"`
 		EmitterChain   uint16 `json:"emitter_chain"`
 	}
 )
@@ -269,19 +269,19 @@ func (acct *Accountant) handleMissingObservation(mo MissingObservation) {
 	}
 }
 
-// queryMissingObservations queries the contract for the set of observations it thinks are missing for this guardian.
+// queryMissingObservations queries the contract for the set of observations it thinks are missing for this phylax.
 func (acct *Accountant) queryMissingObservations() ([]MissingObservation, error) {
 	gs := acct.gst.Get()
 	if gs == nil {
-		return nil, fmt.Errorf("failed to get guardian set")
+		return nil, fmt.Errorf("failed to get phylax set")
 	}
 
-	guardianIndex, found := gs.KeyIndex(acct.guardianAddr)
+	phylaxIndex, found := gs.KeyIndex(acct.phylaxAddr)
 	if !found {
-		return nil, fmt.Errorf("failed to get guardian index")
+		return nil, fmt.Errorf("failed to get phylax index")
 	}
 
-	query := fmt.Sprintf(`{"missing_observations":{"guardian_set": %d, "index": %d}}`, gs.Index, guardianIndex)
+	query := fmt.Sprintf(`{"missing_observations":{"phylax_set": %d, "index": %d}}`, gs.Index, phylaxIndex)
 	acct.logger.Debug("submitting missing_observations query", zap.String("query", query))
 	respBytes, err := acct.deltachainConn.SubmitQuery(acct.ctx, acct.contract, []byte(query))
 	if err != nil {

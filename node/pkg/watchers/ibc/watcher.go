@@ -604,7 +604,7 @@ func (w *Watcher) processIbcReceivePublishEvent(evt *ibcReceivePublishEvent, obs
 
 	ce, exists := w.chainMap[mappedChainID]
 	if !exists {
-		// This is not an error because some guardians may choose to run the full node and not listen to this chain over IBC.
+		// This is not an error because some phylaxs may choose to run the full node and not listen to this chain over IBC.
 		w.logger.Debug(fmt.Sprintf("received %s message from an unconfigured chain, dropping observation", observationType),
 			zap.String("IbcChannelID", evt.ChannelID),
 			zap.Stringer("ChainID", mappedChainID),

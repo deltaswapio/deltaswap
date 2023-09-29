@@ -22,7 +22,7 @@ module token_bridge::coin_wrapped_7 {
     // TODO: need to fix the emitter address
     // +------------------------------------------------------------------------------+
     // | Wormhole VAA v1         | nonce: 69               | time: 0                  |
-    // | guardian set #0         | #1                      | consistency: 15          |
+    // | phylax set #0         | #1                      | consistency: 15          |
     // |------------------------------------------------------------------------------|
     // | Signature:                                                                   |
     // |   #0: 3d8fd671611d84801dc9d14a07835e8729d217b1aac77b054175d0f91294...        |

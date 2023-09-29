@@ -493,7 +493,7 @@ class AlgoTest(PortalCore):
         #pprint.pprint(vaa)
         #sys.exit(0)
 
-#        q = bytes.fromhex(gt.genAssetMeta(gt.guardianPrivKeys, 1, 1, 1, bytes.fromhex("4523c3F29447d1f32AEa95BEBD00383c4640F1b4"), 1, 8, b"USDC", b"CircleCoin"))
+#        q = bytes.fromhex(gt.genAssetMeta(gt.phylaxPrivKeys, 1, 1, 1, bytes.fromhex("4523c3F29447d1f32AEa95BEBD00383c4640F1b4"), 1, 8, b"USDC", b"CircleCoin"))
 #        pprint.pprint(self.parseVAA(q))
 #        sys.exit(0)
 
@@ -545,8 +545,8 @@ class AlgoTest(PortalCore):
         self.coreid = self.createPortalCoreApp(client=client, sender=foundation)
         print("coreid = " + str(self.coreid) + " " + get_application_address(self.coreid))
 
-        print("bootstrapping the guardian set...")
-        bootVAA = bytes.fromhex(gt.genPhylaxSetUpgrade(gt.guardianPrivKeys, 1, 1, seq, seq))
+        print("bootstrapping the phylax set...")
+        bootVAA = bytes.fromhex(gt.genPhylaxSetUpgrade(gt.phylaxPrivKeys, 1, 1, seq, seq))
 
         self.bootPhylaxs(bootVAA, client, foundation, self.coreid)
 
@@ -560,9 +560,9 @@ class AlgoTest(PortalCore):
         bal = self.getBalances(client, player.getAddress())
         pprint.pprint(bal)
 
-        print("upgrading the the guardian set using untrusted account...")
-        upgradeVAA = bytes.fromhex(gt.genPhylaxSetUpgrade(gt.guardianPrivKeys, 1, 2, seq, seq))
-        vaaLogs.append(["guardianUpgrade", upgradeVAA.hex()])
+        print("upgrading the the phylax set using untrusted account...")
+        upgradeVAA = bytes.fromhex(gt.genPhylaxSetUpgrade(gt.phylaxPrivKeys, 1, 2, seq, seq))
+        vaaLogs.append(["phylaxUpgrade", upgradeVAA.hex()])
         self.submitVAA(upgradeVAA, client, player, self.coreid)
 
         bal = self.getBalances(client, player.getAddress())
@@ -585,7 +585,7 @@ class AlgoTest(PortalCore):
 
         for r in range(1, 6):
             print("Registering chain " + str(r))
-            v = gt.genRegisterChain(gt.guardianPrivKeys, 2, seq, seq, r)
+            v = gt.genRegisterChain(gt.phylaxPrivKeys, 2, seq, seq, r)
             vaa = bytes.fromhex(v)
 #            pprint.pprint((v, self.parseVAA(vaa)))
             if r == 2:
@@ -597,7 +597,7 @@ class AlgoTest(PortalCore):
             pprint.pprint(bal)
 
         print("Create a asset")
-        attestVAA = bytes.fromhex(gt.genAssetMeta(gt.guardianPrivKeys, 2, seq, seq, bytes.fromhex("4523c3F29447d1f32AEa95BEBD00383c4640F1b4"), 1, 8, b"USDC", b"CircleCoin"))
+        attestVAA = bytes.fromhex(gt.genAssetMeta(gt.phylaxPrivKeys, 2, seq, seq, bytes.fromhex("4523c3F29447d1f32AEa95BEBD00383c4640F1b4"), 1, 8, b"USDC", b"CircleCoin"))
         # paul - createWrappedOnAlgorand
         vaaLogs.append(["createWrappedOnAlgorand", attestVAA.hex()])
         self.submitVAA(attestVAA, client, player, self.tokenid)
@@ -608,12 +608,12 @@ class AlgoTest(PortalCore):
 
         print("Create the same asset " + str(seq))
         # paul - updateWrappedOnAlgorand
-        attestVAA = bytes.fromhex(gt.genAssetMeta(gt.guardianPrivKeys, 2, seq, seq, bytes.fromhex("4523c3F29447d1f32AEa95BEBD00383c4640F1b4"), 1, 8, b"USD2C", b"Circle2Coin"))
+        attestVAA = bytes.fromhex(gt.genAssetMeta(gt.phylaxPrivKeys, 2, seq, seq, bytes.fromhex("4523c3F29447d1f32AEa95BEBD00383c4640F1b4"), 1, 8, b"USD2C", b"Circle2Coin"))
         self.submitVAA(attestVAA, client, player, self.tokenid)
         seq += 1
 
         print("Transfer the asset " + str(seq))
-        transferVAA = bytes.fromhex(gt.genTransfer(gt.guardianPrivKeys, 1, 1, 1, 1, bytes.fromhex("4523c3F29447d1f32AEa95BEBD00383c4640F1b4"), 1, decode_address(player.getAddress()), 8, 0))
+        transferVAA = bytes.fromhex(gt.genTransfer(gt.phylaxPrivKeys, 1, 1, 1, 1, bytes.fromhex("4523c3F29447d1f32AEa95BEBD00383c4640F1b4"), 1, decode_address(player.getAddress()), 8, 0))
         # paul - redeemOnAlgorand
         vaaLogs.append(["redeemOnAlgorand", transferVAA.hex()])
         self.submitVAA(transferVAA, client, player, self.tokenid)
@@ -629,8 +629,8 @@ class AlgoTest(PortalCore):
             # so we can be sure this works with many different VAAs -- as long as they are valid
             # non-valid vaas fail for other reasons
             vaa = bytearray.fromhex(gt.genRandomValidTransfer(
-                signers=gt.guardianPrivKeys,
-                guardianSet=1,
+                signers=gt.phylaxPrivKeys,
+                phylaxSet=1,
                 seq=seq,
                 # we set the max_amount, but the actual amount will be between zero and this value
                 amount_max=self.getBalances(client, player.getAddress())[0], # 0 is the ALGO amount
@@ -644,13 +644,13 @@ class AlgoTest(PortalCore):
             # so the repeated one is still valid, but different from the first one.
             # NOTE: this will only be interesting if we are working with a big validator set,
             # don't even botters if it's not
-            if len(gt.guardianKeys) > 1:
+            if len(gt.phylaxKeys) > 1:
                 current_signatures_amount = vaa[5]
                 signatures_len = 66*current_signatures_amount
                 signatures_offset = 6
                 rest_offset = signatures_offset+signatures_len
 
-                new_signature_amount = random.randint(int(len(gt.guardianKeys)*2/3)+1, current_signatures_amount)
+                new_signature_amount = random.randint(int(len(gt.phylaxKeys)*2/3)+1, current_signatures_amount)
 
                 # construct a list of every siganture with its index
                 signatures = vaa[signatures_offset:rest_offset]
@@ -689,8 +689,8 @@ class AlgoTest(PortalCore):
 
         def sending_vaa_version_not_one_fails(seq, version):
             vaa = bytearray.fromhex(gt.genRandomValidTransfer(
-                signers=gt.guardianPrivKeys,
-                guardianSet=1,
+                signers=gt.phylaxPrivKeys,
+                phylaxSet=1,
                 seq=seq,
                 tokenAddress=bytes.fromhex("4523c3F29447d1f32AEa95BEBD00383c4640F1b4"),
                 toAddress=decode_address(player.getAddress()),
@@ -698,7 +698,7 @@ class AlgoTest(PortalCore):
                 ))
 
             # we know VAA is malleable in the first four fields:
-            # version, guardian set index, len of signatures, signatures
+            # version, phylax set index, len of signatures, signatures
             vaa[0] = version
 
             try:
@@ -861,13 +861,13 @@ class AlgoTest(PortalCore):
         print("core contract has a MessageFee set to " + str(self.getMessageFee()))
 
         seq += 1
-        v = gt.genGSetFee(gt.guardianPrivKeys, 2, seq, seq, 2000000)
+        v = gt.genGSetFee(gt.phylaxPrivKeys, 2, seq, seq, 2000000)
         self.submitVAA(bytes.fromhex(v), client, player, self.coreid)
         seq += 1
 
         print("core contract now has a MessageFee set to " + str(self.getMessageFee()))
 
-#        v = gt.genGSetFee(gt.guardianPrivKeys, 2, seq, seq, 0)
+#        v = gt.genGSetFee(gt.phylaxPrivKeys, 2, seq, seq, 0)
 #        self.submitVAA(bytes.fromhex(v), client, player, self.coreid)
 #        seq += 1
 

@@ -47,16 +47,16 @@
 
 // The chain governor also supports the following Prometheus metrics:
 //
-// guardian_governor_available_notional{chain_id="1",chain_name="solana",enabled="1",total_notional="1000"} 304
+// phylax_governor_available_notional{chain_id="1",chain_name="solana",enabled="1",total_notional="1000"} 304
 // - This metric provides the current remaining notional value before a chain starts enqueuing VAAs. There is a metric
 //   for all existing chains, where the enabled flag indicates whether the governor is monitoring the chain or not.
 //   The total_notional value is the configured limit for the chain, and is zero if the chain is not configured in the governor.
 //
-// guardian_governor_enqueued_vaas{chain_id="1",chain_name="solana",enabled="1"} 1
+// phylax_governor_enqueued_vaas{chain_id="1",chain_name="solana",enabled="1"} 1
 // - This metric lists the number of VAAs currently enqueued for that chain because they would exceed the notional limit.
 //   There is a metric for all existing chains, where the enabled flag indicates whether the governor is monitoring the chain or not.
 //
-// guardian_governor_total_enqueued_vaas 1
+// phylax_governor_total_enqueued_vaas 1
 // - This is a single metric that indicates the total number of enqueued VAAs across all chains. This provides a quick check if
 //   anything is currently being limited.
 
@@ -376,24 +376,24 @@ func (gov *ChainGovernor) GetTokenList() []*publicrpcv1.GovernorGetTokenListResp
 }
 
 var (
-	// guardian_governor_available_notional{chain_id=1, chain_name="solana", enabled=1, total_notional=10000} 100
+	// phylax_governor_available_notional{chain_id=1, chain_name="solana", enabled=1, total_notional=10000} 100
 	metricAvailableNotional = promauto.NewGaugeVec(
 		prometheus.GaugeOpts{
-			Name: "guardian_governor_available_notional",
+			Name: "phylax_governor_available_notional",
 			Help: "Chain governor remaining available notional value per chain",
 		}, []string{"chain_id", "chain_name", "enabled", "total_notional"})
 
-	// guardian_governor_enqueued_vaas{chain_id="5",chain_name="polygon",enabled="1"} 0
+	// phylax_governor_enqueued_vaas{chain_id="5",chain_name="polygon",enabled="1"} 0
 	metricEnqueuedVAAs = promauto.NewGaugeVec(
 		prometheus.GaugeOpts{
-			Name: "guardian_governor_enqueued_vaas",
+			Name: "phylax_governor_enqueued_vaas",
 			Help: "Chain governor number of VAAs enqueued due to limiting per chain",
 		}, []string{"chain_id", "chain_name", "enabled"})
 
-	// guardian_governor_total_enqueued_vaas 0
+	// phylax_governor_total_enqueued_vaas 0
 	metricTotalEnqueuedVAAs = promauto.NewGauge(
 		prometheus.GaugeOpts{
-			Name: "guardian_governor_total_enqueued_vaas",
+			Name: "phylax_governor_total_enqueued_vaas",
 			Help: "Chain governor total number of VAAs enqueued due to limiting across all chains",
 		})
 )

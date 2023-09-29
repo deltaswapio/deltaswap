@@ -271,9 +271,9 @@ async function test() {
   const { wormholeUseContract, tokenUseContract, testUseContract } =
     await initTest();
 
-  console.log("Booting guardian set with index 0");
+  console.log("Booting phylax set with index 0");
   await wormholeUseContract.boot_wormhole({
-    args: { gset: 0, addresses: ts.guardianKeys },
+    args: { gset: 0, addresses: ts.phylaxKeys },
   });
   console.log("Completed without an error... odd.. I am not sucking yet");
 
@@ -287,12 +287,12 @@ async function test() {
 
   console.log("lets upgrade the governance set to 1");
   let vaa = ts.genPhylaxSetUpgrade(
-    ts.guardianPrivKeys,
+    ts.phylaxPrivKeys,
     0,
     1,
     1,
     seq,
-    ts.guardianKeys
+    ts.phylaxKeys
   );
 
   console.log("sending it to the core contract");
@@ -313,7 +313,7 @@ async function test() {
     console.log(
       "Lets try to send a governence message (SetFee) with the wrong index"
     );
-    vaa = ts.genGSetFee(ts.guardianPrivKeys, 0, 1, seq, CHAIN_ID_NEAR, 5);
+    vaa = ts.genGSetFee(ts.phylaxPrivKeys, 0, 1, seq, CHAIN_ID_NEAR, 5);
     try {
       await wormholeUseContract.submit_vaa({ args: { vaa: vaa } });
       console.log("This should have thrown a exception..");
@@ -327,7 +327,7 @@ async function test() {
     console.log(
       "Lets try to send a governence message (SetFee) with the correct index but the wrong chain"
     );
-    vaa = ts.genGSetFee(ts.guardianPrivKeys, 1, 1, seq, CHAIN_ID_ALGORAND, 5);
+    vaa = ts.genGSetFee(ts.phylaxPrivKeys, 1, 1, seq, CHAIN_ID_ALGORAND, 5);
     try {
       await wormholeUseContract.submit_vaa({ args: { vaa: vaa } });
       console.log("This should have thrown a exception..");
@@ -339,7 +339,7 @@ async function test() {
     console.log(
       "Lets try to send a governence message (SetFee) with the correct index but for all chains"
     );
-    vaa = ts.genGSetFee(ts.guardianPrivKeys, 1, 1, seq, 0, 5);
+    vaa = ts.genGSetFee(ts.phylaxPrivKeys, 1, 1, seq, 0, 5);
     try {
       await wormholeUseContract.submit_vaa({ args: { vaa: vaa } });
       console.log("This should have thrown a exception..");
@@ -352,7 +352,7 @@ async function test() {
       "Lets try to send a governence message (SetFee)  with the correct index and the correct chain"
     );
 
-    vaa = ts.genGSetFee(ts.guardianPrivKeys, 1, 1, seq, CHAIN_ID_NEAR, 5);
+    vaa = ts.genGSetFee(ts.phylaxPrivKeys, 1, 1, seq, CHAIN_ID_NEAR, 5);
     await wormholeUseContract.submit_vaa({ args: { vaa: vaa } });
     console.log("boo yaah! this was supposed to pass and it did");
 
@@ -368,7 +368,7 @@ async function test() {
     }
 
     try {
-      vaa = ts.genRegisterChain(ts.guardianPrivKeys, 0, 1, seq, 1);
+      vaa = ts.genRegisterChain(ts.phylaxPrivKeys, 0, 1, seq, 1);
       console.log(
         "Now lets call submit_vaa with a valid vaa (register the solana chain) on the token bridge.. with the wrong governance set"
       );
@@ -383,7 +383,7 @@ async function test() {
     }
   }
 
-  vaa = ts.genRegisterChain(ts.guardianPrivKeys, 1, 1, seq, 1);
+  vaa = ts.genRegisterChain(ts.phylaxPrivKeys, 1, 1, seq, 1);
 
   let is_completed = await tokenUseContract.account.viewFunction(config.tokenAccount, "is_transfer_completed", { vaa: vaa });
   console.log("is_transfer_completed: %s", is_completed);
@@ -403,7 +403,7 @@ async function test() {
 
   if (!fastTest) {
     try {
-      vaa = ts.genRegisterChain(ts.guardianPrivKeys, 1, 1, seq, 1);
+      vaa = ts.genRegisterChain(ts.phylaxPrivKeys, 1, 1, seq, 1);
       console.log(
         "Now lets call submit_vaa with a valid vaa (register the solana chain) again.. again... this should fail"
       );
@@ -424,7 +424,7 @@ async function test() {
     try {
       vaa =
         ts.genAssetMeta(
-          ts.guardianPrivKeys,
+          ts.phylaxPrivKeys,
           1,
           1,
           seq,
@@ -448,7 +448,7 @@ async function test() {
     }
   }
   vaa = ts.genAssetMeta(
-    ts.guardianPrivKeys,
+    ts.phylaxPrivKeys,
     1,
     1,
     seq,
@@ -480,7 +480,7 @@ async function test() {
   if (!fastTest) {
     console.log("Lets attest the same thing again");
     vaa = ts.genAssetMeta(
-      ts.guardianPrivKeys,
+      ts.phylaxPrivKeys,
       1,
       1,
       seq,
@@ -505,7 +505,7 @@ async function test() {
     try {
       console.log("Lets make it fail");
       vaa = ts.genAssetMeta(
-        ts.guardianPrivKeys,
+        ts.phylaxPrivKeys,
         1,
         1,
         seq,
@@ -538,7 +538,7 @@ async function test() {
   );
 
   vaa = ts.genTransfer(
-    ts.guardianPrivKeys,
+    ts.phylaxPrivKeys,
     1,
     1,
     seq,

@@ -246,7 +246,7 @@ impl TokenBridge {
         gov_idx: u32,
         deposit: Balance,
     ) -> Balance {
-        if gov_idx != vaa.guardian_set_index {
+        if gov_idx != vaa.phylax_set_index {
             env::panic_str("InvalidGovernanceSet");
         }
 

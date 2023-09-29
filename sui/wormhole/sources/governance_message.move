@@ -127,10 +127,10 @@ module wormhole::governance_message {
             global
         } = ticket;
 
-        // Protect against governance actions enacted using an old guardian set.
+        // Protect against governance actions enacted using an old phylax set.
         // This is not a protection found in the other Wormhole contracts.
         assert!(
-            vaa::guardian_set_index(&verified_vaa) == state::guardian_set_index(wormhole_state),
+            vaa::phylax_set_index(&verified_vaa) == state::phylax_set_index(wormhole_state),
             E_OLD_GUARDIAN_SET_GOVERNANCE
         );
 
@@ -629,7 +629,7 @@ module wormhole::governance_message_tests {
                 state::governance_chain(&worm_state),
                 state::governance_contract(&worm_state),
                 state::governance_module(),
-                2 // update guardian set
+                2 // update phylax set
             );
 
         // You shall not pass!

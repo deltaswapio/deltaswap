@@ -77,13 +77,13 @@ test.skip("testnet - injective contract is own admin", async () => {
     CONTRACTS.TESTNET.injective.token_bridge
   );
 });
-test.skip("testnet - injective query guardian_set_info", async () => {
+test.skip("testnet - injective query phylax_set_info", async () => {
   const network = getNetworkInfo(getEndPoint());
   const client = new ChainGrpcWasmApi(network.grpc);
   // https://k8s.testnet.lcd.injective.network/cosmwasm/wasm/v1/contract/inj1xx3aupmgv3ce537c0yce8zzd3sz567syuyedpg/smart/eyJndWFyZGlhbl9zZXRfaW5mbyI6e319
   const queryResult = await client.fetchSmartContractState(
     CONTRACTS.TESTNET.injective.core,
-    Buffer.from('{"guardian_set_info":{}}').toString("base64")
+    Buffer.from('{"phylax_set_info":{}}').toString("base64")
   );
   let result: any = null;
   if (typeof queryResult.data === "string") {
@@ -91,7 +91,7 @@ test.skip("testnet - injective query guardian_set_info", async () => {
       Buffer.from(queryResult.data, "base64").toString("utf-8")
     );
   }
-  expect(result?.guardian_set_index).toEqual(0);
+  expect(result?.phylax_set_index).toEqual(0);
   expect(result?.addresses.length).toEqual(1);
 });
 test.skip("testnet - injective query state", async () => {

@@ -64,7 +64,7 @@ export class TestLib {
     return "0x" + ret;
   }
 
-  guardianKeys: string[] = [
+  phylaxKeys: string[] = [
     "52A26Ce40F8CAa8D36155d37ef0D5D783fc614d2",
     "389A74E8FFa224aeAD0778c786163a7A2150768C",
     "B4459EA6482D4aE574305B239B4f2264239e7599",
@@ -86,7 +86,7 @@ export class TestLib {
     "1c0Cc52D7673c52DE99785741344662F5b2308a0",
   ];
 
-  guardianPrivKeys: string[] = [
+  phylaxPrivKeys: string[] = [
     "563d8d2fd4e701901d3846dee7ae7a92c18f1975195264d676f8407ac5976757",
     "8d97f25916a755df1d9ef74eb4dbebc5f868cb07830527731e94478cdc2b9d5f",
     "9bd728ad7617c05c31382053b57658d4a8125684c0098f740a054d87ddc0e93b",
@@ -131,11 +131,11 @@ export class TestLib {
 
   genPhylaxSetUpgrade(
     signers: any,
-    guardianSet: number,
+    phylaxSet: number,
     targetSet: number,
     nonce: number,
     seq: number,
-    guardianKeys: string[]
+    phylaxKeys: string[]
   ): string {
     const b = [
       "0x",
@@ -147,10 +147,10 @@ export class TestLib {
       this.encoder("uint8", 2),
       this.encoder("uint16", 0),
       this.encoder("uint32", targetSet),
-      this.encoder("uint8", guardianKeys.length),
+      this.encoder("uint8", phylaxKeys.length),
     ];
 
-    guardianKeys.forEach((x) => {
+    phylaxKeys.forEach((x) => {
       b.push(x);
     });
 
@@ -158,7 +158,7 @@ export class TestLib {
     let seconds = Math.floor(new Date().getTime() / 1000.0);
 
     return this.createSignedVAA(
-      guardianSet,
+      phylaxSet,
       signers,
       seconds,
       nonce,
@@ -172,7 +172,7 @@ export class TestLib {
 
   genGSetFee(
     signers: any,
-    guardianSet: number,
+    phylaxSet: number,
     nonce: number,
     seq: number,
     amt: number
@@ -194,7 +194,7 @@ export class TestLib {
     var seconds = Math.floor(new Date().getTime() / 1000.0);
 
     return this.createSignedVAA(
-      guardianSet,
+      phylaxSet,
       signers,
       seconds,
       nonce,
@@ -208,7 +208,7 @@ export class TestLib {
 
   genGFeePayout(
     signers: any,
-    guardianSet: number,
+    phylaxSet: number,
     nonce: number,
     seq: number,
     amt: number,
@@ -232,7 +232,7 @@ export class TestLib {
     var seconds = Math.floor(new Date().getTime() / 1000.0);
 
     return this.createSignedVAA(
-      guardianSet,
+      phylaxSet,
       signers,
       seconds,
       nonce,
@@ -299,7 +299,7 @@ export class TestLib {
 
   genRegisterChain(
     signers: any,
-    guardianSet: number,
+    phylaxSet: number,
     nonce: number,
     seq: number,
     chain: string
@@ -328,7 +328,7 @@ export class TestLib {
     var seconds = Math.floor(new Date().getTime() / 1000.0);
 
     return this.createSignedVAA(
-      guardianSet,
+      phylaxSet,
       signers,
       seconds,
       nonce,
@@ -342,7 +342,7 @@ export class TestLib {
 
   genAssetMeta(
     signers: any,
-    guardianSet: number,
+    phylaxSet: number,
     nonce: number,
     seq: number,
     tokenAddress: string,
@@ -371,7 +371,7 @@ export class TestLib {
     let seconds = Math.floor(new Date().getTime() / 1000.0);
 
     return this.createSignedVAA(
-      guardianSet,
+      phylaxSet,
       signers,
       seconds,
       nonce,
@@ -385,7 +385,7 @@ export class TestLib {
 
   genTransfer(
     signers: any,
-    guardianSet: number,
+    phylaxSet: number,
     nonce: number,
     seq: number,
     amount: number,
@@ -412,7 +412,7 @@ export class TestLib {
     let seconds = Math.floor(new Date().getTime() / 1000.0);
 
     return this.createSignedVAA(
-      guardianSet,
+      phylaxSet,
       signers,
       seconds,
       nonce,
@@ -428,7 +428,7 @@ export class TestLib {
    * Create a packed and signed VAA for testing.
    * See https://github.com/deltaswapio/deltaswap/blob/main/design/0001_generic_message_passing.md
    *
-   * @param {} guardianSetIndex  The guardian set index
+   * @param {} phylaxSetIndex  The phylax set index
    * @param {*} signers The list of private keys for signing the VAA
    * @param {*} timestamp The timestamp of VAA
    * @param {*} nonce The nonce.
@@ -439,7 +439,7 @@ export class TestLib {
    * @param {*} payload This VAA Payload hex string, prefixed with 0x
    */
   createSignedVAA(
-    guardianSetIndex: number,
+    phylaxSetIndex: number,
     signers: any,
     timestamp: number,
     nonce: number,
@@ -483,7 +483,7 @@ export class TestLib {
 
     const vm = [
       this.encoder("uint8", 1),
-      this.encoder("uint32", guardianSetIndex),
+      this.encoder("uint32", phylaxSetIndex),
       this.encoder("uint8", signers.length),
 
       signatures,

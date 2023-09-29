@@ -79,7 +79,7 @@ contract MockWormhole is IWormhole {
         vm.version = encodedVm.toUint8(offset);
         offset += 1;
 
-        vm.guardianSetIndex = encodedVm.toUint32(offset);
+        vm.phylaxSetIndex = encodedVm.toUint32(offset);
         offset += 4;
 
         (vm.signatures, offset) = parseSignatures(encodedVm, offset);
@@ -120,7 +120,7 @@ contract MockWormhole is IWormhole {
 
         signatures = new Signature[](sigCount);
         for (uint256 i = 0; i < sigCount; ++i) {
-            uint8 guardianIndex = encodedVm.toUint8(offset);
+            uint8 phylaxIndex = encodedVm.toUint8(offset);
             offset += 1;
 
             bytes32 r = encodedVm.toBytes32(offset);
@@ -139,7 +139,7 @@ contract MockWormhole is IWormhole {
                 // used in ECDSA signatures for bitcoin and ethereum.
                 // See https://bitcoin.stackexchange.com/a/5089
                 v: v + 27,
-                guardianIndex: guardianIndex
+                phylaxIndex: phylaxIndex
             });
         }
 
@@ -218,7 +218,7 @@ contract MockWormhole is IWormhole {
     function verifySignatures(
         bytes32, /*hash*/
         Signature[] memory, /*signatures*/
-        PhylaxSet memory /*guardianSet*/
+        PhylaxSet memory /*phylaxSet*/
     ) external pure returns (bool, /*valid*/ string memory /*reason*/ ) {
         revert("unsupported verifySignatures in wormhole mock");
     }

@@ -131,17 +131,17 @@ pub struct UpgradePhylaxSet<'b> {
     /// An Uninitialized Claim account to consume the VAA.
     pub claim: Mut<Claim<'b>>,
 
-    /// Old guardian set
-    pub guardian_set_old: Mut<PhylaxSet<'b, { AccountState::Initialized }>>,
+    /// Old phylax set
+    pub phylax_set_old: Mut<PhylaxSet<'b, { AccountState::Initialized }>>,
 
-    /// New guardian set
-    pub guardian_set_new: Mut<PhylaxSet<'b, { AccountState::Uninitialized }>>,
+    /// New phylax set
+    pub phylax_set_new: Mut<PhylaxSet<'b, { AccountState::Uninitialized }>>,
 }
 
 #[derive(BorshDeserialize, BorshSerialize, Default)]
 pub struct UpgradePhylaxSetData {}
 
-pub fn upgrade_guardian_set(
+pub fn upgrade_phylax_set(
     ctx: &ExecutionContext,
     accs: &mut UpgradePhylaxSet,
     _data: UpgradePhylaxSetData,
@@ -150,50 +150,50 @@ pub fn upgrade_guardian_set(
     claim::consume(ctx, accs.payer.key, &mut accs.claim, &accs.vaa)?;
 
     // Enforce single increments when upgrading.
-    if accs.guardian_set_old.index != accs.vaa.new_guardian_set_index - 1 {
+    if accs.phylax_set_old.index != accs.vaa.new_phylax_set_index - 1 {
         return Err(InvalidPhylaxSetUpgrade.into());
     }
 
     // Confirm that the version the bridge has active is the previous version.
-    if accs.bridge.guardian_set_index != accs.vaa.new_guardian_set_index - 1 {
+    if accs.bridge.phylax_set_index != accs.vaa.new_phylax_set_index - 1 {
         return Err(InvalidPhylaxSetUpgrade.into());
     }
 
-    accs.guardian_set_old.verify_derivation(
+    accs.phylax_set_old.verify_derivation(
         ctx.program_id,
         &PhylaxSetDerivationData {
-            index: accs.vaa.new_guardian_set_index - 1,
+            index: accs.vaa.new_phylax_set_index - 1,
         },
     )?;
-    accs.guardian_set_new.verify_derivation(
+    accs.phylax_set_new.verify_derivation(
         ctx.program_id,
         &PhylaxSetDerivationData {
-            index: accs.vaa.new_guardian_set_index,
+            index: accs.vaa.new_phylax_set_index,
         },
     )?;
 
     // Set expiration time for the old set
-    accs.guardian_set_old.expiration_time =
-        accs.vaa.meta().vaa_time + accs.bridge.config.guardian_set_expiration_time;
+    accs.phylax_set_old.expiration_time =
+        accs.vaa.meta().vaa_time + accs.bridge.config.phylax_set_expiration_time;
 
-    // Initialize new guardian Set
-    accs.guardian_set_new.index = accs.vaa.new_guardian_set_index;
-    accs.guardian_set_new.creation_time = accs.vaa.meta().vaa_time;
-    accs.guardian_set_new.keys = accs.vaa.new_guardian_set.clone();
+    // Initialize new phylax Set
+    accs.phylax_set_new.index = accs.vaa.new_phylax_set_index;
+    accs.phylax_set_new.creation_time = accs.vaa.meta().vaa_time;
+    accs.phylax_set_new.keys = accs.vaa.new_phylax_set.clone();
 
-    // Create new guardian set
+    // Create new phylax set
     // This is done after populating it to properly allocate space according to key vec length.
-    accs.guardian_set_new.create(
+    accs.phylax_set_new.create(
         &PhylaxSetDerivationData {
-            index: accs.guardian_set_new.index,
+            index: accs.phylax_set_new.index,
         },
         ctx,
         accs.payer.key,
         Exempt,
     )?;
 
-    // Set guardian set index
-    accs.bridge.guardian_set_index = accs.vaa.new_guardian_set_index;
+    // Set phylax set index
+    accs.bridge.phylax_set_index = accs.vaa.new_phylax_set_index;
 
     Ok(())
 }

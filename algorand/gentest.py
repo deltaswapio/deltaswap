@@ -12,7 +12,7 @@ from algosdk.encoding import decode_address
 class GenTest:
     def __init__(self, bigSet) -> None:
         if bigSet:
-            self.guardianKeys = [
+            self.phylaxKeys = [
                 "52A26Ce40F8CAa8D36155d37ef0D5D783fc614d2",
                 "389A74E8FFa224aeAD0778c786163a7A2150768C",
                 "B4459EA6482D4aE574305B239B4f2264239e7599",
@@ -34,7 +34,7 @@ class GenTest:
                 "1c0Cc52D7673c52DE99785741344662F5b2308a0",
             ]
 
-            self.guardianPrivKeys = [
+            self.phylaxPrivKeys = [
                 "563d8d2fd4e701901d3846dee7ae7a92c18f1975195264d676f8407ac5976757",
                 "8d97f25916a755df1d9ef74eb4dbebc5f868cb07830527731e94478cdc2b9d5f",
                 "9bd728ad7617c05c31382053b57658d4a8125684c0098f740a054d87ddc0e93b",
@@ -57,11 +57,11 @@ class GenTest:
             ]
 
         else:
-            self.guardianKeys = [
+            self.phylaxKeys = [
                 "beFA429d57cD18b7F8A4d91A2da9AB4AF05d0FBe"
             ]
     
-            self.guardianPrivKeys = [
+            self.phylaxPrivKeys = [
                 "cfb12303a19cde580bb4dd771639b0d26bc68353645571a8cff516ab2ee113a0"
             ]
 
@@ -82,11 +82,11 @@ class GenTest:
             return encode_single(type, val).hex()[64-(64):64]
         raise Exception("invalid type")
 
-    def createTrashVAA(self, guardianSetIndex, ts, nonce, emitterChainId, emitterAddress, sequence, consistencyLevel, target, payload, version=1):
+    def createTrashVAA(self, phylaxSetIndex, ts, nonce, emitterChainId, emitterAddress, sequence, consistencyLevel, target, payload, version=1):
         return self.createSignedVAA(
-            guardianSetIndex,
+            phylaxSetIndex,
             # set the minimum amount of trash as signature for this to pass validations
-            [random.randbytes(32).hex() for _ in range(int(len(self.guardianKeys)*2/3)+1)],
+            [random.randbytes(32).hex() for _ in range(int(len(self.phylaxKeys)*2/3)+1)],
             ts,
             nonce,
             emitterChainId,
@@ -99,7 +99,7 @@ class GenTest:
         )
 
 
-    def createSignedVAA(self, guardianSetIndex, signers, ts, nonce, emitterChainId, emitterAddress, sequence, consistencyLevel, target, payload, version=1):
+    def createSignedVAA(self, phylaxSetIndex, signers, ts, nonce, emitterChainId, emitterAddress, sequence, consistencyLevel, target, payload, version=1):
         b = ""
 
         b += self.encoder("uint32", ts)
@@ -122,7 +122,7 @@ class GenTest:
             signatures += signature.hex()
 
         ret  = self.encoder("uint8", version)
-        ret += self.encoder("uint32", guardianSetIndex)
+        ret += self.encoder("uint32", phylaxSetIndex)
         ret += self.encoder("uint8", len(signers))
         ret += signatures
         ret += b
@@ -130,7 +130,7 @@ class GenTest:
         print(ret)
         return ret
 
-    def createValidRandomSignedVAA(self, guardianSetIndex, signers, sequence):
+    def createValidRandomSignedVAA(self, phylaxSetIndex, signers, sequence):
         ts = random.randint(0, 2**32-1)
         nonce = random.randint(0, 2**32-1)
         emitterChainId = random.randint(0, 2**16-1)
@@ -139,7 +139,7 @@ class GenTest:
         payload = self.createRandomValidPayload().hex()
 
         return self.createSignedVAA(
-            guardianSetIndex, # guardian set index needs to be fixed so contract knows where to look into
+            phylaxSetIndex, # phylax set index needs to be fixed so contract knows where to look into
             signers,
             ts,
             nonce,
@@ -185,7 +185,7 @@ class GenTest:
 
 
 
-    def createRandomSignedVAA(self, guardianSetIndex, signers):
+    def createRandomSignedVAA(self, phylaxSetIndex, signers):
         ts = random.randint(0, 2**32-1)
         nonce = random.randint(0, 2**32-1)
         emitterChainId = random.randint(0, 2**16-1)
@@ -198,7 +198,7 @@ class GenTest:
         version = random.randint(0,10)
 
         return self.createSignedVAA(
-            guardianSetIndex, # guardian set index needs to be fixed so contract knows where to look into
+            phylaxSetIndex, # phylax set index needs to be fixed so contract knows where to look into
             signers,
             ts,
             nonce,
@@ -211,7 +211,7 @@ class GenTest:
             version,
         )
 
-    def genPhylaxSetUpgrade(self, signers, guardianSet, targetSet, nonce, seq):
+    def genPhylaxSetUpgrade(self, signers, phylaxSet, targetSet, nonce, seq):
         b  = self.zeroPadBytes[0:(28*2)]
         b += self.encoder("uint8", ord("C"))
         b += self.encoder("uint8", ord("o"))
@@ -220,15 +220,15 @@ class GenTest:
         b += self.encoder("uint8", 2)
         b += self.encoder("uint16", 0)
         b += self.encoder("uint32", targetSet)
-        b += self.encoder("uint8", len(self.guardianKeys))
+        b += self.encoder("uint8", len(self.phylaxKeys))
 
-        for i in self.guardianKeys:
+        for i in self.phylaxKeys:
             b += i
 
         emitter = bytes.fromhex(self.zeroPadBytes[0:(31*2)] + "04")
-        return self.createSignedVAA(guardianSet, signers, int(time.time()), nonce, 1, emitter, seq, 32, 0, b)
+        return self.createSignedVAA(phylaxSet, signers, int(time.time()), nonce, 1, emitter, seq, 32, 0, b)
 
-    def genGSetFee(self, signers, guardianSet, nonce, seq, amt):
+    def genGSetFee(self, signers, phylaxSet, nonce, seq, amt):
         b  = self.zeroPadBytes[0:(28*2)]
         b += self.encoder("uint8", ord("C"))
         b += self.encoder("uint8", ord("o"))
@@ -239,9 +239,9 @@ class GenTest:
         b += self.encoder("uint256", int(amt))  # a whole algo!
 
         emitter = bytes.fromhex(self.zeroPadBytes[0:(31*2)] + "04")
-        return self.createSignedVAA(guardianSet, signers, int(time.time()), nonce, 1, emitter, seq, 32, 0, b)
+        return self.createSignedVAA(phylaxSet, signers, int(time.time()), nonce, 1, emitter, seq, 32, 0, b)
 
-    def genGFeePayout(self, signers, guardianSet, targetSet, nonce, seq, amt, dest):
+    def genGFeePayout(self, signers, phylaxSet, targetSet, nonce, seq, amt, dest):
         b  = self.zeroPadBytes[0:(28*2)]
         b += self.encoder("uint8", ord("C"))
         b += self.encoder("uint8", ord("o"))
@@ -253,7 +253,7 @@ class GenTest:
         b += decode_address(dest).hex()
 
         emitter = bytes.fromhex(self.zeroPadBytes[0:(31*2)] + "04")
-        return self.createSignedVAA(guardianSet, signers, int(time.time()), nonce, 1, emitter, seq, 32, 0, b)
+        return self.createSignedVAA(phylaxSet, signers, int(time.time()), nonce, 1, emitter, seq, 32, 0, b)
 
     def getEmitter(self, chain):
         if chain == 1:
@@ -268,7 +268,7 @@ class GenTest:
             return "0000000000000000000000005a58505a96d1dbf8df91cb21b54419fc36e93fde"
         raise Exception("invalid chain")
         
-    def genRegisterChain(self, signers, guardianSet, nonce, seq, chain, addr = None):
+    def genRegisterChain(self, signers, phylaxSet, nonce, seq, chain, addr = None):
         b  = self.zeroPadBytes[0:((32 -11)*2)]
         b += self.encoder("uint8", ord("T"))
         b += self.encoder("uint8", ord("o"))
@@ -290,9 +290,9 @@ class GenTest:
         else:
             b += addr
         emitter = bytes.fromhex(self.zeroPadBytes[0:(31*2)] + "04")
-        return self.createSignedVAA(guardianSet, signers, int(time.time()), nonce, 1, emitter, seq, 32, 0, b)
+        return self.createSignedVAA(phylaxSet, signers, int(time.time()), nonce, 1, emitter, seq, 32, 0, b)
 
-    def genAssetMeta(self, signers, guardianSet, nonce, seq, tokenAddress, chain, decimals, symbol, name):
+    def genAssetMeta(self, signers, phylaxSet, nonce, seq, tokenAddress, chain, decimals, symbol, name):
         b  = self.encoder("uint8", 2)
         b += self.zeroPadBytes[0:((32-len(tokenAddress))*2)]
         b += tokenAddress.hex()
@@ -303,11 +303,11 @@ class GenTest:
         b += name.hex()
         b += self.zeroPadBytes[0:((32-len(name))*2)]
         emitter = bytes.fromhex(self.getEmitter(chain))
-        return self.createSignedVAA(guardianSet, signers, int(time.time()), nonce, 1, emitter, seq, 32, 0, b)
+        return self.createSignedVAA(phylaxSet, signers, int(time.time()), nonce, 1, emitter, seq, 32, 0, b)
 
     def genRandomValidTransfer(self,
                                signers,
-                               guardianSet,
+                               phylaxSet,
                                seq,
                                tokenAddress,
                                toAddress,
@@ -316,7 +316,7 @@ class GenTest:
         fee = random.randint(0, amount) # fee must be lower than amount for VAA to be valid
         return self.genTransfer(
             signers=signers,
-            guardianSet=guardianSet,
+            phylaxSet=phylaxSet,
             nonce=random.randint(0, 2**32-1),
             seq=seq,
             # amount gets encoded as an uint256, but it's actually clearly
@@ -334,7 +334,7 @@ class GenTest:
         )
 
 
-    def genTransfer(self, signers, guardianSet, nonce, seq, amount, tokenAddress, tokenChain, toAddress, toChain, fee):
+    def genTransfer(self, signers, phylaxSet, nonce, seq, amount, tokenAddress, tokenChain, toAddress, toChain, fee):
         b  = self.encoder("uint8", 1)
         b += self.encoder("uint256", int(amount * 100000000))
 
@@ -351,14 +351,14 @@ class GenTest:
         b += self.encoder("uint256", int(fee * 100000000))
 
         emitter = bytes.fromhex(self.getEmitter(tokenChain))
-        return self.createSignedVAA(guardianSet, signers, int(time.time()), nonce, 1, emitter, seq, 32, 0, b)
+        return self.createSignedVAA(phylaxSet, signers, int(time.time()), nonce, 1, emitter, seq, 32, 0, b)
 
     def genVaa(self, emitter, seq, payload):
         nonce = int(random.random() * 4000000.0)
-        return self.createSignedVAA(1, self.guardianPrivKeys, int(time.time()), nonce, 8, emitter, seq, 32, 0, payload.hex())
+        return self.createSignedVAA(1, self.phylaxPrivKeys, int(time.time()), nonce, 8, emitter, seq, 32, 0, payload.hex())
 
     def test(self):
-        print(self.genTransfer(self.guardianPrivKeys, 1, 1, 1, 1, bytes.fromhex("4523c3F29447d1f32AEa95BEBD00383c4640F1b4"), 1, decode_address("ROOKEPZMHHBAEH75Y44OCNXQAGTXZWG3PY7IYQQCMXO7IG7DJMVHU32YVI"), 8, 0))
+        print(self.genTransfer(self.phylaxPrivKeys, 1, 1, 1, 1, bytes.fromhex("4523c3F29447d1f32AEa95BEBD00383c4640F1b4"), 1, decode_address("ROOKEPZMHHBAEH75Y44OCNXQAGTXZWG3PY7IYQQCMXO7IG7DJMVHU32YVI"), 8, 0))
         
 if __name__ == '__main__':    
     core = GenTest(True)

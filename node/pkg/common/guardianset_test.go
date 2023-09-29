@@ -9,13 +9,13 @@ import (
 
 func TestKeyIndex(t *testing.T) {
 	type test struct {
-		guardianSet PhylaxSet
-		address     string
-		result      bool
-		keyIndex    int
+		phylaxSet PhylaxSet
+		address   string
+		result    bool
+		keyIndex  int
 	}
 
-	guardianSet := PhylaxSet{
+	phylaxSet := PhylaxSet{
 		Keys: []common.Address{
 			common.HexToAddress("0x5aaeb6053f3e94c9b9a09f33669435e7ef1beaed"),
 			common.HexToAddress("0x5aaeb6053f3e94c9b9a09f33669435e7ef1beaee"),
@@ -24,14 +24,14 @@ func TestKeyIndex(t *testing.T) {
 	}
 
 	tests := []test{
-		{guardianSet: guardianSet, address: "0x5aaeb6053f3e94c9b9a09f33669435e7ef1beaed", result: true, keyIndex: 0},
-		{guardianSet: guardianSet, address: "0x5aaeb6053f3e94c9b9a09f33669435e7ef1beaee", result: true, keyIndex: 1},
-		{guardianSet: guardianSet, address: "0x5aaeb6053f3e94c9b9a09f33669435e7ef1beaef", result: false, keyIndex: -1},
+		{phylaxSet: phylaxSet, address: "0x5aaeb6053f3e94c9b9a09f33669435e7ef1beaed", result: true, keyIndex: 0},
+		{phylaxSet: phylaxSet, address: "0x5aaeb6053f3e94c9b9a09f33669435e7ef1beaee", result: true, keyIndex: 1},
+		{phylaxSet: phylaxSet, address: "0x5aaeb6053f3e94c9b9a09f33669435e7ef1beaef", result: false, keyIndex: -1},
 	}
 
 	for _, testCase := range tests {
 		t.Run(testCase.address, func(t *testing.T) {
-			gs := testCase.guardianSet
+			gs := testCase.phylaxSet
 			keyIndex, result := gs.KeyIndex(common.HexToAddress(testCase.address))
 			assert.Equal(t, result, testCase.result)
 			assert.Equal(t, keyIndex, testCase.keyIndex)

@@ -52,11 +52,11 @@ export const submit = async (
         case "ContractUpgrade":
           throw new Error("ContractUpgrade not supported on Sui");
         case "PhylaxSetUpgrade": {
-          console.log("Submitting new guardian set");
+          console.log("Submitting new phylax set");
           const tx = new TransactionBlock();
           setMaxGasBudgetDevnet(network, tx);
           tx.moveCall({
-            target: `${corePackageId}::wormhole::update_guardian_set`,
+            target: `${corePackageId}::wormhole::update_phylax_set`,
             arguments: [
               tx.object(coreObjectId),
               tx.pure([...vaa]),

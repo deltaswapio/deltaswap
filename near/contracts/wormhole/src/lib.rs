@@ -86,11 +86,11 @@ impl WormholeEvent {
 #[near_bindgen]
 #[derive(BorshDeserialize, BorshSerialize)]
 pub struct OldWormhole {
-    guardians:             LookupMap<u32, PhylaxSetInfo>,
+    phylaxs:             LookupMap<u32, PhylaxSetInfo>,
     dups:                  UnorderedSet<Vec<u8>>,
     emitters:              LookupMap<String, u64>,
-    guardian_set_expirity: u64,
-    guardian_set_index:    u32,
+    phylax_set_expirity: u64,
+    phylax_set_index:    u32,
     owner_pk:              PublicKey,
     upgrade_hash:          Vec<u8>,
     message_fee:           u128,
@@ -100,11 +100,11 @@ pub struct OldWormhole {
 #[near_bindgen]
 #[derive(BorshDeserialize, BorshSerialize)]
 pub struct Wormhole {
-    guardians:             LookupMap<u32, PhylaxSetInfo>,
+    phylaxs:             LookupMap<u32, PhylaxSetInfo>,
     dups:                  UnorderedSet<Vec<u8>>,
     emitters:              LookupMap<String, u64>,
-    guardian_set_expirity: u64,
-    guardian_set_index:    u32,
+    phylax_set_expirity: u64,
+    phylax_set_index:    u32,
     owner_pk:              PublicKey,
     upgrade_hash:          Vec<u8>,
     message_fee:           u128,
@@ -114,11 +114,11 @@ pub struct Wormhole {
 impl Default for Wormhole {
     fn default() -> Self {
         Self {
-            guardians:             LookupMap::new(b"gs".to_vec()),
+            phylaxs:             LookupMap::new(b"gs".to_vec()),
             dups:                  UnorderedSet::new(b"d".to_vec()),
             emitters:              LookupMap::new(b"e".to_vec()),
-            guardian_set_index:    u32::MAX,
-            guardian_set_expirity: 24 * 60 * 60 * 1_000_000_000, // 24 hours in nanoseconds
+            phylax_set_index:    u32::MAX,
+            phylax_set_expirity: 24 * 60 * 60 * 1_000_000_000, // 24 hours in nanoseconds
             owner_pk:              env::signer_account_pk(),
             upgrade_hash:          b"".to_vec(),
             message_fee:           0,
@@ -133,18 +133,18 @@ impl Wormhole {
         if vaa.version != 1 {
             env::panic_str("InvalidVersion");
         }
-        let guardian_set = self
-            .guardians
-            .get(&vaa.guardian_set_index)
+        let phylax_set = self
+            .phylaxs
+            .get(&vaa.phylax_set_index)
             .expect("InvalidPhylaxSetIndex");
 
-        if guardian_set.expiration_time != 0
-            && guardian_set.expiration_time < env::block_timestamp()
+        if phylax_set.expiration_time != 0
+            && phylax_set.expiration_time < env::block_timestamp()
         {
             env::panic_str("PhylaxSetExpired");
         }
 
-        if (vaa.len_signers as usize) < guardian_set.quorum() {
+        if (vaa.len_signers as usize) < phylax_set.quorum() {
             env::panic_str("ContractError");
         }
 
@@ -154,15 +154,15 @@ impl Wormhole {
         let p1 = env::keccak256(&data[pos..]);
         let digest = env::keccak256(&p1);
 
-        // Verify guardian signatures
+        // Verify phylax signatures
         let mut last_index: i32 = -1;
         pos = state::ParsedVAA::HEADER_LEN; // HEADER_LEN: usize = 6;
 
         for _ in 0..vaa.len_signers {
-            // which guardian signature is this?
+            // which phylax signature is this?
             let index = data.get_u8(pos) as i32;
 
-            // We can't go backwards or use the same guardian over again
+            // We can't go backwards or use the same phylax over again
             if index <= last_index {
                 env::panic_str("WrongPhylaxIndexOrder");
             }
@@ -172,7 +172,7 @@ impl Wormhole {
 
             // Grab the whole signature
             let signature = &data[(pos)..(pos + state::ParsedVAA::SIG_DATA_LEN)]; // SIG_DATA_LEN: usize = 64;
-            let key = guardian_set.addresses.get(index as usize).unwrap();
+            let key = phylax_set.addresses.get(index as usize).unwrap();
 
             pos += state::ParsedVAA::SIG_DATA_LEN; // SIG_DATA_LEN: usize = 64;
             let recovery = data.get_u8(pos);
@@ -219,7 +219,7 @@ impl Wormhole {
         }
     }
 
-    fn vaa_update_guardian_set(
+    fn vaa_update_phylax_set(
         self: &mut Wormhole,
         _vaa: &state::ParsedVAA,
         data: &[u8],
@@ -227,32 +227,32 @@ impl Wormhole {
         refund_to: AccountId,
     ) -> PromiseOrValue<bool> {
         const ADDRESS_LEN: usize = 20;
-        let new_guardian_set_index = data.get_u32(0);
+        let new_phylax_set_index = data.get_u32(0);
 
-        if self.guardian_set_index + 1 != new_guardian_set_index {
+        if self.phylax_set_index + 1 != new_phylax_set_index {
             env::panic_str("InvalidGovernanceSetIndex");
         }
 
-        let n_guardians = data.get_u8(4);
+        let n_phylaxs = data.get_u8(4);
 
         let mut addresses = vec![];
 
-        for i in 0..n_guardians {
+        for i in 0..n_phylaxs {
             let pos = 5 + (i as usize) * ADDRESS_LEN;
             addresses.push(PhylaxAddress {
                 bytes: data[pos..pos + ADDRESS_LEN].to_vec(),
             });
         }
 
-        let guardian_set = &mut self
-            .guardians
-            .get(&self.guardian_set_index)
+        let phylax_set = &mut self
+            .phylaxs
+            .get(&self.phylax_set_index)
             .expect("InvalidPreviousPhylaxSetIndex");
 
-        guardian_set.expiration_time = env::block_timestamp() + self.guardian_set_expirity;
+        phylax_set.expiration_time = env::block_timestamp() + self.phylax_set_expirity;
 
-        self.guardians
-            .insert(&self.guardian_set_index, guardian_set);
+        self.phylaxs
+            .insert(&self.phylax_set_index, phylax_set);
 
         let g = PhylaxSetInfo {
             addresses,
@@ -261,8 +261,8 @@ impl Wormhole {
 
         let storage_used = env::storage_usage();
 
-        self.guardians.insert(&new_guardian_set_index, &g);
-        self.guardian_set_index = new_guardian_set_index;
+        self.phylaxs.insert(&new_phylax_set_index, &g);
+        self.phylax_set_index = new_phylax_set_index;
 
         let required_cost =
             (Balance::from(env::storage_usage() - storage_used)) * env::storage_byte_cost();
@@ -372,7 +372,7 @@ impl Wormhole {
             serde_json::to_string(&(g2 - g1)).unwrap()
         ));
 
-        self.guardian_set_index as u32
+        self.phylax_set_index as u32
     }
 
     #[payable]
@@ -506,7 +506,7 @@ impl Wormhole {
 
         // This is the core contract... it SHOULD only get governance packets and be on the latest
 
-        if self.guardian_set_index != vaa.guardian_set_index {
+        if self.phylax_set_index != vaa.phylax_set_index {
             env::panic_str("InvalidGovernanceSet");
         }
 
@@ -539,7 +539,7 @@ impl Wormhole {
 
         match action {
             1u8 => self.vaa_update_contract(&vaa, payload, deposit, refund_to),
-            2u8 => self.vaa_update_guardian_set(&vaa, payload, deposit, refund_to),
+            2u8 => self.vaa_update_phylax_set(&vaa, payload, deposit, refund_to),
             3u8 => self.handle_set_fee(&vaa, payload, deposit, refund_to),
             4u8 => self.handle_transfer_fee(&vaa, payload, deposit),
             _ => env::panic_str("InvalidGovernanceAction"),
@@ -555,7 +555,7 @@ impl Wormhole {
             env::panic_str("invalidSigner");
         }
 
-        assert!(self.guardian_set_index == u32::MAX);
+        assert!(self.phylax_set_index == u32::MAX);
 
         let addr = addresses
             .iter()
@@ -568,9 +568,9 @@ impl Wormhole {
             addresses:       addr,
             expiration_time: 0,
         };
-        self.guardians.insert(&gset, &g);
-        self.guardian_set_index = gset;
-        env::log_str(&format!("Booting guardian_set_index {}", gset));
+        self.phylaxs.insert(&gset, &g);
+        self.phylax_set_index = gset;
+        env::log_str(&format!("Booting phylax_set_index {}", gset));
     }
 
     #[private]
@@ -611,11 +611,11 @@ impl Wormhole {
         state
 //        let old_state: OldWormhole = env::state_read().expect("failed");
 //        Self {
-//            guardians:             old_state.guardians,
+//            phylaxs:             old_state.phylaxs,
 //            dups:                  old_state.dups,
 //            emitters:              old_state.emitters,
-//            guardian_set_expirity: old_state.guardian_set_expirity,
-//            guardian_set_index:    old_state.guardian_set_index,
+//            phylax_set_expirity: old_state.phylax_set_expirity,
+//            phylax_set_index:    old_state.phylax_set_index,
 //            owner_pk:              old_state.owner_pk,
 //            upgrade_hash:          old_state.upgrade_hash,
 //            message_fee:           old_state.message_fee,

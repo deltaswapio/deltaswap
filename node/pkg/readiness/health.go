@@ -12,7 +12,7 @@ import (
 )
 
 var (
-	// TODO is a hack to support running multiple guardians in one process;
+	// TODO is a hack to support running multiple phylaxs in one process;
 	// This package should be rewritten to support multiple registries in one process instead of using a global registry
 	NoPanic  = false
 	mu       = sync.Mutex{}

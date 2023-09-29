@@ -46,7 +46,7 @@ module core_messages::sender {
 
     /// NOTE: This is NOT the proper way of using the `prepare_message` and
     /// `publish_message` workflow. This example app is meant for testing for
-    /// observing Wormhole messages via the guardian.
+    /// observing Wormhole messages via the phylax.
     ///
     /// See `publish_message` module for more info.
     public fun send_message(

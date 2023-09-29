@@ -20,7 +20,7 @@ import (
 type GrpcLogDetail string
 
 // initMutex is used during initialization to prevent concurrent writes to the prometheus registry.
-// This is only relevant during testing of node/node.go where multiple guardians are created in the same process.
+// This is only relevant during testing of node/node.go where multiple phylaxs are created in the same process.
 var initMutex sync.Mutex
 
 const (
@@ -55,7 +55,7 @@ func addDetail(ctx context.Context, logDetail GrpcLogDetail) {
 // newMetadataStreamServerInterceptor returns stream interceptor that
 // adds the `x-forwarded-for` and, if logDetail == "full", the `user-agent` metadata as a tag to cause it to be logged by grpc_zap.StreamServerInterceptor().
 // Note that `x-forwarded-for` can only be trusted if the latest hop in the proxy chain is trusted.
-// For JSON-Web requests, the latest hop is the guardian itself (`grpc-gateway`), which is listening on TCP and forwarding to the gRPC publicrpc UNIX socket.
+// For JSON-Web requests, the latest hop is the phylax itself (`grpc-gateway`), which is listening on TCP and forwarding to the gRPC publicrpc UNIX socket.
 // This can be identified by `"peer.address": "@"` in the logs and `grpc-gateway` correctly sets the `x-forwarded-for` metadata.
 func newMetadataStreamServerInterceptor(logDetail GrpcLogDetail) func(srv interface{}, stream grpc.ServerStream, info *grpc.StreamServerInfo, handler grpc.StreamHandler) error {
 	return func(srv interface{}, stream grpc.ServerStream, info *grpc.StreamServerInfo, handler grpc.StreamHandler) error {
@@ -68,7 +68,7 @@ func newMetadataStreamServerInterceptor(logDetail GrpcLogDetail) func(srv interf
 // newMetadataServerInterceptor returns a unary interceptor that
 // adds the `x-forwarded-for` and, if logDetail == "full", the `user-agent` metadata as a tag to cause it to be logged by grpc_zap.StreamServerInterceptor().
 // Note that `x-forwarded-for` can only be trusted if the latest hop in the proxy chain is trusted.
-// For JSON-Web requests, the latest hop is the guardian itself (`grpc-gateway`), which is listening on TCP and forwarding to the gRPC publicrpc UNIX socket.
+// For JSON-Web requests, the latest hop is the phylax itself (`grpc-gateway`), which is listening on TCP and forwarding to the gRPC publicrpc UNIX socket.
 // This can be identified by `"peer.address": "@"` in the logs and `grpc-gateway` correctly sets the `x-forwarded-for` metadata.
 func newMetadataServerInterceptor(logDetail GrpcLogDetail) func(ctx context.Context, req interface{}, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (interface{}, error) {
 	return func(ctx context.Context, req interface{}, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (interface{}, error) {

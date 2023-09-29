@@ -26,14 +26,14 @@ module wormhole::wormhole_scenario {
     const VAA_VERIFIER: address = @0xD00D;
     const EMITTER_MAKER: address = @0xFEED;
 
-    /// Set up Wormhole with any guardian pubkeys. For most testing purposes,
-    /// please use `set_up_wormhole` which only uses one guardian.
+    /// Set up Wormhole with any phylax pubkeys. For most testing purposes,
+    /// please use `set_up_wormhole` which only uses one phylax.
     ///
     /// NOTE: This also creates `Clock` for testing.
-    public fun set_up_wormhole_with_guardians(
+    public fun set_up_wormhole_with_phylaxs(
         scenario: &mut Scenario,
         message_fee: u64,
-        initial_guardians: vector<vector<u8>>,
+        initial_phylaxs: vector<vector<u8>>,
     ) {
         // Process effects prior. `init_test_only` will be executed as the
         // Wormhole contract deployer.
@@ -47,9 +47,9 @@ module wormhole::wormhole_scenario {
         test_scenario::next_tx(scenario, DEPLOYER);
 
         // Parameters for Wormhole's `State` are common in the Wormhole testing
-        // environment aside from the `guardian_set_epochs_to_live`, which at
+        // environment aside from the `phylax_set_epochs_to_live`, which at
         // the moment needs to be discussed on how to configure. As of now,
-        // there is no clock with unix timestamp to expire guardian sets in
+        // there is no clock with unix timestamp to expire phylax sets in
         // terms of human-interpretable time.
         {
             // This will be created and sent to the transaction sender
@@ -61,8 +61,8 @@ module wormhole::wormhole_scenario {
             let governance_chain = 1;
             let governance_contract =
                 x"0000000000000000000000000000000000000000000000000000000000000004";
-            let guardian_set_index = 0;
-            let guardian_set_seconds_to_live = 420;
+            let phylax_set_index = 0;
+            let phylax_set_seconds_to_live = 420;
 
             // Share `State`.
             setup::complete(
@@ -72,9 +72,9 @@ module wormhole::wormhole_scenario {
                 upgrade_cap,
                 governance_chain,
                 governance_contract,
-                guardian_set_index,
-                initial_guardians,
-                guardian_set_seconds_to_live,
+                phylax_set_index,
+                initial_phylaxs,
+                phylax_set_seconds_to_live,
                 message_fee,
                 test_scenario::ctx(scenario)
             );
@@ -83,15 +83,15 @@ module wormhole::wormhole_scenario {
         // Done.
     }
 
-    /// Set up Wormhole with only the first devnet guardian.
+    /// Set up Wormhole with only the first devnet phylax.
     public fun set_up_wormhole(scenario: &mut Scenario, message_fee: u64) {
-        let initial_guardians = vector::empty();
+        let initial_phylaxs = vector::empty();
         vector::push_back(
-            &mut initial_guardians,
-            *vector::borrow(&guardians(), 0)
+            &mut initial_phylaxs,
+            *vector::borrow(&phylaxs(), 0)
         );
 
-        set_up_wormhole_with_guardians(scenario, message_fee, initial_guardians)
+        set_up_wormhole_with_phylaxs(scenario, message_fee, initial_phylaxs)
     }
 
     /// Perform an upgrade (which just upticks the current version of what the
@@ -124,8 +124,8 @@ module wormhole::wormhole_scenario {
         (WALLET_1, WALLET_2, WALLET_3)
     }
 
-    /// All guardians that exist in devnet (Tilt) environment.
-    public fun guardians(): vector<vector<u8>> {
+    /// All phylaxs that exist in devnet (Tilt) environment.
+    public fun phylaxs(): vector<vector<u8>> {
         vector[
             x"befa429d57cd18b7f8a4d91a2da9ab4af05d0fbe",
             x"88d7d8b32a9105d228100e72dffe2fae0705d31c",

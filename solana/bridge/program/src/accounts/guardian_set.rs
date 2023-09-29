@@ -1,4 +1,4 @@
-//! PhylaxSet represents an account containing information about the current active guardians
+//! PhylaxSet represents an account containing information about the current active phylaxs
 //! responsible for signing wormhole VAAs.
 
 use crate::types::PhylaxPublicKey;
@@ -22,13 +22,13 @@ pub type PhylaxSet<'b, const State: AccountState> = Data<'b, PhylaxSetData, { St
 
 #[derive(Default, BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
 pub struct PhylaxSetData {
-    /// Index representing an incrementing version number for this guardian set.
+    /// Index representing an incrementing version number for this phylax set.
     pub index: u32,
 
     /// ETH style public keys
     pub keys: Vec<PhylaxPublicKey>,
 
-    /// Timestamp representing the time this guardian became active.
+    /// Timestamp representing the time this phylax became active.
     pub creation_time: u32,
 
     /// Expiration time when VAAs issued by this set are no longer valid.
@@ -52,8 +52,8 @@ impl<'a, const State: AccountState> Seeded<&PhylaxSetDerivationData>
 }
 
 impl PhylaxSetData {
-    /// Number of guardians in the set
-    pub fn num_guardians(&self) -> u8 {
+    /// Number of phylaxs in the set
+    pub fn num_phylaxs(&self) -> u8 {
         self.keys.iter().filter(|v| **v != [0u8; 20]).count() as u8
     }
 }

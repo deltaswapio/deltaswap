@@ -436,7 +436,7 @@ contract Bridge is BridgeGovernance, ReentrancyGuard {
      * @dev The transaction can only be redeemed by the recipient, typically a
      * contract.
      *
-     * @param encodedVm    A byte array containing a VAA signed by the guardians.
+     * @param encodedVm    A byte array containing a VAA signed by the phylaxs.
      *
      * @return The byte array representing a BridgeStructs.TransferWithPayload.
      */
@@ -450,7 +450,7 @@ contract Bridge is BridgeGovernance, ReentrancyGuard {
      * @dev The transaction can only be redeemed by the recipient, typically a
      * contract.
      *
-     * @param encodedVm    A byte array containing a VAA signed by the guardians.
+     * @param encodedVm    A byte array containing a VAA signed by the phylaxs.
      *
      * @return The byte array representing a BridgeStructs.TransferWithPayload.
      */
@@ -463,7 +463,7 @@ contract Bridge is BridgeGovernance, ReentrancyGuard {
      *
      * @dev The msg.sender gets paid the associated fee.
      *
-     * @param encodedVm A byte array containing a VAA signed by the guardians.
+     * @param encodedVm A byte array containing a VAA signed by the phylaxs.
      */
     function completeTransfer(bytes memory encodedVm) public {
         _completeTransfer(encodedVm, false);
@@ -474,7 +474,7 @@ contract Bridge is BridgeGovernance, ReentrancyGuard {
      *
      * @dev The msg.sender gets paid the associated fee.
      *
-     * @param encodedVm A byte array containing a VAA signed by the guardians.
+     * @param encodedVm A byte array containing a VAA signed by the phylaxs.
      */
     function completeTransferAndUnwrapETH(bytes memory encodedVm) public {
         _completeTransfer(encodedVm, true);

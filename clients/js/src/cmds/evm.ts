@@ -156,7 +156,7 @@ export const builder = function (y: typeof yargs) {
     )
     .command(
       "hijack",
-      "Override the guardian set of the core bridge contract during testing (anvil or hardhat)",
+      "Override the phylax set of the core bridge contract during testing (anvil or hardhat)",
       (yargs) =>
         yargs
           .option("core-contract-address", {
@@ -165,27 +165,27 @@ export const builder = function (y: typeof yargs) {
             type: "string",
             default: CONTRACTS.MAINNET.ethereum.core,
           })
-          .option("guardian-address", {
+          .option("phylax-address", {
             alias: "g",
             demandOption: true,
             describe: "Phylaxs' public addresses (CSV)",
             type: "string",
           })
-          .option("guardian-set-index", {
+          .option("phylax-set-index", {
             alias: "i",
             demandOption: false,
             describe:
-              "New guardian set index (if unspecified, default to overriding the current index)",
+              "New phylax set index (if unspecified, default to overriding the current index)",
             type: "number",
           }),
       async (argv) => {
-        const guardian_addresses = argv["guardian-address"].split(",");
+        const phylax_addresses = argv["phylax-address"].split(",");
         let rpc = argv.rpc ?? NETWORKS.DEVNET.ethereum.rpc;
         await hijack_evm(
           rpc,
           argv["core-contract-address"],
-          guardian_addresses,
-          argv["guardian-set-index"]
+          phylax_addresses,
+          argv["phylax-set-index"]
         );
       }
     )

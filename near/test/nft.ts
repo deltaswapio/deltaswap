@@ -118,7 +118,7 @@ async function waitUntilEthTxObserved(
   // get the sequence from the logs (needed to fetch the vaa)
   let sequence = parseSequenceFromLogEth(receipt, ETH_CORE_BRIDGE_ADDRESS);
   let emitterAddress = getEmitterAddressEth(ETH_NFT_BRIDGE_ADDRESS);
-  // poll until the guardian(s) witness and sign the vaa
+  // poll until the phylax(s) witness and sign the vaa
   const { vaaBytes: signedVAA } = await getSignedVAAWithRetry(
     ["http://localhost:7071"],
     CHAIN_ID_ETH,

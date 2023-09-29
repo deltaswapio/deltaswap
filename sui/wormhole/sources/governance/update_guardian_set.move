@@ -1,26 +1,26 @@
 // SPDX-License-Identifier: Apache 2
 
 /// This module implements handling a governance VAA to enact updating the
-/// current guardian set to be a new set of guardian public keys. As a part of
-/// this process, the previous guardian set's expiration time is set. Keep in
-/// mind that the current guardian set has no expiration.
-module wormhole::update_guardian_set {
+/// current phylax set to be a new set of phylax public keys. As a part of
+/// this process, the previous phylax set's expiration time is set. Keep in
+/// mind that the current phylax set has no expiration.
+module wormhole::update_phylax_set {
     use std::vector::{Self};
     use sui::clock::{Clock};
 
     use wormhole::bytes::{Self};
     use wormhole::cursor::{Self};
     use wormhole::governance_message::{Self, DecreeTicket, DecreeReceipt};
-    use wormhole::guardian::{Self, Phylax};
-    use wormhole::guardian_set::{Self};
+    use wormhole::phylax::{Self, Phylax};
+    use wormhole::phylax_set::{Self};
     use wormhole::state::{Self, State, LatestOnly};
 
-    /// No guardians public keys found in VAA.
+    /// No phylaxs public keys found in VAA.
     const E_NO_GUARDIANS: u64 = 0;
-    /// Phylax set index is not incremented from last known guardian set.
+    /// Phylax set index is not incremented from last known phylax set.
     const E_NON_INCREMENTAL_GUARDIAN_SETS: u64 = 1;
 
-    /// Specific governance payload ID (action) for updating the guardian set.
+    /// Specific governance payload ID (action) for updating the phylax set.
     const ACTION_UPDATE_GUARDIAN_SET: u8 = 2;
 
     struct GovernanceWitness has drop {}
@@ -32,7 +32,7 @@ module wormhole::update_guardian_set {
 
     struct UpdatePhylaxSet {
         new_index: u32,
-        guardians: vector<Phylax>,
+        phylaxs: vector<Phylax>,
     }
 
     public fun authorize_governance(
@@ -53,7 +53,7 @@ module wormhole::update_guardian_set {
     ///
     /// NOTE: This method is guarded by a minimum build version check. This
     /// method could break backward compatibility on an upgrade.
-    public fun update_guardian_set(
+    public fun update_phylax_set(
         wormhole_state: &mut State,
         receipt: DecreeReceipt<GovernanceWitness>,
         the_clock: &Clock
@@ -63,7 +63,7 @@ module wormhole::update_guardian_set {
 
         // Even though this disallows the VAA to be replayed, it may be
         // impossible to redeem the same VAA again because `governance_message`
-        // requires new governance VAAs being signed by the most recent guardian
+        // requires new governance VAAs being signed by the most recent phylax
         // set).
         let payload =
             governance_message::take_payload(
@@ -72,36 +72,36 @@ module wormhole::update_guardian_set {
             );
 
         // Proceed with the update.
-        handle_update_guardian_set(&latest_only, wormhole_state, payload, the_clock)
+        handle_update_phylax_set(&latest_only, wormhole_state, payload, the_clock)
     }
 
-    fun handle_update_guardian_set(
+    fun handle_update_phylax_set(
         latest_only: &LatestOnly,
         wormhole_state: &mut State,
         governance_payload: vector<u8>,
         the_clock: &Clock
     ): u32 {
-        // Deserialize the payload as the updated guardian set.
+        // Deserialize the payload as the updated phylax set.
         let UpdatePhylaxSet {
             new_index,
-            guardians
+            phylaxs
         } = deserialize(governance_payload);
 
-        // Every new guardian set index must be incremental from the last known
-        // guardian set.
+        // Every new phylax set index must be incremental from the last known
+        // phylax set.
         assert!(
-            new_index == state::guardian_set_index(wormhole_state) + 1,
+            new_index == state::phylax_set_index(wormhole_state) + 1,
             E_NON_INCREMENTAL_GUARDIAN_SETS
         );
 
-        // Expire the existing guardian set.
-        state::expire_guardian_set(latest_only, wormhole_state, the_clock);
+        // Expire the existing phylax set.
+        state::expire_phylax_set(latest_only, wormhole_state, the_clock);
 
         // And store the new one.
-        state::add_new_guardian_set(
+        state::add_new_phylax_set(
             latest_only,
             wormhole_state,
-            guardian_set::new(new_index, guardians)
+            phylax_set::new(new_index, phylaxs)
         );
 
         sui::event::emit(PhylaxSetAdded { new_index });
@@ -112,19 +112,19 @@ module wormhole::update_guardian_set {
     fun deserialize(payload: vector<u8>): UpdatePhylaxSet {
         let cur = cursor::new(payload);
         let new_index = bytes::take_u32_be(&mut cur);
-        let num_guardians = bytes::take_u8(&mut cur);
-        assert!(num_guardians > 0, E_NO_GUARDIANS);
+        let num_phylaxs = bytes::take_u8(&mut cur);
+        assert!(num_phylaxs > 0, E_NO_GUARDIANS);
 
-        let guardians = vector::empty<Phylax>();
+        let phylaxs = vector::empty<Phylax>();
         let i = 0;
-        while (i < num_guardians) {
+        while (i < num_phylaxs) {
             let key = bytes::take_bytes(&mut cur, 20);
-            vector::push_back(&mut guardians, guardian::new(key));
+            vector::push_back(&mut phylaxs, phylax::new(key));
             i = i + 1;
         };
         cursor::destroy_empty(cur);
 
-        UpdatePhylaxSet { new_index, guardians }
+        UpdatePhylaxSet { new_index, phylaxs }
     }
 
     #[test_only]
@@ -134,7 +134,7 @@ module wormhole::update_guardian_set {
 }
 
 #[test_only]
-module wormhole::update_guardian_set_tests {
+module wormhole::update_phylax_set_tests {
     use std::vector::{Self};
     use sui::clock::{Self};
     use sui::test_scenario::{Self};
@@ -142,10 +142,10 @@ module wormhole::update_guardian_set_tests {
     use wormhole::bytes::{Self};
     use wormhole::cursor::{Self};
     use wormhole::governance_message::{Self};
-    use wormhole::guardian::{Self};
-    use wormhole::guardian_set::{Self};
+    use wormhole::phylax::{Self};
+    use wormhole::phylax_set::{Self};
     use wormhole::state::{Self};
-    use wormhole::update_guardian_set::{Self};
+    use wormhole::update_phylax_set::{Self};
     use wormhole::vaa::{Self};
     use wormhole::version_control::{Self};
     use wormhole::wormhole_scenario::{
@@ -168,9 +168,9 @@ module wormhole::update_guardian_set_tests {
         x"0100000000010098f9e45f836661d2932def9c74c587168f4f75d0282201ee6f5a98557e6212ff19b0f8881c2750646250f60dd5d565530779ecbf9442aa5ffc2d6afd7303aaa40000bc614e000000000001000000000000000000000000000000000000000000000000000000000000000400000000000000010100000000000000000000000000000000000000000000000000000000436f72650200000000000100";
 
     #[test]
-    fun test_update_guardian_set() {
+    fun test_update_phylax_set() {
         // Testing this method.
-        use wormhole::update_guardian_set::{update_guardian_set};
+        use wormhole::update_phylax_set::{update_phylax_set};
 
         // Set up.
         let caller = person();
@@ -180,7 +180,7 @@ module wormhole::update_guardian_set_tests {
         let wormhole_fee = 350;
         set_up_wormhole(scenario, wormhole_fee);
 
-        // Prepare test to execute `update_guardian_set`.
+        // Prepare test to execute `update_phylax_set`.
         test_scenario::next_tx(scenario, caller);
 
         let worm_state = take_state(scenario);
@@ -192,72 +192,72 @@ module wormhole::update_guardian_set_tests {
                 VAA_UPDATE_GUARDIAN_SET_1,
                 &the_clock
             );
-        let ticket = update_guardian_set::authorize_governance(&worm_state);
+        let ticket = update_phylax_set::authorize_governance(&worm_state);
         let receipt =
             governance_message::verify_vaa(&worm_state, verified_vaa, ticket);
         let new_index =
-            update_guardian_set(&mut worm_state, receipt, &the_clock);
+            update_phylax_set(&mut worm_state, receipt, &the_clock);
         assert!(new_index == 1, 0);
 
-        let new_guardian_set =
-            state::guardian_set_at(&worm_state, new_index);
+        let new_phylax_set =
+            state::phylax_set_at(&worm_state, new_index);
 
-        // Verify new guardian set index.
-        assert!(state::guardian_set_index(&worm_state) == new_index, 0);
+        // Verify new phylax set index.
+        assert!(state::phylax_set_index(&worm_state) == new_index, 0);
         assert!(
-            guardian_set::index(new_guardian_set) == state::guardian_set_index(&worm_state),
+            phylax_set::index(new_phylax_set) == state::phylax_set_index(&worm_state),
             0
         );
 
-        // Check that the guardians agree with what we expect.
-        let guardians = guardian_set::guardians(new_guardian_set);
+        // Check that the phylaxs agree with what we expect.
+        let phylaxs = phylax_set::phylaxs(new_phylax_set);
         let expected = vector[
-            guardian::new(x"befa429d57cd18b7f8a4d91a2da9ab4af05d0fbe"),
-            guardian::new(x"88d7d8b32a9105d228100e72dffe2fae0705d31c"),
-            guardian::new(x"58076f561cc62a47087b567c86f986426dfcd000"),
-            guardian::new(x"bd6e9833490f8fa87c733a183cd076a6cbd29074"),
-            guardian::new(x"b853fcf0a5c78c1b56d15fce7a154e6ebe9ed7a2"),
-            guardian::new(x"af3503dbd2e37518ab04d7ce78b630f98b15b78a"),
-            guardian::new(x"785632dea5609064803b1c8ea8bb2c77a6004bd1"),
-            guardian::new(x"09a281a698c0f5ba31f158585b41f4f33659e54d"),
-            guardian::new(x"3178443ab76a60e21690dbfb17f7f59f09ae3ea1"),
-            guardian::new(x"647ec26ae49b14060660504f4da1c2059e1c5ab6"),
-            guardian::new(x"810ac3d8e1258bd2f004a94ca0cd4c68fc1c0611"),
-            guardian::new(x"80610e96d645b12f47ae5cf4546b18538739e90f"),
-            guardian::new(x"2edb0d8530e31a218e72b9480202acbaeb06178d"),
-            guardian::new(x"a78858e5e5c4705cdd4b668ffe3be5bae4867c9d"),
-            guardian::new(x"5efe3a05efc62d60e1d19faeb56a80223cdd3472"),
-            guardian::new(x"d791b7d32c05abb1cc00b6381fa0c4928f0c56fc"),
-            guardian::new(x"14bc029b8809069093d712a3fd4dfab31963597e"),
-            guardian::new(x"246ab29fc6ebedf2d392a51ab2dc5c59d0902a03"),
-            guardian::new(x"132a84dfd920b35a3d0ba5f7a0635df298f9033e"),
+            phylax::new(x"befa429d57cd18b7f8a4d91a2da9ab4af05d0fbe"),
+            phylax::new(x"88d7d8b32a9105d228100e72dffe2fae0705d31c"),
+            phylax::new(x"58076f561cc62a47087b567c86f986426dfcd000"),
+            phylax::new(x"bd6e9833490f8fa87c733a183cd076a6cbd29074"),
+            phylax::new(x"b853fcf0a5c78c1b56d15fce7a154e6ebe9ed7a2"),
+            phylax::new(x"af3503dbd2e37518ab04d7ce78b630f98b15b78a"),
+            phylax::new(x"785632dea5609064803b1c8ea8bb2c77a6004bd1"),
+            phylax::new(x"09a281a698c0f5ba31f158585b41f4f33659e54d"),
+            phylax::new(x"3178443ab76a60e21690dbfb17f7f59f09ae3ea1"),
+            phylax::new(x"647ec26ae49b14060660504f4da1c2059e1c5ab6"),
+            phylax::new(x"810ac3d8e1258bd2f004a94ca0cd4c68fc1c0611"),
+            phylax::new(x"80610e96d645b12f47ae5cf4546b18538739e90f"),
+            phylax::new(x"2edb0d8530e31a218e72b9480202acbaeb06178d"),
+            phylax::new(x"a78858e5e5c4705cdd4b668ffe3be5bae4867c9d"),
+            phylax::new(x"5efe3a05efc62d60e1d19faeb56a80223cdd3472"),
+            phylax::new(x"d791b7d32c05abb1cc00b6381fa0c4928f0c56fc"),
+            phylax::new(x"14bc029b8809069093d712a3fd4dfab31963597e"),
+            phylax::new(x"246ab29fc6ebedf2d392a51ab2dc5c59d0902a03"),
+            phylax::new(x"132a84dfd920b35a3d0ba5f7a0635df298f9033e"),
         ];
-        assert!(vector::length(&expected) == vector::length(guardians), 0);
+        assert!(vector::length(&expected) == vector::length(phylaxs), 0);
 
         let cur = cursor::new(expected);
         let i = 0;
         while (!cursor::is_empty(&cur)) {
-            let left = guardian::as_bytes(vector::borrow(guardians, i));
-            let right = guardian::to_bytes(cursor::poke(&mut cur));
+            let left = phylax::as_bytes(vector::borrow(phylaxs, i));
+            let right = phylax::to_bytes(cursor::poke(&mut cur));
             assert!(left == right, 0);
             i = i + 1;
         };
         cursor::destroy_empty(cur);
 
-        // Make sure old guardian set is still active.
-        let old_guardian_set =
-            state::guardian_set_at(&worm_state, new_index - 1);
-        assert!(guardian_set::is_active(old_guardian_set, &the_clock), 0);
+        // Make sure old phylax set is still active.
+        let old_phylax_set =
+            state::phylax_set_at(&worm_state, new_index - 1);
+        assert!(phylax_set::is_active(old_phylax_set, &the_clock), 0);
 
         // Fast forward time beyond expiration by
-        // `guardian_set_seconds_to_live`.
+        // `phylax_set_seconds_to_live`.
         let tick_ms =
-            (state::guardian_set_seconds_to_live(&worm_state) as u64) * 1000;
+            (state::phylax_set_seconds_to_live(&worm_state) as u64) * 1000;
         clock::increment_for_testing(&mut the_clock, tick_ms + 1);
 
-        // Now the old guardian set should be expired (because in the test setup
+        // Now the old phylax set should be expired (because in the test setup
         // time to live is set to 2 epochs).
-        assert!(!guardian_set::is_active(old_guardian_set, &the_clock), 0);
+        assert!(!phylax_set::is_active(old_phylax_set, &the_clock), 0);
 
         // Clean up.
         return_state(worm_state);
@@ -268,9 +268,9 @@ module wormhole::update_guardian_set_tests {
     }
 
     #[test]
-    fun test_update_guardian_set_after_upgrade() {
+    fun test_update_phylax_set_after_upgrade() {
         // Testing this method.
-        use wormhole::update_guardian_set::{update_guardian_set};
+        use wormhole::update_phylax_set::{update_phylax_set};
 
         // Set up.
         let caller = person();
@@ -283,7 +283,7 @@ module wormhole::update_guardian_set_tests {
         // Upgrade.
         upgrade_wormhole(scenario);
 
-        // Prepare test to execute `update_guardian_set`.
+        // Prepare test to execute `update_phylax_set`.
         test_scenario::next_tx(scenario, caller);
 
         let worm_state = take_state(scenario);
@@ -295,11 +295,11 @@ module wormhole::update_guardian_set_tests {
                 VAA_UPDATE_GUARDIAN_SET_1,
                 &the_clock
             );
-        let ticket = update_guardian_set::authorize_governance(&worm_state);
+        let ticket = update_phylax_set::authorize_governance(&worm_state);
         let receipt =
             governance_message::verify_vaa(&worm_state, verified_vaa, ticket);
         let new_index =
-            update_guardian_set(&mut worm_state, receipt, &the_clock);
+            update_phylax_set(&mut worm_state, receipt, &the_clock);
         assert!(new_index == 1, 0);
 
         // Clean up.
@@ -314,9 +314,9 @@ module wormhole::update_guardian_set_tests {
     #[expected_failure(
         abort_code = governance_message::E_OLD_GUARDIAN_SET_GOVERNANCE
     )]
-    fun test_cannot_update_guardian_set_again_with_same_vaa() {
+    fun test_cannot_update_phylax_set_again_with_same_vaa() {
         // Testing this method.
-        use wormhole::update_guardian_set::{update_guardian_set};
+        use wormhole::update_phylax_set::{update_phylax_set};
 
         // Set up.
         let caller = person();
@@ -326,7 +326,7 @@ module wormhole::update_guardian_set_tests {
         let wormhole_fee = 350;
         set_up_wormhole(scenario, wormhole_fee);
 
-        // Prepare test to execute `update_guardian_set`.
+        // Prepare test to execute `update_phylax_set`.
         test_scenario::next_tx(scenario, caller);
 
         let worm_state = take_state(scenario);
@@ -338,25 +338,25 @@ module wormhole::update_guardian_set_tests {
                 VAA_UPDATE_GUARDIAN_SET_2A,
                 &the_clock
             );
-        let ticket = update_guardian_set::authorize_governance(&worm_state);
+        let ticket = update_phylax_set::authorize_governance(&worm_state);
         let receipt =
             governance_message::verify_vaa(&worm_state, verified_vaa, ticket);
-        update_guardian_set(&mut worm_state, receipt, &the_clock);
+        update_phylax_set(&mut worm_state, receipt, &the_clock);
 
-        // Update guardian set again with new VAA.
+        // Update phylax set again with new VAA.
         let verified_vaa =
             vaa::parse_and_verify(
                 &worm_state,
                 VAA_UPDATE_GUARDIAN_SET_2B,
                 &the_clock
             );
-        let ticket = update_guardian_set::authorize_governance(&worm_state);
+        let ticket = update_phylax_set::authorize_governance(&worm_state);
         let receipt =
             governance_message::verify_vaa(&worm_state, verified_vaa, ticket);
         let new_index =
-            update_guardian_set(&mut worm_state, receipt, &the_clock);
+            update_phylax_set(&mut worm_state, receipt, &the_clock);
         assert!(new_index == 2, 0);
-        assert!(state::guardian_set_index(&worm_state) == 2, 0);
+        assert!(state::phylax_set_index(&worm_state) == 2, 0);
 
         let verified_vaa =
             vaa::parse_and_verify(
@@ -364,20 +364,20 @@ module wormhole::update_guardian_set_tests {
                 VAA_UPDATE_GUARDIAN_SET_2A,
                 &the_clock
             );
-        let ticket = update_guardian_set::authorize_governance(&worm_state);
+        let ticket = update_phylax_set::authorize_governance(&worm_state);
         let receipt =
             governance_message::verify_vaa(&worm_state, verified_vaa, ticket);
         // You shall not pass!
-        update_guardian_set(&mut worm_state, receipt, &the_clock);
+        update_phylax_set(&mut worm_state, receipt, &the_clock);
 
         abort 42
     }
 
     #[test]
-    #[expected_failure(abort_code = update_guardian_set::E_NO_GUARDIANS)]
-    fun test_cannot_update_guardian_set_with_no_guardians() {
+    #[expected_failure(abort_code = update_phylax_set::E_NO_GUARDIANS)]
+    fun test_cannot_update_phylax_set_with_no_phylaxs() {
         // Testing this method.
-        use wormhole::update_guardian_set::{update_guardian_set};
+        use wormhole::update_phylax_set::{update_phylax_set};
 
         // Set up.
         let caller = person();
@@ -387,14 +387,14 @@ module wormhole::update_guardian_set_tests {
         let wormhole_fee = 350;
         set_up_wormhole(scenario, wormhole_fee);
 
-        // Prepare test to execute `update_guardian_set`.
+        // Prepare test to execute `update_phylax_set`.
         test_scenario::next_tx(scenario, caller);
 
         let worm_state = take_state(scenario);
         let the_clock = take_clock(scenario);
 
 
-        // Show that the encoded number of guardians is zero.
+        // Show that the encoded number of phylaxs is zero.
         let verified_vaa =
             vaa::parse_and_verify(
                 &worm_state,
@@ -405,19 +405,19 @@ module wormhole::update_guardian_set_tests {
             governance_message::take_decree(vaa::payload(&verified_vaa));
         let cur = cursor::new(payload);
 
-        let new_guardian_set_index = bytes::take_u32_be(&mut cur);
-        assert!(new_guardian_set_index == 1, 0);
+        let new_phylax_set_index = bytes::take_u32_be(&mut cur);
+        assert!(new_phylax_set_index == 1, 0);
 
-        let num_guardians = bytes::take_u8(&mut cur);
-        assert!(num_guardians == 0, 0);
+        let num_phylaxs = bytes::take_u8(&mut cur);
+        assert!(num_phylaxs == 0, 0);
 
         cursor::destroy_empty(cur);
 
-        let ticket = update_guardian_set::authorize_governance(&worm_state);
+        let ticket = update_phylax_set::authorize_governance(&worm_state);
         let receipt =
             governance_message::verify_vaa(&worm_state, verified_vaa, ticket);
         // You shall not pass!
-        update_guardian_set(&mut worm_state, receipt, &the_clock);
+        update_phylax_set(&mut worm_state, receipt, &the_clock);
 
         abort 42
     }
@@ -426,7 +426,7 @@ module wormhole::update_guardian_set_tests {
     #[expected_failure(abort_code = wormhole::package_utils::E_NOT_CURRENT_VERSION)]
     fun test_cannot_set_fee_outdated_version() {
         // Testing this method.
-        use wormhole::update_guardian_set::{update_guardian_set};
+        use wormhole::update_phylax_set::{update_phylax_set};
 
         // Set up.
         let caller = person();
@@ -436,7 +436,7 @@ module wormhole::update_guardian_set_tests {
         let wormhole_fee = 350;
         set_up_wormhole(scenario, wormhole_fee);
 
-        // Prepare test to execute `update_guardian_set`.
+        // Prepare test to execute `update_phylax_set`.
         test_scenario::next_tx(scenario, caller);
 
         let worm_state = take_state(scenario);
@@ -460,11 +460,11 @@ module wormhole::update_guardian_set_tests {
                 VAA_UPDATE_GUARDIAN_SET_1,
                 &the_clock
             );
-        let ticket = update_guardian_set::authorize_governance(&worm_state);
+        let ticket = update_phylax_set::authorize_governance(&worm_state);
         let receipt =
             governance_message::verify_vaa(&worm_state, verified_vaa, ticket);
         // You shall not pass!
-        update_guardian_set(&mut worm_state, receipt, &the_clock);
+        update_phylax_set(&mut worm_state, receipt, &the_clock);
 
         abort 42
     }

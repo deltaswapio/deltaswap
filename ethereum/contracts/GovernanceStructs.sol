@@ -81,7 +81,7 @@ contract GovernanceStructs {
         require(encodedUpgrade.length == index, "invalid ContractUpgrade");
     }
 
-    /// @dev Parse a guardianSet upgrade (action 2) with minimal validation
+    /// @dev Parse a phylaxSet upgrade (action 2) with minimal validation
     function parsePhylaxSetUpgrade(bytes memory encodedUpgrade) public pure returns (PhylaxSetUpgrade memory gsu) {
         uint index = 0;
 
@@ -99,15 +99,15 @@ contract GovernanceStructs {
         gsu.newPhylaxSetIndex = encodedUpgrade.toUint32(index);
         index += 4;
 
-        uint8 guardianLength = encodedUpgrade.toUint8(index);
+        uint8 phylaxLength = encodedUpgrade.toUint8(index);
         index += 1;
 
         gsu.newPhylaxSet = Structs.PhylaxSet({
-            keys : new address[](guardianLength),
+            keys : new address[](phylaxLength),
             expirationTime : 0
         });
 
-        for(uint i = 0; i < guardianLength; i++) {
+        for(uint i = 0; i < phylaxLength; i++) {
             gsu.newPhylaxSet.keys[i] = encodedUpgrade.toAddress(index);
             index += 20;
         }

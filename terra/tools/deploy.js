@@ -162,17 +162,17 @@ async function instantiate(contract, inst_msg) {
 
 const addresses = {};
 
-const init_guardians = JSON.parse(process.env.INIT_SIGNERS);
-if (!init_guardians || init_guardians.length === 0) {
-  throw "failed to get initial guardians from .env file.";
+const init_phylaxs = JSON.parse(process.env.INIT_SIGNERS);
+if (!init_phylaxs || init_phylaxs.length === 0) {
+  throw "failed to get initial phylaxs from .env file.";
 }
 
 addresses["wormhole.wasm"] = await instantiate("wormhole.wasm", {
   gov_chain: govChain,
   gov_address: Buffer.from(govAddress, "hex").toString("base64"),
-  guardian_set_expirity: 86400,
-  initial_guardian_set: {
-    addresses: init_guardians.map((hex) => {
+  phylax_set_expirity: 86400,
+  initial_phylax_set: {
+    addresses: init_phylaxs.map((hex) => {
       return {
         bytes: Buffer.from(hex, "hex").toString("base64"),
       };

@@ -133,12 +133,12 @@ mod helpers {
         data: Vec<u8>,
         nonce: u32,
         sequence: u64,
-        guardian_set_index: u32,
+        phylax_set_index: u32,
         emitter_chain: u16,
     ) -> (PostVAAData, [u8; 32], [u8; 32]) {
         let vaa = PostVAAData {
             version: 0,
-            guardian_set_index,
+            phylax_set_index,
 
             // Body part
             emitter_chain,
@@ -187,7 +187,7 @@ mod helpers {
         client: &mut BanksClient,
         program: Pubkey,
         payer: &Keypair,
-        initial_guardians: &[[u8; 20]],
+        initial_phylaxs: &[[u8; 20]],
         fee: u64,
     ) -> Result<(), BanksClientError> {
         execute(
@@ -199,7 +199,7 @@ mod helpers {
                 payer.pubkey(),
                 fee,
                 2_000_000_000,
-                initial_guardians,
+                initial_phylaxs,
             )
             .unwrap()],
             CommitmentLevel::Processed,
@@ -301,7 +301,7 @@ mod helpers {
         payer: &Keypair,
         body: [u8; 32],
         secret_keys: &[SecretKey],
-        guardian_set_version: u32,
+        phylax_set_version: u32,
     ) -> Result<Pubkey, BanksClientError> {
         let signature_set = Keypair::new();
         let tx_signers = [payer, &signature_set];
@@ -320,7 +320,7 @@ mod helpers {
                     instructions::verify_signatures(
                         *program,
                         payer.pubkey(),
-                        guardian_set_version,
+                        phylax_set_version,
                         signature_set.pubkey(),
                         VerifySignaturesData { signers },
                     )
@@ -357,7 +357,7 @@ mod helpers {
     }
 
     #[allow(clippy::too_many_arguments)]
-    pub async fn upgrade_guardian_set(
+    pub async fn upgrade_phylax_set(
         client: &mut BanksClient,
         program: &Pubkey,
         payer: &Keypair,
@@ -371,7 +371,7 @@ mod helpers {
             client,
             payer,
             &[payer],
-            &[instructions::upgrade_guardian_set(
+            &[instructions::upgrade_phylax_set(
                 *program,
                 payer.pubkey(),
                 payload_message,

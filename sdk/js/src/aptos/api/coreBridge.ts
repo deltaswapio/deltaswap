@@ -9,7 +9,7 @@ export const upgradePhylaxSet = (
 ): Types.EntryFunctionPayload => {
   if (!coreBridgeAddress) throw new Error("Need core bridge address.");
   return {
-    function: `${coreBridgeAddress}::guardian_set_upgrade::submit_vaa_entry`,
+    function: `${coreBridgeAddress}::phylax_set_upgrade::submit_vaa_entry`,
     type_arguments: [],
     arguments: [vaa],
   };

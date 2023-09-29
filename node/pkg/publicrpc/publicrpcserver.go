@@ -41,15 +41,15 @@ func NewPublicrpcServer(
 func (s *PublicrpcServer) GetLastHeartbeats(ctx context.Context, req *publicrpcv1.GetLastHeartbeatsRequest) (*publicrpcv1.GetLastHeartbeatsResponse, error) {
 	gs := s.gst.Get()
 	if gs == nil {
-		return nil, status.Error(codes.Unavailable, "guardian set not fetched from chain yet")
+		return nil, status.Error(codes.Unavailable, "phylax set not fetched from chain yet")
 	}
 
 	resp := &publicrpcv1.GetLastHeartbeatsResponse{
 		Entries: make([]*publicrpcv1.GetLastHeartbeatsResponse_Entry, 0),
 	}
 
-	// Fetch all heartbeats (including from nodes not in the guardian set - which
-	// can happen either with --disableHeartbeatVerify or when the guardian set changes)
+	// Fetch all heartbeats (including from nodes not in the phylax set - which
+	// can happen either with --disableHeartbeatVerify or when the phylax set changes)
 	for addr, v := range s.gst.GetAll() {
 		for peerId, hb := range v {
 			resp.Entries = append(resp.Entries, &publicrpcv1.GetLastHeartbeatsResponse_Entry{
@@ -113,7 +113,7 @@ func (s *PublicrpcServer) GetSignedBatchVAA(ctx context.Context, req *publicrpcv
 func (s *PublicrpcServer) GetCurrentPhylaxSet(ctx context.Context, req *publicrpcv1.GetCurrentPhylaxSetRequest) (*publicrpcv1.GetCurrentPhylaxSetResponse, error) {
 	gs := s.gst.Get()
 	if gs == nil {
-		return nil, status.Error(codes.Unavailable, "guardian set not fetched from chain yet")
+		return nil, status.Error(codes.Unavailable, "phylax set not fetched from chain yet")
 	}
 
 	resp := &publicrpcv1.GetCurrentPhylaxSetResponse{

@@ -219,7 +219,7 @@ describe.skip("Terra Integration Tests", () => {
           const emitterAddress = getEmitterAddressEth(
             CONTRACTS.DEVNET.ethereum.token_bridge
           );
-          // poll until the guardian(s) witness and sign the vaa
+          // poll until the phylax(s) witness and sign the vaa
           const { vaaBytes: signedVAA } = await getSignedVAAWithRetry(
             WORMHOLE_RPC_HOSTS,
             CHAIN_ID_ETH,
@@ -385,7 +385,7 @@ describe.skip("Terra Integration Tests", () => {
           const emitterAddress = getEmitterAddressEth(
             CONTRACTS.DEVNET.ethereum.token_bridge
           );
-          // poll until the guardian(s) witness and sign the vaa
+          // poll until the phylax(s) witness and sign the vaa
           const { vaaBytes: signedVAA } = await getSignedVAAWithRetry(
             WORMHOLE_RPC_HOSTS,
             CHAIN_ID_ETH,
@@ -768,7 +768,7 @@ describe.skip("Terra Integration Tests", () => {
             CONTRACTS.DEVNET.ethereum.token_bridge
           );
 
-          // poll until the guardian(s) witness and sign the vaa
+          // poll until the phylax(s) witness and sign the vaa
           const { vaaBytes: signedVAA } = await getSignedVAAWithRetry(
             WORMHOLE_RPC_HOSTS,
             CHAIN_ID_ETH,
@@ -1087,7 +1087,7 @@ describe.skip("Terra Integration Tests", () => {
             CONTRACTS.DEVNET.ethereum.token_bridge
           );
 
-          // poll until the guardian(s) witness and sign the vaa
+          // poll until the phylax(s) witness and sign the vaa
           const { vaaBytes: signedVAA } = await getSignedVAAWithRetry(
             WORMHOLE_RPC_HOSTS,
             CHAIN_ID_ETH,

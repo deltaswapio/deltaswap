@@ -65,7 +65,7 @@ struct Context {
 }
 
 /// Small helper to track and provide sequences during tests. This is in particular needed for
-/// guardian operations that require them for derivations.
+/// phylax operations that require them for derivations.
 struct Sequencer {
     sequences: std::collections::HashMap<[u8; 32], u64>,
 }
@@ -102,25 +102,25 @@ async fn initialize() -> (Context, BanksClient, Keypair, Pubkey) {
 
     // Verify the initial bridge state is as expected.
     let bridge_key = Bridge::<'_, { AccountState::Uninitialized }>::key(None, &program);
-    let guardian_set_key = PhylaxSet::<'_, { AccountState::Uninitialized }>::key(
+    let phylax_set_key = PhylaxSet::<'_, { AccountState::Uninitialized }>::key(
         &PhylaxSetDerivationData { index: 0 },
         &program,
     );
 
     // Fetch account states.
     let bridge: BridgeData = common::get_account_data(&mut client, bridge_key).await;
-    let guardian_set: PhylaxSetData =
-        common::get_account_data(&mut client, guardian_set_key).await;
+    let phylax_set: PhylaxSetData =
+        common::get_account_data(&mut client, phylax_set_key).await;
 
     // Bridge Config should be as expected.
-    assert_eq!(bridge.guardian_set_index, 0);
-    assert_eq!(bridge.config.guardian_set_expiration_time, 2_000_000_000);
+    assert_eq!(bridge.phylax_set_index, 0);
+    assert_eq!(bridge.config.phylax_set_expiration_time, 2_000_000_000);
     assert_eq!(bridge.config.fee, 500);
 
     // Phylax set account must also be as expected.
-    assert_eq!(guardian_set.index, 0);
-    assert_eq!(guardian_set.keys, context.public);
-    assert!(guardian_set.creation_time as u64 > now);
+    assert_eq!(phylax_set.index, 0);
+    assert_eq!(phylax_set.keys, context.public);
+    assert!(phylax_set.creation_time as u64 > now);
 
     (context, client, payer, program)
 }
@@ -137,7 +137,7 @@ async fn bridge_messages() {
     for _ in 0..2 {
         let nonce = rand::thread_rng().gen();
 
-        // Post the message, publishing the data for guardian consumption.
+        // Post the message, publishing the data for phylax consumption.
         let sequence = context.seq.next(emitter.pubkey().to_bytes());
         let message_key = common::post_message(
             client,
@@ -216,7 +216,7 @@ async fn bridge_messages() {
 
         // Verify on chain Signatures
         assert_eq!(signatures.hash, body);
-        assert_eq!(signatures.guardian_set_index, 0);
+        assert_eq!(signatures.phylax_set_index, 0);
 
         for (signature, _secret_key) in signatures.signatures.iter().zip(context.secret.iter()) {
             assert!(*signature);
@@ -227,7 +227,7 @@ async fn bridge_messages() {
     let nonce = rand::thread_rng().gen();
     let message = b"".to_vec();
 
-    // Post the message, publishing the data for guardian consumption.
+    // Post the message, publishing the data for phylax consumption.
     let sequence = context.seq.next(emitter.pubkey().to_bytes());
     let message_key = common::post_message(
         client,
@@ -304,7 +304,7 @@ async fn bridge_messages() {
 
     // Verify on chain Signatures
     assert_eq!(signatures.hash, body);
-    assert_eq!(signatures.guardian_set_index, 0);
+    assert_eq!(signatures.phylax_set_index, 0);
 
     for (signature, _secret_key) in signatures.signatures.iter().zip(context.secret.iter()) {
         assert!(*signature);
@@ -327,7 +327,7 @@ async fn test_bridge_messages_unreliable() {
         let message: [u8; 32] = rand::thread_rng().gen();
         let sequence = context.seq.next(emitter.pubkey().to_bytes());
 
-        // Post the message, publishing the data for guardian consumption.
+        // Post the message, publishing the data for phylax consumption.
         common::post_message_unreliable(
             client,
             program,
@@ -389,7 +389,7 @@ async fn test_bridge_messages_unreliable() {
 
         // Verify on chain Signatures
         assert_eq!(signatures.hash, body);
-        assert_eq!(signatures.guardian_set_index, 0);
+        assert_eq!(signatures.phylax_set_index, 0);
 
         for (signature, _secret_key) in signatures.signatures.iter().zip(context.secret.iter()) {
             assert!(*signature);
@@ -561,7 +561,7 @@ async fn test_bridge_message_prefunded_account() {
     let nonce = rand::thread_rng().gen();
     let sequence = context.seq.next(emitter.pubkey().to_bytes());
 
-    // Post the message, publishing the data for guardian consumption.
+    // Post the message, publishing the data for phylax consumption.
     // Transfer money into the fee collector as it needs a balance/must exist.
     let fee_collector = FeeCollector::<'_>::key(None, program);
 
@@ -666,7 +666,7 @@ async fn invalid_emitter() {
 }
 
 #[tokio::test]
-async fn guardian_set_change() {
+async fn phylax_set_change() {
     // Initialize a wormhole bridge on Solana to test with.
     let (ref mut context, ref mut client, ref payer, ref program) = initialize().await;
 
@@ -677,15 +677,15 @@ async fn guardian_set_change() {
         .as_secs()
         - 10;
 
-    // Upgrade the guardian set with a new set of guardians.
+    // Upgrade the phylax set with a new set of phylaxs.
     let (new_public_keys, new_secret_keys) = common::generate_keys(1);
 
     let nonce = rand::thread_rng().gen();
     let emitter = Keypair::from_bytes(&GOVERNANCE_KEY).unwrap();
     let sequence = context.seq.next(emitter.pubkey().to_bytes());
     let message = GovernancePayloadPhylaxSetChange {
-        new_guardian_set_index: 1,
-        new_guardian_set: new_public_keys.clone(),
+        new_phylax_set_index: 1,
+        new_phylax_set: new_public_keys.clone(),
     }
     .try_to_vec()
     .unwrap();
@@ -734,7 +734,7 @@ async fn guardian_set_change() {
     common::post_vaa(client, program, payer, signature_set, vaa)
         .await
         .unwrap();
-    common::upgrade_guardian_set(
+    common::upgrade_phylax_set(
         client,
         program,
         payer,
@@ -749,7 +749,7 @@ async fn guardian_set_change() {
 
     // Derive keys for accounts we want to check.
     let bridge_key = Bridge::<'_, { AccountState::Uninitialized }>::key(None, program);
-    let guardian_set_key = PhylaxSet::<'_, { AccountState::Uninitialized }>::key(
+    let phylax_set_key = PhylaxSet::<'_, { AccountState::Uninitialized }>::key(
         &PhylaxSetDerivationData { index: 1 },
         program,
     );
@@ -757,7 +757,7 @@ async fn guardian_set_change() {
     // Fetch account states.
     let posted_message: PostedVAAData = common::get_account_data(client, message_key).await;
     let bridge: BridgeData = common::get_account_data(client, bridge_key).await;
-    let guardian_set: PhylaxSetData = common::get_account_data(client, guardian_set_key).await;
+    let phylax_set: PhylaxSetData = common::get_account_data(client, phylax_set_key).await;
 
     // Verify on chain Message
     assert_eq!(posted_message.message.vaa_version, 0);
@@ -780,15 +780,15 @@ async fn guardian_set_change() {
         emitter.pubkey().to_bytes()
     );
 
-    // Confirm the bridge now has a new guardian set, and no other fields have shifted.
-    assert_eq!(bridge.guardian_set_index, 1);
-    assert_eq!(bridge.config.guardian_set_expiration_time, 2_000_000_000);
+    // Confirm the bridge now has a new phylax set, and no other fields have shifted.
+    assert_eq!(bridge.phylax_set_index, 1);
+    assert_eq!(bridge.config.phylax_set_expiration_time, 2_000_000_000);
     assert_eq!(bridge.config.fee, 500);
 
     // Verify Created Phylax Set
-    assert_eq!(guardian_set.index, 1);
-    assert_eq!(guardian_set.keys, new_public_keys);
-    assert!(guardian_set.creation_time as u64 > now);
+    assert_eq!(phylax_set.index, 1);
+    assert_eq!(phylax_set.keys, new_public_keys);
+    assert!(phylax_set.creation_time as u64 > now);
 
     // Submit the message a second time with a new nonce.
     let nonce = rand::thread_rng().gen();
@@ -848,7 +848,7 @@ async fn guardian_set_change() {
 
     // Verify on chain Signatures
     assert_eq!(signatures.hash, body);
-    assert_eq!(signatures.guardian_set_index, 1);
+    assert_eq!(signatures.phylax_set_index, 1);
 
     for (signature, _secret_key) in signatures.signatures.iter().zip(context.secret.iter()) {
         assert!(*signature);
@@ -856,7 +856,7 @@ async fn guardian_set_change() {
 }
 
 #[tokio::test]
-async fn guardian_set_change_fails() {
+async fn phylax_set_change_fails() {
     // Initialize a wormhole bridge on Solana to test with.
     let (ref mut context, ref mut client, ref payer, ref program) = initialize().await;
 
@@ -864,12 +864,12 @@ async fn guardian_set_change_fails() {
     let emitter = Keypair::new();
     let sequence = context.seq.next(emitter.pubkey().to_bytes());
 
-    // Upgrade the guardian set with a new set of guardians.
+    // Upgrade the phylax set with a new set of phylaxs.
     let (new_public_keys, _new_secret_keys) = common::generate_keys(6);
     let nonce = rand::thread_rng().gen();
     let message = GovernancePayloadPhylaxSetChange {
-        new_guardian_set_index: 2,
-        new_guardian_set: new_public_keys.clone(),
+        new_phylax_set_index: 2,
+        new_phylax_set: new_public_keys.clone(),
     }
     .try_to_vec()
     .unwrap();
@@ -887,7 +887,7 @@ async fn guardian_set_change_fails() {
     .await
     .unwrap();
 
-    assert!(common::upgrade_guardian_set(
+    assert!(common::upgrade_phylax_set(
         client,
         program,
         payer,
@@ -1043,7 +1043,7 @@ async fn set_fees() {
 
     // Verify on chain Signatures
     assert_eq!(signatures.hash, body);
-    assert_eq!(signatures.guardian_set_index, 0);
+    assert_eq!(signatures.phylax_set_index, 0);
 
     for (signature, _secret_key) in signatures.signatures.iter().zip(context.secret.iter()) {
         assert!(*signature);
@@ -1220,7 +1220,7 @@ async fn free_fees() {
 
     // Verify on chain Signatures
     assert_eq!(signatures.hash, body);
-    assert_eq!(signatures.guardian_set_index, 0);
+    assert_eq!(signatures.phylax_set_index, 0);
 
     for (signature, _secret_key) in signatures.signatures.iter().zip(context.secret.iter()) {
         assert!(*signature);
@@ -1452,7 +1452,7 @@ async fn foreign_bridge_messages() {
 
     // Verify on chain Signatures
     assert_eq!(signatures.hash, body);
-    assert_eq!(signatures.guardian_set_index, 0);
+    assert_eq!(signatures.phylax_set_index, 0);
 
     for (signature, _secret_key) in signatures.signatures.iter().zip(context.secret.iter()) {
         assert!(*signature);

@@ -51,7 +51,7 @@ fn batch() {
     let (wh, mut contract) = proper_instantiate();
     register_emitters(&wh, &mut contract, COUNT);
 
-    let index = wh.guardian_set_index();
+    let index = wh.phylax_set_index();
 
     let obs = to_binary(&observations).unwrap();
     let signatures = sign_observations(&wh, &obs);
@@ -159,7 +159,7 @@ fn duplicates() {
     let (txs, observations) = set_up(COUNT);
     let (wh, mut contract) = proper_instantiate();
     register_emitters(&wh, &mut contract, COUNT);
-    let index = wh.guardian_set_index();
+    let index = wh.phylax_set_index();
 
     let obs = to_binary(&observations).unwrap();
     let signatures = sign_observations(&wh, &obs);
@@ -273,8 +273,8 @@ fn transfer_tokens(
 fn round_trip() {
     let (wh, mut contract) = proper_instantiate();
     register_emitters(&wh, &mut contract, 15);
-    let index = wh.guardian_set_index();
-    let num_guardians = wh.num_guardians();
+    let index = wh.phylax_set_index();
+    let num_phylaxs = wh.num_phylaxs();
 
     let emitter_chain = 2;
     let amount = Amount(Uint256::from(500u128).to_be_bytes());
@@ -293,7 +293,7 @@ fn round_trip() {
     };
 
     let (o, _) =
-        transfer_tokens(&wh, &mut contract, key.clone(), msg, index, num_guardians).unwrap();
+        transfer_tokens(&wh, &mut contract, key.clone(), msg, index, num_phylaxs).unwrap();
 
     let expected = transfer::Data {
         amount: Uint256::new(amount.0),
@@ -320,7 +320,7 @@ fn round_trip() {
         fee: Amount([0u8; 32]),
     };
     let (o, _) =
-        transfer_tokens(&wh, &mut contract, key.clone(), msg, index, num_guardians).unwrap();
+        transfer_tokens(&wh, &mut contract, key.clone(), msg, index, num_phylaxs).unwrap();
 
     let expected = transfer::Data {
         amount: Uint256::new(amount.0),
@@ -355,10 +355,10 @@ fn round_trip() {
 }
 
 #[test]
-fn missing_guardian_set() {
+fn missing_phylax_set() {
     let (wh, mut contract) = proper_instantiate();
-    let index = wh.guardian_set_index();
-    let num_guardians = wh.num_guardians();
+    let index = wh.phylax_set_index();
+    let num_phylaxs = wh.num_phylaxs();
 
     let emitter_chain = 2;
     let amount = Amount(Uint256::from(500u128).to_be_bytes());
@@ -376,21 +376,21 @@ fn missing_guardian_set() {
         fee: Amount([0u8; 32]),
     };
 
-    let err = transfer_tokens(&wh, &mut contract, key, msg, index + 1, num_guardians)
-        .expect_err("successfully submitted observations with invalid guardian set");
+    let err = transfer_tokens(&wh, &mut contract, key, msg, index + 1, num_phylaxs)
+        .expect_err("successfully submitted observations with invalid phylax set");
     assert_eq!(
-        "generic error: querier contract error: invalid guardian set",
+        "generic error: querier contract error: invalid phylax set",
         err.root_cause().to_string().to_lowercase()
     );
 }
 
 #[test]
-fn expired_guardian_set() {
+fn expired_phylax_set() {
     let (wh, mut contract) = proper_instantiate();
-    let index = wh.guardian_set_index();
+    let index = wh.phylax_set_index();
     let mut block = contract.app().block_info();
 
-    let num_guardians = wh.num_guardians();
+    let num_phylaxs = wh.num_phylaxs();
 
     let emitter_chain = 2;
     let amount = Amount(Uint256::from(500u128).to_be_bytes());
@@ -408,15 +408,15 @@ fn expired_guardian_set() {
         fee: Amount([0u8; 32]),
     };
 
-    // Mark the guardian set expired.
+    // Mark the phylax set expired.
     wh.set_expiration(block.height);
     block.height += 1;
     contract.app_mut().set_block(block);
 
-    let err = transfer_tokens(&wh, &mut contract, key, msg, index, num_guardians)
-        .expect_err("successfully submitted observations with expired guardian set");
+    let err = transfer_tokens(&wh, &mut contract, key, msg, index, num_phylaxs)
+        .expect_err("successfully submitted observations with expired phylax set");
     assert_eq!(
-        "generic error: querier contract error: guardian set expired",
+        "generic error: querier contract error: phylax set expired",
         err.root_cause().to_string().to_lowercase()
     );
 }
@@ -425,7 +425,7 @@ fn expired_guardian_set() {
 fn no_quorum() {
     let (wh, mut contract) = proper_instantiate();
     register_emitters(&wh, &mut contract, 3);
-    let index = wh.guardian_set_index();
+    let index = wh.phylax_set_index();
     let quorum = wh
         .calculate_quorum(index, contract.app().block_info().height)
         .unwrap() as usize;
@@ -466,8 +466,8 @@ fn no_quorum() {
 fn missing_wrapped_account() {
     let (wh, mut contract) = proper_instantiate();
     register_emitters(&wh, &mut contract, 15);
-    let index = wh.guardian_set_index();
-    let num_guardians = wh.num_guardians();
+    let index = wh.phylax_set_index();
+    let num_phylaxs = wh.num_phylaxs();
     let quorum = wh
         .calculate_quorum(index, contract.app().block_info().height)
         .unwrap() as usize;
@@ -489,7 +489,7 @@ fn missing_wrapped_account() {
     };
 
     let (_, responses) =
-        transfer_tokens(&wh, &mut contract, key.clone(), msg, index, num_guardians).unwrap();
+        transfer_tokens(&wh, &mut contract, key.clone(), msg, index, num_phylaxs).unwrap();
     for mut resp in responses.into_iter().skip(quorum - 1) {
         let r = from_binary::<Vec<SubmitObservationResponse>>(&resp.data.take().unwrap()).unwrap();
         assert_eq!(key, r[0].key);
@@ -521,8 +521,8 @@ fn missing_native_account() {
 
     let (wh, mut contract) = proper_instantiate();
     register_emitters(&wh, &mut contract, 15);
-    let index = wh.guardian_set_index();
-    let num_guardians = wh.num_guardians();
+    let index = wh.phylax_set_index();
+    let num_phylaxs = wh.num_phylaxs();
     let quorum = wh
         .calculate_quorum(index, contract.app().block_info().height)
         .unwrap() as usize;
@@ -553,7 +553,7 @@ fn missing_native_account() {
     };
 
     let (_, responses) =
-        transfer_tokens(&wh, &mut contract, key.clone(), msg, index, num_guardians).unwrap();
+        transfer_tokens(&wh, &mut contract, key.clone(), msg, index, num_phylaxs).unwrap();
     for mut resp in responses.into_iter().skip(quorum - 1) {
         let r = from_binary::<Vec<SubmitObservationResponse>>(&resp.data.take().unwrap()).unwrap();
         assert_eq!(key, r[0].key);
@@ -581,8 +581,8 @@ fn repeated() {
 
     let (wh, mut contract) = proper_instantiate();
     register_emitters(&wh, &mut contract, 3);
-    let index = wh.guardian_set_index();
-    let num_guardians = wh.num_guardians();
+    let index = wh.phylax_set_index();
+    let num_phylaxs = wh.num_phylaxs();
 
     let emitter_chain = 2;
     let recipient_chain = 14;
@@ -607,7 +607,7 @@ fn repeated() {
             key.clone(),
             msg.clone(),
             index,
-            num_guardians,
+            num_phylaxs,
         )
         .unwrap();
     }
@@ -644,8 +644,8 @@ fn wrapped_to_wrapped() {
 
     let (wh, mut contract) = proper_instantiate();
     register_emitters(&wh, &mut contract, 15);
-    let index = wh.guardian_set_index();
-    let num_guardians = wh.num_guardians();
+    let index = wh.phylax_set_index();
+    let num_phylaxs = wh.num_phylaxs();
     // increase the sequence to be large than the vaa's used to register emitters.
     contract.sequence += 100;
 
@@ -672,7 +672,7 @@ fn wrapped_to_wrapped() {
     };
 
     let (o, _) =
-        transfer_tokens(&wh, &mut contract, key.clone(), msg, index, num_guardians).unwrap();
+        transfer_tokens(&wh, &mut contract, key.clone(), msg, index, num_phylaxs).unwrap();
 
     let expected = transfer::Data {
         amount: Uint256::new(amount.0),
@@ -708,8 +708,8 @@ fn wrapped_to_wrapped() {
 #[test]
 fn unknown_emitter() {
     let (wh, mut contract) = proper_instantiate();
-    let index = wh.guardian_set_index();
-    let num_guardians = wh.num_guardians();
+    let index = wh.phylax_set_index();
+    let num_phylaxs = wh.num_phylaxs();
     let quorum = wh
         .calculate_quorum(index, contract.app().block_info().height)
         .unwrap() as usize;
@@ -731,7 +731,7 @@ fn unknown_emitter() {
     };
 
     let (_, responses) =
-        transfer_tokens(&wh, &mut contract, key.clone(), msg, index, num_guardians).unwrap();
+        transfer_tokens(&wh, &mut contract, key.clone(), msg, index, num_phylaxs).unwrap();
     for mut resp in responses.into_iter().skip(quorum - 1) {
         let r = from_binary::<Vec<SubmitObservationResponse>>(&resp.data.take().unwrap()).unwrap();
         assert_eq!(key, r[0].key);
@@ -754,7 +754,7 @@ fn unknown_emitter() {
 fn different_observations() {
     let (wh, mut contract) = proper_instantiate();
     register_emitters(&wh, &mut contract, 3);
-    let index = wh.guardian_set_index();
+    let index = wh.phylax_set_index();
     let quorum = wh
         .calculate_quorum(index, contract.app().block_info().height)
         .unwrap() as usize;
@@ -839,11 +839,11 @@ fn emit_event_with_quorum() {
     let (wh, mut contract) = proper_instantiate();
     register_emitters(&wh, &mut contract, 3);
 
-    let index = wh.guardian_set_index();
+    let index = wh.phylax_set_index();
     let quorum = wh
         .calculate_quorum(index, contract.app().block_info().height)
         .unwrap() as usize;
-    let num_guardians = wh.num_guardians();
+    let num_phylaxs = wh.num_phylaxs();
 
     let emitter_chain = 2;
     let amount = Amount(Uint256::from(500u128).to_be_bytes());
@@ -862,7 +862,7 @@ fn emit_event_with_quorum() {
     };
 
     let (o, responses) =
-        transfer_tokens(&wh, &mut contract, key, msg, index, num_guardians).unwrap();
+        transfer_tokens(&wh, &mut contract, key, msg, index, num_phylaxs).unwrap();
 
     let expected = Event::new("wasm-Observation")
         .add_attribute("tx_hash", serde_json_wasm::to_string(&o.tx_hash).unwrap())
@@ -886,7 +886,7 @@ fn emit_event_with_quorum() {
         )
         .add_attribute("payload", serde_json_wasm::to_string(&o.payload).unwrap());
 
-    assert_eq!(responses.len(), num_guardians);
+    assert_eq!(responses.len(), num_phylaxs);
     for (i, r) in responses.into_iter().enumerate() {
         if i < quorum - 1 || i >= quorum {
             assert!(!r.has_event(&expected));
@@ -901,8 +901,8 @@ fn duplicate_vaa() {
     let (wh, mut contract) = proper_instantiate();
     register_emitters(&wh, &mut contract, 3);
 
-    let index = wh.guardian_set_index();
-    let num_guardians = wh.num_guardians();
+    let index = wh.phylax_set_index();
+    let num_phylaxs = wh.num_phylaxs();
 
     let emitter_chain = 2;
     let amount = Amount(Uint256::from(500u128).to_be_bytes());
@@ -920,7 +920,7 @@ fn duplicate_vaa() {
         fee: Amount([0u8; 32]),
     };
 
-    let (o, _) = transfer_tokens(&wh, &mut contract, key, msg, index, num_guardians).unwrap();
+    let (o, _) = transfer_tokens(&wh, &mut contract, key, msg, index, num_phylaxs).unwrap();
 
     // Now try to submit a VAA for this transfer.  This should fail since the transfer is already
     // processed.
@@ -939,7 +939,7 @@ fn duplicate_vaa() {
 
     let mut data = serde_wormhole::to_vec(&Header {
         version: 1,
-        guardian_set_index: index,
+        phylax_set_index: index,
         signatures: wh.sign(&body_data),
     })
     .unwrap();
@@ -956,8 +956,8 @@ fn digest_mismatch() {
     let (wh, mut contract) = proper_instantiate();
     register_emitters(&wh, &mut contract, 3);
 
-    let index = wh.guardian_set_index();
-    let num_guardians = wh.num_guardians();
+    let index = wh.phylax_set_index();
+    let num_phylaxs = wh.num_phylaxs();
 
     let emitter_chain = 2;
     let amount = Amount(Uint256::from(500u128).to_be_bytes());
@@ -975,7 +975,7 @@ fn digest_mismatch() {
         fee: Amount([0u8; 32]),
     };
 
-    let (o, _) = transfer_tokens(&wh, &mut contract, key, msg, index, num_guardians).unwrap();
+    let (o, _) = transfer_tokens(&wh, &mut contract, key, msg, index, num_phylaxs).unwrap();
 
     // Now try submitting a VAA with the same (chain, address, sequence) tuple but with
     // different details.
@@ -994,7 +994,7 @@ fn digest_mismatch() {
 
     let mut data = serde_wormhole::to_vec(&Header {
         version: 1,
-        guardian_set_index: index,
+        phylax_set_index: index,
         signatures: wh.sign(&body_data),
     })
     .unwrap();

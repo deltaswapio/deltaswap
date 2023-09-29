@@ -46,7 +46,7 @@
                 "id": "vaa",
                 "type": "promptString",
                 "description": "hex VAA string",
-                // this vaa is PhylaxSetIndex: 1, which contains two signers: guardian-0 & guardian-1
+                // this vaa is PhylaxSetIndex: 1, which contains two signers: phylax-0 & phylax-1
                 "default": "010000000001005e56dff434b7c2d81b38aa2544038839b61fd7654cc6c7bcf5c3cc61ad8f9e5d21df20d2f4c910c813dca110a627fa6db7d349d5988f28dd45971a7361bcc65d00000000001d0acf0400010000000000000000000000000000000000000000000000000000000000000004b5cc4c23133077212000000000000000000000000000000000000000000000000000000000436f72650200000000000102befa429d57cd18b7f8a4d91a2da9ab4af05d0fbe88d7d8b32a9105d228100e72dffe2fae0705d31c",
             },
         ]

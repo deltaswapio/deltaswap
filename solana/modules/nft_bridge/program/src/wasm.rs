@@ -162,7 +162,7 @@ pub fn complete_transfer_native_ix(
     );
     let post_vaa_data = PostVAAData {
         version: vaa.version,
-        guardian_set_index: vaa.guardian_set_index,
+        phylax_set_index: vaa.phylax_set_index,
         timestamp: vaa.timestamp,
         nonce: vaa.nonce,
         emitter_chain: vaa.emitter_chain,
@@ -211,7 +211,7 @@ pub fn complete_transfer_wrapped_ix(
     );
     let post_vaa_data = PostVAAData {
         version: vaa.version,
-        guardian_set_index: vaa.guardian_set_index,
+        phylax_set_index: vaa.phylax_set_index,
         timestamp: vaa.timestamp,
         nonce: vaa.nonce,
         emitter_chain: vaa.emitter_chain,
@@ -256,7 +256,7 @@ pub fn complete_transfer_wrapped_meta_ix(
     );
     let post_vaa_data = PostVAAData {
         version: vaa.version,
-        guardian_set_index: vaa.guardian_set_index,
+        phylax_set_index: vaa.phylax_set_index,
         timestamp: vaa.timestamp,
         nonce: vaa.nonce,
         emitter_chain: vaa.emitter_chain,
@@ -331,7 +331,7 @@ pub fn register_chain_ix(
     );
     let post_vaa_data = PostVAAData {
         version: vaa.version,
-        guardian_set_index: vaa.guardian_set_index,
+        phylax_set_index: vaa.phylax_set_index,
         timestamp: vaa.timestamp,
         nonce: vaa.nonce,
         emitter_chain: vaa.emitter_chain,

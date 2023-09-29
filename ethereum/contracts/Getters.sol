@@ -7,15 +7,15 @@ import "./State.sol";
 
 contract Getters is State {
     function getPhylaxSet(uint32 index) public view returns (Structs.PhylaxSet memory) {
-        return _state.guardianSets[index];
+        return _state.phylaxSets[index];
     }
 
     function getCurrentPhylaxSetIndex() public view returns (uint32) {
-        return _state.guardianSetIndex;
+        return _state.phylaxSetIndex;
     }
 
     function getPhylaxSetExpiry() public view returns (uint32) {
-        return _state.guardianSetExpiry;
+        return _state.phylaxSetExpiry;
     }
 
     function governanceActionIsConsumed(bytes32 hash) public view returns (bool) {

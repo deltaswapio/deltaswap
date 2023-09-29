@@ -1,6 +1,6 @@
 // The edit-vaa command allows the user to create, update or sign a VAA. It queries the core contract on Ethereum
-// to get the guardian set. It can take signature data from wormscan or (in the case of testnet or devnet) it can
-// take a guardian secret as input.
+// to get the phylax set. It can take signature data from wormscan or (in the case of testnet or devnet) it can
+// take a phylax secret as input.
 //
 // Sign a VAA using signatures from wormscan:
 //   worm edit-vaa -n mainnet --vaa $VAA --wormscanurl https://api.wormscan.io/api/v1/observations/1/0000000000000000000000000000000000000000000000000000000000000004/651169458827220885
@@ -12,7 +12,7 @@
 //     --payload 000000000000000000000000000000436972636c65496e746567726174696f6e020002000600000000000000000000000009fb06a271faff70a651047395aaeb6265265f1300000001 \
 //     --wormscanurl https://api.wormscan.io/api/v1/observations/1/0000000000000000000000000000000000000000000000000000000000000004/651169458827220885
 //
-// Sign a VAA using the testnet guardian key:
+// Sign a VAA using the testnet phylax key:
 //   worm edit-vaa --vaa $VAA --gs $TESTNET_GUARDIAN_SECRET
 //
 
@@ -37,9 +37,9 @@ export const builder = (y: typeof yargs) =>
       demandOption: true,
     })
     .option("network", NETWORK_OPTIONS)
-    .option("guardian-set-index", {
+    .option("phylax-set-index", {
       alias: "gsi",
-      describe: "guardian set index",
+      describe: "phylax set index",
       type: "number",
     })
     .option("signatures", {
@@ -94,7 +94,7 @@ export const builder = (y: typeof yargs) =>
       describe: "payload in hex format",
       type: "string",
     })
-    .option("guardian-secret", {
+    .option("phylax-secret", {
       alias: "gs",
       describe: "Phylax's secret key",
       type: "string",
@@ -118,13 +118,13 @@ export const handler = async (
     numSigs += 1;
   }
 
-  if (argv["guardian-secret"]) {
+  if (argv["phylax-secret"]) {
     numSigs += 1;
   }
 
   if (numSigs > 1) {
     throw new Error(
-      `may only specify one of "--signatures", "--wormscan", "--wormscanurl" or "--guardian-secret"`
+      `may only specify one of "--signatures", "--wormscan", "--wormscanurl" or "--phylax-secret"`
     );
   }
 
@@ -146,7 +146,7 @@ export const handler = async (
   } else {
     vaa = {
       version: 1,
-      guardianSetIndex: 0,
+      phylaxSetIndex: 0,
       signatures: [],
       timestamp: 0,
       nonce: 0,
@@ -161,14 +161,14 @@ export const handler = async (
     };
   }
 
-  if (argv["guardian-set-index"]) {
-    vaa.guardianSetIndex = Number(argv["guardian-set-index"]);
+  if (argv["phylax-set-index"]) {
+    vaa.phylaxSetIndex = Number(argv["phylax-set-index"]);
   }
 
   if (argv.signatures) {
     vaa.signatures = argv.signatures.split(",").map((s, i) => ({
       signature: s,
-      guardianSetIndex: i,
+      phylaxSetIndex: i,
     }));
   } else if (argv.wormscan) {
     const wormscanurl =
@@ -179,21 +179,21 @@ export const handler = async (
       "/" +
       vaa.sequence.toString();
     const wormscanData = await axios.get(wormscanurl);
-    const guardianSet = await getPhylaxSet(network, vaa.guardianSetIndex);
+    const phylaxSet = await getPhylaxSet(network, vaa.phylaxSetIndex);
     vaa.signatures = await getSigsFromWormscanData(
       wormscanData.data,
-      guardianSet
+      phylaxSet
     );
   } else if (argv.wormscanurl) {
     const wormscanData = await axios.get(argv.wormscanurl);
-    const guardianSet = await getPhylaxSet(network, vaa.guardianSetIndex);
+    const phylaxSet = await getPhylaxSet(network, vaa.phylaxSetIndex);
     vaa.signatures = await getSigsFromWormscanData(
       wormscanData.data,
-      guardianSet
+      phylaxSet
     );
-  } else if (argv["guardian-secret"]) {
-    vaa.guardianSetIndex = 0;
-    vaa.signatures = sign([argv["guardian-secret"]], vaa as VAA<Payload>);
+  } else if (argv["phylax-secret"]) {
+    vaa.phylaxSetIndex = 0;
+    vaa.signatures = sign([argv["phylax-secret"]], vaa as VAA<Payload>);
   }
 
   if (argv["emitter-chain-id"]) {
@@ -230,10 +230,10 @@ export const handler = async (
   console.log(serialiseVAA(vaa as unknown as VAA<Payload>));
 };
 
-// getPhylaxSet queries the core contract on Ethereum for the guardian set and returns it.
+// getPhylaxSet queries the core contract on Ethereum for the phylax set and returns it.
 const getPhylaxSet = async (
   network: Network,
-  guardianSetIndex: number
+  phylaxSetIndex: number
 ): Promise<string[]> => {
   let n = NETWORKS[network].ethereum;
   let contract_address = CONTRACTS[network].ethereum.core;
@@ -243,31 +243,31 @@ const getPhylaxSet = async (
 
   const provider = new ethers.providers.JsonRpcProvider(n.rpc);
   const contract = Implementation__factory.connect(contract_address, provider);
-  const result = await contract.getPhylaxSet(guardianSetIndex);
+  const result = await contract.getPhylaxSet(phylaxSetIndex);
   return result[0];
 };
 
-// getSigsFromWormscanData reads the guardian address / signature pairs from the wormscan data
+// getSigsFromWormscanData reads the phylax address / signature pairs from the wormscan data
 // and generates an array of signature objects. It then sorts them into order by address.
 const getSigsFromWormscanData = (
   wormscanData: any,
-  guardianSet: string[]
+  phylaxSet: string[]
 ): Signature[] => {
   let sigs: Signature[] = [];
   for (let data in wormscanData) {
-    let guardianAddr = wormscanData[data].guardianAddr;
+    let phylaxAddr = wormscanData[data].phylaxAddr;
     let gsi = -1;
-    for (let idx = 0; idx < guardianSet.length; idx++) {
-      if (guardianSet[idx] === guardianAddr) {
+    for (let idx = 0; idx < phylaxSet.length; idx++) {
+      if (phylaxSet[idx] === phylaxAddr) {
         gsi = idx;
         break;
       }
     }
     if (gsi < 0) {
-      throw new Error("Failed to look up guardian address " + guardianAddr);
+      throw new Error("Failed to look up phylax address " + phylaxAddr);
     }
     let sig: Signature = {
-      guardianSetIndex: gsi,
+      phylaxSetIndex: gsi,
       signature: Buffer.from(wormscanData[data].signature, "base64").toString(
         "hex"
       ),
@@ -277,11 +277,11 @@ const getSigsFromWormscanData = (
   }
 
   return sigs.sort((s1, s2) => {
-    if (s1.guardianSetIndex > s2.guardianSetIndex) {
+    if (s1.phylaxSetIndex > s2.phylaxSetIndex) {
       return 1;
     }
 
-    if (s1.guardianSetIndex < s2.guardianSetIndex) {
+    if (s1.phylaxSetIndex < s2.phylaxSetIndex) {
       return -1;
     }
 

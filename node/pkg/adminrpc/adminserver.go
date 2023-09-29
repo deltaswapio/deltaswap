@@ -47,17 +47,17 @@ var (
 
 type nodePrivilegedService struct {
 	nodev1.UnimplementedNodePrivilegedServiceServer
-	db              *db.Database
-	injectC         chan<- *common.MessagePublication
-	obsvReqSendC    chan<- *gossipv1.ObservationRequest
-	logger          *zap.Logger
-	signedInC       chan<- *gossipv1.SignedVAAWithQuorum
-	governor        *governor.ChainGovernor
-	evmConnector    connectors.Connector
-	gsCache         sync.Map
-	gk              *ecdsa.PrivateKey
-	guardianAddress ethcommon.Address
-	rpcMap          map[string]string
+	db            *db.Database
+	injectC       chan<- *common.MessagePublication
+	obsvReqSendC  chan<- *gossipv1.ObservationRequest
+	logger        *zap.Logger
+	signedInC     chan<- *gossipv1.SignedVAAWithQuorum
+	governor      *governor.ChainGovernor
+	evmConnector  connectors.Connector
+	gsCache       sync.Map
+	gk            *ecdsa.PrivateKey
+	phylaxAddress ethcommon.Address
+	rpcMap        map[string]string
 }
 
 func NewPrivService(
@@ -69,33 +69,33 @@ func NewPrivService(
 	governor *governor.ChainGovernor,
 	evmConnector connectors.Connector,
 	gk *ecdsa.PrivateKey,
-	guardianAddress ethcommon.Address,
+	phylaxAddress ethcommon.Address,
 	rpcMap map[string]string,
 
 ) *nodePrivilegedService {
 	return &nodePrivilegedService{
-		db:              db,
-		injectC:         injectC,
-		obsvReqSendC:    obsvReqSendC,
-		logger:          logger,
-		signedInC:       signedInC,
-		governor:        governor,
-		evmConnector:    evmConnector,
-		gk:              gk,
-		guardianAddress: guardianAddress,
-		rpcMap:          rpcMap,
+		db:            db,
+		injectC:       injectC,
+		obsvReqSendC:  obsvReqSendC,
+		logger:        logger,
+		signedInC:     signedInC,
+		governor:      governor,
+		evmConnector:  evmConnector,
+		gk:            gk,
+		phylaxAddress: phylaxAddress,
+		rpcMap:        rpcMap,
 	}
 }
 
 // adminPhylaxSetUpdateToVAA converts a nodev1.PhylaxSetUpdate message to its canonical VAA representation.
 // Returns an error if the data is invalid.
-func adminPhylaxSetUpdateToVAA(req *nodev1.PhylaxSetUpdate, timestamp time.Time, guardianSetIndex uint32, nonce uint32, sequence uint64) (*vaa.VAA, error) {
+func adminPhylaxSetUpdateToVAA(req *nodev1.PhylaxSetUpdate, timestamp time.Time, phylaxSetIndex uint32, nonce uint32, sequence uint64) (*vaa.VAA, error) {
 	if len(req.Phylaxs) == 0 {
-		return nil, errors.New("empty guardian set specified")
+		return nil, errors.New("empty phylax set specified")
 	}
 
 	if len(req.Phylaxs) > common.MaxPhylaxCount {
-		return nil, fmt.Errorf("too many guardians - %d, maximum is %d", len(req.Phylaxs), common.MaxPhylaxCount)
+		return nil, fmt.Errorf("too many phylaxs - %d, maximum is %d", len(req.Phylaxs), common.MaxPhylaxCount)
 	}
 
 	addrs := make([]ethcommon.Address, len(req.Phylaxs))
@@ -114,10 +114,10 @@ func adminPhylaxSetUpdateToVAA(req *nodev1.PhylaxSetUpdate, timestamp time.Time,
 		addrs[i] = ethAddr
 	}
 
-	v := vaa.CreateGovernanceVAA(timestamp, nonce, sequence, guardianSetIndex,
+	v := vaa.CreateGovernanceVAA(timestamp, nonce, sequence, phylaxSetIndex,
 		vaa.BodyPhylaxSetUpdate{
 			Keys:     addrs,
-			NewIndex: guardianSetIndex + 1,
+			NewIndex: phylaxSetIndex + 1,
 		}.Serialize())
 
 	return v, nil
@@ -125,7 +125,7 @@ func adminPhylaxSetUpdateToVAA(req *nodev1.PhylaxSetUpdate, timestamp time.Time,
 
 // adminContractUpgradeToVAA converts a nodev1.ContractUpgrade message to its canonical VAA representation.
 // Returns an error if the data is invalid.
-func adminContractUpgradeToVAA(req *nodev1.ContractUpgrade, timestamp time.Time, guardianSetIndex uint32, nonce uint32, sequence uint64) (*vaa.VAA, error) {
+func adminContractUpgradeToVAA(req *nodev1.ContractUpgrade, timestamp time.Time, phylaxSetIndex uint32, nonce uint32, sequence uint64) (*vaa.VAA, error) {
 	b, err := hex.DecodeString(req.NewContract)
 	if err != nil {
 		return nil, errors.New("invalid new contract address encoding (expected hex)")
@@ -142,7 +142,7 @@ func adminContractUpgradeToVAA(req *nodev1.ContractUpgrade, timestamp time.Time,
 	newContractAddress := vaa.Address{}
 	copy(newContractAddress[:], b)
 
-	v := vaa.CreateGovernanceVAA(timestamp, nonce, sequence, guardianSetIndex,
+	v := vaa.CreateGovernanceVAA(timestamp, nonce, sequence, phylaxSetIndex,
 		vaa.BodyContractUpgrade{
 			ChainID:     vaa.ChainID(req.ChainId),
 			NewContract: newContractAddress,
@@ -153,7 +153,7 @@ func adminContractUpgradeToVAA(req *nodev1.ContractUpgrade, timestamp time.Time,
 
 // tokenBridgeRegisterChain converts a nodev1.TokenBridgeRegisterChain message to its canonical VAA representation.
 // Returns an error if the data is invalid.
-func tokenBridgeRegisterChain(req *nodev1.BridgeRegisterChain, timestamp time.Time, guardianSetIndex uint32, nonce uint32, sequence uint64) (*vaa.VAA, error) {
+func tokenBridgeRegisterChain(req *nodev1.BridgeRegisterChain, timestamp time.Time, phylaxSetIndex uint32, nonce uint32, sequence uint64) (*vaa.VAA, error) {
 	if req.ChainId > math.MaxUint16 {
 		return nil, errors.New("invalid chain_id")
 	}
@@ -170,7 +170,7 @@ func tokenBridgeRegisterChain(req *nodev1.BridgeRegisterChain, timestamp time.Ti
 	emitterAddress := vaa.Address{}
 	copy(emitterAddress[:], b)
 
-	v := vaa.CreateGovernanceVAA(timestamp, nonce, sequence, guardianSetIndex,
+	v := vaa.CreateGovernanceVAA(timestamp, nonce, sequence, phylaxSetIndex,
 		vaa.BodyTokenBridgeRegisterChain{
 			Module:         req.Module,
 			ChainID:        vaa.ChainID(req.ChainId),
@@ -182,7 +182,7 @@ func tokenBridgeRegisterChain(req *nodev1.BridgeRegisterChain, timestamp time.Ti
 
 // accountantModifyBalance converts a nodev1.AccountantModifyBalance message to its canonical VAA representation.
 // Returns an error if the data is invalid.
-func accountantModifyBalance(req *nodev1.AccountantModifyBalance, timestamp time.Time, guardianSetIndex uint32, nonce uint32, sequence uint64) (*vaa.VAA, error) {
+func accountantModifyBalance(req *nodev1.AccountantModifyBalance, timestamp time.Time, phylaxSetIndex uint32, nonce uint32, sequence uint64) (*vaa.VAA, error) {
 	if req.TargetChainId > math.MaxUint16 {
 		return nil, errors.New("invalid target_chain_id")
 	}
@@ -221,7 +221,7 @@ func accountantModifyBalance(req *nodev1.AccountantModifyBalance, timestamp time
 	tokenAdress := vaa.Address{}
 	copy(tokenAdress[:], b)
 
-	v := vaa.CreateGovernanceVAA(timestamp, nonce, sequence, guardianSetIndex,
+	v := vaa.CreateGovernanceVAA(timestamp, nonce, sequence, phylaxSetIndex,
 		vaa.BodyAccountantModifyBalance{
 			Module:        req.Module,
 			TargetChainID: vaa.ChainID(req.TargetChainId),
@@ -240,7 +240,7 @@ func accountantModifyBalance(req *nodev1.AccountantModifyBalance, timestamp time
 
 // tokenBridgeUpgradeContract converts a nodev1.TokenBridgeRegisterChain message to its canonical VAA representation.
 // Returns an error if the data is invalid.
-func tokenBridgeUpgradeContract(req *nodev1.BridgeUpgradeContract, timestamp time.Time, guardianSetIndex uint32, nonce uint32, sequence uint64) (*vaa.VAA, error) {
+func tokenBridgeUpgradeContract(req *nodev1.BridgeUpgradeContract, timestamp time.Time, phylaxSetIndex uint32, nonce uint32, sequence uint64) (*vaa.VAA, error) {
 	if req.TargetChainId > math.MaxUint16 {
 		return nil, errors.New("invalid target_chain_id")
 	}
@@ -257,7 +257,7 @@ func tokenBridgeUpgradeContract(req *nodev1.BridgeUpgradeContract, timestamp tim
 	newContract := vaa.Address{}
 	copy(newContract[:], b)
 
-	v := vaa.CreateGovernanceVAA(timestamp, nonce, sequence, guardianSetIndex,
+	v := vaa.CreateGovernanceVAA(timestamp, nonce, sequence, phylaxSetIndex,
 		vaa.BodyTokenBridgeUpgradeContract{
 			Module:        req.Module,
 			TargetChainID: vaa.ChainID(req.TargetChainId),
@@ -269,7 +269,7 @@ func tokenBridgeUpgradeContract(req *nodev1.BridgeUpgradeContract, timestamp tim
 
 // deltachainStoreCode converts a nodev1.WormchainStoreCode to its canonical VAA representation
 // Returns an error if the data is invalid
-func deltachainStoreCode(req *nodev1.WormchainStoreCode, timestamp time.Time, guardianSetIndex uint32, nonce uint32, sequence uint64) (*vaa.VAA, error) {
+func deltachainStoreCode(req *nodev1.WormchainStoreCode, timestamp time.Time, phylaxSetIndex uint32, nonce uint32, sequence uint64) (*vaa.VAA, error) {
 	// validate the length of the hex passed in
 	b, err := hex.DecodeString(req.WasmHash)
 	if err != nil {
@@ -283,7 +283,7 @@ func deltachainStoreCode(req *nodev1.WormchainStoreCode, timestamp time.Time, gu
 	wasmHash := [32]byte{}
 	copy(wasmHash[:], b)
 
-	v := vaa.CreateGovernanceVAA(timestamp, nonce, sequence, guardianSetIndex,
+	v := vaa.CreateGovernanceVAA(timestamp, nonce, sequence, phylaxSetIndex,
 		vaa.BodyWormchainStoreCode{
 			WasmHash: wasmHash,
 		}.Serialize())
@@ -293,10 +293,10 @@ func deltachainStoreCode(req *nodev1.WormchainStoreCode, timestamp time.Time, gu
 
 // deltachainInstantiateContract converts a nodev1.WormchainInstantiateContract to its canonical VAA representation
 // Returns an error if the data is invalid
-func deltachainInstantiateContract(req *nodev1.WormchainInstantiateContract, timestamp time.Time, guardianSetIndex uint32, nonce uint32, sequence uint64) (*vaa.VAA, error) { //nolint:unparam // error is always nil but kept to mirror function signature of other functions
+func deltachainInstantiateContract(req *nodev1.WormchainInstantiateContract, timestamp time.Time, phylaxSetIndex uint32, nonce uint32, sequence uint64) (*vaa.VAA, error) { //nolint:unparam // error is always nil but kept to mirror function signature of other functions
 	instantiationParams_hash := vaa.CreateInstatiateCosmwasmContractHash(req.CodeId, req.Label, []byte(req.InstantiationMsg))
 
-	v := vaa.CreateGovernanceVAA(timestamp, nonce, sequence, guardianSetIndex,
+	v := vaa.CreateGovernanceVAA(timestamp, nonce, sequence, phylaxSetIndex,
 		vaa.BodyWormchainInstantiateContract{
 			InstantiationParamsHash: instantiationParams_hash,
 		}.Serialize())
@@ -305,10 +305,10 @@ func deltachainInstantiateContract(req *nodev1.WormchainInstantiateContract, tim
 }
 
 // deltachainMigrateContract converts a nodev1.WormchainMigrateContract to its canonical VAA representation
-func deltachainMigrateContract(req *nodev1.WormchainMigrateContract, timestamp time.Time, guardianSetIndex uint32, nonce uint32, sequence uint64) (*vaa.VAA, error) { //nolint:unparam // error is always nil but kept to mirror function signature of other functions
+func deltachainMigrateContract(req *nodev1.WormchainMigrateContract, timestamp time.Time, phylaxSetIndex uint32, nonce uint32, sequence uint64) (*vaa.VAA, error) { //nolint:unparam // error is always nil but kept to mirror function signature of other functions
 	instantiationParams_hash := vaa.CreateMigrateCosmwasmContractHash(req.CodeId, req.Contract, []byte(req.InstantiationMsg))
 
-	v := vaa.CreateGovernanceVAA(timestamp, nonce, sequence, guardianSetIndex,
+	v := vaa.CreateGovernanceVAA(timestamp, nonce, sequence, phylaxSetIndex,
 		vaa.BodyWormchainMigrateContract{
 			MigrationParamsHash: instantiationParams_hash,
 		}.Serialize())
@@ -319,7 +319,7 @@ func deltachainMigrateContract(req *nodev1.WormchainMigrateContract, timestamp t
 func deltachainWasmInstantiateAllowlist(
 	req *nodev1.WormchainWasmInstantiateAllowlist,
 	timestamp time.Time,
-	guardianSetIndex uint32,
+	phylaxSetIndex uint32,
 	nonce uint32,
 	sequence uint64,
 ) (*vaa.VAA, error) { //nolint:unparam // error is always nil but kept to mirror function signature of other functions
@@ -340,7 +340,7 @@ func deltachainWasmInstantiateAllowlist(
 	var decodedAddr32 [32]byte
 	copy(decodedAddr32[:], decodedAddr)
 
-	v := vaa.CreateGovernanceVAA(timestamp, nonce, sequence, guardianSetIndex, vaa.BodyWormchainWasmAllowlistInstantiate{
+	v := vaa.CreateGovernanceVAA(timestamp, nonce, sequence, phylaxSetIndex, vaa.BodyWormchainWasmAllowlistInstantiate{
 		ContractAddr: decodedAddr32,
 		CodeId:       req.CodeId,
 	}.Serialize(action))
@@ -351,11 +351,11 @@ func deltachainWasmInstantiateAllowlist(
 func gatewayScheduleUpgrade(
 	req *nodev1.GatewayScheduleUpgrade,
 	timestamp time.Time,
-	guardianSetIndex uint32,
+	phylaxSetIndex uint32,
 	nonce uint32,
 	sequence uint64,
 ) (*vaa.VAA, error) { //nolint:unparam // error is always nil but kept to mirror function signature of other functions
-	v := vaa.CreateGovernanceVAA(timestamp, nonce, sequence, guardianSetIndex, vaa.BodyGatewayScheduleUpgrade{
+	v := vaa.CreateGovernanceVAA(timestamp, nonce, sequence, phylaxSetIndex, vaa.BodyGatewayScheduleUpgrade{
 		Name:   req.Name,
 		Height: req.Height,
 	}.Serialize())
@@ -365,11 +365,11 @@ func gatewayScheduleUpgrade(
 
 func gatewayCancelUpgrade(
 	timestamp time.Time,
-	guardianSetIndex uint32,
+	phylaxSetIndex uint32,
 	nonce uint32,
 	sequence uint64,
 ) (*vaa.VAA, error) { //nolint:unparam // error is always nil but kept to mirror function signature of other functions
-	v := vaa.CreateGovernanceVAA(timestamp, nonce, sequence, guardianSetIndex,
+	v := vaa.CreateGovernanceVAA(timestamp, nonce, sequence, phylaxSetIndex,
 		vaa.EmptyPayloadVaa(vaa.GatewayModuleStr, vaa.ActionCancelUpgrade, vaa.ChainIDWormchain),
 	)
 
@@ -379,7 +379,7 @@ func gatewayCancelUpgrade(
 func gatewayIbcComposabilityMwSetContract(
 	req *nodev1.GatewayIbcComposabilityMwSetContract,
 	timestamp time.Time,
-	guardianSetIndex uint32,
+	phylaxSetIndex uint32,
 	nonce uint32,
 	sequence uint64,
 ) (*vaa.VAA, error) {
@@ -391,7 +391,7 @@ func gatewayIbcComposabilityMwSetContract(
 	var decodedAddr32 [32]byte
 	copy(decodedAddr32[:], decodedAddr)
 
-	v := vaa.CreateGovernanceVAA(timestamp, nonce, sequence, guardianSetIndex, vaa.BodyGatewayIbcComposabilityMwContract{
+	v := vaa.CreateGovernanceVAA(timestamp, nonce, sequence, phylaxSetIndex, vaa.BodyGatewayIbcComposabilityMwContract{
 		ContractAddr: decodedAddr32,
 	}.Serialize())
 
@@ -400,14 +400,14 @@ func gatewayIbcComposabilityMwSetContract(
 
 // circleIntegrationUpdateWormholeFinality converts a nodev1.CircleIntegrationUpdateWormholeFinality to its canonical VAA representation
 // Returns an error if the data is invalid
-func circleIntegrationUpdateWormholeFinality(req *nodev1.CircleIntegrationUpdateWormholeFinality, timestamp time.Time, guardianSetIndex uint32, nonce uint32, sequence uint64) (*vaa.VAA, error) {
+func circleIntegrationUpdateWormholeFinality(req *nodev1.CircleIntegrationUpdateWormholeFinality, timestamp time.Time, phylaxSetIndex uint32, nonce uint32, sequence uint64) (*vaa.VAA, error) {
 	if req.TargetChainId > math.MaxUint16 {
 		return nil, fmt.Errorf("invalid target chain id, must be <= %d", math.MaxUint16)
 	}
 	if req.Finality > math.MaxUint8 {
 		return nil, fmt.Errorf("invalid finality, must be <= %d", math.MaxUint8)
 	}
-	v := vaa.CreateGovernanceVAA(timestamp, nonce, sequence, guardianSetIndex,
+	v := vaa.CreateGovernanceVAA(timestamp, nonce, sequence, phylaxSetIndex,
 		vaa.BodyCircleIntegrationUpdateWormholeFinality{
 			TargetChainID: vaa.ChainID(req.TargetChainId),
 			Finality:      uint8(req.Finality),
@@ -418,7 +418,7 @@ func circleIntegrationUpdateWormholeFinality(req *nodev1.CircleIntegrationUpdate
 
 // circleIntegrationRegisterEmitterAndDomain converts a nodev1.CircleIntegrationRegisterEmitterAndDomain to its canonical VAA representation
 // Returns an error if the data is invalid
-func circleIntegrationRegisterEmitterAndDomain(req *nodev1.CircleIntegrationRegisterEmitterAndDomain, timestamp time.Time, guardianSetIndex uint32, nonce uint32, sequence uint64) (*vaa.VAA, error) {
+func circleIntegrationRegisterEmitterAndDomain(req *nodev1.CircleIntegrationRegisterEmitterAndDomain, timestamp time.Time, phylaxSetIndex uint32, nonce uint32, sequence uint64) (*vaa.VAA, error) {
 	if req.TargetChainId > math.MaxUint16 {
 		return nil, fmt.Errorf("invalid target chain id, must be <= %d", math.MaxUint16)
 	}
@@ -437,7 +437,7 @@ func circleIntegrationRegisterEmitterAndDomain(req *nodev1.CircleIntegrationRegi
 	foreignEmitterAddress := vaa.Address{}
 	copy(foreignEmitterAddress[:], b)
 
-	v := vaa.CreateGovernanceVAA(timestamp, nonce, sequence, guardianSetIndex,
+	v := vaa.CreateGovernanceVAA(timestamp, nonce, sequence, phylaxSetIndex,
 		vaa.BodyCircleIntegrationRegisterEmitterAndDomain{
 			TargetChainID:         vaa.ChainID(req.TargetChainId),
 			ForeignEmitterChainId: vaa.ChainID(req.ForeignEmitterChainId),
@@ -450,7 +450,7 @@ func circleIntegrationRegisterEmitterAndDomain(req *nodev1.CircleIntegrationRegi
 
 // circleIntegrationUpgradeContractImplementation converts a nodev1.CircleIntegrationUpgradeContractImplementation to its canonical VAA representation
 // Returns an error if the data is invalid
-func circleIntegrationUpgradeContractImplementation(req *nodev1.CircleIntegrationUpgradeContractImplementation, timestamp time.Time, guardianSetIndex uint32, nonce uint32, sequence uint64) (*vaa.VAA, error) {
+func circleIntegrationUpgradeContractImplementation(req *nodev1.CircleIntegrationUpgradeContractImplementation, timestamp time.Time, phylaxSetIndex uint32, nonce uint32, sequence uint64) (*vaa.VAA, error) {
 	if req.TargetChainId > math.MaxUint16 {
 		return nil, fmt.Errorf("invalid target chain id, must be <= %d", math.MaxUint16)
 	}
@@ -466,7 +466,7 @@ func circleIntegrationUpgradeContractImplementation(req *nodev1.CircleIntegratio
 	newImplementationAddress := vaa.Address{}
 	copy(newImplementationAddress[:], b)
 
-	v := vaa.CreateGovernanceVAA(timestamp, nonce, sequence, guardianSetIndex,
+	v := vaa.CreateGovernanceVAA(timestamp, nonce, sequence, phylaxSetIndex,
 		vaa.BodyCircleIntegrationUpgradeContractImplementation{
 			TargetChainID:            vaa.ChainID(req.TargetChainId),
 			NewImplementationAddress: newImplementationAddress,
@@ -478,7 +478,7 @@ func circleIntegrationUpgradeContractImplementation(req *nodev1.CircleIntegratio
 func ibcUpdateChannelChain(
 	req *nodev1.IbcUpdateChannelChain,
 	timestamp time.Time,
-	guardianSetIndex uint32,
+	phylaxSetIndex uint32,
 	nonce uint32,
 	sequence uint64,
 ) (*vaa.VAA, error) {
@@ -506,7 +506,7 @@ func ibcUpdateChannelChain(
 	}
 
 	// create governance VAA
-	v := vaa.CreateGovernanceVAA(timestamp, nonce, sequence, guardianSetIndex,
+	v := vaa.CreateGovernanceVAA(timestamp, nonce, sequence, phylaxSetIndex,
 		vaa.BodyIbcUpdateChannelChain{
 			TargetChainId: vaa.ChainID(req.TargetChainId),
 			ChannelId:     channelId,
@@ -518,7 +518,7 @@ func ibcUpdateChannelChain(
 
 // wormholeRelayerSetDefaultDeliveryProvider converts a nodev1.WormholeRelayerSetDefaultDeliveryProvider message to its canonical VAA representation.
 // Returns an error if the data is invalid.
-func wormholeRelayerSetDefaultDeliveryProvider(req *nodev1.WormholeRelayerSetDefaultDeliveryProvider, timestamp time.Time, guardianSetIndex uint32, nonce uint32, sequence uint64) (*vaa.VAA, error) {
+func wormholeRelayerSetDefaultDeliveryProvider(req *nodev1.WormholeRelayerSetDefaultDeliveryProvider, timestamp time.Time, phylaxSetIndex uint32, nonce uint32, sequence uint64) (*vaa.VAA, error) {
 	if req.ChainId > math.MaxUint16 {
 		return nil, errors.New("invalid target_chain_id")
 	}
@@ -535,7 +535,7 @@ func wormholeRelayerSetDefaultDeliveryProvider(req *nodev1.WormholeRelayerSetDef
 	NewDefaultDeliveryProviderAddress := vaa.Address{}
 	copy(NewDefaultDeliveryProviderAddress[:], b)
 
-	v := vaa.CreateGovernanceVAA(timestamp, nonce, sequence, guardianSetIndex,
+	v := vaa.CreateGovernanceVAA(timestamp, nonce, sequence, phylaxSetIndex,
 		vaa.BodyWormholeRelayerSetDefaultDeliveryProvider{
 			ChainID:                           vaa.ChainID(req.ChainId),
 			NewDefaultDeliveryProviderAddress: NewDefaultDeliveryProviderAddress,
@@ -888,7 +888,7 @@ func (s *nodePrivilegedService) SignExistingVAA(ctx context.Context, req *nodev1
 	}
 
 	if req.NewPhylaxSetIndex <= v.PhylaxSetIndex {
-		return nil, errors.New("new guardian set index must be higher than provided VAA")
+		return nil, errors.New("new phylax set index must be higher than provided VAA")
 	}
 
 	if s.evmConnector == nil {
@@ -905,7 +905,7 @@ func (s *nodePrivilegedService) SignExistingVAA(ctx context.Context, req *nodev1
 	} else {
 		evmGs, err := s.evmConnector.GetPhylaxSet(ctx, v.PhylaxSetIndex)
 		if err != nil {
-			return nil, fmt.Errorf("failed to load guardian set [%d]: %w", v.PhylaxSetIndex, err)
+			return nil, fmt.Errorf("failed to load phylax set [%d]: %w", v.PhylaxSetIndex, err)
 		}
 		gs = &common.PhylaxSet{
 			Keys:  evmGs.Keys,
@@ -914,8 +914,8 @@ func (s *nodePrivilegedService) SignExistingVAA(ctx context.Context, req *nodev1
 		s.gsCache.Store(v.PhylaxSetIndex, gs)
 	}
 
-	if slices.Index(gs.Keys, s.guardianAddress) != -1 {
-		return nil, fmt.Errorf("local guardian is already on the old set")
+	if slices.Index(gs.Keys, s.phylaxAddress) != -1 {
+		return nil, fmt.Errorf("local phylax is already on the old set")
 	}
 
 	// Verify VAA
@@ -925,12 +925,12 @@ func (s *nodePrivilegedService) SignExistingVAA(ctx context.Context, req *nodev1
 	}
 
 	if len(req.NewPhylaxAddrs) > 255 {
-		return nil, errors.New("new guardian set has too many guardians")
+		return nil, errors.New("new phylax set has too many phylaxs")
 	}
 	newGS := make([]ethcommon.Address, len(req.NewPhylaxAddrs))
-	for i, guardianString := range req.NewPhylaxAddrs {
-		guardianAddress := ethcommon.HexToAddress(guardianString)
-		newGS[i] = guardianAddress
+	for i, phylaxString := range req.NewPhylaxAddrs {
+		phylaxAddress := ethcommon.HexToAddress(phylaxString)
+		newGS[i] = phylaxAddress
 	}
 
 	// Make sure there are no duplicates. Compact needs to take a sorted slice to remove all duplicates.
@@ -940,17 +940,17 @@ func (s *nodePrivilegedService) SignExistingVAA(ctx context.Context, req *nodev1
 	})
 	newGsLen := len(newGSSorted)
 	if len(slices.Compact(newGSSorted)) != newGsLen {
-		return nil, fmt.Errorf("duplicate guardians in the guardian set")
+		return nil, fmt.Errorf("duplicate phylaxs in the phylax set")
 	}
 
-	localPhylaxIndex := slices.Index(newGS, s.guardianAddress)
+	localPhylaxIndex := slices.Index(newGS, s.phylaxAddress)
 	if localPhylaxIndex == -1 {
-		return nil, fmt.Errorf("local guardian is not a member of the new guardian set")
+		return nil, fmt.Errorf("local phylax is not a member of the new phylax set")
 	}
 
 	newVAA := &vaa.VAA{
 		Version: v.Version,
-		// Set the new guardian set index
+		// Set the new phylax set index
 		PhylaxSetIndex: req.NewPhylaxSetIndex,
 		// Signatures will be repopulated
 		Signatures:       nil,
@@ -977,15 +977,15 @@ func (s *nodePrivilegedService) SignExistingVAA(ctx context.Context, req *nodev1
 		})
 	}
 
-	// Add our own signature only if the new guardian set would reach quorum
+	// Add our own signature only if the new phylax set would reach quorum
 	if vaa.CalculateQuorum(len(newGS)) > len(newVAA.Signatures)+1 {
-		return nil, errors.New("cannot reach quorum on new guardian set with the local signature")
+		return nil, errors.New("cannot reach quorum on new phylax set with the local signature")
 	}
 
 	// Add local signature
 	newVAA.AddSignature(s.gk, uint8(localPhylaxIndex))
 
-	// Sort VAA signatures by guardian ID
+	// Sort VAA signatures by phylax ID
 	slices.SortFunc(newVAA.Signatures, func(a, b *vaa.Signature) bool {
 		return a.Index < b.Index
 	})

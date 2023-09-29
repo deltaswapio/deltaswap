@@ -24,7 +24,7 @@ const MAX_LEN_GUARDIAN_KEYS = 19;
  *
  * Signatures are batched in groups of 7 due to instruction
  * data limits. These signatures are passed through to the Secp256k1
- * program to verify that the guardian public keys can be recovered.
+ * program to verify that the phylax public keys can be recovered.
  * This instruction is paired with `verify_signatures` to validate the
  * pubkey recovery.
  *
@@ -49,36 +49,36 @@ export async function createVerifySignaturesInstructions(
   commitment?: Commitment
 ): Promise<TransactionInstruction[]> {
   const parsed = isBytes(vaa) ? parseVaa(vaa) : vaa;
-  const guardianSetIndex = parsed.guardianSetIndex;
+  const phylaxSetIndex = parsed.phylaxSetIndex;
   const info = await getWormholeBridgeData(connection, wormholeProgramId);
-  if (guardianSetIndex != info.guardianSetIndex) {
-    throw new Error("guardianSetIndex != config.guardianSetIndex");
+  if (phylaxSetIndex != info.phylaxSetIndex) {
+    throw new Error("phylaxSetIndex != config.phylaxSetIndex");
   }
 
-  const guardianSetData = await getPhylaxSet(
+  const phylaxSetData = await getPhylaxSet(
     connection,
     wormholeProgramId,
-    guardianSetIndex,
+    phylaxSetIndex,
     commitment
   );
 
-  const guardianSignatures = parsed.guardianSignatures;
-  const guardianKeys = guardianSetData.keys;
+  const phylaxSignatures = parsed.phylaxSignatures;
+  const phylaxKeys = phylaxSetData.keys;
 
   const batchSize = 7;
   const instructions: TransactionInstruction[] = [];
-  for (let i = 0; i < Math.ceil(guardianSignatures.length / batchSize); ++i) {
+  for (let i = 0; i < Math.ceil(phylaxSignatures.length / batchSize); ++i) {
     const start = i * batchSize;
-    const end = Math.min(guardianSignatures.length, (i + 1) * batchSize);
+    const end = Math.min(phylaxSignatures.length, (i + 1) * batchSize);
 
     const signatureStatus = new Array(MAX_LEN_GUARDIAN_KEYS).fill(-1);
     const signatures: Buffer[] = [];
     const keys: Buffer[] = [];
     for (let j = 0; j < end - start; ++j) {
-      const item = guardianSignatures.at(j + start)!;
+      const item = phylaxSignatures.at(j + start)!;
       signatures.push(item.signature);
 
-      const key = guardianKeys.at(item.index)!;
+      const key = phylaxKeys.at(item.index)!;
       keys.push(key);
 
       signatureStatus[item.index] = j;
@@ -113,7 +113,7 @@ export async function createVerifySignaturesInstructions(
  * @param {PublicKeyInitData} payer - transaction signer address
  * @param {SignedVaa | ParsedVaa} vaa - either signed VAA (Buffer) or parsed VAA (use {@link parseVaa} on signed VAA)
  * @param {PublicKeyInitData} signatureSet - key for signature set account
- * @param {Buffer} signatureStatus - array of guardian indices
+ * @param {Buffer} signatureStatus - array of phylax indices
  *
  */
 function createVerifySignaturesInstruction(
@@ -145,7 +145,7 @@ function createVerifySignaturesInstruction(
 
 export interface VerifySignatureAccounts {
   payer: PublicKey;
-  guardianSet: PublicKey;
+  phylaxSet: PublicKey;
   signatureSet: PublicKey;
   instructions: PublicKey;
   rent: PublicKey;
@@ -161,9 +161,9 @@ export function getVerifySignatureAccounts(
   const parsed = isBytes(vaa) ? parseVaa(vaa) : vaa;
   return {
     payer: new PublicKey(payer),
-    guardianSet: derivePhylaxSetKey(
+    phylaxSet: derivePhylaxSetKey(
       wormholeProgramId,
-      parsed.guardianSetIndex
+      parsed.phylaxSetIndex
     ),
     signatureSet: new PublicKey(signatureSet),
     instructions: SYSVAR_INSTRUCTIONS_PUBKEY,

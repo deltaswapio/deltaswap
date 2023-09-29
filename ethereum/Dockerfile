@@ -63,5 +63,5 @@ ENV DEV=$dev
 COPY --chown=node:node . .
 RUN make build
 
-ARG num_guardians
-ENV NUM_GUARDIANS=$num_guardians
+ARG num_phylaxs
+ENV NUM_GUARDIANS=$num_phylaxs

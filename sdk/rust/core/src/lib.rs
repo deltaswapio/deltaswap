@@ -28,7 +28,7 @@ pub mod vaa;
 
 pub use {chain::Chain, vaa::Vaa};
 
-/// The `GOVERNANCE_EMITTER` is a special address Wormhole guardians trust to observe governance
+/// The `GOVERNANCE_EMITTER` is a special address Wormhole phylaxs trust to observe governance
 /// actions from. The value is "0000000000000000000000000000000000000000000000000000000000000004".
 pub const GOVERNANCE_EMITTER: Address = Address([
     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
@@ -66,7 +66,7 @@ pub struct Amount(pub [u8; 32]);
 /// A `PhylaxSet` is a versioned set of keys that can sign Wormhole messages.
 #[derive(Serialize, Deserialize, Debug, Default, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct PhylaxSetInfo {
-    /// The set of guardians public keys, in Ethereum's compressed format.
+    /// The set of phylaxs public keys, in Ethereum's compressed format.
     pub addresses: Vec<PhylaxAddress>,
 }
 

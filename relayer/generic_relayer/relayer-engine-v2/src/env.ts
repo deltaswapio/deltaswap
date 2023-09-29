@@ -56,7 +56,7 @@ const defaults: { [key in Flag]: GRRelayerAppConfig } = {
     spyEndpoint: "spy:7072",
     logLevel: "debug",
     logFormat: "text",
-    wormholeRpcs: ["http://guardian:7071"],
+    wormholeRpcs: ["http://phylax:7071"],
     providers: {
       chains: {
         [CHAIN_ID_ETH]: {

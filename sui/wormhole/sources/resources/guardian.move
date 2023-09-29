@@ -1,13 +1,13 @@
 // SPDX-License-Identifier: Apache 2
 
 /// This module implements a `Phylax` that warehouses a 20-byte public key.
-module wormhole::guardian {
+module wormhole::phylax {
     use std::vector::{Self};
     use sui::hash::{Self};
     use sui::ecdsa_k1::{Self};
 
     use wormhole::bytes20::{Self, Bytes20};
-    use wormhole::guardian_signature::{Self, PhylaxSignature};
+    use wormhole::phylax_signature::{Self, PhylaxSignature};
 
     /// Phylax public key is all zeros.
     const E_ZERO_ADDRESS: u64 = 1;
@@ -42,7 +42,7 @@ module wormhole::guardian {
         signature: PhylaxSignature,
         message_hash: vector<u8>
     ): bool {
-        let sig = guardian_signature::to_rsv(signature);
+        let sig = phylax_signature::to_rsv(signature);
         as_bytes(self) == ecrecover(message_hash, sig)
     }
 
@@ -56,18 +56,18 @@ module wormhole::guardian {
         vector::remove(&mut pubkey, 0);
 
         let hash = hash::keccak256(&pubkey);
-        let guardian_pubkey = vector::empty<u8>();
+        let phylax_pubkey = vector::empty<u8>();
         let (i, n) = (0, bytes20::length());
         while (i < n) {
             vector::push_back(
-                &mut guardian_pubkey,
+                &mut phylax_pubkey,
                 vector::pop_back(&mut hash)
             );
             i = i + 1;
         };
-        vector::reverse(&mut guardian_pubkey);
+        vector::reverse(&mut phylax_pubkey);
 
-        guardian_pubkey
+        phylax_pubkey
     }
 
     #[test_only]

@@ -11,11 +11,11 @@ def app_id(portal_core, client, creator):
 
 @pytest.fixture(scope='module')
 def signers(gen_test):
-    return bytes.fromhex("".join(gen_test.guardianKeys))
+    return bytes.fromhex("".join(gen_test.phylaxKeys))
 
 @pytest.fixture(scope='module')
 def signers_private_keys(gen_test):
-    return gen_test.guardianPrivKeys
+    return gen_test.phylaxPrivKeys
 
 @pytest.fixture(scope='module')
 def hash():

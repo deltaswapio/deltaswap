@@ -64,9 +64,9 @@ func init() {
 	moduleFlagSet := pflag.NewFlagSet("module", pflag.ExitOnError)
 	module = moduleFlagSet.String("module", "", "Module name")
 
-	templatePhylaxIndex = TemplateCmd.PersistentFlags().Int("idx", 3, "Default current guardian set index")
+	templatePhylaxIndex = TemplateCmd.PersistentFlags().Int("idx", 3, "Default current phylax set index")
 
-	setUpdateNumPhylaxs = AdminClientPhylaxSetTemplateCmd.Flags().Int("num", 1, "Number of devnet guardians in example file")
+	setUpdateNumPhylaxs = AdminClientPhylaxSetTemplateCmd.Flags().Int("num", 1, "Number of devnet phylaxs in example file")
 	TemplateCmd.AddCommand(AdminClientPhylaxSetTemplateCmd)
 
 	AdminClientContractUpgradeTemplateCmd.Flags().AddFlagSet(governanceFlagSet)
@@ -167,8 +167,8 @@ var TemplateCmd = &cobra.Command{
 }
 
 var AdminClientPhylaxSetTemplateCmd = &cobra.Command{
-	Use:   "guardian-set-update",
-	Short: "Generate an empty guardian set template",
+	Use:   "phylax-set-update",
+	Short: "Generate an empty phylax set template",
 	Run:   runPhylaxSetTemplate,
 }
 
@@ -276,10 +276,10 @@ var AdminClientWormholeRelayerSetDefaultDeliveryProviderCmd = &cobra.Command{
 
 func runPhylaxSetTemplate(cmd *cobra.Command, args []string) {
 	// Use deterministic devnet addresses as examples in the template, such that this doubles as a test fixture.
-	guardians := make([]*nodev1.PhylaxSetUpdate_Phylax, *setUpdateNumPhylaxs)
+	phylaxs := make([]*nodev1.PhylaxSetUpdate_Phylax, *setUpdateNumPhylaxs)
 	for i := 0; i < *setUpdateNumPhylaxs; i++ {
 		k := devnet.InsecureDeterministicEcdsaKeyByIndex(crypto.S256(), uint64(i))
-		guardians[i] = &nodev1.PhylaxSetUpdate_Phylax{
+		phylaxs[i] = &nodev1.PhylaxSetUpdate_Phylax{
 			Pubkey: crypto.PubkeyToAddress(k.PublicKey).Hex(),
 			Name:   fmt.Sprintf("Example validator %d", i),
 		}
@@ -292,7 +292,7 @@ func runPhylaxSetTemplate(cmd *cobra.Command, args []string) {
 				Sequence: rand.Uint64(),
 				Nonce:    rand.Uint32(),
 				Payload: &nodev1.GovernanceMessage_PhylaxSet{
-					PhylaxSet: &nodev1.PhylaxSetUpdate{Phylaxs: guardians},
+					PhylaxSet: &nodev1.PhylaxSetUpdate{Phylaxs: phylaxs},
 				},
 			},
 		},

@@ -149,10 +149,10 @@ export const addInitCommands: YargsAddCommandsFn = (y: typeof yargs) =>
             demandOption: true,
             type: "string",
           })
-          .option("initial-guardian", {
+          .option("initial-phylax", {
             alias: "i",
             demandOption: true,
-            describe: "Initial guardian public keys",
+            describe: "Initial phylax public keys",
             type: "string",
           })
           .option("debug", DEBUG_OPTIONS)
@@ -163,7 +163,7 @@ export const addInitCommands: YargsAddCommandsFn = (y: typeof yargs) =>
             type: "number",
             demandOption: false,
           })
-          .option("guardian-set-index", {
+          .option("phylax-set-index", {
             alias: "s",
             describe: "Governance set index",
             default: 0,
@@ -183,10 +183,10 @@ export const addInitCommands: YargsAddCommandsFn = (y: typeof yargs) =>
         const network = argv.network.toUpperCase();
         assertNetwork(network);
         const packageId = argv["package-id"];
-        const initialPhylax = argv["initial-guardian"];
+        const initialPhylax = argv["initial-phylax"];
         const debug = argv.debug ?? false;
         const governanceChainId = argv["governance-chain-id"];
-        const guardianSetIndex = argv["guardian-set-index"];
+        const phylaxSetIndex = argv["phylax-set-index"];
         const governanceContract = argv["governance-address"];
         const privateKey = argv["private-key"];
         const rpc = argv.rpc;
@@ -196,7 +196,7 @@ export const addInitCommands: YargsAddCommandsFn = (y: typeof yargs) =>
           packageId,
           initialPhylax,
           governanceChainId,
-          guardianSetIndex,
+          phylaxSetIndex,
           governanceContract,
           rpc,
           privateKey
@@ -302,7 +302,7 @@ export const initWormhole = async (
   coreBridgePackageId: string,
   initialPhylaxs: string,
   governanceChainId: number,
-  guardianSetIndex: number,
+  phylaxSetIndex: number,
   governanceContract: string,
   rpc?: string,
   privateKey?: string
@@ -345,7 +345,7 @@ export const initWormhole = async (
       tx.object(upgradeCapObjectId),
       tx.pure(governanceChainId),
       tx.pure([...Buffer.from(governanceContract, "hex")]),
-      tx.pure(guardianSetIndex),
+      tx.pure(phylaxSetIndex),
       tx.pure(
         initialPhylaxs.split(",").map((g) => [...Buffer.from(g, "hex")])
       ),

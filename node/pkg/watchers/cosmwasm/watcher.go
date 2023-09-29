@@ -348,7 +348,7 @@ func (e *Watcher) Run(ctx context.Context) error {
 					messagesConfirmed.WithLabelValues(networkName).Inc()
 				}
 
-				// We do not send guardian changes to the processor - ETH guardians are the source of truth.
+				// We do not send phylax changes to the processor - ETH phylaxs are the source of truth.
 			}
 		}
 	})

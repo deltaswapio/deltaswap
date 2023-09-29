@@ -148,8 +148,8 @@ test("Deploy Contracts", (done) => {
         {
           gov_chain: GOVERNANCE_CHAIN,
           gov_address: governanceAddress,
-          guardian_set_expirity: 86400,
-          initial_guardian_set: {
+          phylax_set_expirity: 86400,
+          initial_phylax_set: {
             addresses: [
               {
                 bytes: GUARDIAN_ADDRESS,
@@ -1327,9 +1327,9 @@ function alwaysPassTests(shutdownMode: boolean, pass: number) {
 
           const wormhole = contracts.get("wormhole")!;
           const result: any = await client.wasm.contractQuery(wormhole, {
-            guardian_set_info: {},
+            phylax_set_info: {},
           });
-          expect(result.guardian_set_index).toBe(0);
+          expect(result.phylax_set_index).toBe(0);
           expect(result.addresses.length).toBe(1);
           expect(result.addresses[0].bytes).toBe(GUARDIAN_ADDRESS);
           done();

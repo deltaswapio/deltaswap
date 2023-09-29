@@ -22,14 +22,14 @@ contract Storage {
     struct WormholeState {
         Structs.Provider provider;
 
-        // Mapping of guardian_set_index => guardian set
-        mapping(uint32 => Structs.PhylaxSet) guardianSets;
+        // Mapping of phylax_set_index => phylax set
+        mapping(uint32 => Structs.PhylaxSet) phylaxSets;
 
-        // Current active guardian set index
-        uint32 guardianSetIndex;
+        // Current active phylax set index
+        uint32 phylaxSetIndex;
 
-        // Period for which a guardian set stays active after it has been replaced
-        uint32 guardianSetExpiry;
+        // Period for which a phylax set stays active after it has been replaced
+        uint32 phylaxSetExpiry;
 
         // Sequence numbers per emitter
         mapping(address => uint64) sequences;

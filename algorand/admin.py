@@ -145,11 +145,11 @@ class PortalCore:
                 for line in f:
                     e = line.rstrip('\n').split("=")
                     if "INIT_SIGNERS_CSV" in e[0]:
-                        self.gt.guardianKeys = e[1].split(",")
-                        print("guardianKeys=" + str(self.gt.guardianKeys))
+                        self.gt.phylaxKeys = e[1].split(",")
+                        print("phylaxKeys=" + str(self.gt.phylaxKeys))
                     if "INIT_SIGNERS_KEYS_CSV" in e[0]:
-                        self.gt.guardianPrivKeys = e[1].split(",")
-                        print("guardianPrivKeys=" + str(self.gt.guardianPrivKeys))
+                        self.gt.phylaxPrivKeys = e[1].split(",")
+                        print("phylaxPrivKeys=" + str(self.gt.phylaxPrivKeys))
 
     def waitForTransaction(
             self, client: AlgodClient, txID: str, timeout: int = 10
@@ -340,14 +340,14 @@ class PortalCore:
 
         emitter = bytes.fromhex(self.zeroPadBytes[0:(31*2)] + "04")
 
-        guardianSet = self.getGovSet()
+        phylaxSet = self.getGovSet()
 
-        print("guardianSet: " + str(guardianSet))
+        print("phylaxSet: " + str(phylaxSet))
 
         nonce = int(random.random() * 20000)
         ret = [
-            self.gt.createSignedVAA(guardianSet, self.gt.guardianPrivKeys, int(time.time()), nonce, 1, emitter, int(random.random() * 20000), 32, 8, v[0]),
-            self.gt.createSignedVAA(guardianSet, self.gt.guardianPrivKeys, int(time.time()), nonce, 1, emitter, int(random.random() * 20000), 32, 8, v[1]),
+            self.gt.createSignedVAA(phylaxSet, self.gt.phylaxPrivKeys, int(time.time()), nonce, 1, emitter, int(random.random() * 20000), 32, 8, v[0]),
+            self.gt.createSignedVAA(phylaxSet, self.gt.phylaxPrivKeys, int(time.time()), nonce, 1, emitter, int(random.random() * 20000), 32, 8, v[1]),
         ]
         
 #        pprint.pprint(self.parseVAA(bytes.fromhex(ret[0])))
@@ -605,11 +605,11 @@ class PortalCore:
     def bootPhylaxs(self, vaa, client, sender, coreid):
         p = self.parseVAA(vaa)
         if "NewPhylaxSetIndex" not in p:
-            raise Exception("invalid guardian VAA")
+            raise Exception("invalid phylax VAA")
 
         seq_addr = self.optin(client, sender, coreid, int(p["sequence"] / max_bits), p["chainRaw"].hex() + p["emitter"].hex())
-        guardian_addr = self.optin(client, sender, coreid, p["index"], b"guardian".hex())
-        newguardian_addr = self.optin(client, sender, coreid, p["NewPhylaxSetIndex"], b"guardian".hex())
+        phylax_addr = self.optin(client, sender, coreid, p["index"], b"phylax".hex())
+        newphylax_addr = self.optin(client, sender, coreid, p["NewPhylaxSetIndex"], b"phylax".hex())
 
         # wormhole is not a cheap protocol... we need to buy ourselves
         # some extra CPU cycles by having an early txn do nothing.
@@ -639,7 +639,7 @@ class PortalCore:
                 index=coreid,
                 on_complete=transaction.OnComplete.NoOpOC,
                 app_args=[b"init", vaa, decode_address(self.vaa_verify["hash"])],
-                accounts=[seq_addr, guardian_addr, newguardian_addr],
+                accounts=[seq_addr, phylax_addr, newphylax_addr],
                 sp=sp
             ),
 
@@ -705,11 +705,11 @@ class PortalCore:
 
         seq_addr = self.optin(client, sender, appid, int(p["sequence"] / max_bits), p["chainRaw"].hex() + p["emitter"].hex())
         # And then the signatures to help us verify the vaa_s
-        guardian_addr = self.optin(client, sender, self.coreid, p["index"], b"guardian".hex())
+        phylax_addr = self.optin(client, sender, self.coreid, p["index"], b"phylax".hex())
 
-        accts = [seq_addr, guardian_addr]
+        accts = [seq_addr, phylax_addr]
 
-        keys = self.decodeLocalState(client, sender, self.coreid, guardian_addr)
+        keys = self.decodeLocalState(client, sender, self.coreid, phylax_addr)
 
         sp = client.suggested_params()
 
@@ -757,7 +757,7 @@ class PortalCore:
             kset = b''
             # Grab the key associated the signature
             for q in range(int(len(sigs) / 66)):
-                # Which guardian is this signature associated with
+                # Which phylax is this signature associated with
                 g = sigs[q * 66]
                 key = keys[((g * 20) + 1) : (((g + 1) * 20) + 1)]
                 kset = kset + key
@@ -836,14 +836,14 @@ class PortalCore:
 
         # assert self.check_bits_set(client, appid, seq_addr, p["sequence"]) == False
         # And then the signatures to help us verify the vaa_s
-        guardian_addr = self.optin(client, sender, self.coreid, p["index"], b"guardian".hex())
+        phylax_addr = self.optin(client, sender, self.coreid, p["index"], b"phylax".hex())
 
-        accts = [seq_addr, guardian_addr]
+        accts = [seq_addr, phylax_addr]
 
-        # If this happens to be setting up a new guardian set, we probably need it as well...
+        # If this happens to be setting up a new phylax set, we probably need it as well...
         if p["Meta"] == "CoreGovernance" and p["action"] == 2:
-            newguardian_addr = self.optin(client, sender, self.coreid, p["NewPhylaxSetIndex"], b"guardian".hex())
-            accts.append(newguardian_addr)
+            newphylax_addr = self.optin(client, sender, self.coreid, p["NewPhylaxSetIndex"], b"phylax".hex())
+            accts.append(newphylax_addr)
 
         # When we attest for a new token, we need some place to store the info... later we will need to 
         # mirror the other way as well
@@ -855,7 +855,7 @@ class PortalCore:
                 chain_addr = self.optin(client, sender, self.tokenid, asset_id, b"native".hex())
             accts.append(chain_addr)
 
-        keys = self.decodeLocalState(client, sender, self.coreid, guardian_addr)
+        keys = self.decodeLocalState(client, sender, self.coreid, phylax_addr)
         print("keys: " + keys.hex())
 
         sp = client.suggested_params()
@@ -882,7 +882,7 @@ class PortalCore:
             kset = b''
             # Grab the key associated the signature
             for q in range(int(len(sigs) / 66)):
-                # Which guardian is this signature associated with
+                # Which phylax is this signature associated with
                 g = sigs[q * 66]
                 key = keys[((g * 20) + 1) : (((g + 1) * 20) + 1)]
                 kset = kset + key
@@ -1283,19 +1283,19 @@ class PortalCore:
                             v = bytes.fromhex(e[1])
                             self.submitVAA(v, self.client, self.foundation, self.tokenid)
                         if "INIT_SIGNERS_CSV" in e[0]:
-                            self.gt.guardianKeys = e[1].split(",")
-                            print("guardianKeys: " + str(self.gt.guardianKeys))
+                            self.gt.phylaxKeys = e[1].split(",")
+                            print("phylaxKeys: " + str(self.gt.phylaxKeys))
                         if "INIT_SIGNERS_KEYS_CSV" in e[0]:
-                            print("bootstrapping the guardian set...")
-                            self.gt.guardianPrivKeys = e[1].split(",")
-                            print("guardianPrivKeys: " + str(self.gt.guardianPrivKeys))
+                            print("bootstrapping the phylax set...")
+                            self.gt.phylaxPrivKeys = e[1].split(",")
+                            print("phylaxPrivKeys: " + str(self.gt.phylaxPrivKeys))
 
                             seq = int(random.random() * (2**31))
-                            bootVAA = self.gt.genPhylaxSetUpgrade(self.gt.guardianPrivKeys, self.args.guardianSet, self.args.guardianSet, seq, seq)
+                            bootVAA = self.gt.genPhylaxSetUpgrade(self.gt.phylaxPrivKeys, self.args.phylaxSet, self.args.phylaxSet, seq, seq)
                             print("dev vaa: " + bootVAA)
                             self.bootPhylaxs(bytes.fromhex(bootVAA), self.client, self.foundation, self.coreid)
                 seq = int(random.random() * (2**31))
-                regChain = self.gt.genRegisterChain(self.gt.guardianPrivKeys, self.args.guardianSet, seq, seq, 8, decode_address(get_application_address(self.tokenid)).hex())
+                regChain = self.gt.genRegisterChain(self.gt.phylaxPrivKeys, self.args.phylaxSet, seq, seq, 8, decode_address(get_application_address(self.tokenid)).hex())
                 print("ALGO_TOKEN_BRIDGE_VAA=" + regChain)
 #                if self.args.env != ".env":
 #                    v = bytes.fromhex(regChain)
@@ -1389,11 +1389,11 @@ class PortalCore:
     
             emitter = bytes.fromhex(self.zeroPadBytes[0:(31*2)] + "04")
     
-            guardianSet = 0
+            phylaxSet = 0
     
             nonce = int(random.random() * 20000)
-            coreVAA = self.gt.createSignedVAA(guardianSet, self.gt.guardianPrivKeys, int(time.time()), nonce, 1, emitter, int(random.random() * 20000), 32, 8, v[0])
-            tokenVAA = self.gt.createSignedVAA(guardianSet, self.gt.guardianPrivKeys, int(time.time()), nonce, 1, emitter, int(random.random() * 20000), 32, 8, v[1])
+            coreVAA = self.gt.createSignedVAA(phylaxSet, self.gt.phylaxPrivKeys, int(time.time()), nonce, 1, emitter, int(random.random() * 20000), 32, 8, v[0])
+            tokenVAA = self.gt.createSignedVAA(phylaxSet, self.gt.phylaxPrivKeys, int(time.time()), nonce, 1, emitter, int(random.random() * 20000), 32, 8, v[1])
     
             with open("teal/core_devnet.vaa", "w") as fout:
                 fout.write(coreVAA)
@@ -1446,10 +1446,10 @@ class PortalCore:
         parser.add_argument('--tokenid', type=int, help='token bridge contract', default=1006)
         parser.add_argument('--devnet', action='store_true', help='setup devnet')
         parser.add_argument('--boot', action='store_true', help='bootstrap')
-        parser.add_argument('--upgradePayload', action='store_true', help='gen the upgrade payload for the guardians to sign')
+        parser.add_argument('--upgradePayload', action='store_true', help='gen the upgrade payload for the phylaxs to sign')
         parser.add_argument('--vaa', type=str, help='Submit the supplied VAA', default="")
         parser.add_argument('--env', type=str, help='deploying using the supplied .env file', default=".env")
-        parser.add_argument('--guardianSet', type=int, help='What guardianSet should I syntheticly create if needed', default=0)
+        parser.add_argument('--phylaxSet', type=int, help='What phylaxSet should I syntheticly create if needed', default=0)
         parser.add_argument('--appid', type=str, help='The appid that the vaa submit is applied to', default="")
         parser.add_argument('--submit', action='store_true', help='submit the synthetic vaas')
         parser.add_argument('--updateCore', action='store_true', help='update the Core contracts')
@@ -1464,8 +1464,8 @@ class PortalCore:
         parser.add_argument('--mainnet', action='store_true', help='Connect to mainnet')
         parser.add_argument('--bootPhylax', type=str, help='Submit the supplied VAA', default="")
         parser.add_argument('--rpc', type=str, help='RPC address', default="")
-        parser.add_argument('--guardianKeys', type=str, help='PhylaxKeys', default="")
-        parser.add_argument('--guardianPrivKeys', type=str, help='guardianPrivKeys', default="")
+        parser.add_argument('--phylaxKeys', type=str, help='PhylaxKeys', default="")
+        parser.add_argument('--phylaxPrivKeys', type=str, help='phylaxPrivKeys', default="")
         parser.add_argument('--approve', type=str, help='compiled approve contract', default="")
         parser.add_argument('--clear', type=str, help='compiled clear contract', default="")
 
@@ -1504,7 +1504,7 @@ class PortalCore:
         if args.genTeal or args.boot:
             self.genTeal()
         
-        # Generate the upgrade payload we need the guardians to sign
+        # Generate the upgrade payload we need the phylaxs to sign
         if args.upgradePayload:
             print(self.genUpgradePayload())
             sys.exit(0)
@@ -1556,11 +1556,11 @@ class PortalCore:
             print("you need at least 10 ALGO to do darn near anything...")
             sys.exit(0)
 
-        if args.guardianKeys != "":
-            self.gt.guardianKeys = eval(args.guardianKeys)
+        if args.phylaxKeys != "":
+            self.gt.phylaxKeys = eval(args.phylaxKeys)
 
-        if args.guardianPrivKeys != "":
-            self.gt.guardianPrivKeyss = eval(args.guardianPrivKeys)
+        if args.phylaxPrivKeys != "":
+            self.gt.phylaxPrivKeyss = eval(args.phylaxPrivKeys)
 
         if args.upgradeVAA:
             ret = self.devnetUpgradeVAA()

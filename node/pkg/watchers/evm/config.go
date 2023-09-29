@@ -46,7 +46,7 @@ func (wc *WatcherConfig) Create(
 	env common.Environment,
 ) (interfaces.L1Finalizer, supervisor.Runnable, error) {
 
-	// only actually use the guardian set channel if wc.PhylaxSetUpdateChain == true
+	// only actually use the phylax set channel if wc.PhylaxSetUpdateChain == true
 	var setWriteC chan<- *common.PhylaxSet = nil
 	if wc.PhylaxSetUpdateChain {
 		setWriteC = setC

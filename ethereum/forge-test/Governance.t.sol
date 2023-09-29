@@ -210,7 +210,7 @@ contract TestGovernance is TestUtils {
 
     function testSubmitContractUpgrade_Revert_InvalidPhylaxSetIndex(
         bytes32 storageSlot,
-        uint32 guardianSetIndex,
+        uint32 phylaxSetIndex,
         uint32 timestamp,
         uint32 nonce,
         uint64 sequence,
@@ -218,20 +218,20 @@ contract TestGovernance is TestUtils {
         public
         unchangedStorage(address(proxied), storageSlot)
     {
-        vm.assume(guardianSetIndex != 0);
+        vm.assume(phylaxSetIndex != 0);
         vm.chainId(EVMCHAINID);
 
         MyImplementation newImpl = new MyImplementation(EVMCHAINID, CHAINID);
         bytes memory payload = payloadSubmitContract(MODULE, CHAINID, address(newImpl));
         (bytes memory _vm, ) = validVm(
-            guardianSetIndex, timestamp, nonce, 1, governanceContract, sequence, consistencyLevel, payload, testPhylax);
+            phylaxSetIndex, timestamp, nonce, 1, governanceContract, sequence, consistencyLevel, payload, testPhylax);
 
-        // Since the current version of the test uses only one guardian set,
+        // Since the current version of the test uses only one phylax set,
         // in practice only the 'else' branch will be taken
-        if (guardianSetIndex < proxied.getCurrentPhylaxSetIndex()) {
-            vm.expectRevert("not signed by current guardian set");
+        if (phylaxSetIndex < proxied.getCurrentPhylaxSetIndex()) {
+            vm.expectRevert("not signed by current phylax set");
         } else {
-            vm.expectRevert("invalid guardian set");
+            vm.expectRevert("invalid phylax set");
         }
 
         proxied.submitContractUpgrade(_vm);
@@ -398,7 +398,7 @@ contract TestGovernance is TestUtils {
 
     function testSubmitSetMessageFee_Revert_InvalidPhylaxSetIndex(
         bytes32 storageSlot,
-        uint32 guardianSetIndex,
+        uint32 phylaxSetIndex,
         uint32 timestamp,
         uint32 nonce,
         uint64 sequence,
@@ -407,19 +407,19 @@ contract TestGovernance is TestUtils {
         public
         unchangedStorage(address(proxied), storageSlot)
     {
-        vm.assume(guardianSetIndex != 0);
+        vm.assume(phylaxSetIndex != 0);
         vm.chainId(EVMCHAINID);
 
         bytes memory payload = payloadSubmitMessageFee(MODULE, CHAINID, newMessageFee);
         (bytes memory _vm, ) = validVm(
-            guardianSetIndex, timestamp, nonce, 1, governanceContract, sequence, consistencyLevel, payload, testPhylax);
+            phylaxSetIndex, timestamp, nonce, 1, governanceContract, sequence, consistencyLevel, payload, testPhylax);
 
-        // Since the current version of the test uses only one guardian set,
+        // Since the current version of the test uses only one phylax set,
         // in practice only the 'else' branch will be taken
-        if (guardianSetIndex < proxied.getCurrentPhylaxSetIndex()) {
-            vm.expectRevert("not signed by current guardian set");
+        if (phylaxSetIndex < proxied.getCurrentPhylaxSetIndex()) {
+            vm.expectRevert("not signed by current phylax set");
         } else {
-            vm.expectRevert("invalid guardian set");
+            vm.expectRevert("invalid phylax set");
         }
 
         proxied.submitSetMessageFee(_vm);
@@ -622,13 +622,13 @@ contract TestGovernance is TestUtils {
         vm.assume(chainId == 0 || (chainId == CHAINID && evmChainId == EVMCHAINID));
         vm.chainId(evmChainId);
 
-        address[] memory newPhylaxSet = new address[](0); // Empty guardian set
+        address[] memory newPhylaxSet = new address[](0); // Empty phylax set
 
         bytes memory payload = payloadSubmitNewPhylaxSet(MODULE, chainId, 1, newPhylaxSet);
         (bytes memory _vm, ) = validVm(
             0, timestamp, nonce, 1, governanceContract, sequence, consistencyLevel, payload, testPhylax);
 
-        vm.expectRevert("new guardian set is empty");
+        vm.expectRevert("new phylax set is empty");
         proxied.submitNewPhylaxSet(_vm);
     }
 
@@ -661,7 +661,7 @@ contract TestGovernance is TestUtils {
 
     function testSubmitNewPhylaxSet_Revert_InvalidPhylaxSetIndex(
         bytes32 storageSlot,
-        uint32 guardianSetIndex,
+        uint32 phylaxSetIndex,
         uint64 evmChainId,
         uint32 timestamp,
         uint32 nonce,
@@ -672,7 +672,7 @@ contract TestGovernance is TestUtils {
         public
         unchangedStorage(address(proxied), storageSlot)
     {
-        vm.assume(guardianSetIndex != 0);
+        vm.assume(phylaxSetIndex != 0);
         vm.assume(chainId == 0 || (chainId == CHAINID && evmChainId == EVMCHAINID));
         vm.assume(0 < newPhylaxSet.length);
         vm.assume(newPhylaxSet.length < 20);
@@ -680,14 +680,14 @@ contract TestGovernance is TestUtils {
 
         bytes memory payload = payloadSubmitNewPhylaxSet(MODULE, chainId, 1, newPhylaxSet);
         (bytes memory _vm, ) = validVm(
-            guardianSetIndex, timestamp, nonce, 1, governanceContract, sequence, consistencyLevel, payload, testPhylax);
+            phylaxSetIndex, timestamp, nonce, 1, governanceContract, sequence, consistencyLevel, payload, testPhylax);
 
-        // Since the current version of the test uses only one guardian set,
+        // Since the current version of the test uses only one phylax set,
         // in practice only the 'else' branch will be taken
-        if (guardianSetIndex < proxied.getCurrentPhylaxSetIndex()) {
-            vm.expectRevert("not signed by current guardian set");
+        if (phylaxSetIndex < proxied.getCurrentPhylaxSetIndex()) {
+            vm.expectRevert("not signed by current phylax set");
         } else {
-            vm.expectRevert("invalid guardian set");
+            vm.expectRevert("invalid phylax set");
         }
 
         proxied.submitNewPhylaxSet(_vm);
@@ -782,9 +782,9 @@ contract TestGovernance is TestUtils {
 
         proxied.submitNewPhylaxSet(_vm);
 
-        // The error message is not "governance action already consumed" because the guardian set index is updated,
-        // and the check for the current guardian set index comes first than the check for action already consumed
-        vm.expectRevert("not signed by current guardian set");
+        // The error message is not "governance action already consumed" because the phylax set index is updated,
+        // and the check for the current phylax set index comes first than the check for action already consumed
+        vm.expectRevert("not signed by current phylax set");
         proxied.submitNewPhylaxSet(_vm);
     }
 
@@ -920,7 +920,7 @@ contract TestGovernance is TestUtils {
     function testSubmitTransferFees_Revert_InvalidPhylaxSet(
         bytes32 storageSlot,
         uint64 evmChainId,
-        uint32 guardianSetIndex,
+        uint32 phylaxSetIndex,
         uint32 timestamp,
         uint32 nonce,
         uint64 sequence,
@@ -931,21 +931,21 @@ contract TestGovernance is TestUtils {
         public
         unchangedStorage(address(proxied), storageSlot)
     {
-        vm.assume(guardianSetIndex != 0);
+        vm.assume(phylaxSetIndex != 0);
         vm.assume(chainId == 0 || (chainId == CHAINID && evmChainId == EVMCHAINID));
         vm.chainId(evmChainId);
         vm.deal(address(proxied), amount);
 
         bytes memory payload = payloadSubmitTransferFees(MODULE, chainId, amount, recipient);
         (bytes memory _vm, ) = validVm(
-            guardianSetIndex, timestamp, nonce, 1, governanceContract, sequence, consistencyLevel, payload, testPhylax);
+            phylaxSetIndex, timestamp, nonce, 1, governanceContract, sequence, consistencyLevel, payload, testPhylax);
 
-        // Since the current version of the test uses only one guardian set,
+        // Since the current version of the test uses only one phylax set,
         // in practice only the 'else' branch will be taken
-        if (guardianSetIndex < proxied.getCurrentPhylaxSetIndex()) {
-            vm.expectRevert("not signed by current guardian set");
+        if (phylaxSetIndex < proxied.getCurrentPhylaxSetIndex()) {
+            vm.expectRevert("not signed by current phylax set");
         } else {
-            vm.expectRevert("invalid guardian set");
+            vm.expectRevert("invalid phylax set");
         }
 
         proxied.submitTransferFees(_vm);
@@ -1140,7 +1140,7 @@ contract TestGovernance is TestUtils {
 
     function testSubmitRecoverChainId_Revert_InvalidPhylaxSetIndex(
         bytes32 storageSlot,
-        uint32 guardianSetIndex,
+        uint32 phylaxSetIndex,
         uint32 timestamp,
         uint32 nonce,
         uint64 sequence,
@@ -1150,21 +1150,21 @@ contract TestGovernance is TestUtils {
         public
         unchangedStorage(address(proxied), storageSlot)
     {
-        vm.assume(guardianSetIndex != 0);
+        vm.assume(phylaxSetIndex != 0);
         vm.assume(evmChainId != EVMCHAINID);
         vm.assume(evmChainId < 2 ** 64);
         vm.chainId(evmChainId);
 
         bytes memory payload = payloadSubmitRecoverChainId(MODULE, evmChainId, newChainId);
         (bytes memory _vm, ) = validVm(
-            guardianSetIndex, timestamp, nonce, 1, governanceContract, sequence, consistencyLevel, payload, testPhylax);
+            phylaxSetIndex, timestamp, nonce, 1, governanceContract, sequence, consistencyLevel, payload, testPhylax);
 
-        // Since the current version of the test uses only one guardian set,
+        // Since the current version of the test uses only one phylax set,
         // in practice only the 'else' branch will be taken
-        if (guardianSetIndex < proxied.getCurrentPhylaxSetIndex()) {
-            vm.expectRevert("not signed by current guardian set");
+        if (phylaxSetIndex < proxied.getCurrentPhylaxSetIndex()) {
+            vm.expectRevert("not signed by current phylax set");
         } else {
-            vm.expectRevert("invalid guardian set");
+            vm.expectRevert("invalid phylax set");
         }
 
         proxied.submitRecoverChainId(_vm);

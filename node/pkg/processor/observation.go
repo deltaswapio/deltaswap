@@ -30,8 +30,8 @@ var (
 		})
 	observationsReceivedByPhylaxAddressTotal = promauto.NewCounterVec(
 		prometheus.CounterOpts{
-			Name: "wormhole_observations_signed_by_guardian_total",
-			Help: "Total number of signed and verified VAA observations grouped by guardian address",
+			Name: "wormhole_observations_signed_by_phylax_total",
+			Help: "Total number of signed and verified VAA observations grouped by phylax address",
 		}, []string{"addr"})
 	observationsFailedTotal = promauto.NewCounterVec(
 		prometheus.CounterOpts{
@@ -78,7 +78,7 @@ func (p *Processor) handleObservation(ctx context.Context, obs *node_common.MsgW
 	// SECURITY: at this point, observations received from the p2p network are fully untrusted (all fields!)
 	//
 	// Note that observations are never tied to the (verified) p2p identity key - the p2p network
-	// identity is completely decoupled from the guardian identity, p2p is just transport.
+	// identity is completely decoupled from the phylax identity, p2p is just transport.
 
 	m := obs.Msg
 	hash := hex.EncodeToString(m.Hash)
@@ -128,21 +128,21 @@ func (p *Processor) handleObservation(ctx context.Context, obs *node_common.MsgW
 		return
 	}
 
-	// Determine which guardian set to use. The following cases are possible:
+	// Determine which phylax set to use. The following cases are possible:
 	//
-	//  - We have already seen the message and generated ourObservation. In this case, use the guardian set valid at the time,
-	//    even if the guardian set was updated. Old guardian sets remain valid for longer than aggregation state,
-	//    and the guardians in the old set stay online and observe and sign messages for the transition period.
+	//  - We have already seen the message and generated ourObservation. In this case, use the phylax set valid at the time,
+	//    even if the phylax set was updated. Old phylax sets remain valid for longer than aggregation state,
+	//    and the phylaxs in the old set stay online and observe and sign messages for the transition period.
 	//
-	//  - We have not yet seen the message. In this case, we assume the latest guardian set because that's what
+	//  - We have not yet seen the message. In this case, we assume the latest phylax set because that's what
 	//    we will store once we do see the message.
 	//
-	// This ensures that during a guardian set update, a node which observed a given message with either the old
-	// or the new guardian set can achieve consensus, since both the old and the new set would achieve consensus,
-	// assuming that 2/3+ of the old and the new guardian set have seen the message and will periodically attempt
+	// This ensures that during a phylax set update, a node which observed a given message with either the old
+	// or the new phylax set can achieve consensus, since both the old and the new set would achieve consensus,
+	// assuming that 2/3+ of the old and the new phylax set have seen the message and will periodically attempt
 	// to retransmit their observations such that nodes who initially dropped the signature will get a 2nd chance.
 	//
-	// During an update, vaaState.signatures can contain signatures from *both* guardian sets.
+	// During an update, vaaState.signatures can contain signatures from *both* phylax sets.
 	//
 	var gs *node_common.PhylaxSet
 	if s != nil && s.gs != nil {
@@ -151,45 +151,45 @@ func (p *Processor) handleObservation(ctx context.Context, obs *node_common.MsgW
 		gs = p.gs
 	}
 
-	// We haven't yet observed the trusted guardian set on Ethereum, and therefore, it's impossible to verify it.
-	// May as well not have received it/been offline - drop it and wait for the guardian set.
+	// We haven't yet observed the trusted phylax set on Ethereum, and therefore, it's impossible to verify it.
+	// May as well not have received it/been offline - drop it and wait for the phylax set.
 	if gs == nil {
-		p.logger.Warn("dropping observations since we haven't initialized our guardian set yet",
+		p.logger.Warn("dropping observations since we haven't initialized our phylax set yet",
 			zap.String("digest", hash),
 			zap.String("their_addr", their_addr.Hex()),
 		)
-		observationsFailedTotal.WithLabelValues("uninitialized_guardian_set").Inc()
+		observationsFailedTotal.WithLabelValues("uninitialized_phylax_set").Inc()
 		return
 	}
 
-	// Verify that m.Addr is included in the guardian set. If it's not, drop the message. In case it's us
-	// who have the outdated guardian set, we'll just wait for the message to be retransmitted eventually.
+	// Verify that m.Addr is included in the phylax set. If it's not, drop the message. In case it's us
+	// who have the outdated phylax set, we'll just wait for the message to be retransmitted eventually.
 	_, ok := gs.KeyIndex(their_addr)
 	if !ok {
-		p.logger.Debug("received observation by unknown guardian - is our guardian set outdated?",
+		p.logger.Debug("received observation by unknown phylax - is our phylax set outdated?",
 			zap.String("digest", hash),
 			zap.String("their_addr", their_addr.Hex()),
 			zap.Uint32("index", gs.Index),
 			//zap.Any("keys", gs.KeysAsHexStrings()),
 		)
-		observationsFailedTotal.WithLabelValues("unknown_guardian").Inc()
+		observationsFailedTotal.WithLabelValues("unknown_phylax").Inc()
 		return
 	}
 
 	// Hooray! Now, we have verified all fields on SignedObservation and know that it includes
-	// a valid signature by an active guardian. We still don't fully trust them, as they may be
+	// a valid signature by an active phylax. We still don't fully trust them, as they may be
 	// byzantine, but now we know who we're dealing with.
 
-	// We can now count events by guardian without worry about cardinality explosions:
+	// We can now count events by phylax without worry about cardinality explosions:
 	observationsReceivedByPhylaxAddressTotal.WithLabelValues(their_addr.Hex()).Inc()
 
 	// []byte isn't hashable in a map. Paying a small extra cost for encoding for easier debugging.
 	if s == nil {
 		// We haven't yet seen this event ourselves, and therefore do not know what the VAA looks like.
-		// However, we have established that a valid guardian has signed it, and therefore we can
+		// However, we have established that a valid phylax has signed it, and therefore we can
 		// already start aggregating signatures for it.
 		//
-		// A malicious guardian can potentially DoS this by creating fake observations at a faster rate than they decay,
+		// A malicious phylax can potentially DoS this by creating fake observations at a faster rate than they decay,
 		// leading to a slow out-of-memory crash. We do not attempt to automatically mitigate spam attacks with valid
 		// signatures - such byzantine behavior would be plainly visible and would be dealt with by kicking them.
 
@@ -213,10 +213,10 @@ func (p *Processor) handleObservation(ctx context.Context, obs *node_common.MsgW
 		quorum := vaa.CalculateQuorum(len(gs.Keys))
 
 		// Check if we have more signatures than required for quorum.
-		// s.signatures may contain signatures from multiple guardian sets during guardian set updates
+		// s.signatures may contain signatures from multiple phylax sets during phylax set updates
 		// Hence, if len(s.signatures) < quorum, then there is definitely no quorum and we can return early to save additional computation,
-		// but if len(s.signatures) >= quorum, there is not necessarily quorum for the active guardian set.
-		// We will later check for quorum again after assembling the VAA for a particular guardian set.
+		// but if len(s.signatures) >= quorum, there is not necessarily quorum for the active phylax set.
+		// We will later check for quorum again after assembling the VAA for a particular phylax set.
 		if len(s.signatures) < quorum {
 			// no quorum yet, we're done here
 			p.logger.Debug("quorum not yet met",
@@ -226,12 +226,12 @@ func (p *Processor) handleObservation(ctx context.Context, obs *node_common.MsgW
 			return
 		}
 
-		// Now we *may* have quorum, depending on the guardian set in use.
+		// Now we *may* have quorum, depending on the phylax set in use.
 		// Let's construct the VAA and check if we actually have quorum.
 		sigsVaaFormat, agg := signaturesToVaaFormat(s.signatures, gs.Keys)
 
 		if p.logger.Level().Enabled(zapcore.DebugLevel) {
-			p.logger.Debug("aggregation state for observation", // 1.3M out of 3M info messages / hour / guardian
+			p.logger.Debug("aggregation state for observation", // 1.3M out of 3M info messages / hour / phylax
 				zap.String("digest", hash),
 				zap.Any("set", gs.KeysAsHexStrings()),
 				zap.Uint32("index", gs.Index),
@@ -243,14 +243,14 @@ func (p *Processor) handleObservation(ctx context.Context, obs *node_common.MsgW
 		}
 
 		if len(sigsVaaFormat) >= quorum && !s.submitted {
-			// we have reached quorum *with the active guardian set*
+			// we have reached quorum *with the active phylax set*
 			s.ourObservation.HandleQuorum(sigsVaaFormat, hash, p)
 		} else {
-			p.logger.Debug("quorum not met or already submitted, doing nothing", // 1.2M out of 3M info messages / hour / guardian
+			p.logger.Debug("quorum not met or already submitted, doing nothing", // 1.2M out of 3M info messages / hour / phylax
 				zap.String("digest", hash))
 		}
 	} else {
-		p.logger.Debug("we have not yet seen this observation - temporarily storing signature", // 175K out of 3M info messages / hour / guardian
+		p.logger.Debug("we have not yet seen this observation - temporarily storing signature", // 175K out of 3M info messages / hour / phylax
 			zap.String("digest", hash))
 
 	}
@@ -277,16 +277,16 @@ func (p *Processor) handleInboundSignedVAAWithQuorum(ctx context.Context, m *gos
 	}
 
 	if p.gs == nil {
-		p.logger.Warn("dropping SignedVAAWithQuorum message since we haven't initialized our guardian set yet",
+		p.logger.Warn("dropping SignedVAAWithQuorum message since we haven't initialized our phylax set yet",
 			zap.String("digest", hex.EncodeToString(v.SigningDigest().Bytes())),
 			zap.Any("message", m),
 		)
 		return
 	}
 
-	// Check if guardianSet doesn't have any keys
+	// Check if phylaxSet doesn't have any keys
 	if len(p.gs.Keys) == 0 {
-		p.logger.Warn("dropping SignedVAAWithQuorum message since we have a guardian set without keys",
+		p.logger.Warn("dropping SignedVAAWithQuorum message since we have a phylax set without keys",
 			zap.String("digest", hex.EncodeToString(v.SigningDigest().Bytes())),
 			zap.Any("message", m),
 		)
@@ -300,7 +300,7 @@ func (p *Processor) handleInboundSignedVAAWithQuorum(ctx context.Context, m *gos
 
 	// We now established that:
 	//  - all signatures on the VAA are valid
-	//  - the signature's addresses match the node's current guardian set
+	//  - the signature's addresses match the node's current phylax set
 	//  - enough signatures are present for the VAA to reach quorum
 
 	// Store signed VAA in database.

@@ -18,7 +18,7 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type NodePrivilegedServiceClient interface {
-	// InjectGovernanceVAA injects a governance VAA into the guardian node.
+	// InjectGovernanceVAA injects a governance VAA into the phylax node.
 	// The node will inject the VAA into the aggregator and sign/broadcast the VAA signature.
 	//
 	// A consensus majority of nodes on the network will have to inject the VAA within the
@@ -31,7 +31,7 @@ type NodePrivilegedServiceClient interface {
 	// An error is returned if more than 1000 gaps are found.
 	FindMissingMessages(ctx context.Context, in *FindMissingMessagesRequest, opts ...grpc.CallOption) (*FindMissingMessagesResponse, error)
 	// SendObservationRequest broadcasts a signed observation request to the gossip network
-	// using the node's guardian key. The network rate limits these requests to one per second.
+	// using the node's phylax key. The network rate limits these requests to one per second.
 	// Requests at higher rates will fail silently.
 	SendObservationRequest(ctx context.Context, in *SendObservationRequestRequest, opts ...grpc.CallOption) (*SendObservationRequestResponse, error)
 	// ChainGovernorStatus displays the status of the chain governor.
@@ -46,9 +46,9 @@ type NodePrivilegedServiceClient interface {
 	ChainGovernorResetReleaseTimer(ctx context.Context, in *ChainGovernorResetReleaseTimerRequest, opts ...grpc.CallOption) (*ChainGovernorResetReleaseTimerResponse, error)
 	// PurgePythNetVaas deletes PythNet VAAs from the database that are more than the specified number of days old.
 	PurgePythNetVaas(ctx context.Context, in *PurgePythNetVaasRequest, opts ...grpc.CallOption) (*PurgePythNetVaasResponse, error)
-	// SignExistingVAA signs an existing VAA for a new guardian set using the local guardian key.
+	// SignExistingVAA signs an existing VAA for a new phylax set using the local phylax key.
 	SignExistingVAA(ctx context.Context, in *SignExistingVAARequest, opts ...grpc.CallOption) (*SignExistingVAAResponse, error)
-	// DumpRPCs returns the RPCs being used by the guardian
+	// DumpRPCs returns the RPCs being used by the phylax
 	DumpRPCs(ctx context.Context, in *DumpRPCsRequest, opts ...grpc.CallOption) (*DumpRPCsResponse, error)
 }
 
@@ -163,7 +163,7 @@ func (c *nodePrivilegedServiceClient) DumpRPCs(ctx context.Context, in *DumpRPCs
 // All implementations must embed UnimplementedNodePrivilegedServiceServer
 // for forward compatibility
 type NodePrivilegedServiceServer interface {
-	// InjectGovernanceVAA injects a governance VAA into the guardian node.
+	// InjectGovernanceVAA injects a governance VAA into the phylax node.
 	// The node will inject the VAA into the aggregator and sign/broadcast the VAA signature.
 	//
 	// A consensus majority of nodes on the network will have to inject the VAA within the
@@ -176,7 +176,7 @@ type NodePrivilegedServiceServer interface {
 	// An error is returned if more than 1000 gaps are found.
 	FindMissingMessages(context.Context, *FindMissingMessagesRequest) (*FindMissingMessagesResponse, error)
 	// SendObservationRequest broadcasts a signed observation request to the gossip network
-	// using the node's guardian key. The network rate limits these requests to one per second.
+	// using the node's phylax key. The network rate limits these requests to one per second.
 	// Requests at higher rates will fail silently.
 	SendObservationRequest(context.Context, *SendObservationRequestRequest) (*SendObservationRequestResponse, error)
 	// ChainGovernorStatus displays the status of the chain governor.
@@ -191,9 +191,9 @@ type NodePrivilegedServiceServer interface {
 	ChainGovernorResetReleaseTimer(context.Context, *ChainGovernorResetReleaseTimerRequest) (*ChainGovernorResetReleaseTimerResponse, error)
 	// PurgePythNetVaas deletes PythNet VAAs from the database that are more than the specified number of days old.
 	PurgePythNetVaas(context.Context, *PurgePythNetVaasRequest) (*PurgePythNetVaasResponse, error)
-	// SignExistingVAA signs an existing VAA for a new guardian set using the local guardian key.
+	// SignExistingVAA signs an existing VAA for a new phylax set using the local phylax key.
 	SignExistingVAA(context.Context, *SignExistingVAARequest) (*SignExistingVAAResponse, error)
-	// DumpRPCs returns the RPCs being used by the guardian
+	// DumpRPCs returns the RPCs being used by the phylax
 	DumpRPCs(context.Context, *DumpRPCsRequest) (*DumpRPCsResponse, error)
 	mustEmbedUnimplementedNodePrivilegedServiceServer()
 }

@@ -108,7 +108,7 @@ type (
 		NewContract Address
 	}
 
-	// BodyPhylaxSetUpdate is a governance message to set a new guardian set
+	// BodyPhylaxSetUpdate is a governance message to set a new phylax set
 	BodyPhylaxSetUpdate struct {
 		Keys     []common.Address
 		NewIndex uint32

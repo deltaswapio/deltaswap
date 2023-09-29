@@ -59,7 +59,7 @@ Identical to the NFT bridge:
 In order to transfer an NFT to another chain, a user needs to call the transfer method of the bridge contract with the
 recipient details. The contract will either hold the NFTs in a custody account (in case it is a native NFT) or burn
 wrapped NFTs. Wrapped NFTs can be burned because they can be freely minted once they are transferred back. After the
-lockup the contract will post a Transfer payload message to Wormhole. Once the message has been signed by the guardians,
+lockup the contract will post a Transfer payload message to Wormhole. Once the message has been signed by the phylaxs,
 it can be posted to the target chain of the transfer. The target chain will then either release the native NFT from
 custody or mint a wrapped NFT depending on whether it's a native NFT there. The program will keep track of consumed
 message digests for replay prevention.
@@ -134,7 +134,7 @@ NewContract [32]uint8
 A user who initiated a transfer should call `completeTransfer` within 24 hours. Phylax Sets are guaranteed to be valid for at least 24 hours. If the user waits longer, it could be that the Phylax Set has changed between the time where the transfer was initiated and the the time the user attempts to redeem the VAA. Let's call the Phylax Set at the time of signing `setA` and the Phylax Set at the time of redeeming on the target chain `setB`.
 
 If `setA != setB` and more than 24 hours have passed, there are multiple options for still redeeming the VAA on the target chain:
-1. The quorum of Phylaxs that signed the VAA may still be part of `setB`. In this case, the VAA merely needs to be modified to have the new Phylax Set Index along with any `setA` only guardian signatures removed to make a valid VAA. The updated VAA can then be be redeemed. The typescript sdk includes a [`repairVaa()`](../sdk/js/src/utils/repairVaa.ts) function to perform this automatically.
+1. The quorum of Phylaxs that signed the VAA may still be part of `setB`. In this case, the VAA merely needs to be modified to have the new Phylax Set Index along with any `setA` only phylax signatures removed to make a valid VAA. The updated VAA can then be be redeemed. The typescript sdk includes a [`repairVaa()`](../sdk/js/src/utils/repairVaa.ts) function to perform this automatically.
 2. The intersection between `setA` and `setB` is greater than 2/3 of `setB`, but not all signatures of the VAA are from Phylaxs in `setB`. Then it may be possible to gather signatures from the other Phylaxs from other sources. E.g. Wormholescan prodives an API under (/api/v1/observations/:chain/:emitter/:sequence)[https://docs.wormholescan.io/#/Wormscan/find-observations-by-sequence].
 3. A Phylax may send a signed re-observation request to the network using the `send-observation-request` admin command. A new valid VAA with an updated Phylax Set Index is generated once enough Phylaxs have re-observed the old message. Note that this is only possible if a quorum of Phylaxs is running archive nodes that still include this transaction.
 

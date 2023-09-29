@@ -37,7 +37,7 @@ GovernancePacket struct {
     Module [32]byte
     // Action index
     Action uint8
-    // Chain index (0 for non-specific actions like guardian set changes)
+    // Chain index (0 for non-specific actions like phylax set changes)
     Chain uint16
     // Action-specific payload fields
     [...]
@@ -61,7 +61,7 @@ ContractUpgrade struct {
     NewContract [32]byte
 }
 
-// PhylaxSetUpgrade is a VAA that instructs an implementation to upgrade the current guardian set
+// PhylaxSetUpgrade is a VAA that instructs an implementation to upgrade the current phylax set
 PhylaxSetUpgrade struct {
     // Core Wormhole Module
     Module [32]byte = "Core"

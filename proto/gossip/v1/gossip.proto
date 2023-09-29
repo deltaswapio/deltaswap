@@ -21,13 +21,13 @@ message SignedHeartbeat {
   // Serialized Heartbeat message.
   bytes heartbeat = 1;
 
-  // ECDSA signature using the node's guardian public key.
+  // ECDSA signature using the node's phylax public key.
   bytes signature = 2;
 
   // Phylax address that signed this payload (truncated Eth address).
   // This is already contained in Heartbeat, however, we want to verify
   // the payload before we deserialize it.
-  bytes guardian_addr = 3;
+  bytes phylax_addr = 3;
 }
 
 // P2P gossip heartbeats for network introspection purposes.
@@ -54,8 +54,8 @@ message Heartbeat {
   // Human-readable representation of the current bridge node release.
   string version = 5;
 
-  // Human-readable representation of the guardian key's address.
-  string guardian_addr = 6;
+  // Human-readable representation of the phylax key's address.
+  string phylax_addr = 6;
 
   // UNIX boot timestamp.
   int64 boot_timestamp = 7;
@@ -67,17 +67,17 @@ message Heartbeat {
   bytes p2p_node_id = 9;
 }
 
-// A SignedObservation is a signed statement by a given guardian node
+// A SignedObservation is a signed statement by a given phylax node
 // that they observed a given event.
 //
 // Observations always result from an external, final event being observed.
-// Examples are emitted messages in finalized blocks on a block or guardian set changes
+// Examples are emitted messages in finalized blocks on a block or phylax set changes
 // injected by node operators after reaching off-chain consensus.
 //
 // The event is uniquely identified by its hashed (tx_hash, nonce, values...) tuple.
 //
 // Other nodes will verify the signature. Once any node has observed a quorum of
-// guardians submitting valid signatures for a given hash, they can be assembled into a VAA.
+// phylaxs submitting valid signatures for a given hash, they can be assembled into a VAA.
 //
 // Messages without valid signature are dropped unceremoniously.
 message SignedObservation {
@@ -85,7 +85,7 @@ message SignedObservation {
   bytes addr = 1;
   // The observation's deterministic, unique hash.
   bytes hash = 2;
-  // ECSDA signature of the hash using the node's guardian key.
+  // ECSDA signature of the hash using the node's phylax key.
   bytes signature = 3;
   // Transaction hash this observation was made from.
   // Optional, included for observability.
@@ -102,9 +102,9 @@ message SignedVAAWithQuorum {
   bytes vaa = 1;
 }
 
-// Any guardian can send a SignedObservationRequest to the network to request
-// all guardians to re-observe a given transaction. This is rate-limited to one
-// request per second per guardian to prevent abuse.
+// Any phylax can send a SignedObservationRequest to the network to request
+// all phylaxs to re-observe a given transaction. This is rate-limited to one
+// request per second per phylax to prevent abuse.
 //
 // In the current implementation, this is only implemented for Solana.
 // For Solana, the tx_hash is the account address of the transaction's message account.
@@ -114,7 +114,7 @@ message SignedObservationRequest {
 
   // Signature
   bytes signature = 2;
-  bytes guardian_addr = 3;
+  bytes phylax_addr = 3;
 }
 
 message ObservationRequest {
@@ -122,7 +122,7 @@ message ObservationRequest {
   bytes tx_hash = 2;
 }
 
-// A SignedBatchObservation is a signed statement by a given guardian node
+// A SignedBatchObservation is a signed statement by a given phylax node
 // that they observed a series of messages originating from a transaction.
 //
 // BatcheObervations are emitted when all the Observations from a tx reach quorum.
@@ -136,7 +136,7 @@ message SignedBatchObservation {
   bytes addr = 1;
   // The observation batch's deterministic, unique hash.
   bytes hash = 2;
-  // ECSDA signature of the hash using the node's guardian key.
+  // ECSDA signature of the hash using the node's phylax key.
   bytes signature = 3;
   // Unique identifier of the transaction that produced the observation.
   bytes tx_id = 4;
@@ -167,11 +167,11 @@ message SignedChainGovernorConfig {
   // Serialized ChainGovernorConfig message.
   bytes config = 1;
 
-  // ECDSA signature using the node's guardian key.
+  // ECDSA signature using the node's phylax key.
   bytes signature = 2;
 
   // Phylax address that signed this payload (truncated Eth address).
-  bytes guardian_addr = 3;
+  bytes phylax_addr = 3;
 }
 
 message ChainGovernorConfig {
@@ -199,11 +199,11 @@ message SignedChainGovernorStatus {
   // Serialized ChainGovernorStatus message.
   bytes status = 1;
 
-  // ECDSA signature using the node's guardian key.
+  // ECDSA signature using the node's phylax key.
   bytes signature = 2;
 
   // Phylax address that signed this payload (truncated Eth address).
-  bytes guardian_addr = 3;
+  bytes phylax_addr = 3;
 }
 
 message ChainGovernorStatus {

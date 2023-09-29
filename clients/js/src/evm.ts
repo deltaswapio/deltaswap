@@ -57,13 +57,13 @@ export async function query_contract_evm(
       const core = Implementation__factory.connect(contract_address, provider);
       result.address = contract_address;
       result.currentPhylaxSetIndex = await core.getCurrentPhylaxSetIndex();
-      const guardianSetsPromise = Promise.all(
+      const phylaxSetsPromise = Promise.all(
         [...Array(result.currentPhylaxSetIndex + 1).keys()].map((i) =>
           core.getPhylaxSet(i)
         )
       );
       const [
-        guardianSetExpiry,
+        phylaxSetExpiry,
         chainId,
         evmChainId,
         isFork,
@@ -71,7 +71,7 @@ export async function query_contract_evm(
         governanceContract,
         messageFee,
         implementationSlot,
-        guardianSets,
+        phylaxSets,
       ] = await Promise.all([
         core.getPhylaxSetExpiry(),
         core.chainId(),
@@ -81,9 +81,9 @@ export async function query_contract_evm(
         core.governanceContract(),
         core.messageFee(),
         getStorageAt(rpc, contract_address, _IMPLEMENTATION_SLOT, ["address"]),
-        guardianSetsPromise,
+        phylaxSetsPromise,
       ]);
-      result.guardianSetExpiry = guardianSetExpiry;
+      result.phylaxSetExpiry = phylaxSetExpiry;
       result.chainId = chainId;
       result.evmChainId = evmChainId.toString();
       result.isFork = isFork;
@@ -92,12 +92,12 @@ export async function query_contract_evm(
       result.messageFee = messageFee;
       result.implementation = implementationSlot[0];
       result.isInitialized = await core.isInitialized(result.implementation);
-      result.guardianSet = {};
+      result.phylaxSet = {};
 
-      for (const [i, guardianSet] of guardianSets.entries()) {
-        result.guardianSet[i] = {
-          keys: guardianSet[0],
-          expiry: guardianSet[1],
+      for (const [i, phylaxSet] of phylaxSets.entries()) {
+        result.phylaxSet[i] = {
+          keys: phylaxSet[0],
+          expiry: phylaxSet[1],
         };
       }
 
@@ -336,7 +336,7 @@ export async function execute_evm(
       const cb = c.attach(contract_address);
       switch (payload.type) {
         case "PhylaxSetUpgrade":
-          console.log("Submitting new guardian set");
+          console.log("Submitting new phylax set");
           console.log(
             "Hash: " + (await cb.submitNewPhylaxSet(vaa, overrides)).hash
           );
@@ -542,27 +542,27 @@ export async function transferEVM(
  *
  * Hijack a core contract. This function is useful when working with a mainnet
  * fork (hardhat or anvil). A fork of the mainnet contract will naturally store
- * the mainnet guardian set, so we can't readily interact with these contracts,
- * because we can't forge signed VAAs for those guardians. This function uses
- * [[setStorageAt]] to override the guardian set to something we have the
- * private keys for (typically the devnet guardian used for testing).
+ * the mainnet phylax set, so we can't readily interact with these contracts,
+ * because we can't forge signed VAAs for those phylaxs. This function uses
+ * [[setStorageAt]] to override the phylax set to something we have the
+ * private keys for (typically the devnet phylax used for testing).
  * This way we can test contract upgrades before rolling them out on mainnet.
  *
  * @param rpc the JSON RPC endpoint (needs to be hardhat of anvil)
  * @param contract_address address of the core bridge contract
- * @param guardian_addresses addresses of the desired guardian set to upgrade to
- * @param newPhylaxSetIndex if specified, the new guardian set will be
- * written into this guardian set index, and the guardian set index of the
+ * @param phylax_addresses addresses of the desired phylax set to upgrade to
+ * @param newPhylaxSetIndex if specified, the new phylax set will be
+ * written into this phylax set index, and the phylax set index of the
  * contract changed to it.
- * If unspecified, then the current guardian set index will be overridden.
- * In particular, it's possible to both upgrade or downgrade the guardian set
+ * If unspecified, then the current phylax set index will be overridden.
+ * In particular, it's possible to both upgrade or downgrade the phylax set
  * this way. The latter is useful for testing locally if you already have some
- * VAAs handy that are signed by guardian set 0.
+ * VAAs handy that are signed by phylax set 0.
  */
 export async function hijack_evm(
   rpc: string,
   contract_address: string,
-  guardian_addresses: string[],
+  phylax_addresses: string[],
   newPhylaxSetIndex: number | undefined
 ): Promise<void> {
   const GUARDIAN_SETS_SLOT = 0x02;
@@ -570,15 +570,15 @@ export async function hijack_evm(
 
   const provider = new ethers.providers.JsonRpcProvider(rpc);
   const core = Implementation__factory.connect(contract_address, provider);
-  let [guardianSetIndex, guardianSetExpiry] = await getStorageAt(
+  let [phylaxSetIndex, phylaxSetExpiry] = await getStorageAt(
     rpc,
     contract_address,
     GUARDIAN_SET_INDEX_SLOT,
     ["uint32", "uint32"]
   );
-  console.log("Attempting to hijack core bridge guardian set.");
-  const current_set = await core.getPhylaxSet(guardianSetIndex);
-  console.log(`Current guardian set (index ${guardianSetIndex}):`);
+  console.log("Attempting to hijack core bridge phylax set.");
+  const current_set = await core.getPhylaxSet(phylaxSetIndex);
+  console.log(`Current phylax set (index ${phylaxSetIndex}):`);
   console.log(current_set[0]);
 
   if (newPhylaxSetIndex !== undefined) {
@@ -587,11 +587,11 @@ export async function hijack_evm(
       contract_address,
       GUARDIAN_SET_INDEX_SLOT,
       ["uint32", "uint32"],
-      [newPhylaxSetIndex, guardianSetExpiry]
+      [newPhylaxSetIndex, phylaxSetExpiry]
     );
-    guardianSetIndex = await core.getCurrentPhylaxSetIndex();
-    if (newPhylaxSetIndex !== guardianSetIndex) {
-      throw Error("Failed to update guardian set index.");
+    phylaxSetIndex = await core.getCurrentPhylaxSetIndex();
+    if (newPhylaxSetIndex !== phylaxSetIndex) {
+      throw Error("Failed to update phylax set index.");
     } else {
       console.log(`Phylax set index updated to ${newPhylaxSetIndex}`);
     }
@@ -599,10 +599,10 @@ export async function hijack_evm(
 
   const addresses_slot = computeMappingElemSlot(
     GUARDIAN_SETS_SLOT,
-    guardianSetIndex
+    phylaxSetIndex
   );
-  console.log(`Writing new set of guardians into set ${guardianSetIndex}...`);
-  guardian_addresses.forEach(async (address, i) => {
+  console.log(`Writing new set of phylaxs into set ${phylaxSetIndex}...`);
+  phylax_addresses.forEach(async (address, i) => {
     await setStorageAt(
       rpc,
       contract_address,
@@ -616,11 +616,11 @@ export async function hijack_evm(
     contract_address,
     addresses_slot,
     ["uint256"],
-    [guardian_addresses.length]
+    [phylax_addresses.length]
   );
-  const after_guardian_set_index = await core.getCurrentPhylaxSetIndex();
-  const new_set = await core.getPhylaxSet(after_guardian_set_index);
-  console.log(`Current guardian set (index ${after_guardian_set_index}):`);
+  const after_phylax_set_index = await core.getCurrentPhylaxSetIndex();
+  const new_set = await core.getPhylaxSet(after_phylax_set_index);
+  console.log(`Current phylax set (index ${after_phylax_set_index}):`);
   console.log(new_set[0]);
   console.log("Success.");
 }
@@ -746,7 +746,7 @@ async function getStorageAt(
  * Use the 'hardhat_setStorageAt' rpc method to override a storage slot of a
  * contract. This method is understood by both hardhat and anvil (from foundry).
  * Useful for manipulating the storage of a forked mainnet contract (such as for
- * changing the guardian set to allow submitting VAAs to).
+ * changing the phylax set to allow submitting VAAs to).
  *
  * @param rpc the JSON RPC endpoint (needs to be hardhat of anvil)
  * @param contract_address address of the contract to be queried

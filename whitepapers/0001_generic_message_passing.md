@@ -67,14 +67,14 @@ following problems, leaving them for future design iterations:
 
 - The mechanics of economically incentivizing nodes to maintain uptime and not to censor or forge messages.
 
-- Governance and criteria for inclusion in the guardian set. We only specify the governance API without defining its
+- Governance and criteria for inclusion in the phylax set. We only specify the governance API without defining its
   implementation, which could be a smart contract on one of the connected chains.
 
 ## Overview
 
 We simplify the design of Wormhole to only provide generic **signed attestations of finalized chain state**.
 Attestations can be requested by any contract by publishing a message, which is then picked up and signed by the
-Wormhole guardian set. The signed attestation will be published on the Wormhole P2P network.
+Wormhole phylax set. The signed attestation will be published on the Wormhole P2P network.
 
 Delivering the message to a contract on the target chain is shifted to the higher-layer protocol.
 
@@ -93,14 +93,14 @@ VAA struct {
 	// Protocol version of the entire VAA.
 	Version uint8
 
-	// PhylaxSetIndex is the index of the guardian set that signed this VAA.
-	// Signatures are verified against the public keys in the guardian set.
+	// PhylaxSetIndex is the index of the phylax set that signed this VAA.
+	// Signatures are verified against the public keys in the phylax set.
 	PhylaxSetIndex uint32
 
 	// Number of signatures included in this VAA
 	LenSignatures uint8
 
-	// Signatures contain a list of signatures made by the guardian set.
+	// Signatures contain a list of signatures made by the phylax set.
 	Signatures []*Signature
 
     // --------------------------------------------------------------------
@@ -124,12 +124,12 @@ VAA struct {
 	// use the (chain, emitter, sequence) tuple instead.
 	Nonce uint32 // <-- NEW
 
-	// EmitterChain the VAA was emitted on. Set by the guardian node
+	// EmitterChain the VAA was emitted on. Set by the phylax node
 	// according to which chain it received the message from.
 	EmitterChain ChainID // <-- NEW
 
 	// EmitterAddress of the contract that emitted the message. Set by
-	// the guardian node according to protocol metadata.
+	// the phylax node according to protocol metadata.
 	EmitterAddress Address // <-- NEW
 
 	// Sequence number of the message. Automatically set and
@@ -150,7 +150,7 @@ VAA struct {
 	Payload []byte // <-- NEW
 }
 
-// ChainID of a Wormhole chain. These are defined in the guardian node
+// ChainID of a Wormhole chain. These are defined in the phylax node
 // for each chain it talks to.
 ChainID uint8
 
@@ -158,9 +158,9 @@ ChainID uint8
 // If the address data type of a chain is < 32 bytes, the value is zero-padded on the left.
 Address [32]byte
 
-// Signature of a single guardian.
+// Signature of a single phylax.
 Signature struct {
-// Index of the validator in the guardian set.
+// Index of the validator in the phylax set.
 Index uint8
 // Signature bytes.
 Signature [65]byte
@@ -236,7 +236,7 @@ A peg zone is the closest analogy to Wormhole in the IBC model, with some import
   complex to implement and audit, and moves the complexity to the upper layer and libraries only where it is needed.
 
 - Instead of operating our own Layer 1 proof-of-stake chain, we rely on finality of the connected chains. A staking
-  mechanism for Wormhole guardian nodes would be managed by a smart contract on one of those chains and inherit its
+  mechanism for Wormhole phylax nodes would be managed by a smart contract on one of those chains and inherit its
   security properties. Nodes cannot initiate consensus on their own.
 
 - By only reacting to finalized state on chains, each with strong finality guarantees, the Wormhole protocol does not
@@ -244,8 +244,8 @@ A peg zone is the closest analogy to Wormhole in the IBC model, with some import
   synchronously, and broadcasts them to a peer-to-peer network. There's no possibility of equivocation or eclipse
   attacks leading to disagreements.
 
-- Long-range attacks and other PoS attacks are prevented by guardian set update finality on the connected chains. After
-  a brief convergence window, the old guardian set becomes invalid and no alternative histories can be built.
+- Long-range attacks and other PoS attacks are prevented by phylax set update finality on the connected chains. After
+  a brief convergence window, the old phylax set becomes invalid and no alternative histories can be built.
 
 - Instead of relying on inclusion proofs, we use a multisig scheme which is easier to understand and audit and cheaper
   to verify on all connected chains. The extra guarantees offered by an inclusion proof are not needed in the Wormhole

@@ -8,9 +8,9 @@ To make signed messages available to Wormhole clients without relying on a conne
 
 ## Background
 
-A Wormhole workflow typically starts by having a user submit a transaction on any of the connected chains, which results in a message being posted on-chain. This message is then picked up and confirmed by the guardian network. Once enough guardians signed the observation, the resulting message - the signed VAA - needs to be posted to the target chain to complete the operation.
+A Wormhole workflow typically starts by having a user submit a transaction on any of the connected chains, which results in a message being posted on-chain. This message is then picked up and confirmed by the phylax network. Once enough phylaxs signed the observation, the resulting message - the signed VAA - needs to be posted to the target chain to complete the operation.
 
-With the Wormhole v1 design, we use Solana for data availability. As soon as any guardian observes a VAA with sufficient signatures, it would race to submit it to Solana, where it would be stored in an account with a deterministic address. A client - usually a web wallet - would then simulate the same deterministic calculation, using its knowledge of the VAA's digest - and retrieve the VAA from its associated Solana account. The client then posts it to the target chain, with the fee paid by the user. On Solana, no client-side submission is necessary - the VAA is executed immediately when posted for data availability.
+With the Wormhole v1 design, we use Solana for data availability. As soon as any phylax observes a VAA with sufficient signatures, it would race to submit it to Solana, where it would be stored in an account with a deterministic address. A client - usually a web wallet - would then simulate the same deterministic calculation, using its knowledge of the VAA's digest - and retrieve the VAA from its associated Solana account. The client then posts it to the target chain, with the fee paid by the user. On Solana, no client-side submission is necessary - the VAA is executed immediately when posted for data availability.
 
 However, while this design worked great for v1 which was bridging only two chains, it's not optimal for v2:
 
@@ -24,7 +24,7 @@ However, while this design worked great for v1 which was bridging only two chain
 
 - Reproducing the deterministic Solana account address is complex to do client-side.
 
-Our data availability requirements do not actually require messages to be posted on a finalized chain - we simply used one for convenience. Anything that reliably shuttles bytes from the guardian p2p network to the client will do the trick, and we can replace on-chain storage by a better-suited custom mechanism.
+Our data availability requirements do not actually require messages to be posted on a finalized chain - we simply used one for convenience. Anything that reliably shuttles bytes from the phylax p2p network to the client will do the trick, and we can replace on-chain storage by a better-suited custom mechanism.
 
 ## Goals
 
@@ -38,7 +38,7 @@ Our data availability requirements do not actually require messages to be posted
 
 - The design facilitates a relayer mechanism where an incentivized third party would submit the transaction to the target chain, but it does not specify how such a mechanism would be implemented.
 
-- Designing an incentivization scheme to compel guardians to run a public API. We assume an effective incentive is provided for guardian nodes to run high-quality API endpoints.
+- Designing an incentivization scheme to compel phylaxs to run a public API. We assume an effective incentive is provided for phylax nodes to run high-quality API endpoints.
 
 - Discovery of public API endpoints by clients. We assume that a well-known set of load balanced API frontends will be documented and hardcoded by client applications.
 
@@ -54,13 +54,13 @@ Our data availability requirements do not actually require messages to be posted
 
 ## Overview
 
-Instead of submitting signed VAAs to Solana, guardians instead broadcast them on the gossip network and persist the signed VAAs locally.
+Instead of submitting signed VAAs to Solana, phylaxs instead broadcast them on the gossip network and persist the signed VAAs locally.
 
 Phylaxs that failed to observe the message (and therefore cannot reconstruct the VAA) will verify the broadcasted signed VAA and persist it as if they had observed it.
 
 A public API endpoint is added to phylaxd, exposing an API which allows clients to retrieve the signed VAA for any (chain, emitter, sequence) tuple. Phylaxs can use this API to serve a public, load-balanced public service for web wallets and other clients to use.
 
-Clients will rely on public API endpoints operated by different guardian node operators or third party service providers when polling for signed VAA messsages.
+Clients will rely on public API endpoints operated by different phylax node operators or third party service providers when polling for signed VAA messsages.
 
 ## Detailed Design
 
@@ -70,9 +70,9 @@ Depending on the order of receipt and network topology, the aggregated set of si
 
 In v1, a node would submit the VAA directly to Solana, with complex logic for fault tolerance and retries. The first signed VAA would "win" a race and be persisted on-chain as the canonical signed VAA for this message.
 
-Instead, each node will now locally persist the full signed VAA and broadcast it to the gossip network, where it can be received both by guardian nodes and unprivileged nodes (like future relayer services) that joined the gossip network.
+Instead, each node will now locally persist the full signed VAA and broadcast it to the gossip network, where it can be received both by phylax nodes and unprivileged nodes (like future relayer services) that joined the gossip network.
 
-Locally persisted state is crucial to maintain data availability across the network - it is used to serve API queries (if enabled) and rebroadcast signed VAAs to other guardians that missed them.
+Locally persisted state is crucial to maintain data availability across the network - it is used to serve API queries (if enabled) and rebroadcast signed VAAs to other phylaxs that missed them.
 
 We can't rely on gossip to provide atomic or reliable broadcast - messages may be lost, or nodes may be down. We need to assume that nodes can and will lose all of their local state, and be down for maintenance, including nodes used to serve a public API. Clients relying on the API therefore have to rely on multiple nodes to provide fault tolerance. Typically, clients would implement this by rotating through a set of known API endpoints operated by different service providers, alternating or randomizing them while polling for VAA completion.
 
@@ -110,7 +110,7 @@ However, we decided against this approach:
 
 ### Direct P2P connectivity
 
-libp2p supports a WebRTC transport, which would - in theory - allow web wallets to directly join the guardian gossip network. However, we decided not to pursue this route:
+libp2p supports a WebRTC transport, which would - in theory - allow web wallets to directly join the phylax gossip network. However, we decided not to pursue this route:
 
 - libp2p is very complex and it's not clear how well such an approach would scale. Debugging any scalability (or other) issue likely requires in-depth libp2p debugging, which we have no experience with. In comparison, the challenges that come with a traditional RPC scale-out approach are much better understood.
 
@@ -124,7 +124,7 @@ Directly connecting to the gossip network remains a possible design for future f
 
 ### Stochastic failure
 
-Unless every guardian node on the network exposes an API endpoint, it is theoretically possible that 2/3+ nodes observe and sign a message, but all the nodes belonging to public API endpoints missed it.
+Unless every phylax node on the network exposes an API endpoint, it is theoretically possible that 2/3+ nodes observe and sign a message, but all the nodes belonging to public API endpoints missed it.
 
 The risk of this is insignificant with libp2p pubsub in a decentralized network, and manual recovery would be possible (any of the nodes in the 2/3+ set could retrieve the VAA and manually deliver it).
 
@@ -146,4 +146,4 @@ VAAs would still be persisted locally during such an attack and can be requested
 
 We believe this risk is easily mitigated - protecting web APIs from denial of service attacks is a well-understood problem, with a robust ecosystem of both technological solutions and service providers.
 
-(robustness of libp2p pubsub itself against flooding by non-guardian nodes is an orthogonal concern tracked in https://github.com/deltaswapio/deltaswap/issues/22 as well as the [official libp2p docs](https://docs.libp2p.io/concepts/security-considerations/))
+(robustness of libp2p pubsub itself against flooding by non-phylax nodes is an orthogonal concern tracked in https://github.com/deltaswapio/deltaswap/issues/22 as well as the [official libp2p docs](https://docs.libp2p.io/concepts/security-considerations/))

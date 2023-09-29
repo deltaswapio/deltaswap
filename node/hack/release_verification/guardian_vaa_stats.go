@@ -1,7 +1,7 @@
 // Usage:
-// 		go run guardian_vaa_stats.go
-// 		go run guardian_vaa_stats.go 2023-06-23 05:10:00 +0000 UTC
-// This tool looks at the last 10 VAAs on each chain and tells you how many signatures each guardian has among those 10 VAAs.
+// 		go run phylax_vaa_stats.go
+// 		go run phylax_vaa_stats.go 2023-06-23 05:10:00 +0000 UTC
+// This tool looks at the last 10 VAAs on each chain and tells you how many signatures each phylax has among those 10 VAAs.
 // Wormscan is used as the datasource.
 // If a timestamp is provided as argument, only VAAs after this timestamp are considered.
 // For example, an output of
@@ -48,7 +48,7 @@ func getValidatorIndexForChain(chainId vaa.ChainID, onlyafter time.Time) (map[ui
 		return nil, err
 	}
 
-	guardianParticipation := make(map[uint8]int, 19)
+	phylaxParticipation := make(map[uint8]int, 19)
 
 	vaaValues := gjson.GetBytes(body, "data.#.vaa")
 
@@ -69,11 +69,11 @@ func getValidatorIndexForChain(chainId vaa.ChainID, onlyafter time.Time) (map[ui
 		}
 
 		for _, sig := range v.Signatures {
-			guardianParticipation[sig.Index] += 1
+			phylaxParticipation[sig.Index] += 1
 		}
 	}
 
-	return guardianParticipation, nil
+	return phylaxParticipation, nil
 }
 
 func main() {

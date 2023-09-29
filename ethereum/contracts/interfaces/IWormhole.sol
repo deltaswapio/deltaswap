@@ -13,7 +13,7 @@ interface IWormhole {
         bytes32 r;
         bytes32 s;
         uint8 v;
-        uint8 guardianIndex;
+        uint8 phylaxIndex;
     }
 
     struct VM {
@@ -26,7 +26,7 @@ interface IWormhole {
         uint8 consistencyLevel;
         bytes payload;
 
-        uint32 guardianSetIndex;
+        uint32 phylaxSetIndex;
         Signature[] signatures;
 
         bytes32 hash;
@@ -90,7 +90,7 @@ interface IWormhole {
 
     function verifyVM(VM memory vm) external view returns (bool valid, string memory reason);
 
-    function verifySignatures(bytes32 hash, Signature[] memory signatures, PhylaxSet memory guardianSet) external pure returns (bool valid, string memory reason);
+    function verifySignatures(bytes32 hash, Signature[] memory signatures, PhylaxSet memory phylaxSet) external pure returns (bool valid, string memory reason);
 
     function parseVM(bytes memory encodedVM) external pure returns (VM memory vm);
 

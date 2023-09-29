@@ -580,7 +580,7 @@ func RegisterPublicRPCServiceHandlerServer(ctx context.Context, mux *runtime.Ser
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/publicrpc.v1.PublicRPCService/GetCurrentPhylaxSet", runtime.WithHTTPPathPattern("/v1/guardianset/current"))
+		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/publicrpc.v1.PublicRPCService/GetCurrentPhylaxSet", runtime.WithHTTPPathPattern("/v1/phylaxset/current"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -794,7 +794,7 @@ func RegisterPublicRPCServiceHandlerClient(ctx context.Context, mux *runtime.Ser
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		rctx, err := runtime.AnnotateContext(ctx, mux, req, "/publicrpc.v1.PublicRPCService/GetCurrentPhylaxSet", runtime.WithHTTPPathPattern("/v1/guardianset/current"))
+		rctx, err := runtime.AnnotateContext(ctx, mux, req, "/publicrpc.v1.PublicRPCService/GetCurrentPhylaxSet", runtime.WithHTTPPathPattern("/v1/phylaxset/current"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -900,7 +900,7 @@ var (
 
 	pattern_PublicRPCService_GetSignedBatchVAA_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 1, 0, 4, 1, 5, 3, 1, 0, 4, 1, 5, 4}, []string{"v1", "signed_batch_vaa", "batch_id.emitter_chain", "batch_id.tx_id", "batch_id.nonce"}, ""))
 
-	pattern_PublicRPCService_GetCurrentPhylaxSet_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v1", "guardianset", "current"}, ""))
+	pattern_PublicRPCService_GetCurrentPhylaxSet_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v1", "phylaxset", "current"}, ""))
 
 	pattern_PublicRPCService_GovernorGetAvailableNotionalByChain_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v1", "governor", "available_notional_by_chain"}, ""))
 

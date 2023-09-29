@@ -70,9 +70,9 @@ type G struct {
 	gossipSendC chan []byte
 	// Inbound observations. This is read/write because the processor also writes to it as a fast-path when handling locally made observations.
 	obsvC chan *common.MsgWithTimeStamp[gossipv1.SignedObservation]
-	// Finalized guardian observations aggregated across all chains
+	// Finalized phylax observations aggregated across all chains
 	msgC channelPair[*common.MessagePublication]
-	// Ethereum incoming guardian set updates
+	// Ethereum incoming phylax set updates
 	setC channelPair[*common.PhylaxSet]
 	// Inbound signed VAAs
 	signedInC channelPair[*gossipv1.SignedVAAWithQuorum]

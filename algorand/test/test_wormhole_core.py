@@ -27,7 +27,7 @@ def boot_vaa(gen_test, portal_core, client, core_id):
     seq = int(random.random() * (2**31))
     portal_core.client = client
     portal_core.coreid = core_id
-    return bytes.fromhex(gen_test.genPhylaxSetUpgrade(gen_test.guardianPrivKeys, portal_core.getGovSet(), portal_core.getGovSet(), seq, seq))
+    return bytes.fromhex(gen_test.genPhylaxSetUpgrade(gen_test.phylaxPrivKeys, portal_core.getGovSet(), portal_core.getGovSet(), seq, seq))
 
 @pytest.fixture(scope='function')
 def core_tmpl_lsig(portal_core, boot_vaa, core_id):
@@ -103,8 +103,8 @@ def tests_allow_init(client, creator, portal_core, suggested_params, vaa_verify_
     parsed_vaa = portal_core.parseVAA(boot_vaa)
     portal_core.seed_amt = SEED_AMOUNT
     seq_addr = portal_core.optin(client, creator, core_id, int(parsed_vaa["sequence"] / max_bits), parsed_vaa["chainRaw"].hex() + parsed_vaa["emitter"].hex())
-    guardian_addr = portal_core.optin(client, creator, core_id, parsed_vaa["index"], b"guardian".hex())
-    newguardian_addr = portal_core.optin(client, creator, core_id, parsed_vaa["NewPhylaxSetIndex"], b"guardian".hex())
+    phylax_addr = portal_core.optin(client, creator, core_id, parsed_vaa["index"], b"phylax".hex())
+    newphylax_addr = portal_core.optin(client, creator, core_id, parsed_vaa["NewPhylaxSetIndex"], b"phylax".hex())
 
 
 
@@ -130,7 +130,7 @@ def tests_allow_init(client, creator, portal_core, suggested_params, vaa_verify_
             index=core_id,
             on_complete=transaction.OnComplete.NoOpOC,
             app_args=[b"init", boot_vaa, decode_address(vaa_verify_lsig.address())],
-            accounts=[seq_addr, guardian_addr, newguardian_addr],
+            accounts=[seq_addr, phylax_addr, newphylax_addr],
             sp=suggested_params
         ),
 
@@ -149,13 +149,13 @@ def tests_reject_another_init(client, creator, portal_core, suggested_params, va
     seq = int(random.random() * (2**31))
     portal_core.client = client
     portal_core.coreid = core_id
-    boot_vaa = bytes.fromhex(gen_test.genPhylaxSetUpgrade(gen_test.guardianPrivKeys, portal_core.getGovSet(), portal_core.getGovSet(), seq, seq))
+    boot_vaa = bytes.fromhex(gen_test.genPhylaxSetUpgrade(gen_test.phylaxPrivKeys, portal_core.getGovSet(), portal_core.getGovSet(), seq, seq))
 
     parsed_vaa = portal_core.parseVAA(boot_vaa)
     portal_core.seed_amt = SEED_AMOUNT
     seq_addr = portal_core.optin(client, creator, core_id, int(parsed_vaa["sequence"] / max_bits), parsed_vaa["chainRaw"].hex() + parsed_vaa["emitter"].hex())
-    guardian_addr = portal_core.optin(client, creator, core_id, parsed_vaa["index"], b"guardian".hex())
-    newguardian_addr = portal_core.optin(client, creator, core_id, parsed_vaa["NewPhylaxSetIndex"], b"guardian".hex())
+    phylax_addr = portal_core.optin(client, creator, core_id, parsed_vaa["index"], b"phylax".hex())
+    newphylax_addr = portal_core.optin(client, creator, core_id, parsed_vaa["NewPhylaxSetIndex"], b"phylax".hex())
 
 
 
@@ -181,7 +181,7 @@ def tests_reject_another_init(client, creator, portal_core, suggested_params, va
             index=core_id,
             on_complete=transaction.OnComplete.NoOpOC,
             app_args=[b"init", boot_vaa, decode_address(vaa_verify_lsig.address())],
-            accounts=[seq_addr, guardian_addr, newguardian_addr],
+            accounts=[seq_addr, phylax_addr, newphylax_addr],
             sp=suggested_params
         ),
 
@@ -204,10 +204,10 @@ def test_rejects_evil_double_verify_vaa(gen_test, portal_core, client, creator, 
     """
 
     seq = int(random.random() * (2**31))
-    signed_vaa = bytearray.fromhex(gen_test.createRandomSignedVAA(0,gen_test.guardianPrivKeys))
+    signed_vaa = bytearray.fromhex(gen_test.createRandomSignedVAA(0,gen_test.phylaxPrivKeys))
 
     trash_vaa = bytearray.fromhex(gen_test.createTrashVAA(
-        guardianSetIndex=0,
+        phylaxSetIndex=0,
         ts=1,
         nonce=1, # the nonce is irrelevant in algorand, batch not supported
         emitterChainId=8,
@@ -224,11 +224,11 @@ def test_rejects_evil_double_verify_vaa(gen_test, portal_core, client, creator, 
     seq_addr = portal_core.optin(client, creator, core_id, int(parsed_vaa["sequence"] / max_bits), parsed_vaa["chainRaw"].hex() + parsed_vaa["emitter"].hex())
 
     # And then the signatures to help us verify the vaa_s
-    guardian_addr = portal_core.optin(client, creator, core_id, parsed_vaa["index"], b"guardian".hex())
+    phylax_addr = portal_core.optin(client, creator, core_id, parsed_vaa["index"], b"phylax".hex())
 
-    accts = [seq_addr, guardian_addr]
+    accts = [seq_addr, phylax_addr]
 
-    keys = portal_core.decodeLocalState(client, creator, core_id, guardian_addr)
+    keys = portal_core.decodeLocalState(client, creator, core_id, phylax_addr)
     print("keys: " + keys.hex())
 
     sp = client.suggested_params()
@@ -253,7 +253,7 @@ def test_rejects_evil_double_verify_vaa(gen_test, portal_core, client, creator, 
         kset = b''
         # Grab the key associated the signature
         for q in range(int(len(sigs) / 66)):
-            # Which guardian is this signature associated with
+            # Which phylax is this signature associated with
             g = sigs[q * 66]
             key = keys[((g * 20) + 1) : (((g + 1) * 20) + 1)]
             kset = kset + key

@@ -15,7 +15,7 @@ use crate::WormholeQuery;
 struct Inner {
     index: u32,
     expiration: u64,
-    guardians: [SigningKey; 7],
+    phylaxs: [SigningKey; 7],
 }
 
 #[derive(Clone, Debug)]
@@ -23,7 +23,7 @@ pub struct WormholeKeeper(Rc<RefCell<Inner>>);
 
 impl WormholeKeeper {
     pub fn new() -> WormholeKeeper {
-        let guardians = [
+        let phylaxs = [
             SigningKey::from_bytes(&[
                 93, 217, 189, 224, 168, 81, 157, 93, 238, 38, 143, 8, 182, 94, 69, 77, 232, 199,
                 238, 206, 15, 135, 221, 58, 43, 74, 0, 129, 54, 198, 62, 226,
@@ -63,7 +63,7 @@ impl WormholeKeeper {
         WormholeKeeper(Rc::new(RefCell::new(Inner {
             index: 0,
             expiration: 0,
-            guardians,
+            phylaxs,
         })))
     }
 
@@ -71,7 +71,7 @@ impl WormholeKeeper {
         let d = digest(msg).unwrap();
         self.0
             .borrow()
-            .guardians
+            .phylaxs
             .iter()
             .map(|g| {
                 let sig: recoverable::Signature = g.sign(&d.hash[..]);
@@ -88,7 +88,7 @@ impl WormholeKeeper {
     pub fn sign_message(&self, msg: &[u8]) -> Vec<Signature> {
         self.0
             .borrow()
-            .guardians
+            .phylaxs
             .iter()
             .map(|g| {
                 let sig: recoverable::Signature = g.sign(msg);
@@ -110,11 +110,11 @@ impl WormholeKeeper {
         for s in &header.signatures {
             // Vaa's are double hashed
             let digest = digest(data).context("unable to create digest of vaa body")?;
-            self.verify_signature(&[], &digest.hash, header.guardian_set_index, s, block_time)?;
+            self.verify_signature(&[], &digest.hash, header.phylax_set_index, s, block_time)?;
             signers.insert(s.index);
         }
 
-        if signers.len() as u32 >= self.calculate_quorum(header.guardian_set_index, block_time)? {
+        if signers.len() as u32 >= self.calculate_quorum(header.phylax_set_index, block_time)? {
             Ok(Empty {})
         } else {
             Err(anyhow!("no quorum"))
@@ -130,17 +130,17 @@ impl WormholeKeeper {
         block_time: u64,
     ) -> anyhow::Result<Empty> {
         let this = self.0.borrow();
-        ensure!(this.index == index, "invalid guardian set");
+        ensure!(this.index == index, "invalid phylax set");
         ensure!(
             this.expiration == 0 || block_time < this.expiration,
-            "guardian set expired"
+            "phylax set expired"
         );
         let mut prepended = Vec::with_capacity(prefix.len() + data.len());
         prepended.extend_from_slice(prefix);
         prepended.extend_from_slice(data);
 
         let d = digest(prepended.as_slice()).context("failed to calculate digest for data")?;
-        if let Some(g) = this.guardians.get(sig.index as usize) {
+        if let Some(g) = this.phylaxs.get(sig.index as usize) {
             let s = recoverable::Signature::try_from(&sig.signature[..])
                 .context("failed to decode signature")?;
             let verifying_key = s
@@ -152,19 +152,19 @@ impl WormholeKeeper {
             );
             Ok(Empty {})
         } else {
-            Err(anyhow!("invalid guardian index"))
+            Err(anyhow!("invalid phylax index"))
         }
     }
 
     pub fn calculate_quorum(&self, index: u32, block_time: u64) -> anyhow::Result<u32> {
         let this = self.0.borrow();
-        ensure!(this.index == index, "invalid guardian set");
+        ensure!(this.index == index, "invalid phylax set");
         ensure!(
             this.expiration == 0 || block_time < this.expiration,
-            "guardian set expired"
+            "phylax set expired"
         );
 
-        Ok(((this.guardians.len() as u32 * 10 / 3) * 2) / 10 + 1)
+        Ok(((this.phylaxs.len() as u32 * 10 / 3) * 2) / 10 + 1)
     }
 
     pub fn query(&self, request: WormholeQuery, block: &BlockInfo) -> anyhow::Result<Binary> {
@@ -175,13 +175,13 @@ impl WormholeKeeper {
             WormholeQuery::VerifyMessageSignature {
                 prefix,
                 data,
-                guardian_set_index,
+                phylax_set_index,
                 signature,
             } => self
-                .verify_signature(&prefix, &data, guardian_set_index, &signature, block.height)
+                .verify_signature(&prefix, &data, phylax_set_index, &signature, block.height)
                 .and_then(|e| to_binary(&e).map_err(From::from)),
-            WormholeQuery::CalculateQuorum { guardian_set_index } => self
-                .calculate_quorum(guardian_set_index, block.height)
+            WormholeQuery::CalculateQuorum { phylax_set_index } => self
+                .calculate_quorum(phylax_set_index, block.height)
                 .and_then(|q| to_binary(&q).map_err(From::from)),
         }
     }
@@ -194,7 +194,7 @@ impl WormholeKeeper {
         self.0.borrow_mut().expiration = expiration;
     }
 
-    pub fn guardian_set_index(&self) -> u32 {
+    pub fn phylax_set_index(&self) -> u32 {
         self.0.borrow().index
     }
 
@@ -202,8 +202,8 @@ impl WormholeKeeper {
         self.0.borrow_mut().index = index;
     }
 
-    pub fn num_guardians(&self) -> usize {
-        self.0.borrow().guardians.len()
+    pub fn num_phylaxs(&self) -> usize {
+        self.0.borrow().phylaxs.len()
     }
 }
 

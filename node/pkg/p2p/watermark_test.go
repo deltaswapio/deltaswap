@@ -56,7 +56,7 @@ func NewG(t *testing.T, nodeName string) *G {
 		panic(err)
 	}
 
-	guardianpriv, err := ecdsa.GenerateKey(crypto.S256(), rand.Reader)
+	phylaxpriv, err := ecdsa.GenerateKey(crypto.S256(), rand.Reader)
 	if err != nil {
 		panic(err)
 	}
@@ -68,7 +68,7 @@ func NewG(t *testing.T, nodeName string) *G {
 		sendC:                  make(chan []byte, cs),
 		signedInC:              make(chan *gossipv1.SignedVAAWithQuorum, cs),
 		priv:                   p2ppriv,
-		gk:                     guardianpriv,
+		gk:                     phylaxpriv,
 		gst:                    node_common.NewPhylaxSetState(nil),
 		nodeName:               nodeName,
 		disableHeartbeatVerify: false,
@@ -96,32 +96,32 @@ func NewG(t *testing.T, nodeName string) *G {
 	return g
 }
 
-// TestWatermark runs 4 different guardians one of which does not send its P2PID in the signed part of the heartbeat.
+// TestWatermark runs 4 different phylaxs one of which does not send its P2PID in the signed part of the heartbeat.
 // The expectation is that hosts that send this information will become "protected" by the Connection Manager.
 func TestWatermark(t *testing.T) {
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 
 	// Create 4 nodes
-	var guardianset = &node_common.PhylaxSet{}
+	var phylaxset = &node_common.PhylaxSet{}
 	var gs [4]*G
 	for i := range gs {
 		gs[i] = NewG(t, fmt.Sprintf("n%d", i))
 		gs[i].components.Port = uint(LOCAL_P2P_PORTRANGE_START + i)
 		gs[i].networkID = "/wormhole/localdev"
 
-		guardianset.Keys = append(guardianset.Keys, crypto.PubkeyToAddress(gs[i].gk.PublicKey))
+		phylaxset.Keys = append(phylaxset.Keys, crypto.PubkeyToAddress(gs[i].gk.PublicKey))
 
 		id, err := p2ppeer.IDFromPublicKey(gs[0].priv.GetPublic())
 		require.NoError(t, err)
 
 		gs[i].bootstrapPeers = fmt.Sprintf("/ip4/127.0.0.1/udp/%d/quic/p2p/%s", LOCAL_P2P_PORTRANGE_START, id.String())
-		gs[i].gst.Set(guardianset)
+		gs[i].gst.Set(phylaxset)
 
 		gs[i].components.ConnMgr, _ = connmgr.NewConnManager(2, 3, connmgr.WithGracePeriod(2*time.Second))
 	}
 
-	// The 4th guardian does not put its libp2p key in the heartbeat
+	// The 4th phylax does not put its libp2p key in the heartbeat
 	gs[3].components.P2PIDInHeartbeat = false
 
 	// Start the nodes
@@ -133,31 +133,31 @@ func TestWatermark(t *testing.T) {
 	time.Sleep(20 * time.Second)
 
 	// It's expected to have the 3 first nodes protected on every node
-	for guardianIndex, guardian := range gs {
+	for phylaxIndex, phylax := range gs {
 
 		// expectedProtectedPeers is expected to be 2 for all nodes except the last one where 3 is expected
 		func() {
-			guardian.components.ProtectedHostByPhylaxKeyLock.Lock()
-			defer guardian.components.ProtectedHostByPhylaxKeyLock.Unlock()
+			phylax.components.ProtectedHostByPhylaxKeyLock.Lock()
+			defer phylax.components.ProtectedHostByPhylaxKeyLock.Unlock()
 			expectedProtectedPeers := 2
-			if guardianIndex == 3 {
+			if phylaxIndex == 3 {
 				expectedProtectedPeers = 3
 			}
-			assert.Equal(t, expectedProtectedPeers, len(guardian.components.ProtectedHostByPhylaxKey))
+			assert.Equal(t, expectedProtectedPeers, len(phylax.components.ProtectedHostByPhylaxKey))
 		}()
 
 		// check that nodes {0, 1, 2} are protected on all other nodes and that nodes {3} are not protected.
 		for otherPhylaxIndex, otherPhylax := range gs {
 			g1addr, err := p2ppeer.IDFromPublicKey(otherPhylax.priv.GetPublic())
 			require.NoError(t, err)
-			isProtected := guardian.components.ConnMgr.IsProtected(g1addr, "heartbeat")
+			isProtected := phylax.components.ConnMgr.IsProtected(g1addr, "heartbeat")
 
 			// A node cannot be protected on itself as one's own heartbeats are dropped
-			if guardianIndex == otherPhylaxIndex {
+			if phylaxIndex == otherPhylaxIndex {
 				continue
 			}
-			assert.Falsef(t, isProtected && otherPhylaxIndex == 3, "node at index 3 should not be protected on node %d but was", guardianIndex)
-			assert.Falsef(t, !isProtected && otherPhylaxIndex != 3, "node at index %d should be protected on node %d but is not", otherPhylaxIndex, guardianIndex)
+			assert.Falsef(t, isProtected && otherPhylaxIndex == 3, "node at index 3 should not be protected on node %d but was", phylaxIndex)
+			assert.Falsef(t, !isProtected && otherPhylaxIndex != 3, "node at index %d should be protected on node %d but is not", otherPhylaxIndex, phylaxIndex)
 		}
 	}
 }

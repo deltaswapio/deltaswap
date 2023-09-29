@@ -79,10 +79,10 @@ type (
 		// Channel to send new messages to.
 		msgC chan<- *common.MessagePublication
 
-		// Channel to send guardian set changes to.
-		// setC can be set to nil if no guardian set changes are needed.
+		// Channel to send phylax set changes to.
+		// setC can be set to nil if no phylax set changes are needed.
 		//
-		// We currently only fetch the guardian set from one primary chain, which should
+		// We currently only fetch the phylax set from one primary chain, which should
 		// have this flag set to true, and false on all others.
 		//
 		// The current primary chain is Ethereum (a mostly arbitrary decision because it
@@ -97,7 +97,7 @@ type (
 		pending   map[pendingKey]*pendingMessage
 		pendingMu sync.Mutex
 
-		// 0 is a valid guardian set, so we need a nil value here
+		// 0 is a valid phylax set, so we need a nil value here
 		currentPhylaxSet *uint32
 
 		// waitForConfirmations indicates if we should wait for the number of confirmations specified by the consistencyLevel in the message.
@@ -357,13 +357,13 @@ func (w *Watcher) Run(parentCtx context.Context) error {
 	}
 	defer messageSub.Unsubscribe()
 
-	// Fetch initial guardian set
+	// Fetch initial phylax set
 	if err := w.fetchAndUpdatePhylaxSet(logger, ctx, w.ethConn); err != nil {
-		return fmt.Errorf("failed to request guardian set: %v", err)
+		return fmt.Errorf("failed to request phylax set: %v", err)
 	}
 
-	// Poll for guardian set.
-	common.RunWithScissors(ctx, errC, "evm_fetch_guardian_set", func(ctx context.Context) error {
+	// Poll for phylax set.
+	common.RunWithScissors(ctx, errC, "evm_fetch_phylax_set", func(ctx context.Context) error {
 		t := time.NewTicker(15 * time.Second)
 		defer t.Stop()
 		for {
@@ -372,7 +372,7 @@ func (w *Watcher) Run(parentCtx context.Context) error {
 				return nil
 			case <-t.C:
 				if err := w.fetchAndUpdatePhylaxSet(logger, ctx, w.ethConn); err != nil {
-					errC <- fmt.Errorf("failed to request guardian set: %v", err)
+					errC <- fmt.Errorf("failed to request phylax set: %v", err)
 					return nil
 				}
 			}
@@ -809,23 +809,23 @@ func (w *Watcher) fetchAndUpdatePhylaxSet(
 	ethConn connectors.Connector,
 ) error {
 	msm := time.Now()
-	logger.Debug("fetching guardian set")
+	logger.Debug("fetching phylax set")
 	timeout, cancel := context.WithTimeout(ctx, 15*time.Second)
 	defer cancel()
 	idx, gs, err := fetchCurrentPhylaxSet(timeout, ethConn)
 	if err != nil {
-		ethConnectionErrors.WithLabelValues(w.networkName, "guardian_set_fetch_error").Inc()
+		ethConnectionErrors.WithLabelValues(w.networkName, "phylax_set_fetch_error").Inc()
 		p2p.DefaultRegistry.AddErrorCount(w.chainID, 1)
 		return err
 	}
 
-	queryLatency.WithLabelValues(w.networkName, "get_guardian_set").Observe(time.Since(msm).Seconds())
+	queryLatency.WithLabelValues(w.networkName, "get_phylax_set").Observe(time.Since(msm).Seconds())
 
 	if w.currentPhylaxSet != nil && *(w.currentPhylaxSet) == idx {
 		return nil
 	}
 
-	logger.Info("updated guardian set found",
+	logger.Info("updated phylax set found",
 		zap.Any("value", gs), zap.Uint32("index", idx),
 		zap.String("eth_network", w.networkName))
 
@@ -841,16 +841,16 @@ func (w *Watcher) fetchAndUpdatePhylaxSet(
 	return nil
 }
 
-// Fetch the current guardian set ID and guardian set from the chain.
+// Fetch the current phylax set ID and phylax set from the chain.
 func fetchCurrentPhylaxSet(ctx context.Context, ethConn connectors.Connector) (uint32, *ethabi.StructsPhylaxSet, error) {
 	currentIndex, err := ethConn.GetCurrentPhylaxSetIndex(ctx)
 	if err != nil {
-		return 0, nil, fmt.Errorf("error requesting current guardian set index: %w", err)
+		return 0, nil, fmt.Errorf("error requesting current phylax set index: %w", err)
 	}
 
 	gs, err := ethConn.GetPhylaxSet(ctx, currentIndex)
 	if err != nil {
-		return 0, nil, fmt.Errorf("error requesting current guardian set value: %w", err)
+		return 0, nil, fmt.Errorf("error requesting current phylax set value: %w", err)
 	}
 
 	return currentIndex, &gs, nil

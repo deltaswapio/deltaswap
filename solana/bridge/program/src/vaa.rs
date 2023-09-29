@@ -150,14 +150,14 @@ pub struct SignatureItem {
 #[derive(Serialize, Deserialize, Default, Clone)]
 pub struct VAASignature {
     pub signature: Vec<u8>,
-    pub guardian_index: u8,
+    pub phylax_index: u8,
 }
 
 #[derive(Serialize, Deserialize, Default, Clone)]
 pub struct VAA {
     // Header part
     pub version: u8,
-    pub guardian_set_index: u32,
+    pub phylax_set_index: u32,
     pub signatures: Vec<VAASignature>,
     // Body part
     pub timestamp: u32,
@@ -177,18 +177,18 @@ impl VAA {
         let mut rdr = Cursor::new(data);
 
         let version = rdr.read_u8()?;
-        let guardian_set_index = rdr.read_u32::<BigEndian>()?;
+        let phylax_set_index = rdr.read_u32::<BigEndian>()?;
 
         let len_sig = rdr.read_u8()?;
         let mut signatures: Vec<VAASignature> = Vec::with_capacity(len_sig as usize);
         for _i in 0..len_sig {
-            let guardian_index = rdr.read_u8()?;
+            let phylax_index = rdr.read_u8()?;
             let mut signature_data = [0u8; 65];
             rdr.read_exact(&mut signature_data)?;
             let signature = signature_data.to_vec();
 
             signatures.push(VAASignature {
-                guardian_index,
+                phylax_index,
                 signature,
             });
         }
@@ -208,7 +208,7 @@ impl VAA {
 
         Ok(VAA {
             version,
-            guardian_set_index,
+            phylax_set_index,
             signatures,
             timestamp,
             nonce,
@@ -225,7 +225,7 @@ impl From<VAA> for PostVAAData {
     fn from(vaa: VAA) -> Self {
         PostVAAData {
             version: vaa.version,
-            guardian_set_index: vaa.guardian_set_index,
+            phylax_set_index: vaa.phylax_set_index,
             timestamp: vaa.timestamp,
             nonce: vaa.nonce,
             emitter_chain: vaa.emitter_chain,

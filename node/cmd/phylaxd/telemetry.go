@@ -5,7 +5,7 @@ package phylaxd
 // Network operators can opt to send their logs to a shared Cloud Logging project for debugging.
 // Logs are available to all network operators. There is no secret data logged anywhere.
 //
-// We encrypt the service account using a hardcoded symmetric key shared with guardians to
+// We encrypt the service account using a hardcoded symmetric key shared with phylaxs to
 // prevent GitHub credential checkers from freaking out and to stop people from sending gigabytes of "gm".
 //
 // By using a separate key, we can keep the configuration decoupled from the telemetry backend,

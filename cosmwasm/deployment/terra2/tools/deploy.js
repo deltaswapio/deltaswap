@@ -140,9 +140,9 @@ async function instantiate(contract, inst_msg, label) {
 
 const addresses = {};
 
-const init_guardians = JSON.parse(process.env.INIT_SIGNERS);
-if (!init_guardians || init_guardians.length === 0) {
-  throw "failed to get initial guardians from .env file.";
+const init_phylaxs = JSON.parse(process.env.INIT_SIGNERS);
+if (!init_phylaxs || init_phylaxs.length === 0) {
+  throw "failed to get initial phylaxs from .env file.";
 }
 
 addresses["cw_wormhole.wasm"] = await instantiate(
@@ -150,9 +150,9 @@ addresses["cw_wormhole.wasm"] = await instantiate(
   {
     gov_chain: govChain,
     gov_address: Buffer.from(govAddress, "hex").toString("base64"),
-    guardian_set_expirity: 86400,
-    initial_guardian_set: {
-      addresses: init_guardians.map((hex) => {
+    phylax_set_expirity: 86400,
+    initial_phylax_set: {
+      addresses: init_phylaxs.map((hex) => {
         return {
           bytes: Buffer.from(hex, "hex").toString("base64"),
         };
@@ -202,13 +202,13 @@ addresses["wormhole_ibc.wasm"] = await instantiate(
   {
     gov_chain: govChain,
     gov_address: Buffer.from(govAddress, "hex").toString("base64"),
-    guardian_set_expirity: 86400,
-    initial_guardian_set: {
-      // This is using one guardian so the above registration can be hard-coded
-      // TODO: instantiate with the correct guardian set and dynamically generate the registration
+    phylax_set_expirity: 86400,
+    initial_phylax_set: {
+      // This is using one phylax so the above registration can be hard-coded
+      // TODO: instantiate with the correct phylax set and dynamically generate the registration
       addresses: [
         {
-          bytes: Buffer.from(init_guardians[0], "hex").toString("base64"),
+          bytes: Buffer.from(init_phylaxs[0], "hex").toString("base64"),
         },
       ],
       expiration_time: 0,

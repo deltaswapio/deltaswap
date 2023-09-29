@@ -231,7 +231,7 @@ fn vaa_governance(
     deposit: Balance,
     refund_to: &AccountId,
 ) -> Balance {
-    if gov_idx != vaa.guardian_set_index {
+    if gov_idx != vaa.phylax_set_index {
         refund_and_panic("InvalidGovernanceSet", refund_to);
     }
 

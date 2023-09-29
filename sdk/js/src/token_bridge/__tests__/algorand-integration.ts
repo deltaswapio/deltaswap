@@ -263,7 +263,7 @@ describe("Algorand tests", () => {
           CONTRACTS.DEVNET.ethereum.token_bridge
         );
 
-        // poll until the guardian(s) witness and sign the vaa
+        // poll until the phylax(s) witness and sign the vaa
         const { vaaBytes: signedVAA } = await getSignedVAAWithRetry(
           WORMHOLE_RPC_HOSTS,
           CHAIN_ID_ETH,
@@ -502,7 +502,7 @@ describe("Algorand tests", () => {
           CONTRACTS.DEVNET.ethereum.token_bridge
         );
 
-        // poll until the guardian(s) witness and sign the vaa
+        // poll until the phylax(s) witness and sign the vaa
         const { vaaBytes: signedVAA } = await getSignedVAAWithRetry(
           WORMHOLE_RPC_HOSTS,
           CHAIN_ID_ETH,
@@ -575,7 +575,7 @@ describe("Algorand tests", () => {
         const emitterAddress = getEmitterAddressEth(
           CONTRACTS.DEVNET.ethereum.token_bridge
         );
-        // poll until the guardian(s) witness and sign the vaa
+        // poll until the phylax(s) witness and sign the vaa
         const { vaaBytes: attestSignedVaa } = await getSignedVAAWithRetry(
           WORMHOLE_RPC_HOSTS,
           CHAIN_ID_ETH,
@@ -651,7 +651,7 @@ describe("Algorand tests", () => {
           receipt,
           CONTRACTS.DEVNET.ethereum.core
         );
-        // poll until the guardian(s) witness and sign the vaa
+        // poll until the phylax(s) witness and sign the vaa
         const { vaaBytes: transferSignedVaa } = await getSignedVAAWithRetry(
           WORMHOLE_RPC_HOSTS,
           CHAIN_ID_ETH,
@@ -825,7 +825,7 @@ describe("Algorand tests", () => {
         const emitterAddress = getEmitterAddressEth(
           CONTRACTS.DEVNET.ethereum.token_bridge
         );
-        // poll until the guardian(s) witness and sign the vaa
+        // poll until the phylax(s) witness and sign the vaa
         const { vaaBytes: signedVAA } = await getSignedVAAWithRetry(
           WORMHOLE_RPC_HOSTS,
           CHAIN_ID_ETH,
@@ -880,7 +880,7 @@ describe("Algorand tests", () => {
         const ethEmitterAddress = getEmitterAddressEth(
           CONTRACTS.DEVNET.ethereum.token_bridge
         );
-        // poll until the guardian(s) witness and sign the vaa
+        // poll until the phylax(s) witness and sign the vaa
         const { vaaBytes: firstHalfVaa } = await getSignedVAAWithRetry(
           WORMHOLE_RPC_HOSTS,
           CHAIN_ID_ETH,
@@ -925,7 +925,7 @@ describe("Algorand tests", () => {
           secondHalfReceipt,
           CONTRACTS.DEVNET.ethereum.core
         );
-        // poll until the guardian(s) witness and sign the vaa
+        // poll until the phylax(s) witness and sign the vaa
         const { vaaBytes: secondHalfVaa } = await getSignedVAAWithRetry(
           WORMHOLE_RPC_HOSTS,
           CHAIN_ID_ETH,

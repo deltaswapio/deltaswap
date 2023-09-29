@@ -55,7 +55,7 @@ pub use api::{
     set_fees,
     transfer_fees,
     upgrade_contract,
-    upgrade_guardian_set,
+    upgrade_phylax_set,
     verify_signatures,
     Initialize,
     InitializeData,
@@ -97,7 +97,7 @@ solitaire! {
     SetFees            => set_fees,
     TransferFees       => transfer_fees,
     UpgradeContract    => upgrade_contract,
-    UpgradePhylaxSet => upgrade_guardian_set,
+    UpgradePhylaxSet => upgrade_phylax_set,
     VerifySignatures   => verify_signatures,
     PostMessageUnreliable        => post_message_unreliable,
 }

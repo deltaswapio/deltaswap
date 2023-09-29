@@ -135,7 +135,7 @@ pub enum Message<P = Box<RawMessage>> {
     /// #
     /// #     let vaa = Vaa {
     /// #         version: 1,
-    /// #         guardian_set_index: 0,
+    /// #         phylax_set_index: 0,
     /// #         signatures: Vec::new(),
     /// #         timestamp: 1,
     /// #         nonce: 1,
@@ -643,7 +643,7 @@ mod test {
 
         let vaa = Vaa {
             version: 1,
-            guardian_set_index: 0,
+            phylax_set_index: 0,
             signatures: vec![Signature {
                 index: 0,
                 signature: [
@@ -758,7 +758,7 @@ mod test {
 
         let vaa = Vaa {
             version: 1,
-            guardian_set_index: 1,
+            phylax_set_index: 1,
             signatures: vec![
                 Signature {
                     index: 2,

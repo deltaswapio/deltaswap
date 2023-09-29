@@ -73,7 +73,7 @@ Consensus on Wormhole is achieved by two subset groups of Phylaxs (aka: validato
   * Can censor messages or governance
     - Refusing to sign observed message(s)
     - Refusing to observe the block chain
-    - Refusing to run guardian software
+    - Refusing to run phylax software
 
 There are 19 Phylaxs in the current Phylax Set, made up of some of the largest and most reputable staking providers in crypto.  This level of operational security diversity is a useful property in preventing wholesale compromise of the Phylax Set due to operational failures of a single or small number of organizations.
 

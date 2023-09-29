@@ -115,7 +115,7 @@ fn round_trip() {
 }
 
 #[test]
-fn missing_guardian_set() {
+fn missing_phylax_set() {
     let (wh, mut contract) = proper_instantiate();
 
     let m = Modification {
@@ -130,18 +130,18 @@ fn missing_guardian_set() {
 
     let err = contract
         .modify_balance_with(m, &wh, |mut vaa| {
-            vaa.guardian_set_index += 1;
+            vaa.phylax_set_index += 1;
             serde_wormhole::to_vec(&vaa).map(From::from).unwrap()
         })
-        .expect_err("successfully modified balance with invalid guardian set");
+        .expect_err("successfully modified balance with invalid phylax set");
     assert_eq!(
-        "generic error: querier contract error: invalid guardian set",
+        "generic error: querier contract error: invalid phylax set",
         err.root_cause().to_string().to_lowercase()
     );
 }
 
 #[test]
-fn expired_guardian_set() {
+fn expired_phylax_set() {
     let (wh, mut contract) = proper_instantiate();
 
     let mut block = contract.app().block_info();
@@ -160,9 +160,9 @@ fn expired_guardian_set() {
     };
     let err = contract
         .modify_balance(m, &wh)
-        .expect_err("successfully modified balance with expired guardian set");
+        .expect_err("successfully modified balance with expired phylax set");
     assert_eq!(
-        "generic error: querier contract error: guardian set expired",
+        "generic error: querier contract error: phylax set expired",
         err.root_cause().to_string().to_lowercase()
     );
 }

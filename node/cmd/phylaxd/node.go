@@ -64,8 +64,8 @@ var (
 
 	statusAddr *string
 
-	guardianKeyPath *string
-	solanaContract  *string
+	phylaxKeyPath  *string
+	solanaContract *string
 
 	ethRPC      *string
 	ethContract *string
@@ -224,7 +224,7 @@ func init() {
 
 	dataDir = NodeCmd.Flags().String("dataDir", "", "Data directory")
 
-	guardianKeyPath = NodeCmd.Flags().String("guardianKey", "", "Path to guardian key (required)")
+	phylaxKeyPath = NodeCmd.Flags().String("phylaxKey", "", "Path to phylax key (required)")
 	solanaContract = NodeCmd.Flags().String("solanaContract", "", "Address of the Solana program (required)")
 
 	ethRPC = NodeCmd.Flags().String("ethRPC", "", "Ethereum RPC URL")
@@ -299,7 +299,7 @@ func init() {
 
 	deltachainURL = NodeCmd.Flags().String("deltachainURL", "", "wormhole-chain gRPC URL")
 
-	// TODO: These are deprecated. Get rid of them once the guardians have had a chance to migrate off of them.
+	// TODO: These are deprecated. Get rid of them once the phylaxs have had a chance to migrate off of them.
 	deltachainKeyPath = NodeCmd.Flags().String("deltachainKeyPath", "", "path to wormhole-chain private key for signing transactions")
 	deltachainKeyPassPhrase = NodeCmd.Flags().String("deltachainKeyPassPhrase", "", "pass phrase used to unarmor the deltachain key file")
 
@@ -403,7 +403,7 @@ var NodeCmd = &cobra.Command{
 // This variable may be overridden by the -X linker flag to "dev" in which case
 // we enforce the --unsafeDevMode flag. Only development binaries/docker images
 // are distributed. Production binaries are required to be built from source by
-// guardians to reduce risk from a compromised builder.
+// phylaxs to reduce risk from a compromised builder.
 var Build = "prod"
 
 func runNode(cmd *cobra.Command, args []string) {
@@ -467,8 +467,8 @@ func runNode(cmd *cobra.Command, args []string) {
 			panic(err)
 		}
 
-		// Use the first guardian node as bootstrap
-		*p2pBootstrap = fmt.Sprintf("/dns4/guardian-0.guardian/udp/%d/quic/p2p/%s", *p2pPort, g0key.String())
+		// Use the first phylax node as bootstrap
+		*p2pBootstrap = fmt.Sprintf("/dns4/phylax-0.phylax/udp/%d/quic/p2p/%s", *p2pPort, g0key.String())
 
 		// Deterministic ganache ETH devnet address.
 		*ethContract = unsafeDevModeEvmContractAddress(*ethContract)
@@ -495,8 +495,8 @@ func runNode(cmd *cobra.Command, args []string) {
 	if *nodeKeyPath == "" && !*unsafeDevMode { // In devnet mode, keys are deterministically generated.
 		logger.Fatal("Please specify --nodeKey")
 	}
-	if *guardianKeyPath == "" {
-		logger.Fatal("Please specify --guardianKey")
+	if *phylaxKeyPath == "" {
+		logger.Fatal("Please specify --phylaxKey")
 	}
 	if *adminSocketPath == "" {
 		logger.Fatal("Please specify --adminSocket")
@@ -779,16 +779,16 @@ func runNode(cmd *cobra.Command, args []string) {
 		logger.Fatal("Infura is known to send incorrect blocks - please use your own nodes")
 	}
 
-	// In devnet mode, we generate a deterministic guardian key and write it to disk.
+	// In devnet mode, we generate a deterministic phylax key and write it to disk.
 	if *unsafeDevMode {
 		gk, err := generateDevnetPhylaxKey()
 		if err != nil {
-			logger.Fatal("failed to generate devnet guardian key", zap.Error(err))
+			logger.Fatal("failed to generate devnet phylax key", zap.Error(err))
 		}
 
-		err = writePhylaxKey(gk, "auto-generated deterministic devnet key", *guardianKeyPath, true)
+		err = writePhylaxKey(gk, "auto-generated deterministic devnet key", *phylaxKeyPath, true)
 		if err != nil {
-			logger.Fatal("failed to write devnet guardian key", zap.Error(err))
+			logger.Fatal("failed to write devnet phylax key", zap.Error(err))
 		}
 	}
 
@@ -797,12 +797,12 @@ func runNode(cmd *cobra.Command, args []string) {
 	defer db.Close()
 
 	// Phylax key
-	gk, err := loadPhylaxKey(*guardianKeyPath)
+	gk, err := loadPhylaxKey(*phylaxKeyPath)
 	if err != nil {
-		logger.Fatal("failed to load guardian key", zap.Error(err))
+		logger.Fatal("failed to load phylax key", zap.Error(err))
 	}
 
-	logger.Info("Loaded guardian key", zap.String(
+	logger.Info("Loaded phylax key", zap.String(
 		"address", ethcrypto.PubkeyToAddress(gk.PublicKey).String()))
 
 	// Load p2p private key
@@ -815,19 +815,19 @@ func runNode(cmd *cobra.Command, args []string) {
 		p2pKey = devnet.DeterministicP2PPrivKeyByIndex(int64(idx))
 
 		if idx != 0 {
-			// try to connect to guardian-0
+			// try to connect to phylax-0
 			for {
-				_, err := net.LookupIP("guardian-0.guardian")
+				_, err := net.LookupIP("phylax-0.phylax")
 				if err == nil {
 					break
 				}
-				logger.Info("Error resolving guardian-0.guardian. Trying again...")
+				logger.Info("Error resolving phylax-0.phylax. Trying again...")
 				time.Sleep(time.Second)
 			}
 			// TODO this is a hack. If this is not the bootstrap Phylax, we wait 10s such that the bootstrap Phylax has enough time to start.
 			// This may no longer be necessary because now the p2p.go ensures that it can connect to at least one bootstrap peer and will
-			// exit the whole guardian if it is unable to. Sleeping here for a bit may reduce overall startup time by preventing unnecessary restarts, though.
-			logger.Info("This is not a bootstrap Phylax. Waiting another 10 seconds for the bootstrap guardian to come online.")
+			// exit the whole phylax if it is unable to. Sleeping here for a bit may reduce overall startup time by preventing unnecessary restarts, though.
+			logger.Info("This is not a bootstrap Phylax. Waiting another 10 seconds for the bootstrap phylax to come online.")
 			time.Sleep(time.Second * 10)
 		}
 	} else {
@@ -913,11 +913,11 @@ func runNode(cmd *cobra.Command, args []string) {
 		}
 
 		labels := map[string]string{
-			"node_name":     *nodeName,
-			"node_key":      peerID.Pretty(),
-			"guardian_addr": ethcrypto.PubkeyToAddress(gk.PublicKey).String(),
-			"network":       *p2pNetworkID,
-			"version":       version.Version(),
+			"node_name":   *nodeName,
+			"node_key":    peerID.Pretty(),
+			"phylax_addr": ethcrypto.PubkeyToAddress(gk.PublicKey).String(),
+			"network":     *p2pNetworkID,
+			"version":     version.Version(),
 		}
 
 		skipPrivateLogs := !*publicRpcLogToTelemetry
@@ -976,7 +976,7 @@ func runNode(cmd *cobra.Command, args []string) {
 	var accountantWormchainConn *wormconn.ClientConn
 	if *accountantContract != "" {
 		// TODO: deltachainKeyPath and deltachainKeyPassPhrase are being replaced by accountantKeyPath and accountantKeyPassPhrase.
-		//       Give the guardians time to migrate off of the old parameters, but then remove them.
+		//       Give the phylaxs time to migrate off of the old parameters, but then remove them.
 		keyPath := *accountantKeyPath
 		if keyPath == "" {
 			if *deltachainKeyPath == "" {
@@ -1416,12 +1416,12 @@ func runNode(cmd *cobra.Command, args []string) {
 		}
 	}
 
-	guardianNode := node.NewPhylaxNode(
+	phylaxNode := node.NewPhylaxNode(
 		env,
 		gk,
 	)
 
-	guardianOptions := []*node.PhylaxOption{
+	phylaxOptions := []*node.PhylaxOption{
 		node.PhylaxOptionDatabase(db),
 		node.PhylaxOptionWatchers(watcherConfigs, ibcWatcherConfig),
 		node.PhylaxOptionAccountant(*accountantContract, *accountantWS, *accountantCheckEnabled, accountantWormchainConn),
@@ -1434,21 +1434,21 @@ func runNode(cmd *cobra.Command, args []string) {
 	}
 
 	if shouldStart(publicGRPCSocketPath) {
-		guardianOptions = append(guardianOptions, node.PhylaxOptionPublicRpcSocket(*publicGRPCSocketPath, publicRpcLogDetail))
+		phylaxOptions = append(phylaxOptions, node.PhylaxOptionPublicRpcSocket(*publicGRPCSocketPath, publicRpcLogDetail))
 
 		if shouldStart(publicRPC) {
-			guardianOptions = append(guardianOptions, node.PhylaxOptionPublicrpcTcpService(*publicRPC, publicRpcLogDetail))
+			phylaxOptions = append(phylaxOptions, node.PhylaxOptionPublicrpcTcpService(*publicRPC, publicRpcLogDetail))
 		}
 
 		if shouldStart(publicWeb) {
-			guardianOptions = append(guardianOptions,
+			phylaxOptions = append(phylaxOptions,
 				node.PhylaxOptionPublicWeb(*publicWeb, *publicGRPCSocketPath, *tlsHostname, *tlsProdEnv, path.Join(*dataDir, "autocert")),
 			)
 		}
 	}
 
 	// Run supervisor with Phylax Node as root.
-	supervisor.New(rootCtx, logger, guardianNode.Run(rootCtxCancel, guardianOptions...),
+	supervisor.New(rootCtx, logger, phylaxNode.Run(rootCtxCancel, phylaxOptions...),
 		// It's safer to crash and restart the process in case we encounter a panic,
 		// rather than attempting to reschedule the runnable.
 		supervisor.WithPropagatePanic)

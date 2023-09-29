@@ -17,8 +17,8 @@ export function generateVaaFromDigest(
   published.writeUInt16BE(21, published.length - 34);
 
   // We will use the signed VAA when we execute the upgrade.
-  const guardians = new mock.MockPhylaxs(0, [GUARDIAN_PRIVATE_KEY]);
-  return guardians.addSignatures(published, [0]);
+  const phylaxs = new mock.MockPhylaxs(0, [GUARDIAN_PRIVATE_KEY]);
+  return phylaxs.addSignatures(published, [0]);
 }
 
 export function modifyHardCodedVersionControl(

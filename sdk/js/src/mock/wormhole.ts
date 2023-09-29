@@ -20,19 +20,19 @@ export class MockPhylaxs {
   }
 
   getPublicKeys() {
-    return this.signers.map((guardian) => ethPrivateToPublic(guardian.key));
+    return this.signers.map((phylax) => ethPrivateToPublic(phylax.key));
   }
 
   updatePhylaxSetIndex(setIndex: number) {
     this.setIndex = setIndex;
   }
 
-  addSignatures(message: Buffer, guardianIndices: number[]) {
-    if (guardianIndices.length == 0) {
-      throw Error("guardianIndices.length == 0");
+  addSignatures(message: Buffer, phylaxIndices: number[]) {
+    if (phylaxIndices.length == 0) {
+      throw Error("phylaxIndices.length == 0");
     }
     const signers = this.signers.filter((signer) =>
-      guardianIndices.includes(signer.index)
+      phylaxIndices.includes(signer.index)
     );
 
     const sigStart = 6;
