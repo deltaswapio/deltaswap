@@ -1,7 +1,7 @@
 // The verify-vaa command invokes the parseAndVerifyVM method on the core contract on Ethereum to verify the specified VAA.
 
-import { Implementation__factory } from "@certusone/wormhole-sdk/lib/esm/ethers-contracts";
-import { CONTRACTS } from "@certusone/wormhole-sdk/lib/esm/utils/consts";
+import { Implementation__factory } from "@deltaswapio/deltaswap-sdk/lib/esm/ethers-contracts";
+import { CONTRACTS } from "@deltaswapio/deltaswap-sdk/lib/esm/utils/consts";
 import { ethers } from "ethers";
 import yargs from "yargs";
 import { NETWORKS, NETWORK_OPTIONS } from "../consts";

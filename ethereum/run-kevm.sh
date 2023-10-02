@@ -8,8 +8,8 @@ forge_build() {
 
 foundry_kompile() {
     kevm foundry-kompile --verbose      \
-        --require wormhole-lemmas.k     \
-        --module-import WORMHOLE-LEMMAS \
+        --require deltaswap-lemmas.k     \
+        --module-import DELTASWAP-LEMMAS \
         ${rekompile}                    \
         ${regen}
 }
@@ -43,7 +43,7 @@ workers=1
 regen=--regen
 regen=
 
-# Turn on if new lemmas have been added to wormhole-lemmas.k (subsumed by --regen)
+# Turn on if new lemmas have been added to deltaswap-lemmas.k (subsumed by --regen)
 rekompile=--rekompile
 rekompile=
 

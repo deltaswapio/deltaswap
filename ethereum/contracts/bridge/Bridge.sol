@@ -22,9 +22,9 @@ contract Bridge is BridgeGovernance, ReentrancyGuard {
 
     /**
      * @notice Emitted when a transfer is completed by the token bridge.
-     * @param emitterChainId Wormhole chain ID of emitter on the source chain.
+     * @param emitterChainId Deltaswap chain ID of emitter on the source chain.
      * @param emitterAddress Address (bytes32 zero-left-padded) of emitter on the source chain.
-     * @param sequence Sequence of the Wormhole message.
+     * @param sequence Sequence of the Deltaswap message.
      */
     event TransferRedeemed(
         uint16 indexed emitterChainId,
@@ -65,7 +65,7 @@ contract Bridge is BridgeGovernance, ReentrancyGuard {
 
         bytes memory encoded = encodeAssetMeta(meta);
 
-        sequence = wormhole().publishMessage{
+        sequence = deltaswap().publishMessage{
             value : msg.value
         }(nonce, encoded, finality());
     }
@@ -88,7 +88,7 @@ contract Bridge is BridgeGovernance, ReentrancyGuard {
             recipientChain,
             recipient,
             transferResult.normalizedArbiterFee,
-            transferResult.wormholeFee,
+            transferResult.deltaswapFee,
             nonce
         );
     }
@@ -119,20 +119,20 @@ contract Bridge is BridgeGovernance, ReentrancyGuard {
             transferResult.normalizedAmount,
             recipientChain,
             recipient,
-            transferResult.wormholeFee,
+            transferResult.deltaswapFee,
             nonce,
             payload
         );
     }
 
     function _wrapAndTransferETH(uint256 arbiterFee) internal returns (BridgeStructs.TransferResult memory transferResult) {
-        uint wormholeFee = wormhole().messageFee();
+        uint deltaswapFee = deltaswap().messageFee();
 
-        require(wormholeFee < msg.value, "value is smaller than wormhole fee");
+        require(deltaswapFee < msg.value, "value is smaller than deltaswap fee");
 
-        uint amount = msg.value - wormholeFee;
+        uint amount = msg.value - deltaswapFee;
 
-        require(arbiterFee <= amount, "fee is bigger than amount minus wormhole fee");
+        require(arbiterFee <= amount, "fee is bigger than amount minus deltaswap fee");
 
         uint normalizedAmount = normalizeAmount(amount, 18);
         uint normalizedArbiterFee = normalizeAmount(arbiterFee, 18);
@@ -156,7 +156,7 @@ contract Bridge is BridgeGovernance, ReentrancyGuard {
             tokenAddress : bytes32(uint256(uint160(address(WETH())))),
             normalizedAmount : normalizedAmount,
             normalizedArbiterFee : normalizedArbiterFee,
-            wormholeFee : wormholeFee
+            deltaswapFee : deltaswapFee
         });
     }
 
@@ -183,7 +183,7 @@ contract Bridge is BridgeGovernance, ReentrancyGuard {
             recipientChain,
             recipient,
             transferResult.normalizedArbiterFee,
-            transferResult.wormholeFee,
+            transferResult.deltaswapFee,
             nonce
         );
     }
@@ -219,7 +219,7 @@ contract Bridge is BridgeGovernance, ReentrancyGuard {
             transferResult.normalizedAmount,
             recipientChain,
             recipient,
-            transferResult.wormholeFee,
+            transferResult.deltaswapFee,
             nonce,
             payload
         );
@@ -281,7 +281,7 @@ contract Bridge is BridgeGovernance, ReentrancyGuard {
             tokenAddress : tokenAddress,
             normalizedAmount : normalizedAmount,
             normalizedArbiterFee : normalizedArbiterFee,
-            wormholeFee : msg.value
+            deltaswapFee : msg.value
         });
     }
 
@@ -321,7 +321,7 @@ contract Bridge is BridgeGovernance, ReentrancyGuard {
             fee: fee
         });
 
-        sequence = wormhole().publishMessage{value: callValue}(
+        sequence = deltaswap().publishMessage{value: callValue}(
             nonce,
             encodeTransfer(transfer),
             finality()
@@ -355,7 +355,7 @@ contract Bridge is BridgeGovernance, ReentrancyGuard {
                 payload: payload
             });
 
-        sequence = wormhole().publishMessage{value: callValue}(
+        sequence = deltaswap().publishMessage{value: callValue}(
             nonce,
             encodeTransferWithPayload(transfer),
             finality()
@@ -363,7 +363,7 @@ contract Bridge is BridgeGovernance, ReentrancyGuard {
     }
 
     function updateWrapped(bytes memory encodedVm) external returns (address token) {
-        (IWormhole.VM memory vm, bool valid, string memory reason) = wormhole().parseAndVerifyVM(encodedVm);
+        (IDeltaswap.VM memory vm, bool valid, string memory reason) = deltaswap().parseAndVerifyVM(encodedVm);
 
         require(valid, reason);
         require(verifyBridgeVM(vm), "invalid emitter");
@@ -383,7 +383,7 @@ contract Bridge is BridgeGovernance, ReentrancyGuard {
     }
 
     function createWrapped(bytes memory encodedVm) external returns (address token) {
-        (IWormhole.VM memory vm, bool valid, string memory reason) = wormhole().parseAndVerifyVM(encodedVm);
+        (IDeltaswap.VM memory vm, bool valid, string memory reason) = deltaswap().parseAndVerifyVM(encodedVm);
 
         require(valid, reason);
         require(verifyBridgeVM(vm), "invalid emitter");
@@ -493,7 +493,7 @@ contract Bridge is BridgeGovernance, ReentrancyGuard {
 
     // Execute a Transfer message
     function _completeTransfer(bytes memory encodedVm, bool unwrapWETH) internal returns (bytes memory) {
-        (IWormhole.VM memory vm, bool valid, string memory reason) = wormhole().parseAndVerifyVM(encodedVm);
+        (IDeltaswap.VM memory vm, bool valid, string memory reason) = deltaswap().parseAndVerifyVM(encodedVm);
 
         require(valid, reason);
         require(verifyBridgeVM(vm), "invalid emitter");
@@ -587,7 +587,7 @@ contract Bridge is BridgeGovernance, ReentrancyGuard {
         setOutstandingBridged(token, outstandingBridged(token) - normalizedAmount);
     }
 
-    function verifyBridgeVM(IWormhole.VM memory vm) internal view returns (bool){
+    function verifyBridgeVM(IDeltaswap.VM memory vm) internal view returns (bool){
         require(!isFork(), "invalid fork");
         return bridgeContracts(vm.emitterChainId) == vm.emitterAddress;
     }

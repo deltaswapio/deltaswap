@@ -57,7 +57,7 @@ export const TERRA2_PRIVATE_KEY =
   "symbol force gallery make bulk round subway violin worry mixture penalty kingdom boring survey tool fringe patrol sausage hard admit remember broken alien absorb"; // test3
 export const TEST_ERC20 = "0x2D8BE6BF0baA74e0A907016679CaE9190e80dD0A";
 export const TEST_SOLANA_TOKEN = "2WDq7wSs9zYrpx2kbHDA4RUTRch2CCTP6ZWaH4GNfnQQ";
-export const WORMHOLE_RPC_HOSTS = ci
+export const DELTASWAP_RPC_HOSTS = ci
   ? ["http://phylax:7071"]
   : ["http://localhost:7071"];
 

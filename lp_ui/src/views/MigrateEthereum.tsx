@@ -1,4 +1,4 @@
-import { CHAIN_ID_ETH } from "@certusone/wormhole-sdk";
+import { CHAIN_ID_ETH } from "@deltaswapio/deltaswap-sdk";
 import {
   Button,
   CircularProgress,
@@ -9,7 +9,7 @@ import {
   TextField,
   Typography,
 } from "@material-ui/core";
-//import { pool_address } from "@certusone/wormhole-sdk/lib/esm/solana/migration/wormhole_migration";
+//import { pool_address } from "@deltaswapio/deltaswap-sdk/lib/esm/solana/migration/wormhole_migration";
 import { parseUnits } from "ethers/lib/utils";
 import { useCallback, useState } from "react";
 import EthereumSignerKey from "../components/EthereumSignerKey";

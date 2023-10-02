@@ -186,7 +186,7 @@ async function fullBootstrapProcess() {
         value: pubkey,
       },
       validator_address: toValAddress(fromAccAddress(TEST_WALLET_ADDRESS_2)),
-      value: { denom: "uworm", amount: "0" },
+      value: { denom: "udelta", amount: "0" },
     });
     const createValidatorReceipt = await signingClient.signAndBroadcast(
       wallet2Address,

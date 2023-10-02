@@ -6,7 +6,7 @@ import {
   CHAIN_ID_SUI,
   CONTRACTS,
   getOriginalAssetSui,
-} from "@certusone/wormhole-sdk";
+} from "@deltaswapio/deltaswap-sdk";
 
 import { Connection, JsonRpcProvider } from "@mysten/sui.js";
 

@@ -6,19 +6,19 @@ import "../contracts/Implementation.sol";
 import "../contracts/Governance.sol";
 import "../contracts/Setup.sol";
 import "../contracts/Shutdown.sol";
-import "../contracts/Wormhole.sol";
+import "../contracts/Deltaswap.sol";
 import "forge-test/rv-helpers/TestUtils.sol";
 import "forge-test/rv-helpers/MyImplementation.sol";
-import "forge-test/rv-helpers/IMyWormhole.sol";
+import "forge-test/rv-helpers/IMyDeltaswap.sol";
 
 contract TestShutdown is TestUtils {
 
     MyImplementation impl;
 
-    Wormhole proxy;
+    Deltaswap proxy;
     Setup setup;
     Setup proxiedSetup;
-    IMyWormhole proxied;
+    IMyDeltaswap proxied;
 
     uint256 constant testPhylax = 93941733246223705020089879371323733820373732307041878556247502674739205313440;
     bytes32 constant governanceContract = 0x0000000000000000000000000000000000000000000000000000000000000004;
@@ -30,7 +30,7 @@ contract TestShutdown is TestUtils {
         // Deploy implementation contract
         impl = new MyImplementation(1,2);
         // Deploy proxy
-        proxy = new Wormhole(address(setup), bytes(""));
+        proxy = new Deltaswap(address(setup), bytes(""));
 
         address[] memory keys = new address[](1);
         keys[0] = 0xbeFA429d57cD18b7F8A4d91A2da9AB4AF05d0FBe;
@@ -48,7 +48,7 @@ contract TestShutdown is TestUtils {
             evmChainId: 1
         });
 
-        proxied = IMyWormhole(address(proxy));
+        proxied = IMyDeltaswap(address(proxy));
         upgradeImplementation();
     }
 

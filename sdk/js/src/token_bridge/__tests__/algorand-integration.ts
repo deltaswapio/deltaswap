@@ -55,7 +55,7 @@ import {
   ETH_NODE_URL,
   ETH_PRIVATE_KEY7,
   TEST_ERC20,
-  WORMHOLE_RPC_HOSTS,
+  DELTASWAP_RPC_HOSTS,
 } from "./utils/consts";
 
 const CORE_ID = BigInt(1004);
@@ -108,7 +108,7 @@ describe("Algorand tests", () => {
 
         const emitterAddr = getEmitterAddressAlgorand(TOKEN_BRIDGE_ID);
         const { vaaBytes } = await getSignedVAAWithRetry(
-          WORMHOLE_RPC_HOSTS,
+          DELTASWAP_RPC_HOSTS,
           CHAIN_ID_ALGORAND,
           emitterAddr,
           sn,
@@ -204,7 +204,7 @@ describe("Algorand tests", () => {
         );
         const txSid = parseSequenceFromLogAlgorand(transferResult);
         const signedVaa = await getSignedVAAWithRetry(
-          WORMHOLE_RPC_HOSTS,
+          DELTASWAP_RPC_HOSTS,
           CHAIN_ID_ALGORAND,
           emitterAddr,
           txSid,
@@ -265,7 +265,7 @@ describe("Algorand tests", () => {
 
         // poll until the phylax(s) witness and sign the vaa
         const { vaaBytes: signedVAA } = await getSignedVAAWithRetry(
-          WORMHOLE_RPC_HOSTS,
+          DELTASWAP_RPC_HOSTS,
           CHAIN_ID_ETH,
           emitterAddress,
           sequence,
@@ -352,7 +352,7 @@ describe("Algorand tests", () => {
 
         const emitterAddr = getEmitterAddressAlgorand(TOKEN_BRIDGE_ID);
         const { vaaBytes } = await getSignedVAAWithRetry(
-          WORMHOLE_RPC_HOSTS,
+          DELTASWAP_RPC_HOSTS,
           CHAIN_ID_ALGORAND,
           emitterAddr,
           attestSn,
@@ -443,7 +443,7 @@ describe("Algorand tests", () => {
         );
         const txSid = parseSequenceFromLogAlgorand(transferResult);
         const signedVaa = await getSignedVAAWithRetry(
-          WORMHOLE_RPC_HOSTS,
+          DELTASWAP_RPC_HOSTS,
           CHAIN_ID_ALGORAND,
           emitterAddr,
           txSid,
@@ -504,7 +504,7 @@ describe("Algorand tests", () => {
 
         // poll until the phylax(s) witness and sign the vaa
         const { vaaBytes: signedVAA } = await getSignedVAAWithRetry(
-          WORMHOLE_RPC_HOSTS,
+          DELTASWAP_RPC_HOSTS,
           CHAIN_ID_ETH,
           emitterAddress,
           sequence,
@@ -577,7 +577,7 @@ describe("Algorand tests", () => {
         );
         // poll until the phylax(s) witness and sign the vaa
         const { vaaBytes: attestSignedVaa } = await getSignedVAAWithRetry(
-          WORMHOLE_RPC_HOSTS,
+          DELTASWAP_RPC_HOSTS,
           CHAIN_ID_ETH,
           emitterAddress,
           attestSequence,
@@ -653,7 +653,7 @@ describe("Algorand tests", () => {
         );
         // poll until the phylax(s) witness and sign the vaa
         const { vaaBytes: transferSignedVaa } = await getSignedVAAWithRetry(
-          WORMHOLE_RPC_HOSTS,
+          DELTASWAP_RPC_HOSTS,
           CHAIN_ID_ETH,
           emitterAddress,
           transferSequence,
@@ -731,7 +731,7 @@ describe("Algorand tests", () => {
         );
         const txSid = parseSequenceFromLogAlgorand(transferResult);
         const signedVaa = await getSignedVAAWithRetry(
-          WORMHOLE_RPC_HOSTS,
+          DELTASWAP_RPC_HOSTS,
           CHAIN_ID_ALGORAND,
           aa,
           txSid,
@@ -827,7 +827,7 @@ describe("Algorand tests", () => {
         );
         // poll until the phylax(s) witness and sign the vaa
         const { vaaBytes: signedVAA } = await getSignedVAAWithRetry(
-          WORMHOLE_RPC_HOSTS,
+          DELTASWAP_RPC_HOSTS,
           CHAIN_ID_ETH,
           emitterAddress,
           sequence,
@@ -882,7 +882,7 @@ describe("Algorand tests", () => {
         );
         // poll until the phylax(s) witness and sign the vaa
         const { vaaBytes: firstHalfVaa } = await getSignedVAAWithRetry(
-          WORMHOLE_RPC_HOSTS,
+          DELTASWAP_RPC_HOSTS,
           CHAIN_ID_ETH,
           ethEmitterAddress,
           firstHalfSn,
@@ -927,7 +927,7 @@ describe("Algorand tests", () => {
         );
         // poll until the phylax(s) witness and sign the vaa
         const { vaaBytes: secondHalfVaa } = await getSignedVAAWithRetry(
-          WORMHOLE_RPC_HOSTS,
+          DELTASWAP_RPC_HOSTS,
           CHAIN_ID_ETH,
           ethEmitterAddress,
           secondHalfSn,
@@ -1001,7 +1001,7 @@ describe("Algorand tests", () => {
         );
         const txSid = parseSequenceFromLogAlgorand(transferResult);
         const signedVaa = await getSignedVAAWithRetry(
-          WORMHOLE_RPC_HOSTS,
+          DELTASWAP_RPC_HOSTS,
           CHAIN_ID_ALGORAND,
           aa,
           txSid,

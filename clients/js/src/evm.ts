@@ -4,8 +4,8 @@ import {
   Implementation__factory,
   NFTBridgeImplementation__factory,
   DeltaswapRelayer__factory,
-} from "@certusone/wormhole-sdk/lib/esm/ethers-contracts";
-import { getDeltaswapRelayerAddress } from "@certusone/wormhole-sdk/lib/esm/relayer";
+} from "@deltaswapio/deltaswap-sdk/lib/esm/ethers-contracts";
+import { getDeltaswapRelayerAddress } from "@deltaswapio/deltaswap-sdk/lib/esm/relayer";
 import {
   CHAINS,
   CONTRACTS,
@@ -13,7 +13,7 @@ import {
   Contracts,
   EVMChainName,
   toChainId,
-} from "@certusone/wormhole-sdk/lib/esm/utils/consts";
+} from "@deltaswapio/deltaswap-sdk/lib/esm/utils/consts";
 import axios from "axios";
 import { ethers } from "ethers";
 import { solidityKeccak256 } from "ethers/lib/utils";
@@ -25,8 +25,8 @@ import {
   getAllowanceEth,
   transferFromEth,
   transferFromEthNative,
-} from "@certusone/wormhole-sdk/lib/esm/token_bridge/transfer";
-import { tryNativeToUint8Array } from "@certusone/wormhole-sdk/lib/esm/utils";
+} from "@deltaswapio/deltaswap-sdk/lib/esm/token_bridge/transfer";
+import { tryNativeToUint8Array } from "@deltaswapio/deltaswap-sdk/lib/esm/utils";
 
 const _IMPLEMENTATION_SLOT =
   "0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc";

@@ -9,7 +9,7 @@ import {
   utils as nearUtils,
   Account as nearAccount,
   providers as nearProviders,
-} from "@certusone/wormhole-sdk/node_modules/near-api-js";
+} from "@deltaswapio/deltaswap-sdk/node_modules/near-api-js";
 
 const BN = require("bn.js");
 
@@ -19,7 +19,7 @@ import algosdk, {
   Account,
   decodeAddress,
   getApplicationAddress,
-} from "@certusone/wormhole-sdk/node_modules/algosdk";
+} from "@deltaswapio/deltaswap-sdk/node_modules/algosdk";
 
 import {
   getAlgoClient,
@@ -31,7 +31,7 @@ import {
   CHAIN_ID_ALGORAND,
   CHAIN_ID_NEAR,
   ChainId,
-} from "@certusone/wormhole-sdk/lib/cjs/utils";
+} from "@deltaswapio/deltaswap-sdk/lib/cjs/utils";
 
 import {
   CONTRACTS,
@@ -51,12 +51,12 @@ import {
   transferFromAlgorand,
   transferNearFromNear,
   transferTokenFromNear,
-} from "@certusone/wormhole-sdk/src";
+} from "@deltaswapio/deltaswap-sdk/src";
 
-import { parseSequenceFromLogAlgorand } from "@certusone/wormhole-sdk/lib/cjs/bridge";
+import { parseSequenceFromLogAlgorand } from "@deltaswapio/deltaswap-sdk/lib/cjs/bridge";
 
-import { _parseVAAAlgorand } from "@certusone/wormhole-sdk/lib/cjs/algorand";
-import { parseSequenceFromLogNear } from "@certusone/wormhole-sdk/src";
+import { _parseVAAAlgorand } from "@deltaswapio/deltaswap-sdk/lib/cjs/algorand";
+import { parseSequenceFromLogNear } from "@deltaswapio/deltaswap-sdk/src";
 
 export const uint8ArrayToHex = (a: Uint8Array): string =>
   Buffer.from(a).toString("hex");

@@ -40,7 +40,7 @@ import {
   SOLANA_HOST,
   SOLANA_PRIVATE_KEY,
   TEST_SOLANA_TOKEN,
-  WORMHOLE_RPC_HOSTS,
+  DELTASWAP_RPC_HOSTS,
 } from "./utils/consts";
 
 jest.setTimeout(60000);
@@ -80,7 +80,7 @@ describe("Solana to Ethereum", () => {
         );
         // poll until the phylax(s) witness and sign the vaa
         const { vaaBytes: signedVAA } = await getSignedVAAWithRetry(
-          WORMHOLE_RPC_HOSTS,
+          DELTASWAP_RPC_HOSTS,
           CHAIN_ID_SOLANA,
           emitterAddress,
           sequence,
@@ -215,7 +215,7 @@ describe("Solana to Ethereum", () => {
         );
         // poll until the phylax(s) witness and sign the vaa
         const { vaaBytes: signedVAA } = await getSignedVAAWithRetry(
-          WORMHOLE_RPC_HOSTS,
+          DELTASWAP_RPC_HOSTS,
           CHAIN_ID_SOLANA,
           emitterAddress,
           sequence,
@@ -309,7 +309,7 @@ describe("Solana to Ethereum", () => {
         );
         // poll until the phylax(s) witness and sign the vaa
         const { vaaBytes: signedVAA } = await getSignedVAAWithRetry(
-          WORMHOLE_RPC_HOSTS,
+          DELTASWAP_RPC_HOSTS,
           CHAIN_ID_SOLANA,
           emitterAddress,
           sequence,
@@ -407,7 +407,7 @@ describe("Solana to Ethereum", () => {
         );
         // poll until the phylax(s) witness and sign the vaa
         const { vaaBytes: signedVAA } = await getSignedVAAWithRetry(
-          WORMHOLE_RPC_HOSTS,
+          DELTASWAP_RPC_HOSTS,
           CHAIN_ID_SOLANA,
           emitterAddress,
           sequence,

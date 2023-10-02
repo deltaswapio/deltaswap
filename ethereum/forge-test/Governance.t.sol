@@ -5,11 +5,11 @@ pragma solidity ^0.8.0;
 
 import "../contracts/Implementation.sol";
 import "../contracts/Setup.sol";
-import "../contracts/Wormhole.sol";
+import "../contracts/Deltaswap.sol";
 import "forge-std/Test.sol";
 import "forge-test/rv-helpers/TestUtils.sol";
 import "forge-test/rv-helpers/MyImplementation.sol";
-import "forge-test/rv-helpers/IMyWormhole.sol";
+import "forge-test/rv-helpers/IMyDeltaswap.sol";
 
 contract TestGovernance is TestUtils {
 
@@ -27,11 +27,11 @@ contract TestGovernance is TestUtils {
     bytes32 constant MESSAGEFEE_SLOT = bytes32(uint256(7));
     bytes32 constant EVMCHAINID_SLOT = bytes32(uint256(8));
 
-    Wormhole proxy;
+    Deltaswap proxy;
     Implementation impl;
     Setup setup;
     Setup proxiedSetup;
-    IMyWormhole proxied;
+    IMyDeltaswap proxied;
 
     uint256 constant testPhylax = 93941733246223705020089879371323733820373732307041878556247502674739205313440;
 
@@ -43,7 +43,7 @@ contract TestGovernance is TestUtils {
         // Deploy implementation contract
         impl = new Implementation();
         // Deploy proxy
-        proxy = new Wormhole(address(setup), bytes(""));
+        proxy = new Deltaswap(address(setup), bytes(""));
 
         address[] memory keys = new address[](1);
         keys[0] = 0xbeFA429d57cD18b7F8A4d91A2da9AB4AF05d0FBe; // vm.addr(testPhylax)
@@ -61,7 +61,7 @@ contract TestGovernance is TestUtils {
             evmChainId: EVMCHAINID
         });
 
-        proxied = IMyWormhole(address(proxy));
+        proxied = IMyDeltaswap(address(proxy));
     }
 
     function testSubmitContractUpgrade(
@@ -792,7 +792,7 @@ contract TestGovernance is TestUtils {
         return
             // Avoid precompiled contracts
             addr <= address(0x9) ||
-            // Wormhole contract does not accept assets
+            // Deltaswap contract does not accept assets
             addr == address(impl) ||
 			// Setup contract
 			addr == address(setup) ||

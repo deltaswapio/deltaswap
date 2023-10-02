@@ -11,7 +11,7 @@ import "@openzeppelin/contracts/proxy/ERC1967/ERC1967Upgrade.sol";
 contract Implementation is Governance {
     event LogMessagePublished(address indexed sender, uint64 sequence, uint32 nonce, bytes payload, uint8 consistencyLevel);
 
-    // Publish a message to be attested by the Wormhole network
+    // Publish a message to be attested by the Deltaswap network
     function publishMessage(
         uint32 nonce,
         bytes memory payload,
@@ -36,7 +36,7 @@ contract Implementation is Governance {
             uint256 evmChainId;
             uint16 chain = chainId();
 
-            // Wormhole chain ids explicitly enumerated
+            // Deltaswap chain ids explicitly enumerated
             if        (chain == 2)  { evmChainId = 1;          // ethereum
             } else if (chain == 4)  { evmChainId = 56;         // bsc
             } else if (chain == 5)  { evmChainId = 137;        // polygon
@@ -76,5 +76,5 @@ contract Implementation is Governance {
 
     fallback() external payable {revert("unsupported");}
 
-    receive() external payable {revert("the Wormhole contract does not accept assets");}
+    receive() external payable {revert("the Deltaswap contract does not accept assets");}
 }

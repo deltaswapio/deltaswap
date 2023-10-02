@@ -1,4 +1,4 @@
-import { ChainId } from "@certusone/wormhole-sdk";
+import { ChainId } from "@deltaswapio/deltaswap-sdk";
 import { ethers } from "ethers";
 import fs from "fs";
 
@@ -19,7 +19,7 @@ export type ChainInfo = {
   evmNetworkId: number;
   chainId: ChainId;
   rpc: string;
-  wormholeAddress: string;
+  deltaswapAddress: string;
 };
 
 export type Deployment = {
@@ -191,9 +191,9 @@ export function loadDeltaswapRelayers(dev: boolean): Deployment[] {
       throw Error("Failed to find last run file for the Core Relayer process!");
     }
     const lastRun = JSON.parse(lastRunFile.toString());
-    return lastRun.wormholeRelayerProxies;
+    return lastRun.deltaswapRelayerProxies;
   } else {
-    return dev ? contracts.wormholeRelayersDev : contracts.wormholeRelayers;
+    return dev ? contracts.deltaswapRelayersDev : contracts.deltaswapRelayers;
   }
 }
 
@@ -347,7 +347,7 @@ export function getDeliveryProvider(
   return contract;
 }
 
-const wormholeRelayerAddressesCache: Partial<Record<ChainId, string>> = {};
+const deltaswapRelayerAddressesCache: Partial<Record<ChainId, string>> = {};
 export async function getDeltaswapRelayerAddress(
   chain: ChainInfo,
   forceCalculate?: boolean
@@ -377,16 +377,16 @@ export async function getDeltaswapRelayerAddress(
     }
   }
 
-  if (!wormholeRelayerAddressesCache[chain.chainId]) {
+  if (!deltaswapRelayerAddressesCache[chain.chainId]) {
     const create2Factory = getCreate2Factory(chain);
     const signer = getSigner(chain).address;
 
-    wormholeRelayerAddressesCache[
+    deltaswapRelayerAddressesCache[
       chain.chainId
     ] = await create2Factory.computeProxyAddress(signer, proxyContractSalt);
   }
 
-  return wormholeRelayerAddressesCache[chain.chainId]!;
+  return deltaswapRelayerAddressesCache[chain.chainId]!;
 }
 
 export async function getDeltaswapRelayer(

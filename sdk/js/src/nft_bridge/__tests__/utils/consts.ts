@@ -40,7 +40,7 @@ export const TEST_CW721 = "terra18dt935pdcn2ka6l0syy5gt20wa48n3mktvdvjj";
 export const TEST_SOLANA_TOKEN = "BVxyYhm498L79r4HMQ9sxZ5bi41DmJmeWZ7SCS7Cyvna";
 export const TEST_SOLANA_TOKEN3 =
   "AQJc65JzbzsT88JnGEXSqZaF8NFAXPo21fX4QUED4uRX";
-export const WORMHOLE_RPC_HOSTS = ci
+export const DELTASWAP_RPC_HOSTS = ci
   ? ["http://phylax:7071"]
   : ["http://localhost:7071"];
 

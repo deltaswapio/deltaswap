@@ -2,10 +2,10 @@ package params
 
 const (
 	// Name defines the application name of Deltachain.
-	Name = "uworm"
+	Name = "udelta"
 
 	// BondDenom defines the native staking token denomination.
-	BondDenom = "uworm"
+	BondDenom = "udelta"
 
 	// DisplayDenom defines the name, symbol, and display value of the worm token.
 	DisplayDenom = "WORM"

@@ -4,12 +4,12 @@
 pragma solidity ^0.8.0;
 
 import "../../libraries/external/BytesLib.sol";
-import "../../interfaces/IWormhole.sol";
+import "../../interfaces/IDeltaswap.sol";
 import "../../interfaces/relayer/IDeltaswapRelayerTyped.sol";
-import "../../interfaces/relayer/IWormholeReceiver.sol";
-import "../../relayer/wormholeRelayer/DeltaswapRelayer.sol";
+import "../../interfaces/relayer/IDeltaswapReceiver.sol";
+import "../../relayer/deltaswapRelayer/DeltaswapRelayer.sol";
 
-import {toWormholeFormat} from "../../relayer/libraries/Utils.sol";
+import {toDeltaswapFormat} from "../../relayer/libraries/Utils.sol";
 
 struct XAddress {
     uint16 chainId;
@@ -24,12 +24,12 @@ struct DeliveryData {
     bytes[] additionalVaas;
 }
 
-contract MockRelayerIntegration is IWormholeReceiver {
+contract MockRelayerIntegration is IDeltaswapReceiver {
     using BytesLib for bytes;
     using LocalNativeLib for LocalNative;
 
-    // wormhole instance on this chain
-    IWormhole immutable wormhole;
+    // deltaswap instance on this chain
+    IDeltaswap immutable deltaswap;
 
     // trusted relayer contract on this chain
     DeltaswapRelayer immutable relayer;
@@ -59,8 +59,8 @@ contract MockRelayerIntegration is IWormholeReceiver {
         bytes forwardMessage;
     }
 
-    constructor(address _wormholeCore, address _coreRelayer) {
-        wormhole = IWormhole(_wormholeCore);
+    constructor(address _deltaswapCore, address _coreRelayer) {
+        deltaswap = IDeltaswap(_deltaswapCore);
         relayer = DeltaswapRelayer(_coreRelayer);
         owner = msg.sender;
     }
@@ -288,14 +288,14 @@ contract MockRelayerIntegration is IWormholeReceiver {
         );
     }
 
-    function receiveWormholeMessages(
+    function receiveDeltaswapMessages(
         bytes memory payload,
         bytes[] memory additionalVaas,
         bytes32 sourceAddress,
         uint16 sourceChain,
         bytes32 deliveryHash
     ) public payable override {
-        // loop through the array of wormhole observations from the batch and store each payload
+        // loop through the array of deltaswap observations from the batch and store each payload
         require(msg.sender == address(relayer), "Wrong msg.sender");
 
         latestDeliveryData =
@@ -333,11 +333,11 @@ contract MockRelayerIntegration is IWormholeReceiver {
             );
             if (message.version == Version.MULTI_SEND_BACK) {
                 (cost,) = relayer.quoteEVMDeliveryPrice(
-                    wormhole.chainId(), TargetNative.wrap(0), Gas.wrap(500_000)
+                    deltaswap.chainId(), TargetNative.wrap(0), Gas.wrap(500_000)
                 );
                 relayer.forwardToEvm{value: LocalNative.unwrap(cost)}(
-                    wormhole.chainId(),
-                    getRegisteredContractAddress(wormhole.chainId()),
+                    deltaswap.chainId(),
+                    getRegisteredContractAddress(deltaswap.chainId()),
                     encodeMessage(Message(Version.SEND, message.forwardMessage, bytes(""))),
                     TargetNative.wrap(0),
                     LocalNative.wrap(address(this).balance - LocalNative.unwrap(cost)),

@@ -4,10 +4,10 @@ import fs from "fs";
 import { MockPhylaxs, GovernanceEmitter } from "../../../sdk/js/src/mock";
 import {
   getPhylaxSet,
-  getWormholeBridgeData,
-  createInitializeInstruction as createWormholeInitializeInstruction,
+  getDeltaswapBridgeData,
+  createInitializeInstruction as createDeltaswapInitializeInstruction,
   deriveUpgradeAuthorityKey,
-  createUpgradeContractInstruction as createWormholeUpgradeContractInstruction,
+  createUpgradeContractInstruction as createDeltaswapUpgradeContractInstruction,
 } from "../../../sdk/js/src/solana/wormhole";
 import {
   createInitializeInstruction as createTokenBridgeInitializeInstruction,
@@ -67,7 +67,7 @@ describe("Deploy and Upgrade Programs", () => {
       .then(async (signature) => connection.confirmTransaction(signature));
   });
 
-  describe("Wormhole (Core Bridge)", () => {
+  describe("Deltaswap (Core Bridge)", () => {
     it("Deploy and Initialize", async () => {
       const artifactPath = `${__dirname}/../artifacts-main/bridge.so`;
       const programIdPath = `${__dirname}/keys/${CORE_BRIDGE_ADDRESS}.json`;
@@ -89,7 +89,7 @@ describe("Deploy and Upgrade Programs", () => {
       const initializeTx = await web3.sendAndConfirmTransaction(
         connection,
         new web3.Transaction().add(
-          createWormholeInitializeInstruction(
+          createDeltaswapInitializeInstruction(
             CORE_BRIDGE_ADDRESS,
             wallet.key(),
             phylaxSetExpirationTime,
@@ -102,7 +102,7 @@ describe("Deploy and Upgrade Programs", () => {
       // console.log(`initializeTx: ${initializeTx}`);
 
       // verify data
-      const info = await getWormholeBridgeData(connection, CORE_BRIDGE_ADDRESS);
+      const info = await getDeltaswapBridgeData(connection, CORE_BRIDGE_ADDRESS);
       expect(info.phylaxSetIndex).to.equal(PHYLAX_SET_INDEX);
       expect(info.config.phylaxSetExpirationTime).to.equal(
         phylaxSetExpirationTime
@@ -135,7 +135,7 @@ describe("Deploy and Upgrade Programs", () => {
       // now pass implementation through governance
       const timestamp = 1;
       const chain = 1;
-      const message = governance.publishWormholeUpgradeContract(
+      const message = governance.publishDeltaswapUpgradeContract(
         timestamp,
         chain,
         implementation.toString()
@@ -156,7 +156,7 @@ describe("Deploy and Upgrade Programs", () => {
       }
       // console.log(`postVaa:           ${postTx}`);
 
-      const upgradeContractIx = createWormholeUpgradeContractInstruction(
+      const upgradeContractIx = createDeltaswapUpgradeContractInstruction(
         CORE_BRIDGE_ADDRESS,
         wallet.key(),
         signedVaa
@@ -189,7 +189,7 @@ describe("Deploy and Upgrade Programs", () => {
       );
 
       // we will initialize using CORE_BRIDGE_ADDRESS instead of
-      // UPGRADEABLE_CORE_BRIDGE_ADDRESS because the Wormhole owner is only
+      // UPGRADEABLE_CORE_BRIDGE_ADDRESS because the Deltaswap owner is only
       // valid for CORE_BRIDGE_ADDRESS with the bpf we deployed
       //
       // AccountOwner::Other(Pubkey::from_str(env!("BRIDGE_ADDRESS")).unwrap())
@@ -283,7 +283,7 @@ describe("Deploy and Upgrade Programs", () => {
       );
 
       // we will initialize using CORE_BRIDGE_ADDRESS instead of
-      // UPGRADEABLE_CORE_BRIDGE_ADDRESS because the Wormhole owner is only
+      // UPGRADEABLE_CORE_BRIDGE_ADDRESS because the Deltaswap owner is only
       // valid for CORE_BRIDGE_ADDRESS with the bpf we deployed
       //
       // AccountOwner::Other(Pubkey::from_str(env!("BRIDGE_ADDRESS")).unwrap())

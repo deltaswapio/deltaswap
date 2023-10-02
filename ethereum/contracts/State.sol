@@ -19,7 +19,7 @@ contract Events {
 }
 
 contract Storage {
-    struct WormholeState {
+    struct DeltaswapState {
         Structs.Provider provider;
 
         // Mapping of phylax_set_index => phylax set
@@ -48,5 +48,5 @@ contract Storage {
 }
 
 contract State {
-    Storage.WormholeState _state;
+    Storage.DeltaswapState _state;
 }

@@ -1,4 +1,4 @@
-import { transferFromSui } from "@certusone/wormhole-sdk/lib/esm/token_bridge/transfer";
+import { transferFromSui } from "@deltaswapio/deltaswap-sdk/lib/esm/token_bridge/transfer";
 import {
   executeTransactionBlock,
   getProvider,
@@ -10,7 +10,7 @@ import {
   ChainName,
   Network,
   tryNativeToUint8Array,
-} from "@certusone/wormhole-sdk/lib/esm/utils";
+} from "@deltaswapio/deltaswap-sdk/lib/esm/utils";
 
 export async function transferSui(
   dstChain: ChainName,

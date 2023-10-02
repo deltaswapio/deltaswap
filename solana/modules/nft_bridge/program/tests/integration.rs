@@ -172,7 +172,7 @@ async fn set_up() -> Result<Context, TransportError> {
     let config: Config = common::get_account_data(&mut context.client, config_key)
         .await
         .unwrap();
-    assert_eq!(config.wormhole_bridge, bridge);
+    assert_eq!(config.deltaswap_bridge, bridge);
 
     Ok(context)
 }

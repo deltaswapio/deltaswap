@@ -2,7 +2,7 @@ import { DirectSecp256k1HdWallet } from "@cosmjs/proto-signing";
 import { calculateFee } from "@cosmjs/stargate";
 import { getSigningCosmWasmClient } from "@sei-js/core";
 
-import { CONTRACTS } from "@certusone/wormhole-sdk/lib/esm/utils/consts";
+import { CONTRACTS } from "@deltaswapio/deltaswap-sdk/lib/esm/utils/consts";
 import { NETWORKS } from "../../consts";
 import { Network } from "../../utils";
 import { impossible, Payload } from "../../vaa";

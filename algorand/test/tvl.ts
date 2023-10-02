@@ -1,6 +1,6 @@
-const algosdk = require("@certusone/wormhole-sdk/node_modules/algosdk");
+const algosdk = require("@deltaswapio/deltaswap-sdk/node_modules/algosdk");
 
-import { calcLogicSigAccount } from "@certusone/wormhole-sdk/lib/cjs/algorand";
+import { calcLogicSigAccount } from "@deltaswapio/deltaswap-sdk/lib/cjs/algorand";
 
 import {
   coalesceChainName,
@@ -10,7 +10,7 @@ import {
   toChainName,
   getOriginalAssetAlgorand,
   CONTRACTS
-} from "@certusone/wormhole-sdk";
+} from "@deltaswapio/deltaswap-sdk";
 
 export async function getNativeAlgoAddress(
   algoClient: any,

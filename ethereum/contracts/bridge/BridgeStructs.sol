@@ -50,7 +50,7 @@ contract BridgeStructs {
         // Amount of tokens (big-endian uint256) that the user is willing to pay as relayer fee. Must be <= Amount.
         uint256 normalizedArbiterFee;
         // Portion of msg.value to be paid as the core bridge fee
-        uint wormholeFee;
+        uint deltaswapFee;
     }
 
     struct AssetMeta {

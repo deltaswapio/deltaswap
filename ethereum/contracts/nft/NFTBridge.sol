@@ -92,7 +92,7 @@ contract NFTBridge is NFTBridgeGovernance {
     function logTransfer(NFTBridgeStructs.Transfer memory transfer, uint256 callValue, uint32 nonce) internal returns (uint64 sequence) {
         bytes memory encoded = encodeTransfer(transfer);
 
-        sequence = wormhole().publishMessage{
+        sequence = deltaswap().publishMessage{
             value : callValue
         }(nonce, encoded, finality());
     }
@@ -103,7 +103,7 @@ contract NFTBridge is NFTBridgeGovernance {
 
     // Execute a Transfer message
     function _completeTransfer(bytes memory encodedVm) internal {
-        (IWormhole.VM memory vm, bool valid, string memory reason) = wormhole().parseAndVerifyVM(encodedVm);
+        (IDeltaswap.VM memory vm, bool valid, string memory reason) = deltaswap().parseAndVerifyVM(encodedVm);
 
         require(valid, reason);
         require(verifyBridgeVM(vm), "invalid emitter");
@@ -155,7 +155,7 @@ contract NFTBridge is NFTBridgeGovernance {
 
         // SPL NFTs all use the same NFT contract, so unify the name
         if (tokenChain == 1) {
-            // "Wormhole Bridged Solana-NFT" - right-padded
+            // "Deltaswap Bridged Solana-NFT" - right-padded
             name =   0x576f726d686f6c65204272696467656420536f6c616e612d4e46540000000000;
             // "WORMSPLNFT" - right-padded
             symbol = 0x574f524d53504c4e465400000000000000000000000000000000000000000000;
@@ -192,7 +192,7 @@ contract NFTBridge is NFTBridgeGovernance {
         setWrappedAsset(tokenChain, tokenAddress, token);
     }
 
-    function verifyBridgeVM(IWormhole.VM memory vm) internal view returns (bool){
+    function verifyBridgeVM(IDeltaswap.VM memory vm) internal view returns (bool){
         require(!isFork(), "invalid fork");
         if (bridgeContracts(vm.emitterChainId) == vm.emitterAddress) {
             return true;
@@ -202,7 +202,7 @@ contract NFTBridge is NFTBridgeGovernance {
     }
 
     function encodeTransfer(NFTBridgeStructs.Transfer memory transfer) public pure returns (bytes memory encoded) {
-        // There is a global limit on 200 bytes of tokenURI in Wormhole due to Solana
+        // There is a global limit on 200 bytes of tokenURI in Deltaswap due to Solana
         require(bytes(transfer.uri).length <= 200, "tokenURI must not exceed 200 bytes");
 
         encoded = abi.encodePacked(

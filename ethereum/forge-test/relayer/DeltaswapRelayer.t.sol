@@ -19,12 +19,12 @@ import {
     DeliveryOverride,
     EvmDeliveryInstruction
 } from "../../contracts/relayer/libraries/RelayerInternalStructs.sol";
-import {DeltaswapRelayer} from "../../contracts/relayer/wormholeRelayer/DeltaswapRelayer.sol";
+import {DeltaswapRelayer} from "../../contracts/relayer/deltaswapRelayer/DeltaswapRelayer.sol";
 import {MockGenericRelayer} from "./MockGenericRelayer.sol";
-import {MockWormhole} from "./MockWormhole.sol";
-import {IWormhole} from "../../contracts/interfaces/IWormhole.sol";
-import {WormholeSimulator, FakeWormholeSimulator} from "./WormholeSimulator.sol";
-import {IWormholeReceiver} from "../../contracts/interfaces/relayer/IWormholeReceiver.sol";
+import {MockDeltaswap} from "./MockDeltaswap.sol";
+import {IDeltaswap} from "../../contracts/interfaces/IDeltaswap.sol";
+import {DeltaswapSimulator, FakeDeltaswapSimulator} from "./DeltaswapSimulator.sol";
+import {IDeltaswapReceiver} from "../../contracts/interfaces/relayer/IDeltaswapReceiver.sol";
 import {
     MockRelayerIntegration,
     XAddress,
@@ -33,14 +33,14 @@ import {
 import {BigRevertBufferIntegration} from "./BigRevertBufferIntegration.sol";
 import {TestHelpers} from "./TestHelpers.sol";
 import {DeltaswapRelayerSerde} from
-    "../../contracts/relayer/wormholeRelayer/DeltaswapRelayerSerde.sol";
+    "../../contracts/relayer/deltaswapRelayer/DeltaswapRelayerSerde.sol";
 import {
     EvmExecutionInfoV1,
     ExecutionInfoVersion,
     decodeEvmExecutionInfoV1,
     encodeEvmExecutionInfoV1
 } from "../../contracts/relayer/libraries/ExecutionParameters.sol";
-import {toWormholeFormat, fromWormholeFormat} from "../../contracts/relayer/libraries/Utils.sol";
+import {toDeltaswapFormat, fromDeltaswapFormat} from "../../contracts/relayer/libraries/Utils.sol";
 import {BytesParsing} from "../../contracts/relayer/libraries/BytesParsing.sol";
 import "../../contracts/interfaces/relayer/TypedUnits.sol";
 
@@ -71,8 +71,8 @@ contract DeltaswapRelayerTests is Test {
     struct FeeParameters {
         uint56 targetNativePrice;
         uint56 sourceNativePrice;
-        uint32 wormholeFeeOnSource;
-        uint32 wormholeFeeOnTarget;
+        uint32 deltaswapFeeOnSource;
+        uint32 deltaswapFeeOnTarget;
         uint64 receiverValueTarget;
     }
 
@@ -86,8 +86,8 @@ contract DeltaswapRelayerTests is Test {
     struct FeeParametersTyped {
         WeiPrice targetNativePrice;
         WeiPrice sourceNativePrice;
-        Wei wormholeFeeOnSource;
-        Wei wormholeFeeOnTarget;
+        Wei deltaswapFeeOnSource;
+        Wei deltaswapFeeOnTarget;
         Wei receiverValueTarget;
     }
 
@@ -112,14 +112,14 @@ contract DeltaswapRelayerTests is Test {
         return FeeParametersTyped({
             targetNativePrice: WeiPrice.wrap(feeParams.targetNativePrice),
             sourceNativePrice: WeiPrice.wrap(feeParams.sourceNativePrice),
-            wormholeFeeOnSource: Wei.wrap(feeParams.wormholeFeeOnSource),
-            wormholeFeeOnTarget: Wei.wrap(feeParams.wormholeFeeOnTarget),
+            deltaswapFeeOnSource: Wei.wrap(feeParams.deltaswapFeeOnSource),
+            deltaswapFeeOnTarget: Wei.wrap(feeParams.deltaswapFeeOnTarget),
             receiverValueTarget: Wei.wrap(feeParams.receiverValueTarget)
         });
     }
 
-    IWormhole relayerWormhole;
-    WormholeSimulator relayerWormholeSimulator;
+    IDeltaswap relayerDeltaswap;
+    DeltaswapSimulator relayerDeltaswapSimulator;
     MockGenericRelayer genericRelayer;
     TestHelpers helpers;
 
@@ -130,21 +130,21 @@ contract DeltaswapRelayerTests is Test {
      */
 
     function setUp() public {
-        // deploy Wormhole
-        MockWormhole wormhole = new MockWormhole({
+        // deploy Deltaswap
+        MockDeltaswap deltaswap = new MockDeltaswap({
             initChainId: 2,
             initEvmChainId: block.chainid
         });
 
-        relayerWormhole = wormhole;
-        relayerWormholeSimulator = new FakeWormholeSimulator(
-            wormhole
+        relayerDeltaswap = deltaswap;
+        relayerDeltaswapSimulator = new FakeDeltaswapSimulator(
+            deltaswap
         );
 
         helpers = new TestHelpers();
 
         genericRelayer =
-            new MockGenericRelayer(address(wormhole), address(relayerWormholeSimulator));
+            new MockGenericRelayer(address(deltaswap), address(relayerDeltaswapSimulator));
 
         setUpChains(5);
     }
@@ -188,7 +188,7 @@ contract DeltaswapRelayerTests is Test {
                     / (
                         uint256(1) * gasParams.targetGasPrice
                             * (uint256(0) + gasParams.targetGasLimit + gasParams.evmGasOverhead)
-                            + feeParams.wormholeFeeOnTarget
+                            + feeParams.deltaswapFeeOnTarget
                     )
         );
         vm.assume(
@@ -197,7 +197,7 @@ contract DeltaswapRelayerTests is Test {
                     / (
                         uint256(1) * gasParams.sourceGasPrice
                             * (uint256(gasParams.targetGasLimit) + gasParams.evmGasOverhead)
-                            + feeParams.wormholeFeeOnSource
+                            + feeParams.deltaswapFeeOnSource
                     )
         );
 
@@ -250,13 +250,13 @@ contract DeltaswapRelayerTests is Test {
         s.source.deliveryProvider.updateDeliverGasOverhead(s.targetChain, gasParams.evmGasOverhead);
         s.target.deliveryProvider.updateDeliverGasOverhead(s.sourceChain, gasParams.evmGasOverhead);
 
-        s.source.wormholeSimulator.setMessageFee(feeParams.wormholeFeeOnSource.unwrap());
-        s.target.wormholeSimulator.setMessageFee(feeParams.wormholeFeeOnTarget.unwrap());
+        s.source.deltaswapSimulator.setMessageFee(feeParams.deltaswapFeeOnSource.unwrap());
+        s.target.deltaswapSimulator.setMessageFee(feeParams.deltaswapFeeOnTarget.unwrap());
     }
 
     struct Contracts {
-        IWormhole wormhole;
-        WormholeSimulator wormholeSimulator;
+        IDeltaswap deltaswap;
+        DeltaswapSimulator deltaswapSimulator;
         DeliveryProvider deliveryProvider;
         IDeltaswapRelayer coreRelayer;
         DeltaswapRelayer coreRelayerFull;
@@ -272,15 +272,15 @@ contract DeltaswapRelayerTests is Test {
     function setUpChains(uint16 numChains) internal {
         for (uint16 i = 1; i <= numChains; i++) {
             Contracts memory mapEntry;
-            (mapEntry.wormhole, mapEntry.wormholeSimulator) = helpers.setUpWormhole(i);
+            (mapEntry.deltaswap, mapEntry.deltaswapSimulator) = helpers.setUpDeltaswap(i);
             mapEntry.deliveryProvider = helpers.setUpDeliveryProvider(i);
             mapEntry.deliveryProvider.updateSupportedMessageKeyTypes(VAA_KEY_TYPE, true);
             mapEntry.coreRelayer =
-                helpers.setUpDeltaswapRelayer(mapEntry.wormhole, address(mapEntry.deliveryProvider));
+                helpers.setUpDeltaswapRelayer(mapEntry.deltaswap, address(mapEntry.deliveryProvider));
             mapEntry.coreRelayerFull = DeltaswapRelayer(payable(address(mapEntry.coreRelayer)));
             genericRelayer.setDeltaswapRelayerContract(i, address(mapEntry.coreRelayer));
             mapEntry.integration =
-            new MockRelayerIntegration(address(mapEntry.wormhole), address(mapEntry.coreRelayer));
+            new MockRelayerIntegration(address(mapEntry.deltaswap), address(mapEntry.coreRelayer));
             mapEntry.relayer =
                 address(uint160(uint256(keccak256(abi.encodePacked(bytes("relayer"), i)))));
             genericRelayer.setProviderDeliveryAddress(i, mapEntry.relayer);
@@ -305,7 +305,7 @@ contract DeltaswapRelayerTests is Test {
                 map[i].deliveryProvider.updateRewardAddress(map[i].rewardAddress);
                 helpers.registerDeltaswapRelayerContract(
                     map[i].coreRelayerFull,
-                    map[i].wormhole,
+                    map[i].deltaswap,
                     i,
                     j,
                     bytes32(uint256(uint160(address(map[j].coreRelayer))))
@@ -363,7 +363,7 @@ contract DeltaswapRelayerTests is Test {
         address emitterAddress
     ) internal pure returns (VaaKey[] memory vaaKeys) {
         vaaKeys = new VaaKey[](1);
-        vaaKeys[0] = VaaKey(chainId, toWormholeFormat(emitterAddress), sequence);
+        vaaKeys[0] = VaaKey(chainId, toDeltaswapFormat(emitterAddress), sequence);
     }
 
     function sendMessageToTargetChain(
@@ -775,7 +775,7 @@ contract DeltaswapRelayerTests is Test {
             test.destinationAmount == test.receiverValue, "Receiver value was sent to the contract"
         );
         assertTrue(
-            test.rewardAddressAmount + feeParams.wormholeFeeOnSource == test.deliveryPrice,
+            test.rewardAddressAmount + feeParams.deltaswapFeeOnSource == test.deliveryPrice,
             "Reward address was paid correctly"
         );
 
@@ -829,7 +829,7 @@ contract DeltaswapRelayerTests is Test {
         assertTrue(test.targetContractBalance == address(setup.target.coreRelayer).balance);
         assertTrue(test.destinationAmount == 0, "No receiver value was sent to the contract");
         assertTrue(
-            test.rewardAddressAmount + feeParams.wormholeFeeOnSource == test.deliveryPrice,
+            test.rewardAddressAmount + feeParams.deltaswapFeeOnSource == test.deliveryPrice,
             "Reward address was paid correctly"
         );
         assertTrue(test.refundAddressAmount == test.receiverValue, "Receiver value was refunded");
@@ -873,7 +873,7 @@ contract DeltaswapRelayerTests is Test {
         assertTrue(test.targetContractBalance == address(setup.target.coreRelayer).balance);
         assertTrue(test.destinationAmount == 0, "No receiver value was sent to the contract");
         assertTrue(
-            test.rewardAddressAmount + feeParams.wormholeFeeOnSource == test.deliveryPrice,
+            test.rewardAddressAmount + feeParams.deltaswapFeeOnSource == test.deliveryPrice,
             "Reward address was paid correctly"
         );
         test.gasAmount = uint32(
@@ -924,7 +924,7 @@ contract DeltaswapRelayerTests is Test {
         assertTrue(
             test.deliveryPrice
                 == setup.source.rewardAddress.balance - test.rewardAddressBalance
-                    + feeParams.wormholeFeeOnSource,
+                    + feeParams.deltaswapFeeOnSource,
             "The source to target relayer's reward address was paid appropriately"
         );
 
@@ -941,7 +941,7 @@ contract DeltaswapRelayerTests is Test {
         TargetNative tmp = setup.target.coreRelayer.quoteNativeForChain(
             setup.sourceChain,
             LocalNative.wrap(
-                amountToGetInRefundTarget + feeParams.wormholeFeeOnTarget - baseFee.unwrap()
+                amountToGetInRefundTarget + feeParams.deltaswapFeeOnTarget - baseFee.unwrap()
             ),
             setup.target.coreRelayer.getDefaultDeliveryProvider()
         );
@@ -950,7 +950,7 @@ contract DeltaswapRelayerTests is Test {
         // Calculate amount that must have been spent on gas, by reverse engineering from the amount that was paid to the provider's reward address on the target chain
         test.gasAmount = uint32(
             gasParams.targetGasLimit
-                - (amountToGetInRefundTarget + feeParams.wormholeFeeOnTarget)
+                - (amountToGetInRefundTarget + feeParams.deltaswapFeeOnTarget)
                     / test.targetChainRefundPerGasUnused
         );
         test.relayerPayment = test.relayerBalance - setup.target.relayer.balance;
@@ -962,7 +962,7 @@ contract DeltaswapRelayerTests is Test {
         );
         assertTrue(
             test.relayerPayment
-                == amountToGetInRefundTarget + feeParams.wormholeFeeOnTarget
+                == amountToGetInRefundTarget + feeParams.deltaswapFeeOnTarget
                     + feeParams.receiverValueTarget,
             "Relayer paid the correct amount"
         );
@@ -993,7 +993,7 @@ contract DeltaswapRelayerTests is Test {
         setup.target.deliveryProvider.updateSupportedChain(setup.sourceChain, false);
         vm.assume(
             test.targetChainRefundPerGasUnused * REASONABLE_GAS_LIMIT.unwrap()
-                >= feeParams.wormholeFeeOnTarget
+                >= feeParams.deltaswapFeeOnTarget
                     + uint256(1) * gasParams.evmGasOverhead * gasParams.sourceGasPrice
                         * (uint256(feeParams.sourceNativePrice) / feeParams.targetNativePrice + 1)
         );
@@ -1014,7 +1014,7 @@ contract DeltaswapRelayerTests is Test {
         assertTrue(
             test.deliveryPrice
                 == setup.source.rewardAddress.balance - test.rewardAddressBalance
-                    + feeParams.wormholeFeeOnSource,
+                    + feeParams.deltaswapFeeOnSource,
             "The source to target relayer's reward address was paid appropriately"
         );
 
@@ -1068,7 +1068,7 @@ contract DeltaswapRelayerTests is Test {
         assertTrue(
             test.deliveryPrice
                 == setup.source.rewardAddress.balance - test.rewardAddressBalance
-                    + feeParams.wormholeFeeOnSource,
+                    + feeParams.deltaswapFeeOnSource,
             "The source to target relayer's reward address was paid appropriately"
         );
 
@@ -1155,23 +1155,23 @@ contract DeltaswapRelayerTests is Test {
 
         DeliveryInstruction memory expectedInstruction = DeliveryInstruction({
             targetChain: setup.targetChain,
-            targetAddress: toWormholeFormat(params.targetAddress),
+            targetAddress: toDeltaswapFormat(params.targetAddress),
             payload: params.payload,
             requestedReceiverValue: TargetNative.wrap(params.receiverValue),
             extraReceiverValue: extraReceiverValue,
             encodedExecutionInfo: encodedExecutionInfo,
             refundChain: params.refundChain,
-            refundAddress: toWormholeFormat(params.refundAddress),
+            refundAddress: toDeltaswapFormat(params.refundAddress),
             refundDeliveryProvider: setup.source.deliveryProvider.getTargetChainAddress(
                 setup.targetChain
                 ),
-            sourceDeliveryProvider: toWormholeFormat(address(setup.source.deliveryProvider)),
-            senderAddress: toWormholeFormat(address(setup.source.integration)),
+            sourceDeliveryProvider: toDeltaswapFormat(address(setup.source.deliveryProvider)),
+            senderAddress: toDeltaswapFormat(address(setup.source.integration)),
             messageKeys: messageKeys
         });
 
         checkInstructionEquality(
-            relayerWormholeSimulator.parseVMFromLogs(vm.getRecordedLogs()[0]).payload,
+            relayerDeltaswapSimulator.parseVMFromLogs(vm.getRecordedLogs()[0]).payload,
             expectedInstruction
         );
     }
@@ -1222,12 +1222,12 @@ contract DeltaswapRelayerTests is Test {
             targetChain: setup.targetChain,
             newRequestedReceiverValue: TargetNative.wrap(params.newReceiverValue),
             newEncodedExecutionInfo: encodedExecutionInfo,
-            newSourceDeliveryProvider: toWormholeFormat(address(setup.source.deliveryProvider)),
-            newSenderAddress: toWormholeFormat(params.senderAddress)
+            newSourceDeliveryProvider: toDeltaswapFormat(address(setup.source.deliveryProvider)),
+            newSenderAddress: toDeltaswapFormat(params.senderAddress)
         });
 
         checkRedeliveryInstructionEquality(
-            relayerWormholeSimulator.parseVMFromLogs(vm.getRecordedLogs()[0]).payload,
+            relayerDeltaswapSimulator.parseVMFromLogs(vm.getRecordedLogs()[0]).payload,
             expectedInstruction
         );
     }
@@ -1412,7 +1412,7 @@ contract DeltaswapRelayerTests is Test {
      *
      */
 
-    function invalidateVM(bytes memory message, WormholeSimulator simulator) internal {
+    function invalidateVM(bytes memory message, DeltaswapSimulator simulator) internal {
         change(message, message.length - 1);
         simulator.invalidateVM(message);
     }
@@ -1431,7 +1431,7 @@ contract DeltaswapRelayerTests is Test {
         Vm.Log[] entries;
         bytes encodedDeliveryVAA;
         bytes[] encodedVMs;
-        IWormhole.VM parsed;
+        IDeltaswap.VM parsed;
         uint256 budget;
         address payable relayerRefundAddress;
         DeliveryInstruction instruction;
@@ -1445,12 +1445,12 @@ contract DeltaswapRelayerTests is Test {
         stack.entries = vm.getRecordedLogs();
         stack.encodedVMs = new bytes[](0);
 
-        stack.encodedDeliveryVAA = relayerWormholeSimulator.fetchSignedMessageFromLogs(
+        stack.encodedDeliveryVAA = relayerDeltaswapSimulator.fetchSignedMessageFromLogs(
             stack.entries[numVaas], setup.sourceChain, address(setup.source.coreRelayer)
         );
 
         stack.relayerRefundAddress = payable(setup.target.relayer);
-        stack.parsed = relayerWormhole.parseVM(stack.encodedDeliveryVAA);
+        stack.parsed = relayerDeltaswap.parseVM(stack.encodedDeliveryVAA);
         stack.instruction = DeltaswapRelayerSerde.decodeDeliveryInstruction(stack.parsed.payload);
         stack.deliveryVaaHash = stack.parsed.hash;
         EvmExecutionInfoV1 memory executionInfo =
@@ -1479,7 +1479,7 @@ contract DeltaswapRelayerTests is Test {
 
         bytes memory fakeVM = abi.encodePacked(stack.encodedDeliveryVAA);
 
-        invalidateVM(fakeVM, setup.target.wormholeSimulator);
+        invalidateVM(fakeVM, setup.target.deltaswapSimulator);
 
         stack.encodedDeliveryVAA = fakeVM;
 
@@ -1507,13 +1507,13 @@ contract DeltaswapRelayerTests is Test {
         prepareDeliveryStack(stack, setup, 0);
 
         // Create valid VAA with wrong emitter address
-        IWormhole.VM memory vm_ = relayerWormholeSimulator.parseVMFromLogs(stack.entries[0]);
+        IDeltaswap.VM memory vm_ = relayerDeltaswapSimulator.parseVMFromLogs(stack.entries[0]);
         vm_.version = uint8(1);
         vm_.timestamp = uint32(block.timestamp);
         vm_.emitterChainId = setup.sourceChain;
-        vm_.emitterAddress = toWormholeFormat(address(setup.source.integration));
+        vm_.emitterAddress = toDeltaswapFormat(address(setup.source.integration));
         bytes memory deliveryVaaWithWrongEmitter =
-            relayerWormholeSimulator.encodeAndSignMessage(vm_);
+            relayerDeltaswapSimulator.encodeAndSignMessage(vm_);
 
         vm.prank(setup.target.relayer);
         vm.expectRevert(
@@ -1707,7 +1707,7 @@ contract DeltaswapRelayerTests is Test {
         );
         stack.payment = payment_.unwrap();
 
-        uint64 sequence = setup.source.wormhole.publishMessage{value: feeParams.wormholeFeeOnSource}(
+        uint64 sequence = setup.source.deltaswap.publishMessage{value: feeParams.deltaswapFeeOnSource}(
             1, bytes(""), 200
         );
         setup.source.integration.sendToEvm{value: stack.payment}(
@@ -2053,9 +2053,9 @@ contract DeltaswapRelayerTests is Test {
         assertTrue(consistencyLevel == actualConsistencyLevel);
     }
 
-    function testToAndFromWormholeFormat(address msg1) public {
-        assertTrue(toWormholeFormat(msg1) == bytes32(uint256(uint160(msg1))));
-        assertTrue(fromWormholeFormat(toWormholeFormat(msg1)) == msg1);
+    function testToAndFromDeltaswapFormat(address msg1) public {
+        assertTrue(toDeltaswapFormat(msg1) == bytes32(uint256(uint160(msg1))));
+        assertTrue(fromDeltaswapFormat(toDeltaswapFormat(msg1)) == msg1);
     }
 
     function testRevertDeliveryReentrantCall(
@@ -2204,7 +2204,7 @@ contract DeltaswapRelayerTests is Test {
         DeliveryData memory deliveryData = setup.target.integration.getDeliveryData();
 
         assertTrue(
-            fromWormholeFormat(deliveryData.sourceAddress) == address(setup.source.integration),
+            fromDeltaswapFormat(deliveryData.sourceAddress) == address(setup.source.integration),
             "Source address wrong"
         );
         assertTrue(deliveryData.sourceChain == setup.sourceChain, "Source chain id wrong");

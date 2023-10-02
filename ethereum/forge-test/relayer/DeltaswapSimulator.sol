@@ -1,25 +1,25 @@
 // SPDX-License-Identifier: Apache 2
 pragma solidity ^0.8.0;
 
-import {IWormhole} from "../../contracts/interfaces/IWormhole.sol";
-import {MockWormhole} from "./MockWormhole.sol";
+import {IDeltaswap} from "../../contracts/interfaces/IDeltaswap.sol";
+import {MockDeltaswap} from "./MockDeltaswap.sol";
 import "../../contracts/libraries/external/BytesLib.sol";
 
 import "forge-std/Vm.sol";
 import "forge-std/console.sol";
 
 /**
- * @notice These are the common parts for the signing and the non signing wormhole simulators.
+ * @notice These are the common parts for the signing and the non signing deltaswap simulators.
  * @dev This contract is meant to be used when testing against a mainnet fork.
  */
-abstract contract WormholeSimulator {
+abstract contract DeltaswapSimulator {
     using BytesLib for bytes;
 
     function doubleKeccak256(bytes memory body) internal pure returns (bytes32) {
         return keccak256(abi.encodePacked(keccak256(body)));
     }
 
-    function parseVMFromLogs(Vm.Log memory log) public pure returns (IWormhole.VM memory vm_) {
+    function parseVMFromLogs(Vm.Log memory log) public pure returns (IDeltaswap.VM memory vm_) {
         uint256 index = 0;
 
         // emitterAddress
@@ -50,14 +50,14 @@ abstract contract WormholeSimulator {
         // trailing bytes (due to 32 byte slot overlap)
         index += log.data.length - index;
 
-        require(index == log.data.length, "failed to parse wormhole message");
+        require(index == log.data.length, "failed to parse deltaswap message");
     }
 
     /**
-     * @notice Finds published Wormhole events in forge logs
+     * @notice Finds published Deltaswap events in forge logs
      * @param logs The forge Vm.log captured when recording events during test execution
      */
-    function fetchWormholeMessageFromLog(Vm.Log[] memory logs)
+    function fetchDeltaswapMessageFromLog(Vm.Log[] memory logs)
         public
         pure
         returns (Vm.Log[] memory)
@@ -90,11 +90,11 @@ abstract contract WormholeSimulator {
     }
 
     /**
-     * @notice Encodes Wormhole message body into bytes
-     * @param vm_ Wormhole VM struct
-     * @return encodedObservation Wormhole message body encoded into bytes
+     * @notice Encodes Deltaswap message body into bytes
+     * @param vm_ Deltaswap VM struct
+     * @return encodedObservation Deltaswap message body encoded into bytes
      */
-    function encodeObservation(IWormhole.VM memory vm_)
+    function encodeObservation(IDeltaswap.VM memory vm_)
         public
         pure
         returns (bytes memory encodedObservation)
@@ -111,17 +111,17 @@ abstract contract WormholeSimulator {
     }
 
     /**
-     * @notice Formats and signs a simulated Wormhole message using the emitted log from calling `publishMessage`
+     * @notice Formats and signs a simulated Deltaswap message using the emitted log from calling `publishMessage`
      * @param log The forge Vm.log captured when recording events during test execution
-     * @return signedMessage Formatted and signed Wormhole message
+     * @return signedMessage Formatted and signed Deltaswap message
      */
     function fetchSignedMessageFromLogs(
         Vm.Log memory log,
         uint16 emitterChainId,
         address emitterAddress
     ) public returns (bytes memory signedMessage) {
-        // Parse wormhole message from ethereum logs
-        IWormhole.VM memory vm_ = parseVMFromLogs(log);
+        // Parse deltaswap message from ethereum logs
+        IDeltaswap.VM memory vm_ = parseVMFromLogs(log);
 
         // Set empty body values before computing the hash
         vm_.version = uint8(1);
@@ -133,62 +133,62 @@ abstract contract WormholeSimulator {
     }
 
     /**
-     * Functions that must be implemented by concrete wormhole simulators.
+     * Functions that must be implemented by concrete deltaswap simulators.
      */
 
     /**
-     * @notice Sets the message fee for a wormhole message.
+     * @notice Sets the message fee for a deltaswap message.
      */
     function setMessageFee(uint256 newFee) public virtual;
 
     /**
-     * @notice Invalidates a VM. It must be executed before it is parsed and verified by the Wormhole instance to work.
+     * @notice Invalidates a VM. It must be executed before it is parsed and verified by the Deltaswap instance to work.
      */
     function invalidateVM(bytes memory message) public virtual;
 
     /**
-     * @notice Signs and preformatted simulated Wormhole message
-     * @param vm_ The preformatted Wormhole message
-     * @return signedMessage Formatted and signed Wormhole message
+     * @notice Signs and preformatted simulated Deltaswap message
+     * @param vm_ The preformatted Deltaswap message
+     * @return signedMessage Formatted and signed Deltaswap message
      */
-    function encodeAndSignMessage(IWormhole.VM memory vm_)
+    function encodeAndSignMessage(IDeltaswap.VM memory vm_)
         public
         virtual
         returns (bytes memory signedMessage);
 }
 
 /**
- * @title A Wormhole Phylax Simulator
- * @notice This contract simulates signing Wormhole messages emitted in a forge test.
+ * @title A Deltaswap Phylax Simulator
+ * @notice This contract simulates signing Deltaswap messages emitted in a forge test.
  * This particular version doesn't sign any message but just exists to keep a standard interface for tests.
- * @dev This contract is meant to be used with the MockWormhole contract that validates any VM as long
+ * @dev This contract is meant to be used with the MockDeltaswap contract that validates any VM as long
  *   as its hash wasn't banned.
  */
-contract FakeWormholeSimulator is WormholeSimulator {
-    // Allow access to Wormhole
-    MockWormhole public wormhole;
+contract FakeDeltaswapSimulator is DeltaswapSimulator {
+    // Allow access to Deltaswap
+    MockDeltaswap public deltaswap;
 
     /**
-     * @param initWormhole address of the Wormhole core contract for the mainnet chain being forked
+     * @param initDeltaswap address of the Deltaswap core contract for the mainnet chain being forked
      */
-    constructor(MockWormhole initWormhole) {
-        wormhole = initWormhole;
+    constructor(MockDeltaswap initDeltaswap) {
+        deltaswap = initDeltaswap;
     }
 
     function setMessageFee(uint256 newFee) public override {
-        wormhole.setMessageFee(newFee);
+        deltaswap.setMessageFee(newFee);
     }
 
     function invalidateVM(bytes memory message) public override {
-        wormhole.invalidateVM(message);
+        deltaswap.invalidateVM(message);
     }
 
     /**
-     * @notice Signs and preformatted simulated Wormhole message
-     * @param vm_ The preformatted Wormhole message
-     * @return signedMessage Formatted and signed Wormhole message
+     * @notice Signs and preformatted simulated Deltaswap message
+     * @param vm_ The preformatted Deltaswap message
+     * @return signedMessage Formatted and signed Deltaswap message
      */
-    function encodeAndSignMessage(IWormhole.VM memory vm_)
+    function encodeAndSignMessage(IDeltaswap.VM memory vm_)
         public
         view
         override
@@ -200,7 +200,7 @@ contract FakeWormholeSimulator is WormholeSimulator {
 
         signedMessage = abi.encodePacked(
             vm_.version,
-            wormhole.getCurrentPhylaxSetIndex(),
+            deltaswap.getCurrentPhylaxSetIndex(),
             // length of signature array
             uint8(1),
             // phylax index
@@ -217,30 +217,30 @@ contract FakeWormholeSimulator is WormholeSimulator {
 }
 
 /**
- * @title A Wormhole Phylax Simulator
- * @notice This contract simulates signing Wormhole messages emitted in a forge test.
- * It overrides the Wormhole phylax set to allow for signing messages with a single
- * private key on any EVM where Wormhole core contracts are deployed.
+ * @title A Deltaswap Phylax Simulator
+ * @notice This contract simulates signing Deltaswap messages emitted in a forge test.
+ * It overrides the Deltaswap phylax set to allow for signing messages with a single
+ * private key on any EVM where Deltaswap core contracts are deployed.
  * @dev This contract is meant to be used when testing against a mainnet fork.
  */
-contract SigningWormholeSimulator is WormholeSimulator {
+contract SigningDeltaswapSimulator is DeltaswapSimulator {
     // Taken from forge-std/Script.sol
     address private constant VM_ADDRESS =
         address(bytes20(uint160(uint256(keccak256("hevm cheat code")))));
     Vm public constant vm = Vm(VM_ADDRESS);
 
-    // Allow access to Wormhole
-    IWormhole public wormhole;
+    // Allow access to Deltaswap
+    IDeltaswap public deltaswap;
 
     // Save the phylax PK to sign messages with
     uint256 private devnetPhylaxPK;
 
     /**
-     * @param wormhole_ address of the Wormhole core contract for the mainnet chain being forked
+     * @param deltaswap_ address of the Deltaswap core contract for the mainnet chain being forked
      * @param devnetPhylax private key of the devnet Phylax
      */
-    constructor(IWormhole wormhole_, uint256 devnetPhylax) {
-        wormhole = wormhole_;
+    constructor(IDeltaswap deltaswap_, uint256 devnetPhylax) {
+        deltaswap = deltaswap_;
         devnetPhylaxPK = devnetPhylax;
         overrideToDevnetPhylax(vm.addr(devnetPhylax));
     }
@@ -248,16 +248,16 @@ contract SigningWormholeSimulator is WormholeSimulator {
     function overrideToDevnetPhylax(address devnetPhylax) internal {
         {
             // Get slot for Phylax Set at the current index
-            uint32 phylaxSetIndex = wormhole.getCurrentPhylaxSetIndex();
+            uint32 phylaxSetIndex = deltaswap.getCurrentPhylaxSetIndex();
             bytes32 phylaxSetSlot = keccak256(abi.encode(phylaxSetIndex, 2));
 
             // Overwrite all but first phylax set to zero address. This isn't
             // necessary, but just in case we inadvertently access these slots
             // for any reason.
-            uint256 numPhylaxs = uint256(vm.load(address(wormhole), phylaxSetSlot));
+            uint256 numPhylaxs = uint256(vm.load(address(deltaswap), phylaxSetSlot));
             for (uint256 i = 1; i < numPhylaxs;) {
                 vm.store(
-                    address(wormhole),
+                    address(deltaswap),
                     bytes32(uint256(keccak256(abi.encodePacked(phylaxSetSlot))) + i),
                     bytes32(0)
                 );
@@ -269,20 +269,20 @@ contract SigningWormholeSimulator is WormholeSimulator {
             // Now overwrite the first phylax key with the devnet key specified
             // in the function argument.
             vm.store(
-                address(wormhole),
+                address(deltaswap),
                 bytes32(uint256(keccak256(abi.encodePacked(phylaxSetSlot))) + 0), // just explicit w/ index 0
                 bytes32(uint256(uint160(devnetPhylax)))
             );
 
             // Change the length to 1 phylax
             vm.store(
-                address(wormhole),
+                address(deltaswap),
                 phylaxSetSlot,
                 bytes32(uint256(1)) // length == 1
             );
 
             // Confirm phylax set override
-            address[] memory phylaxs = wormhole.getPhylaxSet(phylaxSetIndex).keys;
+            address[] memory phylaxs = deltaswap.getPhylaxSet(phylaxSetIndex).keys;
             require(phylaxs.length == 1, "phylaxs.length != 1");
             require(phylaxs[0] == devnetPhylax, "incorrect phylax set override");
         }
@@ -291,23 +291,23 @@ contract SigningWormholeSimulator is WormholeSimulator {
     function setMessageFee(uint256 newFee) public override {
         bytes32 coreModule = 0x00000000000000000000000000000000000000000000000000000000436f7265;
         bytes memory message =
-            abi.encodePacked(coreModule, uint8(3), uint16(wormhole.chainId()), newFee);
-        IWormhole.VM memory preSignedMessage = IWormhole.VM({
+            abi.encodePacked(coreModule, uint8(3), uint16(deltaswap.chainId()), newFee);
+        IDeltaswap.VM memory preSignedMessage = IDeltaswap.VM({
             version: 1,
             timestamp: uint32(block.timestamp),
             nonce: 0,
-            emitterChainId: wormhole.governanceChainId(),
-            emitterAddress: wormhole.governanceContract(),
+            emitterChainId: deltaswap.governanceChainId(),
+            emitterAddress: deltaswap.governanceContract(),
             sequence: 0,
             consistencyLevel: 200,
             payload: message,
             phylaxSetIndex: 0,
-            signatures: new IWormhole.Signature[](0),
+            signatures: new IDeltaswap.Signature[](0),
             hash: bytes32("")
         });
 
         bytes memory signed = encodeAndSignMessage(preSignedMessage);
-        wormhole.submitSetMessageFee(signed);
+        deltaswap.submitSetMessageFee(signed);
     }
 
     function invalidateVM(bytes memory message) public pure override {
@@ -316,11 +316,11 @@ contract SigningWormholeSimulator is WormholeSimulator {
     }
 
     /**
-     * @notice Signs and preformatted simulated Wormhole message
-     * @param vm_ The preformatted Wormhole message
-     * @return signedMessage Formatted and signed Wormhole message
+     * @notice Signs and preformatted simulated Deltaswap message
+     * @param vm_ The preformatted Deltaswap message
+     * @return signedMessage Formatted and signed Deltaswap message
      */
-    function encodeAndSignMessage(IWormhole.VM memory vm_)
+    function encodeAndSignMessage(IDeltaswap.VM memory vm_)
         public
         view
         override
@@ -331,13 +331,13 @@ contract SigningWormholeSimulator is WormholeSimulator {
         vm_.hash = doubleKeccak256(body);
 
         // Sign the hash with the devnet phylax private key
-        IWormhole.Signature[] memory sigs = new IWormhole.Signature[](1);
+        IDeltaswap.Signature[] memory sigs = new IDeltaswap.Signature[](1);
         (sigs[0].v, sigs[0].r, sigs[0].s) = vm.sign(devnetPhylaxPK, vm_.hash);
         sigs[0].phylaxIndex = 0;
 
         signedMessage = abi.encodePacked(
             vm_.version,
-            wormhole.getCurrentPhylaxSetIndex(),
+            deltaswap.getCurrentPhylaxSetIndex(),
             uint8(sigs.length),
             sigs[0].phylaxIndex,
             sigs[0].r,

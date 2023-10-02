@@ -2,7 +2,7 @@ import {
   CHAINS,
   ChainName,
   assertChain,
-} from "@certusone/wormhole-sdk/lib/esm/utils/consts";
+} from "@deltaswapio/deltaswap-sdk/lib/esm/utils/consts";
 import yargs from "yargs";
 import { NETWORKS } from "../../consts";
 import { assertNetwork } from "../../utils";

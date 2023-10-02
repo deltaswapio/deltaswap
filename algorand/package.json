@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "@certusone/wormhole-sdk": "file:../sdk/js",
+    "@deltaswapio/deltaswap-sdk": "file:../sdk/js",
     "algosdk": "^1.21.0",
     "ts-node": "^10.7.0",
     "typescript": "^4.6.2",

@@ -16,7 +16,7 @@ const {
   parseSequenceFromLogEth,
   getEmitterAddressEth,
   getSignedVAA,
-} = require("@certusone/wormhole-sdk");
+} = require("@deltaswapio/deltaswap-sdk");
 const { default: axios } = require("axios");
 
 const ETH_NODE_URL = "ws://localhost:8545";

@@ -241,9 +241,9 @@
       },
       "addresses": {
         "native": {
-          "address": "uworm",
+          "address": "udelta",
           "addressWormhole": "010c0ded78f1b69ec7b79b9ee592fbbcacebc97db1c695220a833135bfa74824",
-          "denom": "uworm",
+          "denom": "udelta",
           "name": "worm",
           "symbol": "worm",
           "decimals": 0

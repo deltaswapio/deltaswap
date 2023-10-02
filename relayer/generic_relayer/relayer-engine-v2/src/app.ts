@@ -12,7 +12,7 @@ import {
   sourceTx,
 } from "relayer-engine";
 import { RedisStorage } from "relayer-engine/lib/storage/redis-storage";
-import { EVMChainId } from "@certusone/wormhole-sdk";
+import { EVMChainId } from "@deltaswapio/deltaswap-sdk";
 import { processGenericRelayerVaa } from "./processor";
 import { Logger } from "winston";
 import deepCopy from "clone";

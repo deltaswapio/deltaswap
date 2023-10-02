@@ -27,6 +27,6 @@ pub fn initialize(
 ) -> Result<()> {
     // Create the config account
     accs.config.create(ctx, accs.payer.key, Exempt)?;
-    accs.config.wormhole_bridge = data.bridge;
+    accs.config.deltaswap_bridge = data.bridge;
     Ok(())
 }

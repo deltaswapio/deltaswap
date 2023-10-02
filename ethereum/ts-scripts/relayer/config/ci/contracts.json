@@ -11,7 +11,7 @@
       "address": "0x1ef9e15c3bbf0555860b5009B51722027134d53a"
     }
   ],
-  "wormholeRelayers": [
+  "deltaswapRelayers": [
     {
       "chainId": 2,
       "address": "0xE66C1Bc1b369EF4F376b84373E3Aa004E8F4C083"

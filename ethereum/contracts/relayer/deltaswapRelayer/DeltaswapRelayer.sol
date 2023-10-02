@@ -23,7 +23,7 @@ contract DeltaswapRelayer is
     //  the inheritance hierarchy here
     bool private initialized;
 
-    constructor(address wormhole) DeltaswapRelayerBase(wormhole) {}
+    constructor(address deltaswap) DeltaswapRelayerBase(deltaswap) {}
 
     //needs to be called upon construction of the EC1967 proxy
     function initialize(address defaultDeliveryProvider) public {

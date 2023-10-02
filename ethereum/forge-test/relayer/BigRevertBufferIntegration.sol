@@ -6,11 +6,11 @@ import "../../contracts/interfaces/relayer/IDeltaswapRelayerTyped.sol";
 import {
     EvmDeliveryInstruction
 } from "../../contracts/relayer/libraries/RelayerInternalStructs.sol";
-import {DeltaswapRelayerDelivery} from "../../contracts/relayer/wormholeRelayer/DeltaswapRelayerDelivery.sol";
-import {DeltaswapRelayerBase} from "../../contracts/relayer/wormholeRelayer/DeltaswapRelayerBase.sol";
-import {IWormholeReceiver} from "../../contracts/interfaces/relayer/IWormholeReceiver.sol";
-import {toWormholeFormat, fromWormholeFormat} from "../../contracts/relayer/libraries/Utils.sol";
-import {MockWormhole} from "./MockWormhole.sol";
+import {DeltaswapRelayerDelivery} from "../../contracts/relayer/deltaswapRelayer/DeltaswapRelayerDelivery.sol";
+import {DeltaswapRelayerBase} from "../../contracts/relayer/deltaswapRelayer/DeltaswapRelayerBase.sol";
+import {IDeltaswapReceiver} from "../../contracts/interfaces/relayer/IDeltaswapReceiver.sol";
+import {toDeltaswapFormat, fromDeltaswapFormat} from "../../contracts/relayer/libraries/Utils.sol";
+import {MockDeltaswap} from "./MockDeltaswap.sol";
 
 import "forge-std/Test.sol";
 import "forge-std/console.sol";
@@ -19,15 +19,15 @@ uint256 constant uint256Length = 32;
 
 /**
  * This contract is meant to test different kinds of extreme scenarios when an integration returns data
- * after its `receiveWormholeMessages` interface is called.
+ * after its `receiveDeltaswapMessages` interface is called.
  *
  * Only meant for testing purposes.
  */
-contract BigRevertBufferIntegration is IWormholeReceiver {
+contract BigRevertBufferIntegration is IDeltaswapReceiver {
     using BytesParsing for bytes;
     // This is the function which receives all messages from the remote contracts.
 
-    function receiveWormholeMessages(
+    function receiveDeltaswapMessages(
         bytes memory payload,
         bytes[] memory, /*additionalVaas*/
         bytes32, /*sourceAddress*/
@@ -50,7 +50,7 @@ contract BigRevertBufferIntegration is IWormholeReceiver {
 }
 
 contract ExecuteInstructionHarness is DeltaswapRelayerDelivery {
-    constructor(address _wormhole) DeltaswapRelayerBase(_wormhole) {}
+    constructor(address _deltaswap) DeltaswapRelayerBase(_deltaswap) {}
 
     function executeInstruction_harness(EvmDeliveryInstruction memory instruction)
         public
@@ -64,12 +64,12 @@ contract TestBigBuffers is Test {
     ExecuteInstructionHarness harness;
 
     function setUp() public {
-        // deploy Wormhole
-        MockWormhole wormhole = new MockWormhole({
+        // deploy Deltaswap
+        MockDeltaswap deltaswap = new MockDeltaswap({
             initChainId: 2,
             initEvmChainId: block.chainid
         });
-        harness = new ExecuteInstructionHarness(address(wormhole));
+        harness = new ExecuteInstructionHarness(address(deltaswap));
         console.log(address(harness));
     }
 
@@ -77,10 +77,10 @@ contract TestBigBuffers is Test {
         console.log(address(harness));
         Gas gasLimit = Gas.wrap(500_000);
         uint256 sizeRequested = 512;
-        bytes32 targetIntegration = toWormholeFormat(address(new BigRevertBufferIntegration()));
+        bytes32 targetIntegration = toDeltaswapFormat(address(new BigRevertBufferIntegration()));
         // We encode 512 as the requested revert buffer length to our test integration contract
         bytes memory payload = abi.encode(sizeRequested);
-        bytes32 userAddress = toWormholeFormat(address(0x8080));
+        bytes32 userAddress = toDeltaswapFormat(address(0x8080));
 
         DeltaswapRelayerDelivery.DeliveryResults memory results = harness.executeInstruction_harness(
             EvmDeliveryInstruction({

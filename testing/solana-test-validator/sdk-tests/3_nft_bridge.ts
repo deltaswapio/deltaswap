@@ -28,7 +28,7 @@ import {
   deriveTokenMetadataKey,
 } from "../../../sdk/js/src/solana";
 import {
-  deriveWormholeEmitterKey,
+  deriveDeltaswapEmitterKey,
   getPostedMessage,
   getPostedVaa,
 } from "../../../sdk/js/src/solana/wormhole";
@@ -760,7 +760,7 @@ describe("NFT Bridge", () => {
         expect(
           Buffer.compare(
             messageData.emitterAddress,
-            deriveWormholeEmitterKey(NFT_BRIDGE_ADDRESS).toBuffer()
+            deriveDeltaswapEmitterKey(NFT_BRIDGE_ADDRESS).toBuffer()
           )
         ).to.equal(0);
         expect(messageData.emitterChain).to.equal(1);
@@ -1131,7 +1131,7 @@ describe("NFT Bridge", () => {
         expect(
           Buffer.compare(
             messageData.emitterAddress,
-            deriveWormholeEmitterKey(NFT_BRIDGE_ADDRESS).toBuffer()
+            deriveDeltaswapEmitterKey(NFT_BRIDGE_ADDRESS).toBuffer()
           )
         ).to.equal(0);
         expect(messageData.emitterChain).to.equal(1);

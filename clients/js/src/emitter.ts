@@ -2,7 +2,7 @@ import {
   ChainId,
   ChainName,
   isCosmWasmChain,
-} from "@certusone/wormhole-sdk/lib/esm/utils/consts";
+} from "@deltaswapio/deltaswap-sdk/lib/esm/utils/consts";
 
 import {
   getEmitterAddressAlgorand,
@@ -10,7 +10,7 @@ import {
   getEmitterAddressNear,
   getEmitterAddressSolana,
   getEmitterAddressTerra,
-} from "@certusone/wormhole-sdk/lib/esm/bridge/getEmitterAddress";
+} from "@deltaswapio/deltaswap-sdk/lib/esm/bridge/getEmitterAddress";
 
 export async function getEmitterAddress(
   chain: ChainId | ChainName,

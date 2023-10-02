@@ -1,12 +1,12 @@
 [package]
-name = "wormhole-migration"
+name = "deltaswap-migration"
 version = "0.1.0"
 description = "Created with Rocksalt"
 edition = "2018"
 
 [lib]
 crate-type = ["cdylib", "lib"]
-name = "wormhole_migration"
+name = "deltaswap_migration"
 
 [features]
 no-entrypoint = ["solitaire/no-entrypoint", "rand"]
@@ -27,6 +27,7 @@ spl-token = { version = "=3.3.0", features = ["no-entrypoint"] }
 wasm-bindgen = { version = "0.2.74", features = ["serde-serialize"], optional = true }
 serde = { version = "1.0", features = ["derive"] }
 rand = { version = "0.7.3", optional = true }
+getrandom = { version = "0.2", features = ["js"] }
 
 [dev-dependencies]
 hex = "*"

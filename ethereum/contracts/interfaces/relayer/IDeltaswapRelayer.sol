@@ -1,13 +1,11 @@
 // SPDX-License-Identifier: Apache 2
 
-pragma solidity ^0.8.19;
-
-import "./TypedUnits.sol";
+pragma solidity ^0.8.0;
 
 /**
  * @title DeltaswapRelayer
  * @author 
- * @notice This project allows developers to build cross-chain applications powered by Wormhole without needing to 
+ * @notice This project allows developers to build cross-chain applications powered by Deltaswap without needing to
  * write and run their own relaying infrastructure
  * 
  * We implement the IDeltaswapRelayer interface that allows users to request a delivery provider to relay a payload (and/or additional messages)
@@ -15,10 +13,10 @@ import "./TypedUnits.sol";
  */
 
 /**
- * @notice VaaKey identifies a wormhole message
+ * @notice VaaKey identifies a deltaswap message
  *
- * @custom:member chainId Wormhole chain ID of the chain where this VAA was emitted from
- * @custom:member emitterAddress Address of the emitter of the VAA, in Wormhole bytes32 format
+ * @custom:member chainId Deltaswap chain ID of the chain where this VAA was emitted from
+ * @custom:member emitterAddress Address of the emitter of the VAA, in Deltaswap bytes32 format
  * @custom:member sequence Sequence number of the VAA
  */
 struct VaaKey {
@@ -38,7 +36,7 @@ struct MessageKey {
 
 interface IDeltaswapRelayerBase {
     event SendEvent(
-        uint64 indexed sequence, LocalNative deliveryQuote, LocalNative paymentForExtraReceiverValue
+        uint64 indexed sequence, uint256 deliveryQuote, uint256 paymentForExtraReceiverValue
     );
 
     function getRegisteredDeltaswapRelayerContract(uint16 chainId) external view returns (bytes32);
@@ -71,15 +69,15 @@ interface IDeltaswapRelayerSend is IDeltaswapRelayerBase {
      * to relay a payload to the address `targetAddress` on chain `targetChain` 
      * with gas limit `gasLimit` and `msg.value` equal to `receiverValue`
      * 
-     * `targetAddress` must implement the IWormholeReceiver interface
+     * `targetAddress` must implement the IDeltaswapReceiver interface
      * 
      * This function must be called with `msg.value` equal to `quoteEVMDeliveryPrice(targetChain, receiverValue, gasLimit)`
      * 
      * Any refunds (from leftover gas) will be paid to the delivery provider. In order to receive the refunds, use the `sendPayloadToEvm` function 
      * with `refundChain` and `refundAddress` as parameters
      * 
-     * @param targetChain in Wormhole Chain ID format
-     * @param targetAddress address to call on targetChain (that implements IWormholeReceiver) 
+     * @param targetChain in Deltaswap Chain ID format
+     * @param targetAddress address to call on targetChain (that implements IDeltaswapReceiver)
      * @param payload arbitrary bytes to pass in as parameter in call to `targetAddress`
      * @param receiverValue msg.value that delivery provider should pass in for call to `targetAddress` (in targetChain currency units)
      * @param gasLimit gas limit with which to call `targetAddress`.
@@ -89,8 +87,8 @@ interface IDeltaswapRelayerSend is IDeltaswapRelayerBase {
         uint16 targetChain,
         address targetAddress,
         bytes memory payload,
-        TargetNative receiverValue,
-        Gas gasLimit
+        uint256 receiverValue,
+        uint256 gasLimit
     ) external payable returns (uint64 sequence);
 
     /**
@@ -99,17 +97,17 @@ interface IDeltaswapRelayerSend is IDeltaswapRelayerBase {
      * with gas limit `gasLimit` and `msg.value` equal to `receiverValue`
      * 
      * Any refunds (from leftover gas) will be sent to `refundAddress` on chain `refundChain`
-     * `targetAddress` must implement the IWormholeReceiver interface
+     * `targetAddress` must implement the IDeltaswapReceiver interface
      * 
      * This function must be called with `msg.value` equal to `quoteEVMDeliveryPrice(targetChain, receiverValue, gasLimit)`
      * 
-     * @param targetChain in Wormhole Chain ID format
-     * @param targetAddress address to call on targetChain (that implements IWormholeReceiver) 
+     * @param targetChain in Deltaswap Chain ID format
+     * @param targetAddress address to call on targetChain (that implements IDeltaswapReceiver)
      * @param payload arbitrary bytes to pass in as parameter in call to `targetAddress`
      * @param receiverValue msg.value that delivery provider should pass in for call to `targetAddress` (in targetChain currency units)
      * @param gasLimit gas limit with which to call `targetAddress`. Any units of gas unused will be refunded according to the
      *        `targetChainRefundPerGasUnused` rate quoted by the delivery provider
-     * @param refundChain The chain to deliver any refund to, in Wormhole Chain ID format
+     * @param refundChain The chain to deliver any refund to, in Deltaswap Chain ID format
      * @param refundAddress The address on `refundChain` to deliver any refund to
      * @return sequence sequence number of published VAA containing delivery instructions
      */
@@ -117,8 +115,8 @@ interface IDeltaswapRelayerSend is IDeltaswapRelayerBase {
         uint16 targetChain,
         address targetAddress,
         bytes memory payload,
-        TargetNative receiverValue,
-        Gas gasLimit,
+        uint256 receiverValue,
+        uint256 gasLimit,
         uint16 refundChain,
         address refundAddress
     ) external payable returns (uint64 sequence);
@@ -128,15 +126,15 @@ interface IDeltaswapRelayerSend is IDeltaswapRelayerBase {
      * to relay a payload and VAAs specified by `vaaKeys` to the address `targetAddress` on chain `targetChain` 
      * with gas limit `gasLimit` and `msg.value` equal to `receiverValue`
      * 
-     * `targetAddress` must implement the IWormholeReceiver interface
+     * `targetAddress` must implement the IDeltaswapReceiver interface
      * 
      * This function must be called with `msg.value` equal to `quoteEVMDeliveryPrice(targetChain, receiverValue, gasLimit)`
      * 
      * Any refunds (from leftover gas) will be paid to the delivery provider. In order to receive the refunds, use the `sendVaasToEvm` function 
      * with `refundChain` and `refundAddress` as parameters
      * 
-     * @param targetChain in Wormhole Chain ID format
-     * @param targetAddress address to call on targetChain (that implements IWormholeReceiver) 
+     * @param targetChain in Deltaswap Chain ID format
+     * @param targetAddress address to call on targetChain (that implements IDeltaswapReceiver)
      * @param payload arbitrary bytes to pass in as parameter in call to `targetAddress`
      * @param receiverValue msg.value that delivery provider should pass in for call to `targetAddress` (in targetChain currency units)
      * @param gasLimit gas limit with which to call `targetAddress`. 
@@ -147,8 +145,8 @@ interface IDeltaswapRelayerSend is IDeltaswapRelayerBase {
         uint16 targetChain,
         address targetAddress,
         bytes memory payload,
-        TargetNative receiverValue,
-        Gas gasLimit,
+        uint256 receiverValue,
+        uint256 gasLimit,
         VaaKey[] memory vaaKeys
     ) external payable returns (uint64 sequence);
 
@@ -158,18 +156,18 @@ interface IDeltaswapRelayerSend is IDeltaswapRelayerBase {
      * with gas limit `gasLimit` and `msg.value` equal to `receiverValue`
      * 
      * Any refunds (from leftover gas) will be sent to `refundAddress` on chain `refundChain`
-     * `targetAddress` must implement the IWormholeReceiver interface
+     * `targetAddress` must implement the IDeltaswapReceiver interface
      * 
      * This function must be called with `msg.value` equal to `quoteEVMDeliveryPrice(targetChain, receiverValue, gasLimit)`
      * 
-     * @param targetChain in Wormhole Chain ID format
-     * @param targetAddress address to call on targetChain (that implements IWormholeReceiver) 
+     * @param targetChain in Deltaswap Chain ID format
+     * @param targetAddress address to call on targetChain (that implements IDeltaswapReceiver)
      * @param payload arbitrary bytes to pass in as parameter in call to `targetAddress`
      * @param receiverValue msg.value that delivery provider should pass in for call to `targetAddress` (in targetChain currency units)
      * @param gasLimit gas limit with which to call `targetAddress`. Any units of gas unused will be refunded according to the 
      *        `targetChainRefundPerGasUnused` rate quoted by the delivery provider
      * @param vaaKeys Additional VAAs to pass in as parameter in call to `targetAddress`
-     * @param refundChain The chain to deliver any refund to, in Wormhole Chain ID format
+     * @param refundChain The chain to deliver any refund to, in Deltaswap Chain ID format
      * @param refundAddress The address on `refundChain` to deliver any refund to
      * @return sequence sequence number of published VAA containing delivery instructions
      */
@@ -177,8 +175,8 @@ interface IDeltaswapRelayerSend is IDeltaswapRelayerBase {
         uint16 targetChain,
         address targetAddress,
         bytes memory payload,
-        TargetNative receiverValue,
-        Gas gasLimit,
+        uint256 receiverValue,
+        uint256 gasLimit,
         VaaKey[] memory vaaKeys,
         uint16 refundChain,
         address refundAddress
@@ -191,34 +189,34 @@ interface IDeltaswapRelayerSend is IDeltaswapRelayerBase {
      * receiverValue + (arbitrary amount that is paid for by paymentForExtraReceiverValue of this chain's wei) in targetChain wei.
      * 
      * Any refunds (from leftover gas) will be sent to `refundAddress` on chain `refundChain`
-     * `targetAddress` must implement the IWormholeReceiver interface
+     * `targetAddress` must implement the IDeltaswapReceiver interface
      * 
      * This function must be called with `msg.value` equal to 
      * quoteEVMDeliveryPrice(targetChain, receiverValue, gasLimit, deliveryProviderAddress) + paymentForExtraReceiverValue
      * 
-     * @param targetChain in Wormhole Chain ID format
-     * @param targetAddress address to call on targetChain (that implements IWormholeReceiver) 
+     * @param targetChain in Deltaswap Chain ID format
+     * @param targetAddress address to call on targetChain (that implements IDeltaswapReceiver)
      * @param payload arbitrary bytes to pass in as parameter in call to `targetAddress`
      * @param receiverValue msg.value that delivery provider should pass in for call to `targetAddress` (in targetChain currency units)
      * @param paymentForExtraReceiverValue amount (in current chain currency units) to spend on extra receiverValue 
      *        (in addition to the `receiverValue` specified)
      * @param gasLimit gas limit with which to call `targetAddress`. Any units of gas unused will be refunded according to the  
      *        `targetChainRefundPerGasUnused` rate quoted by the delivery provider
-     * @param refundChain The chain to deliver any refund to, in Wormhole Chain ID format
+     * @param refundChain The chain to deliver any refund to, in Deltaswap Chain ID format
      * @param refundAddress The address on `refundChain` to deliver any refund to
      * @param deliveryProviderAddress The address of the desired delivery provider's implementation of IDeliveryProvider
      * @param vaaKeys Additional VAAs to pass in as parameter in call to `targetAddress`
      * @param consistencyLevel Consistency level with which to publish the delivery instructions - see 
-     *        https://book.wormhole.com/wormhole/3_coreLayerContracts.html?highlight=consistency#consistency-levels
+     *        https://book.deltaswap.com/deltaswap/3_coreLayerContracts.html?highlight=consistency#consistency-levels
      * @return sequence sequence number of published VAA containing delivery instructions
      */
     function sendToEvm(
         uint16 targetChain,
         address targetAddress,
         bytes memory payload,
-        TargetNative receiverValue,
-        LocalNative paymentForExtraReceiverValue,
-        Gas gasLimit,
+        uint256 receiverValue,
+        uint256 paymentForExtraReceiverValue,
+        uint256 gasLimit,
         uint16 refundChain,
         address refundAddress,
         address deliveryProviderAddress,
@@ -233,37 +231,37 @@ interface IDeltaswapRelayerSend is IDeltaswapRelayerBase {
      * receiverValue + (arbitrary amount that is paid for by paymentForExtraReceiverValue of this chain's wei) in targetChain wei.
      * 
      * Any refunds (from leftover gas) will be sent to `refundAddress` on chain `refundChain`
-     * `targetAddress` must implement the IWormholeReceiver interface
+     * `targetAddress` must implement the IDeltaswapReceiver interface
      * 
      * This function must be called with `msg.value` equal to 
      * quoteEVMDeliveryPrice(targetChain, receiverValue, gasLimit, deliveryProviderAddress) + paymentForExtraReceiverValue
      *
-     * Note: MessageKeys can specify wormhole messages (VaaKeys) or other types of messages (ex. USDC CCTP attestations). Ensure the selected 
+     * Note: MessageKeys can specify deltaswap messages (VaaKeys) or other types of messages (ex. USDC CCTP attestations). Ensure the selected
      * DeliveryProvider supports all the MessageKey.keyType values specified or it will not be delivered!
      * 
-     * @param targetChain in Wormhole Chain ID format
-     * @param targetAddress address to call on targetChain (that implements IWormholeReceiver) 
+     * @param targetChain in Deltaswap Chain ID format
+     * @param targetAddress address to call on targetChain (that implements IDeltaswapReceiver)
      * @param payload arbitrary bytes to pass in as parameter in call to `targetAddress`
      * @param receiverValue msg.value that delivery provider should pass in for call to `targetAddress` (in targetChain currency units)
      * @param paymentForExtraReceiverValue amount (in current chain currency units) to spend on extra receiverValue 
      *        (in addition to the `receiverValue` specified)
      * @param gasLimit gas limit with which to call `targetAddress`. Any units of gas unused will be refunded according to the  
      *        `targetChainRefundPerGasUnused` rate quoted by the delivery provider
-     * @param refundChain The chain to deliver any refund to, in Wormhole Chain ID format
+     * @param refundChain The chain to deliver any refund to, in Deltaswap Chain ID format
      * @param refundAddress The address on `refundChain` to deliver any refund to
      * @param deliveryProviderAddress The address of the desired delivery provider's implementation of IDeliveryProvider
      * @param messageKeys Additional messagess to pass in as parameter in call to `targetAddress`
      * @param consistencyLevel Consistency level with which to publish the delivery instructions - see 
-     *        https://book.wormhole.com/wormhole/3_coreLayerContracts.html?highlight=consistency#consistency-levels
+     *        https://book.deltaswap.com/deltaswap/3_coreLayerContracts.html?highlight=consistency#consistency-levels
      * @return sequence sequence number of published VAA containing delivery instructions
      */
     function sendToEvm(
         uint16 targetChain,
         address targetAddress,
         bytes memory payload,
-        TargetNative receiverValue,
-        LocalNative paymentForExtraReceiverValue,
-        Gas gasLimit,
+        uint256 receiverValue,
+        uint256 paymentForExtraReceiverValue,
+        uint256 gasLimit,
         uint16 refundChain,
         address refundAddress,
         address deliveryProviderAddress,
@@ -278,33 +276,33 @@ interface IDeltaswapRelayerSend is IDeltaswapRelayerBase {
      * receiverValue + (arbitrary amount that is paid for by paymentForExtraReceiverValue of this chain's wei) in targetChain wei.
      * 
      * Any refunds (from leftover gas) will be sent to `refundAddress` on chain `refundChain`
-     * `targetAddress` must implement the IWormholeReceiver interface
+     * `targetAddress` must implement the IDeltaswapReceiver interface
      * 
      * This function must be called with `msg.value` equal to 
      * quoteDeliveryPrice(targetChain, receiverValue, encodedExecutionParameters, deliveryProviderAddress) + paymentForExtraReceiverValue  
      * 
-     * @param targetChain in Wormhole Chain ID format
-     * @param targetAddress address to call on targetChain (that implements IWormholeReceiver), in Wormhole bytes32 format
+     * @param targetChain in Deltaswap Chain ID format
+     * @param targetAddress address to call on targetChain (that implements IDeltaswapReceiver), in Deltaswap bytes32 format
      * @param payload arbitrary bytes to pass in as parameter in call to `targetAddress`
      * @param receiverValue msg.value that delivery provider should pass in for call to `targetAddress` (in targetChain currency units)
      * @param paymentForExtraReceiverValue amount (in current chain currency units) to spend on extra receiverValue 
      *        (in addition to the `receiverValue` specified)
      * @param encodedExecutionParameters encoded information on how to execute delivery that may impact pricing
      *        e.g. for version EVM_V1, this is a struct that encodes the `gasLimit` with which to call `targetAddress`
-     * @param refundChain The chain to deliver any refund to, in Wormhole Chain ID format
-     * @param refundAddress The address on `refundChain` to deliver any refund to, in Wormhole bytes32 format
+     * @param refundChain The chain to deliver any refund to, in Deltaswap Chain ID format
+     * @param refundAddress The address on `refundChain` to deliver any refund to, in Deltaswap bytes32 format
      * @param deliveryProviderAddress The address of the desired delivery provider's implementation of IDeliveryProvider
      * @param vaaKeys Additional VAAs to pass in as parameter in call to `targetAddress`
      * @param consistencyLevel Consistency level with which to publish the delivery instructions - see 
-     *        https://book.wormhole.com/wormhole/3_coreLayerContracts.html?highlight=consistency#consistency-levels
+     *        https://book.deltaswap.com/deltaswap/3_coreLayerContracts.html?highlight=consistency#consistency-levels
      * @return sequence sequence number of published VAA containing delivery instructions
      */
     function send(
         uint16 targetChain,
         bytes32 targetAddress,
         bytes memory payload,
-        TargetNative receiverValue,
-        LocalNative paymentForExtraReceiverValue,
+        uint256 receiverValue,
+        uint256 paymentForExtraReceiverValue,
         bytes memory encodedExecutionParameters,
         uint16 refundChain,
         bytes32 refundAddress,
@@ -320,36 +318,36 @@ interface IDeltaswapRelayerSend is IDeltaswapRelayerBase {
      * receiverValue + (arbitrary amount that is paid for by paymentForExtraReceiverValue of this chain's wei) in targetChain wei.
      * 
      * Any refunds (from leftover gas) will be sent to `refundAddress` on chain `refundChain`
-     * `targetAddress` must implement the IWormholeReceiver interface
+     * `targetAddress` must implement the IDeltaswapReceiver interface
      * 
      * This function must be called with `msg.value` equal to 
      * quoteDeliveryPrice(targetChain, receiverValue, encodedExecutionParameters, deliveryProviderAddress) + paymentForExtraReceiverValue  
      *
-     * Note: MessageKeys can specify wormhole messages (VaaKeys) or other types of messages (ex. USDC CCTP attestations). Ensure the selected 
+     * Note: MessageKeys can specify deltaswap messages (VaaKeys) or other types of messages (ex. USDC CCTP attestations). Ensure the selected
      * DeliveryProvider supports all the MessageKey.keyType values specified or it will not be delivered!
      * 
-     * @param targetChain in Wormhole Chain ID format
-     * @param targetAddress address to call on targetChain (that implements IWormholeReceiver), in Wormhole bytes32 format
+     * @param targetChain in Deltaswap Chain ID format
+     * @param targetAddress address to call on targetChain (that implements IDeltaswapReceiver), in Deltaswap bytes32 format
      * @param payload arbitrary bytes to pass in as parameter in call to `targetAddress`
      * @param receiverValue msg.value that delivery provider should pass in for call to `targetAddress` (in targetChain currency units)
      * @param paymentForExtraReceiverValue amount (in current chain currency units) to spend on extra receiverValue 
      *        (in addition to the `receiverValue` specified)
      * @param encodedExecutionParameters encoded information on how to execute delivery that may impact pricing
      *        e.g. for version EVM_V1, this is a struct that encodes the `gasLimit` with which to call `targetAddress`
-     * @param refundChain The chain to deliver any refund to, in Wormhole Chain ID format
-     * @param refundAddress The address on `refundChain` to deliver any refund to, in Wormhole bytes32 format
+     * @param refundChain The chain to deliver any refund to, in Deltaswap Chain ID format
+     * @param refundAddress The address on `refundChain` to deliver any refund to, in Deltaswap bytes32 format
      * @param deliveryProviderAddress The address of the desired delivery provider's implementation of IDeliveryProvider
      * @param messageKeys Additional messagess to pass in as parameter in call to `targetAddress`
      * @param consistencyLevel Consistency level with which to publish the delivery instructions - see 
-     *        https://book.wormhole.com/wormhole/3_coreLayerContracts.html?highlight=consistency#consistency-levels
+     *        https://book.deltaswap.com/deltaswap/3_coreLayerContracts.html?highlight=consistency#consistency-levels
      * @return sequence sequence number of published VAA containing delivery instructions
      */
     function send(
         uint16 targetChain,
         bytes32 targetAddress,
         bytes memory payload,
-        TargetNative receiverValue,
-        LocalNative paymentForExtraReceiverValue,
+        uint256 receiverValue,
+        uint256 paymentForExtraReceiverValue,
         bytes memory encodedExecutionParameters,
         uint16 refundChain,
         bytes32 refundAddress,
@@ -370,7 +368,7 @@ interface IDeltaswapRelayerSend is IDeltaswapRelayerBase {
      *         - newReceiverValue >= receiver value of the old instruction
      *         - newDeliveryProvider's `targetChainRefundPerGasUnused` >= old relay provider's `targetChainRefundPerGasUnused`
      * 
-     * @param deliveryVaaKey VaaKey identifying the wormhole message containing the 
+     * @param deliveryVaaKey VaaKey identifying the deltaswap message containing the
      *        previously published delivery instructions
      * @param targetChain The target chain that the original delivery targeted. Must match targetChain from original delivery instructions
      * @param newReceiverValue new msg.value that delivery provider should pass in for call to `targetAddress` (in targetChain currency units)
@@ -387,8 +385,8 @@ interface IDeltaswapRelayerSend is IDeltaswapRelayerBase {
     function resendToEvm(
         VaaKey memory deliveryVaaKey,
         uint16 targetChain,
-        TargetNative newReceiverValue,
-        Gas newGasLimit,
+        uint256 newReceiverValue,
+        uint256 newGasLimit,
         address newDeliveryProviderAddress
     ) external payable returns (uint64 sequence);
 
@@ -399,7 +397,7 @@ interface IDeltaswapRelayerSend is IDeltaswapRelayerBase {
      * This function must be called with `msg.value` equal to 
      * quoteDeliveryPrice(targetChain, newReceiverValue, newEncodedExecutionParameters, newDeliveryProviderAddress)
      * 
-     * @param deliveryVaaKey VaaKey identifying the wormhole message containing the 
+     * @param deliveryVaaKey VaaKey identifying the deltaswap message containing the
      *        previously published delivery instructions
      * @param targetChain The target chain that the original delivery targeted. Must match targetChain from original delivery instructions
      * @param newReceiverValue new msg.value that delivery provider should pass in for call to `targetAddress` (in targetChain currency units)
@@ -416,7 +414,7 @@ interface IDeltaswapRelayerSend is IDeltaswapRelayerBase {
     function resend(
         VaaKey memory deliveryVaaKey,
         uint16 targetChain,
-        TargetNative newReceiverValue,
+        uint256 newReceiverValue,
         bytes memory newEncodedExecutionParameters,
         address newDeliveryProviderAddress
     ) external payable returns (uint64 sequence);
@@ -424,7 +422,7 @@ interface IDeltaswapRelayerSend is IDeltaswapRelayerBase {
     /**
      * @notice Returns the price to request a relay to chain `targetChain`, using the default delivery provider
      * 
-     * @param targetChain in Wormhole Chain ID format
+     * @param targetChain in Deltaswap Chain ID format
      * @param receiverValue msg.value that delivery provider should pass in for call to `targetAddress` (in targetChain currency units)
      * @param gasLimit gas limit with which to call `targetAddress`. 
      * @return nativePriceQuote Price, in units of current chain currency, that the delivery provider charges to perform the relay
@@ -433,14 +431,14 @@ interface IDeltaswapRelayerSend is IDeltaswapRelayerBase {
      */
     function quoteEVMDeliveryPrice(
         uint16 targetChain,
-        TargetNative receiverValue,
-        Gas gasLimit
-    ) external view returns (LocalNative nativePriceQuote, GasPrice targetChainRefundPerGasUnused);
+        uint256 receiverValue,
+        uint256 gasLimit
+    ) external view returns (uint256 nativePriceQuote, uint256 targetChainRefundPerGasUnused);
 
     /**
      * @notice Returns the price to request a relay to chain `targetChain`, using delivery provider `deliveryProviderAddress`
      * 
-     * @param targetChain in Wormhole Chain ID format
+     * @param targetChain in Deltaswap Chain ID format
      * @param receiverValue msg.value that delivery provider should pass in for call to `targetAddress` (in targetChain currency units)
      * @param gasLimit gas limit with which to call `targetAddress`. 
      * @param deliveryProviderAddress The address of the desired delivery provider's implementation of IDeliveryProvider
@@ -450,15 +448,15 @@ interface IDeltaswapRelayerSend is IDeltaswapRelayerBase {
      */
     function quoteEVMDeliveryPrice(
         uint16 targetChain,
-        TargetNative receiverValue,
-        Gas gasLimit,
+        uint256 receiverValue,
+        uint256 gasLimit,
         address deliveryProviderAddress
-    ) external view returns (LocalNative nativePriceQuote, GasPrice targetChainRefundPerGasUnused);
+    ) external view returns (uint256 nativePriceQuote, uint256 targetChainRefundPerGasUnused);
 
     /**
      * @notice Returns the price to request a relay to chain `targetChain`, using delivery provider `deliveryProviderAddress`
      * 
-     * @param targetChain in Wormhole Chain ID format
+     * @param targetChain in Deltaswap Chain ID format
      * @param receiverValue msg.value that delivery provider should pass in for call to `targetAddress` (in targetChain currency units)
      * @param encodedExecutionParameters encoded information on how to execute delivery that may impact pricing
      *        e.g. for version EVM_V1, this is a struct that encodes the `gasLimit` with which to call `targetAddress`
@@ -471,16 +469,16 @@ interface IDeltaswapRelayerSend is IDeltaswapRelayerBase {
      */
     function quoteDeliveryPrice(
         uint16 targetChain,
-        TargetNative receiverValue,
+        uint256 receiverValue,
         bytes memory encodedExecutionParameters,
         address deliveryProviderAddress
-    ) external view returns (LocalNative nativePriceQuote, bytes memory encodedExecutionInfo);
+    ) external view returns (uint256 nativePriceQuote, bytes memory encodedExecutionInfo);
 
     /**
      * @notice Returns the (extra) amount of target chain currency that `targetAddress`
      * will be called with, if the `paymentForExtraReceiverValue` field is set to `currentChainAmount`
      * 
-     * @param targetChain in Wormhole Chain ID format
+     * @param targetChain in Deltaswap Chain ID format
      * @param currentChainAmount The value that `paymentForExtraReceiverValue` will be set to
      * @param deliveryProviderAddress The address of the desired delivery provider's implementation of IDeliveryProvider
      * @return targetChainAmount The amount such that if `targetAddress` will be called with `msg.value` equal to
@@ -488,9 +486,9 @@ interface IDeltaswapRelayerSend is IDeltaswapRelayerBase {
      */
     function quoteNativeForChain(
         uint16 targetChain,
-        LocalNative currentChainAmount,
+        uint256 currentChainAmount,
         address deliveryProviderAddress
-    ) external view returns (TargetNative targetChainAmount);
+    ) external view returns (uint256 targetChainAmount);
 
     /**
      * @notice Returns the address of the current default delivery provider
@@ -521,9 +519,9 @@ interface IDeltaswapRelayerDelivery is IDeltaswapRelayerBase {
 
     /**
      * @custom:member recipientContract - The target contract address
-     * @custom:member sourceChain - The chain which this delivery was requested from (in wormhole
+     * @custom:member sourceChain - The chain which this delivery was requested from (in deltaswap
      *     ChainID format)
-     * @custom:member sequence - The wormhole sequence number of the delivery VAA on the source chain
+     * @custom:member sequence - The deltaswap sequence number of the delivery VAA on the source chain
      *     corresponding to this delivery request
      * @custom:member deliveryVaaHash - The hash of the delivery VAA corresponding to this delivery
      *     request
@@ -548,7 +546,7 @@ interface IDeltaswapRelayerDelivery is IDeltaswapRelayerBase {
         uint64 indexed sequence,
         bytes32 deliveryVaaHash,
         DeliveryStatus status,
-        Gas gasUsed,
+        uint256 gasUsed,
         RefundStatus refundStatus,
         bytes additionalStatusInfo,
         bytes overridesInfo
@@ -557,8 +555,8 @@ interface IDeltaswapRelayerDelivery is IDeltaswapRelayerBase {
     /**
      * @notice The delivery provider calls `deliver` to relay messages as described by one delivery instruction
      * 
-     * The delivery provider must pass in the specified (by VaaKeys[]) signed wormhole messages (VAAs) from the source chain
-     * as well as the signed wormhole message with the delivery instructions (the delivery VAA)
+     * The delivery provider must pass in the specified (by VaaKeys[]) signed deltaswap messages (VAAs) from the source chain
+     * as well as the signed deltaswap message with the delivery instructions (the delivery VAA)
      *
      * The messages will be relayed to the target address (with the specified gas limit and receiver value) iff the following checks are met:
      * - the delivery VAA has a valid signature
@@ -567,9 +565,9 @@ interface IDeltaswapRelayerDelivery is IDeltaswapRelayerBase {
      * - the instruction's target chain is this chain
      * - the relayed signed VAAs match the descriptions in container.messages (the VAA hashes match, or the emitter address, sequence number pair matches, depending on the description given)
      *
-     * @param encodedVMs - An array of signed wormhole messages (all from the same source chain
+     * @param encodedVMs - An array of signed deltaswap messages (all from the same source chain
      *     transaction)
-     * @param encodedDeliveryVAA - Signed wormhole message from the source chain's DeltaswapRelayer
+     * @param encodedDeliveryVAA - Signed deltaswap message from the source chain's DeltaswapRelayer
      *     contract with payload being the encoded delivery instruction container
      * @param relayerRefundAddress - The address to which any refunds to the delivery provider
      *     should be sent
@@ -596,7 +594,7 @@ interface IDeltaswapRelayer is IDeltaswapRelayerDelivery, IDeltaswapRelayerSend 
 uint256 constant RETURNDATA_TRUNCATION_THRESHOLD = 132;
 
 //When msg.value was not equal to `delivery provider's quoted delivery price` + `paymentForExtraReceiverValue`
-error InvalidMsgValue(LocalNative msgValue, LocalNative totalFee);
+error InvalidMsgValue(uint256 msgValue, uint256 totalFee);
 
 error RequestedGasLimitTooLow();
 
@@ -613,7 +611,7 @@ error InvalidVaaKeyType(uint8 parsed);
 error TooManyMessageKeys(uint256 numMessageKeys);
 
 error InvalidDeliveryVaa(string reason);
-//When the delivery VAA (signed wormhole message with delivery instructions) was not emitted by the
+//When the delivery VAA (signed deltaswap message with delivery instructions) was not emitted by the
 //  registered DeltaswapRelayer contract
 error InvalidEmitter(bytes32 emitter, bytes32 registered, uint16 chainId);
 error MessageKeysLengthDoesNotMatchMessagesLength(uint256 keys, uint256 vaas);
@@ -633,7 +631,7 @@ error InvalidOverrideRefundPerGasUnused();
 
 //When the delivery provider doesn't pass in sufficient funds (i.e. msg.value does not cover the
 // maximum possible refund to the user)
-error InsufficientRelayerFunds(LocalNative msgValue, LocalNative minimum);
+error InsufficientRelayerFunds(uint256 msgValue, uint256 minimum);
 
 //When a bytes32 field can't be converted into a 20 byte EVM address, because the 12 padding bytes
 //  are non-zero (duplicated from Utils.sol)

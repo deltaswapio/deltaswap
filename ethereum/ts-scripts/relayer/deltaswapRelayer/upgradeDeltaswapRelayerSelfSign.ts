@@ -15,7 +15,7 @@ const chains = getOperatingChains();
 async function run() {
   console.log("Start!");
   const output: any = {
-    wormholeRelayerImplementations: []
+    deltaswapRelayerImplementations: []
   };
 
   for (const chain of chains) {
@@ -24,7 +24,7 @@ async function run() {
     );
     await upgradeDeltaswapRelayer(chain, coreRelayerImplementation.address);
 
-    output.wormholeRelayerImplementations.push(coreRelayerImplementation);
+    output.deltaswapRelayerImplementations.push(coreRelayerImplementation);
   }
 
   writeOutputFiles(output, processName);

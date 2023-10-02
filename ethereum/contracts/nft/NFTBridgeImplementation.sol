@@ -21,7 +21,7 @@ contract NFTBridgeImplementation is NFTBridge {
             uint256 evmChainId;
             uint16 chain = chainId();
 
-            // Wormhole chain ids explicitly enumerated
+            // Deltaswap chain ids explicitly enumerated
             if        (chain == 2)  { evmChainId = 1;          // ethereum
             } else if (chain == 4)  { evmChainId = 56;         // bsc
             } else if (chain == 5)  { evmChainId = 137;        // polygon

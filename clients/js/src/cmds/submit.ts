@@ -9,7 +9,7 @@ import {
   isEVMChain,
   isTerraChain,
   toChainName,
-} from "@certusone/wormhole-sdk/lib/esm/utils/consts";
+} from "@deltaswapio/deltaswap-sdk/lib/esm/utils/consts";
 import yargs from "yargs";
 import { execute_algorand } from "../algorand";
 import { execute_aptos } from "../aptos";

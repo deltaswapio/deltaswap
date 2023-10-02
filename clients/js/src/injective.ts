@@ -2,7 +2,7 @@ import {
   CHAINS,
   CONTRACTS,
   ChainName,
-} from "@certusone/wormhole-sdk/lib/esm/utils/consts";
+} from "@deltaswapio/deltaswap-sdk/lib/esm/utils/consts";
 import {
   getNetworkInfo,
   Network as InjectiveNetwork,
@@ -21,8 +21,8 @@ import { fromUint8Array } from "js-base64";
 import { NETWORKS } from "./consts";
 import { Network } from "./utils";
 import { impossible, Payload } from "./vaa";
-import { transferFromInjective } from "@certusone/wormhole-sdk/lib/esm/token_bridge/injective";
-import { tryNativeToUint8Array } from "@certusone/wormhole-sdk/lib/esm/utils";
+import { transferFromInjective } from "@deltaswapio/deltaswap-sdk/lib/esm/token_bridge/injective";
+import { tryNativeToUint8Array } from "@deltaswapio/deltaswap-sdk/lib/esm/utils";
 
 export async function execute_injective(
   payload: Payload,

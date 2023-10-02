@@ -1,8 +1,8 @@
-import { postVaaSolanaWithRetry } from "@certusone/wormhole-sdk/lib/esm/solana";
+import { postVaaSolanaWithRetry } from "@deltaswapio/deltaswap-sdk/lib/esm/solana";
 import {
   createRegisterChainInstruction as createNFTBridgeRegisterChainInstruction,
   createUpgradeContractInstruction as createNFTBridgeUpgradeContractInstruction,
-} from "@certusone/wormhole-sdk/lib/esm/solana/nftBridge";
+} from "@deltaswapio/deltaswap-sdk/lib/esm/solana/nftBridge";
 import {
   createCompleteTransferNativeInstruction,
   createCompleteTransferWrappedInstruction,
@@ -11,18 +11,18 @@ import {
   createUpgradeContractInstruction as createTokenBridgeUpgradeContractInstruction,
   deriveEndpointKey,
   getEndpointRegistration,
-} from "@certusone/wormhole-sdk/lib/esm/solana/tokenBridge";
+} from "@deltaswapio/deltaswap-sdk/lib/esm/solana/tokenBridge";
 import {
   createUpgradePhylaxSetInstruction,
   createUpgradeContractInstruction as createWormholeUpgradeContractInstruction,
-} from "@certusone/wormhole-sdk/lib/esm/solana/wormhole";
+} from "@deltaswapio/deltaswap-sdk/lib/esm/solana/wormhole";
 import {
   CHAINS,
   CONTRACTS,
   ChainName,
   Network,
   SolanaChainName,
-} from "@certusone/wormhole-sdk/lib/esm/utils/consts";
+} from "@deltaswapio/deltaswap-sdk/lib/esm/utils/consts";
 import * as web3s from "@solana/web3.js";
 import base58 from "bs58";
 import { NETWORKS } from "./consts";
@@ -31,11 +31,11 @@ import { getEmitterAddress } from "./emitter";
 import {
   transferFromSolana,
   transferNativeSol,
-} from "@certusone/wormhole-sdk/lib/esm/token_bridge/transfer";
+} from "@deltaswapio/deltaswap-sdk/lib/esm/token_bridge/transfer";
 import {
   hexToUint8Array,
   tryNativeToUint8Array,
-} from "@certusone/wormhole-sdk/lib/esm/utils";
+} from "@deltaswapio/deltaswap-sdk/lib/esm/utils";
 import { PublicKey } from "@solana/web3.js";
 import { getAssociatedTokenAddress } from "@solana/spl-token";
 

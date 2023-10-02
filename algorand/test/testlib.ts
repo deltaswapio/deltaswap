@@ -26,7 +26,7 @@ import {
   CHAIN_ID_POLYGON,
   CHAIN_ID_SOLANA,
   CHAIN_ID_TERRA,
-} from "@certusone/wormhole-sdk";
+} from "@deltaswapio/deltaswap-sdk";
 
 const web3EthAbi = require("web3-eth-abi");
 const web3Utils = require("web3-utils");

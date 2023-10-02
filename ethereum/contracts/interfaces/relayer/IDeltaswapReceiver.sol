@@ -3,14 +3,14 @@
 pragma solidity ^0.8.0;
 
 /**
- * @notice Interface for a contract which can receive Wormhole messages.
+ * @notice Interface for a contract which can receive Deltaswap messages.
  */
-interface IWormholeReceiver {
+interface IDeltaswapReceiver {
     /**
      * @notice When a `send` is performed with this contract as the target, this function will be
      *     invoked by the DeltaswapRelayer contract
      *
-     * NOTE: This function should be restricted such that only the Wormhole Relayer contract can call it.
+     * NOTE: This function should be restricted such that only the Deltaswap Relayer contract can call it.
      *
      * We also recommend that this function:
      *   - Stores all received `deliveryHash`s in a mapping `(bytes32 => bool)`, and
@@ -30,16 +30,16 @@ interface IWormholeReceiver {
      * @param additionalVaas - Additional VAAs which were requested to be included in this delivery.
      *   They are guaranteed to all be included and in the same order as was specified in the
      *     delivery request.
-     * @param sourceAddress - the (wormhole format) address on the sending chain which requested
+     * @param sourceAddress - the (deltaswap format) address on the sending chain which requested
      *     this delivery.
-     * @param sourceChain - the wormhole chain ID where this delivery was requested.
+     * @param sourceChain - the deltaswap chain ID where this delivery was requested.
      * @param deliveryHash - the VAA hash of the deliveryVAA.
      *
-     * NOTE: These signedVaas are NOT verified by the Wormhole core contract prior to being provided
-     *     to this call. Always make sure `parseAndVerify()` is called on the Wormhole core contract
+     * NOTE: These signedVaas are NOT verified by the Deltaswap core contract prior to being provided
+     *     to this call. Always make sure `parseAndVerify()` is called on the Deltaswap core contract
      *     before trusting the content of a raw VAA, otherwise the VAA may be invalid or malicious.
      */
-    function receiveWormholeMessages(
+    function receiveDeltaswapMessages(
         bytes memory payload,
         bytes[] memory additionalVaas,
         bytes32 sourceAddress,

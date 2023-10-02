@@ -1,4 +1,4 @@
-import { tryUint8ArrayToNative } from "@certusone/wormhole-sdk/lib/esm/utils";
+import { tryUint8ArrayToNative } from "@deltaswapio/deltaswap-sdk/lib/esm/utils";
 import yargs from "yargs";
 import { getOriginalAsset } from "../../chains/generic";
 import { CHAIN_ID_OR_NAME_CHOICES, RPC_OPTIONS } from "../../consts";

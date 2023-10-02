@@ -2,7 +2,7 @@ const jsonfile = require('jsonfile');
 const elliptic = require('elliptic');
 const BigNumber = require('bignumber.js');
 
-const Wormhole = artifacts.require("Wormhole");
+const Deltaswap = artifacts.require("Deltaswap");
 const TokenBridge = artifacts.require("TokenBridge");
 const BridgeSetup = artifacts.require("BridgeSetup");
 const BridgeImplementation = artifacts.require("BridgeImplementation");
@@ -12,7 +12,7 @@ const FeeToken = artifacts.require("FeeToken");
 
 const testSigner1PK = "cfb12303a19cde580bb4dd771639b0d26bc68353645571a8cff516ab2ee113a0";
 
-const WormholeImplementationFullABI = jsonfile.readFileSync("build/contracts/Implementation.json").abi
+const DeltaswapImplementationFullABI = jsonfile.readFileSync("build/contracts/Implementation.json").abi
 const BridgeImplementationFullABI = jsonfile.readFileSync("build/contracts/BridgeImplementation.json").abi
 
 // needs to run on a mainnet fork
@@ -37,7 +37,7 @@ contract("Update Bridge", function (accounts) {
         const initData = setup.methods.setup(
             currentImplementation,
             testChainId,
-            (await Wormhole.deployed()).address,
+            (await Deltaswap.deployed()).address,
             testGovernanceChainId,
             testGovernanceContract,
             TokenImplementation.address,
@@ -107,8 +107,8 @@ contract("Update Bridge", function (accounts) {
         });
 
         // check transfer log
-        const wormhole = new web3.eth.Contract(WormholeImplementationFullABI, Wormhole.address);
-        const log = (await wormhole.getPastEvents('LogMessagePublished', {
+        const deltaswap = new web3.eth.Contract(DeltaswapImplementationFullABI, Deltaswap.address);
+        const log = (await deltaswap.getPastEvents('LogMessagePublished', {
             fromBlock: 'latest'
         }))[0].returnValues
 
@@ -280,8 +280,8 @@ contract("Update Bridge", function (accounts) {
         assert.equal(bridgeBalanceAfter.toString(10), feeAmount);
 
         // check transfer log
-        const wormhole = new web3.eth.Contract(WormholeImplementationFullABI, Wormhole.address);
-        const log = (await wormhole.getPastEvents('LogMessagePublished', {
+        const deltaswap = new web3.eth.Contract(DeltaswapImplementationFullABI, Deltaswap.address);
+        const log = (await deltaswap.getPastEvents('LogMessagePublished', {
             fromBlock: 'latest'
         }))[0].returnValues
 

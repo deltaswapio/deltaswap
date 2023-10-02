@@ -3,7 +3,7 @@ import {
   ChainName,
   CHAINS,
   CONTRACTS,
-} from "@certusone/wormhole-sdk/lib/esm/utils/consts";
+} from "@deltaswapio/deltaswap-sdk/lib/esm/utils/consts";
 import { NETWORKS } from "../../consts/networks";
 import { Network } from "../../utils";
 

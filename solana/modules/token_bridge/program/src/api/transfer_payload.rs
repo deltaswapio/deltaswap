@@ -223,7 +223,7 @@ pub fn transfer_native_with_payload(
     );
 
     let ix = Instruction::new_with_bytes(
-        accs.config.wormhole_bridge,
+        accs.config.deltaswap_bridge,
         params.try_to_vec()?.as_slice(),
         vec![
             AccountMeta::new(*accs.bridge.info().key, false),
@@ -352,7 +352,7 @@ pub fn transfer_wrapped_with_payload(
     );
 
     let ix = Instruction::new_with_bytes(
-        accs.config.wormhole_bridge,
+        accs.config.deltaswap_bridge,
         params.try_to_vec()?.as_slice(),
         vec![
             AccountMeta::new(*accs.bridge.info().key, false),

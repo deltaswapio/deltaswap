@@ -40,7 +40,7 @@ let elliptic = require("elliptic"); //No TS defs?
 const ADDRESS_PREFIX = "delta";
 const OPERATOR_PREFIX = "deltavaloper";
 export const TENDERMINT_URL = "http://localhost:26658";
-export const WORM_DENOM = "uworm";
+export const WORM_DENOM = "udelta";
 export const LCD_URL = "http://localhost:1318";
 
 export async function getStargateQueryClient() {
@@ -104,7 +104,7 @@ export async function executeGovernanceVAA(
   const signingClient = await SigningStargateClient.connectWithSigner(
     TENDERMINT_URL,
     wallet
-    //{ gasPrice: { amount: Decimal.fromUserInput("0.0", 0), denom: "uworm" } }
+    //{ gasPrice: { amount: Decimal.fromUserInput("0.0", 0), denom: "udelta" } }
   );
 
   //TODO investigate signing with the stargate client, as the module txClients can't do 100% of the operations

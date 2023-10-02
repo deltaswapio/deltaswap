@@ -12,7 +12,7 @@ import "../../interfaces/relayer/TypedUnits.sol";
 //And presumably what they mean by "direct number constants" is number literals...
 
 struct GovernanceState {
-    // mapping of IWormhole.VM.hash of previously executed governance VMs
+    // mapping of IDeltaswap.VM.hash of previously executed governance VMs
     mapping(bytes32 => bool) consumedGovernanceActions;
 }
 
@@ -45,7 +45,7 @@ function getDefaultDeliveryProviderState()
 }
 
 struct RegisteredDeltaswapRelayersState {
-    // chainId => wormhole address mapping of relayer contracts on other chains
+    // chainId => deltaswap address mapping of relayer contracts on other chains
     mapping(uint16 => bytes32) registeredDeltaswapRelayers;
 }
 

@@ -4,12 +4,12 @@
 pragma solidity ^0.8.0;
 
 import "../libraries/external/BytesLib.sol";
-import "../interfaces/IWormhole.sol";
+import "../interfaces/IDeltaswap.sol";
 
 contract MockBatchedVAASender {
     using BytesLib for bytes;
 
-    address wormholeCoreAddress;
+    address deltaswapCoreAddress;
 
     function sendMultipleMessages(
         uint32 nonce,
@@ -24,30 +24,30 @@ contract MockBatchedVAASender {
             uint64 messageSequence2
         )
     {
-        messageSequence0 = wormholeCore().publishMessage{value: msg.value}(
+        messageSequence0 = deltaswapCore().publishMessage{value: msg.value}(
             nonce,
             payload,
             consistencyLevel
         );
 
-        messageSequence1 = wormholeCore().publishMessage{value: msg.value}(
+        messageSequence1 = deltaswapCore().publishMessage{value: msg.value}(
             nonce,
             payload,
             consistencyLevel
         );
 
-        messageSequence2 = wormholeCore().publishMessage{value: msg.value}(
+        messageSequence2 = deltaswapCore().publishMessage{value: msg.value}(
             nonce,
             payload,
             consistencyLevel
         );
     }
 
-    function wormholeCore() private view returns (IWormhole) {
-        return IWormhole(wormholeCoreAddress);
+    function deltaswapCore() private view returns (IDeltaswap) {
+        return IDeltaswap(deltaswapCoreAddress);
     }
 
-    function setup(address _wormholeCore) public {
-        wormholeCoreAddress = _wormholeCore;
+    function setup(address _deltaswapCore) public {
+        deltaswapCoreAddress = _deltaswapCore;
     }
 }

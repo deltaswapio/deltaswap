@@ -803,6 +803,28 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "3ee2393c4a91429dffb4bedf19f4d6abf27d8a732c8ce4980305d782e5426d57"
 
 [[package]]
+name = "deltaswap-migration"
+version = "0.1.0"
+dependencies = [
+ "borsh",
+ "byteorder",
+ "getrandom 0.2.6",
+ "hex",
+ "hex-literal",
+ "libsecp256k1",
+ "rand 0.7.3",
+ "rocksalt",
+ "serde",
+ "sha3 0.9.1",
+ "solana-client",
+ "solana-program",
+ "solana-sdk",
+ "solitaire",
+ "spl-token",
+ "wasm-bindgen",
+]
+
+[[package]]
 name = "der"
 version = "0.5.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1283,8 +1305,10 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "9be70c98951c83b8d2f8f60d7065fa6d5146873094452a1008da8c2f1e4205ad"
 dependencies = [
  "cfg-if",
+ "js-sys",
  "libc",
  "wasi 0.10.2+wasi-snapshot-preview1",
+ "wasm-bindgen",
 ]
 
 [[package]]
@@ -1867,6 +1891,7 @@ dependencies = [
  "borsh",
  "bstr",
  "byteorder",
+ "getrandom 0.2.6",
  "hex",
  "hex-literal",
  "libsecp256k1",
@@ -4270,6 +4295,7 @@ dependencies = [
  "borsh",
  "bstr",
  "byteorder",
+ "getrandom 0.2.6",
  "hex",
  "hex-literal",
  "libsecp256k1",
@@ -4924,27 +4950,6 @@ dependencies = [
  "solana-program-test",
  "solana-sdk",
  "solitaire",
- "wasm-bindgen",
-]
-
-[[package]]
-name = "wormhole-migration"
-version = "0.1.0"
-dependencies = [
- "borsh",
- "byteorder",
- "hex",
- "hex-literal",
- "libsecp256k1",
- "rand 0.7.3",
- "rocksalt",
- "serde",
- "sha3 0.9.1",
- "solana-client",
- "solana-program",
- "solana-sdk",
- "solitaire",
- "spl-token",
  "wasm-bindgen",
 ]
 

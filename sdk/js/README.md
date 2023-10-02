@@ -73,7 +73,7 @@ const sequence = parseSequenceFromLogSolana(info);
 const emitterAddress = await getEmitterAddressSolana(SOL_TOKEN_BRIDGE_ADDRESS);
 // Fetch the signedVAA from the Deltaswap Network (this may require retries while you wait for confirmation)
 const { signedVAA } = await getSignedVAA(
-  WORMHOLE_RPC_HOST,
+  DELTASWAP_RPC_HOST,
   CHAIN_ID_SOLANA,
   emitterAddress,
   sequence
@@ -96,7 +96,7 @@ const sequence = parseSequenceFromLogEth(receipt, ETH_BRIDGE_ADDRESS);
 const emitterAddress = getEmitterAddressEth(ETH_TOKEN_BRIDGE_ADDRESS);
 // Fetch the signedVAA from the Deltaswap Network (this may require retries while you wait for confirmation)
 const { signedVAA } = await getSignedVAA(
-  WORMHOLE_RPC_HOST,
+  DELTASWAP_RPC_HOST,
   CHAIN_ID_ETH,
   emitterAddress,
   sequence
@@ -150,7 +150,7 @@ const sequence = parseSequenceFromLogSolana(info);
 const emitterAddress = await getEmitterAddressSolana(SOL_TOKEN_BRIDGE_ADDRESS);
 // Fetch the signedVAA from the Deltaswap Network (this may require retries while you wait for confirmation)
 const { signedVAA } = await getSignedVAA(
-  WORMHOLE_RPC_HOST,
+  DELTASWAP_RPC_HOST,
   CHAIN_ID_SOLANA,
   emitterAddress,
   sequence
@@ -191,7 +191,7 @@ const sequence = parseSequenceFromLogEth(receipt, ETH_BRIDGE_ADDRESS);
 const emitterAddress = getEmitterAddressEth(ETH_TOKEN_BRIDGE_ADDRESS);
 // Fetch the signedVAA from the Deltaswap Network (this may require retries while you wait for confirmation)
 const { signedVAA } = await getSignedVAA(
-  WORMHOLE_RPC_HOST,
+  DELTASWAP_RPC_HOST,
   CHAIN_ID_ETH,
   emitterAddress,
   sequence

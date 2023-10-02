@@ -38,7 +38,7 @@ RUN --mount=type=cache,target=target,id=build \
     cargo build-bpf --manifest-path "migration/Cargo.toml" -- --locked && \
     cp target/deploy/bridge.so /opt/solana/deps/bridge.so && \
     cp target/deploy/cpi_poster.so /opt/solana/deps/cpi_poster.so && \
-    cp target/deploy/wormhole_migration.so /opt/solana/deps/wormhole_migration.so && \
+    cp target/deploy/deltaswap_migration.so /opt/solana/deps/deltaswap_migration.so && \
     cp target/deploy/token_bridge.so /opt/solana/deps/token_bridge.so && \
     cp target/deploy/nft_bridge.so /opt/solana/deps/nft_bridge.so && \
     cp external/mpl_token_metadata.so /opt/solana/deps/mpl_token_metadata.so

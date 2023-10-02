@@ -33,14 +33,14 @@ The script is set to resume proofs from where they left off. This means that if 
 **Note:** When building the tests, the `run-kevm.sh` script uses the command `forge build --skip Migrator.sol` to avoid building the `Migrator` contract. The reason is that this contract contains a function named `claim`, which currently causes problems because `claim` is a reserved keyword in KEVM (none of the proofs depend on this contract, but KEVM generates definitions for all contracts built by `forge build`). Until this issue is fixed, if `forge build` has previously been run without the `--skip Migrator.sol` option, it is necessary to delete the `out/Migrator.sol` directory before running `run-kevm.sh`. Otherwise, the script will produce the following error:
 ```
 [Error] Inner Parser: Parse error: unexpected end of file following token '.'.
-	Source(/path/to/wormhole/ethereum/out/kompiled/foundry.k)
+	Source(/path/to/deltaswap/ethereum/out/kompiled/foundry.k)
 	Location(7633,23,7633,23)
 	7633 |	    rule  ( Migrator . claim ( V0__amount : uint256 ) => #abiCallData (
 "claim" , #uint256 ( V0__amount ) , .TypedArgs ) )
 	     .	                      ^
 [Error] Inner Parser: Parse error: unexpected token 'uint256' following token
 ':'.
-	Source(/path/to/wormhole/ethereum/out/kompiled/foundry.k)
+	Source(/path/to/deltaswap/ethereum/out/kompiled/foundry.k)
 	Location(7633,45,7633,52)
 	7633 |	    rule  ( Migrator . claim ( V0__amount : uint256 ) => #abiCallData (
 "claim" , #uint256 ( V0__amount ) , .TypedArgs ) )

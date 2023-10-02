@@ -1,6 +1,6 @@
-import * as wh from "@certusone/wormhole-sdk";
+import * as wh from "@deltaswapio/deltaswap-sdk";
 //TODO address sdk version mismatch
-//import { Implementation__factory, LogMessagePublishedEvent } from "@certusone/wormhole-sdk"
+//import { Implementation__factory, LogMessagePublishedEvent } from "@deltaswapio/deltaswap-sdk"
 import {
   ChainInfo,
   getDeltaswapRelayer,
@@ -48,7 +48,7 @@ export async function sendMessage(
   const rx = await tx.wait();
   const sequences = wh.parseSequencesFromLogEth(
     rx,
-    sourceChain.wormholeAddress
+    sourceChain.deltaswapAddress
   );
   console.log("Tx hash: ", rx.transactionHash);
   console.log(`Sequences: ${sequences}`);
@@ -121,7 +121,7 @@ export async function encodeEmitterAddress(
   if (wh.isEVMChain(myChainId)) {
     return wh.getEmitterAddressEth(emitterAddressStr);
   }
-  throw new Error(`Unrecognized wormhole chainId ${myChainId}`);
+  throw new Error(`Unrecognized deltaswap chainId ${myChainId}`);
 }
 
 function fetchVaaFromLog(
@@ -137,7 +137,7 @@ function fetchVaaFromLog(
   // const emitter = wh.tryNativeToHexString(log.args.sender, "ethereum");
   // return wh
   //   .getSignedVAA(
-  //     "https://wormhole-v2-testnet-api.certus.one",
+  //     "https://deltaswap-v2-testnet-api.certus.one",
   //     chainId,
   //     emitter,
   //     sequence,

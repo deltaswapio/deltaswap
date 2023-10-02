@@ -1,4 +1,4 @@
-import * as mock from "@certusone/wormhole-sdk/lib/cjs/mock";
+import * as mock from "@deltaswapio/deltaswap-sdk/lib/cjs/mock";
 import {
   RawSigner,
   SUI_CLOCK_OBJECT_ID,

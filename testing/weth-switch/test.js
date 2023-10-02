@@ -17,7 +17,7 @@ const {
   getEmitterAddressEth,
   getSignedVAA,
   BridgeImplementation__factory,
-} = require("@certusone/wormhole-sdk");
+} = require("@deltaswapio/deltaswap-sdk");
 
 const BSC_NODE_URL = "ws://localhost:8546";
 const ETH_NODE_URL = "ws://localhost:8545";

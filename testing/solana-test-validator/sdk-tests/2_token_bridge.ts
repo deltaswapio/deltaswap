@@ -61,7 +61,7 @@ import {
   signSendAndConfirmTransaction,
 } from "../../../sdk/js/src/solana";
 import {
-  deriveWormholeEmitterKey,
+  deriveDeltaswapEmitterKey,
   getPostedMessage,
   getPostedVaa,
   getProgramSequenceTracker,
@@ -1079,7 +1079,7 @@ describe("Token Bridge", () => {
         expect(
           Buffer.compare(
             messageData.emitterAddress,
-            deriveWormholeEmitterKey(TOKEN_BRIDGE_ADDRESS).toBuffer()
+            deriveDeltaswapEmitterKey(TOKEN_BRIDGE_ADDRESS).toBuffer()
           )
         ).to.equal(0);
         expect(messageData.emitterChain).to.equal(1);
@@ -1179,7 +1179,7 @@ describe("Token Bridge", () => {
         expect(
           Buffer.compare(
             messageData.emitterAddress,
-            deriveWormholeEmitterKey(TOKEN_BRIDGE_ADDRESS).toBuffer()
+            deriveDeltaswapEmitterKey(TOKEN_BRIDGE_ADDRESS).toBuffer()
           )
         ).to.equal(0);
         expect(messageData.emitterChain).to.equal(1);
@@ -1407,7 +1407,7 @@ describe("Token Bridge", () => {
         expect(
           Buffer.compare(
             messageData.emitterAddress,
-            deriveWormholeEmitterKey(TOKEN_BRIDGE_ADDRESS).toBuffer()
+            deriveDeltaswapEmitterKey(TOKEN_BRIDGE_ADDRESS).toBuffer()
           )
         ).to.equal(0);
         expect(messageData.emitterChain).to.equal(1);
@@ -1560,7 +1560,7 @@ describe("Token Bridge", () => {
         expect(wrappedMeta.originalDecimals).to.equal(decimals);
 
         // check metadata
-        const expectedName = `${name} (Wormhole)`.padEnd(32, "\0");
+        const expectedName = `${name} (Deltaswap)`.padEnd(32, "\0");
         const metadata = await Metadata.fromAccountAddress(
           connection,
           deriveTokenMetadataKey(mint)
@@ -1699,13 +1699,13 @@ describe("Token Bridge", () => {
 
         expect(metadata.data.symbol.toString()).equals(symbol.padEnd(10, "\0"));
         expect(metadata.data.name.toString()).equals(
-          `${name} (Wormhole)`.padEnd(32, "\0")
+          `${name} (Deltaswap)`.padEnd(32, "\0")
         );
       });
 
       it("Update (Create) Wrapped with New Metadata for V1 Metadata Account", async () => {
         const tokenAddress = DEADBEEF_ADDRESS;
-        const oldExpectedName = "Dead Beef (Wormhole)".padEnd(32, "\0");
+        const oldExpectedName = "Dead Beef (Deltaswap)".padEnd(32, "\0");
 
         // fetch previously created metadata account
         // check wrapped mint
@@ -1828,7 +1828,7 @@ describe("Token Bridge", () => {
         );
         expect(metadata.data.name.toString()).not.equals(oldExpectedName);
         expect(metadata.data.name.toString()).equals(
-          `${name} (Wormhole)`.padEnd(32, "\0")
+          `${name} (Deltaswap)`.padEnd(32, "\0")
         );
       });
 
@@ -2029,7 +2029,7 @@ describe("Token Bridge", () => {
         expect(
           Buffer.compare(
             messageData.emitterAddress,
-            deriveWormholeEmitterKey(TOKEN_BRIDGE_ADDRESS).toBuffer()
+            deriveDeltaswapEmitterKey(TOKEN_BRIDGE_ADDRESS).toBuffer()
           )
         ).to.equal(0);
         expect(messageData.emitterChain).to.equal(1);
@@ -2138,7 +2138,7 @@ describe("Token Bridge", () => {
         expect(
           Buffer.compare(
             messageData.emitterAddress,
-            deriveWormholeEmitterKey(TOKEN_BRIDGE_ADDRESS).toBuffer()
+            deriveDeltaswapEmitterKey(TOKEN_BRIDGE_ADDRESS).toBuffer()
           )
         ).to.equal(0);
         expect(messageData.emitterChain).to.equal(1);

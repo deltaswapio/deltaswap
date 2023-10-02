@@ -15,7 +15,7 @@ import {
   connect as nearConnect,
   keyStores as nearKeyStores,
   utils as nearUtils,
-} from "@certusone/wormhole-sdk/node_modules/near-api-js";
+} from "@deltaswapio/deltaswap-sdk/node_modules/near-api-js";
 
 import {
   CHAIN_ID_ETH,
@@ -28,7 +28,7 @@ import {
   parseSequenceFromLogNear,
   transferTokenFromNear,
   uint8ArrayToHex,
-} from "@certusone/wormhole-sdk";
+} from "@deltaswapio/deltaswap-sdk";
 import { NodeHttpTransport } from "@improbable-eng/grpc-web-node-http-transport";
 // @ts-ignore
 import { parseSeedPhrase } from "near-seed-phrase";

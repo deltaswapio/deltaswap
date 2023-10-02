@@ -2,7 +2,7 @@
 
 pragma solidity ^0.8.19;
 
-import {IWormhole} from "../../interfaces/IWormhole.sol";
+import {IDeltaswap} from "../../interfaces/IDeltaswap.sol";
 import {
     InvalidDeliveryVaa,
     InvalidEmitter,
@@ -22,10 +22,10 @@ import {
     IDeltaswapRelayerSend,
     RETURNDATA_TRUNCATION_THRESHOLD
 } from "../../interfaces/relayer/IDeltaswapRelayerTyped.sol";
-import {IWormholeReceiver} from "../../interfaces/relayer/IWormholeReceiver.sol";
+import {IDeltaswapReceiver} from "../../interfaces/relayer/IDeltaswapReceiver.sol";
 import {IDeliveryProvider} from "../../interfaces/relayer/IDeliveryProviderTyped.sol";
 
-import {pay, min, toWormholeFormat, fromWormholeFormat, returnLengthBoundedCall} from "../../relayer/libraries/Utils.sol";
+import {pay, min, toDeltaswapFormat, fromDeltaswapFormat, returnLengthBoundedCall} from "../../relayer/libraries/Utils.sol";
 import {
     DeliveryInstruction,
     DeliveryOverride,
@@ -60,13 +60,13 @@ abstract contract DeltaswapRelayerDelivery is DeltaswapRelayerBase, IDeltaswapRe
     ) public payable nonReentrant {
 
         // Parse and verify VAA containing delivery instructions, revert if invalid
-        (IWormhole.VM memory vm, bool valid, string memory reason) =
-            getWormhole().parseAndVerifyVM(encodedDeliveryVAA);
+        (IDeltaswap.VM memory vm, bool valid, string memory reason) =
+            getDeltaswap().parseAndVerifyVM(encodedDeliveryVAA);
         if (!valid) {
             revert InvalidDeliveryVaa(reason);
         }
 
-        // Revert if the emitter of the VAA is not a Wormhole Relayer contract 
+        // Revert if the emitter of the VAA is not a Deltaswap Relayer contract
         bytes32 registeredDeltaswapRelayer = getRegisteredDeltaswapRelayerContract(vm.emitterChainId);
         if (vm.emitterAddress != registeredDeltaswapRelayer) {
             revert InvalidEmitter(vm.emitterAddress, registeredDeltaswapRelayer, vm.emitterChainId);
@@ -234,7 +234,7 @@ abstract contract DeltaswapRelayerDelivery is DeltaswapRelayerBase, IDeltaswapRe
 
     /**
      * Performs the following actions:
-     * - Calls the `receiveWormholeMessages` method on the contract
+     * - Calls the `receiveDeltaswapMessages` method on the contract
      *     `vaaInfo.deliveryInstruction.targetAddress` (with the gas limit and value specified in
      *     vaaInfo.gasLimit and vaaInfo.totalReceiverValue, and `encodedVMs` as the input)
      *
@@ -246,7 +246,7 @@ abstract contract DeltaswapRelayerDelivery is DeltaswapRelayerBase, IDeltaswapRe
      *    - sourceSequence sequence number of the delivery VAA on the source chain
      *    - deliveryVaaHash hash of delivery VAA
      *    - relayerRefundAddress address that should be paid for relayer refunds
-     *    - encodedVMs list of signed wormhole messages (VAAs)
+     *    - encodedVMs list of signed deltaswap messages (VAAs)
      *    - deliveryInstruction the specific instruction which is being executed
      *    - gasLimit the gas limit to call targetAddress with
      *    - targetChainRefundPerGasUnused the amount of (this chain) wei to refund to refundAddress
@@ -311,8 +311,8 @@ abstract contract DeltaswapRelayerDelivery is DeltaswapRelayerBase, IDeltaswapRe
         Gas gasLimit = evmInstruction.gasLimit;
         bool success;
         {
-            address payable deliveryTarget = payable(fromWormholeFormat(evmInstruction.targetAddress));
-            bytes memory callData = abi.encodeCall(IWormholeReceiver.receiveWormholeMessages, (
+            address payable deliveryTarget = payable(fromDeltaswapFormat(evmInstruction.targetAddress));
+            bytes memory callData = abi.encodeCall(IDeltaswapReceiver.receiveDeltaswapMessages, (
                 evmInstruction.payload,
                 evmInstruction.signedVaas,
                 evmInstruction.senderAddress,
@@ -323,7 +323,7 @@ abstract contract DeltaswapRelayerDelivery is DeltaswapRelayerBase, IDeltaswapRe
             // Measure gas usage of call
             Gas preGas = Gas.wrap(gasleft());
 
-            // Calls the `receiveWormholeMessages` endpoint on the contract `evmInstruction.targetAddress`
+            // Calls the `receiveDeltaswapMessages` endpoint on the contract `evmInstruction.targetAddress`
             // (with the gas limit and value specified in instruction, and `encodedVMs` as the input)
             // If it reverts, returns the first 132 bytes of the revert message
             (success, results.additionalStatusInfo) = returnLengthBoundedCall(
@@ -345,7 +345,7 @@ abstract contract DeltaswapRelayerDelivery is DeltaswapRelayerBase, IDeltaswapRe
             results.additionalStatusInfo = new bytes(0);
             results.status = DeliveryStatus.SUCCESS;
         } else {
-            // Call to 'receiveWormholeMessages' on targetAddress reverted
+            // Call to 'receiveDeltaswapMessages' on targetAddress reverted
             results.status = DeliveryStatus.RECEIVER_FAILURE;
         }
     }
@@ -370,7 +370,7 @@ abstract contract DeltaswapRelayerDelivery is DeltaswapRelayerBase, IDeltaswapRe
 
     function emitDeliveryEvent(DeliveryVAAInfo memory vaaInfo, DeliveryResults memory results, RefundStatus refundStatus) private {
         emit Delivery(
-            fromWormholeFormat(vaaInfo.deliveryInstruction.targetAddress),
+            fromDeltaswapFormat(vaaInfo.deliveryInstruction.targetAddress),
             vaaInfo.sourceChain,
             vaaInfo.sourceSequence,
             vaaInfo.deliveryVaaHash,
@@ -389,7 +389,7 @@ abstract contract DeltaswapRelayerDelivery is DeltaswapRelayerBase, IDeltaswapRe
         DeliveryStatus status
     ) private returns (RefundStatus refundStatus) {
         //Amount of receiverValue that is refunded to the user (0 if the call to
-        //  'receiveWormholeMessages' did not revert, or the full receiverValue otherwise)
+        //  'receiveDeltaswapMessages' did not revert, or the full receiverValue otherwise)
         LocalNative receiverValueRefundAmount = LocalNative.wrap(0);
 
         if (
@@ -450,14 +450,14 @@ abstract contract DeltaswapRelayerDelivery is DeltaswapRelayerBase, IDeltaswapRe
     ) private returns (RefundStatus) {
         // User requested refund on this chain
         if (refundChain == getChainId()) {
-            return pay(payable(fromWormholeFormat(refundAddress)), refundAmount)
+            return pay(payable(fromDeltaswapFormat(refundAddress)), refundAmount)
                 ? RefundStatus.REFUND_SENT
                 : RefundStatus.REFUND_FAIL;
         }
 
         // User requested refund on a different chain
         
-        IDeliveryProvider deliveryProvider = IDeliveryProvider(fromWormholeFormat(relayerAddress));
+        IDeliveryProvider deliveryProvider = IDeliveryProvider(fromDeltaswapFormat(relayerAddress));
         
         // Determine price of an 'empty' delivery
         // (Note: assumes refund chain is an EVM chain)
@@ -474,7 +474,7 @@ abstract contract DeltaswapRelayerDelivery is DeltaswapRelayerBase, IDeltaswapRe
         }
 
         // If the refundAmount is not greater than the 'empty delivery price', the refund does not go through
-        if (refundAmount <= getWormholeMessageFee() + baseDeliveryPrice) {
+        if (refundAmount <= getDeltaswapMessageFee() + baseDeliveryPrice) {
             return RefundStatus.CROSS_CHAIN_REFUND_FAIL_NOT_ENOUGH;
         }
         
@@ -484,11 +484,11 @@ abstract contract DeltaswapRelayerDelivery is DeltaswapRelayerBase, IDeltaswapRe
             bytes32(0),
             bytes(""),
             TargetNative.wrap(0),
-            refundAmount - getWormholeMessageFee() - baseDeliveryPrice,
+            refundAmount - getDeltaswapMessageFee() - baseDeliveryPrice,
             encodeEvmExecutionParamsV1(getEmptyEvmExecutionParamsV1()),
             refundChain,
             refundAddress,
-            fromWormholeFormat(relayerAddress),
+            fromDeltaswapFormat(relayerAddress),
             new VaaKey[](0),
             CONSISTENCY_LEVEL_INSTANT
         ) returns (uint64) {
@@ -509,7 +509,7 @@ abstract contract DeltaswapRelayerDelivery is DeltaswapRelayerBase, IDeltaswapRe
         uint256 len = messageKeys.length;
         for (uint256 i = 0; i < len;) {
             if (messageKeys[i].keyType == VAA_KEY_TYPE) {
-                IWormhole.VM memory parsedVaa = getWormhole().parseVM(signedMessages[i]);
+                IDeltaswap.VM memory parsedVaa = getDeltaswap().parseVM(signedMessages[i]);
                 (VaaKey memory vaaKey,) = DeltaswapRelayerSerde.decodeVaaKey(messageKeys[i].encodedKey, 0);
                 
                 if (

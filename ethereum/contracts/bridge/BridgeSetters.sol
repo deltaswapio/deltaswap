@@ -43,8 +43,8 @@ contract BridgeSetters is BridgeState {
         _state.provider.WETH = weth;
     }
 
-    function setWormhole(address wh) internal {
-        _state.wormhole = payable(wh);
+    function setDeltaswap(address wh) internal {
+        _state.deltaswap = payable(wh);
     }
 
     function setWrappedAsset(uint16 tokenChainId, bytes32 tokenAddress, address wrapper) internal {

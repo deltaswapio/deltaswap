@@ -1,14 +1,14 @@
-import addLiquidityTx from "@certusone/wormhole-sdk/lib/esm/migration/addLiquidity";
-import getAuthorityAddress from "@certusone/wormhole-sdk/lib/esm/migration/authorityAddress";
-import claimSharesTx from "@certusone/wormhole-sdk/lib/esm/migration/claimShares";
-import createPoolAccount from "@certusone/wormhole-sdk/lib/esm/migration/createPool";
-import getFromCustodyAddress from "@certusone/wormhole-sdk/lib/esm/migration/fromCustodyAddress";
-import migrateTokensTx from "@certusone/wormhole-sdk/lib/esm/migration/migrateTokens";
-import parsePool from "@certusone/wormhole-sdk/lib/esm/migration/parsePool";
-import getPoolAddress from "@certusone/wormhole-sdk/lib/esm/migration/poolAddress";
-import removeLiquidityTx from "@certusone/wormhole-sdk/lib/esm/migration/removeLiquidity";
-import getShareMintAddress from "@certusone/wormhole-sdk/lib/esm/migration/shareMintAddress";
-import getToCustodyAddress from "@certusone/wormhole-sdk/lib/esm/migration/toCustodyAddress";
+import addLiquidityTx from "@deltaswapio/deltaswap-sdk/lib/esm/migration/addLiquidity";
+import getAuthorityAddress from "@deltaswapio/deltaswap-sdk/lib/esm/migration/authorityAddress";
+import claimSharesTx from "@deltaswapio/deltaswap-sdk/lib/esm/migration/claimShares";
+import createPoolAccount from "@deltaswapio/deltaswap-sdk/lib/esm/migration/createPool";
+import getFromCustodyAddress from "@deltaswapio/deltaswap-sdk/lib/esm/migration/fromCustodyAddress";
+import migrateTokensTx from "@deltaswapio/deltaswap-sdk/lib/esm/migration/migrateTokens";
+import parsePool from "@deltaswapio/deltaswap-sdk/lib/esm/migration/parsePool";
+import getPoolAddress from "@deltaswapio/deltaswap-sdk/lib/esm/migration/poolAddress";
+import removeLiquidityTx from "@deltaswapio/deltaswap-sdk/lib/esm/migration/removeLiquidity";
+import getShareMintAddress from "@deltaswapio/deltaswap-sdk/lib/esm/migration/shareMintAddress";
+import getToCustodyAddress from "@deltaswapio/deltaswap-sdk/lib/esm/migration/toCustodyAddress";
 import {
   Button,
   CircularProgress,
@@ -25,7 +25,7 @@ import {
   TOKEN_PROGRAM_ID,
 } from "@solana/spl-token";
 import { Connection, PublicKey } from "@solana/web3.js";
-//import { pool_address } from "@certusone/wormhole-sdk/lib/esm/solana/migration/wormhole_migration";
+//import { pool_address } from "@deltaswapio/deltaswap-sdk/lib/esm/solana/migration/wormhole_migration";
 import { parseUnits } from "ethers/lib/utils";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import LogWatcher from "../components/LogWatcher";

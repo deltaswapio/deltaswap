@@ -1,4 +1,4 @@
-const Wormhole = artifacts.require("Wormhole");
+const Deltaswap = artifacts.require("Deltaswap");
 const MockBatchedVAASender = artifacts.require("MockBatchedVAASender");
 
 module.exports = async function(callback) {
@@ -13,7 +13,7 @@ module.exports = async function(callback) {
     }
 
     const batchedSender = new web3.eth.Contract(MockBatchedVAASender.abi, MockBatchedVAASender.address);
-    await batchedSender.methods.setup(Wormhole.address).send({from: accounts[0]});
+    await batchedSender.methods.setup(Deltaswap.address).send({from: accounts[0]});
 
     callback();
   } catch (e) {

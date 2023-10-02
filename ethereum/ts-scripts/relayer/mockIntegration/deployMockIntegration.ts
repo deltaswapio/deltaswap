@@ -12,7 +12,7 @@ import { BigNumber, BigNumberish, BytesLike } from "ethers";
 import {
   tryNativeToHexString,
   tryNativeToUint8Array,
-} from "@certusone/wormhole-sdk";
+} from "@deltaswapio/deltaswap-sdk";
 import { MockRelayerIntegration__factory } from "../../../ethers-contracts";
 import { wait } from "../helpers/utils";
 

@@ -1,5 +1,5 @@
-import { attestFromSolana } from "@certusone/wormhole-sdk";
-import { setDefaultWasm } from "@certusone/wormhole-sdk/lib/cjs/solana/wasm";
+import { attestFromSolana } from "@deltaswapio/deltaswap-sdk";
+import { setDefaultWasm } from "@deltaswapio/deltaswap-sdk/lib/cjs/solana/wasm";
 import { jest, test } from "@jest/globals";
 import { Connection, Keypair } from "@solana/web3.js";
 import { createSpyRPCServiceClient, subscribeSignedVAA } from "..";

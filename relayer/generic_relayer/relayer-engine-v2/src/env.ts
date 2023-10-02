@@ -10,7 +10,7 @@ import {
   CHAIN_ID_ETH,
   CHAIN_ID_BSC,
   EVMChainId,
-} from "@certusone/wormhole-sdk";
+} from "@deltaswapio/deltaswap-sdk";
 import { rootLogger } from "./log";
 import { ethers } from "ethers";
 

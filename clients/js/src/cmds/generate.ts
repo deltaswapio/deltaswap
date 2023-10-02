@@ -1,4 +1,4 @@
-import { tryNativeToHexString } from "@certusone/wormhole-sdk/lib/esm/utils/array";
+import { tryNativeToHexString } from "@deltaswapio/deltaswap-sdk/lib/esm/utils/array";
 import {
   assertChain,
   ChainName,
@@ -6,7 +6,7 @@ import {
   isCosmWasmChain,
   isEVMChain,
   toChainId,
-} from "@certusone/wormhole-sdk/lib/esm/utils/consts";
+} from "@deltaswapio/deltaswap-sdk/lib/esm/utils/consts";
 import { fromBech32, toHex } from "@cosmjs/encoding";
 import base58 from "bs58";
 import { sha3_256 } from "js-sha3";

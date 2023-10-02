@@ -7,7 +7,7 @@ import "../../interfaces/relayer/TypedUnits.sol";
 abstract contract DeliveryProviderStructs {
     struct UpdatePrice {
         /**
-         * Wormhole chain id
+         * Deltaswap chain id
          */
         uint16 chainId;
         /**
@@ -23,18 +23,18 @@ abstract contract DeliveryProviderStructs {
 
     struct TargetChainUpdate {
         /**
-         * Wormhole chain id
+         * Deltaswap chain id
          */
         uint16 chainId;
         /**
-         * Wormhole address of the relay provider in the ´chainId´ chain.
+         * Deltaswap address of the relay provider in the ´chainId´ chain.
          */
         bytes32 targetChainAddress;
     }
 
     struct MaximumBudgetUpdate {
         /**
-         * Wormhole chain id
+         * Deltaswap chain id
          */
         uint16 chainId;
         /**
@@ -45,7 +45,7 @@ abstract contract DeliveryProviderStructs {
 
     struct DeliverGasOverheadUpdate {
         /**
-         * Wormhole chain id
+         * Deltaswap chain id
          */
         uint16 chainId;
         /**
@@ -56,7 +56,7 @@ abstract contract DeliveryProviderStructs {
 
     struct SupportedChainUpdate {
         /**
-         * Wormhole chain id
+         * Deltaswap chain id
          */
         uint16 chainId;
         /**
@@ -67,7 +67,7 @@ abstract contract DeliveryProviderStructs {
 
     struct AssetConversionBufferUpdate {
         /**
-         * Wormhole chain id
+         * Deltaswap chain id
          */
         uint16 chainId;
         // See DeliveryProviderState.AssetConversion
@@ -86,7 +86,7 @@ abstract contract DeliveryProviderStructs {
         // SupportedChainUpdate
         bool isSupported;
         /**
-         * Wormhole chain id
+         * Deltaswap chain id
          */
         uint16 chainId;
         // AssetConversionBufferUpdate
@@ -110,7 +110,7 @@ abstract contract DeliveryProviderStructs {
         WeiPrice nativeCurrencyPrice;
         // TargetChainUpdate
         /**
-         * Wormhole address of the relay provider in the ´chainId´ chain.
+         * Deltaswap address of the relay provider in the ´chainId´ chain.
          */
         bytes32 targetChainAddress;
         // MaximumBudgetUpdate

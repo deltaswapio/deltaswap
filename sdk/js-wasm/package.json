@@ -20,7 +20,7 @@
     "sdk",
     "wasm"
   ],
-  "author": "certusone",
+  "author": "deltaswapio",
   "license": "Apache-2.0",
   "devDependencies": {
     "typescript": "^4.7.4"

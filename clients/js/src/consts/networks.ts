@@ -1,4 +1,4 @@
-import { ChainName } from "@certusone/wormhole-sdk/lib/esm/utils/consts";
+import { ChainName } from "@deltaswapio/deltaswap-sdk/lib/esm/utils/consts";
 import { config } from "dotenv";
 import { homedir } from "os";
 

@@ -2,7 +2,7 @@ import {
   getEmitterAddressTerra,
   parseSequenceFromLogTerra,
   setDefaultWasm,
-} from "@certusone/wormhole-sdk";
+} from "@deltaswapio/deltaswap-sdk";
 import { Bech32, toHex } from "@cosmjs/encoding";
 import { describe, expect, jest, test } from "@jest/globals";
 import {

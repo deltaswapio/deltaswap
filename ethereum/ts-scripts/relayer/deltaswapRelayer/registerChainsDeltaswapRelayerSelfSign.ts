@@ -24,7 +24,7 @@ async function run() {
 
 async function registerChainsDeltaswapRelayer(chain: ChainInfo) {
   console.log(
-    "Registering all the wormhole relayers onto Wormhole Relayer " +
+    "Registering all the deltaswap relayers onto Deltaswap Relayer " +
       chain.chainId
   );
 
@@ -48,9 +48,9 @@ async function registerChainsDeltaswapRelayer(chain: ChainInfo) {
 
 async function registerOnExistingChainsDeltaswapRelayer(chain: ChainInfo) {
   console.log(
-    "Registering Wormhole Relayer " +
+    "Registering Deltaswap Relayer " +
       chain.chainId +
-      " onto all the wormhole relayers"
+      " onto all the deltaswap relayers"
   );
   const operatingChainIds = operatingChains.map((c) => c.chainId);
   for (const targetChain of chains) {

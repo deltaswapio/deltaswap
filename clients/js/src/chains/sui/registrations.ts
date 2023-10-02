@@ -1,12 +1,12 @@
-import { getObjectFields } from "@certusone/wormhole-sdk/lib/esm/sui";
+import { getObjectFields } from "@deltaswapio/deltaswap-sdk/lib/esm/sui";
 import {
   CHAIN_ID_TO_NAME,
   CONTRACTS,
-} from "@certusone/wormhole-sdk/lib/esm/utils/consts";
+} from "@deltaswapio/deltaswap-sdk/lib/esm/utils/consts";
 import { NETWORKS } from "../../consts/networks";
 import { Network } from "../../utils";
 import { getProvider } from "./utils";
-import { ChainId } from "@certusone/wormhole-sdk";
+import { ChainId } from "@deltaswapio/deltaswap-sdk";
 
 export async function queryRegistrationsSui(
   network: Network,

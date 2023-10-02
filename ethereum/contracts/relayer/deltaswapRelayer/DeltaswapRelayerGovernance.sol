@@ -3,9 +3,9 @@ pragma solidity ^0.8.19;
 
 import "@openzeppelin/contracts/proxy/ERC1967/ERC1967Upgrade.sol";
 
-import {IWormhole} from "../../interfaces/IWormhole.sol";
+import {IDeltaswap} from "../../interfaces/IDeltaswap.sol";
 import {InvalidPayloadLength} from "../../interfaces/relayer/IDeltaswapRelayerTyped.sol";
-import {fromWormholeFormat} from "../../relayer/libraries/Utils.sol";
+import {fromDeltaswapFormat} from "../../relayer/libraries/Utils.sol";
 import {BytesParsing} from "../../relayer/libraries/BytesParsing.sol";
 import {
     getGovernanceState,
@@ -28,15 +28,15 @@ error ChainAlreadyRegistered(uint16 chainId, bytes32 registeredDeltaswapRelayerC
 error InvalidDefaultDeliveryProvider(bytes32 defaultDeliveryProvider);
 
 abstract contract DeltaswapRelayerGovernance is DeltaswapRelayerBase, ERC1967Upgrade {
-    //This constant should actually be defined in IWormhole. Alas, it isn't.
-    uint16 private constant WORMHOLE_CHAINID_UNSET = 0;
+    //This constant should actually be defined in IDeltaswap. Alas, it isn't.
+    uint16 private constant DELTASWAP_CHAINID_UNSET = 0;
 
     /**
-     * Governance VMs are encoded in a packed fashion using the general wormhole scheme:
+     * Governance VMs are encoded in a packed fashion using the general deltaswap scheme:
      *   GovernancePacket = <Common Header|Action Parameters>
      *
      * For a more detailed explanation see here:
-     *   - https://docs.wormhole.com/wormhole/governance
+     *   - https://docs.deltaswap.com/deltaswap/governance
      *   - https://github.com/deltaswapio/deltaswap/blob/main/whitepapers/0002_governance_messaging.md
      */
 
@@ -50,14 +50,14 @@ abstract contract DeltaswapRelayerGovernance is DeltaswapRelayerBase, ERC1967Upg
      */
 
     /**
-     * Registers a wormhole relayer contract that was deployed on another chain with the DeltaswapRelayer on
+     * Registers a deltaswap relayer contract that was deployed on another chain with the DeltaswapRelayer on
      *   this chain. The equivalent to the core bridge's registerChain action.
      *
      * Action Parameters:
      *   - uint16 foreignChainId
      *   - bytes32 foreignContractAddress
      */
-    uint8 private constant GOVERNANCE_ACTION_REGISTER_WORMHOLE_RELAYER_CONTRACT = 1;
+    uint8 private constant GOVERNANCE_ACTION_REGISTER_DELTASWAP_RELAYER_CONTRACT = 1;
 
     /**
      * Upgrades the DeltaswapRelayer contract to a new implementation. The equivalent to the core bridge's
@@ -128,7 +128,7 @@ abstract contract DeltaswapRelayerGovernance is DeltaswapRelayerBase, ERC1967Upg
     {
         bytes memory payload = verifyAndConsumeGovernanceVM(encodedVm);
         uint256 offset = parseAndCheckPayloadHeader(
-            payload, GOVERNANCE_ACTION_REGISTER_WORMHOLE_RELAYER_CONTRACT, true
+            payload, GOVERNANCE_ACTION_REGISTER_DELTASWAP_RELAYER_CONTRACT, true
         );
 
         (foreignChainId, offset) = payload.asUint16Unchecked(offset);
@@ -153,8 +153,8 @@ abstract contract DeltaswapRelayerGovernance is DeltaswapRelayerBase, ERC1967Upg
 
         bytes32 newImplementationWhFmt;
         (newImplementationWhFmt, offset) = payload.asBytes32Unchecked(offset);
-        //fromWormholeFormat reverts if first 12 bytes aren't zero (i.e. if it's not an EVM address)
-        newImplementation = fromWormholeFormat(newImplementationWhFmt);
+        //fromDeltaswapFormat reverts if first 12 bytes aren't zero (i.e. if it's not an EVM address)
+        newImplementation = fromDeltaswapFormat(newImplementationWhFmt);
 
         checkLength(payload, offset);
     }
@@ -169,8 +169,8 @@ abstract contract DeltaswapRelayerGovernance is DeltaswapRelayerBase, ERC1967Upg
 
         bytes32 newProviderWhFmt;
         (newProviderWhFmt, offset) = payload.asBytes32Unchecked(offset);
-        //fromWormholeFormat reverts if first 12 bytes aren't zero (i.e. if it's not an EVM address)
-        newProvider = fromWormholeFormat(newProviderWhFmt);
+        //fromDeltaswapFormat reverts if first 12 bytes aren't zero (i.e. if it's not an EVM address)
+        newProvider = fromDeltaswapFormat(newProviderWhFmt);
 
         checkLength(payload, offset);
 
@@ -183,19 +183,19 @@ abstract contract DeltaswapRelayerGovernance is DeltaswapRelayerBase, ERC1967Upg
         private
         returns (bytes memory payload)
     {
-        (IWormhole.VM memory vm, bool valid, string memory reason) =
-            getWormhole().parseAndVerifyVM(encodedVm);
+        (IDeltaswap.VM memory vm, bool valid, string memory reason) =
+            getDeltaswap().parseAndVerifyVM(encodedVm);
 
         if (!valid) {
             revert InvalidGovernanceVM(reason);
         }
 
-        uint16 governanceChainId = getWormhole().governanceChainId();
+        uint16 governanceChainId = getDeltaswap().governanceChainId();
         if (vm.emitterChainId != governanceChainId) {
             revert InvalidGovernanceChainId(vm.emitterChainId, governanceChainId);
         }
 
-        bytes32 governanceContract = getWormhole().governanceContract();
+        bytes32 governanceContract = getDeltaswap().governanceContract();
         if (vm.emitterAddress != governanceContract) {
             revert InvalidGovernanceContract(vm.emitterAddress, governanceContract);
         }
@@ -229,8 +229,8 @@ abstract contract DeltaswapRelayerGovernance is DeltaswapRelayerBase, ERC1967Upg
 
         uint16 parsedChainId;
         (parsedChainId, offset) = encodedPayload.asUint16Unchecked(offset);
-        if (!(parsedChainId == WORMHOLE_CHAINID_UNSET && allowUnset)) {
-            if (getWormhole().isFork()) {
+        if (!(parsedChainId == DELTASWAP_CHAINID_UNSET && allowUnset)) {
+            if (getDeltaswap().isFork()) {
                 revert InvalidFork();
             }
 

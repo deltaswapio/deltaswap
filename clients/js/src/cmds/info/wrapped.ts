@@ -1,4 +1,4 @@
-import { assertChain } from "@certusone/wormhole-sdk/lib/esm/utils/consts";
+import { assertChain } from "@deltaswapio/deltaswap-sdk/lib/esm/utils/consts";
 import yargs from "yargs";
 import { getWrappedAssetAddress } from "../../chains/generic/getWrappedAssetAddress";
 import { CHAIN_ID_OR_NAME_CHOICES, RPC_OPTIONS } from "../../consts";

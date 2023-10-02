@@ -80,7 +80,7 @@
               "amount": "100000000"
             },
             {
-              "denom": "uworm",
+              "denom": "udelta",
               "amount": "1000000000"
             }
           ]
@@ -93,7 +93,7 @@
               "amount": "100000000000"
             },
             {
-              "denom": "uworm",
+              "denom": "udelta",
               "amount": "200000000"
             }
           ]
@@ -106,7 +106,7 @@
               "amount": "100000000000"
             },
             {
-              "denom": "uworm",
+              "denom": "udelta",
               "amount": "200000000"
             }
           ]
@@ -119,7 +119,7 @@
               "amount": "100000000000"
             },
             {
-              "denom": "uworm",
+              "denom": "udelta",
               "amount": "200000000"
             }
           ]
@@ -132,7 +132,7 @@
               "amount": "100000000000"
             },
             {
-              "denom": "uworm",
+              "denom": "udelta",
               "amount": "200000000"
             }
           ]
@@ -163,7 +163,7 @@
           "description": "Deltachain's native staking asset",
           "denom_units": [
             {
-              "denom": "uworm",
+              "denom": "udelta",
               "exponent": 0,
               "aliases": []
             },
@@ -173,7 +173,7 @@
               "aliases": []
             }
           ],
-          "base": "uworm",
+          "base": "udelta",
           "display": "worm",
           "name": "Worm Coin",
           "symbol": "WORM"
@@ -242,7 +242,7 @@
                   "key": "Zcujkt1sXRWWLfhgxLAm/Q+ioLn4wFim0OnGPLlCG0I="
                 },
                 "value": {
-                  "denom": "uworm",
+                  "denom": "udelta",
                   "amount": "0"
                 }
               }
@@ -303,7 +303,7 @@
                   "key": "fnfoo/C+i+Ng1J8vct6wfvrTS9JeNIG5UeO87ZHKMkY="
                 },
                 "value": {
-                  "denom": "uworm",
+                  "denom": "udelta",
                   "amount": "0"
                 }
               }
@@ -347,7 +347,7 @@
         "min_deposit": [
           {
             "amount": "1000000",
-            "denom": "uworm"
+            "denom": "udelta"
           }
         ]
       },
@@ -405,7 +405,7 @@
         "inflation_max": "0.0",
         "inflation_min": "0.0",
         "inflation_rate_change": "0.0",
-        "mint_denom": "uworm"
+        "mint_denom": "udelta"
       }
     },
     "params": null,
@@ -426,7 +426,7 @@
       "last_total_power": "0",
       "last_validator_powers": [],
       "params": {
-        "bond_denom": "uworm",
+        "bond_denom": "udelta",
         "historical_entries": 10000,
         "max_entries": 7,
         "max_validators": 1000,

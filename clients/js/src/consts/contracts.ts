@@ -1,7 +1,7 @@
 import {
   CHAIN_ID_SOLANA,
   CONTRACTS as SDK_CONTRACTS,
-} from "@certusone/wormhole-sdk/lib/esm/utils/consts";
+} from "@deltaswapio/deltaswap-sdk/lib/esm/utils/consts";
 
 const OVERRIDES = {
   MAINNET: {

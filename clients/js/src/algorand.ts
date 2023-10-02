@@ -1,17 +1,17 @@
 import {
   _submitVAAAlgorand,
   signSendAndConfirmAlgorand,
-} from "@certusone/wormhole-sdk/lib/esm/algorand";
+} from "@deltaswapio/deltaswap-sdk/lib/esm/algorand";
 import {
   CONTRACTS,
   ChainName,
-} from "@certusone/wormhole-sdk/lib/esm/utils/consts";
+} from "@deltaswapio/deltaswap-sdk/lib/esm/utils/consts";
 import { Account, Algodv2, mnemonicToSecretKey } from "algosdk";
 import { NETWORKS } from "./consts";
 import { Network } from "./utils";
 import { Payload, impossible } from "./vaa";
-import { transferFromAlgorand } from "@certusone/wormhole-sdk/lib/esm/token_bridge/transfer";
-import { tryNativeToHexString } from "@certusone/wormhole-sdk/lib/esm/utils";
+import { transferFromAlgorand } from "@deltaswapio/deltaswap-sdk/lib/esm/token_bridge/transfer";
+import { tryNativeToHexString } from "@deltaswapio/deltaswap-sdk/lib/esm/utils";
 
 export async function execute_algorand(
   payload: Payload,

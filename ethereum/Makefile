@@ -4,7 +4,7 @@ SOURCE_FILES:=$(shell find contracts -name "*.sol")
 # dependendency tree, i.e. the contracts that actually get deployed on-chain.
 # Proxies and implementations.
 FLATTEN_FILES:= contracts/Implementation.sol \
-                contracts/Wormhole.sol \
+                contracts/Deltaswap.sol \
                 contracts/bridge/BridgeImplementation.sol \
                 contracts/bridge/TokenBridge.sol \
                 contracts/bridge/token/TokenImplementation.sol \
@@ -77,7 +77,7 @@ test-upgrade: build .env node_modules
 
 .PHONY:
 test-identifiers: dependencies
-	./compare-method-identifiers.sh contracts/Implementation.sol:Implementation contracts/interfaces/IWormhole.sol:IWormhole
+	./compare-method-identifiers.sh contracts/Implementation.sol:Implementation contracts/interfaces/IDeltaswap.sol:IDeltaswap
 	./compare-method-identifiers.sh contracts/bridge/BridgeImplementation.sol:BridgeImplementation contracts/bridge/interfaces/ITokenBridge.sol:ITokenBridge
 	./compare-method-identifiers.sh contracts/nft/NFTBridgeImplementation.sol:NFTBridgeImplementation contracts/nft/interfaces/INFTBridge.sol:INFTBridge
 

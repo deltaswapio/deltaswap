@@ -7,14 +7,14 @@ import {
   getForeignAssetSui,
   getForeignAssetTerra,
   getForeignAssetXpla,
-} from "@certusone/wormhole-sdk/lib/esm/token_bridge/getForeignAsset";
-import { getForeignAssetInjective } from "@certusone/wormhole-sdk/lib/esm/token_bridge/injective";
-import { tryNativeToUint8Array } from "@certusone/wormhole-sdk/lib/esm/utils/array";
+} from "@deltaswapio/deltaswap-sdk/lib/esm/token_bridge/getForeignAsset";
+import { getForeignAssetInjective } from "@deltaswapio/deltaswap-sdk/lib/esm/token_bridge/injective";
+import { tryNativeToUint8Array } from "@deltaswapio/deltaswap-sdk/lib/esm/utils/array";
 import {
   ChainId,
   ChainName,
   coalesceChainName,
-} from "@certusone/wormhole-sdk/lib/esm/utils/consts";
+} from "@deltaswapio/deltaswap-sdk/lib/esm/utils/consts";
 import { CONTRACTS } from "../../consts";
 import { Network } from "../../utils";
 import { impossible } from "../../vaa";

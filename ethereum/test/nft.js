@@ -2,7 +2,7 @@ const jsonfile = require('jsonfile');
 const elliptic = require('elliptic');
 const BigNumber = require('bignumber.js');
 
-const Wormhole = artifacts.require("Wormhole");
+const Deltaswap = artifacts.require("Deltaswap");
 const NFTBridge = artifacts.require("NFTBridgeEntrypoint");
 const NFTBridgeImplementation = artifacts.require("NFTBridgeImplementation");
 const NFTImplementation = artifacts.require("NFTImplementation");
@@ -11,7 +11,7 @@ const MockBridgeImplementation = artifacts.require("MockNFTBridgeImplementation"
 const testSigner1PK = "cfb12303a19cde580bb4dd771639b0d26bc68353645571a8cff516ab2ee113a0";
 const testSigner2PK = "892330666a850761e7370376430bb8c2aa1494072d3bfeaed0c4fa3d5a9135fe";
 
-const WormholeImplementationFullABI = jsonfile.readFileSync("build/contracts/Implementation.json").abi
+const DeltaswapImplementationFullABI = jsonfile.readFileSync("build/contracts/Implementation.json").abi
 const BridgeImplementationFullABI = jsonfile.readFileSync("build/contracts/NFTBridgeImplementation.json").abi
 const NFTImplementationFullABI = jsonfile.readFileSync("build/contracts/NFTImplementation.json").abi
 
@@ -250,8 +250,8 @@ contract("NFT", function () {
         assert.equal(ownerAfter, NFTBridge.address);
 
         // check transfer log
-        const wormhole = new web3.eth.Contract(WormholeImplementationFullABI, Wormhole.address);
-        const log = (await wormhole.getPastEvents('LogMessagePublished', {
+        const deltaswap = new web3.eth.Contract(DeltaswapImplementationFullABI, Deltaswap.address);
+        const log = (await deltaswap.getPastEvents('LogMessagePublished', {
             fromBlock: 'latest'
         }))[0].returnValues
 
@@ -271,7 +271,7 @@ contract("NFT", function () {
         // symbol (TT)
         assert.equal(log.payload.substr(72, 64), "5454000000000000000000000000000000000000000000000000000000000000")
 
-        // name (TestToken (Wormhole))
+        // name (TestToken (Deltaswap))
         assert.equal(log.payload.substr(136, 64), "54657374546f6b656e0000000000000000000000000000000000000000000000")
 
         // tokenID
@@ -536,7 +536,7 @@ contract("NFT", function () {
         assert.equal(symbol, "WORMSPLNFT");
 
         const name = await wrappedAsset.methods.name().call();
-        assert.equal(name, "Wormhole Bridged Solana-NFT");
+        assert.equal(name, "Deltaswap Bridged Solana-NFT");
     })
 
     it("cached SPL names are loaded when transferring out, cache is cleared", async function () {

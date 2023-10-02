@@ -9,9 +9,9 @@ import "../../contracts/relayer/deliveryProvider/DeliveryProviderImplementation.
 import "../../contracts/relayer/deliveryProvider/DeliveryProviderProxy.sol";
 import "../../contracts/relayer/deliveryProvider/DeliveryProviderStructs.sol";
 import "../../contracts/interfaces/relayer/TypedUnits.sol";
-import {MockWormhole} from "./MockWormhole.sol";
-import {IWormhole} from "../../contracts/interfaces/IWormhole.sol";
-import {WormholeSimulator, FakeWormholeSimulator} from "./WormholeSimulator.sol";
+import {MockDeltaswap} from "./MockDeltaswap.sol";
+import {IDeltaswap} from "../../contracts/interfaces/IDeltaswap.sol";
+import {DeltaswapSimulator, FakeDeltaswapSimulator} from "./DeltaswapSimulator.sol";
 
 import "forge-std/Test.sol";
 
@@ -229,7 +229,7 @@ contract TestDeliveryProvider is Test {
         uint64 srcNativeCurrencyPrice
     ) public {
         vm.assume(dstChainId > 0);
-        vm.assume(dstChainId != TEST_ORACLE_CHAIN_ID); // wormhole.chainId()
+        vm.assume(dstChainId != TEST_ORACLE_CHAIN_ID); // deltaswap.chainId()
         vm.assume(dstGasPrice > 0);
         vm.assume(dstNativeCurrencyPrice > 0);
         vm.assume(srcGasPrice > 0);
@@ -292,7 +292,7 @@ contract TestDeliveryProvider is Test {
         initializeDeliveryProvider();
 
         vm.assume(dstChainId > 0);
-        vm.assume(dstChainId != TEST_ORACLE_CHAIN_ID); // wormhole.chainId()
+        vm.assume(dstChainId != TEST_ORACLE_CHAIN_ID); // deltaswap.chainId()
         vm.assume(dstGasPrice > 0);
         vm.assume(dstNativeCurrencyPrice > 0);
         vm.assume(srcGasPrice > 0);
@@ -341,7 +341,7 @@ contract TestDeliveryProvider is Test {
         initializeDeliveryProvider();
 
         vm.assume(dstChainId > 0);
-        vm.assume(dstChainId != TEST_ORACLE_CHAIN_ID); // wormhole.chainId()
+        vm.assume(dstChainId != TEST_ORACLE_CHAIN_ID); // deltaswap.chainId()
         vm.assume(dstGasPrice > 0);
         vm.assume(dstNativeCurrencyPrice > 0);
         vm.assume(srcGasPrice > 0);

@@ -10,8 +10,8 @@ import "@openzeppelin/contracts/proxy/ERC1967/ERC1967Upgrade.sol";
 
 /**
  * @title  Shutdown
- * @notice This contract implements a stripped-down version of the Wormhole core
- *         messaging protocol that is a drop-in replacement for Wormhole's
+ * @notice This contract implements a stripped-down version of the Deltaswap core
+ *         messaging protocol that is a drop-in replacement for Deltaswap's
  *         implementation contract, effectively disabling all non-governance
  *         functionality.
  *         In particular, outgoing messages are disabled, but the contract

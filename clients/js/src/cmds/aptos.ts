@@ -1,10 +1,10 @@
-import { APTOS_DEPLOYER_ADDRESS_DEVNET } from "@certusone/wormhole-sdk";
+import { APTOS_DEPLOYER_ADDRESS_DEVNET } from "@deltaswapio/deltaswap-sdk";
 import {
   assertChain,
   CHAIN_ID_APTOS,
   coalesceChainId,
   CONTRACTS,
-} from "@certusone/wormhole-sdk/lib/esm/utils/consts";
+} from "@deltaswapio/deltaswap-sdk/lib/esm/utils/consts";
 import { BCS, FaucetClient } from "aptos";
 import { spawnSync } from "child_process";
 import fs from "fs";

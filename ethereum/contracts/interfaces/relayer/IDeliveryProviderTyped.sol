@@ -77,7 +77,7 @@ interface IDeliveryProvider {
 
     /**
      * @notice If a DeliveryProvider supports a given chain, this function should provide the contract
-     *      address (in wormhole format) of the relay provider on that chain.
+     *      address (in deltaswap format) of the relay provider on that chain.
      *
      * @param targetChain - The chain which is being delivered to.
      */

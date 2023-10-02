@@ -3,7 +3,7 @@
 
 pragma solidity ^0.8.0;
 
-import "../../interfaces/IWormhole.sol";
+import "../../interfaces/IDeltaswap.sol";
 
 interface INFTBridge {
     struct Transfer {
@@ -65,7 +65,7 @@ interface INFTBridge {
 
     function isTransferCompleted(bytes32 hash) external view returns (bool);
 
-    function wormhole() external view returns (IWormhole);
+    function deltaswap() external view returns (IDeltaswap);
 
     function chainId() external view returns (uint16);
 

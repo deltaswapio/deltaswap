@@ -8,13 +8,13 @@ import {
   getOriginalAssetSui,
   getOriginalAssetTerra,
   getOriginalAssetXpla,
-} from "@certusone/wormhole-sdk/lib/esm/token_bridge/getOriginalAsset";
-import { getOriginalAssetInjective } from "@certusone/wormhole-sdk/lib/esm/token_bridge/injective";
+} from "@deltaswapio/deltaswap-sdk/lib/esm/token_bridge/getOriginalAsset";
+import { getOriginalAssetInjective } from "@deltaswapio/deltaswap-sdk/lib/esm/token_bridge/injective";
 import {
   ChainId,
   ChainName,
   coalesceChainName,
-} from "@certusone/wormhole-sdk/lib/esm/utils/consts";
+} from "@deltaswapio/deltaswap-sdk/lib/esm/utils/consts";
 import { CONTRACTS } from "../../consts";
 import { Network } from "../../utils";
 import { impossible } from "../../vaa";

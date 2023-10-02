@@ -28,17 +28,17 @@ function max(uint256 a, uint256 b) pure returns (uint256) {
   return a > b ? a : b;
 }
 
-function toWormholeFormat(address addr) pure returns (bytes32) {
+function toDeltaswapFormat(address addr) pure returns (bytes32) {
   return bytes32(uint256(uint160(addr)));
 }
 
-function fromWormholeFormat(bytes32 whFormatAddress) pure returns (address) {
+function fromDeltaswapFormat(bytes32 whFormatAddress) pure returns (address) {
   if (uint256(whFormatAddress) >> 160 != 0)
     revert NotAnEvmAddress(whFormatAddress);
   return address(uint160(uint256(whFormatAddress)));
 }
 
-function fromWormholeFormatUnchecked(bytes32 whFormatAddress) pure returns (address) {
+function fromDeltaswapFormatUnchecked(bytes32 whFormatAddress) pure returns (address) {
   return address(uint160(uint256(whFormatAddress)));
 }
 

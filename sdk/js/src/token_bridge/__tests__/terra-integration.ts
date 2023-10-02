@@ -44,7 +44,7 @@ import {
   TERRA_PRIVATE_KEY,
   TERRA_PUBLIC_KEY,
   TEST_ERC20,
-  WORMHOLE_RPC_HOSTS,
+  DELTASWAP_RPC_HOSTS,
 } from "./utils/consts";
 import {
   getSignedVAABySequence,
@@ -221,7 +221,7 @@ describe.skip("Terra Integration Tests", () => {
           );
           // poll until the phylax(s) witness and sign the vaa
           const { vaaBytes: signedVAA } = await getSignedVAAWithRetry(
-            WORMHOLE_RPC_HOSTS,
+            DELTASWAP_RPC_HOSTS,
             CHAIN_ID_ETH,
             emitterAddress,
             sequence,
@@ -387,7 +387,7 @@ describe.skip("Terra Integration Tests", () => {
           );
           // poll until the phylax(s) witness and sign the vaa
           const { vaaBytes: signedVAA } = await getSignedVAAWithRetry(
-            WORMHOLE_RPC_HOSTS,
+            DELTASWAP_RPC_HOSTS,
             CHAIN_ID_ETH,
             emitterAddress,
             sequence,
@@ -770,7 +770,7 @@ describe.skip("Terra Integration Tests", () => {
 
           // poll until the phylax(s) witness and sign the vaa
           const { vaaBytes: signedVAA } = await getSignedVAAWithRetry(
-            WORMHOLE_RPC_HOSTS,
+            DELTASWAP_RPC_HOSTS,
             CHAIN_ID_ETH,
             emitterAddress,
             sequence,
@@ -1089,7 +1089,7 @@ describe.skip("Terra Integration Tests", () => {
 
           // poll until the phylax(s) witness and sign the vaa
           const { vaaBytes: signedVAA } = await getSignedVAAWithRetry(
-            WORMHOLE_RPC_HOSTS,
+            DELTASWAP_RPC_HOSTS,
             CHAIN_ID_ETH,
             emitterAddress,
             sequence,

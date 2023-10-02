@@ -23,7 +23,7 @@ import {
   tryNativeToUint8Array,
   uint8ArrayToHex,
   VAA,
-} from "@certusone/wormhole-sdk";
+} from "@deltaswapio/deltaswap-sdk";
 import { NodeHttpTransport } from "@improbable-eng/grpc-web-node-http-transport";
 import { ethers } from "ethers";
 import * as devnetConsts from "../devnet-consts.json";

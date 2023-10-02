@@ -6,7 +6,7 @@ import {
   CONTRACTS,
   isEVMChain,
   toChainName,
-} from "@certusone/wormhole-sdk/lib/esm/utils/consts";
+} from "@deltaswapio/deltaswap-sdk/lib/esm/utils/consts";
 import { ethers } from "ethers";
 import { homedir } from "os";
 import yargs from "yargs";

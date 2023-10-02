@@ -34,7 +34,7 @@
                         "key": "receiver",
                         "value": "delta1zugu6cajc4z7ue29g9wnes9a5ep9cs7yu7rn3z"
                       },
-                      { "key": "amount", "value": "100uworm" }
+                      { "key": "amount", "value": "100udelta" }
                     ]
                   },
                   {
@@ -44,7 +44,7 @@
                         "key": "spender",
                         "value": "delta1wqwywkce50mg6077huy4j9y8lt80943ks5udzr"
                       },
-                      { "key": "amount", "value": "100uworm" }
+                      { "key": "amount", "value": "100udelta" }
                     ]
                   },
                   {
@@ -68,7 +68,7 @@
                         "key": "sender",
                         "value": "delta1wqwywkce50mg6077huy4j9y8lt80943ks5udzr"
                       },
-                      { "key": "amount", "value": "100uworm" }
+                      { "key": "amount", "value": "100udelta" }
                     ]
                   }
                 ]
@@ -209,8 +209,8 @@
     },
     "events": {
       "coin_spent.spender": ["delta1wqwywkce50mg6077huy4j9y8lt80943ks5udzr"],
-      "coin_received.amount": ["100uworm"],
-      "transfer.amount": ["100uworm"],
+      "coin_received.amount": ["100udelta"],
+      "transfer.amount": ["100udelta"],
       "tx.acc_seq": ["delta1wqwywkce50mg6077huy4j9y8lt80943ks5udzr/13"],
       "message.action": ["Transfer"],
       "deltaswapio.deltachain.deltaswap.EventPostedMessage.nonce": ["0"],
@@ -230,7 +230,7 @@
       "tx.signature": [
         "7S2taziRjKoisL0iSt1wq6VJixB+t+9YMOOD1F5lm/hvG1uxOOxM90c+QNWpwIq3O4FwyjG6IrodNN+uNOIX0A=="
       ],
-      "coin_spent.amount": ["100uworm"],
+      "coin_spent.amount": ["100udelta"],
       "deltaswapio.deltachain.deltaswap.EventPostedMessage.payload": [
         "AQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABkAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAdWhvbGUMIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=="
       ],

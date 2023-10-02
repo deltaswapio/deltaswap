@@ -21,20 +21,20 @@ import {
   tryNativeToUint8Array,
   CONTRACTS,
   parseNFTPayload,
-} from "@certusone/wormhole-sdk";
+} from "@deltaswapio/deltaswap-sdk";
 
 import {
   ParsedVAA,
   _parseVAAAlgorand,
   _parseNFTAlgorand,
-} from "@certusone/wormhole-sdk/lib/cjs/algorand";
+} from "@deltaswapio/deltaswap-sdk/lib/cjs/algorand";
 
 import {
   BigNumberish,
   ethers,
-} from "@certusone/wormhole-sdk/node_modules/ethers";
+} from "@deltaswapio/deltaswap-sdk/node_modules/ethers";
 
-import { Account as nearAccount } from "@certusone/wormhole-sdk/node_modules/near-api-js";
+import { Account as nearAccount } from "@deltaswapio/deltaswap-sdk/node_modules/near-api-js";
 const BN = require("bn.js");
 const fetch = require("node-fetch");
 

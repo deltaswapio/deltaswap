@@ -1,4 +1,4 @@
-import * as wh from "@certusone/wormhole-sdk";
+import * as wh from "@deltaswapio/deltaswap-sdk";
 import { Next, ParsedVaaWithBytes, sleep } from "relayer-engine";
 import {
   VaaKeyType,
@@ -13,11 +13,11 @@ import {
   packOverrides,
   DeliveryOverrideArgs,
   parseEVMExecutionInfoV1,
-} from "@certusone/wormhole-sdk/lib/cjs/relayer";
-import { EVMChainId } from "@certusone/wormhole-sdk";
+} from "@deltaswapio/deltaswap-sdk/lib/cjs/relayer";
+import { EVMChainId } from "@deltaswapio/deltaswap-sdk";
 import { GRContext } from "./app";
 import { BigNumber, ethers } from "ethers";
-import { DeltaswapRelayer__factory } from "@certusone/wormhole-sdk/lib/cjs/ethers-contracts";
+import { DeltaswapRelayer__factory } from "@deltaswapio/deltaswap-sdk/lib/cjs/ethers-contracts";
 import {
   DeliveryExecutionRecord,
   addFatalError,

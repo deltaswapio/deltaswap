@@ -17,8 +17,8 @@ async function run() {
   console.log("Start! " + processName);
 
   const output: any = {
-    wormholeRelayerImplementations: [],
-    wormholeRelayerProxies: [],
+    deltaswapRelayerImplementations: [],
+    deltaswapRelayerProxies: [],
   };
 
   for (const chain of chains) {
@@ -32,8 +32,8 @@ async function run() {
       getDeliveryProviderAddress(chain)
     );
 
-    output.wormholeRelayerImplementations.push(coreRelayerImplementation);
-    output.wormholeRelayerProxies.push(coreRelayerProxy);
+    output.deltaswapRelayerImplementations.push(coreRelayerImplementation);
+    output.deltaswapRelayerProxies.push(coreRelayerProxy);
     console.log("");
   }
 

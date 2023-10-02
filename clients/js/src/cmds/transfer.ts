@@ -2,7 +2,7 @@ import {
   isCosmWasmChain,
   isEVMChain,
   isTerraChain,
-} from "@certusone/wormhole-sdk/lib/esm/utils/consts";
+} from "@deltaswapio/deltaswap-sdk/lib/esm/utils/consts";
 import yargs from "yargs";
 import { impossible } from "../vaa";
 import { transferEVM } from "../evm";

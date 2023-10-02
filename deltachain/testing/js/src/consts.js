@@ -29,7 +29,7 @@ export const NODE_URL = "http://0.0.0.0:1319";
 export const TENDERMINT_URL = "http://localhost:26659";
 //export const FAUCET_URL = "http://localhost:4500";
 
-export const WORM_DENOM = "uworm";
+export const WORM_DENOM = "udelta";
 export const ADDRESS_PREFIX = "delta";
 export const OPERATOR_PREFIX = "deltavaloper";
 

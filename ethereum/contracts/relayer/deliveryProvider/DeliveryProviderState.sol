@@ -22,7 +22,7 @@ contract DeliveryProviderStorage {
     }
 
     struct State {
-        // Wormhole chain id of this blockchain.
+        // Deltaswap chain id of this blockchain.
         uint16 chainId;
         // Current owner.
         address owner;
@@ -38,13 +38,13 @@ contract DeliveryProviderStorage {
         mapping(uint16 => bool) supportedChains;
         // Contracts of this relay provider on other chains
         mapping(uint16 => bytes32) targetChainAddresses;
-        // Dictionary of wormhole chain id -> price data
+        // Dictionary of deltaswap chain id -> price data
         mapping(uint16 => PriceData) data;
         // The delivery overhead gas required to deliver a message to targetChain, denominated in targetChain's gas.
         mapping(uint16 => Gas) deliverGasOverhead;
         // The maximum budget that is allowed for a delivery on target chain, denominated in the targetChain's wei.
         mapping(uint16 => TargetNative) maximumBudget;
-        // Dictionary of wormhole chain id -> assetConversion
+        // Dictionary of deltaswap chain id -> assetConversion
         mapping(uint16 => AssetConversion) assetConversion;
         // Reward address for the relayer. The DeltaswapRelayer contract transfers the reward for relaying messages here.
         address payable rewardAddress;

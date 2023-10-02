@@ -1,6 +1,6 @@
 require('dotenv').config({ path: "../.env" });
 
-const Wormhole = artifacts.require("Wormhole");
+const Deltaswap = artifacts.require("Deltaswap");
 const MockBatchedVAASender = artifacts.require("MockBatchedVAASender");
 
 module.exports = async function (deployer, network, accounts) {
@@ -10,6 +10,6 @@ module.exports = async function (deployer, network, accounts) {
     const contract = new web3.eth.Contract(MockBatchedVAASender.abi, MockBatchedVAASender.address);
 
     await contract.methods.setup(
-        Wormhole.address
+        Deltaswap.address
     ).send({from: accounts[0]})
 };

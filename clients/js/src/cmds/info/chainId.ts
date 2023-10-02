@@ -1,7 +1,7 @@
 import {
   assertChain,
   coalesceChainId,
-} from "@certusone/wormhole-sdk/lib/esm/utils/consts";
+} from "@deltaswapio/deltaswap-sdk/lib/esm/utils/consts";
 import yargs from "yargs";
 import { CHAIN_ID_OR_NAME_CHOICES } from "../../consts";
 

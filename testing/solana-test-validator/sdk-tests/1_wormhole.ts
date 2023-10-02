@@ -12,7 +12,7 @@ import {
   createSetFeesInstruction,
   createTransferFeesInstruction,
   createUpgradePhylaxSetInstruction,
-  getWormholeBridgeData,
+  getDeltaswapBridgeData,
   getInitializeAccounts,
   getPostMessageAccounts,
   getPostVaaAccounts,
@@ -40,7 +40,7 @@ import {
   TOKEN_BRIDGE_ADDRESS,
 } from "./helpers/consts";
 
-describe("Wormhole (Core Bridge)", () => {
+describe("Deltaswap (Core Bridge)", () => {
   const connection = new web3.Connection(LOCALHOST, "processed");
 
   const wallet = new NodeWallet(web3.Keypair.generate());
@@ -63,7 +63,7 @@ describe("Wormhole (Core Bridge)", () => {
     );
 
     // hijacking the ethereum token bridge address for our fake emitter
-    const ethereumWormhole = new MockEthereumEmitter(ETHEREUM_WALLET_BYTES32);
+    const ethereumDeltaswap = new MockEthereumEmitter(ETHEREUM_WALLET_BYTES32);
 
     const payer = new web3.PublicKey(
       "6sbzC1eH4FTujJXWj51eQe25cYvr4xfXbJ1vAj7j2k5J"
@@ -125,7 +125,7 @@ describe("Wormhole (Core Bridge)", () => {
       const nonce = 0;
       const consistencyLevel = 15;
       const timestamp = 12345678;
-      const published = ethereumWormhole.publishMessage(
+      const published = ethereumDeltaswap.publishMessage(
         nonce,
         message,
         consistencyLevel,
@@ -162,7 +162,7 @@ describe("Wormhole (Core Bridge)", () => {
     it("Instruction 4: Set Fees", () => {
       const timestamp = 23456789;
       const newFeeAmount = 42069n;
-      const message = governance.publishWormholeSetMessageFee(
+      const message = governance.publishDeltaswapSetMessageFee(
         timestamp,
         1,
         newFeeAmount
@@ -195,7 +195,7 @@ describe("Wormhole (Core Bridge)", () => {
       const chain = 1;
       const amount = 0n;
       const recipient = payer;
-      const message = governance.publishWormholeTransferFees(
+      const message = governance.publishDeltaswapTransferFees(
         timestamp,
         chain,
         amount,
@@ -235,7 +235,7 @@ describe("Wormhole (Core Bridge)", () => {
       const implementation = new web3.PublicKey(
         "2B5wMnErS8oKWV1wPTNQQhM1WLyxee2obtBMDtsYeHgA"
       );
-      const message = governance.publishWormholeUpgradeContract(
+      const message = governance.publishDeltaswapUpgradeContract(
         timestamp,
         chain,
         implementation.toString()
@@ -281,7 +281,7 @@ describe("Wormhole (Core Bridge)", () => {
       const timestamp = 56789012;
       const newPhylaxSetIndex = phylaxs.setIndex + 1;
       const newPhylaxSet = phylaxs.getPublicKeys();
-      const message = governance.publishWormholePhylaxSetUpgrade(
+      const message = governance.publishDeltaswapPhylaxSetUpgrade(
         timestamp,
         newPhylaxSetIndex,
         newPhylaxSet
@@ -320,7 +320,7 @@ describe("Wormhole (Core Bridge)", () => {
       const message = Buffer.from("All your base are belong to us.");
       const nonce = 0;
       const consistencyLevel = 15;
-      const published = ethereumWormhole.publishMessage(
+      const published = ethereumDeltaswap.publishMessage(
         nonce,
         message,
         consistencyLevel,
@@ -392,7 +392,7 @@ describe("Wormhole (Core Bridge)", () => {
     });
   });
 
-  describe("Wormhole Program Interaction", () => {
+  describe("Deltaswap Program Interaction", () => {
     // for generating governance wormhole messages
     const governance = new GovernanceEmitter(
       GOVERNANCE_EMITTER_ADDRESS.toBuffer().toString("hex"),
@@ -400,7 +400,7 @@ describe("Wormhole (Core Bridge)", () => {
     );
 
     // hijacking the ethereum token bridge address for our fake emitter
-    const ethereumWormhole = new MockEthereumEmitter(ETHEREUM_WALLET_BYTES32);
+    const ethereumDeltaswap = new MockEthereumEmitter(ETHEREUM_WALLET_BYTES32);
 
     describe("Post VAA with One Phylax", () => {
       it("Verify Phylax Signature and Post Message", async () => {
@@ -408,7 +408,7 @@ describe("Wormhole (Core Bridge)", () => {
         const nonce = 0;
         const consistencyLevel = 15;
         const timestamp = 12345678;
-        const published = ethereumWormhole.publishMessage(
+        const published = ethereumDeltaswap.publishMessage(
           nonce,
           message,
           consistencyLevel,
@@ -475,14 +475,14 @@ describe("Wormhole (Core Bridge)", () => {
 
     describe("Governance", () => {
       it("Set Fees to Arbitrary Amount", async () => {
-        const previousFee = await getWormholeBridgeData(
+        const previousFee = await getDeltaswapBridgeData(
           connection,
           CORE_BRIDGE_ADDRESS
         ).then((info) => info.config.fee);
 
         const timestamp = 1;
         const newFeeAmount = previousFee + BigInt(69420);
-        const message = governance.publishWormholeSetMessageFee(
+        const message = governance.publishDeltaswapSetMessageFee(
           timestamp,
           1,
           newFeeAmount
@@ -516,7 +516,7 @@ describe("Wormhole (Core Bridge)", () => {
         );
         // console.log(`setFeeTx:         ${setFeeTx}`);
 
-        const currentFee = await getWormholeBridgeData(
+        const currentFee = await getDeltaswapBridgeData(
           connection,
           CORE_BRIDGE_ADDRESS
         ).then((info) => info.config.fee);
@@ -533,7 +533,7 @@ describe("Wormhole (Core Bridge)", () => {
         const timestamp = 2;
         const chain = 1;
         const amount = 0n;
-        const message = governance.publishWormholeTransferFees(
+        const message = governance.publishDeltaswapTransferFees(
           timestamp,
           chain,
           amount,
@@ -576,7 +576,7 @@ describe("Wormhole (Core Bridge)", () => {
         const timestamp = 3;
         const newPhylaxSetIndex = phylaxs.setIndex + 1;
         const newPhylaxSet = phylaxs.getPublicKeys();
-        const message = governance.publishWormholePhylaxSetUpgrade(
+        const message = governance.publishDeltaswapPhylaxSetUpgrade(
           timestamp,
           newPhylaxSetIndex,
           newPhylaxSet
@@ -634,7 +634,7 @@ describe("Wormhole (Core Bridge)", () => {
         const message = Buffer.from("All your base are belong to us.");
         const nonce = 0;
         const consistencyLevel = 15;
-        const published = ethereumWormhole.publishMessage(
+        const published = ethereumDeltaswap.publishMessage(
           nonce,
           message,
           consistencyLevel
@@ -697,7 +697,7 @@ describe("Wormhole (Core Bridge)", () => {
         const message = Buffer.from("All your base are belong to us.");
         const nonce = 0;
         const consistencyLevel = 15;
-        const published = ethereumWormhole.publishMessage(
+        const published = ethereumDeltaswap.publishMessage(
           nonce,
           message,
           consistencyLevel

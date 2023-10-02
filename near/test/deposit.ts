@@ -16,7 +16,7 @@ import {
   CHAIN_ID_NEAR,
   CHAIN_ID_ETH,
   hexToUint8Array,
-} from "@certusone/wormhole-sdk/lib/cjs/utils";
+} from "@deltaswapio/deltaswap-sdk/lib/cjs/utils";
 
 export const WORMHOLE_RPC_HOSTS = [
   "https://wormhole-v2-mainnet-api.certus.one",
@@ -34,7 +34,7 @@ import {
   utils as nearUtils,
   Account as nearAccount,
   providers as nearProviders,
-} from "@certusone/wormhole-sdk/node_modules/near-api-js";
+} from "@deltaswapio/deltaswap-sdk/node_modules/near-api-js";
 
 import {
   CONTRACTS,
@@ -52,9 +52,9 @@ import {
   transferTokenFromNear,
   getEmitterAddressEth,
   parseSequenceFromLogEth,
-} from "@certusone/wormhole-sdk";
+} from "@deltaswapio/deltaswap-sdk";
 
-const sdk = require("@certusone/wormhole-sdk");
+const sdk = require("@deltaswapio/deltaswap-sdk");
 const { ethers } = require("ethers");
 
 async function transferTest() {

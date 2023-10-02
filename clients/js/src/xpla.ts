@@ -1,7 +1,7 @@
 import {
   CONTRACTS,
   ChainName,
-} from "@certusone/wormhole-sdk/lib/esm/utils/consts";
+} from "@deltaswapio/deltaswap-sdk/lib/esm/utils/consts";
 import {
   Coin,
   Fee,
@@ -14,8 +14,8 @@ import { fromUint8Array } from "js-base64";
 import { NETWORKS } from "./consts";
 import { Network } from "./utils";
 import { Payload, impossible } from "./vaa";
-import { transferFromXpla } from "@certusone/wormhole-sdk/lib/esm/token_bridge/transfer";
-import { tryNativeToUint8Array } from "@certusone/wormhole-sdk/lib/esm/utils";
+import { transferFromXpla } from "@deltaswapio/deltaswap-sdk/lib/esm/token_bridge/transfer";
+import { tryNativeToUint8Array } from "@deltaswapio/deltaswap-sdk/lib/esm/utils";
 
 export async function execute_xpla(
   payload: Payload,

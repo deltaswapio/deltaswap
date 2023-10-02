@@ -2,8 +2,8 @@ import {
   ChainId,
   ChainName,
   coalesceChainName,
-} from "@certusone/wormhole-sdk/lib/esm/utils/consts";
-import { parseTokenBridgeRegisterChainVaa } from "@certusone/wormhole-sdk/lib/esm/vaa/tokenBridge";
+} from "@deltaswapio/deltaswap-sdk/lib/esm/utils/consts";
+import { parseTokenBridgeRegisterChainVaa } from "@deltaswapio/deltaswap-sdk/lib/esm/vaa/tokenBridge";
 import {
   JsonRpcProvider,
   TransactionBlock,

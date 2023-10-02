@@ -9,7 +9,7 @@ import {
   TERRA_GAS_PRICES_URL,
   TERRA_NODE_URL,
   TERRA_PRIVATE_KEY,
-  WORMHOLE_RPC_HOSTS,
+  DELTASWAP_RPC_HOSTS,
 } from "./consts";
 
 export async function waitForTerraExecution(
@@ -45,7 +45,7 @@ export async function getSignedVAABySequence(
 ): Promise<Uint8Array> {
   //Note, if handed a sequence which doesn't exist or was skipped for consensus this will retry until the timeout.
   const { vaaBytes } = await getSignedVAAWithRetry(
-    WORMHOLE_RPC_HOSTS,
+    DELTASWAP_RPC_HOSTS,
     chainId,
     emitterAddress,
     sequence,

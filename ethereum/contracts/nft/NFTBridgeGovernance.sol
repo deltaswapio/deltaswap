@@ -15,7 +15,7 @@ import "./NFTBridgeStructs.sol";
 import "./token/NFT.sol";
 import "./token/NFTImplementation.sol";
 
-import "../interfaces/IWormhole.sol";
+import "../interfaces/IDeltaswap.sol";
 
 contract NFTBridgeGovernance is NFTBridgeGetters, NFTBridgeSetters, ERC1967Upgrade {
     using BytesLib for bytes;
@@ -25,7 +25,7 @@ contract NFTBridgeGovernance is NFTBridgeGetters, NFTBridgeSetters, ERC1967Upgra
 
     // Execute a RegisterChain governance message
     function registerChain(bytes memory encodedVM) public {
-        (IWormhole.VM memory vm, bool valid, string memory reason) = verifyGovernanceVM(encodedVM);
+        (IDeltaswap.VM memory vm, bool valid, string memory reason) = verifyGovernanceVM(encodedVM);
         require(valid, reason);
 
         setGovernanceActionConsumed(vm.hash);
@@ -41,7 +41,7 @@ contract NFTBridgeGovernance is NFTBridgeGetters, NFTBridgeSetters, ERC1967Upgra
     function upgrade(bytes memory encodedVM) public {
         require(!isFork(), "invalid fork");
 
-        (IWormhole.VM memory vm, bool valid, string memory reason) = verifyGovernanceVM(encodedVM);
+        (IDeltaswap.VM memory vm, bool valid, string memory reason) = verifyGovernanceVM(encodedVM);
         require(valid, reason);
 
         setGovernanceActionConsumed(vm.hash);
@@ -59,7 +59,7 @@ contract NFTBridgeGovernance is NFTBridgeGetters, NFTBridgeSetters, ERC1967Upgra
     function submitRecoverChainId(bytes memory encodedVM) public {
         require(isFork(), "not a fork");
 
-        (IWormhole.VM memory vm, bool valid, string memory reason) = verifyGovernanceVM(encodedVM);
+        (IDeltaswap.VM memory vm, bool valid, string memory reason) = verifyGovernanceVM(encodedVM);
         require(valid, reason);
 
         setGovernanceActionConsumed(vm.hash);
@@ -74,8 +74,8 @@ contract NFTBridgeGovernance is NFTBridgeGetters, NFTBridgeSetters, ERC1967Upgra
         setChainId(rci.newChainId);
     }
 
-    function verifyGovernanceVM(bytes memory encodedVM) internal view returns (IWormhole.VM memory parsedVM, bool isValid, string memory invalidReason){
-        (IWormhole.VM memory vm, bool valid, string memory reason) = wormhole().parseAndVerifyVM(encodedVM);
+    function verifyGovernanceVM(bytes memory encodedVM) internal view returns (IDeltaswap.VM memory parsedVM, bool isValid, string memory invalidReason){
+        (IDeltaswap.VM memory vm, bool valid, string memory reason) = deltaswap().parseAndVerifyVM(encodedVM);
 
         if(!valid){
             return (vm, valid, reason);

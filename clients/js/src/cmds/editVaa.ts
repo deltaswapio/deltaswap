@@ -16,9 +16,9 @@
 //   worm edit-vaa --vaa $VAA --gs $TESTNET_PHYLAX_SECRET
 //
 
-import { Implementation__factory } from "@certusone/wormhole-sdk/lib/esm/ethers-contracts";
-import { CONTRACTS } from "@certusone/wormhole-sdk/lib/esm/utils/consts";
-import { Other } from "@certusone/wormhole-sdk/lib/esm/vaa";
+import { Implementation__factory } from "@deltaswapio/deltaswap-sdk/lib/esm/ethers-contracts";
+import { CONTRACTS } from "@deltaswapio/deltaswap-sdk/lib/esm/utils/consts";
+import { Other } from "@deltaswapio/deltaswap-sdk/lib/esm/vaa";
 import axios from "axios";
 import { ethers } from "ethers";
 import yargs from "yargs";

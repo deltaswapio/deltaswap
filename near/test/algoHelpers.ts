@@ -5,14 +5,14 @@ import algosdk, {
   makePaymentTxnWithSuggestedParamsFromObject,
   Transaction,
   waitForConfirmation,
-} from "@certusone/wormhole-sdk/node_modules/algosdk";
+} from "@deltaswapio/deltaswap-sdk/node_modules/algosdk";
 
-import { getForeignAssetAlgorand } from "@certusone/wormhole-sdk/lib/cjs/token_bridge";
-import { ChainId } from "@certusone/wormhole-sdk/lib/cjs/utils";
+import { getForeignAssetAlgorand } from "@deltaswapio/deltaswap-sdk/lib/cjs/token_bridge";
+import { ChainId } from "@deltaswapio/deltaswap-sdk/lib/cjs/utils";
 import {
   TransactionSignerPair,
   _parseVAAAlgorand,
-} from "@certusone/wormhole-sdk/lib/cjs/algorand";
+} from "@deltaswapio/deltaswap-sdk/lib/cjs/algorand";
 
 const ci = !!process.env.CI;
 

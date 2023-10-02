@@ -24,7 +24,7 @@ pub type ChainID = u16;
 
 #[derive(Default, Clone, Copy, BorshDeserialize, BorshSerialize, Serialize, Deserialize)]
 pub struct Config {
-    pub wormhole_bridge: Pubkey,
+    pub deltaswap_bridge: Pubkey,
 }
 
 impl Owned for Config {

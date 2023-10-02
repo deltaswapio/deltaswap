@@ -70,7 +70,7 @@ import {
   SUI_FAUCET_URL,
   SUI_NODE_URL,
   TEST_ERC20,
-  WORMHOLE_RPC_HOSTS,
+  DELTASWAP_RPC_HOSTS,
 } from "./utils/consts";
 import {
   assertIsNotNull,
@@ -167,7 +167,7 @@ describe("Sui SDK tests", () => {
     expect(attestSequence).toBeTruthy();
     let { vaaBytes: attestVAA }: { vaaBytes: Uint8Array } =
       await getSignedVAAWithRetry(
-        WORMHOLE_RPC_HOSTS,
+        DELTASWAP_RPC_HOSTS,
         CHAIN_ID_ETH,
         getEmitterAddressEth(ETH_TOKEN_BRIDGE_ADDRESS),
         attestSequence,
@@ -334,7 +334,7 @@ describe("Sui SDK tests", () => {
       ETH_CORE_BRIDGE_ADDRESS
     );
     let { vaaBytes: transferFromEthVAA } = await getSignedVAAWithRetry(
-      WORMHOLE_RPC_HOSTS,
+      DELTASWAP_RPC_HOSTS,
       CHAIN_ID_ETH,
       getEmitterAddressEth(ETH_TOKEN_BRIDGE_ADDRESS),
       ethSequence,
@@ -411,7 +411,7 @@ describe("Sui SDK tests", () => {
 
     // Fetch the transfer VAA
     const { vaaBytes: transferFromSuiVAA } = await getSignedVAAWithRetry(
-      WORMHOLE_RPC_HOSTS,
+      DELTASWAP_RPC_HOSTS,
       CHAIN_ID_SUI,
       emitterAddress,
       sequence,
@@ -493,7 +493,7 @@ describe("Sui SDK tests", () => {
     expect(attestSequence).toBeTruthy();
     expect(attestEmitterAddress).toBeTruthy();
     const { vaaBytes: attestVAA } = await getSignedVAAWithRetry(
-      WORMHOLE_RPC_HOSTS,
+      DELTASWAP_RPC_HOSTS,
       CHAIN_ID_SUI,
       attestEmitterAddress,
       attestSequence,
@@ -555,7 +555,7 @@ describe("Sui SDK tests", () => {
 
     //   // Fetch the transfer VAA
     //   const { vaaBytes: transferVAA } = await getSignedVAAWithRetry(
-    //     WORMHOLE_RPC_HOSTS,
+    //     DELTASWAP_RPC_HOSTS,
     //     CHAIN_ID_SUI,
     //     emitterAddress,
     //     sequence!,
@@ -604,7 +604,7 @@ describe("Sui SDK tests", () => {
     //   );
     //   expect(ethSequence).toBeTruthy();
     //   const { vaaBytes: ethTransferVAA } = await getSignedVAAWithRetry(
-    //     WORMHOLE_RPC_HOSTS,
+    //     DELTASWAP_RPC_HOSTS,
     //     CHAIN_ID_ETH,
     //     getEmitterAddressEth(ETH_TOKEN_BRIDGE_ADDRESS),
     //     ethSequence,
@@ -665,7 +665,7 @@ describe("Sui SDK tests", () => {
     expect(attestSequence).toBeTruthy();
     expect(attestEmitterAddress).toBeTruthy();
     const { vaaBytes: attestVAA } = await getSignedVAAWithRetry(
-      WORMHOLE_RPC_HOSTS,
+      DELTASWAP_RPC_HOSTS,
       CHAIN_ID_SUI,
       attestEmitterAddress,
       attestSequence,
@@ -734,7 +734,7 @@ describe("Sui SDK tests", () => {
 
     // Fetch the transfer VAA
     const { vaaBytes: transferVAA } = await getSignedVAAWithRetry(
-      WORMHOLE_RPC_HOSTS,
+      DELTASWAP_RPC_HOSTS,
       CHAIN_ID_SUI,
       emitterAddress,
       sequence!,

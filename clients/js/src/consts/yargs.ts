@@ -2,7 +2,7 @@ import {
   CHAINS,
   ChainId,
   ChainName,
-} from "@certusone/wormhole-sdk/lib/esm/utils/consts";
+} from "@deltaswapio/deltaswap-sdk/lib/esm/utils/consts";
 
 export const DEBUG_OPTIONS = {
   alias: "d",

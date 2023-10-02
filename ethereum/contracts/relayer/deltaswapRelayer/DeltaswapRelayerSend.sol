@@ -13,7 +13,7 @@ import {
 } from "../../interfaces/relayer/IDeltaswapRelayerTyped.sol";
 import {IDeliveryProvider} from "../../interfaces/relayer/IDeliveryProviderTyped.sol";
 
-import {toWormholeFormat, fromWormholeFormat} from "../../relayer/libraries/Utils.sol";
+import {toDeltaswapFormat, fromDeltaswapFormat} from "../../relayer/libraries/Utils.sol";
 import {
     DeliveryInstruction,
     RedeliveryInstruction
@@ -144,13 +144,13 @@ abstract contract DeltaswapRelayerSend is DeltaswapRelayerBase, IDeltaswapRelaye
     ) public payable returns (uint64 sequence) {
         sequence = send(
             targetChain,
-            toWormholeFormat(targetAddress),
+            toDeltaswapFormat(targetAddress),
             payload,
             receiverValue,
             paymentForExtraReceiverValue,
             encodeEvmExecutionParamsV1(EvmExecutionParamsV1(gasLimit)),
             refundChain,
-            toWormholeFormat(refundAddress),
+            toDeltaswapFormat(refundAddress),
             deliveryProviderAddress,
             vaaKeys,
             consistencyLevel
@@ -172,13 +172,13 @@ abstract contract DeltaswapRelayerSend is DeltaswapRelayerBase, IDeltaswapRelaye
     ) public payable returns (uint64 sequence) {
         sequence = send(
             targetChain,
-            toWormholeFormat(targetAddress),
+            toDeltaswapFormat(targetAddress),
             payload,
             receiverValue,
             paymentForExtraReceiverValue,
             encodeEvmExecutionParamsV1(EvmExecutionParamsV1(gasLimit)),
             refundChain,
-            toWormholeFormat(refundAddress),
+            toDeltaswapFormat(refundAddress),
             deliveryProviderAddress,
             messageKeys,
             consistencyLevel
@@ -294,9 +294,9 @@ abstract contract DeltaswapRelayerSend is DeltaswapRelayerBase, IDeltaswapRelaye
             sendParams.targetChain, sendParams.receiverValue, sendParams.encodedExecutionParameters
         );
 
-        // Check if user passed in 'one wormhole message fee' + 'delivery provider's fee'
-        LocalNative wormholeMessageFee = getWormholeMessageFee();
-        checkMsgValue(wormholeMessageFee, deliveryPrice, sendParams.paymentForExtraReceiverValue);
+        // Check if user passed in 'one deltaswap message fee' + 'delivery provider's fee'
+        LocalNative deltaswapMessageFee = getDeltaswapMessageFee();
+        checkMsgValue(deltaswapMessageFee, deliveryPrice, sendParams.paymentForExtraReceiverValue);
 
         checkKeyTypesSupported(provider, sendParams.messageKeys);
 
@@ -313,16 +313,16 @@ abstract contract DeltaswapRelayerSend is DeltaswapRelayerBase, IDeltaswapRelaye
             refundChain: sendParams.refundChain,
             refundAddress: sendParams.refundAddress,
             refundDeliveryProvider: provider.getTargetChainAddress(sendParams.targetChain),
-            sourceDeliveryProvider: toWormholeFormat(sendParams.deliveryProviderAddress),
-            senderAddress: toWormholeFormat(msg.sender),
+            sourceDeliveryProvider: toDeltaswapFormat(sendParams.deliveryProviderAddress),
+            senderAddress: toDeltaswapFormat(msg.sender),
             messageKeys: sendParams.messageKeys
         }).encode();
 
-        // Publish the encoded delivery instruction as a wormhole message
+        // Publish the encoded delivery instruction as a deltaswap message
         // and pay the delivery provider their fee
         bool paymentSucceeded;
         (sequence, paymentSucceeded) = publishAndPay(
-            wormholeMessageFee,
+            deltaswapMessageFee,
             deliveryPrice,
             sendParams.paymentForExtraReceiverValue,
             encodedInstruction,
@@ -377,9 +377,9 @@ abstract contract DeltaswapRelayerSend is DeltaswapRelayerBase, IDeltaswapRelaye
             targetChain, newReceiverValue, newEncodedExecutionParameters
         );
 
-        // Check if user passed in 'one wormhole message fee' + 'delivery provider's fee'
-        LocalNative wormholeMessageFee = getWormholeMessageFee();
-        checkMsgValue(wormholeMessageFee, deliveryPrice, LocalNative.wrap(0));
+        // Check if user passed in 'one deltaswap message fee' + 'delivery provider's fee'
+        LocalNative deltaswapMessageFee = getDeltaswapMessageFee();
+        checkMsgValue(deltaswapMessageFee, deliveryPrice, LocalNative.wrap(0));
 
         // Encode all relevant info the delivery provider needs to perform this redelivery as requested
         bytes memory encodedInstruction = RedeliveryInstruction({
@@ -387,15 +387,15 @@ abstract contract DeltaswapRelayerSend is DeltaswapRelayerBase, IDeltaswapRelaye
             targetChain: targetChain,
             newRequestedReceiverValue: newReceiverValue,
             newEncodedExecutionInfo: encodedExecutionInfo,
-            newSourceDeliveryProvider: toWormholeFormat(newDeliveryProviderAddress),
-            newSenderAddress: toWormholeFormat(msg.sender)
+            newSourceDeliveryProvider: toDeltaswapFormat(newDeliveryProviderAddress),
+            newSenderAddress: toDeltaswapFormat(msg.sender)
         }).encode();
 
-        // Publish the encoded redelivery instruction as a wormhole message
+        // Publish the encoded redelivery instruction as a deltaswap message
         // and pay the delivery provider their fee
         bool paymentSucceeded;
         (sequence, paymentSucceeded) = publishAndPay(
-            wormholeMessageFee,
+            deltaswapMessageFee,
             deliveryPrice,
             LocalNative.wrap(0),
             encodedInstruction,
@@ -448,7 +448,7 @@ abstract contract DeltaswapRelayerSend is DeltaswapRelayerBase, IDeltaswapRelaye
         (LocalNative deliveryPrice, bytes memory _encodedExecutionInfo) =
             provider.quoteDeliveryPrice(targetChain, receiverValue, encodedExecutionParameters);
         encodedExecutionInfo = _encodedExecutionInfo;
-        nativePriceQuote = deliveryPrice + getWormholeMessageFee();
+        nativePriceQuote = deliveryPrice + getDeltaswapMessageFee();
     }
 
     function quoteNativeForChain(
@@ -472,7 +472,7 @@ abstract contract DeltaswapRelayerSend is DeltaswapRelayerBase, IDeltaswapRelaye
     ) external payable {
         forward(
             targetChain,
-            toWormholeFormat(targetAddress),
+            toDeltaswapFormat(targetAddress),
             payload,
             receiverValue,
             LocalNative.wrap(0),
@@ -495,7 +495,7 @@ abstract contract DeltaswapRelayerSend is DeltaswapRelayerBase, IDeltaswapRelaye
     ) external payable {
         forward(
             targetChain,
-            toWormholeFormat(targetAddress),
+            toDeltaswapFormat(targetAddress),
             payload,
             receiverValue,
             LocalNative.wrap(0),
@@ -523,13 +523,13 @@ abstract contract DeltaswapRelayerSend is DeltaswapRelayerBase, IDeltaswapRelaye
     ) public payable {
         forward(
             targetChain,
-            toWormholeFormat(targetAddress),
+            toDeltaswapFormat(targetAddress),
             payload,
             receiverValue,
             paymentForExtraReceiverValue,
             encodeEvmExecutionParamsV1(EvmExecutionParamsV1(gasLimit)),
             refundChain,
-            toWormholeFormat(refundAddress),
+            toDeltaswapFormat(refundAddress),
             deliveryProviderAddress,
             vaaKeys,
             consistencyLevel

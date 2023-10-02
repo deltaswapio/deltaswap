@@ -14,17 +14,17 @@ import  {
     parseVAA, 
     CORE_ID,
     TOKEN_BRIDGE_ID
-} from "@certusone/wormhole-sdk/lib/cjs/algorand/Algorand";
+} from "@deltaswapio/deltaswap-sdk/lib/cjs/algorand/Algorand";
 
 import {
     hexStringToUint8Array,
     uint8ArrayToHexString,
-} from "@certusone/wormhole-sdk/lib/cjs/algorand/TmplSig";
+} from "@deltaswapio/deltaswap-sdk/lib/cjs/algorand/TmplSig";
 
 
 import {
     getTempAccounts,
-} from "@certusone/wormhole-sdk/lib/cjs/algorand/Helpers";
+} from "@deltaswapio/deltaswap-sdk/lib/cjs/algorand/Helpers";
 
 
 const phylaxKeys = [

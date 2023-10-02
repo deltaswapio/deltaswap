@@ -9,8 +9,8 @@ import path from 'path'
 import crypto from 'crypto'
 import AnyTransaction from 'algosdk/dist/types/src/types/transactions'
 import { WORMHOLE_CONFIG_TESTNET } from './Environment'
-import { redeemOnAlgorand } from '@certusone/wormhole-sdk'
-import { TransactionSignerPair } from "@certusone/wormhole-sdk/lib/cjs/algorand"
+import { redeemOnAlgorand } from '@deltaswapio/deltaswap-sdk'
+import { TransactionSignerPair } from "@deltaswapio/deltaswap-sdk/lib/cjs/algorand"
 
 export enum FieldType {
     UINT = 1,

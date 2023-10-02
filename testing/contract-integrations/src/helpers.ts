@@ -2,8 +2,8 @@ import {
   attestFromEth,
   ChainId,
   parseSequenceFromLogEth,
-} from "@certusone/wormhole-sdk";
-import { setDefaultWasm } from "@certusone/wormhole-sdk/lib/cjs/solana/wasm";
+} from "@deltaswapio/deltaswap-sdk";
+import { setDefaultWasm } from "@deltaswapio/deltaswap-sdk/lib/cjs/solana/wasm";
 import { getBridgeAddressForChain } from "./consts";
 import { getSignerForChain, getTokenBridgeAddressForChain } from "./consts";
 

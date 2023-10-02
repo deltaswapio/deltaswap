@@ -1,5 +1,5 @@
 import * as fs from "fs";
-import * as mock from "@certusone/wormhole-sdk/lib/cjs/mock";
+import * as mock from "@deltaswapio/deltaswap-sdk/lib/cjs/mock";
 import { PHYLAX_PRIVATE_KEY, UTF8 } from "./consts";
 
 export function generateVaaFromDigest(

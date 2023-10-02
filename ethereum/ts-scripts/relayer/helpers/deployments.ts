@@ -106,7 +106,7 @@ export async function deployMockIntegration(
     signer
   );
   const contract = await factory.deploy(
-    chain.wormholeAddress,
+    chain.deltaswapAddress,
     await getDeltaswapRelayerAddress(chain)
   );
   return await contract.deployed().then((result) => {
@@ -133,7 +133,7 @@ export async function deployDeltaswapRelayerImplementation(
   console.log("deployDeltaswapRelayerImplementation " + chain.chainId);
 
   const result = await new DeltaswapRelayer__factory(getSigner(chain))
-    .deploy(chain.wormholeAddress)
+    .deploy(chain.deltaswapAddress)
     .then(deployed);
 
   console.log("Successfully deployed contract at " + result.address);

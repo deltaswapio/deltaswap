@@ -3,7 +3,7 @@
 
 pragma solidity ^0.8.19;
 
-import "../../interfaces/IWormhole.sol";
+import "../../interfaces/IDeltaswap.sol";
 import "../../interfaces/relayer/TypedUnits.sol";
 
 import "./DeliveryProviderState.sol";

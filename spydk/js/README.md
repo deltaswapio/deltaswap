@@ -2,7 +2,7 @@
 
 > Note: This is a pre-alpha release and in active development. Function names and signatures are subject to change.
 
-Wormhole Spy service SDK for use with [@certusone/wormhole-sdk](https://www.npmjs.com/package/@certusone/wormhole-sdk)
+Wormhole Spy service SDK for use with [@deltaswapio/deltaswap-sdk](https://www.npmjs.com/package/@deltaswapio/deltaswap-sdk)
 
 ## Usage
 

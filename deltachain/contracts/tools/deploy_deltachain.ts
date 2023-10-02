@@ -6,7 +6,7 @@ import {
   serialiseVAA,
   sign,
   VAA,
-} from "@certusone/wormhole-sdk";
+} from "@deltaswapio/deltaswap-sdk";
 import { toBinary } from "@cosmjs/cosmwasm-stargate";
 import { fromBase64, toUtf8, fromBech32 } from "@cosmjs/encoding";
 import {

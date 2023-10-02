@@ -17,11 +17,11 @@ import {
   ChainId,
   CHAIN_ID_ALGORAND,
   CHAIN_ID_NEAR,
-} from "@certusone/wormhole-sdk/lib/cjs/utils";
+} from "@deltaswapio/deltaswap-sdk/lib/cjs/utils";
 
-import { _parseVAAAlgorand } from "@certusone/wormhole-sdk/lib/cjs/algorand";
+import { _parseVAAAlgorand } from "@deltaswapio/deltaswap-sdk/lib/cjs/algorand";
 
-import { getSignedVAAWithRetry } from "@certusone/wormhole-sdk";
+import { getSignedVAAWithRetry } from "@deltaswapio/deltaswap-sdk";
 
 function getConfig(env: any) {
   switch (env) {

@@ -4,7 +4,7 @@
 
 ### Changed
 
-Use `@certusone/wormhole-sdk-proto-node` package
+Use `@deltaswapio/deltaswap-sdk-proto-node` package
 
 ## 0.0.1
 

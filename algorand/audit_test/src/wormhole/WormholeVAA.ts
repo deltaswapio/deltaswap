@@ -1,4 +1,4 @@
-import { CHAIN_ID_ALGORAND, CHAIN_ID_SOLANA } from '@certusone/wormhole-sdk'
+import { CHAIN_ID_ALGORAND, CHAIN_ID_SOLANA } from '@deltaswapio/deltaswap-sdk'
 import assert from 'assert'
 import { AppId } from '../sdk/AlgorandTypes'
 import { EMITTER_GOVERNANCE, generateKeySet } from './WormholeEncoders'

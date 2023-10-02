@@ -3,7 +3,7 @@ import {
   CONTRACTS,
   ChainName,
   TerraChainName,
-} from "@certusone/wormhole-sdk/lib/esm/utils/consts";
+} from "@deltaswapio/deltaswap-sdk/lib/esm/utils/consts";
 import {
   Coin,
   Fee,
@@ -17,8 +17,8 @@ import { fromUint8Array } from "js-base64";
 import { NETWORKS } from "./consts";
 import { Network } from "./utils";
 import { Payload, impossible } from "./vaa";
-import { transferFromTerra } from "@certusone/wormhole-sdk/lib/esm/token_bridge/transfer";
-import { tryNativeToUint8Array } from "@certusone/wormhole-sdk/lib/esm/utils";
+import { transferFromTerra } from "@deltaswapio/deltaswap-sdk/lib/esm/token_bridge/transfer";
+import { tryNativeToUint8Array } from "@deltaswapio/deltaswap-sdk/lib/esm/utils";
 
 export async function execute_terra(
   payload: Payload,

@@ -3,16 +3,16 @@
 pragma solidity ^0.8.0;
 
 import "../../contracts/interfaces/relayer/IDeltaswapRelayerTyped.sol";
-import {IWormhole} from "../../contracts/interfaces/IWormhole.sol";
-import {WormholeSimulator} from "./WormholeSimulator.sol";
-import {toWormholeFormat} from "../../contracts/relayer/libraries/Utils.sol";
+import {IDeltaswap} from "../../contracts/interfaces/IDeltaswap.sol";
+import {DeltaswapSimulator} from "./DeltaswapSimulator.sol";
+import {toDeltaswapFormat} from "../../contracts/relayer/libraries/Utils.sol";
 import {
     DeliveryInstruction,
     DeliveryOverride,
     RedeliveryInstruction
 } from "../../contracts/relayer/libraries/RelayerInternalStructs.sol";
 import {DeltaswapRelayerSerde} from
-    "../../contracts/relayer/wormholeRelayer/DeltaswapRelayerSerde.sol";
+    "../../contracts/relayer/deltaswapRelayer/DeltaswapRelayerSerde.sol";
 import "../../contracts/libraries/external/BytesLib.sol";
 import "forge-std/Vm.sol";
 import "../../contracts/interfaces/relayer/TypedUnits.sol";
@@ -24,8 +24,8 @@ contract MockGenericRelayer {
     using GasLib for Gas;
     using TargetNativeLib for TargetNative;
 
-    IWormhole relayerWormhole;
-    WormholeSimulator relayerWormholeSimulator;
+    IDeltaswap relayerDeltaswap;
+    DeltaswapSimulator relayerDeltaswapSimulator;
     uint256 transactionIndex;
 
     address private constant VM_ADDRESS =
@@ -33,7 +33,7 @@ contract MockGenericRelayer {
 
     Vm public constant vm = Vm(VM_ADDRESS);
 
-    mapping(uint16 => address) wormholeRelayerContracts;
+    mapping(uint16 => address) deltaswapRelayerContracts;
 
     mapping(uint16 => address) relayers;
 
@@ -41,11 +41,11 @@ contract MockGenericRelayer {
 
     mapping(bytes32 => bytes) pastEncodedDeliveryVAA;
 
-    constructor(address _wormhole, address _wormholeSimulator) {
-        // deploy Wormhole
+    constructor(address _deltaswap, address _deltaswapSimulator) {
+        // deploy Deltaswap
 
-        relayerWormhole = IWormhole(_wormhole);
-        relayerWormholeSimulator = WormholeSimulator(_wormholeSimulator);
+        relayerDeltaswap = IDeltaswap(_deltaswap);
+        relayerDeltaswapSimulator = DeltaswapSimulator(_deltaswapSimulator);
         transactionIndex = 0;
     }
 
@@ -75,7 +75,7 @@ contract MockGenericRelayer {
     }
 
     function setDeltaswapRelayerContract(uint16 chainId, address contractAddress) public {
-        wormholeRelayerContracts[chainId] = contractAddress;
+        deltaswapRelayerContracts[chainId] = contractAddress;
     }
 
     function setProviderDeliveryAddress(uint16 chainId, address deliveryAddress) public {
@@ -101,27 +101,27 @@ contract MockGenericRelayer {
         VaaKey memory vaaKey,
         bytes memory signedVaa
     ) internal view returns (bool) {
-        IWormhole.VM memory parsedVaa = relayerWormhole.parseVM(signedVaa);
+        IDeltaswap.VM memory parsedVaa = relayerDeltaswap.parseVM(signedVaa);
         return (vaaKey.chainId == parsedVaa.emitterChainId)
             && (vaaKey.emitterAddress == parsedVaa.emitterAddress)
             && (vaaKey.sequence == parsedVaa.sequence);
     }
 
     function relay(Vm.Log[] memory logs, uint16 chainId, bytes memory deliveryOverrides) public {
-        Vm.Log[] memory entries = relayerWormholeSimulator.fetchWormholeMessageFromLog(logs);
+        Vm.Log[] memory entries = relayerDeltaswapSimulator.fetchDeltaswapMessageFromLog(logs);
         bytes[] memory encodedVMs = new bytes[](entries.length);
         for (uint256 i = 0; i < encodedVMs.length; i++) {
-            encodedVMs[i] = relayerWormholeSimulator.fetchSignedMessageFromLogs(
+            encodedVMs[i] = relayerDeltaswapSimulator.fetchSignedMessageFromLogs(
                 entries[i], chainId, address(uint160(uint256(bytes32(entries[i].topics[1]))))
             );
         }
-        IWormhole.VM[] memory parsed = new IWormhole.VM[](encodedVMs.length);
+        IDeltaswap.VM[] memory parsed = new IDeltaswap.VM[](encodedVMs.length);
         for (uint16 i = 0; i < encodedVMs.length; i++) {
-            parsed[i] = relayerWormhole.parseVM(encodedVMs[i]);
+            parsed[i] = relayerDeltaswap.parseVM(encodedVMs[i]);
         }
         for (uint16 i = 0; i < encodedVMs.length; i++) {
             if (
-                parsed[i].emitterAddress == toWormholeFormat(wormholeRelayerContracts[chainId])
+                parsed[i].emitterAddress == toDeltaswapFormat(deltaswapRelayerContracts[chainId])
                     && (parsed[i].emitterChainId == chainId)
             ) {
                 genericRelay(encodedVMs[i], encodedVMs, parsed[i], deliveryOverrides);
@@ -136,7 +136,7 @@ contract MockGenericRelayer {
     function genericRelay(
         bytes memory encodedDeliveryVAA,
         bytes[] memory encodedVMs,
-        IWormhole.VM memory parsedDeliveryVAA,
+        IDeltaswap.VM memory parsedDeliveryVAA,
         bytes memory deliveryOverrides
     ) internal {
         uint8 payloadId = parsedDeliveryVAA.payload.toUint8(0);
@@ -164,7 +164,7 @@ contract MockGenericRelayer {
             uint16 targetChain = instruction.targetChain;
 
             vm.prank(relayers[targetChain]);
-            IDeltaswapRelayerDelivery(wormholeRelayerContracts[targetChain]).deliver{
+            IDeltaswapRelayerDelivery(deltaswapRelayerContracts[targetChain]).deliver{
                 value: budget.unwrap()
             }(
                 encodedVMsToBeDelivered,
@@ -202,11 +202,11 @@ contract MockGenericRelayer {
             );
 
             uint16 targetChain = DeltaswapRelayerSerde.decodeDeliveryInstruction(
-                relayerWormhole.parseVM(oldEncodedDeliveryVAA).payload
+                relayerDeltaswap.parseVM(oldEncodedDeliveryVAA).payload
             ).targetChain;
 
             vm.prank(relayers[targetChain]);
-            IDeltaswapRelayerDelivery(wormholeRelayerContracts[targetChain]).deliver{
+            IDeltaswapRelayerDelivery(deltaswapRelayerContracts[targetChain]).deliver{
                 value: budget.unwrap()
             }(
                 oldEncodedVMs,

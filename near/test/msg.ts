@@ -5,7 +5,7 @@ import { NodeHttpTransport } from "@improbable-eng/grpc-web-node-http-transport"
 
 import { TestLib } from "./testlib";
 
-import { Account as nearAccount } from "@certusone/wormhole-sdk/node_modules/near-api-js";
+import { Account as nearAccount } from "@deltaswapio/deltaswap-sdk/node_modules/near-api-js";
 const BN = require("bn.js");
 const fetch = require("node-fetch");
 

@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import * as mock from "@certusone/wormhole-sdk/lib/cjs/mock";
+import * as mock from "@deltaswapio/deltaswap-sdk/lib/cjs/mock";
 
 import {
   CREATOR_PRIVATE_KEY,

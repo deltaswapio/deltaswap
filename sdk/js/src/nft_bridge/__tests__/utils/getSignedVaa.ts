@@ -19,7 +19,7 @@ import {
   CHAIN_ID_SOLANA,
   CONTRACTS,
 } from "../../../utils";
-import { WORMHOLE_RPC_HOSTS } from "./consts";
+import { DELTASWAP_RPC_HOSTS } from "./consts";
 
 // TODO(aki): implement getEmitterAddressAptos and sub here
 export async function getSignedVaaAptos(
@@ -88,7 +88,7 @@ const getSignedVaa = async (
 ): Promise<Uint8Array> => {
   const { vaaBytes: signedVAA }: GetSignedVAAResponse =
     await getSignedVAAWithRetry(
-      WORMHOLE_RPC_HOSTS,
+      DELTASWAP_RPC_HOSTS,
       chain,
       emitterAddress,
       sequence,

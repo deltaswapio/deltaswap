@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: Apache 2
 pragma solidity ^0.8.17;
 
-import "../../contracts/interfaces/IWormhole.sol";
+import "../../contracts/interfaces/IDeltaswap.sol";
 import "../../contracts/libraries/external/BytesLib.sol";
 
-contract MockWormhole is IWormhole {
+contract MockDeltaswap is IDeltaswap {
     using BytesLib for bytes;
 
     uint256 private constant VM_VERSION_SIZE = 1;
@@ -32,11 +32,11 @@ contract MockWormhole is IWormhole {
     mapping(bytes32 => bool) public invalidVMs;
 
     uint256 currentMsgFee;
-    uint16 immutable wormholeChainId;
+    uint16 immutable deltaswapChainId;
     uint256 immutable boundEvmChainId;
 
     constructor(uint16 initChainId, uint256 initEvmChainId) {
-        wormholeChainId = initChainId;
+        deltaswapChainId = initChainId;
         boundEvmChainId = initEvmChainId;
     }
 
@@ -160,7 +160,7 @@ contract MockWormhole is IWormhole {
      * General state and chain observers
      */
     function chainId() external view returns (uint16) {
-        return wormholeChainId;
+        return deltaswapChainId;
     }
 
     function evmChainId() external view returns (uint256) {
@@ -172,7 +172,7 @@ contract MockWormhole is IWormhole {
     }
 
     function getPhylaxSet(uint32 /*index*/ ) external pure returns (PhylaxSet memory) {
-        revert("unsupported getPhylaxSet in wormhole mock");
+        revert("unsupported getPhylaxSet in deltaswap mock");
     }
 
     function getPhylaxSetExpiry() external pure returns (uint32) {
@@ -212,7 +212,7 @@ contract MockWormhole is IWormhole {
         pure
         returns (bool, /*valid*/ string memory /*reason*/ )
     {
-        revert("unsupported verifyVM in wormhole mock");
+        revert("unsupported verifyVM in deltaswap mock");
     }
 
     function verifySignatures(
@@ -220,7 +220,7 @@ contract MockWormhole is IWormhole {
         Signature[] memory, /*signatures*/
         PhylaxSet memory /*phylaxSet*/
     ) external pure returns (bool, /*valid*/ string memory /*reason*/ ) {
-        revert("unsupported verifySignatures in wormhole mock");
+        revert("unsupported verifySignatures in deltaswap mock");
     }
 
     function parseContractUpgrade(bytes memory /*encodedUpgrade*/ )
@@ -228,7 +228,7 @@ contract MockWormhole is IWormhole {
         pure
         returns (ContractUpgrade memory /*cu*/ )
     {
-        revert("unsupported parseContractUpgrade in wormhole mock");
+        revert("unsupported parseContractUpgrade in deltaswap mock");
     }
 
     function parsePhylaxSetUpgrade(bytes memory /*encodedUpgrade*/ )
@@ -236,7 +236,7 @@ contract MockWormhole is IWormhole {
         pure
         returns (PhylaxSetUpgrade memory /*gsu*/ )
     {
-        revert("unsupported parsePhylaxSetUpgrade in wormhole mock");
+        revert("unsupported parsePhylaxSetUpgrade in deltaswap mock");
     }
 
     function parseSetMessageFee(bytes memory /*encodedSetMessageFee*/ )
@@ -244,7 +244,7 @@ contract MockWormhole is IWormhole {
         pure
         returns (SetMessageFee memory /*smf*/ )
     {
-        revert("unsupported parseSetMessageFee in wormhole mock");
+        revert("unsupported parseSetMessageFee in deltaswap mock");
     }
 
     function parseTransferFees(bytes memory /*encodedTransferFees*/ )
@@ -252,7 +252,7 @@ contract MockWormhole is IWormhole {
         pure
         returns (TransferFees memory /*tf*/ )
     {
-        revert("unsupported parseTransferFees in wormhole mock");
+        revert("unsupported parseTransferFees in deltaswap mock");
     }
 
     function parseRecoverChainId(bytes memory /*encodedRecoverChainId*/ )
@@ -260,15 +260,15 @@ contract MockWormhole is IWormhole {
         pure
         returns (RecoverChainId memory /*rci*/ )
     {
-        revert("unsupported parseRecoverChainId in wormhole mock");
+        revert("unsupported parseRecoverChainId in deltaswap mock");
     }
 
     function submitContractUpgrade(bytes memory /*_vm*/ ) external pure {
-        revert("unsupported submitContractUpgrade in wormhole mock");
+        revert("unsupported submitContractUpgrade in deltaswap mock");
     }
 
     function submitSetMessageFee(bytes memory /*_vm*/ ) external pure {
-        revert("unsupported submitSetMessageFee in wormhole mock");
+        revert("unsupported submitSetMessageFee in deltaswap mock");
     }
 
     function setMessageFee(uint256 newFee) external {
@@ -276,14 +276,14 @@ contract MockWormhole is IWormhole {
     }
 
     function submitNewPhylaxSet(bytes memory /*_vm*/ ) external pure {
-        revert("unsupported submitNewPhylaxSet in wormhole mock");
+        revert("unsupported submitNewPhylaxSet in deltaswap mock");
     }
 
     function submitTransferFees(bytes memory /*_vm*/ ) external pure {
-        revert("unsupported submitTransferFees in wormhole mock");
+        revert("unsupported submitTransferFees in deltaswap mock");
     }
 
     function submitRecoverChainId(bytes memory /*_vm*/ ) external pure {
-        revert("unsupported submitRecoverChainId in wormhole mock");
+        revert("unsupported submitRecoverChainId in deltaswap mock");
     }
 }

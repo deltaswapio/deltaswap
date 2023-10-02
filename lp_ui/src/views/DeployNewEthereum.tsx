@@ -1,4 +1,4 @@
-import { Migrator__factory } from "@certusone/wormhole-sdk";
+import { Migrator__factory } from "@deltaswapio/deltaswap-sdk";
 import {
   Button,
   Container,

@@ -1,4 +1,4 @@
-// This is a simple contract to generate Wormhole messages.
+// This is a simple contract to generate Deltaswap messages.
 // It allows you to populate the consistency level in the message.
 // It can be used to test the phylax watcher.
 
@@ -6,7 +6,7 @@ pragma solidity >=0.8.0 <0.9.0;
 
 import "./libraries/external/BytesLib.sol";
 
-interface IWormhole {
+interface IDeltaswap {
     function publishMessage(
         uint32 nonce,
         bytes memory payload,
@@ -16,10 +16,10 @@ interface IWormhole {
 
 contract PublishMsg {
 
-    IWormhole wormhole;
+    IDeltaswap wormhole;
 
     constructor(address wormholeAddress) {
-        wormhole = IWormhole(wormholeAddress);
+        wormhole = IDeltaswap(wormholeAddress);
     }
 
     function publishMsg(uint8 consistencyLevel) public payable returns (uint64 sequence) {

@@ -1,4 +1,4 @@
-import { spy, Spy } from "@certusone/wormhole-sdk-proto-node";
+import { spy, Spy } from "@deltaswapio/deltaswap-sdk-proto-node";
 import grpc, { ChannelCredentials } from "@grpc/grpc-js";
 
 const { SpyRPCServiceClient, SubscribeSignedVAARequest } = spy;

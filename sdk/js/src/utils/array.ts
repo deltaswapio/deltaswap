@@ -24,7 +24,7 @@ import {
   CHAIN_ID_SUI,
   CHAIN_ID_TERRA,
   CHAIN_ID_TERRA2,
-  CHAIN_ID_WORMCHAIN,
+  CHAIN_ID_DELTACHAIN,
   CHAIN_ID_UNSET,
   coalesceChainId,
   isEVMChain,
@@ -107,7 +107,7 @@ export const tryUint8ArrayToNative = (
     return humanAddress("inj", isLikely20ByteCosmwasm(h) ? a.slice(-20) : a);
   } else if (chainId === CHAIN_ID_ALGORAND) {
     return uint8ArrayToNativeStringAlgorand(a);
-  } else if (chainId == CHAIN_ID_WORMCHAIN) {
+  } else if (chainId == CHAIN_ID_DELTACHAIN) {
     const h = uint8ArrayToHex(a);
     return humanAddress(
       "deltaswap",
@@ -260,7 +260,7 @@ export const tryNativeToHexString = (
     return buildTokenId(chainId, address);
   } else if (chainId === CHAIN_ID_ALGORAND) {
     return nativeStringToHexAlgorand(address);
-  } else if (chainId == CHAIN_ID_WORMCHAIN) {
+  } else if (chainId == CHAIN_ID_DELTACHAIN) {
     return uint8ArrayToHex(zeroPad(canonicalAddress(address), 32));
   } else if (chainId === CHAIN_ID_NEAR) {
     return uint8ArrayToHex(arrayify(sha256(Buffer.from(address))));

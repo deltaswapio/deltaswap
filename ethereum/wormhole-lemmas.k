@@ -1,7 +1,7 @@
 requires "evm.md"
 requires "foundry.md"
 
-module WORMHOLE-LEMMAS
+module DELTASWAP-LEMMAS
     imports FOUNDRY
     imports INFINITE-GAS
     imports SET-SYMBOLIC
@@ -166,8 +166,8 @@ module WORMHOLE-LEMMAS
         [simplification, smt-lemma]
 endmodule
 
-module WORMHOLE-LEMMAS-SPEC
-    imports WORMHOLE-LEMMAS
+module DELTASWAP-LEMMAS-SPEC
+    imports DELTASWAP-LEMMAS
 
     claim [lowest-32-bits]: <k> runLemma ( VV0_index_114b9705:Int ==Int ( maxUInt32 &Int ( VV0_index_114b9705:Int |Int ( notMaxUInt32 &Int #lookup ( _STORAGE:Map , 11 ) ) ) ) )
            => doneLemma ( true ) ... </k>

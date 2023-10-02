@@ -1,16 +1,16 @@
-import { getWrappedCoinType } from "@certusone/wormhole-sdk/lib/esm/sui";
+import { getWrappedCoinType } from "@deltaswapio/deltaswap-sdk/lib/esm/sui";
 import {
   createWrappedOnSui,
   createWrappedOnSuiPrepare,
-} from "@certusone/wormhole-sdk/lib/esm/token_bridge/createWrapped";
-import { getForeignAssetSui } from "@certusone/wormhole-sdk/lib/esm/token_bridge/getForeignAsset";
+} from "@deltaswapio/deltaswap-sdk/lib/esm/token_bridge/createWrapped";
+import { getForeignAssetSui } from "@deltaswapio/deltaswap-sdk/lib/esm/token_bridge/getForeignAsset";
 import {
   CHAIN_ID_SUI,
   CHAIN_ID_TO_NAME,
   CONTRACTS,
   assertChain,
-} from "@certusone/wormhole-sdk/lib/esm/utils/consts";
-import { parseAttestMetaVaa } from "@certusone/wormhole-sdk/lib/esm/vaa/tokenBridge";
+} from "@deltaswapio/deltaswap-sdk/lib/esm/utils/consts";
+import { parseAttestMetaVaa } from "@deltaswapio/deltaswap-sdk/lib/esm/vaa/tokenBridge";
 import { SUI_CLOCK_OBJECT_ID, TransactionBlock } from "@mysten/sui.js";
 import { Network } from "../../utils";
 import { Payload, impossible } from "../../vaa";

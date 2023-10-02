@@ -21,7 +21,7 @@ contract BridgeStorage {
     }
 
     struct State {
-        address payable wormhole;
+        address payable deltaswap;
         address tokenImplementation;
 
         Provider provider;

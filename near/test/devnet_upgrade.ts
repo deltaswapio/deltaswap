@@ -11,7 +11,7 @@ import { TestLib } from "./testlib";
 import {
   ChainId,
   CHAIN_ID_NEAR,
-} from "@certusone/wormhole-sdk/lib/cjs/utils";
+} from "@deltaswapio/deltaswap-sdk/lib/cjs/utils";
 
 function getConfig(env: any) {
   switch (env) {

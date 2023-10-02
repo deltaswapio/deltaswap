@@ -2,7 +2,7 @@ const jsonfile = require('jsonfile');
 const elliptic = require('elliptic');
 const path = require('path');
 
-const Wormhole = artifacts.require("Wormhole");
+const Deltaswap = artifacts.require("Deltaswap");
 const MockImplementation = artifacts.require("MockImplementation");
 const Implementation = artifacts.require("Implementation");
 const MockBatchedVAASender = artifacts.require("MockBatchedVAASender");
@@ -69,7 +69,7 @@ advanceBlock = () => {
     });
 }
 
-contract("Wormhole", function () {
+contract("Deltaswap", function () {
     const testSigner1 = web3.eth.accounts.privateKeyToAccount(testSigner1PK);
     const testSigner2 = web3.eth.accounts.privateKeyToAccount(testSigner2PK);
     const testSigner3 = web3.eth.accounts.privateKeyToAccount(testSigner3PK);
@@ -79,7 +79,7 @@ contract("Wormhole", function () {
     const testGovernanceContract = "0x0000000000000000000000000000000000000000000000000000000000000004";
 
     it("should be initialized with the correct signers and values", async function () {
-        const initialized = new web3.eth.Contract(ImplementationFullABI, Wormhole.address);
+        const initialized = new web3.eth.Contract(ImplementationFullABI, Deltaswap.address);
 
         const index = await initialized.methods.getCurrentPhylaxSetIndex().call();
         const set = (await initialized.methods.getPhylaxSet(index).call());
@@ -107,7 +107,7 @@ contract("Wormhole", function () {
     })
 
     it("should log a published message correctly", async function () {
-        const initialized = new web3.eth.Contract(ImplementationFullABI, Wormhole.address);
+        const initialized = new web3.eth.Contract(ImplementationFullABI, Deltaswap.address);
         const accounts = await web3.eth.getAccounts();
 
         const log = await initialized.methods.publishMessage(
@@ -127,7 +127,7 @@ contract("Wormhole", function () {
     })
 
     it("should log sequential sequence numbers for multi-VAA transactions", async function () {
-        const initialized = new web3.eth.Contract(ImplementationFullABI, Wormhole.address);
+        const initialized = new web3.eth.Contract(ImplementationFullABI, Deltaswap.address);
         const accounts = await web3.eth.getAccounts();
 
         const mockIntegration = new web3.eth.Contract(MockBatchedVAASender.abi, MockBatchedVAASender.address);
@@ -155,7 +155,7 @@ contract("Wormhole", function () {
     })
 
     it("should increase the sequence for an account", async function () {
-        const initialized = new web3.eth.Contract(ImplementationFullABI, Wormhole.address);
+        const initialized = new web3.eth.Contract(ImplementationFullABI, Deltaswap.address);
         const accounts = await web3.eth.getAccounts();
 
         const log = await initialized.methods.publishMessage(
@@ -171,7 +171,7 @@ contract("Wormhole", function () {
     })
 
     it("should get the same nonce from all VAAs produced by a transaction", async function () {
-        const initialized = new web3.eth.Contract(ImplementationFullABI, Wormhole.address);
+        const initialized = new web3.eth.Contract(ImplementationFullABI, Deltaswap.address);
         const accounts = await web3.eth.getAccounts();
 
         const mockIntegration = new web3.eth.Contract(MockBatchedVAASender.abi, MockBatchedVAASender.address);
@@ -198,7 +198,7 @@ contract("Wormhole", function () {
     })
 
     it("parses VMs correctly", async function () {
-        const initialized = new web3.eth.Contract(ImplementationFullABI, Wormhole.address);
+        const initialized = new web3.eth.Contract(ImplementationFullABI, Deltaswap.address);
 
         const timestamp = 1000;
         const nonce = 1001;
@@ -245,7 +245,7 @@ contract("Wormhole", function () {
 
 
     it("should fail quorum on VMs with no signers", async function () {
-        const initialized = new web3.eth.Contract(ImplementationFullABI, Wormhole.address);
+        const initialized = new web3.eth.Contract(ImplementationFullABI, Deltaswap.address);
 
         const timestamp = 1000;
         const nonce = 1001;
@@ -272,7 +272,7 @@ contract("Wormhole", function () {
 
 
     it("should fail to verify on VMs with bad signer", async function () {
-        const initialized = new web3.eth.Contract(ImplementationFullABI, Wormhole.address);
+        const initialized = new web3.eth.Contract(ImplementationFullABI, Deltaswap.address);
 
         const timestamp = 1000;
         const nonce = 1001;
@@ -300,7 +300,7 @@ contract("Wormhole", function () {
     })
 
     it("should error on VMs with invalid phylax set index", async function () {
-        const initialized = new web3.eth.Contract(ImplementationFullABI, Wormhole.address);
+        const initialized = new web3.eth.Contract(ImplementationFullABI, Deltaswap.address);
 
         const timestamp = 1000;
         const nonce = 1001;
@@ -328,7 +328,7 @@ contract("Wormhole", function () {
     })
 
     it("should revert on VMs with duplicate non-monotonic signature indexes", async function () {
-        const initialized = new web3.eth.Contract(ImplementationFullABI, Wormhole.address);
+        const initialized = new web3.eth.Contract(ImplementationFullABI, Deltaswap.address);
 
         const timestamp = 1000;
         const nonce = 1001;
@@ -362,7 +362,7 @@ contract("Wormhole", function () {
 
 
     it("should set and enforce fees", async function () {
-        const initialized = new web3.eth.Contract(ImplementationFullABI, Wormhole.address);
+        const initialized = new web3.eth.Contract(ImplementationFullABI, Deltaswap.address);
         const accounts = await web3.eth.getAccounts();
 
         const timestamp = 1000;
@@ -437,7 +437,7 @@ contract("Wormhole", function () {
     })
 
     it("should transfer out collected fees", async function () {
-        const initialized = new web3.eth.Contract(ImplementationFullABI, Wormhole.address);
+        const initialized = new web3.eth.Contract(ImplementationFullABI, Deltaswap.address);
         const accounts = await web3.eth.getAccounts();
 
         const receiver = "0x" + zeroPadBytes(Math.floor(Math.random() * Number.MAX_SAFE_INTEGER).toString(16), 20);
@@ -474,7 +474,7 @@ contract("Wormhole", function () {
             2
         );
 
-        let WHBefore = await web3.eth.getBalance(Wormhole.address);
+        let WHBefore = await web3.eth.getBalance(Deltaswap.address);
         let receiverBefore = await web3.eth.getBalance(receiver);
 
         let set = await initialized.methods.submitTransferFees("0x" + vm).send({
@@ -483,7 +483,7 @@ contract("Wormhole", function () {
             gasLimit: 1000000
         });
 
-        let WHAfter = await web3.eth.getBalance(Wormhole.address);
+        let WHAfter = await web3.eth.getBalance(Deltaswap.address);
         let receiverAfter = await web3.eth.getBalance(receiver);
 
         assert.equal(WHBefore - WHAfter, 11);
@@ -491,7 +491,7 @@ contract("Wormhole", function () {
     })
 
     it("should revert when submitting a new phylax set with the zero address", async function () {
-        const initialized = new web3.eth.Contract(ImplementationFullABI, Wormhole.address);
+        const initialized = new web3.eth.Contract(ImplementationFullABI, Deltaswap.address);
         const accounts = await web3.eth.getAccounts();
 
         const timestamp = 1000;
@@ -546,7 +546,7 @@ contract("Wormhole", function () {
     })
 
     it("should accept a new phylax set", async function () {
-        const initialized = new web3.eth.Contract(ImplementationFullABI, Wormhole.address);
+        const initialized = new web3.eth.Contract(ImplementationFullABI, Deltaswap.address);
         const accounts = await web3.eth.getAccounts();
 
         const timestamp = 1000;
@@ -616,7 +616,7 @@ contract("Wormhole", function () {
     })
 
     it("should accept smart contract upgrades", async function () {
-        const initialized = new web3.eth.Contract(ImplementationFullABI, Wormhole.address);
+        const initialized = new web3.eth.Contract(ImplementationFullABI, Deltaswap.address);
         const accounts = await web3.eth.getAccounts();
 
         const mock = await MockImplementation.new();
@@ -653,7 +653,7 @@ contract("Wormhole", function () {
             2
         );
 
-        let before = await web3.eth.getStorageAt(Wormhole.address, "0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc");
+        let before = await web3.eth.getStorageAt(Deltaswap.address, "0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc");
 
         assert.equal(BigInt(before), BigInt(Implementation.address));
 
@@ -663,11 +663,11 @@ contract("Wormhole", function () {
             gasLimit: 1000000
         });
 
-        let after = await web3.eth.getStorageAt(Wormhole.address, "0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc");
+        let after = await web3.eth.getStorageAt(Deltaswap.address, "0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc");
 
         assert.equal(BigInt(after), BigInt(mock.address));
 
-        const mockImpl = new web3.eth.Contract(MockImplementation.abi, Wormhole.address);
+        const mockImpl = new web3.eth.Contract(MockImplementation.abi, Deltaswap.address);
 
         let isUpgraded = await mockImpl.methods.testNewImplementationActive().call();
 
@@ -676,7 +676,7 @@ contract("Wormhole", function () {
     })
 
     it("should revert recover chain ID governance packets on canonical chains (non-fork)", async function () {
-        const initialized = new web3.eth.Contract(ImplementationFullABI, Wormhole.address);
+        const initialized = new web3.eth.Contract(ImplementationFullABI, Deltaswap.address);
         const accounts = await web3.eth.getAccounts();
 
         const timestamp = 1000;
@@ -724,7 +724,7 @@ contract("Wormhole", function () {
     })
 
     it("should revert governance packets from old phylax set", async function () {
-        const initialized = new web3.eth.Contract(ImplementationFullABI, Wormhole.address);
+        const initialized = new web3.eth.Contract(ImplementationFullABI, Deltaswap.address);
         const accounts = await web3.eth.getAccounts();
 
         data = [
@@ -768,7 +768,7 @@ contract("Wormhole", function () {
     })
 
     it("should time out old phylaxs", async function () {
-        const initialized = new web3.eth.Contract(ImplementationFullABI, Wormhole.address);
+        const initialized = new web3.eth.Contract(ImplementationFullABI, Deltaswap.address);
 
         const timestamp = 1000;
         const nonce = 1001;
@@ -803,7 +803,7 @@ contract("Wormhole", function () {
     })
 
     it("should revert governance packets from wrong governance chain", async function () {
-        const initialized = new web3.eth.Contract(ImplementationFullABI, Wormhole.address);
+        const initialized = new web3.eth.Contract(ImplementationFullABI, Deltaswap.address);
         const accounts = await web3.eth.getAccounts();
 
         data = [
@@ -848,7 +848,7 @@ contract("Wormhole", function () {
     })
 
     it("should revert governance packets from wrong governance contract", async function () {
-        const initialized = new web3.eth.Contract(ImplementationFullABI, Wormhole.address);
+        const initialized = new web3.eth.Contract(ImplementationFullABI, Deltaswap.address);
         const accounts = await web3.eth.getAccounts();
 
         data = [
@@ -890,7 +890,7 @@ contract("Wormhole", function () {
     })
 
     it("should revert on governance packets that already have been applied", async function () {
-        const initialized = new web3.eth.Contract(ImplementationFullABI, Wormhole.address);
+        const initialized = new web3.eth.Contract(ImplementationFullABI, Deltaswap.address);
         const accounts = await web3.eth.getAccounts();
 
         data = [
@@ -942,8 +942,8 @@ contract("Wormhole", function () {
     })
 
     it("should reject smart contract upgrades on forks", async function () {
-        const mockInitialized = new web3.eth.Contract(MockImplementation.abi, Wormhole.address);
-        const initialized = new web3.eth.Contract(ImplementationFullABI, Wormhole.address);
+        const mockInitialized = new web3.eth.Contract(MockImplementation.abi, Deltaswap.address);
+        const initialized = new web3.eth.Contract(ImplementationFullABI, Deltaswap.address);
         const accounts = await web3.eth.getAccounts();
 
         const mock = await MockImplementation.new();
@@ -1007,7 +1007,7 @@ contract("Wormhole", function () {
     })
 
     it("should allow recover chain ID governance packets forks", async function () {
-        const initialized = new web3.eth.Contract(ImplementationFullABI, Wormhole.address);
+        const initialized = new web3.eth.Contract(ImplementationFullABI, Deltaswap.address);
         const accounts = await web3.eth.getAccounts();
 
         const timestamp = 1000;
@@ -1056,7 +1056,7 @@ contract("Wormhole", function () {
     })
 
     it("should accept smart contract upgrades after chain ID has been recovered", async function () {
-        const initialized = new web3.eth.Contract(ImplementationFullABI, Wormhole.address);
+        const initialized = new web3.eth.Contract(ImplementationFullABI, Deltaswap.address);
         const accounts = await web3.eth.getAccounts();
 
         const mock = await MockImplementation.new();
@@ -1093,7 +1093,7 @@ contract("Wormhole", function () {
             2
         );
 
-        let before = await web3.eth.getStorageAt(Wormhole.address, "0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc");
+        let before = await web3.eth.getStorageAt(Deltaswap.address, "0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc");
 
         assert.equal(BigInt(before), BigInt(lastDeployed.address));
 
@@ -1103,11 +1103,11 @@ contract("Wormhole", function () {
             gasLimit: 1000000
         });
 
-        let after = await web3.eth.getStorageAt(Wormhole.address, "0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc");
+        let after = await web3.eth.getStorageAt(Deltaswap.address, "0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc");
 
         assert.equal(BigInt(after), BigInt(mock.address));
 
-        const mockImpl = new web3.eth.Contract(MockImplementation.abi, Wormhole.address);
+        const mockImpl = new web3.eth.Contract(MockImplementation.abi, Deltaswap.address);
 
         let isUpgraded = await mockImpl.methods.testNewImplementationActive().call();
 

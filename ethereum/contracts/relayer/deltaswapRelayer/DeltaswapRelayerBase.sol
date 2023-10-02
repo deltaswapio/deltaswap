@@ -2,9 +2,9 @@
 
 pragma solidity ^0.8.19;
 
-import {IWormhole} from "../../interfaces/IWormhole.sol";
+import {IDeltaswap} from "../../interfaces/IDeltaswap.sol";
 import {IDeliveryProvider} from "../../interfaces/relayer/IDeliveryProviderTyped.sol";
-import {toWormholeFormat, min, pay} from "../../relayer/libraries/Utils.sol";
+import {toDeltaswapFormat, min, pay} from "../../relayer/libraries/Utils.sol";
 import {
     ReentrantDelivery,
     DeliveryProviderDoesNotSupportTargetChain,
@@ -30,18 +30,18 @@ abstract contract DeltaswapRelayerBase is IDeltaswapRelayerBase {
     using GasPriceLib for GasPrice;
     using LocalNativeLib for LocalNative;
 
-    //see https://book.wormhole.com/wormhole/3_coreLayerContracts.html#consistency-levels
+    //see https://book.deltaswap.com/deltaswap/3_coreLayerContracts.html#consistency-levels
     //  15 is valid choice for now but ultimately we want something more canonical (202?)
-    //  Also, these values should definitely not be defined here but should be provided by IWormhole!
+    //  Also, these values should definitely not be defined here but should be provided by IDeltaswap!
     uint8 internal constant CONSISTENCY_LEVEL_FINALIZED = 15;
     uint8 internal constant CONSISTENCY_LEVEL_INSTANT = 200;
 
-    IWormhole private immutable wormhole_;
+    IDeltaswap private immutable deltaswap_;
     uint16 private immutable chainId_;
 
-    constructor(address _wormhole) {
-        wormhole_ = IWormhole(_wormhole);
-        chainId_ = uint16(wormhole_.chainId());
+    constructor(address _deltaswap) {
+        deltaswap_ = IDeltaswap(_deltaswap);
+        chainId_ = uint16(deltaswap_.chainId());
     }
 
     function getRegisteredDeltaswapRelayerContract(uint16 chainId) public view returns (bytes32) {
@@ -64,16 +64,16 @@ abstract contract DeltaswapRelayerBase is IDeltaswapRelayerBase {
     //Our get functions require view instead of pure (despite not actually reading storage) because
     //  they can't be evaluated at compile time. (https://ethereum.stackexchange.com/a/120630/103366)
 
-    function getWormhole() internal view returns (IWormhole) {
-        return wormhole_;
+    function getDeltaswap() internal view returns (IDeltaswap) {
+        return deltaswap_;
     }
 
     function getChainId() internal view returns (uint16) {
         return chainId_;
     }
 
-    function getWormholeMessageFee() internal view returns (LocalNative) {
-        return LocalNative.wrap(getWormhole().messageFee());
+    function getDeltaswapMessageFee() internal view returns (LocalNative) {
+        return LocalNative.wrap(getDeltaswap().messageFee());
     }
 
     function msgValue() internal view returns (LocalNative) {
@@ -81,26 +81,26 @@ abstract contract DeltaswapRelayerBase is IDeltaswapRelayerBase {
     }
 
     function checkMsgValue(
-        LocalNative wormholeMessageFee,
+        LocalNative deltaswapMessageFee,
         LocalNative deliveryPrice,
         LocalNative paymentForExtraReceiverValue
     ) internal view {
-        if (msgValue() != deliveryPrice + paymentForExtraReceiverValue + wormholeMessageFee) {
+        if (msgValue() != deliveryPrice + paymentForExtraReceiverValue + deltaswapMessageFee) {
             revert InvalidMsgValue(
-                msgValue(), deliveryPrice + paymentForExtraReceiverValue + wormholeMessageFee
+                msgValue(), deliveryPrice + paymentForExtraReceiverValue + deltaswapMessageFee
             );
         }
     }
 
     function publishAndPay(
-        LocalNative wormholeMessageFee,
+        LocalNative deltaswapMessageFee,
         LocalNative deliveryQuote,
         LocalNative paymentForExtraReceiverValue,
         bytes memory encodedInstruction,
         uint8 consistencyLevel,
         address payable rewardAddress
     ) internal returns (uint64 sequence, bool paymentSucceeded) {
-        sequence = getWormhole().publishMessage{value: wormholeMessageFee.unwrap()}(
+        sequence = getDeltaswap().publishMessage{value: deltaswapMessageFee.unwrap()}(
             0, encodedInstruction, consistencyLevel
         );
 

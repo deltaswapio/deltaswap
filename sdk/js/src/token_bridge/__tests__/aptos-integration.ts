@@ -53,7 +53,7 @@ import {
   ETH_NODE_URL,
   ETH_PRIVATE_KEY6,
   TEST_ERC20,
-  WORMHOLE_RPC_HOSTS,
+  DELTASWAP_RPC_HOSTS,
 } from "./utils/consts";
 
 const JEST_TEST_TIMEOUT = 60000;
@@ -89,7 +89,7 @@ describe("Aptos SDK tests", () => {
     expect(sequence).toBeTruthy();
 
     const { vaaBytes: attestVAA } = await getSignedVAAWithRetry(
-      WORMHOLE_RPC_HOSTS,
+      DELTASWAP_RPC_HOSTS,
       CHAIN_ID_APTOS,
       APTOS_TOKEN_BRIDGE_EMITTER_ADDRESS,
       sequence!,
@@ -156,7 +156,7 @@ describe("Aptos SDK tests", () => {
     expect(sequence).toBeTruthy();
 
     const { vaaBytes: transferVAA } = await getSignedVAAWithRetry(
-      WORMHOLE_RPC_HOSTS,
+      DELTASWAP_RPC_HOSTS,
       CHAIN_ID_APTOS,
       APTOS_TOKEN_BRIDGE_EMITTER_ADDRESS,
       sequence!,
@@ -224,7 +224,7 @@ describe("Aptos SDK tests", () => {
     expect(sequence).toBeTruthy();
 
     const { vaaBytes: attestVAA } = await getSignedVAAWithRetry(
-      WORMHOLE_RPC_HOSTS,
+      DELTASWAP_RPC_HOSTS,
       CHAIN_ID_ETH,
       getEmitterAddressEth(ethTokenBridge),
       sequence,
@@ -330,7 +330,7 @@ describe("Aptos SDK tests", () => {
     expect(sequence).toBeTruthy();
 
     const { vaaBytes: transferVAA } = await getSignedVAAWithRetry(
-      WORMHOLE_RPC_HOSTS,
+      DELTASWAP_RPC_HOSTS,
       CHAIN_ID_ETH,
       getEmitterAddressEth(ethTokenBridge),
       sequence,
@@ -409,7 +409,7 @@ describe("Aptos SDK tests", () => {
     expect(sequence).toBeTruthy();
 
     const { vaaBytes: attestVAA } = await getSignedVAAWithRetry(
-      WORMHOLE_RPC_HOSTS,
+      DELTASWAP_RPC_HOSTS,
       CHAIN_ID_APTOS,
       APTOS_TOKEN_BRIDGE_EMITTER_ADDRESS,
       sequence!,
@@ -479,7 +479,7 @@ describe("Aptos SDK tests", () => {
     expect(sequence).toBeTruthy();
 
     const { vaaBytes: transferVAA } = await getSignedVAAWithRetry(
-      WORMHOLE_RPC_HOSTS,
+      DELTASWAP_RPC_HOSTS,
       CHAIN_ID_APTOS,
       APTOS_TOKEN_BRIDGE_EMITTER_ADDRESS,
       sequence!,

@@ -5,7 +5,7 @@ import {
   getEmitterAddressEth,
   Implementation__factory,
   parseSequenceFromLogEth,
-} from "@certusone/wormhole-sdk";
+} from "@deltaswapio/deltaswap-sdk";
 import { describe, jest, test } from "@jest/globals";
 import { ethers, Signer } from "ethers";
 import { getAddress } from "ethers/lib/utils";
@@ -13,8 +13,8 @@ import {
   CHAIN_ID_ETH,
   hexToUint8Array,
   nativeToHexString,
-} from "@certusone/wormhole-sdk";
-import { setDefaultWasm } from "@certusone/wormhole-sdk/lib/cjs/solana/wasm";
+} from "@deltaswapio/deltaswap-sdk";
+import { setDefaultWasm } from "@deltaswapio/deltaswap-sdk/lib/cjs/solana/wasm";
 import {
   ETH_TEST_TOKEN,
   ETH_TEST_WALLET_PUBLIC_KEY,
@@ -24,7 +24,7 @@ import {
   WORMHOLE_RPC_HOSTS,
 } from "../consts";
 import { DoubleTransfer__factory } from "../../ethers-contracts/abi/factories/DoubleTransfer__factory";
-import getSignedVAAWithRetry from "@certusone/wormhole-sdk/lib/cjs/rpc/getSignedVAAWithRetry";
+import getSignedVAAWithRetry from "@deltaswapio/deltaswap-sdk/lib/cjs/rpc/getSignedVAAWithRetry";
 import { NodeHttpTransport } from "@improbable-eng/grpc-web-node-http-transport";
 
 setDefaultWasm("node");

@@ -8,7 +8,7 @@ import {getSupportedMessageKeyTypes} from "./DeliveryProviderState.sol";
 import "../../interfaces/relayer/IDeliveryProviderTyped.sol";
 import "../../interfaces/relayer/TypedUnits.sol";
 import "../../relayer/libraries/ExecutionParameters.sol";
-import {IWormhole} from "../../interfaces/IWormhole.sol";
+import {IDeltaswap} from "../../interfaces/IDeltaswap.sol";
 
 contract DeliveryProvider is DeliveryProviderGovernance, IDeliveryProvider {
     using WeiLib for Wei;

@@ -1,7 +1,7 @@
 import {
   ChainName,
   CONTRACTS,
-} from "@certusone/wormhole-sdk/lib/esm/utils/consts";
+} from "@deltaswapio/deltaswap-sdk/lib/esm/utils/consts";
 import BN from "bn.js";
 import { Account, connect, KeyPair } from "near-api-js";
 import { InMemoryKeyStore } from "near-api-js/lib/key_stores";
@@ -11,8 +11,8 @@ import { impossible, Payload } from "./vaa";
 import {
   transferNearFromNear,
   transferTokenFromNear,
-} from "@certusone/wormhole-sdk/lib/esm/token_bridge/transfer";
-import { tryNativeToUint8Array } from "@certusone/wormhole-sdk/lib/esm/utils";
+} from "@deltaswapio/deltaswap-sdk/lib/esm/token_bridge/transfer";
+import { tryNativeToUint8Array } from "@deltaswapio/deltaswap-sdk/lib/esm/utils";
 
 export const execute_near = async (
   payload: Payload,

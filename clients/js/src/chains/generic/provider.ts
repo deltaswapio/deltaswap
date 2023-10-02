@@ -14,7 +14,7 @@ import {
   EVMChainId,
   EVMChainName,
   coalesceChainName,
-} from "@certusone/wormhole-sdk/lib/esm/utils/consts";
+} from "@deltaswapio/deltaswap-sdk/lib/esm/utils/consts";
 import { CosmWasmClient } from "@cosmjs/cosmwasm-stargate";
 import {
   Network as InjectiveNetwork,

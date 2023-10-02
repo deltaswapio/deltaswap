@@ -3,20 +3,20 @@ import {
   ChainId,
   ChainName,
   assertChain,
-} from "@certusone/wormhole-sdk/lib/esm/utils/consts";
-import { transferFromAptos } from "@certusone/wormhole-sdk/lib/esm/token_bridge/transfer";
+} from "@deltaswapio/deltaswap-sdk/lib/esm/utils/consts";
+import { transferFromAptos } from "@deltaswapio/deltaswap-sdk/lib/esm/token_bridge/transfer";
 import { AptosAccount, AptosClient, BCS, TxnBuilderTypes, Types } from "aptos";
 import { ethers } from "ethers";
 import { sha3_256 } from "js-sha3";
 import { NETWORKS } from "./consts";
 import { Network } from "./utils";
 import { Payload, impossible } from "./vaa";
-import { CHAINS, ensureHexPrefix } from "@certusone/wormhole-sdk";
-import { TokenBridgeState } from "@certusone/wormhole-sdk/lib/esm/aptos/types";
+import { CHAINS, ensureHexPrefix } from "@deltaswapio/deltaswap-sdk";
+import { TokenBridgeState } from "@deltaswapio/deltaswap-sdk/lib/esm/aptos/types";
 import {
   generateSignAndSubmitEntryFunction,
   tryNativeToUint8Array,
-} from "@certusone/wormhole-sdk/lib/esm/utils";
+} from "@deltaswapio/deltaswap-sdk/lib/esm/utils";
 
 export async function execute_aptos(
   payload: Payload,

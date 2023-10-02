@@ -8,9 +8,9 @@ import {
   transferNearFromNear,
   parseSequenceFromLogNear,
   getEmitterAddressNear,
-} from "@certusone/wormhole-sdk";
+} from "@deltaswapio/deltaswap-sdk";
 
-import { _parseVAAAlgorand } from "@certusone/wormhole-sdk/lib/cjs/algorand";
+import { _parseVAAAlgorand } from "@deltaswapio/deltaswap-sdk/lib/cjs/algorand";
 
 function getConfig(env: any) {
   switch (env) {

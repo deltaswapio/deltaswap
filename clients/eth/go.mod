@@ -4,9 +4,9 @@ go 1.20
 
 require (
 	github.com/deltaswapio/deltaswap/node v0.0.0-20210722131135-a191017d22d0
+	github.com/deltaswapio/deltaswap/sdk v0.0.0-20220926172624-4b38dc650bb0
 	github.com/ethereum/go-ethereum v1.12.0
 	github.com/spf13/cobra v1.7.0
-	github.com/deltaswapio/deltaswap/sdk v0.0.0-20220926172624-4b38dc650bb0
 )
 
 replace github.com/deltaswapio/deltaswap/node => ../../node
@@ -35,6 +35,5 @@ require (
 	github.com/tklauser/numcpus v0.4.0 // indirect
 	golang.org/x/crypto v0.12.0 // indirect
 	golang.org/x/sys v0.11.0 // indirect
-	golang.org/x/text v0.12.0 // indirect
 	gopkg.in/natefinch/npipe.v2 v2.0.0-20160621034901-c1b8fa8bdcce // indirect
 )

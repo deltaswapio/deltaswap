@@ -5,14 +5,14 @@ import {
   CHAIN_ID_POLYGON,
   CHAIN_ID_SOLANA,
   CHAIN_ID_TERRA,
-} from "@certusone/wormhole-sdk";
+} from "@deltaswapio/deltaswap-sdk";
 import { Signer } from "@ethersproject/abstract-signer";
 import { clusterApiUrl } from "@solana/web3.js";
 import { ethers } from "ethers";
 import { getAddress } from "ethers/lib/utils";
 
 //Devnet here means the locahost kubernetes environment used by the wormhole-foundation/wormhole official git repository.
-//Testnet is the official Wormhole testnet
+//Testnet is the official Deltaswap testnet
 export type Environment = "devnet" | "testnet" | "mainnet";
 export const CLUSTER: Environment = "devnet" as Environment; //This is the currently selected environment.
 

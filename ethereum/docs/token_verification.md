@@ -15,7 +15,7 @@ against the deployed bytecode.
 We will use the flattened source file, as it's easier to upload. Flattened just
 means that the whole contract, including its dependencies, are inlined into a
 single source file.
-Wormhole's flattened source files can be downloaded from [Github
+Deltaswap's flattened source files can be downloaded from [Github
 Actions](https://github.com/deltaswapio/deltaswap/actions/workflows/evm-flattened-contracts.yml).
 This page includes a version of the contracts for each ethereum contract
 deployment. The deployed token contract tends not to change very often (if at
@@ -90,17 +90,17 @@ these bytes as the constructor arguments. This time, verification should succeed
 
 If the explorer page does not show the expected and actual bytecodes, then we
 need to compute the arguments ourselves. For this, we will need the `forge` tool
-(install from https://getfoundry.sh/), and a local checkout of the wormhole repository
+(install from https://getfoundry.sh/), and a local checkout of the deltaswap repository
 
 ```sh
-$ git clone https://github.com/wormhole-foundation/wormhole.git
+$ git clone https://github.com/deltaswap-foundation/deltaswap.git
 ```
 
 First, install the dependencies by running the `make dependencies` in the
 `ethereum` folder:
 
 ```sh
-wormhole/ethereum $ make dependencies
+deltaswap/ethereum $ make dependencies
 ```
 
 Next, we will run a `forge` script to compute the constructor arguments. For
@@ -112,7 +112,7 @@ under the MAINNET section (or TESTNET if you're verifying a testnet contract).
 For our example, the mainnet moonbeam token bridge contract is
 `0xb1731c586ca89a23809861c6103f0b96b3f57d92`.
 
-Next, we'll need the VAA (the signed wormhole message) that was sent to the
+Next, we'll need the VAA (the signed deltaswap message) that was sent to the
 token bridge contract to create the wrapped asset. This can be found by finding
 the transaction that created this contract. On the contract's page
 https://moonscan.io/address/0xab3f0245b83feb11d15aaffefd7ad465a59817ed, the
@@ -130,7 +130,7 @@ section. Click "Decode input data" which will show the hex value of the
 We copy this field and go back to our terminal. Run the following
 
 ```
-wormhole/ethereum $ forge script scripts/TokenABI.s.sol -s "token_constructor_args(bytes, address)" <VAA-BYTES> <CONTRACT-ADDRESS>
+deltaswap/ethereum $ forge script scripts/TokenABI.s.sol -s "token_constructor_args(bytes, address)" <VAA-BYTES> <CONTRACT-ADDRESS>
 ```
 
 where in place of `<VAA-BYTES>`, substitute the hex sequence we just copied from

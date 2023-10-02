@@ -45,7 +45,7 @@ export const getEmitterAddressAndSequenceFromResponseSui = (
   originalCoreBridgePackageId: string,
   response: SuiTransactionBlockResponse
 ): { emitterAddress: string; sequence: string } => {
-  constdeltaswapMessageEventType = `${originalCoreBridgePackageId}::publish_message::DeltaswapMessage`;
+  const deltaswapMessageEventType = `${originalCoreBridgePackageId}::publish_message::DeltaswapMessage`;
   const event = response.events?.find((e) =>
     isSameType(e.type,deltaswapMessageEventType)
   );

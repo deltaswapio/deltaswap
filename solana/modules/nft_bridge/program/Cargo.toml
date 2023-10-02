@@ -32,6 +32,7 @@ primitive-types = { version = "0.9.0", default-features = false }
 spl-token-metadata = { git = "https://github.com/wormhole-foundation/metaplex-program-library", rev = "a7ab32ab0defd89c98f205c80ebdaf77ed60152d", package = "mpl-token-metadata" }
 wasm-bindgen = { version = "0.2.74", features = ["serde-serialize"], optional = true }
 serde = { version = "1.0", features = ["derive"] }
+getrandom = { version = "0.2", features = ["js"] }
 
 [dev-dependencies]
 hex = "*"

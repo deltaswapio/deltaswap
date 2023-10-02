@@ -22,7 +22,7 @@ import {
   keyStores as nearKeyStores,
   providers as nearProviders,
   utils as nearUtils,
-} from "@certusone/wormhole-sdk/node_modules/near-api-js";
+} from "@deltaswapio/deltaswap-sdk/node_modules/near-api-js";
 
 import {
   approveEth,
@@ -43,7 +43,7 @@ import {
   redeemOnNear,
   transferFromEth,
   uint8ArrayToHex,
-} from "@certusone/wormhole-sdk";
+} from "@deltaswapio/deltaswap-sdk";
 import colors from "@colors/colors/safe";
 import { NodeHttpTransport } from "@improbable-eng/grpc-web-node-http-transport";
 import BN from "bn.js";

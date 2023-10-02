@@ -5,19 +5,19 @@ pragma solidity ^0.8.0;
 
 import "../contracts/Implementation.sol";
 import "../contracts/Setup.sol";
-import "../contracts/Wormhole.sol";
-import "../contracts/interfaces/IWormhole.sol";
+import "../contracts/Deltaswap.sol";
+import "../contracts/interfaces/IDeltaswap.sol";
 import "forge-std/Test.sol";
 import "forge-test/rv-helpers/TestUtils.sol";
 
 contract TestImplementation is TestUtils {
     event LogMessagePublished(address indexed sender, uint64 sequence, uint32 nonce, bytes payload, uint8 consistencyLevel);
 
-    Wormhole proxy;
+    Deltaswap proxy;
     Implementation impl;
     Setup setup;
     Setup proxiedSetup;
-    IWormhole proxied;
+    IDeltaswap proxied;
 
     uint256 constant testPhylax = 93941733246223705020089879371323733820373732307041878556247502674739205313440;
     bytes32 constant governanceContract = 0x0000000000000000000000000000000000000000000000000000000000000004;
@@ -30,7 +30,7 @@ contract TestImplementation is TestUtils {
         // Deploy implementation contract
         impl = new Implementation();
         // Deploy proxy
-        proxy = new Wormhole(address(setup), bytes(""));
+        proxy = new Deltaswap(address(setup), bytes(""));
 
         address[] memory keys = new address[](1);
         keys[0] = 0xbeFA429d57cD18b7F8A4d91A2da9AB4AF05d0FBe;
@@ -49,7 +49,7 @@ contract TestImplementation is TestUtils {
             evmChainId: 1
         });
 
-        proxied = IWormhole(address(proxy));
+        proxied = IDeltaswap(address(proxy));
     }
 
     function testPublishMessage(

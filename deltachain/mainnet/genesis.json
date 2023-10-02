@@ -413,11 +413,11 @@
           "symbol": "TEST"
         },
         {
-          "base": "uworm",
+          "base": "udelta",
           "denom_units": [
             {
               "aliases": [],
-              "denom": "uworm",
+              "denom": "udelta",
               "exponent": 0
             },
             {
@@ -712,7 +712,7 @@
         "min_deposit": [
           {
             "amount": "1000000",
-            "denom": "uworm"
+            "denom": "udelta"
           }
         ]
       },
@@ -773,7 +773,7 @@
         "inflation_max": "0.000000000000000000",
         "inflation_min": "0.000000000000000000",
         "inflation_rate_change": "0.000000000000000000",
-        "mint_denom": "uworm"
+        "mint_denom": "udelta"
       }
     },
     "params": null,
@@ -847,7 +847,7 @@
         }
       ],
       "params": {
-        "bond_denom": "uworm",
+        "bond_denom": "udelta",
         "historical_entries": 10000,
         "max_entries": 7,
         "max_validators": 1000,

@@ -13,15 +13,15 @@ import {DeliveryProviderProxy} from
 import {DeliveryProviderStructs} from
     "../../contracts/relayer/deliveryProvider/DeliveryProviderStructs.sol";
 import "../../contracts/interfaces/relayer/IDeltaswapRelayerTyped.sol";
-import {DeltaswapRelayer} from "../../contracts/relayer/wormholeRelayer/DeltaswapRelayer.sol";
+import {DeltaswapRelayer} from "../../contracts/relayer/deltaswapRelayer/DeltaswapRelayer.sol";
 import {MockGenericRelayer} from "./MockGenericRelayer.sol";
-import {MockWormhole} from "./MockWormhole.sol";
-import {IWormhole} from "../../contracts/interfaces/IWormhole.sol";
-import {WormholeSimulator, FakeWormholeSimulator} from "./WormholeSimulator.sol";
-import {IWormholeReceiver} from "../../contracts/interfaces/relayer/IWormholeReceiver.sol";
+import {MockDeltaswap} from "./MockDeltaswap.sol";
+import {IDeltaswap} from "../../contracts/interfaces/IDeltaswap.sol";
+import {DeltaswapSimulator, FakeDeltaswapSimulator} from "./DeltaswapSimulator.sol";
+import {IDeltaswapReceiver} from "../../contracts/interfaces/relayer/IDeltaswapReceiver.sol";
 import {MockRelayerIntegration} from "../../contracts/mock/relayer/MockRelayerIntegration.sol";
 import {TestHelpers} from "./TestHelpers.sol";
-import {toWormholeFormat} from "../../contracts/relayer/libraries/Utils.sol";
+import {toDeltaswapFormat} from "../../contracts/relayer/libraries/Utils.sol";
 import "../../contracts/libraries/external/BytesLib.sol";
 
 import "forge-std/Test.sol";
@@ -38,39 +38,39 @@ contract DeltaswapRelayerGovernanceTests is Test {
     TestHelpers helpers;
 
     bytes32 relayerModule = 0x0000000000000000000000000000000000576f726d686f6c6552656c61796572;
-    IWormhole wormhole;
+    IDeltaswap deltaswap;
     IDeliveryProvider deliveryProvider;
-    WormholeSimulator wormholeSimulator;
-    IDeltaswapRelayer wormholeRelayer;
+    DeltaswapSimulator deltaswapSimulator;
+    IDeltaswapRelayer deltaswapRelayer;
 
     function setUp() public {
         helpers = new TestHelpers();
-        (wormhole, wormholeSimulator) = helpers.setUpWormhole(1);
+        (deltaswap, deltaswapSimulator) = helpers.setUpDeltaswap(1);
         deliveryProvider = helpers.setUpDeliveryProvider(1);
-        wormholeRelayer = helpers.setUpDeltaswapRelayer(wormhole, address(deliveryProvider));
+        deltaswapRelayer = helpers.setUpDeltaswapRelayer(deltaswap, address(deliveryProvider));
     }
 
     struct GovernanceStack {
         bytes message;
-        IWormhole.VM preSignedMessage;
+        IDeltaswap.VM preSignedMessage;
         bytes signed;
     }
 
     function signMessage(bytes memory message) internal returns (bytes memory signed) {
-        IWormhole.VM memory preSignedMessage = IWormhole.VM({
+        IDeltaswap.VM memory preSignedMessage = IDeltaswap.VM({
             version: 1,
             timestamp: uint32(block.timestamp),
             nonce: 0,
-            emitterChainId: wormhole.governanceChainId(),
-            emitterAddress: wormhole.governanceContract(),
+            emitterChainId: deltaswap.governanceChainId(),
+            emitterAddress: deltaswap.governanceContract(),
             sequence: 0,
             consistencyLevel: 200,
             payload: message,
             phylaxSetIndex: 0,
-            signatures: new IWormhole.Signature[](0),
+            signatures: new IDeltaswap.Signature[](0),
             hash: bytes32("")
         });
-        signed = wormholeSimulator.encodeAndSignMessage(preSignedMessage);
+        signed = deltaswapSimulator.encodeAndSignMessage(preSignedMessage);
     }
 
     function fillInGovernanceStack(bytes memory message)
@@ -78,20 +78,20 @@ contract DeltaswapRelayerGovernanceTests is Test {
         returns (GovernanceStack memory stack)
     {
         stack.message = message;
-        stack.preSignedMessage = IWormhole.VM({
+        stack.preSignedMessage = IDeltaswap.VM({
             version: 1,
             timestamp: uint32(block.timestamp),
             nonce: 0,
-            emitterChainId: wormhole.governanceChainId(),
-            emitterAddress: wormhole.governanceContract(),
+            emitterChainId: deltaswap.governanceChainId(),
+            emitterAddress: deltaswap.governanceContract(),
             sequence: 0,
             consistencyLevel: 200,
             payload: message,
             phylaxSetIndex: 0,
-            signatures: new IWormhole.Signature[](0),
+            signatures: new IDeltaswap.Signature[](0),
             hash: bytes32("")
         });
-        stack.signed = wormholeSimulator.encodeAndSignMessage(stack.preSignedMessage);
+        stack.signed = deltaswapSimulator.encodeAndSignMessage(stack.preSignedMessage);
     }
 
     function testSetDefaultDeliveryProvider() public {
@@ -107,9 +107,9 @@ contract DeltaswapRelayerGovernanceTests is Test {
             )
         );
 
-        DeltaswapRelayer(payable(address(wormholeRelayer))).setDefaultDeliveryProvider(signed);
+        DeltaswapRelayer(payable(address(deltaswapRelayer))).setDefaultDeliveryProvider(signed);
 
-        assertTrue(wormholeRelayer.getDefaultDeliveryProvider() == address(deliveryProviderB));
+        assertTrue(deltaswapRelayer.getDefaultDeliveryProvider() == address(deliveryProviderB));
 
         signed = signMessage(
             abi.encodePacked(
@@ -120,73 +120,73 @@ contract DeltaswapRelayerGovernanceTests is Test {
             )
         );
 
-        DeltaswapRelayer(payable(address(wormholeRelayer))).setDefaultDeliveryProvider(signed);
+        DeltaswapRelayer(payable(address(deltaswapRelayer))).setDefaultDeliveryProvider(signed);
 
-        assertTrue(wormholeRelayer.getDefaultDeliveryProvider() == address(deliveryProviderC));
+        assertTrue(deltaswapRelayer.getDefaultDeliveryProvider() == address(deliveryProviderC));
     }
 
     function testRegisterChain() public {
-        IDeltaswapRelayer wormholeRelayer1 =
-            helpers.setUpDeltaswapRelayer(wormhole, address(deliveryProvider));
-        IDeltaswapRelayer wormholeRelayer2 =
-            helpers.setUpDeltaswapRelayer(wormhole, address(deliveryProvider));
-        IDeltaswapRelayer wormholeRelayer3 =
-            helpers.setUpDeltaswapRelayer(wormhole, address(deliveryProvider));
+        IDeltaswapRelayer deltaswapRelayer1 =
+            helpers.setUpDeltaswapRelayer(deltaswap, address(deliveryProvider));
+        IDeltaswapRelayer deltaswapRelayer2 =
+            helpers.setUpDeltaswapRelayer(deltaswap, address(deliveryProvider));
+        IDeltaswapRelayer deltaswapRelayer3 =
+            helpers.setUpDeltaswapRelayer(deltaswap, address(deliveryProvider));
 
         helpers.registerDeltaswapRelayerContract(
-            DeltaswapRelayer(payable(address(wormholeRelayer1))),
-            wormhole,
+            DeltaswapRelayer(payable(address(deltaswapRelayer1))),
+            deltaswap,
             1,
             2,
-            toWormholeFormat(address(wormholeRelayer2))
+            toDeltaswapFormat(address(deltaswapRelayer2))
         );
 
         helpers.registerDeltaswapRelayerContract(
-            DeltaswapRelayer(payable(address(wormholeRelayer1))),
-            wormhole,
+            DeltaswapRelayer(payable(address(deltaswapRelayer1))),
+            deltaswap,
             1,
             3,
-            toWormholeFormat(address(wormholeRelayer3))
+            toDeltaswapFormat(address(deltaswapRelayer3))
         );
 
         assertTrue(
-            DeltaswapRelayer(payable(address(wormholeRelayer1))).getRegisteredDeltaswapRelayerContract(
+            DeltaswapRelayer(payable(address(deltaswapRelayer1))).getRegisteredDeltaswapRelayerContract(
                 2
-            ) == toWormholeFormat(address(wormholeRelayer2))
+            ) == toDeltaswapFormat(address(deltaswapRelayer2))
         );
 
         assertTrue(
-            DeltaswapRelayer(payable(address(wormholeRelayer1))).getRegisteredDeltaswapRelayerContract(
+            DeltaswapRelayer(payable(address(deltaswapRelayer1))).getRegisteredDeltaswapRelayerContract(
                 3
-            ) == toWormholeFormat(address(wormholeRelayer3))
+            ) == toDeltaswapFormat(address(deltaswapRelayer3))
         );
 
         vm.expectRevert(
             abi.encodeWithSignature(
                 "ChainAlreadyRegistered(uint16,bytes32)",
                 3,
-                toWormholeFormat(address(wormholeRelayer3))
+                toDeltaswapFormat(address(deltaswapRelayer3))
             )
         );
         helpers.registerDeltaswapRelayerContract(
-            DeltaswapRelayer(payable(address(wormholeRelayer1))),
-            wormhole,
+            DeltaswapRelayer(payable(address(deltaswapRelayer1))),
+            deltaswap,
             1,
             3,
-            toWormholeFormat(address(wormholeRelayer2))
+            toDeltaswapFormat(address(deltaswapRelayer2))
         );
     }
 
     function testUpgradeContractToItself() public {
         address payable myDeltaswapRelayer =
-            payable(address(helpers.setUpDeltaswapRelayer(wormhole, address(deliveryProvider))));
+            payable(address(helpers.setUpDeltaswapRelayer(deltaswap, address(deliveryProvider))));
 
         bytes memory noMigrationFunction = signMessage(
             abi.encodePacked(
                 relayerModule,
                 uint8(2),
                 uint16(1),
-                toWormholeFormat(address(new DeliveryProviderImplementation()))
+                toDeltaswapFormat(address(new DeliveryProviderImplementation()))
             )
         );
 
@@ -195,7 +195,7 @@ contract DeltaswapRelayerGovernanceTests is Test {
 
         Brick brick = new Brick();
         bytes memory signed = signMessage(
-            abi.encodePacked(relayerModule, uint8(2), uint16(1), toWormholeFormat(address(brick)))
+            abi.encodePacked(relayerModule, uint8(2), uint16(1), toDeltaswapFormat(address(brick)))
         );
 
         DeltaswapRelayer(myDeltaswapRelayer).submitContractUpgrade(signed);

@@ -2,15 +2,15 @@
 import {
   buildTokenId,
   isNativeCosmWasmDenom,
-} from "@certusone/wormhole-sdk/lib/esm/cosmwasm/address";
-import { WormholeWrappedInfo } from "@certusone/wormhole-sdk/lib/esm/token_bridge/getOriginalAsset";
-import { hexToUint8Array } from "@certusone/wormhole-sdk/lib/esm/utils/array";
+} from "@deltaswapio/deltaswap-sdk/lib/esm/cosmwasm/address";
+import { WormholeWrappedInfo } from "@deltaswapio/deltaswap-sdk/lib/esm/token_bridge/getOriginalAsset";
+import { hexToUint8Array } from "@deltaswapio/deltaswap-sdk/lib/esm/utils/array";
 import {
   CHAIN_ID_SEI,
   ChainId,
   ChainName,
   coalesceChainId,
-} from "@certusone/wormhole-sdk/lib/esm/utils/consts";
+} from "@deltaswapio/deltaswap-sdk/lib/esm/utils/consts";
 import { CosmWasmClient } from "@cosmjs/cosmwasm-stargate";
 import { fromUint8Array } from "js-base64";
 
