@@ -185,7 +185,7 @@ func TestBatchTransferStatusForExactlyOneTransfer(t *testing.T) {
 	require.Equal(t, 1, len(keys))
 	qc := &BatchTransferStatusQueryConnMock{resp: queryResp}
 
-	transferDetails, err := queryBatchTransferStatusWithConn(ctx, logger, qc, "wormhole14hj2tavq8fpesdwxxcu44rty3hh90vhujrvcmstl4zr3txmfvw9srrg465", keys)
+	transferDetails, err := queryBatchTransferStatusWithConn(ctx, logger, qc, "delta14hj2tavq8fpesdwxxcu44rty3hh90vhujrvcmstl4zr3txmfvw9srrg465", keys)
 	require.NoError(t, err)
 	require.Equal(t, len(keys), len(transferDetails))
 	validateBatchTransferStatusResults(t, keys, transferDetails)
@@ -199,7 +199,7 @@ func TestBatchTransferStatusForExactlyOneChunk(t *testing.T) {
 	require.Equal(t, maxPendingsPerQuery, len(keys))
 	qc := &BatchTransferStatusQueryConnMock{resp: queryResp}
 
-	transferDetails, err := queryBatchTransferStatusWithConn(ctx, logger, qc, "wormhole14hj2tavq8fpesdwxxcu44rty3hh90vhujrvcmstl4zr3txmfvw9srrg465", keys)
+	transferDetails, err := queryBatchTransferStatusWithConn(ctx, logger, qc, "delta14hj2tavq8fpesdwxxcu44rty3hh90vhujrvcmstl4zr3txmfvw9srrg465", keys)
 	require.NoError(t, err)
 	require.Equal(t, len(keys), len(transferDetails))
 	validateBatchTransferStatusResults(t, keys, transferDetails)
@@ -213,7 +213,7 @@ func TestBatchTransferStatusForExactlyOneChunkPlus1(t *testing.T) {
 	require.Equal(t, maxPendingsPerQuery+1, len(keys))
 	qc := &BatchTransferStatusQueryConnMock{resp: queryResp}
 
-	transferDetails, err := queryBatchTransferStatusWithConn(ctx, logger, qc, "wormhole14hj2tavq8fpesdwxxcu44rty3hh90vhujrvcmstl4zr3txmfvw9srrg465", keys)
+	transferDetails, err := queryBatchTransferStatusWithConn(ctx, logger, qc, "delta14hj2tavq8fpesdwxxcu44rty3hh90vhujrvcmstl4zr3txmfvw9srrg465", keys)
 	require.NoError(t, err)
 	require.Equal(t, len(keys), len(transferDetails))
 	validateBatchTransferStatusResults(t, keys, transferDetails)
@@ -227,7 +227,7 @@ func TestBatchTransferStatusMultipleChunks(t *testing.T) {
 	require.Less(t, maxPendingsPerQuery, len(keys))
 	qc := &BatchTransferStatusQueryConnMock{resp: queryResp}
 
-	transferDetails, err := queryBatchTransferStatusWithConn(ctx, logger, qc, "wormhole14hj2tavq8fpesdwxxcu44rty3hh90vhujrvcmstl4zr3txmfvw9srrg465", keys)
+	transferDetails, err := queryBatchTransferStatusWithConn(ctx, logger, qc, "delta14hj2tavq8fpesdwxxcu44rty3hh90vhujrvcmstl4zr3txmfvw9srrg465", keys)
 	require.NoError(t, err)
 	require.Equal(t, len(keys), len(transferDetails))
 	validateBatchTransferStatusResults(t, keys, transferDetails)

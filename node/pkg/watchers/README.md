@@ -56,15 +56,15 @@ The watcher should peg counts to be picked up by prometheus. The following are r
 ```go
 var (
   <chain>ConnectionErrors = promauto.NewCounterVec(prometheus.CounterOpts{
-    Name: "wormhole_<chain>_connection_errors_total",
+    Name: "deltaswap_<chain>_connection_errors_total",
     Help: "Total number of <chain> connection errors",
   }, []string{"reason"})
   <chain>MessagesConfirmed = promauto.NewCounter(prometheus.CounterOpts{
-    Name: "wormhole_<chain>_observations_confirmed_total",
+    Name: "deltaswap_<chain>_observations_confirmed_total",
     Help: "Total number of verified <chain> observations found",
   })
   current<chain>Height = promauto.NewGauge(prometheus.GaugeOpts{
-    Name: "wormhole_<chain>_current_height",
+    Name: "deltaswap_<chain>_current_height",
     Help: "Current <chain> block height",
   })
 )

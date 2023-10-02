@@ -31,37 +31,37 @@ func (e *Watcher) runMetrics(ctx context.Context) error {
 
 	wormholeTxAvgDuration := promauto.With(reg).NewGauge(
 		prometheus.GaugeOpts{
-			Name: "wormhole_near_tx_avg_duration",
+			Name: "deltaswap_near_tx_avg_duration",
 			Help: "Average duration it takes for a wormhole message to be processed in milliseconds",
 		})
 
 	txqueueLen := promauto.With(reg).NewGauge(
 		prometheus.GaugeOpts{
-			Name: "wormhole_near_tx_queue",
+			Name: "deltaswap_near_tx_queue",
 			Help: "Current Near transaction processing queue length",
 		})
 
 	chunkqueueLen := promauto.With(reg).NewGauge(
 		prometheus.GaugeOpts{
-			Name: "wormhole_near_chunk_queue",
+			Name: "deltaswap_near_chunk_queue",
 			Help: "Current Near chunk processing queue length",
 		})
 
 	nearMessagesConfirmed := promauto.With(reg).NewCounter(
 		prometheus.CounterOpts{
-			Name: "wormhole_near_observations_confirmed_total",
+			Name: "deltaswap_near_observations_confirmed_total",
 			Help: "Total number of verified Near observations found",
 		})
 
 	nearFinalizedCacheMisses := promauto.With(reg).NewCounter(
 		prometheus.CounterOpts{
-			Name: "wormhole_near_finalized_cache_misses",
+			Name: "deltaswap_near_finalized_cache_misses",
 			Help: "Number of times the watcher needed to check the finalization status of a block by walking the chain forward because the finalization status was not cached.",
 		})
 
 	nearRpcErrorCounter := promauto.With(reg).NewCounter(
 		prometheus.CounterOpts{
-			Name: "wormhole_near_rpc_error",
+			Name: "deltaswap_near_rpc_error",
 			Help: "NEAR RPC Error Counter",
 		})
 

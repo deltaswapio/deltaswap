@@ -21,14 +21,14 @@ var (
 
 	messagesObservedTotal = promauto.NewCounterVec(
 		prometheus.CounterOpts{
-			Name: "wormhole_message_observations_total",
+			Name: "deltaswap_message_observations_total",
 			Help: "Total number of messages observed",
 		},
 		[]string{"emitter_chain"})
 
 	messagesSignedTotal = promauto.NewCounterVec(
 		prometheus.CounterOpts{
-			Name: "wormhole_message_observations_signed_total",
+			Name: "deltaswap_message_observations_signed_total",
 			Help: "Total number of message observations that were successfully signed",
 		},
 		[]string{"emitter_chain"})

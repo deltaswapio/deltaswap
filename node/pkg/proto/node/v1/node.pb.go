@@ -497,7 +497,7 @@ type GovernanceMessage_AccountantModifyBalance struct {
 
 type GovernanceMessage_CircleIntegrationUpdateWormholeFinality struct {
 	// Circle Integration
-	CircleIntegrationUpdateWormholeFinality *CircleIntegrationUpdateWormholeFinality `protobuf:"bytes,18,opt,name=circle_integration_update_wormhole_finality,json=circleIntegrationUpdateWormholeFinality,proto3,oneof"`
+	CircleIntegrationUpdateWormholeFinality *CircleIntegrationUpdateWormholeFinality `protobuf:"bytes,18,opt,name=circle_integration_update_deltaswap_finality,json=circleIntegrationUpdateWormholeFinality,proto3,oneof"`
 }
 
 type GovernanceMessage_CircleIntegrationRegisterEmitterAndDomain struct {
@@ -515,7 +515,7 @@ type GovernanceMessage_IbcUpdateChannelChain struct {
 
 type GovernanceMessage_DeltaswapRelayerSetDefaultDeliveryProvider struct {
 	// Wormhole Relayer module
-	DeltaswapRelayerSetDefaultDeliveryProvider *DeltaswapRelayerSetDefaultDeliveryProvider `protobuf:"bytes,22,opt,name=wormhole_relayer_set_default_delivery_provider,json=wormholeRelayerSetDefaultDeliveryProvider,proto3,oneof"`
+	DeltaswapRelayerSetDefaultDeliveryProvider *DeltaswapRelayerSetDefaultDeliveryProvider `protobuf:"bytes,22,opt,name=deltaswap_relayer_set_default_delivery_provider,json=wormholeRelayerSetDefaultDeliveryProvider,proto3,oneof"`
 }
 
 func (*GovernanceMessage_PhylaxSet) isGovernanceMessage_Payload() {}
@@ -3327,11 +3327,11 @@ var file_node_v1_node_proto_depIdxs = []int32{
 	18, // 10: node.v1.GovernanceMessage.gateway_cancel_upgrade:type_name -> node.v1.GatewayCancelUpgrade
 	16, // 11: node.v1.GovernanceMessage.gateway_ibc_composability_mw_set_contract:type_name -> node.v1.GatewayIbcComposabilityMwSetContract
 	9,  // 12: node.v1.GovernanceMessage.accountant_modify_balance:type_name -> node.v1.AccountantModifyBalance
-	19, // 13: node.v1.GovernanceMessage.circle_integration_update_wormhole_finality:type_name -> node.v1.CircleIntegrationUpdateWormholeFinality
+	19, // 13: node.v1.GovernanceMessage.circle_integration_update_deltaswap_finality:type_name -> node.v1.CircleIntegrationUpdateWormholeFinality
 	20, // 14: node.v1.GovernanceMessage.circle_integration_register_emitter_and_domain:type_name -> node.v1.CircleIntegrationRegisterEmitterAndDomain
 	21, // 15: node.v1.GovernanceMessage.circle_integration_upgrade_contract_implementation:type_name -> node.v1.CircleIntegrationUpgradeContractImplementation
 	22, // 16: node.v1.GovernanceMessage.ibc_update_channel_chain:type_name -> node.v1.IbcUpdateChannelChain
-	23, // 17: node.v1.GovernanceMessage.wormhole_relayer_set_default_delivery_provider:type_name -> node.v1.DeltaswapRelayerSetDefaultDeliveryProvider
+	23, // 17: node.v1.GovernanceMessage.deltaswap_relayer_set_default_delivery_provider:type_name -> node.v1.DeltaswapRelayerSetDefaultDeliveryProvider
 	44, // 18: node.v1.PhylaxSetUpdate.phylaxs:type_name -> node.v1.PhylaxSetUpdate.Phylax
 	0,  // 19: node.v1.AccountantModifyBalance.kind:type_name -> node.v1.ModificationKind
 	1,  // 20: node.v1.DeltachainWasmInstantiateAllowlist.action:type_name -> node.v1.DeltachainWasmInstantiateAllowlistAction

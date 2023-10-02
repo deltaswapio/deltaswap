@@ -52,22 +52,22 @@ const TESTNET_BOOTSTRAP_DHI = 350
 var (
 	p2pHeartbeatsSent = promauto.NewCounter(
 		prometheus.CounterOpts{
-			Name: "wormhole_p2p_heartbeats_sent_total",
+			Name: "deltaswap_p2p_heartbeats_sent_total",
 			Help: "Total number of p2p heartbeats sent",
 		})
 	p2pMessagesSent = promauto.NewCounter(
 		prometheus.CounterOpts{
-			Name: "wormhole_p2p_broadcast_messages_sent_total",
+			Name: "deltaswap_p2p_broadcast_messages_sent_total",
 			Help: "Total number of p2p pubsub broadcast messages sent",
 		})
 	p2pMessagesReceived = promauto.NewCounterVec(
 		prometheus.CounterOpts{
-			Name: "wormhole_p2p_broadcast_messages_received_total",
+			Name: "deltaswap_p2p_broadcast_messages_received_total",
 			Help: "Total number of p2p pubsub broadcast messages received",
 		}, []string{"type"})
 	p2pReceiveChannelOverflow = promauto.NewCounterVec(
 		prometheus.CounterOpts{
-			Name: "wormhole_p2p_receive_channel_overflow",
+			Name: "deltaswap_p2p_receive_channel_overflow",
 			Help: "Total number of p2p received messages dropped due to channel overflow",
 		}, []string{"type"})
 )

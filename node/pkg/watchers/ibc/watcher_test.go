@@ -37,7 +37,7 @@ func TestParseIbcReceivePublishEvent(t *testing.T) {
 	require.Equal(t, true, gjson.Valid(eventJson))
 	event := gjson.Parse(eventJson)
 
-	contractAddress := "wormhole1nc5tatafv6eyq7llkr2gv50ff9e22mnf70qgjlv737ktmt4eswrq0kdhcj"
+	contractAddress := "delta1nc5tatafv6eyq7llkr2gv50ff9e22mnf70qgjlv737ktmt4eswrq0kdhcj"
 
 	txHash, err := vaa.StringToHash("82ea2536c5d1671830cb49120f94479e34b54596a8dd369fbc2666667a765f4b")
 	require.NoError(t, err)
@@ -115,7 +115,7 @@ func TestParseEventForWrongAction(t *testing.T) {
 	require.Equal(t, true, gjson.Valid(eventJson))
 	event := gjson.Parse(eventJson)
 
-	contractAddress := "wormhole1nc5tatafv6eyq7llkr2gv50ff9e22mnf70qgjlv737ktmt4eswrq0kdhcj"
+	contractAddress := "delta1nc5tatafv6eyq7llkr2gv50ff9e22mnf70qgjlv737ktmt4eswrq0kdhcj"
 
 	txHash, err := vaa.StringToHash("82ea2536c5d1671830cb49120f94479e34b54596a8dd369fbc2666667a765f4b")
 	require.NoError(t, err)
@@ -144,7 +144,7 @@ func TestParseEventForNoContractSpecified(t *testing.T) {
 	require.Equal(t, true, gjson.Valid(eventJson))
 	event := gjson.Parse(eventJson)
 
-	contractAddress := "wormhole1nc5tatafv6eyq7llkr2gv50ff9e22mnf70qgjlv737ktmt4eswrq0kdhcj"
+	contractAddress := "delta1nc5tatafv6eyq7llkr2gv50ff9e22mnf70qgjlv737ktmt4eswrq0kdhcj"
 
 	txHash, err := vaa.StringToHash("82ea2536c5d1671830cb49120f94479e34b54596a8dd369fbc2666667a765f4b")
 	require.NoError(t, err)
@@ -172,7 +172,7 @@ func TestParseEventForNoActionSpecified(t *testing.T) {
 	require.Equal(t, true, gjson.Valid(eventJson))
 	event := gjson.Parse(eventJson)
 
-	contractAddress := "wormhole1nc5tatafv6eyq7llkr2gv50ff9e22mnf70qgjlv737ktmt4eswrq0kdhcj"
+	contractAddress := "delta1nc5tatafv6eyq7llkr2gv50ff9e22mnf70qgjlv737ktmt4eswrq0kdhcj"
 
 	txHash, err := vaa.StringToHash("82ea2536c5d1671830cb49120f94479e34b54596a8dd369fbc2666667a765f4b")
 	require.NoError(t, err)

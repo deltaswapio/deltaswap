@@ -38,12 +38,12 @@ type (
 var (
 	aptosMessagesConfirmed = promauto.NewCounter(
 		prometheus.CounterOpts{
-			Name: "wormhole_aptos_observations_confirmed_total",
+			Name: "deltaswap_aptos_observations_confirmed_total",
 			Help: "Total number of verified Aptos observations found",
 		})
 	currentAptosHeight = promauto.NewGauge(
 		prometheus.GaugeOpts{
-			Name: "wormhole_aptos_current_height",
+			Name: "deltaswap_aptos_current_height",
 			Help: "Current Aptos block height",
 		})
 )

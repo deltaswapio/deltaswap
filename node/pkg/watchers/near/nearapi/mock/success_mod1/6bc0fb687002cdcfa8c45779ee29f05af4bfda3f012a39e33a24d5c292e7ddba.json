@@ -45,7 +45,7 @@
           }
         },
         "receipt_id": "4bmB5iKs4p1edfuX9kpKA3ZE896EcRkSKz2ssMiCNQUs",
-        "receiver_id": "contract.wormhole_crypto.near"
+        "receiver_id": "contract.deltaswap_crypto.near"
       },
       {
         "predecessor_id": "system",

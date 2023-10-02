@@ -222,14 +222,14 @@ func getPublicRPCServiceClient(ctx context.Context, addr string) (*grpc.ClientCo
 func runSignDeltachainValidatorAddress(cmd *cobra.Command, args []string) error {
 	phylaxKeyPath := args[0]
 	deltachainAddress := args[1]
-	if !strings.HasPrefix(deltachainAddress, "wormhole") || strings.HasPrefix(deltachainAddress, "wormholeval") {
+	if !strings.HasPrefix(deltachainAddress, "delta") || strings.HasPrefix(deltachainAddress, "deltaval") {
 		return fmt.Errorf("must provide a bech32 address that has 'wormhole' prefix")
 	}
 	gk, err := loadPhylaxKey(phylaxKeyPath)
 	if err != nil {
 		return fmt.Errorf("failed to load phylax key: %w", err)
 	}
-	addr, err := types.GetFromBech32(deltachainAddress, "wormhole")
+	addr, err := types.GetFromBech32(deltachainAddress, "delta")
 	if err != nil {
 		return fmt.Errorf("failed to decode deltachain address: %w", err)
 	}

@@ -14,7 +14,7 @@ import (
 
 var storedVaaTotal = promauto.NewCounter(
 	prometheus.CounterOpts{
-		Name: "wormhole_db_total_vaas",
+		Name: "deltaswap_db_total_vaas",
 		Help: "Total number of VAAs added to database",
 	})
 

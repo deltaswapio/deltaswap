@@ -43,8 +43,8 @@ There is a RPC API EXPERIMENTAL_changes_in_block which would tell you if the blo
 	* tx_proc_queue_full: The transaction processing queue is full but there are new transaction. This means that the Phylax is not able to catch up with block production on NEAR. This is a critical error that needs to be investigated. `chunk_id` is the ID of the chunk from which all or some transactions have been dropped.
 	* obsv_req_received: Observation request received
 	* info_process_tx: Transaction processing is being attempted. This is done for all transactions on NEAR, so we only log this with debugging level. Log fields: `tx_hash`.
-	* wormhole_event: A Wormhole event is being processed
-	* wormhole_event_success: A Wormhole event has been successfully processed
+	* deltaswap_event: A Wormhole event is being processed
+	* deltaswap_event_success: A Wormhole event has been successfully processed
 	* watcher_behind: The NEAR watcher fell behind too much and skipped blocks.
 	* height: The highest height of a block from which at least one transaction has been processed. Includes `height`.
 	* block_poll: A block has been successfully polled. Includes `height`.
@@ -53,7 +53,7 @@ There is a RPC API EXPERIMENTAL_changes_in_block which would tell you if the blo
 * error_type (enum)
 	* invalid_hash: Program encountered a hash that is not well-formed, i.e. not 32 bytes long.
 	* nearapi_inconsistent: NEAR RPC returned data that doesn't make sense.
-	* malformed_wormhole_event: The wormhole log emission is malformed. This should never happen. If it does, that'd be indicative of a big problem.
+	* malformed_deltaswap_event: The wormhole log emission is malformed. This should never happen. If it does, that'd be indicative of a big problem.
 	* startup_fail: Something went wrong during watcher startup.
 
 

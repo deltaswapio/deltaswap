@@ -54,12 +54,12 @@ type (
 var (
 	algorandMessagesConfirmed = promauto.NewCounter(
 		prometheus.CounterOpts{
-			Name: "wormhole_algorand_observations_confirmed_total",
+			Name: "deltaswap_algorand_observations_confirmed_total",
 			Help: "Total number of verified Algorand observations found",
 		})
 	currentAlgorandHeight = promauto.NewGauge(
 		prometheus.GaugeOpts{
-			Name: "wormhole_algorand_current_height",
+			Name: "deltaswap_algorand_current_height",
 			Help: "Current Algorand block height",
 		})
 )

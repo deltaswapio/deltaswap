@@ -272,7 +272,7 @@ def build_node_yaml():
                     "deltachain:9090",
 
                     "--accountantContract",
-                    "wormhole14hj2tavq8fpesdwxxcu44rty3hh90vhujrvcmstl4zr3txmfvw9srrg465",
+                    "delta14hj2tavq8fpesdwxxcu44rty3hh90vhujrvcmstl4zr3txmfvw9srrg465",
                     "--accountantKeyPath",
                     "/tmp/mounted-keys/deltachain/accountantKey",
                     "--accountantKeyPassPhrase",
@@ -283,21 +283,21 @@ def build_node_yaml():
                     "true",
 
                     "--ibcContract",
-                    "wormhole1nc5tatafv6eyq7llkr2gv50ff9e22mnf70qgjlv737ktmt4eswrq0kdhcj",
+                    "delta1nc5tatafv6eyq7llkr2gv50ff9e22mnf70qgjlv737ktmt4eswrq0kdhcj",
                     "--ibcWS",
                     "ws://deltachain:26657/websocket",
                     "--ibcLCD",
                     "http://deltachain:1317",
 
                     "--gatewayRelayerContract",
-                    "wormhole17p9rzwnnfxcjp32un9ug7yhhzgtkhvl9jfksztgw5uh69wac2pgshdnj3k",
+                    "delta17p9rzwnnfxcjp32un9ug7yhhzgtkhvl9jfksztgw5uh69wac2pgshdnj3k",
                     "--gatewayRelayerKeyPath",
                     "/tmp/mounted-keys/deltachain/gwrelayerKey",
                     "--gatewayRelayerKeyPassPhrase",
                     "test0000",
 
                     "--gatewayContract",
-                    "wormhole17p9rzwnnfxcjp32un9ug7yhhzgtkhvl9jfksztgw5uh69wac2pgshdnj3k",
+                    "delta17p9rzwnnfxcjp32un9ug7yhhzgtkhvl9jfksztgw5uh69wac2pgshdnj3k",
                     "--gatewayWS",
                     "ws://deltachain:26657/websocket",
                     "--gatewayLCD",

@@ -15,7 +15,7 @@ read -r -d '' TX0_wrong_block << EOM
         {
           "block_hash": "A5mwZmMzNZM39BVuEVfupMrEpvuCuRt6u9kJ1JGupgkx",
           "outcome": {
-            "executor_id": "contract.wormhole_crypto.near",
+            "executor_id": "contract.deltaswap_crypto.near",
             "logs": [
               "wormhole/src/lib.rs#412: publish_message  prepaid_gas: \"94217765723035\"   used_gas: \"561737236755\"  delta: \"93653874829714\"",
               "EVENT_JSON:{\"standard\":\"wormhole\",\"event\":\"publish\",\"data\":\"0100000000000000000000000000000000000000000000000000000000000f42400000000000000000000000000000000000000000000000000000000000000000000f0108bc32f7de18a5f6e1e7d6ee7aff9f5fc858d0d87ac0da94dd8d2a5d267d6b00160000000000000000000000000000000000000000000000000000000000000000\",\"nonce\":76538233,\"emitter\":\"148410499d3fcda4dcfd68a1ebfcdddda16ab28326448d4aae4d2f0465cdfcb7\",\"seq\":261,\"block\":76538234}"
@@ -38,7 +38,7 @@ read -r -d '' TX0_wrong_sequence << EOM
         {
           "block_hash": "6zPnFkHojNQpbRgALHgRnbzhFvp55hido4Gv645nR8zf",
           "outcome": {
-            "executor_id": "contract.wormhole_crypto.near",
+            "executor_id": "contract.deltaswap_crypto.near",
             "logs": [
               "wormhole/src/lib.rs#412: publish_message  prepaid_gas: \"94217765723035\"   used_gas: \"561737236755\"  delta: \"93653874829714\"",
               "EVENT_JSON:{\"standard\":\"wormhole\",\"event\":\"publish\",\"data\":\"0100000000000000000000000000000000000000000000000000000000000f42400000000000000000000000000000000000000000000000000000000000000000000f0108bc32f7de18a5f6e1e7d6ee7aff9f5fc858d0d87ac0da94dd8d2a5d267d6b00160000000000000000000000000000000000000000000000000000000000000000\",\"nonce\":76538233,\"emitter\":\"148410499d3fcda4dcfd68a1ebfcdddda16ab28326448d4aae4d2f0465cdfcb7\",\"seq\":262,\"block\":76538234}"
@@ -61,7 +61,7 @@ read -r -d '' TX1 << EOM
         {
           "block_hash": "9AEuLtXe4JgJGnwY6ZZE6PmkPcEYpQqqUzwDMzUsMgBT",
           "outcome": {
-            "executor_id": "contract.wormhole_crypto.near",
+            "executor_id": "contract.deltaswap_crypto.near",
             "logs": [
               "wormhole/src/lib.rs#412: publish_message  prepaid_gas: \"94217765723035\"   used_gas: \"561737236755\"  delta: \"93653874829714\"",
               "EVENT_JSON:{\"standard\":\"wormhole\",\"event\":\"publish\",\"data\":\"0100000000000000000000000000000000000000000000000000000000000f42400000000000000000000000000000000000000000000000000000000000000000000f0108bc32f7de18a5f6e1e7d6ee7aff9f5fc858d0d87ac0da94dd8d2a5d267d6b00160000000000000000000000000000000000000000000000000000000000000000\",\"nonce\":76538233,\"emitter\":\"148410499d3fcda4dcfd68a1ebfcdddda16ab28326448d4aae4d2f0465cdfcb7\",\"seq\":261,\"block\":76538230}"
@@ -84,7 +84,7 @@ read -r -d '' TX2 << EOM
         {
           "block_hash": "G3r7EszAnX2ecbV4jX8e7Ls9vamrwHnn19UP4SeUL5qv",
           "outcome": {
-            "executor_id": "contract.wormhole_crypto.near",
+            "executor_id": "contract.deltaswap_crypto.near",
             "logs": [
               "wormhole/src/lib.rs#412: publish_message  prepaid_gas: \"94217765723035\"   used_gas: \"561737236755\"  delta: \"93653874829714\"",
               "EVENT_JSON:{\"standard\":\"wormhole\",\"event\":\"publish\",\"data\":\"0100000000000000000000000000000000000000000000000000000000000f42400000000000000000000000000000000000000000000000000000000000000000000f0108bc32f7de18a5f6e1e7d6ee7aff9f5fc858d0d87ac0da94dd8d2a5d267d6b00160000000000000000000000000000000000000000000000000000000000000000\",\"nonce\":76538233,\"emitter\":\"148410499d3fcda4dcfd68a1ebfcdddda16ab28326448d4aae4d2f0465cdfcb7\",\"seq\":262,\"block\":76538232}"
@@ -107,7 +107,7 @@ read -r -d '' TX3 << EOM
         {
           "block_hash": "6eCgeVSC4Hwm8tAVy4qNQpnLs4S9EpzRjGtAipwZ632A",
           "outcome": {
-            "executor_id": "contract.wormhole_crypto.near",
+            "executor_id": "contract.deltaswap_crypto.near",
             "logs": [
               "wormhole/src/lib.rs#412: publish_message  prepaid_gas: \"94217765723035\"   used_gas: \"561737236755\"  delta: \"93653874829714\"",
               "EVENT_JSON:{\"standard\":\"wormhole\",\"event\":\"publish\",\"data\":\"0100000000000000000000000000000000000000000000000000000000000f42400000000000000000000000000000000000000000000000000000000000000000000f0108bc32f7de18a5f6e1e7d6ee7aff9f5fc858d0d87ac0da94dd8d2a5d267d6b00160000000000000000000000000000000000000000000000000000000000000000\",\"nonce\":76538233,\"emitter\":\"148410499d3fcda4dcfd68a1ebfcdddda16ab28326448d4aae4d2f0465cdfcb7\",\"seq\":263,\"block\":76538236}"
@@ -124,27 +124,27 @@ EOM
 
 
 base53="6gFEzydsKaV1nnsuc5E6afydzayzn9siWm332NqAAod8"
-hash=$(printf '{"id": "dontcare", "jsonrpc": "2.0", "method": "tx", "params": ["'"$base53"'", "contract.wormhole_crypto.near"]}' | sha256sum | head -c 64)
+hash=$(printf '{"id": "dontcare", "jsonrpc": "2.0", "method": "tx", "params": ["'"$base53"'", "contract.deltaswap_crypto.near"]}' | sha256sum | head -c 64)
 filename="$(dirname "$(realpath "$0")")/synthetic/$hash.json"
 echo "$TX0_wrong_block" > "$filename"
 
 base53="6gFEzydsKaV1nnxWnb9wAaBXRQ92Zk4v99MBxr31WWpW"
-hash=$(printf '{"id": "dontcare", "jsonrpc": "2.0", "method": "tx", "params": ["'"$base53"'", "contract.wormhole_crypto.near"]}' | sha256sum | head -c 64)
+hash=$(printf '{"id": "dontcare", "jsonrpc": "2.0", "method": "tx", "params": ["'"$base53"'", "contract.deltaswap_crypto.near"]}' | sha256sum | head -c 64)
 filename="$(dirname "$(realpath "$0")")/synthetic/$hash.json"
 echo "$TX0_wrong_sequence" > "$filename"
 
 base53="7RJ5bcEyBLDXFbmDSNzHeAKUC5z7z3Du5mKLY7FuuwoE"
-hash=$(printf '{"id": "dontcare", "jsonrpc": "2.0", "method": "tx", "params": ["'"$base53"'", "contract.wormhole_crypto.near"]}' | sha256sum | head -c 64)
+hash=$(printf '{"id": "dontcare", "jsonrpc": "2.0", "method": "tx", "params": ["'"$base53"'", "contract.deltaswap_crypto.near"]}' | sha256sum | head -c 64)
 filename="$(dirname "$(realpath "$0")")/synthetic/$hash.json"
 echo "$TX1" > "$filename"
 
 base53="7RJ5bcEyBLDXFbmDSNzHeAKUC5z7z3Du5mKLY7FuuwoF"
-hash=$(printf '{"id": "dontcare", "jsonrpc": "2.0", "method": "tx", "params": ["'"$base53"'", "contract.wormhole_crypto.near"]}' | sha256sum | head -c 64)
+hash=$(printf '{"id": "dontcare", "jsonrpc": "2.0", "method": "tx", "params": ["'"$base53"'", "contract.deltaswap_crypto.near"]}' | sha256sum | head -c 64)
 filename="$(dirname "$(realpath "$0")")/synthetic/$hash.json"
 echo "$TX2" > "$filename"
 
 base53="7RJ5bcEyBLDXFbmDSNzHeAKUC5z7z3Du5mKLY7FuuwoG"
-hash=$(printf '{"id": "dontcare", "jsonrpc": "2.0", "method": "tx", "params": ["'"$base53"'", "contract.wormhole_crypto.near"]}' | sha256sum | head -c 64)
+hash=$(printf '{"id": "dontcare", "jsonrpc": "2.0", "method": "tx", "params": ["'"$base53"'", "contract.deltaswap_crypto.near"]}' | sha256sum | head -c 64)
 filename="$(dirname "$(realpath "$0")")/synthetic/$hash.json"
 echo "$TX3" > "$filename"
 

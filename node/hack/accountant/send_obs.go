@@ -34,7 +34,7 @@ func main() {
 
 	deltachainURL := string("localhost:9090")
 	deltachainKeyPath := string("./dev.deltachain.key")
-	contract := "wormhole14hj2tavq8fpesdwxxcu44rty3hh90vhujrvcmstl4zr3txmfvw9srrg465"
+	contract := "delta14hj2tavq8fpesdwxxcu44rty3hh90vhujrvcmstl4zr3txmfvw9srrg465"
 	phylaxKeyPath := string("./dev.phylax.key")
 
 	deltachainKey, err := wormconn.LoadDeltachainPrivKey(deltachainKeyPath, "test0000")

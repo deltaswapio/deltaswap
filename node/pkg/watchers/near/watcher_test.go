@@ -22,7 +22,7 @@ import (
 )
 
 const (
-	WORMHOLE_CONTRACT   = "contract.wormhole_crypto.near"
+	DELTASWAP_CONTRACT  = "contract.deltaswap_crypto.near"
 	BLOCK_POLL_INTERVAL = time.Millisecond * 50
 )
 
@@ -222,7 +222,7 @@ func TestWatcherSimple(t *testing.T) {
 		name:             "TestWatcherSimple",
 		timeout:          time.Second * 2,
 		t:                t,
-		wormholeContract: WORMHOLE_CONTRACT,
+		wormholeContract: DELTASWAP_CONTRACT,
 		upstreamHost:     "",
 		cacheDir:         "nearapi/mock/success/",
 		latestFinalBlocks: []string{
@@ -257,7 +257,7 @@ func TestWatcherSimple2(t *testing.T) {
 		name:             "TestWatcherSimple2",
 		timeout:          time.Second * 2,
 		t:                t,
-		wormholeContract: WORMHOLE_CONTRACT,
+		wormholeContract: DELTASWAP_CONTRACT,
 		upstreamHost:     "",
 		cacheDir:         "nearapi/mock/success/",
 		latestFinalBlocks: []string{
@@ -300,7 +300,7 @@ func TestWatcherReobservation(t *testing.T) {
 		name:             "TestWatcherReobservation",
 		timeout:          time.Second * 5,
 		t:                t,
-		wormholeContract: WORMHOLE_CONTRACT,
+		wormholeContract: DELTASWAP_CONTRACT,
 		upstreamHost:     "",
 		cacheDir:         "nearapi/mock/success/",
 		latestFinalBlocks: []string{
@@ -352,7 +352,7 @@ func TestWatcherDelayedFinal(t *testing.T) {
 		name:              "TestWatcherDelayedFinal",
 		timeout:           time.Second * 2,
 		t:                 t,
-		wormholeContract:  WORMHOLE_CONTRACT,
+		wormholeContract:  DELTASWAP_CONTRACT,
 		upstreamHost:      "",
 		cacheDir:          "nearapi/mock/success_mod1/",
 		latestFinalBlocks: lfb,
@@ -387,7 +387,7 @@ func TestWatcherDelayedFinalAndGaps(t *testing.T) {
 		name:             "TestWatcherDelayedFinalAndGaps",
 		timeout:          time.Second * 2,
 		t:                t,
-		wormholeContract: WORMHOLE_CONTRACT,
+		wormholeContract: DELTASWAP_CONTRACT,
 		upstreamHost:     "",
 		cacheDir:         "nearapi/mock/success_mod1/",
 		latestFinalBlocks: []string{
@@ -433,7 +433,7 @@ func TestWatcherSynthetic(t *testing.T) {
 		name:             "TestWatcherSynthetic",
 		timeout:          time.Second * 2,
 		t:                t,
-		wormholeContract: WORMHOLE_CONTRACT,
+		wormholeContract: DELTASWAP_CONTRACT,
 		upstreamHost:     "",
 		cacheDir:         "nearapi/mock/synthetic/",
 		latestFinalBlocks: []string{
@@ -526,7 +526,7 @@ func TestWatcherUnfinalized(t *testing.T) {
 		name:             "TestWatcherUnfinalized",
 		timeout:          time.Second * 2,
 		t:                t,
-		wormholeContract: WORMHOLE_CONTRACT,
+		wormholeContract: DELTASWAP_CONTRACT,
 		upstreamHost:     "",
 		cacheDir:         "nearapi/mock/unfinalized/",
 		latestFinalBlocks: []string{

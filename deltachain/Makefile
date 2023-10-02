@@ -1,7 +1,7 @@
 PROTO_FILES=$(shell find proto -name "*.proto")
 GO_FILES=$(shell find . -name "*.go")
 # Address of the main tilt validator that the others should connect to
-TILT_VALADDRESS=wormholevaloper1cyyzpxplxdzkeea7kwsydadg87357qna87hzv8
+TILT_VALADDRESS=deltavaloper1cyyzpxplxdzkeea7kwsydadg87357qna87hzv8
 
 VERSION := $(shell echo $(shell git describe --tags 2> /dev/null || echo v0.0.1))
 COMMIT := $(shell git log -1 --format='%h' 2> /dev/null || echo 'abc123')

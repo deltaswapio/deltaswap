@@ -128,7 +128,7 @@ func (e *Watcher) processWormholeLog(logger *zap.Logger, _ context.Context, job 
 
 	eventJsonStr := event[11:]
 
-	logger.Info("event", zap.String("log_msg_type", "wormhole_event"), zap.String("event", eventJsonStr))
+	logger.Info("event", zap.String("log_msg_type", "deltaswap_event"), zap.String("event", eventJsonStr))
 
 	// SECURITY: Wormhole is following NEP-297 (https://nomicon.io/Standards/EventsFormat)
 	// First, check that we're looking at a "publish" event type from the "wormhole" standard.
@@ -140,12 +140,12 @@ func (e *Watcher) processWormholeLog(logger *zap.Logger, _ context.Context, job 
 
 	var pubEvent NearWormholePublishEvent
 	if err := json.Unmarshal([]byte(eventJsonStr), &pubEvent); err != nil {
-		logger.Error("Wormhole publish event malformed", zap.String("error_type", "malformed_wormhole_event"), zap.String("json", eventJsonStr))
+		logger.Error("Wormhole publish event malformed", zap.String("error_type", "malformed_deltaswap_event"), zap.String("json", eventJsonStr))
 		return errors.New("Wormhole publish event malformed")
 	}
 
 	if pubEvent.Standard != "wormhole" || pubEvent.Event != "publish" || pubEvent.Emitter == "" || pubEvent.Seq <= 0 || pubEvent.BlockHeight == 0 {
-		logger.Error("Wormhole publish event malformed", zap.String("error_type", "malformed_wormhole_event"), zap.String("json", eventJsonStr))
+		logger.Error("Wormhole publish event malformed", zap.String("error_type", "malformed_deltaswap_event"), zap.String("json", eventJsonStr))
 		return errors.New("Wormhole publish event malformed")
 	}
 
@@ -155,7 +155,7 @@ func (e *Watcher) processWormholeLog(logger *zap.Logger, _ context.Context, job 
 	if err != nil || successValueInt == 0 || uint64(successValueInt) != pubEvent.Seq {
 		logger.Error(
 			"SuccessValue does not match sequence number",
-			zap.String("error_type", "malformed_wormhole_event"),
+			zap.String("error_type", "malformed_deltaswap_event"),
 			zap.String("log_msg_type", "tx_processing_error"),
 			zap.String("SuccessValue", successValue),
 			zap.Int("int(SuccessValue)", successValueInt),
@@ -168,7 +168,7 @@ func (e *Watcher) processWormholeLog(logger *zap.Logger, _ context.Context, job 
 	if pubEvent.BlockHeight != outcomeBlockHeader.Height {
 		logger.Error(
 			"Wormhole publish event.block does not equal receipt_outcome[x].block_height",
-			zap.String("error_type", "malformed_wormhole_event"),
+			zap.String("error_type", "malformed_deltaswap_event"),
 			zap.String("log_msg_type", "tx_processing_error"),
 			zap.Uint64("event.block", pubEvent.BlockHeight),
 			zap.Uint64("receipt_outcome[x].block_height", outcomeBlockHeader.Height),
@@ -186,7 +186,7 @@ func (e *Watcher) processWormholeLog(logger *zap.Logger, _ context.Context, job 
 	if len(emitter) != 32 {
 		logger.Error(
 			"Wormhole publish event malformed",
-			zap.String("error_type", "malformed_wormhole_event"),
+			zap.String("error_type", "malformed_deltaswap_event"),
 			zap.String("log_msg_type", "tx_processing_error"),
 			zap.String("json", eventJsonStr),
 			zap.String("field", "emitter"),
@@ -206,7 +206,7 @@ func (e *Watcher) processWormholeLog(logger *zap.Logger, _ context.Context, job 
 	if len(txHashBytes) != 32 {
 		logger.Error(
 			"Transaction hash is not 32 bytes",
-			zap.String("error_type", "malformed_wormhole_event"),
+			zap.String("error_type", "malformed_deltaswap_event"),
 			zap.String("log_msg_type", "tx_processing_error"),
 			zap.String("txHash", job.txHash),
 		)
@@ -223,7 +223,7 @@ func (e *Watcher) processWormholeLog(logger *zap.Logger, _ context.Context, job 
 	if len(pl)*2 != len(pubEvent.Data) {
 		logger.Error(
 			"Wormhole publish event malformed",
-			zap.String("error_type", "malformed_wormhole_event"),
+			zap.String("error_type", "malformed_deltaswap_event"),
 			zap.String("log_msg_type", "tx_processing_error"),
 			zap.String("field", "data"),
 			zap.String("data", pubEvent.Data),
@@ -251,7 +251,7 @@ func (e *Watcher) processWormholeLog(logger *zap.Logger, _ context.Context, job 
 	e.eventChan <- EVENT_NEAR_MESSAGE_CONFIRMED
 
 	logger.Info("message observed",
-		zap.String("log_msg_type", "wormhole_event_success"),
+		zap.String("log_msg_type", "deltaswap_event_success"),
 		zap.Uint64("ts", ts),
 		zap.Time("timestamp", observation.Timestamp),
 		zap.Uint32("nonce", observation.Nonce),
@@ -284,7 +284,7 @@ func isWormholePublishEvent(logger *zap.Logger, eventJsonStr string) bool {
 	if !gjson.Valid(eventJsonStr) {
 		logger.Error(
 			"event is invalid json",
-			zap.String("error_type", "malformed_wormhole_event"),
+			zap.String("error_type", "malformed_deltaswap_event"),
 			zap.String("log_msg_type", "tx_processing_error"),
 			zap.String("json", eventJsonStr),
 		)

@@ -32,33 +32,33 @@ import (
 var (
 	ethConnectionErrors = promauto.NewCounterVec(
 		prometheus.CounterOpts{
-			Name: "wormhole_eth_connection_errors_total",
+			Name: "deltaswap_eth_connection_errors_total",
 			Help: "Total number of Ethereum connection errors (either during initial connection or while watching)",
 		}, []string{"eth_network", "reason"})
 
 	ethMessagesObserved = promauto.NewCounterVec(
 		prometheus.CounterOpts{
-			Name: "wormhole_eth_messages_observed_total",
+			Name: "deltaswap_eth_messages_observed_total",
 			Help: "Total number of Eth messages observed (pre-confirmation)",
 		}, []string{"eth_network"})
 	ethMessagesOrphaned = promauto.NewCounterVec(
 		prometheus.CounterOpts{
-			Name: "wormhole_eth_messages_orphaned_total",
+			Name: "deltaswap_eth_messages_orphaned_total",
 			Help: "Total number of Eth messages dropped (orphaned)",
 		}, []string{"eth_network", "reason"})
 	ethMessagesConfirmed = promauto.NewCounterVec(
 		prometheus.CounterOpts{
-			Name: "wormhole_eth_messages_confirmed_total",
+			Name: "deltaswap_eth_messages_confirmed_total",
 			Help: "Total number of Eth messages verified (post-confirmation)",
 		}, []string{"eth_network"})
 	currentEthHeight = promauto.NewGaugeVec(
 		prometheus.GaugeOpts{
-			Name: "wormhole_eth_current_height",
+			Name: "deltaswap_eth_current_height",
 			Help: "Current Ethereum block height",
 		}, []string{"eth_network"})
 	queryLatency = promauto.NewHistogramVec(
 		prometheus.HistogramOpts{
-			Name: "wormhole_eth_query_latency",
+			Name: "deltaswap_eth_query_latency",
 			Help: "Latency histogram for Ethereum calls (note that most interactions are streaming queries, NOT calls, and we cannot measure latency for those",
 		}, []string{"eth_network", "operation"})
 )

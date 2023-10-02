@@ -109,27 +109,27 @@ type (
 var (
 	solanaConnectionErrors = promauto.NewCounterVec(
 		prometheus.CounterOpts{
-			Name: "wormhole_solana_connection_errors_total",
+			Name: "deltaswap_solana_connection_errors_total",
 			Help: "Total number of Solana connection errors",
 		}, []string{"solana_network", "commitment", "reason"})
 	solanaAccountSkips = promauto.NewCounterVec(
 		prometheus.CounterOpts{
-			Name: "wormhole_solana_account_updates_skipped_total",
+			Name: "deltaswap_solana_account_updates_skipped_total",
 			Help: "Total number of account updates skipped due to invalid data",
 		}, []string{"solana_network", "reason"})
 	solanaMessagesConfirmed = promauto.NewCounterVec(
 		prometheus.CounterOpts{
-			Name: "wormhole_solana_observations_confirmed_total",
+			Name: "deltaswap_solana_observations_confirmed_total",
 			Help: "Total number of verified Solana observations found",
 		}, []string{"solana_network"})
 	currentSolanaHeight = promauto.NewGaugeVec(
 		prometheus.GaugeOpts{
-			Name: "wormhole_solana_current_height",
+			Name: "deltaswap_solana_current_height",
 			Help: "Current Solana slot height",
 		}, []string{"solana_network", "commitment"})
 	queryLatency = promauto.NewHistogramVec(
 		prometheus.HistogramOpts{
-			Name: "wormhole_solana_query_latency",
+			Name: "deltaswap_solana_query_latency",
 			Help: "Latency histogram for Solana RPC calls",
 		}, []string{"solana_network", "operation", "commitment"})
 )

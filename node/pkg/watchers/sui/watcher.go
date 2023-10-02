@@ -137,17 +137,17 @@ type (
 var (
 	suiConnectionErrors = promauto.NewCounterVec(
 		prometheus.CounterOpts{
-			Name: "wormhole_sui_connection_errors_total",
+			Name: "deltaswap_sui_connection_errors_total",
 			Help: "Total number of SUI connection errors",
 		}, []string{"reason"})
 	suiMessagesConfirmed = promauto.NewCounter(
 		prometheus.CounterOpts{
-			Name: "wormhole_sui_observations_confirmed_total",
+			Name: "deltaswap_sui_observations_confirmed_total",
 			Help: "Total number of verified Sui observations found",
 		})
 	currentSuiHeight = promauto.NewGauge(
 		prometheus.GaugeOpts{
-			Name: "wormhole_sui_current_height",
+			Name: "deltaswap_sui_current_height",
 			Help: "Current Sui block height",
 		})
 )
@@ -220,7 +220,7 @@ func (e *Watcher) inspectBody(logger *zap.Logger, body SuiResult) error {
 	if len(txHashBytes) != 32 {
 		logger.Error(
 			"Transaction hash is not 32 bytes",
-			zap.String("error_type", "malformed_wormhole_event"),
+			zap.String("error_type", "malformed_deltaswap_event"),
 			zap.String("log_msg_type", "tx_processing_error"),
 			zap.String("txHash", *body.ID.TxDigest),
 		)

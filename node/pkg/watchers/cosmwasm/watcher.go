@@ -64,22 +64,22 @@ type (
 var (
 	connectionErrors = promauto.NewCounterVec(
 		prometheus.CounterOpts{
-			Name: "wormhole_terra_connection_errors_total",
+			Name: "deltaswap_terra_connection_errors_total",
 			Help: "Total number of connection errors on a cosmwasm chain",
 		}, []string{"terra_network", "reason"})
 	messagesConfirmed = promauto.NewCounterVec(
 		prometheus.CounterOpts{
-			Name: "wormhole_terra_messages_confirmed_total",
+			Name: "deltaswap_terra_messages_confirmed_total",
 			Help: "Total number of verified messages found on a cosmwasm chain",
 		}, []string{"terra_network"})
 	currentSlotHeight = promauto.NewGaugeVec(
 		prometheus.GaugeOpts{
-			Name: "wormhole_terra_current_height",
+			Name: "deltaswap_terra_current_height",
 			Help: "Current slot height on a cosmwasm chain (at default commitment level, not the level used for observations)",
 		}, []string{"terra_network"})
 	queryLatency = promauto.NewHistogramVec(
 		prometheus.HistogramOpts{
-			Name: "wormhole_terra_query_latency",
+			Name: "deltaswap_terra_query_latency",
 			Help: "Latency histogram for RPC calls on a cosmwasm chain",
 		}, []string{"terra_network", "operation"})
 )

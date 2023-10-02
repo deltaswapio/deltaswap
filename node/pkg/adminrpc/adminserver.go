@@ -40,7 +40,7 @@ import (
 var (
 	vaaInjectionsTotal = promauto.NewCounter(
 		prometheus.CounterOpts{
-			Name: "wormhole_vaa_injections_total",
+			Name: "deltaswap_vaa_injections_total",
 			Help: "Total number of injected VAA queued for broadcast",
 		})
 )

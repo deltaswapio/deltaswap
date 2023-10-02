@@ -131,14 +131,14 @@ type Processor struct {
 var (
 	observationChanDelay = promauto.NewHistogram(
 		prometheus.HistogramOpts{
-			Name:    "wormhole_signed_observation_channel_delay_us",
+			Name:    "deltaswap_signed_observation_channel_delay_us",
 			Help:    "Latency histogram for delay of signed observations in channel",
 			Buckets: []float64{10.0, 20.0, 50.0, 100.0, 1000.0, 5000.0, 10000.0},
 		})
 
 	observationTotalDelay = promauto.NewHistogram(
 		prometheus.HistogramOpts{
-			Name:    "wormhole_signed_observation_total_delay_us",
+			Name:    "deltaswap_signed_observation_total_delay_us",
 			Help:    "Latency histogram for total time to process signed observations",
 			Buckets: []float64{10.0, 20.0, 50.0, 100.0, 1000.0, 5000.0, 10000.0},
 		})

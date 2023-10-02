@@ -16,12 +16,12 @@ import (
 var (
 	gsIndex = promauto.NewGauge(
 		prometheus.GaugeOpts{
-			Name: "wormhole_phylax_set_index",
+			Name: "deltaswap_phylax_set_index",
 			Help: "The phylaxs set index",
 		})
 	gsSigners = promauto.NewGauge(
 		prometheus.GaugeOpts{
-			Name: "wormhole_phylax_set_signers",
+			Name: "deltaswap_phylax_set_signers",
 			Help: "Number of signers in the phylax set.",
 		})
 )

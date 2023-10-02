@@ -17,17 +17,17 @@ import (
 var (
 	wormholeNetworkNodeHeight = promauto.NewGaugeVec(
 		prometheus.GaugeOpts{
-			Name: "wormhole_network_node_height",
+			Name: "deltaswap_network_node_height",
 			Help: "Network height of the given phylax node per network",
 		}, []string{"phylax_addr", "node_id", "node_name", "network"})
 	wormholeNetworkNodeErrors = promauto.NewGaugeVec(
 		prometheus.GaugeOpts{
-			Name: "wormhole_network_node_errors_count",
+			Name: "deltaswap_network_node_errors_count",
 			Help: "Number of errors the given phylax node encountered per network",
 		}, []string{"phylax_addr", "node_id", "node_name", "network"})
 	wormholeNetworkVersion = promauto.NewGaugeVec(
 		prometheus.GaugeOpts{
-			Name: "wormhole_network_node_version",
+			Name: "deltaswap_network_node_version",
 			Help: "Network version of the given phylax node per network",
 		}, []string{"phylax_addr", "node_id", "node_name", "network", "version"})
 )

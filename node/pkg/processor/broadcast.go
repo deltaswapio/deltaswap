@@ -19,7 +19,7 @@ import (
 var (
 	observationsBroadcastTotal = promauto.NewCounter(
 		prometheus.CounterOpts{
-			Name: "wormhole_observations_broadcast_total",
+			Name: "deltaswap_observations_broadcast_total",
 			Help: "Total number of signed observations queued for broadcast",
 		})
 )

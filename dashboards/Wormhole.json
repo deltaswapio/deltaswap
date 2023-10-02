@@ -97,7 +97,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "rate(wormhole_eth_current_height{instance=~\"$instance\", eth_network=\"eth\"}[$__rate_interval])",
+          "expr": "rate(deltaswap_eth_current_height{instance=~\"$instance\", eth_network=\"eth\"}[$__rate_interval])",
           "instant": false,
           "interval": "",
           "legendFormat": "",
@@ -196,7 +196,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "rate(wormhole_solana_current_height{instance=~\"$instance\"}[$__rate_interval])",
+          "expr": "rate(deltaswap_solana_current_height{instance=~\"$instance\"}[$__rate_interval])",
           "interval": "",
           "legendFormat": "",
           "queryType": "randomWalk",
@@ -294,7 +294,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "rate(wormhole_terra_current_height{instance=~\"$instance\"}[$__rate_interval])",
+          "expr": "rate(deltaswap_terra_current_height{instance=~\"$instance\"}[$__rate_interval])",
           "interval": "",
           "legendFormat": "",
           "queryType": "randomWalk",
@@ -392,7 +392,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "rate(wormhole_eth_current_height{instance=~\"$instance\", eth_network=\"bsc\"}[$__rate_interval])",
+          "expr": "rate(deltaswap_eth_current_height{instance=~\"$instance\", eth_network=\"bsc\"}[$__rate_interval])",
           "instant": false,
           "interval": "",
           "legendFormat": "",
@@ -491,7 +491,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "wormhole_network_node_height{instance=~\"$instance\", network=\"ethereum\"} > 0",
+          "expr": "deltaswap_network_node_height{instance=~\"$instance\", network=\"ethereum\"} > 0",
           "instant": false,
           "interval": "",
           "legendFormat": "{{ node_name }}",
@@ -590,7 +590,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "wormhole_network_node_height{instance=~\"$instance\", network=\"solana\"} > 0",
+          "expr": "deltaswap_network_node_height{instance=~\"$instance\", network=\"solana\"} > 0",
           "instant": false,
           "interval": "",
           "legendFormat": "{{ node_name }}",
@@ -689,7 +689,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "wormhole_network_node_height{instance=~\"$instance\", network=\"terra\"} > 0",
+          "expr": "deltaswap_network_node_height{instance=~\"$instance\", network=\"terra\"} > 0",
           "instant": false,
           "interval": "",
           "legendFormat": "{{ node_name }}",
@@ -788,7 +788,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "wormhole_network_node_height{instance=~\"$instance\", network=\"bsc\"} > 0",
+          "expr": "deltaswap_network_node_height{instance=~\"$instance\", network=\"bsc\"} > 0",
           "instant": false,
           "interval": "",
           "legendFormat": "{{ node_name }}",
@@ -887,38 +887,38 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "increase(wormhole_aggregation_state_unobserved_total{instance=~\"$instance\"}[$__rate_interval])",
+          "expr": "increase(deltaswap_aggregation_state_unobserved_total{instance=~\"$instance\"}[$__rate_interval])",
           "interval": "",
           "legendFormat": "unobserved",
           "queryType": "randomWalk",
           "refId": "A"
         },
         {
-          "expr": "increase(wormhole_aggregation_state_expirations_total{instance=~\"$instance\"}[$__rate_interval])",
+          "expr": "increase(deltaswap_aggregation_state_expirations_total{instance=~\"$instance\"}[$__rate_interval])",
           "interval": "",
           "legendFormat": "expirations",
           "refId": "B"
         },
         {
-          "expr": "increase(wormhole_aggregation_state_retries_total{instance=~\"$instance\"}[$__rate_interval])",
+          "expr": "increase(deltaswap_aggregation_state_retries_total{instance=~\"$instance\"}[$__rate_interval])",
           "interval": "",
           "legendFormat": "retries",
           "refId": "C"
         },
         {
-          "expr": "sum without (addr, origin, status)(increase(wormhole_aggregation_state_settled_signatures_total{instance=~\"$instance\"}[$__rate_interval]))",
+          "expr": "sum without (addr, origin, status)(increase(deltaswap_aggregation_state_settled_signatures_total{instance=~\"$instance\"}[$__rate_interval]))",
           "interval": "",
           "legendFormat": "settled",
           "refId": "D"
         },
         {
-          "expr": "increase(wormhole_aggregation_state_timeout_total{instance=~\"$instance\"}[$__rate_interval])",
+          "expr": "increase(deltaswap_aggregation_state_timeout_total{instance=~\"$instance\"}[$__rate_interval])",
           "interval": "",
           "legendFormat": "timeout",
           "refId": "E"
         },
         {
-          "expr": "increase(wormhole_aggregation_state_timeout_total{instance=~\"$instance\"}[$__rate_interval])",
+          "expr": "increase(deltaswap_aggregation_state_timeout_total{instance=~\"$instance\"}[$__rate_interval])",
           "interval": "",
           "legendFormat": "timeout",
           "refId": "F"
@@ -1015,7 +1015,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "wormhole_aggregation_state_entries{instance=~\"$instance\"}",
+          "expr": "deltaswap_aggregation_state_entries{instance=~\"$instance\"}",
           "interval": "",
           "legendFormat": "count",
           "queryType": "randomWalk",
@@ -1113,28 +1113,28 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "increase(wormhole_eth_messages_observed_total{instance=~\"$instance\"}[$__rate_interval])",
+          "expr": "increase(deltaswap_eth_messages_observed_total{instance=~\"$instance\"}[$__rate_interval])",
           "interval": "",
           "legendFormat": "ethereum (found)",
           "queryType": "randomWalk",
           "refId": "A"
         },
         {
-          "expr": "increase(wormhole_eth_messages_confirmed_total{instance=~\"$instance\"}[$__rate_interval])",
+          "expr": "increase(deltaswap_eth_messages_confirmed_total{instance=~\"$instance\"}[$__rate_interval])",
           "interval": "",
           "legendFormat": "ethereum (confirmed)",
           "queryType": "randomWalk",
           "refId": "B"
         },
         {
-          "expr": "increase(wormhole_solana_observations_confirmed_total{instance=~\"$instance\"}[$__rate_interval])",
+          "expr": "increase(deltaswap_solana_observations_confirmed_total{instance=~\"$instance\"}[$__rate_interval])",
           "interval": "",
           "legendFormat": "solana (confirmed)",
           "queryType": "randomWalk",
           "refId": "C"
         },
         {
-          "expr": "increase(wormhole_terra_messages_confirmed_total{instance=~\"$instance\"}[$__rate_interval])",
+          "expr": "increase(deltaswap_terra_messages_confirmed_total{instance=~\"$instance\"}[$__rate_interval])",
           "interval": "",
           "legendFormat": "terra (confirmed)",
           "queryType": "randomWalk",
@@ -1232,7 +1232,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "rate(wormhole_p2p_broadcast_messages_received_total{instance=~\"$instance\"}[$__rate_interval])",
+          "expr": "rate(deltaswap_p2p_broadcast_messages_received_total{instance=~\"$instance\"}[$__rate_interval])",
           "interval": "",
           "legendFormat": "{{ type }}",
           "queryType": "randomWalk",
@@ -1330,21 +1330,21 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "increase(wormhole_eth_connection_errors_total{instance=~\"$instance\"}[$__rate_interval])",
+          "expr": "increase(deltaswap_eth_connection_errors_total{instance=~\"$instance\"}[$__rate_interval])",
           "interval": "1m",
           "legendFormat": "[Ethereum] {{eth_network}} {{ reason }}",
           "queryType": "randomWalk",
           "refId": "A"
         },
         {
-          "expr": "increase(wormhole_solana_connection_errors_total{instance=~\"$instance\"}[$__rate_interval])",
+          "expr": "increase(deltaswap_solana_connection_errors_total{instance=~\"$instance\"}[$__rate_interval])",
           "interval": "1m",
           "legendFormat": "[Solana] {{ reason }}",
           "queryType": "randomWalk",
           "refId": "B"
         },
         {
-          "expr": "rate(wormhole_terra_connection_errors_total{instance=~\"$instance\"}[$__rate_interval])",
+          "expr": "rate(deltaswap_terra_connection_errors_total{instance=~\"$instance\"}[$__rate_interval])",
           "interval": "1m",
           "legendFormat": "[Terra] {{ reason }}",
           "queryType": "randomWalk",
@@ -1446,7 +1446,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "increase(wormhole_observations_signed_by_phylax_total{instance=~\"$instance\", instance=~\"$instance\"}[$__rate_interval])",
+          "expr": "increase(deltaswap_observations_signed_by_phylax_total{instance=~\"$instance\", instance=~\"$instance\"}[$__rate_interval])",
           "interval": "",
           "legendFormat": "{{ addr }}",
           "queryType": "randomWalk",
@@ -1548,7 +1548,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "increase(wormhole_aggregation_state_settled_signatures_total{status!=\"present\", instance=~\"$instance\"}[1h])",
+          "expr": "increase(deltaswap_aggregation_state_settled_signatures_total{status!=\"present\", instance=~\"$instance\"}[1h])",
           "interval": "",
           "legendFormat": "{{ addr }} [from {{ origin }}]",
           "queryType": "randomWalk",
@@ -1650,7 +1650,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "increase(wormhole_aggregation_state_settled_signatures_total{status!=\"present\", origin!=\"unknown\", instance=~\"$instance\"}[1h])",
+          "expr": "increase(deltaswap_aggregation_state_settled_signatures_total{status!=\"present\", origin!=\"unknown\", instance=~\"$instance\"}[1h])",
           "interval": "",
           "legendFormat": "{{ addr }} [from {{ origin }}]",
           "queryType": "randomWalk",
@@ -1737,7 +1737,7 @@
       "reverseYBuckets": false,
       "targets": [
         {
-          "expr": "sum(increase(wormhole_solana_query_latency_bucket{instance=~\"$instance\"}[$__interval])) by (le)",
+          "expr": "sum(increase(deltaswap_solana_query_latency_bucket{instance=~\"$instance\"}[$__interval])) by (le)",
           "interval": "",
           "legendFormat": "",
           "queryType": "randomWalk",
@@ -1807,7 +1807,7 @@
       "reverseYBuckets": false,
       "targets": [
         {
-          "expr": "sum(increase(wormhole_eth_query_latency_bucket{instance=~\"$instance\"}[$__interval])) by (le)",
+          "expr": "sum(increase(deltaswap_eth_query_latency_bucket{instance=~\"$instance\"}[$__interval])) by (le)",
           "interval": "",
           "legendFormat": "",
           "queryType": "randomWalk",
@@ -1877,7 +1877,7 @@
       "reverseYBuckets": false,
       "targets": [
         {
-          "expr": "sum(increase(wormhole_terra_query_latency_bucket{instance=~\"$instance\"}[$__interval])) by (le)",
+          "expr": "sum(increase(deltaswap_terra_query_latency_bucket{instance=~\"$instance\"}[$__interval])) by (le)",
           "interval": "",
           "legendFormat": "",
           "queryType": "randomWalk",
@@ -1947,7 +1947,7 @@
       "reverseYBuckets": false,
       "targets": [
         {
-          "expr": "sum(increase(wormhole_eth_query_latency_bucket{instance=~\"$instance\", eth_network=\"bsc\"}[$__interval])) by (le)",
+          "expr": "sum(increase(deltaswap_eth_query_latency_bucket{instance=~\"$instance\", eth_network=\"bsc\"}[$__interval])) by (le)",
           "interval": "",
           "legendFormat": "",
           "queryType": "randomWalk",
@@ -1991,7 +1991,7 @@
         "allValue": null,
         "current": {},
         "datasource": "prometheus",
-        "definition": "label_values(wormhole_network_node_height, instance)",
+        "definition": "label_values(deltaswap_network_node_height, instance)",
         "error": null,
         "hide": 0,
         "includeAll": true,
@@ -1999,7 +1999,7 @@
         "multi": false,
         "name": "instance",
         "options": [],
-        "query": "label_values(wormhole_network_node_height, instance)",
+        "query": "label_values(deltaswap_network_node_height, instance)",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,

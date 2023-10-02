@@ -20,37 +20,37 @@ import (
 var (
 	aggregationStateEntries = promauto.NewGauge(
 		prometheus.GaugeOpts{
-			Name: "wormhole_aggregation_state_entries",
+			Name: "deltaswap_aggregation_state_entries",
 			Help: "Current number of aggregation state entries (including unexpired succeed ones)",
 		})
 	aggregationStateExpiration = promauto.NewCounter(
 		prometheus.CounterOpts{
-			Name: "wormhole_aggregation_state_expirations_total",
+			Name: "deltaswap_aggregation_state_expirations_total",
 			Help: "Total number of expired submitted aggregation states",
 		})
 	aggregationStateLate = promauto.NewCounter(
 		prometheus.CounterOpts{
-			Name: "wormhole_aggregation_state_late_total",
+			Name: "deltaswap_aggregation_state_late_total",
 			Help: "Total number of late aggregation states (cluster achieved consensus without us)",
 		})
 	aggregationStateTimeout = promauto.NewCounter(
 		prometheus.CounterOpts{
-			Name: "wormhole_aggregation_state_timeout_total",
+			Name: "deltaswap_aggregation_state_timeout_total",
 			Help: "Total number of aggregation states expired due to timeout after exhausting retries",
 		})
 	aggregationStateRetries = promauto.NewCounter(
 		prometheus.CounterOpts{
-			Name: "wormhole_aggregation_state_retries_total",
+			Name: "deltaswap_aggregation_state_retries_total",
 			Help: "Total number of aggregation states queued for resubmission",
 		})
 	aggregationStateUnobserved = promauto.NewCounter(
 		prometheus.CounterOpts{
-			Name: "wormhole_aggregation_state_unobserved_total",
+			Name: "deltaswap_aggregation_state_unobserved_total",
 			Help: "Total number of aggregation states expired due to no matching local message observations",
 		})
 	aggregationStateFulfillment = promauto.NewCounterVec(
 		prometheus.CounterOpts{
-			Name: "wormhole_aggregation_state_settled_signatures_total",
+			Name: "deltaswap_aggregation_state_settled_signatures_total",
 			Help: "Total number of signatures produced by a validator, counted after waiting a fixed amount of time",
 		}, []string{"addr", "origin", "status"})
 )

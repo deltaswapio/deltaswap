@@ -168,7 +168,7 @@
         "block_hash": "6zPnFkHojNQpbRgALHgRnbzhFvp55hido4Gv645nR8zf",
         "id": "4bmB5iKs4p1edfuX9kpKA3ZE896EcRkSKz2ssMiCNQUs",
         "outcome": {
-          "executor_id": "contract.wormhole_crypto.near",
+          "executor_id": "contract.deltaswap_crypto.near",
           "gas_burnt": 3806330948934,
           "logs": [
             "wormhole/src/lib.rs#412: publish_message  prepaid_gas: \"94217765723035\"   used_gas: \"561737236755\"  delta: \"93653874829714\"",

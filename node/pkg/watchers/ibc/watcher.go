@@ -78,17 +78,17 @@ var (
 		}, []string{"reason"})
 	messagesConfirmed = promauto.NewCounterVec(
 		prometheus.CounterOpts{
-			Name: "wormhole_ibc_messages_confirmed_total",
+			Name: "deltaswap_ibc_messages_confirmed_total",
 			Help: "Total number of verified messages found on an IBC connected chain",
 		}, []string{"chain_name"})
 	currentSlotHeight = promauto.NewGaugeVec(
 		prometheus.GaugeOpts{
-			Name: "wormhole_ibc_current_height",
+			Name: "deltaswap_ibc_current_height",
 			Help: "Current slot height on an IBC connected chain (the block height on deltachain)",
 		}, []string{"chain_name"})
 	invalidChainIdMismatches = promauto.NewCounterVec(
 		prometheus.CounterOpts{
-			Name: "wormhole_ibc_chain_id_mismatches",
+			Name: "deltaswap_ibc_chain_id_mismatches",
 			Help: "Total number of cases where the wormhole chain ID does not match the IBC connection ID",
 		}, []string{"ibc_channel_id"})
 )
@@ -687,7 +687,7 @@ This query:
 '{"all_channel_chains": {}}' is `eyJhbGxfY2hhbm5lbF9jaGFpbnMiOiB7fX0=`
 
 which becomes:
-http://localhost:1319/cosmwasm/wasm/v1/contract/wormhole1nc5tatafv6eyq7llkr2gv50ff9e22mnf70qgjlv737ktmt4eswrq0kdhcj/smart/eyJhbGxfY2hhbm5lbF9jaGFpbnMiOiB7fX0%3D
+http://localhost:1319/cosmwasm/wasm/v1/contract/delta1nc5tatafv6eyq7llkr2gv50ff9e22mnf70qgjlv737ktmt4eswrq0kdhcj/smart/eyJhbGxfY2hhbm5lbF9jaGFpbnMiOiB7fX0%3D
 
 Returns something like this:
 {

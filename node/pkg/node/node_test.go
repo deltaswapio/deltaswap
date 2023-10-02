@@ -57,7 +57,7 @@ const LOCAL_P2P_PORTRANGE_START = 11000
 const LOCAL_STATUS_PORTRANGE_START = 12000
 const LOCAL_PUBLICWEB_PORTRANGE_START = 13000
 
-var PROMETHEUS_METRIC_VALID_HEARTBEAT_RECEIVED = "wormhole_p2p_broadcast_messages_received_total{type=\"valid_heartbeat\"}"
+var PROMETHEUS_METRIC_VALID_HEARTBEAT_RECEIVED = "deltaswap_p2p_broadcast_messages_received_total{type=\"valid_heartbeat\"}"
 
 const WAIT_FOR_LOGS = true
 const WAIT_FOR_METRICS = false

@@ -25,22 +25,22 @@ import (
 var (
 	observationsReceivedTotal = promauto.NewCounter(
 		prometheus.CounterOpts{
-			Name: "wormhole_observations_received_total",
+			Name: "deltaswap_observations_received_total",
 			Help: "Total number of raw VAA observations received from gossip",
 		})
 	observationsReceivedByPhylaxAddressTotal = promauto.NewCounterVec(
 		prometheus.CounterOpts{
-			Name: "wormhole_observations_signed_by_phylax_total",
+			Name: "deltaswap_observations_signed_by_phylax_total",
 			Help: "Total number of signed and verified VAA observations grouped by phylax address",
 		}, []string{"addr"})
 	observationsFailedTotal = promauto.NewCounterVec(
 		prometheus.CounterOpts{
-			Name: "wormhole_observations_verification_failures_total",
+			Name: "deltaswap_observations_verification_failures_total",
 			Help: "Total number of observations verification failure, grouped by failure reason",
 		}, []string{"cause"})
 	observationsUnknownTotal = promauto.NewCounter(
 		prometheus.CounterOpts{
-			Name: "wormhole_observations_unknown_total",
+			Name: "deltaswap_observations_unknown_total",
 			Help: "Total number of verified observations we haven't seen ourselves",
 		})
 )
