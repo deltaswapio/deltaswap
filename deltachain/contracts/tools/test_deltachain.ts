@@ -54,7 +54,7 @@ async function main() {
     }
     const denom = devnetConsts.chains[WORMCHAIN_ID].addresses.native.denom
     const mnemonic = devnetConsts.chains[WORMCHAIN_ID].accounts.deltachainNodeOfPhylax0.mnemonic
-    const addressPrefix = "wormhole"
+    const addressPrefix = "delta"
     const signerPk = devnetConsts.devnetPhylaxs[0].private
     const accountingAddress = devnetConsts.chains[WORMCHAIN_ID].contracts.accountingNativeAddress
 

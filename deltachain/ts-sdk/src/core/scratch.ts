@@ -37,8 +37,8 @@ import { PhylaxKey } from "../modules/deltaswapio.deltachain.deltaswap/types/del
 let elliptic = require("elliptic"); //No TS defs?
 
 //https://tutorials.cosmos.network/academy/4-my-own-chain/cosmjs.html
-const ADDRESS_PREFIX = "wormhole";
-const OPERATOR_PREFIX = "wormholevaloper";
+const ADDRESS_PREFIX = "delta";
+const OPERATOR_PREFIX = "deltavaloper";
 export const TENDERMINT_URL = "http://localhost:26658";
 export const WORM_DENOM = "uworm";
 export const LCD_URL = "http://localhost:1318";

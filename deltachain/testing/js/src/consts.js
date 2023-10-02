@@ -4,9 +4,9 @@ export const TEST_WALLET_MNEMONIC_2 =
   "maple pudding enjoy pole real rabbit soft make square city wrestle area aisle dwarf spike voice over still post lend genius bitter exit shoot";
 
 export const TEST_WALLET_ADDRESS_1 =
-  "wormhole1cyyzpxplxdzkeea7kwsydadg87357qna3zg3tq";
+  "delta1cyyzpxplxdzkeea7kwsydadg87357qna3zg3tq";
 export const TEST_WALLET_ADDRESS_2 =
-  "wormhole1wqwywkce50mg6077huy4j9y8lt80943ks5udzr";
+  "delta1wqwywkce50mg6077huy4j9y8lt80943ks5udzr";
 
 export const DEVNET_PHYLAX_PUBLIC_KEY =
   "beFA429d57cD18b7F8A4d91A2da9AB4AF05d0FBe";
@@ -19,7 +19,7 @@ export const DEVNET_PHYLAX2_PRIVATE_KEY =
 
 //This assume phylax 1 uses test wallet 1.
 export const PHYLAX_VALIDATOR_VALADDR =
-  "wormholevaloper1cyyzpxplxdzkeea7kwsydadg87357qna87hzv8";
+  "deltavaloper1cyyzpxplxdzkeea7kwsydadg87357qna87hzv8";
 // export const PHYLAX_VALIDATOR2_VALADDR = "";
 
 export const PHYLAX_VALIDATOR_BASE64_VALADDR = "wQggmD8zRWznvrOgRvWoP6NPAn0=";
@@ -30,13 +30,13 @@ export const TENDERMINT_URL = "http://localhost:26659";
 //export const FAUCET_URL = "http://localhost:4500";
 
 export const WORM_DENOM = "uworm";
-export const ADDRESS_PREFIX = "wormhole";
-export const OPERATOR_PREFIX = "wormholevaloper";
+export const ADDRESS_PREFIX = "delta";
+export const OPERATOR_PREFIX = "deltavaloper";
 
 export const DEVNET_SOLT = "2WDq7wSs9zYrpx2kbHDA4RUTRch2CCTP6ZWaH4GNfnQQ";
 
 //This is a transfer for 100 SOLT to Chain ID 2,
-//And recipient address wormhole1cyyzpxplxdzkeea7kwsydadg87357qna3zg3tq, which should be TEST_WALLET_1
+//And recipient address delta1cyyzpxplxdzkeea7kwsydadg87357qna3zg3tq, which should be TEST_WALLET_1
 // Will need to update this with the real chain ID
 export const TEST_TRANSFER_VAA_1 =
   "01000000000100167fddaf3b94aa48975829abfa0f52b6f48ad97f67a6d62c928ad5159964471d3b3f465077aa08dc5311f3adbc92e76d6e7a2c114cad4a09297cd150336520b100000000006ea5bc5b0001c69a1b1a65dd336bf1df6a77afb501fc25db7fc0938cb08595a9ef473265cb4f1f428ee55b7e3c0d2001000000000000000000000000000000000000000000000000002386f26fc10000165809739240a0ac03b98440fe8985548e3aa683cd0d4d9df5b5659669faa3010001000000000000000000000000c10820983f33456ce7beb3a046f5a83fa34f027d0c200000000000000000000000000000000000000000000000000000000000000000";

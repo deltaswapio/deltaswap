@@ -45,7 +45,7 @@ type (
 // REST handler with a given sub-route.
 func ProposalPhylaxSetUpdateRESTHandler(clientCtx client.Context) govrest.ProposalRESTHandler {
 	return govrest.ProposalRESTHandler{
-		SubRoute: "wormhole_phylax_update",
+		SubRoute: "deltaswap_phylax_update",
 		Handler:  postProposalPhylaxSetUpdateHandlerFn(clientCtx),
 	}
 }
@@ -93,7 +93,7 @@ func postProposalPhylaxSetUpdateHandlerFn(clientCtx client.Context) http.Handler
 // REST handler with a given sub-route.
 func ProposalDeltaswapGovernanceMessageRESTHandler(clientCtx client.Context) govrest.ProposalRESTHandler {
 	return govrest.ProposalRESTHandler{
-		SubRoute: "wormhole_governance_message",
+		SubRoute: "deltaswap_governance_message",
 		Handler:  postProposalDeltaswapGovernanceMessageHandlerFn(clientCtx),
 	}
 }

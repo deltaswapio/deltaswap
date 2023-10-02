@@ -33,21 +33,21 @@
       "accounts": [
         {
           "@type": "/cosmos.auth.v1beta1.BaseAccount",
-          "address": "wormhole1cyyzpxplxdzkeea7kwsydadg87357qna3zg3tq",
+          "address": "delta1cyyzpxplxdzkeea7kwsydadg87357qna3zg3tq",
           "pub_key": null,
           "account_number": "0",
           "sequence": "0"
         },
         {
           "@type": "/cosmos.auth.v1beta1.BaseAccount",
-          "address": "wormhole1wqwywkce50mg6077huy4j9y8lt80943ks5udzr",
+          "address": "delta1wqwywkce50mg6077huy4j9y8lt80943ks5udzr",
           "pub_key": null,
           "account_number": "0",
           "sequence": "0"
         },
         {
           "@type": "/cosmos.auth.v1beta1.BaseAccount",
-          "address": "wormhole14vtqhv6550uh6gycxxum8qmx3kmy7ak2qwzecx",
+          "address": "delta14vtqhv6550uh6gycxxum8qmx3kmy7ak2qwzecx",
           "pub_key": null,
           "account_number": "0",
           "sequence": "0"
@@ -61,7 +61,7 @@
       },
       "balances": [
         {
-          "address": "wormhole1wqwywkce50mg6077huy4j9y8lt80943ks5udzr",
+          "address": "delta1wqwywkce50mg6077huy4j9y8lt80943ks5udzr",
           "coins": [
             {
               "denom": "utest",
@@ -70,7 +70,7 @@
           ]
         },
         {
-          "address": "wormhole1cyyzpxplxdzkeea7kwsydadg87357qna3zg3tq",
+          "address": "delta1cyyzpxplxdzkeea7kwsydadg87357qna3zg3tq",
           "coins": [
             {
               "denom": "utest",
@@ -79,7 +79,7 @@
           ]
         },
         {
-          "address": "wormhole14vtqhv6550uh6gycxxum8qmx3kmy7ak2qwzecx",
+          "address": "delta14vtqhv6550uh6gycxxum8qmx3kmy7ak2qwzecx",
           "coins": [
             {
               "denom": "utest",
@@ -185,8 +185,8 @@
                   "max_change_rate": "0.010000000000000000"
                 },
                 "min_self_delegation": "0",
-                "delegator_address": "wormhole1cyyzpxplxdzkeea7kwsydadg87357qna3zg3tq",
-                "validator_address": "wormholevaloper1cyyzpxplxdzkeea7kwsydadg87357qna87hzv8",
+                "delegator_address": "delta1cyyzpxplxdzkeea7kwsydadg87357qna3zg3tq",
+                "validator_address": "deltavaloper1cyyzpxplxdzkeea7kwsydadg87357qna87hzv8",
                 "pubkey": {
                   "@type": "/cosmos.crypto.ed25519.PubKey",
                   "key": "fnfoo/C+i+Ng1J8vct6wfvrTS9JeNIG5UeO87ZHKMkY="
@@ -351,7 +351,7 @@
       "sequences": [],
       "gen_msgs": []
     },
-    "wormhole": {
+    "deltaswap": {
       "config": {
         "chain_id": 3104,
         "governance_chain": 1,

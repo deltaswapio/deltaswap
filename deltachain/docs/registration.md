@@ -3,7 +3,7 @@
 The deltaswap (core module) address is:
 
 ```
-wormhole1ap5vgur5zlgys8whugfegnn43emka567dtq0jl
+delta1ap5vgur5zlgys8whugfegnn43emka567dtq0jl
 ```
 
 This is deterministically generated from the module.

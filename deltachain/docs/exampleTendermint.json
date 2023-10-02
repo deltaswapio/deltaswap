@@ -32,7 +32,7 @@
                     "attributes": [
                       {
                         "key": "receiver",
-                        "value": "wormhole1zugu6cajc4z7ue29g9wnes9a5ep9cs7yu7rn3z"
+                        "value": "delta1zugu6cajc4z7ue29g9wnes9a5ep9cs7yu7rn3z"
                       },
                       { "key": "amount", "value": "100uworm" }
                     ]
@@ -42,7 +42,7 @@
                     "attributes": [
                       {
                         "key": "spender",
-                        "value": "wormhole1wqwywkce50mg6077huy4j9y8lt80943ks5udzr"
+                        "value": "delta1wqwywkce50mg6077huy4j9y8lt80943ks5udzr"
                       },
                       { "key": "amount", "value": "100uworm" }
                     ]
@@ -53,7 +53,7 @@
                       { "key": "action", "value": "Transfer" },
                       {
                         "key": "sender",
-                        "value": "wormhole1wqwywkce50mg6077huy4j9y8lt80943ks5udzr"
+                        "value": "delta1wqwywkce50mg6077huy4j9y8lt80943ks5udzr"
                       }
                     ]
                   },
@@ -62,11 +62,11 @@
                     "attributes": [
                       {
                         "key": "recipient",
-                        "value": "wormhole1zugu6cajc4z7ue29g9wnes9a5ep9cs7yu7rn3z"
+                        "value": "delta1zugu6cajc4z7ue29g9wnes9a5ep9cs7yu7rn3z"
                       },
                       {
                         "key": "sender",
-                        "value": "wormhole1wqwywkce50mg6077huy4j9y8lt80943ks5udzr"
+                        "value": "delta1wqwywkce50mg6077huy4j9y8lt80943ks5udzr"
                       },
                       { "key": "amount", "value": "100uworm" }
                     ]
@@ -208,21 +208,21 @@
       }
     },
     "events": {
-      "coin_spent.spender": ["wormhole1wqwywkce50mg6077huy4j9y8lt80943ks5udzr"],
+      "coin_spent.spender": ["delta1wqwywkce50mg6077huy4j9y8lt80943ks5udzr"],
       "coin_received.amount": ["100uworm"],
       "transfer.amount": ["100uworm"],
-      "tx.acc_seq": ["wormhole1wqwywkce50mg6077huy4j9y8lt80943ks5udzr/13"],
+      "tx.acc_seq": ["delta1wqwywkce50mg6077huy4j9y8lt80943ks5udzr/13"],
       "message.action": ["Transfer"],
       "deltaswapio.deltachain.deltaswap.EventPostedMessage.nonce": ["0"],
       "tx.hash": [
         "0A623859DCEBE1DCAC077D6D8B459BBF6FB199B18FCC5A3B9518EB3F36F25BE5"
       ],
       "tx.fee": [""],
-      "message.sender": ["wormhole1wqwywkce50mg6077huy4j9y8lt80943ks5udzr"],
+      "message.sender": ["delta1wqwywkce50mg6077huy4j9y8lt80943ks5udzr"],
       "coin_received.receiver": [
-        "wormhole1zugu6cajc4z7ue29g9wnes9a5ep9cs7yu7rn3z"
+        "delta1zugu6cajc4z7ue29g9wnes9a5ep9cs7yu7rn3z"
       ],
-      "transfer.recipient": ["wormhole1zugu6cajc4z7ue29g9wnes9a5ep9cs7yu7rn3z"],
+      "transfer.recipient": ["delta1zugu6cajc4z7ue29g9wnes9a5ep9cs7yu7rn3z"],
       "deltaswapio.deltachain.deltaswap.EventPostedMessage.sequence": [
         "13"
       ],
@@ -235,7 +235,7 @@
         "AQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABkAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAdWhvbGUMIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=="
       ],
       "tm.event": ["Tx"],
-      "transfer.sender": ["wormhole1wqwywkce50mg6077huy4j9y8lt80943ks5udzr"],
+      "transfer.sender": ["delta1wqwywkce50mg6077huy4j9y8lt80943ks5udzr"],
       "deltaswapio.deltachain.deltaswap.EventPostedMessage.emitter": [
         "AAAAAAAAAAAAAAAAFxHNY7LFRe5lRUFdPMC9pkJcQ8Q="
       ]

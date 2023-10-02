@@ -33,7 +33,7 @@
       "accounts": [
         {
           "@type": "/cosmos.auth.v1beta1.BaseAccount",
-          "address": "wormhole168v7xxulsamp5sms8q8mtjfdgemczm7fhv0zwv",
+          "address": "delta168v7xxulsamp5sms8q8mtjfdgemczm7fhv0zwv",
           "pub_key": null,
           "account_number": "0",
           "sequence": "0"
@@ -47,7 +47,7 @@
       },
       "balances": [
         {
-          "address": "wormhole168v7xxulsamp5sms8q8mtjfdgemczm7fhv0zwv",
+          "address": "delta168v7xxulsamp5sms8q8mtjfdgemczm7fhv0zwv",
           "coins": [
             {
               "denom": "utest",
@@ -153,8 +153,8 @@
                   "max_change_rate": "0.010000000000000000"
                 },
                 "min_self_delegation": "0",
-                "delegator_address": "wormhole168v7xxulsamp5sms8q8mtjfdgemczm7fhv0zwv",
-                "validator_address": "wormholevaloper168v7xxulsamp5sms8q8mtjfdgemczm7fpss3ft",
+                "delegator_address": "delta168v7xxulsamp5sms8q8mtjfdgemczm7fhv0zwv",
+                "validator_address": "deltavaloper168v7xxulsamp5sms8q8mtjfdgemczm7fpss3ft",
                 "pubkey": {
                   "@type": "/cosmos.crypto.ed25519.PubKey",
                   "key": "1ZI8QSBCjJgdJfkP86lHxA3R+JAKKpeg55k1XC7WLoI="
@@ -319,7 +319,7 @@
       "sequences": [],
       "gen_msgs": []
     },
-    "wormhole": {
+    "deltaswap": {
       "config": {
         "chain_id": 3104,
         "governance_chain": 1,

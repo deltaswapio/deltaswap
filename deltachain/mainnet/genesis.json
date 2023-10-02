@@ -6,14 +6,14 @@
         {
           "@type": "/cosmos.auth.v1beta1.BaseAccount",
           "account_number": "14",
-          "address": "wormhole1p0pg5975w37rpry7w5zjjgzg94yh0xhsuptkzg",
+          "address": "delta1p0pg5975w37rpry7w5zjjgzg94yh0xhsuptkzg",
           "pub_key": null,
           "sequence": "0"
         },
         {
           "@type": "/cosmos.auth.v1beta1.BaseAccount",
           "account_number": "16",
-          "address": "wormhole1z89utvygweg5l56fsk8ak7t6hh88fd0a6wuxw2",
+          "address": "delta1z89utvygweg5l56fsk8ak7t6hh88fd0a6wuxw2",
           "pub_key": {
             "@type": "/cosmos.crypto.secp256k1.PubKey",
             "key": "ArQwoEt9mBB0R1jlSIE5Tc7UwDWaIIGdT2W7HLnlbuc0"
@@ -24,7 +24,7 @@
           "@type": "/cosmos.auth.v1beta1.ModuleAccount",
           "base_account": {
             "account_number": "7",
-            "address": "wormhole1yl6hdjhmkf37639730gffanpzndzdpmhqmm4up",
+            "address": "delta1yl6hdjhmkf37639730gffanpzndzdpmhqmm4up",
             "pub_key": null,
             "sequence": "0"
           },
@@ -37,7 +37,7 @@
         {
           "@type": "/cosmos.auth.v1beta1.BaseAccount",
           "account_number": "8",
-          "address": "wormhole1xmhvcpuhyphm3a2svwct5mv839gcugwx0j04rp",
+          "address": "delta1xmhvcpuhyphm3a2svwct5mv839gcugwx0j04rp",
           "pub_key": {
             "@type": "/cosmos.crypto.secp256k1.PubKey",
             "key": "AkXYDy6G0yAcJ7Z28XAeEEN+DwYuZ9lqBEC987eX6jk2"
@@ -47,7 +47,7 @@
         {
           "@type": "/cosmos.auth.v1beta1.BaseAccount",
           "account_number": "21",
-          "address": "wormhole1ftlycecv4qgplcnw8f8fu4f7z7ezwdva2gxanh",
+          "address": "delta1ftlycecv4qgplcnw8f8fu4f7z7ezwdva2gxanh",
           "pub_key": {
             "@type": "/cosmos.crypto.secp256k1.PubKey",
             "key": "A3TFGqcdVEIy+SqA3XvZmlq7DcI/W8XjAXnQGqsr2qEz"
@@ -58,7 +58,7 @@
           "@type": "/cosmos.auth.v1beta1.ModuleAccount",
           "base_account": {
             "account_number": "3",
-            "address": "wormhole1fl48vsnmsdzcv85q5d2q4z5ajdha8yu3mlynj4",
+            "address": "delta1fl48vsnmsdzcv85q5d2q4z5ajdha8yu3mlynj4",
             "pub_key": null,
             "sequence": "0"
           },
@@ -71,7 +71,7 @@
         {
           "@type": "/cosmos.auth.v1beta1.BaseAccount",
           "account_number": "13",
-          "address": "wormhole12trn2ltz4zswxqhepsc8sq5zc7g6h0xtycy93d",
+          "address": "delta12trn2ltz4zswxqhepsc8sq5zc7g6h0xtycy93d",
           "pub_key": {
             "@type": "/cosmos.crypto.secp256k1.PubKey",
             "key": "A2rhDuxEmaKhWNBBqrev0NUJdmcNdxrv5yzVGPaPfKtU"
@@ -82,7 +82,7 @@
           "@type": "/cosmos.auth.v1beta1.ModuleAccount",
           "base_account": {
             "account_number": "4",
-            "address": "wormhole1tygms3xhhs3yv487phx3dw4a95jn7t7l0lczyp",
+            "address": "delta1tygms3xhhs3yv487phx3dw4a95jn7t7l0lczyp",
             "pub_key": null,
             "sequence": "0"
           },
@@ -95,28 +95,28 @@
         {
           "@type": "/cosmos.auth.v1beta1.BaseAccount",
           "account_number": "19",
-          "address": "wormhole1tthx03ehpcu8a7lkyhnrlfrkj8n9l7swylquey",
+          "address": "delta1tthx03ehpcu8a7lkyhnrlfrkj8n9l7swylquey",
           "pub_key": null,
           "sequence": "0"
         },
         {
           "@type": "/cosmos.auth.v1beta1.BaseAccount",
           "account_number": "12",
-          "address": "wormhole1tmhnuvqt2nnt52gw4c8kj2mhrfqztuec6yqa2g",
+          "address": "delta1tmhnuvqt2nnt52gw4c8kj2mhrfqztuec6yqa2g",
           "pub_key": null,
           "sequence": "0"
         },
         {
           "@type": "/cosmos.auth.v1beta1.BaseAccount",
           "account_number": "24",
-          "address": "wormhole1vseqxn0fhl3gv9ls0sxv22vd5w5ruu64g99xrt",
+          "address": "delta1vseqxn0fhl3gv9ls0sxv22vd5w5ruu64g99xrt",
           "pub_key": null,
           "sequence": "0"
         },
         {
           "@type": "/cosmos.auth.v1beta1.BaseAccount",
           "account_number": "25",
-          "address": "wormhole1dqgczkwjc976lrqft0zh2zcm4m3tnhg7mm2g7k",
+          "address": "delta1dqgczkwjc976lrqft0zh2zcm4m3tnhg7mm2g7k",
           "pub_key": {
             "@type": "/cosmos.crypto.secp256k1.PubKey",
             "key": "ApwmmBARzuUvQ4trwcv63WC5pSR3rU3h7Y//6Qv0oQ64"
@@ -126,7 +126,7 @@
         {
           "@type": "/cosmos.auth.v1beta1.BaseAccount",
           "account_number": "22",
-          "address": "wormhole1w8rc2yn90v8s6k56ngejkh9w62qekmec7ftufa",
+          "address": "delta1w8rc2yn90v8s6k56ngejkh9w62qekmec7ftufa",
           "pub_key": null,
           "sequence": "0"
         },
@@ -134,7 +134,7 @@
           "@type": "/cosmos.auth.v1beta1.ModuleAccount",
           "base_account": {
             "account_number": "5",
-            "address": "wormhole10d07y265gmmuvt4z0w9aw880jnsr700j5x7ea3",
+            "address": "delta10d07y265gmmuvt4z0w9aw880jnsr700j5x7ea3",
             "pub_key": null,
             "sequence": "0"
           },
@@ -146,7 +146,7 @@
         {
           "@type": "/cosmos.auth.v1beta1.BaseAccount",
           "account_number": "26",
-          "address": "wormhole1000ya26q2cmh399q4c5aaacd9lmmdqp9yxhr4z",
+          "address": "delta1000ya26q2cmh399q4c5aaacd9lmmdqp9yxhr4z",
           "pub_key": {
             "@type": "/cosmos.crypto.secp256k1.PubKey",
             "key": "A0sSh9hdJ/AmahR47jRwcMRtvUE5Q582oHRduBDzLwDd"
@@ -156,7 +156,7 @@
         {
           "@type": "/cosmos.auth.v1beta1.BaseAccount",
           "account_number": "23",
-          "address": "wormhole1szfznrw4jttqxzpu3aq77frg5jf4wjw29m0k3y",
+          "address": "delta1szfznrw4jttqxzpu3aq77frg5jf4wjw29m0k3y",
           "pub_key": {
             "@type": "/cosmos.crypto.secp256k1.PubKey",
             "key": "AtBvgkLLcyhBwrB7teosVqqRqwJqClGdl4gqFEl2JFja"
@@ -167,7 +167,7 @@
           "@type": "/cosmos.auth.v1beta1.ModuleAccount",
           "base_account": {
             "account_number": "2",
-            "address": "wormhole1jv65s3grqf6v6jl3dp4t6c9t9rk99cd8fmfqza",
+            "address": "delta1jv65s3grqf6v6jl3dp4t6c9t9rk99cd8fmfqza",
             "pub_key": null,
             "sequence": "0"
           },
@@ -177,21 +177,21 @@
         {
           "@type": "/cosmos.auth.v1beta1.BaseAccount",
           "account_number": "15",
-          "address": "wormhole1njl5dpn8eg6t0rjhznqaw3sndmyec4xagl5hk3",
+          "address": "delta1njl5dpn8eg6t0rjhznqaw3sndmyec4xagl5hk3",
           "pub_key": null,
           "sequence": "0"
         },
         {
           "@type": "/cosmos.auth.v1beta1.BaseAccount",
           "account_number": "20",
-          "address": "wormhole15up52ucx95n73knwjk373acpjngtntcs8hv9vs",
+          "address": "delta15up52ucx95n73knwjk373acpjngtntcs8hv9vs",
           "pub_key": null,
           "sequence": "0"
         },
         {
           "@type": "/cosmos.auth.v1beta1.BaseAccount",
           "account_number": "17",
-          "address": "wormhole14kn8w5lcd93uhva9gxpupv0sy244dexmr2w6y4",
+          "address": "delta14kn8w5lcd93uhva9gxpupv0sy244dexmr2w6y4",
           "pub_key": {
             "@type": "/cosmos.crypto.secp256k1.PubKey",
             "key": "Ax6Zl6H7rhaD+koK1Y1VtS5/9eNmIUUljujkRrnsQ5hu"
@@ -201,7 +201,7 @@
         {
           "@type": "/cosmos.auth.v1beta1.BaseAccount",
           "account_number": "0",
-          "address": "wormhole1cm4lqyl5j5t9ewd79vrnsrga2cnml8ca29r0sz",
+          "address": "delta1cm4lqyl5j5t9ewd79vrnsrga2cnml8ca29r0sz",
           "pub_key": {
             "@type": "/cosmos.crypto.secp256k1.PubKey",
             "key": "AjlvIWgYHr744P8yB3InidcBoKSjGRSq4wuSqGZY9UaU"
@@ -211,14 +211,14 @@
         {
           "@type": "/cosmos.auth.v1beta1.BaseAccount",
           "account_number": "10",
-          "address": "wormhole1eg9kajxr5x25h0t94570mn79j3a00emphnwt3p",
+          "address": "delta1eg9kajxr5x25h0t94570mn79j3a00emphnwt3p",
           "pub_key": null,
           "sequence": "0"
         },
         {
           "@type": "/cosmos.auth.v1beta1.BaseAccount",
           "account_number": "11",
-          "address": "wormhole16pj5gljqnqs0ajxakccfjhu05yczp987gk40yh",
+          "address": "delta16pj5gljqnqs0ajxakccfjhu05yczp987gk40yh",
           "pub_key": null,
           "sequence": "0"
         },
@@ -226,7 +226,7 @@
           "@type": "/cosmos.auth.v1beta1.ModuleAccount",
           "base_account": {
             "account_number": "6",
-            "address": "wormhole1m3h30wlvsf8llruxtpukdvsy0km2kum8x42yvz",
+            "address": "delta1m3h30wlvsf8llruxtpukdvsy0km2kum8x42yvz",
             "pub_key": null,
             "sequence": "0"
           },
@@ -238,14 +238,14 @@
         {
           "@type": "/cosmos.auth.v1beta1.BaseAccount",
           "account_number": "18",
-          "address": "wormhole1mlw6tma6pq522h50pcarrjh9gf5xryukfykszc",
+          "address": "delta1mlw6tma6pq522h50pcarrjh9gf5xryukfykszc",
           "pub_key": null,
           "sequence": "0"
         },
         {
           "@type": "/cosmos.auth.v1beta1.BaseAccount",
           "account_number": "9",
-          "address": "wormhole1ac3ry97k843tdnv26ss7ps86w0l4mss7qeagwh",
+          "address": "delta1ac3ry97k843tdnv26ss7ps86w0l4mss7qeagwh",
           "pub_key": {
             "@type": "/cosmos.crypto.secp256k1.PubKey",
             "key": "AkAqcbHi4Th2LVRvJjcuFPBVm5ngzLsGF6jOJW8rYvCL"
@@ -256,7 +256,7 @@
           "@type": "/cosmos.auth.v1beta1.ModuleAccount",
           "base_account": {
             "account_number": "1",
-            "address": "wormhole17xpfvakm2amg962yls6f84z3kell8c5l7awuql",
+            "address": "delta17xpfvakm2amg962yls6f84z3kell8c5l7awuql",
             "pub_key": null,
             "sequence": "0"
           },
@@ -275,7 +275,7 @@
     "bank": {
       "balances": [
         {
-          "address": "wormhole1p0pg5975w37rpry7w5zjjgzg94yh0xhsuptkzg",
+          "address": "delta1p0pg5975w37rpry7w5zjjgzg94yh0xhsuptkzg",
           "coins": [
             {
               "amount": "1",
@@ -284,7 +284,7 @@
           ]
         },
         {
-          "address": "wormhole12trn2ltz4zswxqhepsc8sq5zc7g6h0xtycy93d",
+          "address": "delta12trn2ltz4zswxqhepsc8sq5zc7g6h0xtycy93d",
           "coins": [
             {
               "amount": "1",
@@ -293,7 +293,7 @@
           ]
         },
         {
-          "address": "wormhole1tthx03ehpcu8a7lkyhnrlfrkj8n9l7swylquey",
+          "address": "delta1tthx03ehpcu8a7lkyhnrlfrkj8n9l7swylquey",
           "coins": [
             {
               "amount": "1",
@@ -302,7 +302,7 @@
           ]
         },
         {
-          "address": "wormhole1tmhnuvqt2nnt52gw4c8kj2mhrfqztuec6yqa2g",
+          "address": "delta1tmhnuvqt2nnt52gw4c8kj2mhrfqztuec6yqa2g",
           "coins": [
             {
               "amount": "1",
@@ -311,7 +311,7 @@
           ]
         },
         {
-          "address": "wormhole1vseqxn0fhl3gv9ls0sxv22vd5w5ruu64g99xrt",
+          "address": "delta1vseqxn0fhl3gv9ls0sxv22vd5w5ruu64g99xrt",
           "coins": [
             {
               "amount": "1",
@@ -320,7 +320,7 @@
           ]
         },
         {
-          "address": "wormhole1dqgczkwjc976lrqft0zh2zcm4m3tnhg7mm2g7k",
+          "address": "delta1dqgczkwjc976lrqft0zh2zcm4m3tnhg7mm2g7k",
           "coins": [
             {
               "amount": "1",
@@ -329,7 +329,7 @@
           ]
         },
         {
-          "address": "wormhole1w8rc2yn90v8s6k56ngejkh9w62qekmec7ftufa",
+          "address": "delta1w8rc2yn90v8s6k56ngejkh9w62qekmec7ftufa",
           "coins": [
             {
               "amount": "1",
@@ -338,7 +338,7 @@
           ]
         },
         {
-          "address": "wormhole1njl5dpn8eg6t0rjhznqaw3sndmyec4xagl5hk3",
+          "address": "delta1njl5dpn8eg6t0rjhznqaw3sndmyec4xagl5hk3",
           "coins": [
             {
               "amount": "1",
@@ -347,7 +347,7 @@
           ]
         },
         {
-          "address": "wormhole15up52ucx95n73knwjk373acpjngtntcs8hv9vs",
+          "address": "delta15up52ucx95n73knwjk373acpjngtntcs8hv9vs",
           "coins": [
             {
               "amount": "1",
@@ -356,7 +356,7 @@
           ]
         },
         {
-          "address": "wormhole1cm4lqyl5j5t9ewd79vrnsrga2cnml8ca29r0sz",
+          "address": "delta1cm4lqyl5j5t9ewd79vrnsrga2cnml8ca29r0sz",
           "coins": [
             {
               "amount": "9988",
@@ -365,7 +365,7 @@
           ]
         },
         {
-          "address": "wormhole1eg9kajxr5x25h0t94570mn79j3a00emphnwt3p",
+          "address": "delta1eg9kajxr5x25h0t94570mn79j3a00emphnwt3p",
           "coins": [
             {
               "amount": "1",
@@ -374,7 +374,7 @@
           ]
         },
         {
-          "address": "wormhole16pj5gljqnqs0ajxakccfjhu05yczp987gk40yh",
+          "address": "delta16pj5gljqnqs0ajxakccfjhu05yczp987gk40yh",
           "coins": [
             {
               "amount": "1",
@@ -383,7 +383,7 @@
           ]
         },
         {
-          "address": "wormhole1mlw6tma6pq522h50pcarrjh9gf5xryukfykszc",
+          "address": "delta1mlw6tma6pq522h50pcarrjh9gf5xryukfykszc",
           "coins": [
             {
               "amount": "1",
@@ -472,58 +472,58 @@
     "distribution": {
       "delegator_starting_infos": [
         {
-          "delegator_address": "wormhole1xmhvcpuhyphm3a2svwct5mv839gcugwx0j04rp",
+          "delegator_address": "delta1xmhvcpuhyphm3a2svwct5mv839gcugwx0j04rp",
           "starting_info": {
             "height": "1093266",
             "previous_period": "1",
             "stake": "0.000000000000000000"
           },
-          "validator_address": "wormholevaloper1xmhvcpuhyphm3a2svwct5mv839gcugwxewsxyx"
+          "validator_address": "deltavaloper1xmhvcpuhyphm3a2svwct5mv839gcugwxewsxyx"
         },
         {
-          "delegator_address": "wormhole12trn2ltz4zswxqhepsc8sq5zc7g6h0xtycy93d",
+          "delegator_address": "delta12trn2ltz4zswxqhepsc8sq5zc7g6h0xtycy93d",
           "starting_info": {
             "height": "1065302",
             "previous_period": "1",
             "stake": "0.000000000000000000"
           },
-          "validator_address": "wormholevaloper12trn2ltz4zswxqhepsc8sq5zc7g6h0xtjymkk2"
+          "validator_address": "deltavaloper12trn2ltz4zswxqhepsc8sq5zc7g6h0xtjymkk2"
         },
         {
-          "delegator_address": "wormhole1dqgczkwjc976lrqft0zh2zcm4m3tnhg7mm2g7k",
+          "delegator_address": "delta1dqgczkwjc976lrqft0zh2zcm4m3tnhg7mm2g7k",
           "starting_info": {
             "height": "681812",
             "previous_period": "1",
             "stake": "0.000000000000000000"
           },
-          "validator_address": "wormholevaloper1dqgczkwjc976lrqft0zh2zcm4m3tnhg7d84me3"
+          "validator_address": "deltavaloper1dqgczkwjc976lrqft0zh2zcm4m3tnhg7d84me3"
         },
         {
-          "delegator_address": "wormhole14kn8w5lcd93uhva9gxpupv0sy244dexmr2w6y4",
+          "delegator_address": "delta14kn8w5lcd93uhva9gxpupv0sy244dexmr2w6y4",
           "starting_info": {
             "height": "1082462",
             "previous_period": "1",
             "stake": "0.000000000000000000"
           },
-          "validator_address": "wormholevaloper14kn8w5lcd93uhva9gxpupv0sy244dexm4k3frj"
+          "validator_address": "deltavaloper14kn8w5lcd93uhva9gxpupv0sy244dexm4k3frj"
         },
         {
-          "delegator_address": "wormhole1cm4lqyl5j5t9ewd79vrnsrga2cnml8ca29r0sz",
+          "delegator_address": "delta1cm4lqyl5j5t9ewd79vrnsrga2cnml8ca29r0sz",
           "starting_info": {
             "height": "0",
             "previous_period": "1",
             "stake": "0.000000000000000000"
           },
-          "validator_address": "wormholevaloper1cm4lqyl5j5t9ewd79vrnsrga2cnml8caueuuh9"
+          "validator_address": "deltavaloper1cm4lqyl5j5t9ewd79vrnsrga2cnml8caueuuh9"
         },
         {
-          "delegator_address": "wormhole1ac3ry97k843tdnv26ss7ps86w0l4mss7qeagwh",
+          "delegator_address": "delta1ac3ry97k843tdnv26ss7ps86w0l4mss7qeagwh",
           "starting_info": {
             "height": "1052474",
             "previous_period": "1",
             "stake": "0.000000000000000000"
           },
-          "validator_address": "wormholevaloper1ac3ry97k843tdnv26ss7ps86w0l4mss7k9zmfs"
+          "validator_address": "deltavaloper1ac3ry97k843tdnv26ss7ps86w0l4mss7k9zmfs"
         }
       ],
       "delegator_withdraw_infos": [],
@@ -533,27 +533,27 @@
       "outstanding_rewards": [
         {
           "outstanding_rewards": [],
-          "validator_address": "wormholevaloper1xmhvcpuhyphm3a2svwct5mv839gcugwxewsxyx"
+          "validator_address": "deltavaloper1xmhvcpuhyphm3a2svwct5mv839gcugwxewsxyx"
         },
         {
           "outstanding_rewards": [],
-          "validator_address": "wormholevaloper12trn2ltz4zswxqhepsc8sq5zc7g6h0xtjymkk2"
+          "validator_address": "deltavaloper12trn2ltz4zswxqhepsc8sq5zc7g6h0xtjymkk2"
         },
         {
           "outstanding_rewards": [],
-          "validator_address": "wormholevaloper1dqgczkwjc976lrqft0zh2zcm4m3tnhg7d84me3"
+          "validator_address": "deltavaloper1dqgczkwjc976lrqft0zh2zcm4m3tnhg7d84me3"
         },
         {
           "outstanding_rewards": [],
-          "validator_address": "wormholevaloper14kn8w5lcd93uhva9gxpupv0sy244dexm4k3frj"
+          "validator_address": "deltavaloper14kn8w5lcd93uhva9gxpupv0sy244dexm4k3frj"
         },
         {
           "outstanding_rewards": [],
-          "validator_address": "wormholevaloper1cm4lqyl5j5t9ewd79vrnsrga2cnml8caueuuh9"
+          "validator_address": "deltavaloper1cm4lqyl5j5t9ewd79vrnsrga2cnml8caueuuh9"
         },
         {
           "outstanding_rewards": [],
-          "validator_address": "wormholevaloper1ac3ry97k843tdnv26ss7ps86w0l4mss7k9zmfs"
+          "validator_address": "deltavaloper1ac3ry97k843tdnv26ss7ps86w0l4mss7k9zmfs"
         }
       ],
       "params": {
@@ -562,43 +562,43 @@
         "community_tax": "0.020000000000000000",
         "withdraw_addr_enabled": true
       },
-      "previous_proposer": "wormholevalcons1ppqj2ve0fdtwknz2xyzcc83xk40gd8szjrk7mc",
+      "previous_proposer": "deltavalcons1ppqj2ve0fdtwknz2xyzcc83xk40gd8szjrk7mc",
       "validator_accumulated_commissions": [
         {
           "accumulated": {
             "commission": []
           },
-          "validator_address": "wormholevaloper1xmhvcpuhyphm3a2svwct5mv839gcugwxewsxyx"
+          "validator_address": "deltavaloper1xmhvcpuhyphm3a2svwct5mv839gcugwxewsxyx"
         },
         {
           "accumulated": {
             "commission": []
           },
-          "validator_address": "wormholevaloper12trn2ltz4zswxqhepsc8sq5zc7g6h0xtjymkk2"
+          "validator_address": "deltavaloper12trn2ltz4zswxqhepsc8sq5zc7g6h0xtjymkk2"
         },
         {
           "accumulated": {
             "commission": []
           },
-          "validator_address": "wormholevaloper1dqgczkwjc976lrqft0zh2zcm4m3tnhg7d84me3"
+          "validator_address": "deltavaloper1dqgczkwjc976lrqft0zh2zcm4m3tnhg7d84me3"
         },
         {
           "accumulated": {
             "commission": []
           },
-          "validator_address": "wormholevaloper14kn8w5lcd93uhva9gxpupv0sy244dexm4k3frj"
+          "validator_address": "deltavaloper14kn8w5lcd93uhva9gxpupv0sy244dexm4k3frj"
         },
         {
           "accumulated": {
             "commission": []
           },
-          "validator_address": "wormholevaloper1cm4lqyl5j5t9ewd79vrnsrga2cnml8caueuuh9"
+          "validator_address": "deltavaloper1cm4lqyl5j5t9ewd79vrnsrga2cnml8caueuuh9"
         },
         {
           "accumulated": {
             "commission": []
           },
-          "validator_address": "wormholevaloper1ac3ry97k843tdnv26ss7ps86w0l4mss7k9zmfs"
+          "validator_address": "deltavaloper1ac3ry97k843tdnv26ss7ps86w0l4mss7k9zmfs"
         }
       ],
       "validator_current_rewards": [
@@ -607,42 +607,42 @@
             "period": "2",
             "rewards": []
           },
-          "validator_address": "wormholevaloper1xmhvcpuhyphm3a2svwct5mv839gcugwxewsxyx"
+          "validator_address": "deltavaloper1xmhvcpuhyphm3a2svwct5mv839gcugwxewsxyx"
         },
         {
           "rewards": {
             "period": "2",
             "rewards": []
           },
-          "validator_address": "wormholevaloper12trn2ltz4zswxqhepsc8sq5zc7g6h0xtjymkk2"
+          "validator_address": "deltavaloper12trn2ltz4zswxqhepsc8sq5zc7g6h0xtjymkk2"
         },
         {
           "rewards": {
             "period": "2",
             "rewards": []
           },
-          "validator_address": "wormholevaloper1dqgczkwjc976lrqft0zh2zcm4m3tnhg7d84me3"
+          "validator_address": "deltavaloper1dqgczkwjc976lrqft0zh2zcm4m3tnhg7d84me3"
         },
         {
           "rewards": {
             "period": "2",
             "rewards": []
           },
-          "validator_address": "wormholevaloper14kn8w5lcd93uhva9gxpupv0sy244dexm4k3frj"
+          "validator_address": "deltavaloper14kn8w5lcd93uhva9gxpupv0sy244dexm4k3frj"
         },
         {
           "rewards": {
             "period": "2",
             "rewards": []
           },
-          "validator_address": "wormholevaloper1cm4lqyl5j5t9ewd79vrnsrga2cnml8caueuuh9"
+          "validator_address": "deltavaloper1cm4lqyl5j5t9ewd79vrnsrga2cnml8caueuuh9"
         },
         {
           "rewards": {
             "period": "2",
             "rewards": []
           },
-          "validator_address": "wormholevaloper1ac3ry97k843tdnv26ss7ps86w0l4mss7k9zmfs"
+          "validator_address": "deltavaloper1ac3ry97k843tdnv26ss7ps86w0l4mss7k9zmfs"
         }
       ],
       "validator_historical_rewards": [
@@ -652,7 +652,7 @@
             "cumulative_reward_ratio": [],
             "reference_count": 2
           },
-          "validator_address": "wormholevaloper1xmhvcpuhyphm3a2svwct5mv839gcugwxewsxyx"
+          "validator_address": "deltavaloper1xmhvcpuhyphm3a2svwct5mv839gcugwxewsxyx"
         },
         {
           "period": "1",
@@ -660,7 +660,7 @@
             "cumulative_reward_ratio": [],
             "reference_count": 2
           },
-          "validator_address": "wormholevaloper12trn2ltz4zswxqhepsc8sq5zc7g6h0xtjymkk2"
+          "validator_address": "deltavaloper12trn2ltz4zswxqhepsc8sq5zc7g6h0xtjymkk2"
         },
         {
           "period": "1",
@@ -668,7 +668,7 @@
             "cumulative_reward_ratio": [],
             "reference_count": 2
           },
-          "validator_address": "wormholevaloper1dqgczkwjc976lrqft0zh2zcm4m3tnhg7d84me3"
+          "validator_address": "deltavaloper1dqgczkwjc976lrqft0zh2zcm4m3tnhg7d84me3"
         },
         {
           "period": "1",
@@ -676,7 +676,7 @@
             "cumulative_reward_ratio": [],
             "reference_count": 2
           },
-          "validator_address": "wormholevaloper14kn8w5lcd93uhva9gxpupv0sy244dexm4k3frj"
+          "validator_address": "deltavaloper14kn8w5lcd93uhva9gxpupv0sy244dexm4k3frj"
         },
         {
           "period": "1",
@@ -684,7 +684,7 @@
             "cumulative_reward_ratio": [],
             "reference_count": 2
           },
-          "validator_address": "wormholevaloper1cm4lqyl5j5t9ewd79vrnsrga2cnml8caueuuh9"
+          "validator_address": "deltavaloper1cm4lqyl5j5t9ewd79vrnsrga2cnml8caueuuh9"
         },
         {
           "period": "1",
@@ -692,7 +692,7 @@
             "cumulative_reward_ratio": [],
             "reference_count": 2
           },
-          "validator_address": "wormholevaloper1ac3ry97k843tdnv26ss7ps86w0l4mss7k9zmfs"
+          "validator_address": "deltavaloper1ac3ry97k843tdnv26ss7ps86w0l4mss7k9zmfs"
         }
       ],
       "validator_slash_events": []
@@ -780,7 +780,7 @@
     "slashing": {
       "missed_blocks": [
         {
-          "address": "wormholevalcons1ppqj2ve0fdtwknz2xyzcc83xk40gd8szjrk7mc",
+          "address": "deltavalcons1ppqj2ve0fdtwknz2xyzcc83xk40gd8szjrk7mc",
           "missed_blocks": []
         }
       ],
@@ -793,9 +793,9 @@
       },
       "signing_infos": [
         {
-          "address": "wormholevalcons1ppqj2ve0fdtwknz2xyzcc83xk40gd8szjrk7mc",
+          "address": "deltavalcons1ppqj2ve0fdtwknz2xyzcc83xk40gd8szjrk7mc",
           "validator_signing_info": {
-            "address": "wormholevalcons1ppqj2ve0fdtwknz2xyzcc83xk40gd8szjrk7mc",
+            "address": "deltavalcons1ppqj2ve0fdtwknz2xyzcc83xk40gd8szjrk7mc",
             "index_offset": "1103268",
             "jailed_until": "1970-01-01T00:00:00Z",
             "missed_blocks_counter": "0",
@@ -808,41 +808,41 @@
     "staking": {
       "delegations": [
         {
-          "delegator_address": "wormhole1xmhvcpuhyphm3a2svwct5mv839gcugwx0j04rp",
+          "delegator_address": "delta1xmhvcpuhyphm3a2svwct5mv839gcugwx0j04rp",
           "shares": "0.000000000000000000",
-          "validator_address": "wormholevaloper1xmhvcpuhyphm3a2svwct5mv839gcugwxewsxyx"
+          "validator_address": "deltavaloper1xmhvcpuhyphm3a2svwct5mv839gcugwxewsxyx"
         },
         {
-          "delegator_address": "wormhole12trn2ltz4zswxqhepsc8sq5zc7g6h0xtycy93d",
+          "delegator_address": "delta12trn2ltz4zswxqhepsc8sq5zc7g6h0xtycy93d",
           "shares": "0.000000000000000000",
-          "validator_address": "wormholevaloper12trn2ltz4zswxqhepsc8sq5zc7g6h0xtjymkk2"
+          "validator_address": "deltavaloper12trn2ltz4zswxqhepsc8sq5zc7g6h0xtjymkk2"
         },
         {
-          "delegator_address": "wormhole1dqgczkwjc976lrqft0zh2zcm4m3tnhg7mm2g7k",
+          "delegator_address": "delta1dqgczkwjc976lrqft0zh2zcm4m3tnhg7mm2g7k",
           "shares": "0.000000000000000000",
-          "validator_address": "wormholevaloper1dqgczkwjc976lrqft0zh2zcm4m3tnhg7d84me3"
+          "validator_address": "deltavaloper1dqgczkwjc976lrqft0zh2zcm4m3tnhg7d84me3"
         },
         {
-          "delegator_address": "wormhole14kn8w5lcd93uhva9gxpupv0sy244dexmr2w6y4",
+          "delegator_address": "delta14kn8w5lcd93uhva9gxpupv0sy244dexmr2w6y4",
           "shares": "0.000000000000000000",
-          "validator_address": "wormholevaloper14kn8w5lcd93uhva9gxpupv0sy244dexm4k3frj"
+          "validator_address": "deltavaloper14kn8w5lcd93uhva9gxpupv0sy244dexm4k3frj"
         },
         {
-          "delegator_address": "wormhole1cm4lqyl5j5t9ewd79vrnsrga2cnml8ca29r0sz",
+          "delegator_address": "delta1cm4lqyl5j5t9ewd79vrnsrga2cnml8ca29r0sz",
           "shares": "0.000000000000000000",
-          "validator_address": "wormholevaloper1cm4lqyl5j5t9ewd79vrnsrga2cnml8caueuuh9"
+          "validator_address": "deltavaloper1cm4lqyl5j5t9ewd79vrnsrga2cnml8caueuuh9"
         },
         {
-          "delegator_address": "wormhole1ac3ry97k843tdnv26ss7ps86w0l4mss7qeagwh",
+          "delegator_address": "delta1ac3ry97k843tdnv26ss7ps86w0l4mss7qeagwh",
           "shares": "0.000000000000000000",
-          "validator_address": "wormholevaloper1ac3ry97k843tdnv26ss7ps86w0l4mss7k9zmfs"
+          "validator_address": "deltavaloper1ac3ry97k843tdnv26ss7ps86w0l4mss7k9zmfs"
         }
       ],
       "exported": true,
       "last_total_power": "1",
       "last_validator_powers": [
         {
-          "address": "wormholevaloper1cm4lqyl5j5t9ewd79vrnsrga2cnml8caueuuh9",
+          "address": "deltavaloper1cm4lqyl5j5t9ewd79vrnsrga2cnml8caueuuh9",
           "power": "1"
         }
       ],
@@ -879,7 +879,7 @@
           },
           "jailed": false,
           "min_self_delegation": "0",
-          "operator_address": "wormholevaloper1xmhvcpuhyphm3a2svwct5mv839gcugwxewsxyx",
+          "operator_address": "deltavaloper1xmhvcpuhyphm3a2svwct5mv839gcugwxewsxyx",
           "status": "BOND_STATUS_UNBONDED",
           "tokens": "0",
           "unbonding_height": "0",
@@ -908,7 +908,7 @@
           },
           "jailed": false,
           "min_self_delegation": "0",
-          "operator_address": "wormholevaloper12trn2ltz4zswxqhepsc8sq5zc7g6h0xtjymkk2",
+          "operator_address": "deltavaloper12trn2ltz4zswxqhepsc8sq5zc7g6h0xtjymkk2",
           "status": "BOND_STATUS_UNBONDED",
           "tokens": "0",
           "unbonding_height": "0",
@@ -937,7 +937,7 @@
           },
           "jailed": false,
           "min_self_delegation": "0",
-          "operator_address": "wormholevaloper1dqgczkwjc976lrqft0zh2zcm4m3tnhg7d84me3",
+          "operator_address": "deltavaloper1dqgczkwjc976lrqft0zh2zcm4m3tnhg7d84me3",
           "status": "BOND_STATUS_UNBONDED",
           "tokens": "0",
           "unbonding_height": "0",
@@ -966,7 +966,7 @@
           },
           "jailed": false,
           "min_self_delegation": "0",
-          "operator_address": "wormholevaloper14kn8w5lcd93uhva9gxpupv0sy244dexm4k3frj",
+          "operator_address": "deltavaloper14kn8w5lcd93uhva9gxpupv0sy244dexm4k3frj",
           "status": "BOND_STATUS_UNBONDED",
           "tokens": "0",
           "unbonding_height": "0",
@@ -995,7 +995,7 @@
           },
           "jailed": false,
           "min_self_delegation": "0",
-          "operator_address": "wormholevaloper1cm4lqyl5j5t9ewd79vrnsrga2cnml8caueuuh9",
+          "operator_address": "deltavaloper1cm4lqyl5j5t9ewd79vrnsrga2cnml8caueuuh9",
           "status": "BOND_STATUS_BONDED",
           "tokens": "0",
           "unbonding_height": "0",
@@ -1024,7 +1024,7 @@
           },
           "jailed": false,
           "min_self_delegation": "0",
-          "operator_address": "wormholevaloper1ac3ry97k843tdnv26ss7ps86w0l4mss7k9zmfs",
+          "operator_address": "deltavaloper1ac3ry97k843tdnv26ss7ps86w0l4mss7k9zmfs",
           "status": "BOND_STATUS_UNBONDED",
           "tokens": "0",
           "unbonding_height": "0",
@@ -1064,7 +1064,7 @@
         }
       ]
     },
-    "wormhole": {
+    "deltaswap": {
       "config": {
         "chain_id": 3104,
         "governance_chain": 1,
