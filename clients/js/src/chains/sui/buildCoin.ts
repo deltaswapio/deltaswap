@@ -82,7 +82,7 @@ const setupCoin = (
 
   // Substitute dependency package IDs
   const toml = new MoveToml(`${packagePath}/templates/wrapped_coin/Move.toml`)
-    .updateRow("addresses", "wormhole", coreBridgePackageId)
+    .updateRow("addresses", "deltaswap", coreBridgePackageId)
     .updateRow("addresses", "token_bridge", tokenBridgePackageId)
     .serialize();
   const tomlPath = `${packagePath}/wrapped_coin/Move.toml`;
@@ -97,10 +97,10 @@ const setupCoin = (
     if (network === "DEVNET") {
       const dependencyToml = new MoveToml(getDefaultTomlPath(dependencyPath));
       switch (getPackageNameFromPath(dependencyPath)) {
-        case "wormhole":
+        case "deltaswap":
           dependencyToml
             .addOrUpdateRow("package", "published-at", coreBridgePackageId)
-            .updateRow("addresses", "wormhole", coreBridgePackageId);
+            .updateRow("addresses", "deltaswap", coreBridgePackageId);
           break;
         case "token_bridge":
           dependencyToml

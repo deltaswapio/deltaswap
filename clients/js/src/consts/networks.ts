@@ -2,7 +2,7 @@ import { ChainName } from "@deltaswapio/deltaswap-sdk/lib/esm/utils/consts";
 import { config } from "dotenv";
 import { homedir } from "os";
 
-config({ path: `${homedir()}/.wormhole/.env` });
+config({ path: `${homedir()}/.deltaswap/.env` });
 
 const getEnvVar = (varName: string): string | undefined => process.env[varName];
 
@@ -257,7 +257,7 @@ const TESTNET = {
     rpc: "https://rpc.testnet.near.org",
     key: getEnvVar("NEAR_KEY_TESTNET"),
     networkId: "testnet",
-    deployerAccount: "wormhole.testnet",
+    deployerAccount: "deltaswap.testnet",
   },
   injective: {
     rpc: "https://k8s.testnet.tm.injective.network:443",

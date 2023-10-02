@@ -14,8 +14,8 @@ import {
 } from "@deltaswapio/deltaswap-sdk/lib/esm/solana/tokenBridge";
 import {
   createUpgradePhylaxSetInstruction,
-  createUpgradeContractInstruction as createWormholeUpgradeContractInstruction,
-} from "@deltaswapio/deltaswap-sdk/lib/esm/solana/wormhole";
+  createUpgradeContractInstruction as createDeltaswapUpgradeContractInstruction,
+} from "@deltaswapio/deltaswap-sdk/lib/esm/solana/deltaswap";
 import {
   CHAINS,
   CONTRACTS,
@@ -91,7 +91,7 @@ export async function execute_solana(
           break;
         case "ContractUpgrade":
           console.log("Upgrading core contract");
-          ix = createWormholeUpgradeContractInstruction(
+          ix = createDeltaswapUpgradeContractInstruction(
             bridgeId,
             from.publicKey,
             vaa
@@ -196,7 +196,7 @@ export async function execute_solana(
       }
       break;
     case "DeltaswapRelayer":
-      throw Error("Wormhole Relayer not supported on Solana");
+      throw Error("Deltaswap Relayer not supported on Solana");
     default:
       ix = impossible(v.payload);
   }

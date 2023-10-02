@@ -37,9 +37,9 @@ export const addPublishMessageCommands: YargsAddCommandsFn = (
           demandOption: true,
           type: "string",
         })
-        .option("wormhole-state", {
+        .option("deltaswap-state", {
           alias: "w",
-          describe: "Wormhole state object ID",
+          describe: "Deltaswap state object ID",
           demandOption: true,
           type: "string",
         })
@@ -61,7 +61,7 @@ export const addPublishMessageCommands: YargsAddCommandsFn = (
       assertNetwork(network);
       const packageId = argv["package-id"];
       const stateObjectId = argv.state;
-      const wormholeStateObjectId = argv["wormhole-state"];
+      const deltaswapStateObjectId = argv["deltaswap-state"];
       const message = argv.message;
       const privateKey = argv["private-key"];
       const rpc = argv.rpc ?? NETWORKS[network].sui.rpc;
@@ -76,7 +76,7 @@ export const addPublishMessageCommands: YargsAddCommandsFn = (
         target: `${packageId}::sender::send_message_entry`,
         arguments: [
           tx.object(stateObjectId),
-          tx.object(wormholeStateObjectId),
+          tx.object(deltaswapStateObjectId),
           tx.pure(message),
           tx.object(SUI_CLOCK_OBJECT_ID),
         ],
@@ -89,7 +89,7 @@ export const addPublishMessageCommands: YargsAddCommandsFn = (
       const event = res.events?.find(
         (e) =>
           normalizeSuiAddress(e.packageId) === normalizeSuiAddress(packageId) &&
-          e.type.includes("publish_message::WormholeMessage")
+          e.type.includes("publish_message::DeltaswapMessage")
       );
       if (!event) {
         throw new Error(

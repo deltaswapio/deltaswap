@@ -236,7 +236,7 @@ export async function execute_aptos(
       break;
     }
     case "DeltaswapRelayer":
-      throw Error("Wormhole Relayer not supported on Aptos");
+      throw Error("Deltaswap Relayer not supported on Aptos");
     default:
       impossible(payload);
   }

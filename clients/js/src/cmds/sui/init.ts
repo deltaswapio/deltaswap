@@ -39,9 +39,9 @@ export const addInitCommands: YargsAddCommandsFn = (y: typeof yargs) =>
             demandOption: true,
             type: "string",
           })
-          .option("wormhole-state", {
+          .option("deltaswap-state", {
             alias: "w",
-            describe: "Wormhole state object ID",
+            describe: "Deltaswap state object ID",
             demandOption: true,
             type: "string",
           })
@@ -51,14 +51,14 @@ export const addInitCommands: YargsAddCommandsFn = (y: typeof yargs) =>
         const network = argv.network.toUpperCase();
         assertNetwork(network);
         const packageId = argv["package-id"];
-        const wormholeStateObjectId = argv["wormhole-state"];
+        const deltaswapStateObjectId = argv["deltaswap-state"];
         const privateKey = argv["private-key"];
         const rpc = argv.rpc;
 
         const res = await initExampleApp(
           network,
           packageId,
-          wormholeStateObjectId,
+          deltaswapStateObjectId,
           rpc,
           privateKey
         );
@@ -85,9 +85,9 @@ export const addInitCommands: YargsAddCommandsFn = (y: typeof yargs) =>
             demandOption: true,
             type: "string",
           })
-          .option("wormhole-state", {
+          .option("deltaswap-state", {
             alias: "w",
-            describe: "Wormhole state object ID",
+            describe: "Deltaswap state object ID",
             demandOption: true,
             type: "string",
           })
@@ -111,7 +111,7 @@ export const addInitCommands: YargsAddCommandsFn = (y: typeof yargs) =>
         const network = argv.network.toUpperCase();
         assertNetwork(network);
         const packageId = argv["package-id"];
-        const wormholeStateObjectId = argv["wormhole-state"];
+        const deltaswapStateObjectId = argv["deltaswap-state"];
         const governanceChainId = argv["governance-chain-id"];
         const governanceContract = argv["governance-address"];
         const privateKey = argv["private-key"];
@@ -120,7 +120,7 @@ export const addInitCommands: YargsAddCommandsFn = (y: typeof yargs) =>
         const res = await initTokenBridge(
           network,
           packageId,
-          wormholeStateObjectId,
+          deltaswapStateObjectId,
           governanceChainId,
           governanceContract,
           rpc,
@@ -138,8 +138,8 @@ export const addInitCommands: YargsAddCommandsFn = (y: typeof yargs) =>
       }
     )
     .command(
-      "init-wormhole",
-      "Initialize wormhole core contract",
+      "init-deltaswap",
+      "Initialize deltaswap core contract",
       (yargs) =>
         yargs
           .option("network", NETWORK_OPTIONS)
@@ -191,7 +191,7 @@ export const addInitCommands: YargsAddCommandsFn = (y: typeof yargs) =>
         const privateKey = argv["private-key"];
         const rpc = argv.rpc;
 
-        const res = await initWormhole(
+        const res = await initDeltaswap(
           network,
           packageId,
           initialPhylax,
@@ -204,7 +204,7 @@ export const addInitCommands: YargsAddCommandsFn = (y: typeof yargs) =>
 
         logTransactionDigest(res);
         console.log(
-          "Wormhole state object ID",
+          "Deltaswap state object ID",
           getCreatedObjects(res).find((e) =>
             isSameType(e.type, `${packageId}::state::State`)
           )?.objectId
@@ -218,7 +218,7 @@ export const addInitCommands: YargsAddCommandsFn = (y: typeof yargs) =>
 export const initExampleApp = async (
   network: Network,
   packageId: string,
-  wormholeStateObjectId: string,
+  deltaswapStateObjectId: string,
   rpc?: string,
   privateKey?: string
 ): Promise<SuiTransactionBlockResponse> => {
@@ -230,7 +230,7 @@ export const initExampleApp = async (
   setMaxGasBudgetDevnet(network, tx);
   tx.moveCall({
     target: `${packageId}::sender::init_with_params`,
-    arguments: [tx.object(wormholeStateObjectId)],
+    arguments: [tx.object(deltaswapStateObjectId)],
   });
   return executeTransactionBlock(signer, tx);
 };
@@ -273,7 +273,7 @@ export const initTokenBridge = async (
     );
   }
 
-  const wormholePackageId = await getPackageId(
+  const deltaswapPackageId = await getPackageId(
     provider,
     coreBridgeStateObjectId
   );
@@ -281,7 +281,7 @@ export const initTokenBridge = async (
   const tx = new TransactionBlock();
   setMaxGasBudgetDevnet(network, tx);
   const [emitterCap] = tx.moveCall({
-    target: `${wormholePackageId}::emitter::new`,
+    target: `${deltaswapPackageId}::emitter::new`,
     arguments: [tx.object(coreBridgeStateObjectId)],
   });
   tx.moveCall({
@@ -297,7 +297,7 @@ export const initTokenBridge = async (
   return executeTransactionBlock(signer, tx);
 };
 
-export const initWormhole = async (
+export const initDeltaswap = async (
   network: Network,
   coreBridgePackageId: string,
   initialPhylaxs: string,
@@ -321,7 +321,7 @@ export const initWormhole = async (
   );
   if (!deployerCapObjectId) {
     throw new Error(
-      `Wormhole cannot be initialized because deployer capability cannot be found under ${owner}. Is the package published?`
+      `Deltaswap cannot be initialized because deployer capability cannot be found under ${owner}. Is the package published?`
     );
   }
 
@@ -332,7 +332,7 @@ export const initWormhole = async (
   );
   if (!upgradeCapObjectId) {
     throw new Error(
-      `Wormhole cannot be initialized because upgrade capability cannot be found under ${owner}. Is the package published?`
+      `Deltaswap cannot be initialized because upgrade capability cannot be found under ${owner}. Is the package published?`
     );
   }
 

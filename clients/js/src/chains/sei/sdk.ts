@@ -3,7 +3,7 @@ import {
   buildTokenId,
   isNativeCosmWasmDenom,
 } from "@deltaswapio/deltaswap-sdk/lib/esm/cosmwasm/address";
-import { WormholeWrappedInfo } from "@deltaswapio/deltaswap-sdk/lib/esm/token_bridge/getOriginalAsset";
+import { DeltaswapWrappedInfo } from "@deltaswapio/deltaswap-sdk/lib/esm/token_bridge/getOriginalAsset";
 import { hexToUint8Array } from "@deltaswapio/deltaswap-sdk/lib/esm/utils/array";
 import {
   CHAIN_ID_SEI,
@@ -66,14 +66,14 @@ export async function getIsTransferCompletedSei(
 
 /**
  * Returns information about the asset
- * @param wrappedAddress Address of the asset in wormhole wrapped format (hex string)
+ * @param wrappedAddress Address of the asset in deltaswap wrapped format (hex string)
  * @param client WASM api client
  * @returns Information about the asset
  */
 export async function getOriginalAssetSei(
   wrappedAddress: string,
   client: CosmWasmClient
-): Promise<WormholeWrappedInfo> {
+): Promise<DeltaswapWrappedInfo> {
   const chainId = CHAIN_ID_SEI;
   if (isNativeCosmWasmDenom(chainId, wrappedAddress)) {
     return {

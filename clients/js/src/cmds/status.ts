@@ -47,9 +47,9 @@ export const handler = async (
   assertChain(chain);
 
   const addr =
-    relayer.RELAYER_CONTRACTS[network][chain]?.wormholeRelayerAddress;
+    relayer.RELAYER_CONTRACTS[network][chain]?.deltaswapRelayerAddress;
   if (!addr) {
-    throw new Error(`Wormhole Relayer not deployed on ${chain} in ${network}`);
+    throw new Error(`Deltaswap Relayer not deployed on ${chain} in ${network}`);
   }
 
   const sourceRPC = NETWORKS[network as Network][chain as ChainName].rpc;

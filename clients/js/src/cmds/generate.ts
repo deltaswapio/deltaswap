@@ -257,12 +257,12 @@ export const builder = function (y: typeof yargs) {
       )
       .command(
         "set-default-delivery-provider",
-        "Sets the default delivery provider for the Wormhole Relayer contract",
+        "Sets the default delivery provider for the Deltaswap Relayer contract",
         (yargs) => {
           return yargs
             .option("chain", {
               alias: "c",
-              describe: "Chain of Wormhole Relayer contract",
+              describe: "Chain of Deltaswap Relayer contract",
               choices: Object.keys(CHAINS),
               demandOption: true,
             } as const)

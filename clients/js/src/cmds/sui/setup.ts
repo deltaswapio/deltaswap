@@ -35,7 +35,7 @@ import {
 } from "../../consts";
 import { YargsAddCommandsFn } from "../Yargs";
 import { deploy } from "./deploy";
-import { initExampleApp, initTokenBridge, initWormhole } from "./init";
+import { initExampleApp, initTokenBridge, initDeltaswap } from "./init";
 
 export const addSetupCommands: YargsAddCommandsFn = (y: typeof yargs) =>
   y.command(
@@ -59,7 +59,7 @@ export const addSetupCommands: YargsAddCommandsFn = (y: typeof yargs) =>
       console.log("[1/4] Deploying core bridge...");
       const coreBridgeDeployRes = await deploy(
         network,
-        "wormhole",
+        "deltaswap",
         rpc,
         privateKey
       );
@@ -70,7 +70,7 @@ export const addSetupCommands: YargsAddCommandsFn = (y: typeof yargs) =>
       // Init core bridge
       console.log("\n[2/4] Initializing core bridge...");
       const coreBridgePackageId = getPublishedPackageId(coreBridgeDeployRes);
-      const coreBridgeInitRes = await initWormhole(
+      const coreBridgeInitRes = await initDeltaswap(
         network,
         coreBridgePackageId,
         INITIAL_PHYLAX_DEVNET,

@@ -1,5 +1,5 @@
 import {
-  WormholeWrappedInfo,
+  DeltaswapWrappedInfo,
   getOriginalAssetAlgorand,
   getOriginalAssetAptos,
   getOriginalAssetEth,
@@ -26,7 +26,7 @@ export const getOriginalAsset = async (
   network: Network,
   assetAddress: string,
   rpc?: string
-): Promise<WormholeWrappedInfo> => {
+): Promise<DeltaswapWrappedInfo> => {
   const chainName = coalesceChainName(chain);
   const tokenBridgeAddress = CONTRACTS[network][chainName].token_bridge;
   if (!tokenBridgeAddress) {

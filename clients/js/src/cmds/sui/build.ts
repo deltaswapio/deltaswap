@@ -42,9 +42,9 @@ export const addBuildCommands: YargsAddCommandsFn = (y: typeof yargs) =>
           demandOption: false,
           type: "string",
         })
-        .option("wormhole-state", {
+        .option("deltaswap-state", {
           alias: "w",
-          describe: "Wormhole state object ID",
+          describe: "Deltaswap state object ID",
           demandOption: false,
           type: "string",
         })
@@ -66,7 +66,7 @@ export const addBuildCommands: YargsAddCommandsFn = (y: typeof yargs) =>
         argv["package-path"] ??
         path.resolve(__dirname, "../../../../../sui/examples");
       const coreBridgeStateObjectId =
-        argv["wormhole-state"] ?? CONTRACTS[network].sui.core;
+        argv["deltaswap-state"] ?? CONTRACTS[network].sui.core;
       const tokenBridgeStateObjectId =
         argv["token-bridge-state"] ?? CONTRACTS[network].sui.token_bridge;
 

@@ -123,7 +123,7 @@ export async function query_contract_evm(
           ])
       );
       const [
-        wormhole,
+        deltaswap,
         implementationSlotTb,
         tokenImplementation,
         chainIdTb,
@@ -135,7 +135,7 @@ export async function query_contract_evm(
         WETH,
         registrations,
       ] = await Promise.all([
-        tb.wormhole(),
+        tb.deltaswap(),
         getStorageAt(rpc, contract_address, _IMPLEMENTATION_SLOT, ["address"]),
         tb.tokenImplementation(),
         tb.chainId(),
@@ -147,7 +147,7 @@ export async function query_contract_evm(
         tb.WETH(),
         registrationsPromise,
       ]);
-      result.wormhole = wormhole;
+      result.deltaswap = deltaswap;
       result.implementation = implementationSlotTb[0];
       result.isInitialized = await tb.isInitialized(result.implementation);
       result.tokenImplementation = tokenImplementation;
@@ -185,7 +185,7 @@ export async function query_contract_evm(
           ])
       );
       const [
-        wormholeNb,
+        deltaswapNb,
         implementationSlotNb,
         tokenImplementationNb,
         chainIdNb,
@@ -196,7 +196,7 @@ export async function query_contract_evm(
         governanceContractNb,
         registrationsNb,
       ] = await Promise.all([
-        nb.wormhole(),
+        nb.deltaswap(),
         getStorageAt(rpc, contract_address, _IMPLEMENTATION_SLOT, ["address"]),
         nb.tokenImplementation(),
         nb.chainId(),
@@ -207,7 +207,7 @@ export async function query_contract_evm(
         nb.governanceContract(),
         registrationsPromiseNb,
       ]);
-      result.wormhole = wormholeNb;
+      result.deltaswap = deltaswapNb;
       result.implementation = implementationSlotNb[0];
       result.isInitialized = await nb.isInitialized(result.implementation);
       result.tokenImplementation = tokenImplementationNb;
@@ -454,7 +454,7 @@ export async function execute_evm(
         : getDeltaswapRelayerAddress(chain, network);
       if (contract_address === undefined) {
         throw Error(
-          `Unknown Wormhole Relayer contract on ${network} for ${chain}`
+          `Unknown Deltaswap Relayer contract on ${network} for ${chain}`
         );
       }
       let rb = DeltaswapRelayer__factory.connect(contract_address, signer);

@@ -56,7 +56,7 @@ export const submit = async (
           const tx = new TransactionBlock();
           setMaxGasBudgetDevnet(network, tx);
           tx.moveCall({
-            target: `${corePackageId}::wormhole::update_phylax_set`,
+            target: `${corePackageId}::deltaswap::update_phylax_set`,
             arguments: [
               tx.object(coreObjectId),
               tx.pure([...vaa]),
@@ -199,7 +199,7 @@ export const submit = async (
       break;
     }
     case "DeltaswapRelayer":
-      throw Error("Wormhole Relayer not supported on Sui");
+      throw Error("Deltaswap Relayer not supported on Sui");
     default:
       impossible(payload);
   }

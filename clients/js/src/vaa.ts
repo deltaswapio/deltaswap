@@ -105,7 +105,7 @@ export function parse(buffer: Buffer): VAA<Payload | Other> {
     .or(coreContractRecoverChainId())
     .or(portalContractRecoverChainId("TokenBridge"))
     .or(portalContractRecoverChainId("NFTBridge"))
-    .or(wormholeRelayerSetDefaultDeliveryProvider());
+    .or(deltaswapRelayerSetDefaultDeliveryProvider());
   let payload: Payload | Other | null = parser.parse(vaa.payload);
   if (payload === null) {
     payload = {
@@ -949,7 +949,7 @@ export interface DeltaswapRelayerSetDefaultDeliveryProvider {
   chain: number;
 }
 
-function wormholeRelayerSetDefaultDeliveryProvider(): P<DeltaswapRelayerSetDefaultDeliveryProvider> {
+function deltaswapRelayerSetDefaultDeliveryProvider(): P<DeltaswapRelayerSetDefaultDeliveryProvider> {
   return new P(
     new Parser()
       .endianess("big")

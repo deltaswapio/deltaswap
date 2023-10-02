@@ -73,8 +73,8 @@ export const builder = (y: typeof yargs) =>
       }
     )
     .command(
-      "init-wormhole",
-      "Init Wormhole core contract",
+      "init-deltaswap",
+      "Init Deltaswap core contract",
       (yargs) =>
         yargs
           .option("network", NETWORK_OPTIONS)
@@ -131,7 +131,7 @@ export const builder = (y: typeof yargs) =>
         await callEntryFunc(
           network,
           rpc,
-          `${contract_address}::wormhole`,
+          `${contract_address}::deltaswap`,
           "init",
           [],
           args
@@ -336,7 +336,7 @@ export const builder = (y: typeof yargs) =>
           .option("contract-address", {
             alias: "a",
             demandOption: true,
-            describe: "Address where the wormhole module is deployed",
+            describe: "Address where the deltaswap module is deployed",
             type: "string",
           })
           .option("network", NETWORK_OPTIONS)
@@ -372,7 +372,7 @@ export const builder = (y: typeof yargs) =>
           .option("contract-address", {
             alias: "a",
             demandOption: true,
-            describe: "Address where the wormhole module is deployed",
+            describe: "Address where the deltaswap module is deployed",
             type: "string",
           })
           .option("network", NETWORK_OPTIONS)

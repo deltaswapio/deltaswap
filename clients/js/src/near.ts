@@ -108,7 +108,7 @@ export const execute_near = async (
       break;
     }
     case "DeltaswapRelayer":
-      throw Error("Wormhole Relayer not supported on Near");
+      throw Error("Deltaswap Relayer not supported on Near");
     default:
       impossible(payload);
   }

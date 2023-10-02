@@ -7,7 +7,7 @@ import { CHAIN_ID_OR_NAME_CHOICES } from "../../consts";
 
 export const command = "chain-id <chain>";
 export const desc =
-  "Print the wormhole chain ID integer associated with the specified chain name";
+  "Print the deltaswap chain ID integer associated with the specified chain name";
 export const builder = (y: typeof yargs) => {
   return y.positional("chain", {
     describe: "Chain to query",
