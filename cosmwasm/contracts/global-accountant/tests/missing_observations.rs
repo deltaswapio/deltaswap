@@ -4,7 +4,7 @@ use accountant::state::transfer;
 use cosmwasm_std::{to_binary, Uint256};
 use global_accountant::msg::Observation;
 use helpers::*;
-use wormhole_sdk::{token::Message, Address, Amount, Chain};
+use deltaswap_sdk::{token::Message, Address, Amount, Chain};
 
 fn create_observation() -> Observation {
     let msg: Message = Message::Transfer {
@@ -28,7 +28,7 @@ fn create_observation() -> Observation {
         emitter_address: [2; 32],
         sequence: 0xcc0b5753769752a3,
         consistency_level: 200,
-        payload: serde_wormhole::to_vec(&msg).map(From::from).unwrap(),
+        payload: serde_deltaswap::to_vec(&msg).map(From::from).unwrap(),
     }
 }
 
@@ -121,7 +121,7 @@ fn different_observations() {
         0x2f, 0x1f,
     ]
     .into();
-    second.payload = serde_wormhole::to_vec(&msg).map(From::from).unwrap();
+    second.payload = serde_deltaswap::to_vec(&msg).map(From::from).unwrap();
     let second_data = to_binary(&[second.clone()]).unwrap();
     let second_signatures = sign_observations(&wh, &second_data);
 

@@ -2,7 +2,7 @@ use std::convert::TryInto;
 
 use cosmwasm_std::{Binary, StdResult, Uint128};
 
-use cw_wormhole::state::ParsedVAA;
+use cw_deltaswap::state::ParsedVAA;
 
 use crate::{
     msg::Asset,
@@ -140,7 +140,7 @@ fn deserialize_transfer_vaa() -> StdResult<()> {
 #[test]
 fn deserialize_transfer_with_payload_vaa() -> StdResult<()> {
     // ┌──────────────────────────────────────────────────────────────────────────────┐
-    // │ Wormhole VAA v1         │ nonce: 2080370133       │ time: 0                  │
+    // │ Deltaswap VAA v1         │ nonce: 2080370133       │ time: 0                  │
     // │ phylax set #0         │ #4568529024235897313    │ consistency: 32          │
     // ├──────────────────────────────────────────────────────────────────────────────┤
     // │ Signature:                                                                   │

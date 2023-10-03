@@ -11,7 +11,7 @@ use cosmwasm_std::{
 use cw20::TokenInfoResponse;
 use cw20_base::msg::QueryMsg as TokenQuery;
 use cw_token_bridge::msg::CompleteTransferResponse;
-use wormhole_bindings::tokenfactory::{DenomUnit, Metadata, TokenFactoryMsg, TokenMsg};
+use deltaswap_bindings::tokenfactory::{DenomUnit, Metadata, TokenFactoryMsg, TokenMsg};
 
 pub fn handle_complete_transfer_reply(
     deps: DepsMut,
@@ -129,7 +129,7 @@ pub fn convert_cw20_to_bank_and_send(
             exponent: 0,
             aliases: vec![],
         };
-        let tf_scaled_denom = "wormhole/".to_string()
+        let tf_scaled_denom = "deltaswap/".to_string()
             + subdenom.as_str()
             + "/"
             + token_info.decimals.to_string().as_str();

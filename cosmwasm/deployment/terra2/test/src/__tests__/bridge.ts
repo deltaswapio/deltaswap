@@ -54,8 +54,8 @@ const CONSISTENCY_LEVEL = 0;
 
 const CHAIN_ID = 18;
 
-const WASM_WORMHOLE = "../artifacts/cw_wormhole.wasm";
-const WASM_SHUTDOWN_WORMHOLE =
+const WASM_DELTASWAP = "../artifacts/cw_deltaswap.wasm";
+const WASM_SHUTDOWN_DELTASWAP =
   "../artifacts/shutdown_core_bridge_cosmwasm.wasm";
 const WASM_WRAPPED_ASSET = "../artifacts/cw20_wrapped_2.wasm";
 const WASM_TOKEN_BRIDGE = "../artifacts/cw_token_bridge.wasm";
@@ -140,8 +140,8 @@ test("Deploy Contracts", (done) => {
       );
 
       // wormhole
-      const wormhole_code = await storeCode(client, wallet, WASM_WORMHOLE); // 11
-      console.log("wormholeCode:", wormhole_code);
+      const deltaswap_code = await storeCode(client, wallet, WASM_DELTASWAP); // 11
+      console.log("deltaswapCode:", deltaswap_code);
       const wormhole = await deployWithCodeID(
         client,
         wallet,
@@ -160,10 +160,10 @@ test("Deploy Contracts", (done) => {
           chain_id: 18,
           fee_denom: "uluna",
         },
-        "wormhole",
-        wormhole_code
+        "deltaswap",
+        deltaswap_code
       );
-      console.log("wormhole deployed at", wormhole);
+      console.log("deltaswap deployed at", wormhole);
       // token bridge
       const wrappedAssetCodeId = await storeCode(
         client,
@@ -182,7 +182,7 @@ test("Deploy Contracts", (done) => {
         {
           gov_chain: GOVERNANCE_CHAIN,
           gov_address: governanceAddress,
-          wormhole_contract: wormhole,
+          deltaswap_contract: wormhole,
           wrapped_asset_code_id: wrappedAssetCodeId,
           chain_id: 18,
           native_denom: "uluna",
@@ -229,12 +229,12 @@ test("Deploy Contracts", (done) => {
       // we will only be upgrading the existing contracts.
 
       // wormhole shutdown contract
-      const wormhole_shutdown_code = await storeCode(
+      const deltaswap_shutdown_code = await storeCode(
         client,
         wallet,
-        WASM_SHUTDOWN_WORMHOLE
+        WASM_SHUTDOWN_DELTASWAP
       ); //
-      console.log("shutdown wormholeCode:", wormhole_shutdown_code); // 16
+      console.log("shutdown wormholeCode:", deltaswap_shutdown_code); // 16
 
       // token bridge shutdown contract
       const tokenBridge_shutdown_code = await storeCode(
@@ -245,14 +245,14 @@ test("Deploy Contracts", (done) => {
       console.log("shutdown TB codeID:", tokenBridge_shutdown_code); // 17
 
       console.log("tokenBridge deployed at", tokenBridge);
-      contracts.set("wormhole", wormhole);
+      contracts.set("deltaswap", wormhole);
       contracts.set("tokenBridge", tokenBridge);
       contracts.set("mockBridgeIntegration", mockBridgeIntegration);
       contracts.set("cw20", cw20);
-      code_ids.set("wormhole", wormhole_code);
+      code_ids.set("deltaswap", deltaswap_code);
       code_ids.set("tokenBridge", tokenBridge_code);
       code_ids.set("wrappedAsset", wrappedAssetCodeId);
-      code_ids.set("wormhole_shutdown", wormhole_shutdown_code);
+      code_ids.set("deltaswap_shutdown", deltaswap_shutdown_code);
       code_ids.set("tokenBridge_shutdown", tokenBridge_shutdown_code);
       done();
     } catch (e) {
@@ -270,7 +270,7 @@ describe("Upgrade to shutdown contracts Tests", () => {
     (async () => {
       const [client, wallet] = await makeProviderAndWallet();
       try {
-        const corebridge = contracts.get("wormhole")!;
+        const corebridge = contracts.get("deltaswap")!;
         await wallet
           .createAndSignTx({
             msgs: [
@@ -314,7 +314,7 @@ describe("Upgrade to shutdown contracts Tests", () => {
     (async () => {
       const [client, wallet] = await makeProviderAndWallet();
       try {
-        const corebridge = contracts.get("wormhole")!;
+        const corebridge = contracts.get("deltaswap")!;
         const submitVaa = new MsgExecuteContract(
           wallet.key.accAddress,
           corebridge,
@@ -359,7 +359,7 @@ describe("Upgrade to previous non-shutdown contracts Tests", () => {
     (async () => {
       const [client, wallet] = await makeProviderAndWallet();
       try {
-        const corebridge = contracts.get("wormhole")!;
+        const corebridge = contracts.get("deltaswap")!;
         const submitVaa = new MsgExecuteContract(
           wallet.key.accAddress,
           corebridge,
@@ -484,7 +484,7 @@ function failInShutdownModeTests(shutdownMode: boolean, pass: number) {
         try {
           const [client, wallet] = await makeProviderAndWallet();
 
-          const wormhole = contracts.get("wormhole")!;
+          const wormhole = contracts.get("deltaswap")!;
           const postMessage = new MsgExecuteContract(
             wallet.key.accAddress,
             wormhole,
@@ -1325,7 +1325,7 @@ function alwaysPassTests(shutdownMode: boolean, pass: number) {
         try {
           const [client] = await makeProviderAndWallet();
 
-          const wormhole = contracts.get("wormhole")!;
+          const wormhole = contracts.get("deltaswap")!;
           const result: any = await client.wasm.contractQuery(wormhole, {
             phylax_set_info: {},
           });
@@ -1344,7 +1344,7 @@ function alwaysPassTests(shutdownMode: boolean, pass: number) {
         try {
           const [client] = await makeProviderAndWallet();
 
-          const wormhole = contracts.get("wormhole")!;
+          const wormhole = contracts.get("deltaswap")!;
           const result: any = await client.wasm.contractQuery(wormhole, {
             get_state: {},
           });

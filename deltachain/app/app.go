@@ -444,7 +444,7 @@ func New(
 
 	// The last arguments can contain custom message handlers, and custom query handlers,
 	// if we want to allow any custom callbacks
-	supportedFeatures := "iterator,staking,stargate,wormhole,token_factory"
+	supportedFeatures := "iterator,staking,stargate,deltaswap,token_factory"
 	wasmDir := filepath.Join(homePath, "data")
 
 	// Instantiate wasm keeper with stubs for other modules as we do not need

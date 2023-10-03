@@ -1,7 +1,7 @@
 [package]
 name = "ibc-translator"
 version = "0.1.0"
-authors = ["Wormhole Project Contributors"]
+authors = ["Deltaswap Project Contributors"]
 edition = "2021"
 
 [lib]
@@ -25,8 +25,8 @@ cw20 = "0.13.2"
 cw20-base = { version = "0.13.2", features = ["library"] }
 cw20-wrapped-2 = { version = "0.1.0", features = ["library"] }
 serde-json-wasm = "0.5.1"
-serde_wormhole = "0.1.0"
+serde_deltaswap = "0.1.0"
 token-bridge-cosmwasm = { version = "0.1.0", features = ["library"] }
-wormhole-bindings = "0.1.0"
-wormhole-cosmwasm = { version = "0.1.0", features = ["library"] }
-wormhole-sdk = { version = "0.1.0", features = ["schemars"] }
+deltaswap-bindings = "0.1.0"
+deltaswap-cosmwasm = { version = "0.1.0", features = ["library"] }
+deltaswap-sdk = { version = "0.1.0", features = ["schemars"] }

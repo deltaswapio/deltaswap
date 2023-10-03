@@ -106,7 +106,7 @@ fn check_token_details(deps: &OwnedDeps<MockStorage, MockApi, MockQuerier>, supp
     assert_eq!(
         from_slice::<TokenInfoResponse>(query_response.as_slice()).unwrap(),
         TokenInfoResponse {
-            name: "Integers (Wormhole)".into(),
+            name: "Integers (Deltaswap)".into(),
             symbol: "INT".into(),
             decimals: 10,
             total_supply: supply,

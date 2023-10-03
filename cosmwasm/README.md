@@ -1,4 +1,4 @@
-# Cosmwasm Wormhole Contracts
+# Cosmwasm Deltaswap Contracts
 
 **NOTE**: _This process is only Linux host compatible at this time._
 

@@ -1,8 +1,8 @@
 use accountant::state::{account, transfer, Account, Modification, Transfer};
 use cosmwasm_schema::{cw_serde, QueryResponses};
 use cosmwasm_std::Binary;
-use serde_wormhole::RawMessage;
-use wormhole_sdk::{
+use serde_deltaswap::RawMessage;
+use deltaswap_sdk::{
     vaa::{Body, Signature},
     Address,
 };
@@ -104,7 +104,7 @@ pub enum ExecuteMsg {
     /// Submit one or more signed VAAs to update the on-chain state.  If processing any of the VAAs
     /// returns an error, the entire transaction is aborted and none of the VAAs are committed.
     SubmitVaas {
-        /// One or more VAAs to be submitted.  Each VAA should be encoded in the standard wormhole
+        /// One or more VAAs to be submitted.  Each VAA should be encoded in the standard deltaswap
         /// wire format.
         vaas: Vec<Binary>,
     },

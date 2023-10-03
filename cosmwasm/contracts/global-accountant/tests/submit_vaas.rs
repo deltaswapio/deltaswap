@@ -4,15 +4,15 @@ use accountant::state::{transfer, TokenAddress};
 use cosmwasm_std::{from_binary, to_binary, Binary, Event, Uint256};
 use global_accountant::msg::{Observation, ObservationStatus, SubmitObservationResponse};
 use helpers::*;
-use serde_wormhole::RawMessage;
-use wormhole_bindings::fake::WormholeKeeper;
-use wormhole_sdk::{
+use serde_deltaswap::RawMessage;
+use deltaswap_bindings::fake::DeltaswapKeeper;
+use deltaswap_sdk::{
     token::Message,
     vaa::{Body, Header, Vaa},
     Address, Amount, Chain,
 };
 
-fn create_transfer_vaas(wh: &WormholeKeeper, count: usize) -> (Vec<Vaa<Message>>, Vec<Binary>) {
+fn create_transfer_vaas(wh: &DeltaswapKeeper, count: usize) -> (Vec<Vaa<Message>>, Vec<Binary>) {
     let mut vaas = Vec::with_capacity(count);
     let mut payloads = Vec::with_capacity(count);
 
@@ -160,7 +160,7 @@ fn no_quorum() {
     let (mut v, _) = sign_vaa_body(&wh, create_vaa_body(3));
     v.signatures.truncate(quorum - 1);
 
-    let data = serde_wormhole::to_vec(&v).map(From::from).unwrap();
+    let data = serde_deltaswap::to_vec(&v).map(From::from).unwrap();
 
     let err = contract
         .submit_vaas(vec![data])
@@ -177,7 +177,7 @@ fn bad_serialization() {
 
     let (v, _) = sign_vaa_body(&wh, create_vaa_body(3));
 
-    // Rather than using the wormhole wire format use cosmwasm json.
+    // Rather than using the deltaswap wire format use cosmwasm json.
     let data = to_binary(&v).unwrap();
 
     let err = contract
@@ -198,7 +198,7 @@ fn bad_signature() {
     // Flip a bit in the first signature so it becomes invalid.
     v.signatures[0].signature[0] ^= 1;
 
-    let data = serde_wormhole::to_vec(&v).map(From::from).unwrap();
+    let data = serde_deltaswap::to_vec(&v).map(From::from).unwrap();
     let err = contract
         .submit_vaas(vec![data])
         .expect_err("successfully submitted VAA with bad signature");
@@ -265,7 +265,7 @@ fn transfer_with_payload() {
         },
     };
 
-    let data = serde_wormhole::to_vec(&body).unwrap();
+    let data = serde_deltaswap::to_vec(&body).unwrap();
 
     let signatures = wh.sign(&data);
     let header = Header {
@@ -276,7 +276,7 @@ fn transfer_with_payload() {
 
     let v = Vaa::from((header, body));
 
-    let data = serde_wormhole::to_vec(&v).unwrap();
+    let data = serde_deltaswap::to_vec(&v).unwrap();
     let resp = contract.submit_vaas(vec![data.into()]).unwrap();
 
     let key = transfer::Key::new(
@@ -304,7 +304,7 @@ fn unsupported_version() {
     let (mut v, _) = sign_vaa_body(&wh, create_vaa_body(6));
     v.version = 0;
 
-    let data = serde_wormhole::to_vec(&v).map(From::from).unwrap();
+    let data = serde_deltaswap::to_vec(&v).map(From::from).unwrap();
 
     let err = contract
         .submit_vaas(vec![data])
@@ -335,7 +335,7 @@ fn reobservation() {
         emitter_address: v.emitter_address.0,
         sequence: v.sequence,
         consistency_level: v.consistency_level,
-        payload: serde_wormhole::to_vec(&v.payload).unwrap().into(),
+        payload: serde_deltaswap::to_vec(&v.payload).unwrap().into(),
     };
     let key = transfer::Key::new(o.emitter_chain, o.emitter_address.into(), o.sequence);
 
@@ -374,7 +374,7 @@ fn digest_mismatch() {
         emitter_address: v.emitter_address.0,
         sequence: v.sequence,
         consistency_level: v.consistency_level,
-        payload: serde_wormhole::to_vec(&v.payload).unwrap().into(),
+        payload: serde_deltaswap::to_vec(&v.payload).unwrap().into(),
     };
 
     let key = transfer::Key::new(o.emitter_chain, o.emitter_address.into(), o.sequence);

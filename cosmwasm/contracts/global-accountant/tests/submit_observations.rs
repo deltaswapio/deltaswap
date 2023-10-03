@@ -7,8 +7,8 @@ use cosmwasm_std::{from_binary, to_binary, Binary, Event, Uint256};
 use cw_multi_test::AppResponse;
 use global_accountant::msg::{Observation, ObservationStatus, SubmitObservationResponse};
 use helpers::*;
-use wormhole_bindings::fake;
-use wormhole_sdk::{
+use deltaswap_bindings::fake;
+use deltaswap_sdk::{
     token::Message,
     vaa::{Body, Header},
     Address, Amount,
@@ -26,7 +26,7 @@ fn set_up(count: usize) -> (Vec<Message>, Vec<Observation>) {
             recipient_chain: ((i + 3) as u16).into(),
             fee: Amount([0u8; 32]),
         };
-        let payload = serde_wormhole::to_vec(&tx).map(Binary::from).unwrap();
+        let payload = serde_deltaswap::to_vec(&tx).map(Binary::from).unwrap();
         txs.push(tx);
         observations.push(Observation {
             tx_hash: vec![(i + 4) as u8; 20].into(),
@@ -238,14 +238,14 @@ fn duplicates() {
 }
 
 fn transfer_tokens(
-    wh: &fake::WormholeKeeper,
+    wh: &fake::DeltaswapKeeper,
     contract: &mut Contract,
     key: transfer::Key,
     msg: Message,
     index: u32,
     num_signatures: usize,
 ) -> anyhow::Result<(Observation, Vec<AppResponse>)> {
-    let payload = serde_wormhole::to_vec(&msg).map(Binary::from).unwrap();
+    let payload = serde_deltaswap::to_vec(&msg).map(Binary::from).unwrap();
     let o = Observation {
         tx_hash: vec![0xd8u8; 20].into(),
         timestamp: 0xec8d03d6,
@@ -934,10 +934,10 @@ fn duplicate_vaa() {
         payload: (),
     };
 
-    let mut body_data = serde_wormhole::to_vec(&body).unwrap();
+    let mut body_data = serde_deltaswap::to_vec(&body).unwrap();
     body_data.extend_from_slice(&o.payload);
 
-    let mut data = serde_wormhole::to_vec(&Header {
+    let mut data = serde_deltaswap::to_vec(&Header {
         version: 1,
         phylax_set_index: index,
         signatures: wh.sign(&body_data),
@@ -989,10 +989,10 @@ fn digest_mismatch() {
         payload: (),
     };
 
-    let mut body_data = serde_wormhole::to_vec(&body).unwrap();
+    let mut body_data = serde_deltaswap::to_vec(&body).unwrap();
     body_data.extend_from_slice(&o.payload);
 
-    let mut data = serde_wormhole::to_vec(&Header {
+    let mut data = serde_deltaswap::to_vec(&Header {
         version: 1,
         phylax_set_index: index,
         signatures: wh.sign(&body_data),

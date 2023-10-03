@@ -6,13 +6,13 @@ use cosmwasm_std::{
     IbcPacketTimeoutMsg, IbcReceiveResponse, StdError, StdResult,
 };
 
-use crate::msg::WormholeIbcPacketMsg;
+use crate::msg::DeltaswapIbcPacketMsg;
 
 // Implementation of IBC protocol
 // Implements 6 entry points that are required for the x/wasm runtime to bind a port for this contract
 // https://github.com/CosmWasm/cosmwasm/blob/main/IBC.md#writing-new-protocols
 
-pub const IBC_APP_VERSION: &str = "ibc-wormhole-v1";
+pub const IBC_APP_VERSION: &str = "ibc-deltaswap-v1";
 
 /// 1. Opening a channel. Step 1 of handshake. Combines ChanOpenInit and ChanOpenTry from the spec.
 /// The only valid action of the contract is to accept the channel or reject it.
@@ -86,20 +86,20 @@ pub fn ibc_packet_receive(
     })
 }
 
-/// Decode the IBC packet as WormholeIbcPacketMsg::Publish and take appropriate action
+/// Decode the IBC packet as DeltaswapIbcPacketMsg::Publish and take appropriate action
 fn handle_packet_receive(msg: IbcPacketReceiveMsg) -> Result<IbcReceiveResponse, anyhow::Error> {
     let packet = msg.packet;
     // which local channel did this packet come on
     let channel_id = packet.dest.channel_id;
-    let wormhole_msg: WormholeIbcPacketMsg = from_slice(&packet.data)?;
-    match wormhole_msg {
-        WormholeIbcPacketMsg::Publish { msg: publish_attrs } => {
+    let deltaswap_msg: DeltaswapIbcPacketMsg = from_slice(&packet.data)?;
+    match deltaswap_msg {
+        DeltaswapIbcPacketMsg::Publish { msg: publish_attrs } => {
             receive_publish(channel_id, publish_attrs)
         }
     }
 }
 
-const EXPECTED_WORMHOLE_IBC_EVENT_ATTRS: [&str; 6] = [
+const EXPECTED_DELTASWAP_IBC_EVENT_ATTRS: [&str; 6] = [
     "message.message",
     "message.sender",
     "message.chain_id",
@@ -112,13 +112,13 @@ fn receive_publish(
     channel_id: String,
     publish_attrs: Vec<Attribute>,
 ) -> Result<IbcReceiveResponse, anyhow::Error> {
-    // check the attributes are what we expect from wormhole
+    // check the attributes are what we expect from deltaswap
     ensure!(
-        publish_attrs.len() == EXPECTED_WORMHOLE_IBC_EVENT_ATTRS.len(),
+        publish_attrs.len() == EXPECTED_DELTASWAP_IBC_EVENT_ATTRS.len(),
         "number of received attributes does not match number of expected"
     );
 
-    for key in EXPECTED_WORMHOLE_IBC_EVENT_ATTRS {
+    for key in EXPECTED_DELTASWAP_IBC_EVENT_ATTRS {
         let mut matched = false;
         for attr in &publish_attrs {
             if key == attr.key {
@@ -134,7 +134,7 @@ fn receive_publish(
         }
     }
 
-    // send the ack and emit the message with the attributes from the wormhole message
+    // send the ack and emit the message with the attributes from the deltaswap message
     let acknowledgement = to_binary(&ContractResult::<()>::Ok(()))?;
     Ok(IbcReceiveResponse::new()
         .set_ack(acknowledgement)

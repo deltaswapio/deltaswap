@@ -7,7 +7,7 @@ use cosmwasm_storage::{
     Singleton,
 };
 
-use cw_wormhole::byte_utils::ByteUtils;
+use cw_deltaswap::byte_utils::ByteUtils;
 
 use crate::token_address::{ExternalTokenId, WrappedCW20};
 
@@ -38,7 +38,7 @@ pub struct ConfigInfoLegacy {
     pub gov_address: Vec<u8>,
 
     /// Address of the core bridge contract
-    pub wormhole_contract: HumanAddr,
+    pub deltaswap_contract: HumanAddr,
 
     /// Code id of the wrapped token contract. When a new token is attested, the
     /// token bridge instantiates a new contract from this code id.
@@ -55,13 +55,13 @@ pub struct ConfigInfo {
     pub gov_address: Vec<u8>,
 
     /// Address of the core bridge contract
-    pub wormhole_contract: HumanAddr,
+    pub deltaswap_contract: HumanAddr,
 
     /// Code id of the wrapped token contract. When a new token is attested, the
     /// token bridge instantiates a new contract from this code id.
     pub wrapped_asset_code_id: u64,
 
-    /// The wormhole id of the current chain.
+    /// The deltaswap id of the current chain.
     pub chain_id: u16,
 
     /// The native denom info of the current chain

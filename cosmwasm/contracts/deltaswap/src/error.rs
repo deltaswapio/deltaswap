@@ -95,7 +95,7 @@ pub enum ContractError {
     #[error("FeeTooLow")]
     FeeTooLow,
 
-    /// Registering asset outside of the wormhole
+    /// Registering asset outside of the deltaswap
     #[error("RegistrationForbidden")]
     RegistrationForbidden,
 }

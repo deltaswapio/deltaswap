@@ -9,7 +9,7 @@
 // or
 //   ETH_ADDRESS="" NEAR_TOKEN="" TOKENS_TO_SEND="" NEAR_PK="" NEAR_ACCOUNT="" npm run transferFromNear
 
-// It is SUPER SUPER important to use the near-api-js that comes from inside wormhole-sdk or all heck breaks lose
+// It is SUPER SUPER important to use the near-api-js that comes from inside deltaswap-sdk or all heck breaks lose
 import {
   Account as nearAccount,
   connect as nearConnect,

@@ -1,4 +1,4 @@
-# Wormhole Contract Test Suite
+# Deltaswap Contract Test Suite
 
 ## Running Local Terra Node
 

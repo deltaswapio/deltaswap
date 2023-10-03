@@ -1,10 +1,10 @@
 use cosmwasm_schema::{cw_serde, QueryResponses};
 use cosmwasm_std::{Binary, CustomQuery, Empty};
-use wormhole_sdk::vaa::Signature;
+use deltaswap_sdk::vaa::Signature;
 
 #[cw_serde]
 #[derive(QueryResponses)]
-pub enum WormholeQuery {
+pub enum DeltaswapQuery {
     /// Verifies that `data` has been signed by a quorum of phylaxs from `phylax_set_index`.
     #[returns(Empty)]
     VerifyVaa { vaa: Binary },
@@ -23,4 +23,4 @@ pub enum WormholeQuery {
     CalculateQuorum { phylax_set_index: u32 },
 }
 
-impl CustomQuery for WormholeQuery {}
+impl CustomQuery for DeltaswapQuery {}

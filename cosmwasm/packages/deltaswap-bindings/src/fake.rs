@@ -6,10 +6,10 @@ use cw_multi_test::{AppResponse, CosmosRouter, Module};
 use k256::ecdsa::{recoverable, signature::Signer, SigningKey};
 use schemars::JsonSchema;
 use serde::de::DeserializeOwned;
-use serde_wormhole::RawMessage;
-use wormhole_sdk::vaa::{digest, Header, Signature};
+use serde_deltaswap::RawMessage;
+use deltaswap_sdk::vaa::{digest, Header, Signature};
 
-use crate::WormholeQuery;
+use crate::DeltaswapQuery;
 
 #[derive(Debug)]
 struct Inner {
@@ -19,10 +19,10 @@ struct Inner {
 }
 
 #[derive(Clone, Debug)]
-pub struct WormholeKeeper(Rc<RefCell<Inner>>);
+pub struct DeltaswapKeeper(Rc<RefCell<Inner>>);
 
-impl WormholeKeeper {
-    pub fn new() -> WormholeKeeper {
+impl DeltaswapKeeper {
+    pub fn new() -> DeltaswapKeeper {
         let phylaxs = [
             SigningKey::from_bytes(&[
                 93, 217, 189, 224, 168, 81, 157, 93, 238, 38, 143, 8, 182, 94, 69, 77, 232, 199,
@@ -60,7 +60,7 @@ impl WormholeKeeper {
             ])
             .unwrap(),
         ];
-        WormholeKeeper(Rc::new(RefCell::new(Inner {
+        DeltaswapKeeper(Rc::new(RefCell::new(Inner {
             index: 0,
             expiration: 0,
             phylaxs,
@@ -103,7 +103,7 @@ impl WormholeKeeper {
     }
 
     pub fn verify_vaa(&self, vaa: &[u8], block_time: u64) -> anyhow::Result<Empty> {
-        let (header, data) = serde_wormhole::from_slice::<(Header, &RawMessage)>(vaa)
+        let (header, data) = serde_deltaswap::from_slice::<(Header, &RawMessage)>(vaa)
             .context("failed to parse VAA header")?;
 
         let mut signers = BTreeSet::new();
@@ -167,12 +167,12 @@ impl WormholeKeeper {
         Ok(((this.phylaxs.len() as u32 * 10 / 3) * 2) / 10 + 1)
     }
 
-    pub fn query(&self, request: WormholeQuery, block: &BlockInfo) -> anyhow::Result<Binary> {
+    pub fn query(&self, request: DeltaswapQuery, block: &BlockInfo) -> anyhow::Result<Binary> {
         match request {
-            WormholeQuery::VerifyVaa { vaa } => self
+            DeltaswapQuery::VerifyVaa { vaa } => self
                 .verify_vaa(&vaa, block.height)
                 .and_then(|e| to_binary(&e).map_err(From::from)),
-            WormholeQuery::VerifyMessageSignature {
+            DeltaswapQuery::VerifyMessageSignature {
                 prefix,
                 data,
                 phylax_set_index,
@@ -180,7 +180,7 @@ impl WormholeKeeper {
             } => self
                 .verify_signature(&prefix, &data, phylax_set_index, &signature, block.height)
                 .and_then(|e| to_binary(&e).map_err(From::from)),
-            WormholeQuery::CalculateQuorum { phylax_set_index } => self
+            DeltaswapQuery::CalculateQuorum { phylax_set_index } => self
                 .calculate_quorum(phylax_set_index, block.height)
                 .and_then(|q| to_binary(&q).map_err(From::from)),
         }
@@ -207,15 +207,15 @@ impl WormholeKeeper {
     }
 }
 
-impl Default for WormholeKeeper {
+impl Default for DeltaswapKeeper {
     fn default() -> Self {
         Self::new()
     }
 }
 
-impl Module for WormholeKeeper {
+impl Module for DeltaswapKeeper {
     type ExecT = Empty;
-    type QueryT = WormholeQuery;
+    type QueryT = DeltaswapQuery;
     type SudoT = Empty;
 
     fn execute<ExecC, QueryC>(

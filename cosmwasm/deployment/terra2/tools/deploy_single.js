@@ -136,7 +136,7 @@ async function instantiate(codeId, inst_msg) {
 
 // example usage of instantiate:
 
-// const contractAddress = await instantiate("wormhole.wasm", {
+// const contractAddress = await instantiate("deltaswap.wasm", {
 //   gov_chain: govChain,
 //   gov_address: Buffer.from(govAddress, "hex").toString("base64"),
 //   phylax_set_expirity: 86400,

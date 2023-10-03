@@ -1,0 +1,12 @@
+[package]
+name = "shutdown-core-bridge-cosmwasm"
+version = "0.1.0"
+authors = ["Deltaswap Project Contributors"]
+edition = "2018"
+description = "Shutdown Deltaswap core bridge on cosmwasm"
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+deltaswap-cosmwasm = { version = "0.1.0", default-features = false }

@@ -7,16 +7,16 @@ use cw_token_bridge::msg::{
     Asset, AssetInfo, ExecuteMsg as TokenBridgeExecuteMsg, QueryMsg as TokenBridgeQueryMsg,
     TransferInfoResponse,
 };
-use cw_wormhole::byte_utils::ByteUtils;
+use cw_deltaswap::byte_utils::ByteUtils;
 
 use cw20_wrapped_2::msg::ExecuteMsg as Cw20WrappedExecuteMsg;
-use serde_wormhole::RawMessage;
+use serde_deltaswap::RawMessage;
 use std::str;
-use wormhole_bindings::{
+use deltaswap_bindings::{
     tokenfactory::{TokenFactoryMsg, TokenMsg},
-    WormholeQuery,
+    DeltaswapQuery,
 };
-use wormhole_sdk::{
+use deltaswap_sdk::{
     ibc_translator::{Action, GovernancePacket},
     vaa::{Body, Header},
     Chain,
@@ -34,9 +34,9 @@ pub enum TransferType {
     ContractControlled { payload: Binary },
 }
 
-/// Calls into the wormhole token bridge to complete the payload3 transfer.
+/// Calls into the deltaswap token bridge to complete the payload3 transfer.
 pub fn complete_transfer_and_convert(
-    deps: DepsMut<WormholeQuery>,
+    deps: DepsMut<DeltaswapQuery>,
     env: Env,
     info: MessageInfo,
     vaa: Binary,
@@ -101,7 +101,7 @@ pub fn complete_transfer_and_convert(
 }
 
 pub fn convert_and_transfer(
-    deps: DepsMut<WormholeQuery>,
+    deps: DepsMut<DeltaswapQuery>,
     info: MessageInfo,
     env: Env,
     recipient: Binary,
@@ -183,7 +183,7 @@ pub fn convert_and_transfer(
 }
 
 pub fn parse_bank_token_factory_contract(
-    deps: DepsMut<WormholeQuery>,
+    deps: DepsMut<DeltaswapQuery>,
     env: Env,
     coin: Coin,
 ) -> Result<String, anyhow::Error> {
@@ -215,7 +215,7 @@ pub fn parse_bank_token_factory_contract(
 }
 
 pub fn contract_addr_from_base58(
-    deps: Deps<WormholeQuery>,
+    deps: Deps<DeltaswapQuery>,
     subdenom: &str,
 ) -> Result<String, anyhow::Error> {
     let decoded_addr = bs58::decode(subdenom)
@@ -229,11 +229,11 @@ pub fn contract_addr_from_base58(
 }
 
 pub fn submit_update_chain_to_channel_map(
-    deps: DepsMut<WormholeQuery>,
+    deps: DepsMut<DeltaswapQuery>,
     vaa: Binary,
 ) -> Result<Response<TokenFactoryMsg>, anyhow::Error> {
     // parse the VAA header and data
-    let (header, data) = serde_wormhole::from_slice::<(Header, &RawMessage)>(&vaa)
+    let (header, data) = serde_deltaswap::from_slice::<(Header, &RawMessage)>(&vaa)
         .context("failed to parse VAA header")?;
 
     // Must be a version 1 VAA
@@ -241,23 +241,23 @@ pub fn submit_update_chain_to_channel_map(
 
     // call into deltachain to verify the VAA
     deps.querier
-        .query::<Empty>(&WormholeQuery::VerifyVaa { vaa: vaa.clone() }.into())
+        .query::<Empty>(&DeltaswapQuery::VerifyVaa { vaa: vaa.clone() }.into())
         .context("failed to verify vaa")?;
 
     // parse the VAA body
-    let body = serde_wormhole::from_slice::<Body<&RawMessage>>(data)
+    let body = serde_deltaswap::from_slice::<Body<&RawMessage>>(data)
         .context("failed to parse VAA body")?;
 
     // validate this is a governance VAA
     ensure!(
         body.emitter_chain == Chain::Solana
-            && body.emitter_address == wormhole_sdk::GOVERNANCE_EMITTER,
+            && body.emitter_address == deltaswap_sdk::GOVERNANCE_EMITTER,
         "not a governance VAA"
     );
 
     // parse the governance packet
     let govpacket: GovernancePacket =
-        serde_wormhole::from_slice(body.payload).context("failed to parse governance packet")?;
+        serde_deltaswap::from_slice(body.payload).context("failed to parse governance packet")?;
 
     // validate the governance VAA is directed to deltachain
     ensure!(

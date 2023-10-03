@@ -1,6 +1,6 @@
-# Terra2 Wormhole Contract Deployment
+# Terra2 Deltaswap Contract Deployment
 
-This readme describes the steps for building, verifying, and deploying Terra2 smart contracts for Wormhole.
+This readme describes the steps for building, verifying, and deploying Terra2 smart contracts for Deltaswap.
 
 **WARNING**: _This process is only Linux host compatible at this time._
 
@@ -88,7 +88,7 @@ For each contract you wish to verify on-chain, you will need the following eleme
 Below is how to verify all three contracts:
 
 ```console
-./verify artifacts/cw_wormhole.wasm NEW_BRIDGE_CODE_ID
+./verify artifacts/cw_deltaswap.wasm NEW_BRIDGE_CODE_ID
 ./verify artifacts/cw_token_bridge.wasm NEW_TOKEN_BRIDGE_CODE_ID
 ./verify artifacts/nft_bridge.wasm NEW_NFT_BRIDGE_CODE_ID
 ```
@@ -96,7 +96,7 @@ Below is how to verify all three contracts:
 Example: `./verify artifacts/token_bridge.wasm 59614`
 
 For each contract, you should expect a `Successfully verified` output message.
-If all contracts can be successfully verified, you can engage in Wormhole
+If all contracts can be successfully verified, you can engage in Deltaswap
 protocol governance to obtain an authorized VAA for the contract upgrade(s).
 
 A verification failure should never happen, and is a sign of some error in the

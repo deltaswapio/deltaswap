@@ -14,10 +14,10 @@ use cosmwasm_std::{
 };
 use cw2::set_contract_version;
 use cw_storage_plus::Bound;
-use serde_wormhole::RawMessage;
+use serde_deltaswap::RawMessage;
 use tinyvec::{Array, TinyVec};
-use wormhole_bindings::WormholeQuery;
-use wormhole_sdk::{
+use deltaswap_bindings::DeltaswapQuery;
+use deltaswap_sdk::{
     accountant as accountant_module, token,
     vaa::{self, Body, Header, Signature},
     Chain,
@@ -42,7 +42,7 @@ const CONTRACT_VERSION: &str = env!("CARGO_PKG_VERSION");
 
 #[cfg_attr(not(feature = "library"), entry_point)]
 pub fn instantiate(
-    deps: DepsMut<WormholeQuery>,
+    deps: DepsMut<DeltaswapQuery>,
     _env: Env,
     info: MessageInfo,
     _msg: Empty,
@@ -57,13 +57,13 @@ pub fn instantiate(
 }
 
 #[cfg_attr(not(feature = "library"), entry_point)]
-pub fn migrate(_deps: DepsMut<WormholeQuery>, _env: Env, _msg: MigrateMsg) -> StdResult<Response> {
+pub fn migrate(_deps: DepsMut<DeltaswapQuery>, _env: Env, _msg: MigrateMsg) -> StdResult<Response> {
     Ok(Response::default())
 }
 
 #[cfg_attr(not(feature = "library"), entry_point)]
 pub fn execute(
-    deps: DepsMut<WormholeQuery>,
+    deps: DepsMut<DeltaswapQuery>,
     _env: Env,
     info: MessageInfo,
     msg: ExecuteMsg,
@@ -80,7 +80,7 @@ pub fn execute(
 }
 
 fn submit_observations(
-    mut deps: DepsMut<WormholeQuery>,
+    mut deps: DepsMut<DeltaswapQuery>,
     info: MessageInfo,
     observations: Binary,
     phylax_set_index: u32,
@@ -92,7 +92,7 @@ fn submit_observations(
 
     deps.querier
         .query::<Empty>(
-            &WormholeQuery::VerifyMessageSignature {
+            &DeltaswapQuery::VerifyMessageSignature {
                 prefix: SUBMITTED_OBSERVATIONS_PREFIX.into(),
                 data: observations.clone(),
                 phylax_set_index,
@@ -104,7 +104,7 @@ fn submit_observations(
 
     let quorum = deps
         .querier
-        .query::<u32>(&WormholeQuery::CalculateQuorum { phylax_set_index }.into())
+        .query::<u32>(&DeltaswapQuery::CalculateQuorum { phylax_set_index }.into())
         .context("failed to calculate quorum")?;
 
     let observations: Vec<Observation> =
@@ -147,7 +147,7 @@ fn submit_observations(
 }
 
 fn handle_observation(
-    mut deps: DepsMut<WormholeQuery>,
+    mut deps: DepsMut<DeltaswapQuery>,
     o: Observation,
     phylax_set_index: u32,
     quorum: u32,
@@ -212,7 +212,7 @@ fn handle_observation(
         return Ok((ObservationStatus::Pending, None));
     }
 
-    let msg = serde_wormhole::from_slice::<token::Message<&RawMessage>>(&o.payload)
+    let msg = serde_deltaswap::from_slice::<token::Message<&RawMessage>>(&o.payload)
         .context("failed to parse observation payload")?;
     let tx_data = match msg {
         token::Message::Transfer {
@@ -263,7 +263,7 @@ fn handle_observation(
 }
 
 fn modify_balance(
-    deps: DepsMut<WormholeQuery>,
+    deps: DepsMut<DeltaswapQuery>,
     info: &MessageInfo,
     modification: Modification,
 ) -> Result<Event, AnyError> {
@@ -278,7 +278,7 @@ fn modify_balance(
 }
 
 fn submit_vaas(
-    mut deps: DepsMut<WormholeQuery>,
+    mut deps: DepsMut<DeltaswapQuery>,
     info: MessageInfo,
     vaas: Vec<Binary>,
 ) -> Result<Response, AnyError> {
@@ -293,24 +293,24 @@ fn submit_vaas(
 }
 
 fn handle_vaa(
-    mut deps: DepsMut<WormholeQuery>,
+    mut deps: DepsMut<DeltaswapQuery>,
     info: &MessageInfo,
     vaa: Binary,
 ) -> anyhow::Result<Event> {
-    let (header, data) = serde_wormhole::from_slice::<(Header, &RawMessage)>(&vaa)
+    let (header, data) = serde_deltaswap::from_slice::<(Header, &RawMessage)>(&vaa)
         .context("failed to parse VAA header")?;
 
     ensure!(header.version == 1, "unsupported VAA version");
 
     deps.querier
-        .query::<Empty>(&WormholeQuery::VerifyVaa { vaa: vaa.clone() }.into())
+        .query::<Empty>(&DeltaswapQuery::VerifyVaa { vaa: vaa.clone() }.into())
         .context(ContractError::VerifyQuorum)?;
 
     let digest = vaa::digest(data)
         .map(|d| d.secp256k_hash.to_vec().into())
         .context("failed to calculate digest for VAA body")?;
 
-    let body = serde_wormhole::from_slice::<Body<&RawMessage>>(data)
+    let body = serde_deltaswap::from_slice::<Body<&RawMessage>>(data)
         .context("failed to parse VAA body")?;
 
     let digest_key = DIGESTS.key((
@@ -332,7 +332,7 @@ fn handle_vaa(
 
     // We may also accept governance messages from deltachain in the future
     let mut evt = if body.emitter_chain == Chain::Solana
-        && body.emitter_address == wormhole_sdk::GOVERNANCE_EMITTER
+        && body.emitter_address == deltaswap_sdk::GOVERNANCE_EMITTER
     {
         if body.payload.len() < 32 {
             bail!("governance module missing");
@@ -340,18 +340,18 @@ fn handle_vaa(
         let module = &body.payload[..32];
 
         if module == token::MODULE {
-            let govpacket = serde_wormhole::from_slice(body.payload)
+            let govpacket = serde_deltaswap::from_slice(body.payload)
                 .context("failed to parse tokenbridge governance packet")?;
             handle_token_governance_vaa(deps.branch(), body.with_payload(govpacket))?
         } else if module == accountant_module::MODULE {
-            let govpacket = serde_wormhole::from_slice(body.payload)
+            let govpacket = serde_deltaswap::from_slice(body.payload)
                 .context("failed to parse accountant governance packet")?;
             handle_accountant_governance_vaa(deps.branch(), info, body.with_payload(govpacket))?
         } else {
             bail!("unknown governance module")
         }
     } else {
-        let msg = serde_wormhole::from_slice(body.payload)
+        let msg = serde_deltaswap::from_slice(body.payload)
             .context("failed to parse tokenbridge message")?;
         handle_tokenbridge_vaa(deps.branch(), body.with_payload(msg))?
     };
@@ -366,7 +366,7 @@ fn handle_vaa(
 }
 
 fn handle_token_governance_vaa(
-    deps: DepsMut<WormholeQuery>,
+    deps: DepsMut<DeltaswapQuery>,
     body: Body<token::GovernancePacket>,
 ) -> anyhow::Result<Event> {
     ensure!(
@@ -395,7 +395,7 @@ fn handle_token_governance_vaa(
 }
 
 fn handle_accountant_governance_vaa(
-    deps: DepsMut<WormholeQuery>,
+    deps: DepsMut<DeltaswapQuery>,
     info: &MessageInfo,
     body: Body<accountant_module::GovernancePacket>,
 ) -> anyhow::Result<Event> {
@@ -438,7 +438,7 @@ fn handle_accountant_governance_vaa(
 }
 
 fn handle_tokenbridge_vaa(
-    mut deps: DepsMut<WormholeQuery>,
+    mut deps: DepsMut<DeltaswapQuery>,
     body: Body<token::Message<&RawMessage>>,
 ) -> anyhow::Result<Event> {
     let registered_emitter = CHAIN_REGISTRATIONS
@@ -493,7 +493,7 @@ fn handle_tokenbridge_vaa(
 }
 
 #[cfg_attr(not(feature = "library"), entry_point)]
-pub fn query(deps: Deps<WormholeQuery>, _env: Env, msg: QueryMsg) -> StdResult<Binary> {
+pub fn query(deps: Deps<DeltaswapQuery>, _env: Env, msg: QueryMsg) -> StdResult<Binary> {
     match msg {
         QueryMsg::Balance(key) => query_balance(deps, key).and_then(|resp| to_binary(&resp)),
         QueryMsg::AllAccounts { start_after, limit } => {
@@ -537,7 +537,7 @@ pub fn query(deps: Deps<WormholeQuery>, _env: Env, msg: QueryMsg) -> StdResult<B
 }
 
 fn query_all_accounts(
-    deps: Deps<WormholeQuery>,
+    deps: Deps<DeltaswapQuery>,
     start_after: Option<account::Key>,
     limit: Option<u32>,
 ) -> StdResult<AllAccountsResponse> {
@@ -557,7 +557,7 @@ fn query_all_accounts(
 }
 
 fn query_all_transfers(
-    deps: Deps<WormholeQuery>,
+    deps: Deps<DeltaswapQuery>,
     start_after: Option<transfer::Key>,
     limit: Option<u32>,
 ) -> StdResult<AllTransfersResponse> {
@@ -613,7 +613,7 @@ fn tinyvec_to_vec<A: Array>(tv: TinyVec<A>) -> Vec<A::Item> {
 }
 
 fn query_all_pending_transfers(
-    deps: Deps<WormholeQuery>,
+    deps: Deps<DeltaswapQuery>,
     start_after: Option<transfer::Key>,
     limit: Option<u32>,
 ) -> StdResult<AllPendingTransfersResponse> {
@@ -642,7 +642,7 @@ fn query_all_pending_transfers(
 }
 
 fn query_all_modifications(
-    deps: Deps<WormholeQuery>,
+    deps: Deps<DeltaswapQuery>,
     start_after: Option<u64>,
     limit: Option<u32>,
 ) -> StdResult<AllModificationsResponse> {
@@ -662,7 +662,7 @@ fn query_all_modifications(
 }
 
 fn query_chain_registration(
-    deps: Deps<WormholeQuery>,
+    deps: Deps<DeltaswapQuery>,
     chain: u16,
 ) -> StdResult<ChainRegistrationResponse> {
     CHAIN_REGISTRATIONS
@@ -671,7 +671,7 @@ fn query_chain_registration(
 }
 
 fn query_missing_observations(
-    deps: Deps<WormholeQuery>,
+    deps: Deps<DeltaswapQuery>,
     phylax_set: u32,
     index: u8,
 ) -> StdResult<MissingObservationsResponse> {
@@ -692,7 +692,7 @@ fn query_missing_observations(
 }
 
 fn query_transfer_status(
-    deps: Deps<WormholeQuery>,
+    deps: Deps<DeltaswapQuery>,
     key: &transfer::Key,
 ) -> StdResult<TransferStatus> {
     if let Some(digest) = DIGESTS.may_load(
@@ -713,7 +713,7 @@ fn query_transfer_status(
 }
 
 fn query_batch_transfer_status(
-    deps: Deps<WormholeQuery>,
+    deps: Deps<DeltaswapQuery>,
     keys: Vec<transfer::Key>,
 ) -> StdResult<BatchTransferStatusResponse> {
     keys.into_iter()

@@ -1,4 +1,4 @@
-static WASM: &[u8] = include_bytes!("../../../target/wasm32-unknown-unknown/release/wormhole.wasm");
+static WASM: &[u8] = include_bytes!("../../../target/wasm32-unknown-unknown/release/deltaswap.wasm");
 
 use cosmwasm_std::{from_slice, Coin, Env, HumanAddr, InitResponse};
 use cosmwasm_storage::to_length_prefixed;
@@ -7,7 +7,7 @@ use cosmwasm_vm::{
     Api, Instance, Storage,
 };
 
-use wormhole::{
+use deltaswap::{
     msg::InitMsg,
     state::{ConfigInfo, PhylaxAddress, PhylaxSetInfo, CONFIG_KEY},
 };

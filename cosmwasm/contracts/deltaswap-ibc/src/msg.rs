@@ -17,7 +17,7 @@ pub enum ExecuteMsg {
     /// Submit a signed VAA to update the on-chain state.  If processing any of the VAAs
     /// returns an error, the entire transaction is aborted and none of the VAAs are committed.
     SubmitUpdateChannelChain {
-        /// VAA to submit.  The VAA should be encoded in the standard wormhole
+        /// VAA to submit.  The VAA should be encoded in the standard deltaswap
         /// wire format.
         vaa: Binary,
     },
@@ -25,14 +25,14 @@ pub enum ExecuteMsg {
 
 /// This is the message we send over the IBC channel
 #[cw_serde]
-pub enum WormholeIbcPacketMsg {
+pub enum DeltaswapIbcPacketMsg {
     Publish { msg: Vec<Attribute> },
 }
 
 #[cfg(test)]
 mod test {
     use cosmwasm_std::to_binary;
-    use cw_wormhole::msg::ExecuteMsg as WormholeExecuteMsg;
+    use cw_deltaswap::msg::ExecuteMsg as DeltaswapExecuteMsg;
 
     use super::ExecuteMsg;
 
@@ -45,16 +45,16 @@ mod test {
         000000000000000000000000000000000000000000000000000a0261626364";
         let signed_vaa = hex::decode(signed_vaa).unwrap();
 
-        let wormhole_submit_vaa = WormholeExecuteMsg::SubmitVAA {
+        let deltaswap_submit_vaa = DeltaswapExecuteMsg::SubmitVAA {
             vaa: signed_vaa.clone().into(),
         };
-        let wormhole_msg = to_binary(&wormhole_submit_vaa).unwrap();
+        let deltaswap_msg = to_binary(&deltaswap_submit_vaa).unwrap();
 
         let submit_vaa = ExecuteMsg::SubmitVAA {
             vaa: signed_vaa.into(),
         };
         let msg = to_binary(&submit_vaa).unwrap();
 
-        assert_eq!(wormhole_msg, msg);
+        assert_eq!(deltaswap_msg, msg);
     }
 }

@@ -4,12 +4,12 @@ use crate::state::{CHANNEL_CHAIN, VAA_ARCHIVE};
 use anyhow::{bail, ensure, Context};
 use cosmwasm_std::{entry_point, to_binary, Binary, Deps, Empty, Event, StdResult};
 use cosmwasm_std::{DepsMut, Env, MessageInfo, Order, Response};
-use serde_wormhole::RawMessage;
+use serde_deltaswap::RawMessage;
 use std::str;
-use wormhole_bindings::WormholeQuery;
-use wormhole_sdk::ibc_receiver::{Action, GovernancePacket};
-use wormhole_sdk::vaa::{Body, Header};
-use wormhole_sdk::Chain;
+use deltaswap_bindings::DeltaswapQuery;
+use deltaswap_sdk::ibc_receiver::{Action, GovernancePacket};
+use deltaswap_sdk::vaa::{Body, Header};
+use deltaswap_sdk::Chain;
 
 #[cfg_attr(not(feature = "library"), entry_point)]
 pub fn instantiate(
@@ -30,7 +30,7 @@ pub fn migrate(_deps: DepsMut, _env: Env, _msg: Empty) -> Result<Response, anyho
 
 #[cfg_attr(not(feature = "library"), entry_point)]
 pub fn execute(
-    deps: DepsMut<WormholeQuery>,
+    deps: DepsMut<DeltaswapQuery>,
     _env: Env,
     info: MessageInfo,
     msg: ExecuteMsg,
@@ -41,7 +41,7 @@ pub fn execute(
 }
 
 fn submit_vaas(
-    mut deps: DepsMut<WormholeQuery>,
+    mut deps: DepsMut<DeltaswapQuery>,
     info: MessageInfo,
     vaas: Vec<Binary>,
 ) -> Result<Response, anyhow::Error> {
@@ -55,9 +55,9 @@ fn submit_vaas(
         .add_events(evts))
 }
 
-fn handle_vaa(deps: DepsMut<WormholeQuery>, vaa: Binary) -> anyhow::Result<Event> {
+fn handle_vaa(deps: DepsMut<DeltaswapQuery>, vaa: Binary) -> anyhow::Result<Event> {
     // parse the VAA header and data
-    let (header, data) = serde_wormhole::from_slice::<(Header, &RawMessage)>(&vaa)
+    let (header, data) = serde_deltaswap::from_slice::<(Header, &RawMessage)>(&vaa)
         .context("failed to parse VAA header")?;
 
     // Must be a version 1 VAA
@@ -65,23 +65,23 @@ fn handle_vaa(deps: DepsMut<WormholeQuery>, vaa: Binary) -> anyhow::Result<Event
 
     // call into deltachain to verify the VAA
     deps.querier
-        .query::<Empty>(&WormholeQuery::VerifyVaa { vaa: vaa.clone() }.into())
+        .query::<Empty>(&DeltaswapQuery::VerifyVaa { vaa: vaa.clone() }.into())
         .context(ContractError::VerifyQuorum)?;
 
     // parse the VAA body
-    let body = serde_wormhole::from_slice::<Body<&RawMessage>>(data)
+    let body = serde_deltaswap::from_slice::<Body<&RawMessage>>(data)
         .context("failed to parse VAA body")?;
 
     // validate this is a governance VAA
     ensure!(
         body.emitter_chain == Chain::Solana
-            && body.emitter_address == wormhole_sdk::GOVERNANCE_EMITTER,
+            && body.emitter_address == deltaswap_sdk::GOVERNANCE_EMITTER,
         "not a governance VAA"
     );
 
     // parse the governance packet
     let govpacket: GovernancePacket =
-        serde_wormhole::from_slice(body.payload).context("failed to parse governance packet")?;
+        serde_deltaswap::from_slice(body.payload).context("failed to parse governance packet")?;
 
     // validate the governance VAA is directed to deltachain
     ensure!(

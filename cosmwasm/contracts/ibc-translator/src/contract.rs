@@ -5,7 +5,7 @@ use anyhow::{bail, Context};
 use cosmwasm_std::{
     to_binary, Binary, Deps, DepsMut, Empty, Env, MessageInfo, Reply, Response, StdResult,
 };
-use wormhole_bindings::{tokenfactory::TokenFactoryMsg, WormholeQuery};
+use deltaswap_bindings::{tokenfactory::TokenFactoryMsg, DeltaswapQuery};
 
 use crate::{
     execute::{
@@ -41,7 +41,7 @@ pub fn migrate(_deps: DepsMut, _env: Env, _msg: Empty) -> Result<Response, anyho
 
 #[cfg_attr(not(feature = "library"), entry_point)]
 pub fn execute(
-    deps: DepsMut<WormholeQuery>,
+    deps: DepsMut<DeltaswapQuery>,
     env: Env,
     info: MessageInfo,
     msg: ExecuteMsg,

@@ -131,7 +131,7 @@ fn missing_phylax_set() {
     let err = contract
         .modify_balance_with(m, &wh, |mut vaa| {
             vaa.phylax_set_index += 1;
-            serde_wormhole::to_vec(&vaa).map(From::from).unwrap()
+            serde_deltaswap::to_vec(&vaa).map(From::from).unwrap()
         })
         .expect_err("successfully modified balance with invalid phylax set");
     assert_eq!(
@@ -189,7 +189,7 @@ fn no_quorum() {
     let err = contract
         .modify_balance_with(m, &wh, |mut vaa| {
             vaa.signatures.truncate(newlen);
-            serde_wormhole::to_vec(&vaa).map(From::from).unwrap()
+            serde_deltaswap::to_vec(&vaa).map(From::from).unwrap()
         })
         .expect_err("successfully submitted modification without quorum");
     assert_eq!(

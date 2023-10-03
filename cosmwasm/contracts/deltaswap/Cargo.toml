@@ -1,12 +1,12 @@
 [package]
-name = "wormhole-cosmwasm"
+name = "deltaswap-cosmwasm"
 version = "0.1.0"
 authors = ["Yuriy Savchenko <yuriy.savchenko@gmail.com>"]
 edition = "2018"
-description = "Wormhole contract"
+description = "Deltaswap contract"
 
 [lib]
-name = "cw_wormhole"
+name = "cw_deltaswap"
 crate-type = ["cdylib", "rlib"]
 
 [features]

@@ -23,10 +23,10 @@ async function main() {
   );
 
   const hardcodedGas = {
-    "wormhole.wasm": 5000000,
+    "deltaswap.wasm": 5000000,
   };
-  // Deploy Wormhole alone.
-  const file = "wormhole.wasm";
+  // Deploy Deltaswap alone.
+  const file = "deltaswap.wasm";
   const contract_bytes = readFileSync(`../artifacts/${file}`);
   console.log(`Storing WASM: ${file} (${contract_bytes.length} bytes)`);
 
@@ -41,7 +41,7 @@ async function main() {
     const tx = await wallet.createAndSignTx({
       msgs: [store_code],
       memo: "",
-      fee: new StdFee(hardcodedGas["wormhole.wasm"], {
+      fee: new StdFee(hardcodedGas["deltaswap.wasm"], {
         uluna: "100000",
       }),
     });
@@ -60,7 +60,7 @@ async function main() {
         new MsgMigrateContract(
           wallet.key.accAddress,
           "terra18vd8fpwxzck93qlwghaj6arh4p7c5n896xzem5",
-          codeIds["wormhole.wasm"],
+          codeIds["deltaswap.wasm"],
           {
               "action": ""
           },
@@ -110,7 +110,7 @@ async function main() {
     const tx = await wallet.createAndSignTx({
       msgs: [store_code],
       memo: "",
-      fee: new StdFee(hardcodedGas["wormhole.wasm"], {
+      fee: new StdFee(hardcodedGas["deltaswap.wasm"], {
         uluna: "100000",
       }),
     });

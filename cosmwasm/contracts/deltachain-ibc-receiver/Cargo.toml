@@ -1,7 +1,7 @@
 [package]
 name = "deltachain-ibc-receiver"
 version = "0.1.0"
-authors = ["Wormhole Project Contributors"]
+authors = ["Deltaswap Project Contributors"]
 edition = "2021"
 
 [lib]
@@ -17,6 +17,6 @@ cw-storage-plus = "0.13.2"
 anyhow = "1"
 semver = "1.0.16"
 thiserror = "1.0.31"
-wormhole-bindings = "0.1.0"
-wormhole-sdk = { version = "0.1.0", features = ["schemars"] }
-serde_wormhole = "0.1.0"
+deltaswap-bindings = "0.1.0"
+deltaswap-sdk = { version = "0.1.0", features = ["schemars"] }
+serde_deltaswap = "0.1.0"

@@ -1,9 +1,9 @@
 [package]
 name = "shutdown-token-bridge-cosmwasm"
 version = "0.1.0"
-authors = ["Wormhole Project Contributors"]
+authors = ["Deltaswap Project Contributors"]
 edition = "2018"
-description = "Shutdown Wormhole token bridge on cosmwasm"
+description = "Shutdown Deltaswap token bridge on cosmwasm"
 
 [lib]
 crate-type = ["cdylib", "rlib"]

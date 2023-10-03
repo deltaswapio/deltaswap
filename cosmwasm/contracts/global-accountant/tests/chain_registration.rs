@@ -3,7 +3,7 @@ mod helpers;
 use cosmwasm_std::{to_binary, Event};
 use global_accountant::msg::ChainRegistrationResponse;
 use helpers::*;
-use wormhole_sdk::{
+use deltaswap_sdk::{
     token::{Action, GovernancePacket},
     vaa::Body,
     Address, Chain,
@@ -14,7 +14,7 @@ fn create_vaa_body() -> Body<GovernancePacket> {
         timestamp: 1,
         nonce: 1,
         emitter_chain: Chain::Solana,
-        emitter_address: wormhole_sdk::GOVERNANCE_EMITTER,
+        emitter_address: deltaswap_sdk::GOVERNANCE_EMITTER,
         sequence: 15920283,
         consistency_level: 0,
         payload: GovernancePacket {
@@ -178,7 +178,7 @@ fn no_quorum() {
     let (mut v, _) = sign_vaa_body(&wh, create_vaa_body());
     v.signatures.truncate(quorum - 1);
 
-    let data = serde_wormhole::to_vec(&v).map(From::from).unwrap();
+    let data = serde_deltaswap::to_vec(&v).map(From::from).unwrap();
 
     let err = contract
         .submit_vaas(vec![data])
@@ -197,7 +197,7 @@ fn bad_signature() {
     // Flip a bit in the first signature so it becomes invalid.
     v.signatures[0].signature[0] ^= 1;
 
-    let data = serde_wormhole::to_vec(&v).map(From::from).unwrap();
+    let data = serde_deltaswap::to_vec(&v).map(From::from).unwrap();
     let err = contract
         .submit_vaas(vec![data])
         .expect_err("successfully executed chain registration with bad signature");
@@ -213,7 +213,7 @@ fn bad_serialization() {
 
     let (v, _) = sign_vaa_body(&wh, create_vaa_body());
 
-    // Rather than using the wormhole wire format use cosmwasm json.
+    // Rather than using the deltaswap wire format use cosmwasm json.
     let data = to_binary(&v).unwrap();
 
     let err = contract

@@ -15,7 +15,7 @@
 // for Eth try EVM_PROVIDER_URL="https://rpc.ankr.com/eth" and EVM_CHAIN_NAME="ethereum"
 // for BSC try EVM_PROVIDER_URL="https://rpc.ankr.com/bsc" and EVM_CHAIN_NAME="bsc"
 
-// It is SUPER SUPER important to use the near-api-js that comes from inside wormhole-sdk or all heck breaks lose
+// It is SUPER SUPER important to use the near-api-js that comes from inside deltaswap-sdk or all heck breaks lose
 import {
   Account as nearAccount,
   connect as nearConnect,

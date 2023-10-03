@@ -6,7 +6,7 @@ pub enum ExecuteMsg {
     /// Submit one or more signed VAAs to update the on-chain state.  If processing any of the VAAs
     /// returns an error, the entire transaction is aborted and none of the VAAs are committed.
     SubmitUpdateChannelChain {
-        /// One or more VAAs to be submitted.  Each VAA should be encoded in the standard wormhole
+        /// One or more VAAs to be submitted.  Each VAA should be encoded in the standard deltaswap
         /// wire format.
         vaas: Vec<Binary>,
     },
@@ -14,7 +14,7 @@ pub enum ExecuteMsg {
 
 /// This is the message we send over the IBC channel
 #[cw_serde]
-pub enum WormholeIbcPacketMsg {
+pub enum DeltaswapIbcPacketMsg {
     Publish { msg: Vec<Attribute> },
 }
 

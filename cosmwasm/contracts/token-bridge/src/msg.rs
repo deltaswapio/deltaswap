@@ -13,7 +13,7 @@ pub struct InstantiateMsg {
     pub gov_chain: u16,
     pub gov_address: Binary,
 
-    pub wormhole_contract: HumanAddr,
+    pub deltaswap_contract: HumanAddr,
     pub wrapped_asset_code_id: u64,
 
     pub chain_id: u16,

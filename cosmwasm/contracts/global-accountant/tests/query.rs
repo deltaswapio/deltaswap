@@ -9,10 +9,10 @@ use accountant::state::{
 use cosmwasm_std::Uint256;
 use global_accountant::msg::TransferStatus;
 use helpers::*;
-use wormhole_bindings::fake;
-use wormhole_sdk::{token::Message, vaa::Body, Address, Amount};
+use deltaswap_bindings::fake;
+use deltaswap_sdk::{token::Message, vaa::Body, Address, Amount};
 
-fn create_accounts(wh: &fake::WormholeKeeper, contract: &mut Contract, count: usize) {
+fn create_accounts(wh: &fake::DeltaswapKeeper, contract: &mut Contract, count: usize) {
     let mut s = 0;
     for i in 0..count {
         for j in 0..count {
@@ -33,7 +33,7 @@ fn create_accounts(wh: &fake::WormholeKeeper, contract: &mut Contract, count: us
 }
 
 fn create_transfers(
-    wh: &fake::WormholeKeeper,
+    wh: &fake::DeltaswapKeeper,
     contract: &mut Contract,
     count: usize,
 ) -> Vec<Transfer> {
@@ -84,7 +84,7 @@ fn create_transfers(
 }
 
 pub fn create_modifications(
-    wh: &fake::WormholeKeeper,
+    wh: &fake::DeltaswapKeeper,
     contract: &mut Contract,
     count: usize,
 ) -> Vec<Modification> {

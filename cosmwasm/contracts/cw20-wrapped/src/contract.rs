@@ -185,7 +185,7 @@ pub fn migrate(_deps: DepsMut, _env: Env, _msg: MigrateMsg) -> StdResult<Respons
 pub fn query_token_info(deps: Deps) -> StdResult<TokenInfoResponse> {
     let info = TOKEN_INFO.load(deps.storage)?;
     Ok(TokenInfoResponse {
-        name: info.name + " (Wormhole)",
+        name: info.name + " (Deltaswap)",
         symbol: info.symbol,
         decimals: info.decimals,
         total_supply: info.total_supply,
@@ -229,7 +229,7 @@ mod tests {
         assert_eq!(
             query_token_info(deps.as_ref()).unwrap(),
             TokenInfoResponse {
-                name: "Integers (Wormhole)".to_string(),
+                name: "Integers (Deltaswap)".to_string(),
                 symbol: "INT".to_string(),
                 decimals: 10,
                 total_supply: Uint128::from(0u128),
@@ -268,7 +268,7 @@ mod tests {
         assert_eq!(
             query_token_info(deps.as_ref()).unwrap(),
             TokenInfoResponse {
-                name: "Integers (Wormhole)".to_string(),
+                name: "Integers (Deltaswap)".to_string(),
                 symbol: "INT".to_string(),
                 decimals: 10,
                 total_supply: amount,

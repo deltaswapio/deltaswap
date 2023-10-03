@@ -127,7 +127,7 @@
             ],
             "properties": {
               "vaas": {
-                "description": "One or more VAAs to be submitted.  Each VAA should be encoded in the standard wormhole wire format.",
+                "description": "One or more VAAs to be submitted.  Each VAA should be encoded in the standard deltaswap wire format.",
                 "type": "array",
                 "items": {
                   "$ref": "#/definitions/Binary"

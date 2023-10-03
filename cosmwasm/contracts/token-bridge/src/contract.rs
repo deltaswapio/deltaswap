@@ -9,13 +9,13 @@ use std::{
     str::FromStr,
 };
 
-use cw_wormhole::{
+use cw_deltaswap::{
     byte_utils::{
         extend_address_to_32, extend_address_to_32_array, extend_string_to_32, get_string_from_32,
         ByteUtils,
     },
     error::ContractError,
-    msg::{ExecuteMsg as WormholeExecuteMsg, QueryMsg as WormholeQueryMsg},
+    msg::{ExecuteMsg as DeltaswapExecuteMsg, QueryMsg as DeltaswapQueryMsg},
     state::{vaa_archive_add, vaa_archive_check, GovernancePacket, ParsedVAA},
 };
 
@@ -83,7 +83,7 @@ pub fn migrate(_deps: DepsMut, _env: Env, _msg: MigrateMsg) -> StdResult<Respons
     // let ConfigInfoLegacy {
     //     gov_chain,
     //     gov_address,
-    //     wormhole_contract,
+    //     deltaswap_contract,
     //     wrapped_asset_code_id,
     // } = config_read_legacy(deps.storage).load()?;
 
@@ -96,7 +96,7 @@ pub fn migrate(_deps: DepsMut, _env: Env, _msg: MigrateMsg) -> StdResult<Respons
     // let config_info = ConfigInfo {
     //     gov_chain,
     //     gov_address,
-    //     wormhole_contract,
+    //     deltaswap_contract,
     //     wrapped_asset_code_id,
     //     chain_id,
     //     native_denom,
@@ -115,11 +115,11 @@ pub fn instantiate(
     _info: MessageInfo,
     msg: InstantiateMsg,
 ) -> StdResult<Response> {
-    // Save general wormhole info
+    // Save general deltaswap info
     let state = ConfigInfo {
         gov_chain: msg.gov_chain,
         gov_address: msg.gov_address.into(),
-        wormhole_contract: msg.wormhole_contract,
+        deltaswap_contract: msg.deltaswap_contract,
         wrapped_asset_code_id: msg.wrapped_asset_code_id,
         chain_id: msg.chain_id,
         native_denom: msg.native_denom,
@@ -185,7 +185,7 @@ pub fn reply(deps: DepsMut, env: Env, _msg: Reply) -> StdResult<Response> {
         return Err(StdError::generic_err("fee greater than sent amount"));
     }
 
-    // Update Wormhole message to correct amount.
+    // Update Deltaswap message to correct amount.
     transfer_info.amount.1 = real_amount.u128();
 
     let token_bridge_message = match transfer_type {
@@ -208,11 +208,11 @@ pub fn reply(deps: DepsMut, env: Env, _msg: Reply) -> StdResult<Response> {
         },
     };
 
-    // Post Wormhole Message
+    // Post Deltaswap Message
     let message = CosmosMsg::Wasm(WasmMsg::Execute {
-        contract_addr: cfg.wormhole_contract,
+        contract_addr: cfg.deltaswap_contract,
         funds: vec![],
-        msg: to_binary(&WormholeExecuteMsg::PostMessage {
+        msg: to_binary(&DeltaswapExecuteMsg::PostMessage {
             message: Binary::from(token_bridge_message.serialize()),
             nonce: state.nonce,
         })?,
@@ -228,8 +228,8 @@ pub fn reply(deps: DepsMut, env: Env, _msg: Reply) -> StdResult<Response> {
 fn parse_vaa(deps: Deps, block_time: u64, data: &Binary) -> StdResult<ParsedVAA> {
     let cfg = config_read(deps.storage).load()?;
     let vaa: ParsedVAA = deps.querier.query(&QueryRequest::Wasm(WasmQuery::Smart {
-        contract_addr: cfg.wormhole_contract,
-        msg: to_binary(&WormholeQueryMsg::VerifyVAA {
+        contract_addr: cfg.deltaswap_contract,
+        msg: to_binary(&DeltaswapQueryMsg::VerifyVAA {
             vaa: data.clone(),
             block_time,
         })?,
@@ -480,7 +480,7 @@ fn handle_attest_meta(
                 }),
             })?,
             funds: vec![],
-            label: "Wormhole Wrapped CW20".to_string(),
+            label: "Deltaswap Wrapped CW20".to_string(),
         })
     };
     wrapped_asset_seq(deps.storage, meta.token_chain).save(&token_address, &sequence)?;
@@ -540,8 +540,8 @@ fn handle_create_asset_meta_token(
 
     Ok(Response::new()
         .add_message(CosmosMsg::Wasm(WasmMsg::Execute {
-            contract_addr: cfg.wormhole_contract,
-            msg: to_binary(&WormholeExecuteMsg::PostMessage {
+            contract_addr: cfg.deltaswap_contract,
+            msg: to_binary(&DeltaswapExecuteMsg::PostMessage {
                 message: Binary::from(token_bridge_message.serialize()),
                 nonce,
             })?,
@@ -583,8 +583,8 @@ fn handle_create_asset_meta_native_token(
     };
     Ok(Response::new()
         .add_message(CosmosMsg::Wasm(WasmMsg::Execute {
-            contract_addr: cfg.wormhole_contract,
-            msg: to_binary(&WormholeExecuteMsg::PostMessage {
+            contract_addr: cfg.deltaswap_contract,
+            msg: to_binary(&DeltaswapExecuteMsg::PostMessage {
                 message: Binary::from(token_bridge_message.serialize()),
                 nonce,
             })?,
@@ -1200,8 +1200,8 @@ fn handle_initiate_transfer_token(
             };
 
             messages.push(CosmosMsg::Wasm(WasmMsg::Execute {
-                contract_addr: cfg.wormhole_contract,
-                msg: to_binary(&WormholeExecuteMsg::PostMessage {
+                contract_addr: cfg.deltaswap_contract,
+                msg: to_binary(&DeltaswapExecuteMsg::PostMessage {
                     message: Binary::from(token_bridge_message.serialize()),
                     nonce,
                 })?,
@@ -1212,7 +1212,7 @@ fn handle_initiate_transfer_token(
         Err(_) => {
             asset_chain = cfg.chain_id;
 
-            // normalize amount to 8 decimals when it sent over the wormhole
+            // normalize amount to 8 decimals when it sent over the deltaswap
             let token_info: TokenInfoResponse =
                 deps.querier.query(&QueryRequest::Wasm(WasmQuery::Smart {
                     contract_addr: asset.clone(),
@@ -1448,8 +1448,8 @@ fn handle_initiate_transfer_native_token(
 
     let sender = deps.api.addr_canonicalize(info.sender.as_str())?;
     messages.push(CosmosMsg::Wasm(WasmMsg::Execute {
-        contract_addr: cfg.wormhole_contract,
-        msg: to_binary(&WormholeExecuteMsg::PostMessage {
+        contract_addr: cfg.deltaswap_contract,
+        msg: to_binary(&DeltaswapExecuteMsg::PostMessage {
             message: Binary::from(token_bridge_message.serialize()),
             nonce,
         })?,

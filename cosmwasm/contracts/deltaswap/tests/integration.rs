@@ -5,7 +5,7 @@ use cosmwasm_std::{
 };
 use cosmwasm_storage::to_length_prefixed;
 
-use cw_wormhole::{
+use cw_deltaswap::{
     contract::instantiate,
     msg::InstantiateMsg,
     state::{ConfigInfo, PhylaxAddress, PhylaxSetInfo, CONFIG_KEY},

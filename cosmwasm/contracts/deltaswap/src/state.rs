@@ -63,10 +63,10 @@ pub struct ConfigInfo {
     // Message sending fee
     pub fee: Coin,
 
-    /// The wormhole id of the current chain.
+    /// The deltaswap id of the current chain.
     pub chain_id: u16,
 
-    /// The denom in which transaction fees and wormhole fees are paid.
+    /// The denom in which transaction fees and deltaswap fees are paid.
     /// Typically the native denom of the current chain.
     pub fee_denom: String,
 }
@@ -220,9 +220,9 @@ impl PhylaxSetInfo {
     }
 }
 
-// Wormhole contract generic information
+// Deltaswap contract generic information
 #[derive(Serialize, Deserialize, Clone, Debug, PartialEq, Eq, JsonSchema)]
-pub struct WormholeInfo {
+pub struct DeltaswapInfo {
     // Period for which a phylax set stays active after it has been replaced
     pub phylax_set_expirity: u64,
 }

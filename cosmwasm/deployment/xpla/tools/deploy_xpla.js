@@ -39,7 +39,7 @@ console.log("Deploying to " + NETWORK + " at URL " + LCD_URL + ", chainId " + CH
   deterministic.
 */
 const artifacts = [
-  "cw_wormhole.wasm",
+  "cw_deltaswap.wasm",
   "cw_token_bridge.wasm",
   "cw20_wrapped_2.wasm",
   // Decided not to deploy these as of 10/10/2022:
@@ -132,7 +132,7 @@ console.log(codeIds);
  * will be instantiated by the on-chain bridge contracts on demand.
  * */
 
-// Governance constants defined by the Wormhole spec.
+// Governance constants defined by the Deltaswap spec.
 const govChain = 1;
 const govAddress =
   "0000000000000000000000000000000000000000000000000000000000000004";
@@ -170,8 +170,8 @@ async function instantiate(contract, inst_msg, label) {
 
 const addresses = {};
 
-addresses["cw_wormhole.wasm"] = await instantiate(
-  "cw_wormhole.wasm",
+addresses["cw_deltaswap.wasm"] = await instantiate(
+  "cw_deltaswap.wasm",
   {
     gov_chain: govChain,
     gov_address: Buffer.from(govAddress, "hex").toString("base64"),
@@ -187,7 +187,7 @@ addresses["cw_wormhole.wasm"] = await instantiate(
     chain_id: 28,
     fee_denom: "axpla",
   },
-  "wormhole"
+  "deltaswap"
 );
 
 addresses["cw_token_bridge.wasm"] = await instantiate(
@@ -195,7 +195,7 @@ addresses["cw_token_bridge.wasm"] = await instantiate(
   {
     gov_chain: govChain,
     gov_address: Buffer.from(govAddress, "hex").toString("base64"),
-    wormhole_contract: addresses["cw_wormhole.wasm"],
+    deltaswap_contract: addresses["cw_deltaswap.wasm"],
     wrapped_asset_code_id: codeIds["cw20_wrapped_2.wasm"],
     chain_id: 28,
     native_denom: "axpla",
@@ -224,7 +224,7 @@ await wallet
     msgs: [
       new MsgExecuteContract(
         wallet.key.accAddress,
-        addresses["wormhole.wasm"],
+        addresses["deltaswap.wasm"],
         {
           submit_v_a_a: {
             vaa: Buffer.from(gs1, "hex").toString("base64"),
@@ -248,7 +248,7 @@ await wallet
     msgs: [
       new MsgExecuteContract(
         wallet.key.accAddress,
-        addresses["wormhole.wasm"],
+        addresses["deltaswap.wasm"],
         {
           submit_v_a_a: {
             vaa: Buffer.from(gs2, "hex").toString("base64"),

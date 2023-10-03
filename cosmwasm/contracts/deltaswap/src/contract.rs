@@ -64,7 +64,7 @@ pub fn instantiate(
     _info: MessageInfo,
     msg: InstantiateMsg,
 ) -> StdResult<Response> {
-    // Save general wormhole info
+    // Save general deltaswap info
     let state = ConfigInfo {
         gov_chain: msg.gov_chain,
         gov_address: msg.gov_address.as_slice().to_vec(),
@@ -155,7 +155,7 @@ fn handle_governance_payload(deps: DepsMut, env: Env, data: &[u8]) -> StdResult<
 }
 
 /// Parses raw VAA data into a struct and verifies whether it contains sufficient signatures of an
-/// active phylax set i.e. is valid according to Wormhole consensus rules
+/// active phylax set i.e. is valid according to Deltaswap consensus rules
 fn parse_and_verify_vaa(
     storage: &dyn Storage,
     data: &[u8],

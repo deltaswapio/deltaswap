@@ -27,7 +27,7 @@ export const WORMHOLE_RPC_HOSTS = [
   "https://wormhole-v2-mainnet.01node.com",
 ];
 
-// It is SUPER SUPER important to use the near-api-js that comes from inside wormhole-sdk or all heck breaks lose
+// It is SUPER SUPER important to use the near-api-js that comes from inside deltaswap-sdk or all heck breaks lose
 import {
   connect as nearConnect,
   keyStores as nearKeyStores,

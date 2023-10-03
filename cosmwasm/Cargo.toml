@@ -1,16 +1,16 @@
 [workspace]
 members = [
     "contracts/cw20-wrapped",
-    "contracts/wormhole",
-    "contracts/shutdown-wormhole",
+    "contracts/deltaswap",
+    "contracts/shutdown-deltaswap",
     "contracts/token-bridge",
     "contracts/shutdown-token-bridge",
     "contracts/mock-bridge-integration",
     "packages/accountant",
     "contracts/global-accountant",
-    "packages/wormhole-bindings",
+    "packages/deltaswap-bindings",
     "packages/cw_transcode",
-    "contracts/wormhole-ibc",
+    "contracts/deltaswap-ibc",
     "contracts/deltachain-ibc-receiver",
     "contracts/ibc-translator"
 ]
@@ -34,11 +34,11 @@ overflow-checks = true
 accountant = { path = "packages/accountant" }
 cw_transcode = { path = "packages/cw_transcode" }
 cw20-wrapped-2 = { path = "contracts/cw20-wrapped" }
-serde_wormhole = { path = "../sdk/rust/serde_wormhole" }
+serde_deltaswap = { path = "../sdk/rust/serde_deltaswap" }
 token-bridge-cosmwasm = { path = "contracts/token-bridge" }
 global-accountant = { path = "contracts/global-accountant" }
-wormhole-bindings = { path = "packages/wormhole-bindings" }
-wormhole-cosmwasm = { path = "contracts/wormhole" }
-wormhole-sdk = { path = "../sdk/rust/core" }
+deltaswap-bindings = { path = "packages/deltaswap-bindings" }
+deltaswap-cosmwasm = { path = "contracts/deltaswap" }
+deltaswap-sdk = { path = "../sdk/rust/core" }
 deltachain-ibc-receiver = { path = "contracts/deltachain-ibc-receiver" }
-wormhole-ibc = { path = "contracts/wormhole-ibc" }
+deltaswap-ibc = { path = "contracts/deltaswap-ibc" }

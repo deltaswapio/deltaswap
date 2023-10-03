@@ -10,7 +10,7 @@ use std::str;
 // Implements 6 entry points that are required for the x/wasm runtime to bind a port for this contract
 // https://github.com/CosmWasm/cosmwasm/blob/main/IBC.md#writing-new-protocols
 
-pub const IBC_APP_VERSION: &str = "ibc-wormhole-v1";
+pub const IBC_APP_VERSION: &str = "ibc-deltaswap-v1";
 
 /// packets live one year
 pub const PACKET_LIFETIME: u64 = 31_536_000;

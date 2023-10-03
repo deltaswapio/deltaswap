@@ -18,8 +18,8 @@ use global_accountant::{
     state,
 };
 use serde::Serialize;
-use wormhole_bindings::{fake, WormholeQuery};
-use wormhole_sdk::{
+use deltaswap_bindings::{fake, DeltaswapQuery};
+use deltaswap_sdk::{
     accountant::{self as accountant_module, ModificationKind},
     token,
     vaa::{Body, Header, Signature},
@@ -72,7 +72,7 @@ impl Contract {
     pub fn modify_balance_with(
         &mut self,
         modification: Modification,
-        wh: &fake::WormholeKeeper,
+        wh: &fake::DeltaswapKeeper,
         tamperer: impl Fn(Vaa<accountant_module::GovernancePacket>) -> Binary,
     ) -> anyhow::Result<AppResponse> {
         let Modification {
@@ -94,7 +94,7 @@ impl Contract {
             timestamp: self.sequence as u32,
             nonce: self.sequence as u32,
             emitter_chain: Chain::Solana,
-            emitter_address: wormhole_sdk::GOVERNANCE_EMITTER,
+            emitter_address: deltaswap_sdk::GOVERNANCE_EMITTER,
             sequence: self.sequence,
             consistency_level: 0,
             payload: accountant_module::GovernancePacket {
@@ -127,10 +127,10 @@ impl Contract {
     pub fn modify_balance(
         &mut self,
         modification: Modification,
-        wh: &fake::WormholeKeeper,
+        wh: &fake::DeltaswapKeeper,
     ) -> anyhow::Result<AppResponse> {
         self.modify_balance_with(modification, wh, |vaa| {
-            serde_wormhole::to_vec(&vaa).map(From::from).unwrap()
+            serde_deltaswap::to_vec(&vaa).map(From::from).unwrap()
         })
     }
 
@@ -260,9 +260,9 @@ const ADMIN: &str = "ADMIN";
 const NATIVE_DENOM: &str = "denom";
 
 pub type FakeApp =
-    App<BankKeeper, MockApi, MockStorage, fake::WormholeKeeper, WasmKeeper<Empty, WormholeQuery>>;
+    App<BankKeeper, MockApi, MockStorage, fake::DeltaswapKeeper, WasmKeeper<Empty, DeltaswapQuery>>;
 
-fn fake_app(wh: fake::WormholeKeeper) -> FakeApp {
+fn fake_app(wh: fake::DeltaswapKeeper) -> FakeApp {
     AppBuilder::new_custom()
         .with_custom(wh)
         .build(|router, _, storage| {
@@ -280,8 +280,8 @@ fn fake_app(wh: fake::WormholeKeeper) -> FakeApp {
         })
 }
 
-pub fn proper_instantiate() -> (fake::WormholeKeeper, Contract) {
-    let wh = fake::WormholeKeeper::new();
+pub fn proper_instantiate() -> (fake::DeltaswapKeeper, Contract) {
+    let wh = fake::DeltaswapKeeper::new();
     let mut app = fake_app(wh.clone());
 
     let accountant_id = app.store_code(Box::new(ContractWrapper::new(
@@ -330,8 +330,8 @@ pub fn proper_instantiate() -> (fake::WormholeKeeper, Contract) {
     )
 }
 
-pub fn sign_vaa_body<P: Serialize>(wh: &fake::WormholeKeeper, body: Body<P>) -> (Vaa<P>, Binary) {
-    let data = serde_wormhole::to_vec(&body).unwrap();
+pub fn sign_vaa_body<P: Serialize>(wh: &fake::DeltaswapKeeper, body: Body<P>) -> (Vaa<P>, Binary) {
+    let data = serde_deltaswap::to_vec(&body).unwrap();
     let signatures = wh.sign(&data);
 
     let header = Header {
@@ -341,12 +341,12 @@ pub fn sign_vaa_body<P: Serialize>(wh: &fake::WormholeKeeper, body: Body<P>) -> 
     };
 
     let v = (header, body).into();
-    let data = serde_wormhole::to_vec(&v).map(From::from).unwrap();
+    let data = serde_deltaswap::to_vec(&v).map(From::from).unwrap();
 
     (v, data)
 }
 
-pub fn sign_observations(wh: &fake::WormholeKeeper, observations: &[u8]) -> Vec<Signature> {
+pub fn sign_observations(wh: &fake::DeltaswapKeeper, observations: &[u8]) -> Vec<Signature> {
     let mut prepended =
         Vec::with_capacity(SUBMITTED_OBSERVATIONS_PREFIX.len() + observations.len());
     prepended.extend_from_slice(SUBMITTED_OBSERVATIONS_PREFIX);
@@ -358,13 +358,13 @@ pub fn sign_observations(wh: &fake::WormholeKeeper, observations: &[u8]) -> Vec<
     signatures
 }
 
-pub fn register_emitters(wh: &fake::WormholeKeeper, contract: &mut Contract, count: usize) {
+pub fn register_emitters(wh: &fake::DeltaswapKeeper, contract: &mut Contract, count: usize) {
     for i in 0..count {
         let body = Body {
             timestamp: i as u32,
             nonce: i as u32,
             emitter_chain: Chain::Solana,
-            emitter_address: wormhole_sdk::GOVERNANCE_EMITTER,
+            emitter_address: deltaswap_sdk::GOVERNANCE_EMITTER,
             sequence: i as u64,
             consistency_level: 0,
             payload: token::GovernancePacket {

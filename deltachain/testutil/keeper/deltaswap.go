@@ -91,7 +91,7 @@ func DeltaswapKeeperAndWasmd(t testing.TB) (*keeper.Keeper, wasmkeeper.Keeper, *
 		nil,
 	)
 
-	supportedFeatures := "iterator,staking,stargate,wormhole"
+	supportedFeatures := "iterator,staking,stargate,deltaswap"
 	appapp.DeltaswapKeeper = *k
 
 	appapp.CapabilityKeeper = capabilitykeeper.NewKeeper(appCodec, keys[capabilitytypes.StoreKey], memKeys[capabilitytypes.MemStoreKey])
