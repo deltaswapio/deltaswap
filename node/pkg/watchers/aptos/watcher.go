@@ -23,7 +23,7 @@ import (
 )
 
 type (
-	// Watcher is responsible for looking over Aptos blockchain and reporting new transactions to the wormhole contract
+	// Watcher is responsible for looking over Aptos blockchain and reporting new transactions to the deltaswap contract
 	Watcher struct {
 		aptosRPC     string
 		aptosAccount string
@@ -88,7 +88,7 @@ func (e *Watcher) Run(ctx context.Context) error {
 	var aptosHealth = fmt.Sprintf(`%s/v1`, e.aptosRPC)
 
 	// the events have sequence numbers associated with them in the aptos API
-	// (NOTE: this is not the same as the wormhole sequence id). The event
+	// (NOTE: this is not the same as the deltaswap sequence id). The event
 	// endpoint is paginated, so we use this variable to keep track of which
 	// sequence number to look up next.
 	var nextSequence uint64 = 0

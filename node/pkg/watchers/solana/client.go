@@ -16,6 +16,7 @@ import (
 	gossipv1 "github.com/deltaswapio/deltaswap/node/pkg/proto/gossip/v1"
 	"github.com/deltaswapio/deltaswap/node/pkg/readiness"
 	"github.com/deltaswapio/deltaswap/node/pkg/supervisor"
+	"github.com/deltaswapio/deltaswap/sdk/vaa"
 	eth_common "github.com/ethereum/go-ethereum/common"
 	"github.com/gagliardetto/solana-go"
 	lookup "github.com/gagliardetto/solana-go/programs/address-lookup-table"
@@ -26,7 +27,6 @@ import (
 	"github.com/near/borsh-go"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promauto"
-	"github.com/deltaswapio/deltaswap/sdk/vaa"
 	"go.uber.org/zap"
 	"nhooyr.io/websocket"
 )
@@ -497,13 +497,13 @@ OUTER:
 		// If the logs don't contain the contract address, skip the transaction.
 		// ex: "Program 3u8hJUVTA4jH1wYAyUur7FFZVQ8H635K3tSHHF4ssjQ5 invoke [2]",
 		var (
-			possiblyWormhole bool
-			whLogPrefix      = fmt.Sprintf("Program %s", s.rawContract)
+			possiblyDeltaswap bool
+			whLogPrefix       = fmt.Sprintf("Program %s", s.rawContract)
 		)
-		for i := 0; i < len(txRpc.Meta.LogMessages) && !possiblyWormhole; i++ {
-			possiblyWormhole = strings.HasPrefix(txRpc.Meta.LogMessages[i], whLogPrefix)
+		for i := 0; i < len(txRpc.Meta.LogMessages) && !possiblyDeltaswap; i++ {
+			possiblyDeltaswap = strings.HasPrefix(txRpc.Meta.LogMessages[i], whLogPrefix)
 		}
-		if !possiblyWormhole {
+		if !possiblyDeltaswap {
 			continue
 		}
 
@@ -538,7 +538,7 @@ OUTER:
 			continue
 		}
 
-		logger.Debug("found Wormhole transaction",
+		logger.Debug("found Deltaswap transaction",
 			zap.Stringer("signature", signature),
 			zap.Uint64("slot", slot),
 			zap.String("commitment", string(s.commitment)))
@@ -547,7 +547,7 @@ OUTER:
 		for i, inst := range tx.Message.Instructions {
 			found, err := s.processInstruction(ctx, logger, slot, inst, programIndex, tx, signature, i)
 			if err != nil {
-				logger.Error("malformed Wormhole instruction",
+				logger.Error("malformed Deltaswap instruction",
 					zap.Error(err),
 					zap.Int("idx", i),
 					zap.Stringer("signature", signature),
@@ -593,7 +593,7 @@ OUTER:
 			for i, inst := range inner.Instructions {
 				_, err = s.processInstruction(ctx, logger, slot, inst, programIndex, tx, signature, i)
 				if err != nil {
-					logger.Error("malformed Wormhole instruction",
+					logger.Error("malformed Deltaswap instruction",
 						zap.Error(err),
 						zap.Int("idx", i),
 						zap.Stringer("signature", signature),
@@ -650,7 +650,7 @@ func (s *SolanaWatcher) processInstruction(ctx context.Context, logger *zap.Logg
 		return true, nil
 	}
 
-	// The second account in a well-formed Wormhole instruction is the VAA program account.
+	// The second account in a well-formed Deltaswap instruction is the VAA program account.
 	acc := tx.Message.AccountKeys[inst.Accounts[1]]
 
 	logger.Debug("fetching VAA account", zap.Stringer("acc", acc),
@@ -791,7 +791,7 @@ func (s *SolanaWatcher) processAccountSubscriptionData(_ context.Context, logger
 		return nil
 	}
 
-	// Other accounts owned by the wormhole contract seem to send updates...
+	// Other accounts owned by the deltaswap contract seem to send updates...
 	switch string(data[:3]) {
 	case accountPrefixReliable, accountPrefixUnreliable:
 		acc := solana.PublicKeyFromBytes([]byte(value.Pubkey))

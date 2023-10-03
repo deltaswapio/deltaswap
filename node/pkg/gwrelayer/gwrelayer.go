@@ -125,7 +125,7 @@ func NewGatewayRelayer(
 // Start initializes the gateway relayer and starts the worker runnable that submits VAAs to the contract.
 func (gwr *GatewayRelayer) Start(ctx context.Context) error {
 	var err error
-	gwr.ibcTranslatorPayloadAddress, err = convertBech32AddressToWormhole(gwr.ibcTranslatorAddress)
+	gwr.ibcTranslatorPayloadAddress, err = convertBech32AddressToDeltaswap(gwr.ibcTranslatorAddress)
 	if err != nil {
 		return err
 	}
@@ -174,7 +174,7 @@ func buildTokenBridgeMap(logger *zap.Logger, env common.Environment) (tokenBridg
 	for chainId, emitterAddrBytes := range emitterMap {
 		if chainId == vaa.ChainIDDeltachain {
 			var err error
-			tokenBridgeAddress, err = sdktypes.Bech32ifyAddressBytes("wormhole", emitterAddrBytes)
+			tokenBridgeAddress, err = sdktypes.Bech32ifyAddressBytes("deltaswap", emitterAddrBytes)
 			if err != nil {
 				return nil, "", fmt.Errorf(`failed to convert gateway emitter address "%s" to bech32: %v`, hex.EncodeToString(emitterAddrBytes), err)
 			}
@@ -208,9 +208,9 @@ func (gwr *GatewayRelayer) Close() {
 	}
 }
 
-// convertBech32AddressToWormhole converts a bech32 address to a wormhole address.
-func convertBech32AddressToWormhole(contractAddress string) (vaa.Address, error) {
-	addrBytes, err := sdktypes.GetFromBech32(contractAddress, "wormhole")
+// convertBech32AddressToDeltaswap converts a bech32 address to a deltaswap address.
+func convertBech32AddressToDeltaswap(contractAddress string) (vaa.Address, error) {
+	addrBytes, err := sdktypes.GetFromBech32(contractAddress, "deltaswap")
 	if err != nil {
 		return vaa.Address{}, fmt.Errorf(`failed to decode target address "%s": %w`, contractAddress, err)
 	}

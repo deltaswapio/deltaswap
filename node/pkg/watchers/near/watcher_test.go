@@ -34,7 +34,7 @@ type (
 		timeout time.Duration
 
 		// configuration
-		wormholeContract      string
+		deltaswapContract     string
 		upstreamHost          string // e.g. "https://rpc.mainnet.near.org"
 		cacheDir              string
 		latestFinalBlocks     []string
@@ -51,9 +51,9 @@ var BLOCKCHAIN_1 = []string{
 	"A5mwZmMzNZM39BVuEVfupMrEpvuCuRt6u9kJ1JGupgkx", // 76538229
 	"9AEuLtXe4JgJGnwY6ZZE6PmkPcEYpQqqUzwDMzUsMgBT", // 76538230
 	"Ad7JSCXZTGegrfWLAmqupd1qiEEphpf5azfWayWCPS8G", // 76538231
-	"G3r7EszAnX2ecbV4jX8e7Ls9vamrwHnn19UP4SeUL5qv", // 76538232	contains a wormhole transaction
+	"G3r7EszAnX2ecbV4jX8e7Ls9vamrwHnn19UP4SeUL5qv", // 76538232	contains a deltaswap transaction
 	"G8kF9bVa4WSxYj5hk5YGfk6GZHhGF6eExj6MVciGosjY", // 76538233
-	"6zPnFkHojNQpbRgALHgRnbzhFvp55hido4Gv645nR8zf", // 76538234	contains the wormhole transaction receipt
+	"6zPnFkHojNQpbRgALHgRnbzhFvp55hido4Gv645nR8zf", // 76538234	contains the deltaswap transaction receipt
 	"G38cqPUZ33Foaaemxtcgq3sXAd64EZark5m6LjjhQb3X", // 76538235
 	"6eCgeVSC4Hwm8tAVy4qNQpnLs4S9EpzRjGtAipwZ632A", // 76538236
 }
@@ -101,7 +101,7 @@ func (testCase *testCase) run(ctx context.Context) error {
 	msgC := make(chan *common.MessagePublication)
 	obsvReqC := make(chan *gossipv1.ObservationRequest, 50)
 	mainnet := true // we set mainnet to true because the testdata was collected on mainnet.
-	w := NewWatcher(mockHttpServer.URL, testCase.wormholeContract, msgC, obsvReqC, mainnet)
+	w := NewWatcher(mockHttpServer.URL, testCase.deltaswapContract, msgC, obsvReqC, mainnet)
 
 	// Run the watcher
 	if err := supervisor.Run(ctx, "nearwatch", w.Run); err != nil {
@@ -211,7 +211,7 @@ func (testCase *testCase) setupAndRun(logger *zap.Logger) {
 	time.Sleep(time.Millisecond * 10)
 }
 
-// TestWatcherSimple() tests the most simple case: "final" API only retruns one block which contains a Wormhole transaction. No re-observation requests.
+// TestWatcherSimple() tests the most simple case: "final" API only retruns one block which contains a Deltaswap transaction. No re-observation requests.
 func TestWatcherSimple(t *testing.T) {
 	logger := zaptest.NewLogger(t)
 
@@ -219,12 +219,12 @@ func TestWatcherSimple(t *testing.T) {
 	txHashBytes, _ := hex.DecodeString("88029cf0e7432cec04c266a3e72903ee6650b4624c7f9c8e22b04d78e18e87f8")
 
 	tc := testCase{
-		name:             "TestWatcherSimple",
-		timeout:          time.Second * 2,
-		t:                t,
-		wormholeContract: DELTASWAP_CONTRACT,
-		upstreamHost:     "",
-		cacheDir:         "nearapi/mock/success/",
+		name:              "TestWatcherSimple",
+		timeout:           time.Second * 2,
+		t:                 t,
+		deltaswapContract: DELTASWAP_CONTRACT,
+		upstreamHost:      "",
+		cacheDir:          "nearapi/mock/success/",
 		latestFinalBlocks: []string{
 			BLOCKCHAIN_1[3],
 		},
@@ -246,7 +246,7 @@ func TestWatcherSimple(t *testing.T) {
 	tc.setupAndRun(logger)
 }
 
-// TestWatcherSimple2() tests the case where the "final" API returns a sequence of real blocks which contain a single Wormhole transaction. No re-observation requests.
+// TestWatcherSimple2() tests the case where the "final" API returns a sequence of real blocks which contain a single Deltaswap transaction. No re-observation requests.
 func TestWatcherSimple2(t *testing.T) {
 	logger := zaptest.NewLogger(t)
 
@@ -254,12 +254,12 @@ func TestWatcherSimple2(t *testing.T) {
 	txHashBytes, _ := hex.DecodeString("88029cf0e7432cec04c266a3e72903ee6650b4624c7f9c8e22b04d78e18e87f8")
 
 	tc := testCase{
-		name:             "TestWatcherSimple2",
-		timeout:          time.Second * 2,
-		t:                t,
-		wormholeContract: DELTASWAP_CONTRACT,
-		upstreamHost:     "",
-		cacheDir:         "nearapi/mock/success/",
+		name:              "TestWatcherSimple2",
+		timeout:           time.Second * 2,
+		t:                 t,
+		deltaswapContract: DELTASWAP_CONTRACT,
+		upstreamHost:      "",
+		cacheDir:          "nearapi/mock/success/",
 		latestFinalBlocks: []string{
 			BLOCKCHAIN_1[0],
 			BLOCKCHAIN_1[1],
@@ -297,12 +297,12 @@ func TestWatcherReobservation(t *testing.T) {
 	txHashBytes, _ := hex.DecodeString("88029cf0e7432cec04c266a3e72903ee6650b4624c7f9c8e22b04d78e18e87f8")
 
 	tc := testCase{
-		name:             "TestWatcherReobservation",
-		timeout:          time.Second * 5,
-		t:                t,
-		wormholeContract: DELTASWAP_CONTRACT,
-		upstreamHost:     "",
-		cacheDir:         "nearapi/mock/success/",
+		name:              "TestWatcherReobservation",
+		timeout:           time.Second * 5,
+		t:                 t,
+		deltaswapContract: DELTASWAP_CONTRACT,
+		upstreamHost:      "",
+		cacheDir:          "nearapi/mock/success/",
 		latestFinalBlocks: []string{
 			"FdJXkyscWxFk8zrZHgahTGCBEcpo4huJNNnuxQ9hgFbW",
 		},
@@ -352,7 +352,7 @@ func TestWatcherDelayedFinal(t *testing.T) {
 		name:              "TestWatcherDelayedFinal",
 		timeout:           time.Second * 2,
 		t:                 t,
-		wormholeContract:  DELTASWAP_CONTRACT,
+		deltaswapContract: DELTASWAP_CONTRACT,
 		upstreamHost:      "",
 		cacheDir:          "nearapi/mock/success_mod1/",
 		latestFinalBlocks: lfb,
@@ -384,12 +384,12 @@ func TestWatcherDelayedFinalAndGaps(t *testing.T) {
 	txHashBytes, _ := hex.DecodeString("88029cf0e7432cec04c266a3e72903ee6650b4624c7f9c8e22b04d78e18e87f8")
 
 	tc := testCase{
-		name:             "TestWatcherDelayedFinalAndGaps",
-		timeout:          time.Second * 2,
-		t:                t,
-		wormholeContract: DELTASWAP_CONTRACT,
-		upstreamHost:     "",
-		cacheDir:         "nearapi/mock/success_mod1/",
+		name:              "TestWatcherDelayedFinalAndGaps",
+		timeout:           time.Second * 2,
+		t:                 t,
+		deltaswapContract: DELTASWAP_CONTRACT,
+		upstreamHost:      "",
+		cacheDir:          "nearapi/mock/success_mod1/",
 		latestFinalBlocks: []string{
 			BLOCKCHAIN_1[0],
 			BLOCKCHAIN_1[1],
@@ -413,7 +413,7 @@ func TestWatcherDelayedFinalAndGaps(t *testing.T) {
 	tc.setupAndRun(logger)
 }
 
-// TestWatcherSynthetic(): Case where there are three wormhole messages. Test data is generated (not real)
+// TestWatcherSynthetic(): Case where there are three deltaswap messages. Test data is generated (not real)
 /*
 "A5mwZmMzNZM39BVuEVfupMrEpvuCuRt6u9kJ1JGupgkx", // 76538229 block 0: tx1
 "9AEuLtXe4JgJGnwY6ZZE6PmkPcEYpQqqUzwDMzUsMgBT", // 76538230 block 1: tx2 & tx1 receipt
@@ -430,12 +430,12 @@ func TestWatcherSynthetic(t *testing.T) {
 	pl, _ := hex.DecodeString("0100000000000000000000000000000000000000000000000000000000000f42400000000000000000000000000000000000000000000000000000000000000000000f0108bc32f7de18a5f6e1e7d6ee7aff9f5fc858d0d87ac0da94dd8d2a5d267d6b00160000000000000000000000000000000000000000000000000000000000000000")
 
 	tc := testCase{
-		name:             "TestWatcherSynthetic",
-		timeout:          time.Second * 2,
-		t:                t,
-		wormholeContract: DELTASWAP_CONTRACT,
-		upstreamHost:     "",
-		cacheDir:         "nearapi/mock/synthetic/",
+		name:              "TestWatcherSynthetic",
+		timeout:           time.Second * 2,
+		t:                 t,
+		deltaswapContract: DELTASWAP_CONTRACT,
+		upstreamHost:      "",
+		cacheDir:          "nearapi/mock/synthetic/",
 		latestFinalBlocks: []string{
 			BLOCKCHAIN_1[1],
 			BLOCKCHAIN_1[1],
@@ -523,12 +523,12 @@ func TestWatcherUnfinalized(t *testing.T) {
 	pl, _ := hex.DecodeString("0100000000000000000000000000000000000000000000000000000000000f42400000000000000000000000000000000000000000000000000000000000000000000f0108bc32f7de18a5f6e1e7d6ee7aff9f5fc858d0d87ac0da94dd8d2a5d267d6b00160000000000000000000000000000000000000000000000000000000000000000")
 
 	tc := testCase{
-		name:             "TestWatcherUnfinalized",
-		timeout:          time.Second * 2,
-		t:                t,
-		wormholeContract: DELTASWAP_CONTRACT,
-		upstreamHost:     "",
-		cacheDir:         "nearapi/mock/unfinalized/",
+		name:              "TestWatcherUnfinalized",
+		timeout:           time.Second * 2,
+		t:                 t,
+		deltaswapContract: DELTASWAP_CONTRACT,
+		upstreamHost:      "",
+		cacheDir:          "nearapi/mock/unfinalized/",
 		latestFinalBlocks: []string{
 			BLOCKCHAIN_1[1],
 			BLOCKCHAIN_1[1],

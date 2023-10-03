@@ -26,13 +26,13 @@ func (e *Watcher) runMetrics(ctx context.Context) error {
 
 	reg := prometheus.NewRegistry()
 
-	wormholeMsgCounter := 0
-	var wormholeMsgTotalTime time.Duration = 0
+	deltaswapMsgCounter := 0
+	var deltaswapMsgTotalTime time.Duration = 0
 
-	wormholeTxAvgDuration := promauto.With(reg).NewGauge(
+	deltaswapTxAvgDuration := promauto.With(reg).NewGauge(
 		prometheus.GaugeOpts{
 			Name: "deltaswap_near_tx_avg_duration",
-			Help: "Average duration it takes for a wormhole message to be processed in milliseconds",
+			Help: "Average duration it takes for a deltaswap message to be processed in milliseconds",
 		})
 
 	txqueueLen := promauto.With(reg).NewGauge(
@@ -93,10 +93,10 @@ func (e *Watcher) runMetrics(ctx context.Context) error {
 				nearRpcErrorCounter.Inc()
 			}
 		case d := <-e.eventChanTxProcessedDuration:
-			wormholeMsgCounter++
-			wormholeMsgTotalTime += d
-			avgDurationMs := wormholeMsgTotalTime.Milliseconds() / int64(wormholeMsgCounter)
-			wormholeTxAvgDuration.Set(float64(avgDurationMs))
+			deltaswapMsgCounter++
+			deltaswapMsgTotalTime += d
+			avgDurationMs := deltaswapMsgTotalTime.Milliseconds() / int64(deltaswapMsgCounter)
+			deltaswapTxAvgDuration.Set(float64(avgDurationMs))
 		}
 	}
 }

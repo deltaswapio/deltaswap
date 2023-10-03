@@ -5,7 +5,7 @@ All of the watchers in the phylax should be written similarly so that if one und
 ### Responsibilities of a watcher:
 
 1. Query the chain for the current block height
-2. Receive messages from the chain’s wormhole core contract and emit them as observations in the common.MessagePublication format
+2. Receive messages from the chain’s deltaswap core contract and emit them as observations in the common.MessagePublication format
 3. Handle re-observation requests
 
 ### Watcher data structure:

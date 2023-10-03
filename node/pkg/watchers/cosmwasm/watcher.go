@@ -438,39 +438,39 @@ func EventsToMessagePublications(contract string, txHash string, events []gjson.
 			logger.Warn("wasm event without contract address field set", zap.String("network", networkName), zap.String("event", event.String()))
 			continue
 		}
-		// This is not a wormhole message
+		// This is not a deltaswap message
 		if contractAddress != contract {
 			continue
 		}
 
 		payload, ok := mappedAttributes["message.message"]
 		if !ok {
-			logger.Error("wormhole event does not have a message field", zap.String("network", networkName), zap.String("tx_hash", txHash), zap.String("attributes", attributes.String()))
+			logger.Error("deltaswap event does not have a message field", zap.String("network", networkName), zap.String("tx_hash", txHash), zap.String("attributes", attributes.String()))
 			continue
 		}
 		sender, ok := mappedAttributes["message.sender"]
 		if !ok {
-			logger.Error("wormhole event does not have a sender field", zap.String("network", networkName), zap.String("tx_hash", txHash), zap.String("attributes", attributes.String()))
+			logger.Error("deltaswap event does not have a sender field", zap.String("network", networkName), zap.String("tx_hash", txHash), zap.String("attributes", attributes.String()))
 			continue
 		}
 		chainId, ok := mappedAttributes["message.chain_id"]
 		if !ok {
-			logger.Error("wormhole event does not have a chain_id field", zap.String("network", networkName), zap.String("tx_hash", txHash), zap.String("attributes", attributes.String()))
+			logger.Error("deltaswap event does not have a chain_id field", zap.String("network", networkName), zap.String("tx_hash", txHash), zap.String("attributes", attributes.String()))
 			continue
 		}
 		nonce, ok := mappedAttributes["message.nonce"]
 		if !ok {
-			logger.Error("wormhole event does not have a nonce field", zap.String("network", networkName), zap.String("tx_hash", txHash), zap.String("attributes", attributes.String()))
+			logger.Error("deltaswap event does not have a nonce field", zap.String("network", networkName), zap.String("tx_hash", txHash), zap.String("attributes", attributes.String()))
 			continue
 		}
 		sequence, ok := mappedAttributes["message.sequence"]
 		if !ok {
-			logger.Error("wormhole event does not have a sequence field", zap.String("network", networkName), zap.String("tx_hash", txHash), zap.String("attributes", attributes.String()))
+			logger.Error("deltaswap event does not have a sequence field", zap.String("network", networkName), zap.String("tx_hash", txHash), zap.String("attributes", attributes.String()))
 			continue
 		}
 		blockTime, ok := mappedAttributes["message.block_time"]
 		if !ok {
-			logger.Error("wormhole event does not have a block_time field", zap.String("network", networkName), zap.String("tx_hash", txHash), zap.String("attributes", attributes.String()))
+			logger.Error("deltaswap event does not have a block_time field", zap.String("network", networkName), zap.String("tx_hash", txHash), zap.String("attributes", attributes.String()))
 			continue
 		}
 

@@ -89,12 +89,12 @@ var (
 	invalidChainIdMismatches = promauto.NewCounterVec(
 		prometheus.CounterOpts{
 			Name: "deltaswap_ibc_chain_id_mismatches",
-			Help: "Total number of cases where the wormhole chain ID does not match the IBC connection ID",
+			Help: "Total number of cases where the deltaswap chain ID does not match the IBC connection ID",
 		}, []string{"ibc_channel_id"})
 )
 
 type (
-	// Watcher is responsible for monitoring the IBC contract on deltachain and publishing wormhole messages for all chains connected via IBC.
+	// Watcher is responsible for monitoring the IBC contract on deltachain and publishing deltaswap messages for all chains connected via IBC.
 	Watcher struct {
 		wsUrl           string
 		lcdUrl          string
@@ -110,7 +110,7 @@ type (
 		// channelIdToChainIdLock protects channelIdToChainIdMap.
 		channelIdToChainIdLock sync.Mutex
 
-		// baseFeatures is used to create the feature string. It is the list of chains enabled, without the wormhole version.
+		// baseFeatures is used to create the feature string. It is the list of chains enabled, without the deltaswap version.
 		baseFeatures string
 	}
 
@@ -187,7 +187,7 @@ type ibcReceivePublishEvent struct {
 	Msg       *common.MessagePublication
 }
 
-// abciInfoResults is used to parse the abci_info query response to get the wormhole version and block height.
+// abciInfoResults is used to parse the abci_info query response to get the deltaswap version and block height.
 type abciInfoResults struct {
 	Result struct {
 		Response struct {

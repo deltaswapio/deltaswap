@@ -16,7 +16,7 @@ import (
 	"google.golang.org/grpc/credentials/insecure"
 )
 
-// ClienConn represents a connection to a wormhole-chain endpoint, encapsulating
+// ClienConn represents a connection to a deltaswap-chain endpoint, encapsulating
 // interactions with the chain.
 //
 // Once a connection is established, users must call ClientConn.Close to
@@ -33,7 +33,7 @@ type ClientConn struct {
 	mutex         sync.Mutex // Protects the account / sequence number
 }
 
-// NewConn creates a new connection to the wormhole-chain instance at `target`.
+// NewConn creates a new connection to the deltaswap-chain instance at `target`.
 func NewConn(ctx context.Context, target string, privateKey cryptotypes.PrivKey, chainId string) (*ClientConn, error) {
 	c, err := grpc.DialContext(
 		ctx,
@@ -90,7 +90,7 @@ func generateSenderAddress(privateKey cryptotypes.PrivKey) (string, error) {
 		return "", fmt.Errorf("failed to generate public key, failed to convert bits: %w", err)
 	}
 
-	encoded, err := bech32.Encode("wormhole", conv)
+	encoded, err := bech32.Encode("deltaswap", conv)
 	if err != nil {
 		return "", fmt.Errorf("failed to generate public key, bech32 encode failed: %w", err)
 	}

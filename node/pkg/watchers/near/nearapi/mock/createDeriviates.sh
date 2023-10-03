@@ -17,8 +17,8 @@ read -r -d '' TX0_wrong_block << EOM
           "outcome": {
             "executor_id": "contract.deltaswap_crypto.near",
             "logs": [
-              "wormhole/src/lib.rs#412: publish_message  prepaid_gas: \"94217765723035\"   used_gas: \"561737236755\"  delta: \"93653874829714\"",
-              "EVENT_JSON:{\"standard\":\"wormhole\",\"event\":\"publish\",\"data\":\"0100000000000000000000000000000000000000000000000000000000000f42400000000000000000000000000000000000000000000000000000000000000000000f0108bc32f7de18a5f6e1e7d6ee7aff9f5fc858d0d87ac0da94dd8d2a5d267d6b00160000000000000000000000000000000000000000000000000000000000000000\",\"nonce\":76538233,\"emitter\":\"148410499d3fcda4dcfd68a1ebfcdddda16ab28326448d4aae4d2f0465cdfcb7\",\"seq\":261,\"block\":76538234}"
+              "deltaswap/src/lib.rs#412: publish_message  prepaid_gas: \"94217765723035\"   used_gas: \"561737236755\"  delta: \"93653874829714\"",
+              "EVENT_JSON:{\"standard\":\"deltaswap\",\"event\":\"publish\",\"data\":\"0100000000000000000000000000000000000000000000000000000000000f42400000000000000000000000000000000000000000000000000000000000000000000f0108bc32f7de18a5f6e1e7d6ee7aff9f5fc858d0d87ac0da94dd8d2a5d267d6b00160000000000000000000000000000000000000000000000000000000000000000\",\"nonce\":76538233,\"emitter\":\"148410499d3fcda4dcfd68a1ebfcdddda16ab28326448d4aae4d2f0465cdfcb7\",\"seq\":261,\"block\":76538234}"
             ],
             "status": {
               "SuccessValue": "MjYx"
@@ -40,8 +40,8 @@ read -r -d '' TX0_wrong_sequence << EOM
           "outcome": {
             "executor_id": "contract.deltaswap_crypto.near",
             "logs": [
-              "wormhole/src/lib.rs#412: publish_message  prepaid_gas: \"94217765723035\"   used_gas: \"561737236755\"  delta: \"93653874829714\"",
-              "EVENT_JSON:{\"standard\":\"wormhole\",\"event\":\"publish\",\"data\":\"0100000000000000000000000000000000000000000000000000000000000f42400000000000000000000000000000000000000000000000000000000000000000000f0108bc32f7de18a5f6e1e7d6ee7aff9f5fc858d0d87ac0da94dd8d2a5d267d6b00160000000000000000000000000000000000000000000000000000000000000000\",\"nonce\":76538233,\"emitter\":\"148410499d3fcda4dcfd68a1ebfcdddda16ab28326448d4aae4d2f0465cdfcb7\",\"seq\":262,\"block\":76538234}"
+              "deltaswap/src/lib.rs#412: publish_message  prepaid_gas: \"94217765723035\"   used_gas: \"561737236755\"  delta: \"93653874829714\"",
+              "EVENT_JSON:{\"standard\":\"deltaswap\",\"event\":\"publish\",\"data\":\"0100000000000000000000000000000000000000000000000000000000000f42400000000000000000000000000000000000000000000000000000000000000000000f0108bc32f7de18a5f6e1e7d6ee7aff9f5fc858d0d87ac0da94dd8d2a5d267d6b00160000000000000000000000000000000000000000000000000000000000000000\",\"nonce\":76538233,\"emitter\":\"148410499d3fcda4dcfd68a1ebfcdddda16ab28326448d4aae4d2f0465cdfcb7\",\"seq\":262,\"block\":76538234}"
             ],
             "status": {
               "SuccessValue": "MjYx"
@@ -63,8 +63,8 @@ read -r -d '' TX1 << EOM
           "outcome": {
             "executor_id": "contract.deltaswap_crypto.near",
             "logs": [
-              "wormhole/src/lib.rs#412: publish_message  prepaid_gas: \"94217765723035\"   used_gas: \"561737236755\"  delta: \"93653874829714\"",
-              "EVENT_JSON:{\"standard\":\"wormhole\",\"event\":\"publish\",\"data\":\"0100000000000000000000000000000000000000000000000000000000000f42400000000000000000000000000000000000000000000000000000000000000000000f0108bc32f7de18a5f6e1e7d6ee7aff9f5fc858d0d87ac0da94dd8d2a5d267d6b00160000000000000000000000000000000000000000000000000000000000000000\",\"nonce\":76538233,\"emitter\":\"148410499d3fcda4dcfd68a1ebfcdddda16ab28326448d4aae4d2f0465cdfcb7\",\"seq\":261,\"block\":76538230}"
+              "deltaswap/src/lib.rs#412: publish_message  prepaid_gas: \"94217765723035\"   used_gas: \"561737236755\"  delta: \"93653874829714\"",
+              "EVENT_JSON:{\"standard\":\"deltaswap\",\"event\":\"publish\",\"data\":\"0100000000000000000000000000000000000000000000000000000000000f42400000000000000000000000000000000000000000000000000000000000000000000f0108bc32f7de18a5f6e1e7d6ee7aff9f5fc858d0d87ac0da94dd8d2a5d267d6b00160000000000000000000000000000000000000000000000000000000000000000\",\"nonce\":76538233,\"emitter\":\"148410499d3fcda4dcfd68a1ebfcdddda16ab28326448d4aae4d2f0465cdfcb7\",\"seq\":261,\"block\":76538230}"
             ],
             "status": {
               "SuccessValue": "MjYx"
@@ -86,8 +86,8 @@ read -r -d '' TX2 << EOM
           "outcome": {
             "executor_id": "contract.deltaswap_crypto.near",
             "logs": [
-              "wormhole/src/lib.rs#412: publish_message  prepaid_gas: \"94217765723035\"   used_gas: \"561737236755\"  delta: \"93653874829714\"",
-              "EVENT_JSON:{\"standard\":\"wormhole\",\"event\":\"publish\",\"data\":\"0100000000000000000000000000000000000000000000000000000000000f42400000000000000000000000000000000000000000000000000000000000000000000f0108bc32f7de18a5f6e1e7d6ee7aff9f5fc858d0d87ac0da94dd8d2a5d267d6b00160000000000000000000000000000000000000000000000000000000000000000\",\"nonce\":76538233,\"emitter\":\"148410499d3fcda4dcfd68a1ebfcdddda16ab28326448d4aae4d2f0465cdfcb7\",\"seq\":262,\"block\":76538232}"
+              "deltaswap/src/lib.rs#412: publish_message  prepaid_gas: \"94217765723035\"   used_gas: \"561737236755\"  delta: \"93653874829714\"",
+              "EVENT_JSON:{\"standard\":\"deltaswap\",\"event\":\"publish\",\"data\":\"0100000000000000000000000000000000000000000000000000000000000f42400000000000000000000000000000000000000000000000000000000000000000000f0108bc32f7de18a5f6e1e7d6ee7aff9f5fc858d0d87ac0da94dd8d2a5d267d6b00160000000000000000000000000000000000000000000000000000000000000000\",\"nonce\":76538233,\"emitter\":\"148410499d3fcda4dcfd68a1ebfcdddda16ab28326448d4aae4d2f0465cdfcb7\",\"seq\":262,\"block\":76538232}"
             ],
             "status": {
               "SuccessValue": "MjYy"
@@ -109,8 +109,8 @@ read -r -d '' TX3 << EOM
           "outcome": {
             "executor_id": "contract.deltaswap_crypto.near",
             "logs": [
-              "wormhole/src/lib.rs#412: publish_message  prepaid_gas: \"94217765723035\"   used_gas: \"561737236755\"  delta: \"93653874829714\"",
-              "EVENT_JSON:{\"standard\":\"wormhole\",\"event\":\"publish\",\"data\":\"0100000000000000000000000000000000000000000000000000000000000f42400000000000000000000000000000000000000000000000000000000000000000000f0108bc32f7de18a5f6e1e7d6ee7aff9f5fc858d0d87ac0da94dd8d2a5d267d6b00160000000000000000000000000000000000000000000000000000000000000000\",\"nonce\":76538233,\"emitter\":\"148410499d3fcda4dcfd68a1ebfcdddda16ab28326448d4aae4d2f0465cdfcb7\",\"seq\":263,\"block\":76538236}"
+              "deltaswap/src/lib.rs#412: publish_message  prepaid_gas: \"94217765723035\"   used_gas: \"561737236755\"  delta: \"93653874829714\"",
+              "EVENT_JSON:{\"standard\":\"deltaswap\",\"event\":\"publish\",\"data\":\"0100000000000000000000000000000000000000000000000000000000000f42400000000000000000000000000000000000000000000000000000000000000000000f0108bc32f7de18a5f6e1e7d6ee7aff9f5fc858d0d87ac0da94dd8d2a5d267d6b00160000000000000000000000000000000000000000000000000000000000000000\",\"nonce\":76538233,\"emitter\":\"148410499d3fcda4dcfd68a1ebfcdddda16ab28326448d4aae4d2f0465cdfcb7\",\"seq\":263,\"block\":76538236}"
             ],
             "status": {
               "SuccessValue": "MjYz"

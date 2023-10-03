@@ -21,7 +21,7 @@ type NewBlock struct {
 	Safe          bool
 }
 
-// Connector exposes Wormhole-specific interactions with an EVM-based network
+// Connector exposes Deltaswap-specific interactions with an EVM-based network
 type Connector interface {
 	NetworkName() string
 	ContractAddress() common.Address

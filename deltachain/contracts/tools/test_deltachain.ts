@@ -45,18 +45,18 @@ async function main() {
 
     /* Set up cosmos client & wallet */
 
-    const WORMCHAIN_ID = 7077
+    const DELTACHAIN_ID = 7077
 
     let host = devnetConsts.chains[7077].tendermintUrlLocal
     if (os.hostname().includes("deltachain-deploy")) {
         // running in tilt devnet
         host = devnetConsts.chains[7077].tendermintUrlTilt
     }
-    const denom = devnetConsts.chains[WORMCHAIN_ID].addresses.native.denom
-    const mnemonic = devnetConsts.chains[WORMCHAIN_ID].accounts.deltachainNodeOfPhylax0.mnemonic
+    const denom = devnetConsts.chains[DELTACHAIN_ID].addresses.native.denom
+    const mnemonic = devnetConsts.chains[DELTACHAIN_ID].accounts.deltachainNodeOfPhylax0.mnemonic
     const addressPrefix = "delta"
     const signerPk = devnetConsts.devnetPhylaxs[0].private
-    const accountingAddress = devnetConsts.chains[WORMCHAIN_ID].contracts.accountingNativeAddress
+    const accountingAddress = devnetConsts.chains[DELTACHAIN_ID].contracts.accountingNativeAddress
 
     const w = await Secp256k1HdWallet.fromMnemonic(mnemonic, { prefix: addressPrefix })
 

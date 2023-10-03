@@ -9,7 +9,7 @@ import (
 )
 
 // LockMemory locks current and future pages in memory to protect secret keys from being swapped out to disk.
-// It's possible (and strongly recommended) to deploy Wormhole such that keys are only ever
+// It's possible (and strongly recommended) to deploy Deltaswap such that keys are only ever
 // stored in memory and never touch the disk. This is a privileged operation and requires CAP_IPC_LOCK.
 func LockMemory() {
 	err := unix.Mlockall(syscall.MCL_CURRENT | syscall.MCL_FUTURE)

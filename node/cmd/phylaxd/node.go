@@ -211,7 +211,7 @@ var (
 )
 
 func init() {
-	p2pNetworkID = NodeCmd.Flags().String("network", "/wormhole/dev", "P2P network identifier")
+	p2pNetworkID = NodeCmd.Flags().String("network", "/deltaswap/dev", "P2P network identifier")
 	p2pPort = NodeCmd.Flags().Uint("port", p2p.DefaultPort, "P2P UDP listener port")
 	p2pBootstrap = NodeCmd.Flags().String("bootstrap", "", "P2P bootstrap peers (comma-separated)")
 
@@ -270,23 +270,23 @@ func init() {
 
 	terraWS = NodeCmd.Flags().String("terraWS", "", "Path to terrad root for websocket connection")
 	terraLCD = NodeCmd.Flags().String("terraLCD", "", "Path to LCD service root for http calls")
-	terraContract = NodeCmd.Flags().String("terraContract", "", "Wormhole contract address on Terra blockchain")
+	terraContract = NodeCmd.Flags().String("terraContract", "", "Deltaswap contract address on Terra blockchain")
 
 	terra2WS = NodeCmd.Flags().String("terra2WS", "", "Path to terrad root for websocket connection")
 	terra2LCD = NodeCmd.Flags().String("terra2LCD", "", "Path to LCD service root for http calls")
-	terra2Contract = NodeCmd.Flags().String("terra2Contract", "", "Wormhole contract address on Terra 2 blockchain")
+	terra2Contract = NodeCmd.Flags().String("terra2Contract", "", "Deltaswap contract address on Terra 2 blockchain")
 
 	injectiveWS = NodeCmd.Flags().String("injectiveWS", "", "Path to root for Injective websocket connection")
 	injectiveLCD = NodeCmd.Flags().String("injectiveLCD", "", "Path to LCD service root for Injective http calls")
-	injectiveContract = NodeCmd.Flags().String("injectiveContract", "", "Wormhole contract address on Injective blockchain")
+	injectiveContract = NodeCmd.Flags().String("injectiveContract", "", "Deltaswap contract address on Injective blockchain")
 
 	xplaWS = NodeCmd.Flags().String("xplaWS", "", "Path to root for XPLA websocket connection")
 	xplaLCD = NodeCmd.Flags().String("xplaLCD", "", "Path to LCD service root for XPLA http calls")
-	xplaContract = NodeCmd.Flags().String("xplaContract", "", "Wormhole contract address on XPLA blockchain")
+	xplaContract = NodeCmd.Flags().String("xplaContract", "", "Deltaswap contract address on XPLA blockchain")
 
 	gatewayWS = NodeCmd.Flags().String("gatewayWS", "", "Path to root for Gateway watcher websocket connection")
 	gatewayLCD = NodeCmd.Flags().String("gatewayLCD", "", "Path to LCD service root for Gateway watcher http calls")
-	gatewayContract = NodeCmd.Flags().String("gatewayContract", "", "Wormhole contract address on Gateway blockchain")
+	gatewayContract = NodeCmd.Flags().String("gatewayContract", "", "Deltaswap contract address on Gateway blockchain")
 
 	algorandIndexerRPC = NodeCmd.Flags().String("algorandIndexerRPC", "", "Algorand Indexer RPC URL")
 	algorandIndexerToken = NodeCmd.Flags().String("algorandIndexerToken", "", "Algorand Indexer access token")
@@ -297,10 +297,10 @@ func init() {
 	nearRPC = NodeCmd.Flags().String("nearRPC", "", "near RPC URL")
 	nearContract = NodeCmd.Flags().String("nearContract", "", "near contract")
 
-	deltachainURL = NodeCmd.Flags().String("deltachainURL", "", "wormhole-chain gRPC URL")
+	deltachainURL = NodeCmd.Flags().String("deltachainURL", "", "deltaswap-chain gRPC URL")
 
 	// TODO: These are deprecated. Get rid of them once the phylaxs have had a chance to migrate off of them.
-	deltachainKeyPath = NodeCmd.Flags().String("deltachainKeyPath", "", "path to wormhole-chain private key for signing transactions")
+	deltachainKeyPath = NodeCmd.Flags().String("deltachainKeyPath", "", "path to deltaswap-chain private key for signing transactions")
 	deltachainKeyPassPhrase = NodeCmd.Flags().String("deltachainKeyPassPhrase", "", "pass phrase used to unarmor the deltachain key file")
 
 	ibcWS = NodeCmd.Flags().String("ibcWS", "", "Websocket used to listen to the IBC receiver smart contract on deltachain")
@@ -928,7 +928,7 @@ func runNode(cmd *cobra.Command, args []string) {
 				zap.String("publicRpcLogDetail", *publicRpcLogDetailStr),
 				zap.Bool("logPublicRpcToTelemetry", *publicRpcLogToTelemetry))
 
-			tm, err = telemetry.NewLokiCloudLogger(context.Background(), logger, *telemetryLokiURL, "wormhole", skipPrivateLogs, labels)
+			tm, err = telemetry.NewLokiCloudLogger(context.Background(), logger, *telemetryLokiURL, "deltaswap", skipPrivateLogs, labels)
 			if err != nil {
 				logger.Fatal("Failed to initialize telemetry", zap.Error(err))
 			}
@@ -1486,5 +1486,5 @@ func unsafeDevModeEvmContractAddress(contractAddr string) string {
 		return contractAddr
 	}
 
-	return devnet.GanacheWormholeContractAddress.Hex()
+	return devnet.GanacheDeltaswapContractAddress.Hex()
 }

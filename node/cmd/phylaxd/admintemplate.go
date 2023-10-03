@@ -87,10 +87,10 @@ func init() {
 	circleIntegrationChainID = circleIntegrationChainIDFlagSet.String("chain-id", "", "Target chain ID")
 
 	circleIntegrationFinalityFlagSet := pflag.NewFlagSet("finality", pflag.ExitOnError)
-	circleIntegrationFinality = circleIntegrationFinalityFlagSet.String("finality", "", "Desired wormhole finality")
-	AdminClientCircleIntegrationUpdateWormholeFinalityCmd.Flags().AddFlagSet(circleIntegrationChainIDFlagSet)
-	AdminClientCircleIntegrationUpdateWormholeFinalityCmd.Flags().AddFlagSet(circleIntegrationFinalityFlagSet)
-	TemplateCmd.AddCommand(AdminClientCircleIntegrationUpdateWormholeFinalityCmd)
+	circleIntegrationFinality = circleIntegrationFinalityFlagSet.String("finality", "", "Desired deltaswap finality")
+	AdminClientCircleIntegrationUpdateDeltaswapFinalityCmd.Flags().AddFlagSet(circleIntegrationChainIDFlagSet)
+	AdminClientCircleIntegrationUpdateDeltaswapFinalityCmd.Flags().AddFlagSet(circleIntegrationFinalityFlagSet)
+	TemplateCmd.AddCommand(AdminClientCircleIntegrationUpdateDeltaswapFinalityCmd)
 
 	circleIntegrationRegisterEmitterFlagSet := pflag.NewFlagSet("register", pflag.ExitOnError)
 	circleIntegrationForeignEmitterChainID = circleIntegrationRegisterEmitterFlagSet.String("foreign-emitter-chain-id", "", "Foreign emitter chain ID")
@@ -190,10 +190,10 @@ var AdminClientTokenBridgeUpgradeContractCmd = &cobra.Command{
 	Run:   runTokenBridgeUpgradeContractTemplate,
 }
 
-var AdminClientCircleIntegrationUpdateWormholeFinalityCmd = &cobra.Command{
-	Use:   "circle-integration-update-wormhole-finality",
-	Short: "Generate an empty circle integration update wormhole finality template at specified path",
-	Run:   runCircleIntegrationUpdateWormholeFinalityTemplate,
+var AdminClientCircleIntegrationUpdateDeltaswapFinalityCmd = &cobra.Command{
+	Use:   "circle-integration-update-deltaswap-finality",
+	Short: "Generate an empty circle integration update deltaswap finality template at specified path",
+	Run:   runCircleIntegrationUpdateDeltaswapFinalityTemplate,
 }
 
 var AdminClientCircleIntegrationRegisterEmitterAndDomainCmd = &cobra.Command{
@@ -269,7 +269,7 @@ var AdminClientIbcTranslatorUpdateChannelChainCmd = &cobra.Command{
 }
 
 var AdminClientDeltaswapRelayerSetDefaultDeliveryProviderCmd = &cobra.Command{
-	Use:   "wormhole-relayer-set-default-delivery-provider",
+	Use:   "deltaswap-relayer-set-default-delivery-provider",
 	Short: "Generate a 'set default delivery provider' template for specified chain and address",
 	Run:   runDeltaswapRelayerSetDefaultDeliveryProviderTemplate,
 }
@@ -405,7 +405,7 @@ func runTokenBridgeUpgradeContractTemplate(cmd *cobra.Command, args []string) {
 	fmt.Print(string(b))
 }
 
-func runCircleIntegrationUpdateWormholeFinalityTemplate(cmd *cobra.Command, args []string) {
+func runCircleIntegrationUpdateDeltaswapFinalityTemplate(cmd *cobra.Command, args []string) {
 	if *circleIntegrationChainID == "" {
 		log.Fatal("--chain-id must be specified.")
 	}
@@ -427,8 +427,8 @@ func runCircleIntegrationUpdateWormholeFinalityTemplate(cmd *cobra.Command, args
 			{
 				Sequence: rand.Uint64(),
 				Nonce:    rand.Uint32(),
-				Payload: &nodev1.GovernanceMessage_CircleIntegrationUpdateWormholeFinality{
-					CircleIntegrationUpdateWormholeFinality: &nodev1.CircleIntegrationUpdateWormholeFinality{
+				Payload: &nodev1.GovernanceMessage_CircleIntegrationUpdateDeltaswapFinality{
+					CircleIntegrationUpdateDeltaswapFinality: &nodev1.CircleIntegrationUpdateDeltaswapFinality{
 						TargetChainId: uint32(chainID),
 						Finality:      uint32(finality),
 					},

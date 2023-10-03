@@ -58,13 +58,13 @@ type (
 		delay           time.Duration
 
 		// set during processing
-		hasWormholeMsg bool // set during processing; whether this transaction emitted a Wormhole message
+		hasDeltaswapMsg bool // set during processing; whether this transaction emitted a Deltaswap message
 	}
 
 	Watcher struct {
-		mainnet         bool
-		wormholeAccount string // name of the Wormhole Account on the NEAR blockchain
-		nearRPC         string
+		mainnet          bool
+		deltaswapAccount string // name of the Deltaswap Account on the NEAR blockchain
+		nearRPC          string
 
 		// external channels
 		msgC          chan<- *common.MessagePublication   // validated (SECURITY: and only validated!) observations go into this channel
@@ -92,14 +92,14 @@ type (
 // NewWatcher creates a new Near appid watcher
 func NewWatcher(
 	nearRPC string,
-	wormholeContract string,
+	deltaswapContract string,
 	msgC chan<- *common.MessagePublication,
 	obsvReqC <-chan *gossipv1.ObservationRequest,
 	mainnet bool,
 ) *Watcher {
 	return &Watcher{
 		mainnet:                      mainnet,
-		wormholeAccount:              wormholeContract,
+		deltaswapAccount:             deltaswapContract,
 		nearRPC:                      nearRPC,
 		msgC:                         msgC,
 		obsvReqC:                     obsvReqC,
@@ -149,7 +149,7 @@ func (e *Watcher) runBlockPoll(ctx context.Context) error {
 
 			p2p.DefaultRegistry.SetNetworkStats(vaa.ChainIDNear, &gossipv1.Heartbeat_Network{
 				Height:          int64(highestFinalBlockHeightObserved),
-				ContractAddress: e.wormholeAccount,
+				ContractAddress: e.deltaswapAccount,
 			})
 			readiness.SetReady(e.readinessSync)
 
@@ -200,11 +200,11 @@ func (e *Watcher) runObsvReqProcessor(ctx context.Context) error {
 
 			logger.Info("Received obsv request", zap.String("log_msg_type", "obsv_req_received"), zap.String("tx_hash", txHash))
 
-			// TODO e.wormholeContract is not the correct value for senderAccountId. Instead, it should be the account id of the transaction sender.
+			// TODO e.deltaswapContract is not the correct value for senderAccountId. Instead, it should be the account id of the transaction sender.
 			// This value is used by NEAR to determine which shard to query. An incorrect value here is not a security risk but could lead to reobservation requests failing.
 			// Phylaxs currently run nodes for all shards and the API seems to be returning the correct results independent of the set senderAccountId but this could change in the future.
 			// Fixing this would require adding the transaction sender account ID to the observation request.
-			job := newTransactionProcessingJob(txHash, e.wormholeAccount)
+			job := newTransactionProcessingJob(txHash, e.deltaswapAccount)
 			err := e.schedule(ctx, job, time.Nanosecond)
 			if err != nil {
 				// Error-level logging here because this is after an re-observation request already, which should be infrequent
@@ -253,7 +253,7 @@ func (e *Watcher) runTxProcessor(ctx context.Context) error {
 				}
 			}
 
-			if job.hasWormholeMsg {
+			if job.hasDeltaswapMsg {
 				// report how long it took to process this transaction
 				e.eventChanTxProcessedDuration <- time.Since(job.creationTime)
 			}
@@ -268,7 +268,7 @@ func (e *Watcher) Run(ctx context.Context) error {
 	logger.Info("Starting watcher",
 		zap.String("watcher_name", "near"),
 		zap.Bool("mainnet", e.mainnet),
-		zap.String("wormholeAccount", e.wormholeAccount),
+		zap.String("deltaswapAccount", e.deltaswapAccount),
 		zap.String("nearRPC", e.nearRPC),
 	)
 
@@ -278,7 +278,7 @@ func (e *Watcher) Run(ctx context.Context) error {
 	e.finalizer = newFinalizer(e.eventChan, e.nearAPI, e.mainnet)
 
 	p2p.DefaultRegistry.SetNetworkStats(vaa.ChainIDNear, &gossipv1.Heartbeat_Network{
-		ContractAddress: e.wormholeAccount,
+		ContractAddress: e.deltaswapAccount,
 	})
 
 	logger.Info("Near watcher connecting to RPC node ", zap.String("url", e.nearRPC))

@@ -1,5 +1,5 @@
 import {
-  CHAIN_ID_WORMCHAIN,
+  CHAIN_ID_DELTACHAIN,
   hexToUint8Array,
   Other,
   Payload,
@@ -125,7 +125,7 @@ async function main() {
         consistencyLevel: 0,
         payload: {
           type: "Other",
-          hex: `0000000000000000000000000000000000000000005761736D644D6F64756C65010${CHAIN_ID_WORMCHAIN.toString(
+          hex: `0000000000000000000000000000000000000000005761736D644D6F64756C65010${CHAIN_ID_DELTACHAIN.toString(
             16
           )}${payload}`,
         },
@@ -190,7 +190,7 @@ async function main() {
       consistencyLevel: 0,
       payload: {
         type: "Other",
-        hex: `0000000000000000000000000000000000000000005761736D644D6F64756C65020${CHAIN_ID_WORMCHAIN.toString(
+        hex: `0000000000000000000000000000000000000000005761736D644D6F64756C65020${CHAIN_ID_DELTACHAIN.toString(
           16
         )}${fullHash}`,
       },

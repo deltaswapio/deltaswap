@@ -168,7 +168,7 @@ func mockPhylaxRunnable(t testing.TB, gs []*mockPhylax, mockPhylaxIndex uint, ob
 
 		// configure p2p
 		nodeName := fmt.Sprintf("g-%d", mockPhylaxIndex)
-		networkID := "/wormhole/localdev"
+		networkID := "/deltaswap/localdev"
 		zeroPeerId, err := libp2p_peer.IDFromPublicKey(gs[0].p2pKey.GetPublic())
 		if err != nil {
 			return err
@@ -344,7 +344,7 @@ func waitForVaa(t testing.TB, ctx context.Context, c publicrpcv1.PublicRPCServic
 }
 
 type testCase struct {
-	msg    *common.MessagePublication // a Wormhole message
+	msg    *common.MessagePublication // a Deltaswap message
 	govMsg *nodev1.GovernanceMessage  // protobuf representation of msg as governance message, if applicable.
 	// number of Phylaxs who will initially observe this message through the mock watcher
 	numPhylaxsObserve int

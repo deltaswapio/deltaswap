@@ -15,17 +15,17 @@ import (
 )
 
 var (
-	wormholeNetworkNodeHeight = promauto.NewGaugeVec(
+	deltaswapNetworkNodeHeight = promauto.NewGaugeVec(
 		prometheus.GaugeOpts{
 			Name: "deltaswap_network_node_height",
 			Help: "Network height of the given phylax node per network",
 		}, []string{"phylax_addr", "node_id", "node_name", "network"})
-	wormholeNetworkNodeErrors = promauto.NewGaugeVec(
+	deltaswapNetworkNodeErrors = promauto.NewGaugeVec(
 		prometheus.GaugeOpts{
 			Name: "deltaswap_network_node_errors_count",
 			Help: "Number of errors the given phylax node encountered per network",
 		}, []string{"phylax_addr", "node_id", "node_name", "network"})
-	wormholeNetworkVersion = promauto.NewGaugeVec(
+	deltaswapNetworkVersion = promauto.NewGaugeVec(
 		prometheus.GaugeOpts{
 			Name: "deltaswap_network_node_version",
 			Help: "Network version of the given phylax node per network",
@@ -40,13 +40,13 @@ func collectNodeMetrics(addr common.Address, peerId peer.ID, hb *gossipv1.Heartb
 
 		chain := vaa.ChainID(n.Id)
 
-		wormholeNetworkNodeHeight.WithLabelValues(
+		deltaswapNetworkNodeHeight.WithLabelValues(
 			addr.Hex(), peerId.Pretty(), hb.NodeName, chain.String()).Set(float64(n.Height))
 
-		wormholeNetworkNodeErrors.WithLabelValues(
+		deltaswapNetworkNodeErrors.WithLabelValues(
 			addr.Hex(), peerId.Pretty(), hb.NodeName, chain.String()).Set(float64(n.ErrorCount))
 
-		wormholeNetworkVersion.WithLabelValues(
+		deltaswapNetworkVersion.WithLabelValues(
 			addr.Hex(), peerId.Pretty(), hb.NodeName, chain.String(),
 			sanitizeVersion(hb.Version, version.Version())).Set(1)
 	}

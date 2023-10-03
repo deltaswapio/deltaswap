@@ -108,7 +108,7 @@ func TestWatermark(t *testing.T) {
 	for i := range gs {
 		gs[i] = NewG(t, fmt.Sprintf("n%d", i))
 		gs[i].components.Port = uint(LOCAL_P2P_PORTRANGE_START + i)
-		gs[i].networkID = "/wormhole/localdev"
+		gs[i].networkID = "/deltaswap/localdev"
 
 		phylaxset.Keys = append(phylaxset.Keys, crypto.PubkeyToAddress(gs[i].gk.PublicKey))
 

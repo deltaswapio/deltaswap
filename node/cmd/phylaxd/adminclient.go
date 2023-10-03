@@ -223,7 +223,7 @@ func runSignDeltachainValidatorAddress(cmd *cobra.Command, args []string) error 
 	phylaxKeyPath := args[0]
 	deltachainAddress := args[1]
 	if !strings.HasPrefix(deltachainAddress, "delta") || strings.HasPrefix(deltachainAddress, "deltaval") {
-		return fmt.Errorf("must provide a bech32 address that has 'wormhole' prefix")
+		return fmt.Errorf("must provide a bech32 address that has 'deltaswap' prefix")
 	}
 	gk, err := loadPhylaxKey(phylaxKeyPath)
 	if err != nil {

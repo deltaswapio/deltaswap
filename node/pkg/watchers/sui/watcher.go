@@ -27,13 +27,13 @@ import (
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promauto"
 
-	"github.com/mr-tron/base58"
 	"github.com/deltaswapio/deltaswap/sdk/vaa"
+	"github.com/mr-tron/base58"
 	"go.uber.org/zap"
 )
 
 type (
-	// Watcher is responsible for looking over Sui blockchain and reporting new transactions to the wormhole contract
+	// Watcher is responsible for looking over Sui blockchain and reporting new transactions to the deltaswap contract
 	Watcher struct {
 		suiRPC           string
 		suiWS            string
@@ -112,7 +112,7 @@ type (
 	//       "packageId": "0x8b04a73ab3cb1e36bee5a86fdbfa481e97d3cc7ce8b594edea1400103ff0134d",
 	//       "transactionModule": "sender",
 	//       "sender": "0xed867315e3f7c83ae82e6d5858b6a6cc57c291fd84f7509646ebc8162169cf96",
-	//       "type": "0x7483d0db53a140eed72bd6cb133daa59c539844f4c053924b9e3f0d2d7ba146d::publish_message::WormholeMessage",
+	//       "type": "0x7483d0db53a140eed72bd6cb133daa59c539844f4c053924b9e3f0d2d7ba146d::publish_message::DeltaswapMessage",
 	//       "parsedJson": {
 	//         "consistency_level": 0,
 	//         "nonce": 0,
@@ -192,7 +192,7 @@ func (e *Watcher) inspectBody(logger *zap.Logger, body SuiResult) error {
 		return nil
 	}
 
-	// Now that we know this is a wormhole event, we can unmarshal the specifics.
+	// Now that we know this is a deltaswap event, we can unmarshal the specifics.
 	var fields FieldsData
 	err := json.Unmarshal(*body.Fields, &fields)
 	if err != nil {

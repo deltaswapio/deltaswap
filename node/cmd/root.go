@@ -21,7 +21,7 @@ var cfgFile string
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
 	Use:   "phylaxd",
-	Short: "Wormhole phylax node",
+	Short: "Deltaswap phylax node",
 }
 
 // Top-level version subcommand

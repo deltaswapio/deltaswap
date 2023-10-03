@@ -49,7 +49,7 @@ var (
 )
 
 func init() {
-	p2pNetworkID = SpyCmd.Flags().String("network", "/wormhole/dev", "P2P network identifier")
+	p2pNetworkID = SpyCmd.Flags().String("network", "/deltaswap/dev", "P2P network identifier")
 	p2pPort = SpyCmd.Flags().Uint("port", 8999, "P2P UDP listener port")
 	p2pBootstrap = SpyCmd.Flags().String("bootstrap", "", "P2P bootstrap peers (comma-separated)")
 
@@ -233,7 +233,7 @@ func runSpy(cmd *cobra.Command, args []string) {
 		os.Exit(1)
 	}
 
-	logger := ipfslog.Logger("wormhole-spy").Desugar()
+	logger := ipfslog.Logger("deltaswap-spy").Desugar()
 
 	ipfslog.SetAllLoggers(lvl)
 

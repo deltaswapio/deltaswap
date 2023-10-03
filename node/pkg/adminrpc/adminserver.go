@@ -323,7 +323,7 @@ func deltachainWasmInstantiateAllowlist(
 	nonce uint32,
 	sequence uint64,
 ) (*vaa.VAA, error) { //nolint:unparam // error is always nil but kept to mirror function signature of other functions
-	decodedAddr, err := sdktypes.GetFromBech32(req.Contract, "wormhole")
+	decodedAddr, err := sdktypes.GetFromBech32(req.Contract, "deltaswap")
 	if err != nil {
 		return nil, err
 	}
@@ -383,7 +383,7 @@ func gatewayIbcComposabilityMwSetContract(
 	nonce uint32,
 	sequence uint64,
 ) (*vaa.VAA, error) {
-	decodedAddr, err := sdktypes.GetFromBech32(req.Contract, "wormhole")
+	decodedAddr, err := sdktypes.GetFromBech32(req.Contract, "deltaswap")
 	if err != nil {
 		return nil, err
 	}
@@ -398,9 +398,9 @@ func gatewayIbcComposabilityMwSetContract(
 	return v, nil
 }
 
-// circleIntegrationUpdateWormholeFinality converts a nodev1.CircleIntegrationUpdateWormholeFinality to its canonical VAA representation
+// circleIntegrationUpdateDeltaswapFinality converts a nodev1.CircleIntegrationUpdateDeltaswapFinality to its canonical VAA representation
 // Returns an error if the data is invalid
-func circleIntegrationUpdateWormholeFinality(req *nodev1.CircleIntegrationUpdateWormholeFinality, timestamp time.Time, phylaxSetIndex uint32, nonce uint32, sequence uint64) (*vaa.VAA, error) {
+func circleIntegrationUpdateDeltaswapFinality(req *nodev1.CircleIntegrationUpdateDeltaswapFinality, timestamp time.Time, phylaxSetIndex uint32, nonce uint32, sequence uint64) (*vaa.VAA, error) {
 	if req.TargetChainId > math.MaxUint16 {
 		return nil, fmt.Errorf("invalid target chain id, must be <= %d", math.MaxUint16)
 	}
@@ -408,7 +408,7 @@ func circleIntegrationUpdateWormholeFinality(req *nodev1.CircleIntegrationUpdate
 		return nil, fmt.Errorf("invalid finality, must be <= %d", math.MaxUint8)
 	}
 	v := vaa.CreateGovernanceVAA(timestamp, nonce, sequence, phylaxSetIndex,
-		vaa.BodyCircleIntegrationUpdateWormholeFinality{
+		vaa.BodyCircleIntegrationUpdateDeltaswapFinality{
 			TargetChainID: vaa.ChainID(req.TargetChainId),
 			Finality:      uint8(req.Finality),
 		}.Serialize())
@@ -516,9 +516,9 @@ func ibcUpdateChannelChain(
 	return v, nil
 }
 
-// wormholeRelayerSetDefaultDeliveryProvider converts a nodev1.DeltaswapRelayerSetDefaultDeliveryProvider message to its canonical VAA representation.
+// deltaswapRelayerSetDefaultDeliveryProvider converts a nodev1.DeltaswapRelayerSetDefaultDeliveryProvider message to its canonical VAA representation.
 // Returns an error if the data is invalid.
-func wormholeRelayerSetDefaultDeliveryProvider(req *nodev1.DeltaswapRelayerSetDefaultDeliveryProvider, timestamp time.Time, phylaxSetIndex uint32, nonce uint32, sequence uint64) (*vaa.VAA, error) {
+func deltaswapRelayerSetDefaultDeliveryProvider(req *nodev1.DeltaswapRelayerSetDefaultDeliveryProvider, timestamp time.Time, phylaxSetIndex uint32, nonce uint32, sequence uint64) (*vaa.VAA, error) {
 	if req.ChainId > math.MaxUint16 {
 		return nil, errors.New("invalid target_chain_id")
 	}
@@ -575,8 +575,8 @@ func GovMsgToVaa(message *nodev1.GovernanceMessage, currentSetIndex uint32, time
 		v, err = gatewayCancelUpgrade(timestamp, currentSetIndex, message.Nonce, message.Sequence)
 	case *nodev1.GovernanceMessage_GatewayIbcComposabilityMwSetContract:
 		v, err = gatewayIbcComposabilityMwSetContract(payload.GatewayIbcComposabilityMwSetContract, timestamp, currentSetIndex, message.Nonce, message.Sequence)
-	case *nodev1.GovernanceMessage_CircleIntegrationUpdateWormholeFinality:
-		v, err = circleIntegrationUpdateWormholeFinality(payload.CircleIntegrationUpdateWormholeFinality, timestamp, currentSetIndex, message.Nonce, message.Sequence)
+	case *nodev1.GovernanceMessage_CircleIntegrationUpdateDeltaswapFinality:
+		v, err = circleIntegrationUpdateDeltaswapFinality(payload.CircleIntegrationUpdateDeltaswapFinality, timestamp, currentSetIndex, message.Nonce, message.Sequence)
 	case *nodev1.GovernanceMessage_CircleIntegrationRegisterEmitterAndDomain:
 		v, err = circleIntegrationRegisterEmitterAndDomain(payload.CircleIntegrationRegisterEmitterAndDomain, timestamp, currentSetIndex, message.Nonce, message.Sequence)
 	case *nodev1.GovernanceMessage_CircleIntegrationUpgradeContractImplementation:
@@ -584,7 +584,7 @@ func GovMsgToVaa(message *nodev1.GovernanceMessage, currentSetIndex uint32, time
 	case *nodev1.GovernanceMessage_IbcUpdateChannelChain:
 		v, err = ibcUpdateChannelChain(payload.IbcUpdateChannelChain, timestamp, currentSetIndex, message.Nonce, message.Sequence)
 	case *nodev1.GovernanceMessage_DeltaswapRelayerSetDefaultDeliveryProvider:
-		v, err = wormholeRelayerSetDefaultDeliveryProvider(payload.DeltaswapRelayerSetDefaultDeliveryProvider, timestamp, currentSetIndex, message.Nonce, message.Sequence)
+		v, err = deltaswapRelayerSetDefaultDeliveryProvider(payload.DeltaswapRelayerSetDefaultDeliveryProvider, timestamp, currentSetIndex, message.Nonce, message.Sequence)
 	default:
 		panic(fmt.Sprintf("unsupported VAA type: %T", payload))
 	}

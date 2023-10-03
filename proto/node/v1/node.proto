@@ -82,7 +82,7 @@ message GovernanceMessage {
     PhylaxSetUpdate phylax_set = 10;
     ContractUpgrade contract_upgrade = 11;
 
-    // Token bridge, NFT module, and Wormhole Relayer module (for the first two) 
+    // Token bridge, NFT module, and Deltaswap Relayer module (for the first two) 
 
     BridgeRegisterChain bridge_register_chain = 12;
     BridgeUpgradeContract bridge_contract_upgrade = 13;
@@ -103,14 +103,14 @@ message GovernanceMessage {
     AccountantModifyBalance accountant_modify_balance = 17;
 
     // Circle Integration
-    CircleIntegrationUpdateWormholeFinality circle_integration_update_wormhole_finality = 18;
+    CircleIntegrationUpdateDeltaswapFinality circle_integration_update_deltaswap_finality = 18;
     CircleIntegrationRegisterEmitterAndDomain circle_integration_register_emitter_and_domain = 19;
     CircleIntegrationUpgradeContractImplementation circle_integration_upgrade_contract_implementation = 20;
 
     // IBC Receiver Integration
     IbcUpdateChannelChain ibc_update_channel_chain = 21;
-    // Wormhole Relayer module
-    DeltaswapRelayerSetDefaultDeliveryProvider wormhole_relayer_set_default_delivery_provider = 22;
+    // Deltaswap Relayer module
+    DeltaswapRelayerSetDefaultDeliveryProvider deltaswap_relayer_set_default_delivery_provider = 22;
   }
 }
 
@@ -183,9 +183,9 @@ message AccountantModifyBalance {
   string reason = 9;
 }
 
-// ContractUpgrade represents a Wormhole contract update to be submitted to and signed by the node.
+// ContractUpgrade represents a Deltaswap contract update to be submitted to and signed by the node.
 message ContractUpgrade {
-  // ID of the chain where the Wormhole contract should be updated (uint8).
+  // ID of the chain where the Deltaswap contract should be updated (uint8).
   uint32 chain_id = 1;
 
   // Hex-encoded address (without leading 0x) address of the new program/contract.
@@ -262,7 +262,7 @@ message GatewayScheduleUpgrade {
 
 message GatewayCancelUpgrade {}
 
-message CircleIntegrationUpdateWormholeFinality {
+message CircleIntegrationUpdateDeltaswapFinality {
   uint32 finality = 1;
   uint32 target_chain_id = 2;
 }
@@ -297,7 +297,7 @@ message IbcUpdateChannelChain {
 }
 
 message DeltaswapRelayerSetDefaultDeliveryProvider {
-  // ID of the chain of the Wormhole Relayer contract where the default delivery provider should be updated (uint16).
+  // ID of the chain of the Deltaswap Relayer contract where the default delivery provider should be updated (uint16).
   uint32 chain_id = 1;
 
   // Hex-encoded address (without leading 0x) of the new default delivery provider contract address.

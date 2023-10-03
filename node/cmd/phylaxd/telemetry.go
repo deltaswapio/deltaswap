@@ -11,7 +11,7 @@ package phylaxd
 // By using a separate key, we can keep the configuration decoupled from the telemetry backend,
 // allowing the key to be replaced or even a different provider to be used without changing the config.
 
-const defaultTelemetryProject = "projects/wormhole-logging"
+const defaultTelemetryProject = "projects/deltaswap-logging"
 
 const defaultTelemetryServiceAccountEnc = `
 RcLwG218oFn9tVWlsl6ZbYQdiny2w13G49Be5UucgwFAdxYP5DilBQhhd0lN900VM25k3joR2VHwtZ90

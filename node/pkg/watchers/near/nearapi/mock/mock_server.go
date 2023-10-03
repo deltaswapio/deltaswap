@@ -1,6 +1,6 @@
 /*
 To create a new set of positive-case test data:
-	1) Find a Wormhole transactions and note down the transaction hash and the block hash: https://explorer.near.org/accounts/contract.deltaswap_crypto.near
+	1) Find a Deltaswap transactions and note down the transaction hash and the block hash: https://explorer.near.org/accounts/contract.deltaswap_crypto.near
 	2) Set that block ID as `BLOCK_ID_START`
 	3) Update the transaction hash in the test files
 */

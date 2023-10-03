@@ -88,7 +88,7 @@ func NewWatcher(
 }
 
 // gatherObservations recurses through a given transactions inner-transactions
-// to find any messages emitted from the core wormhole contract.
+// to find any messages emitted from the core deltaswap contract.
 // Algorand allows up to 8 levels of inner transactions.
 func gatherObservations(e *Watcher, t types.SignedTxnWithAD, depth int, logger *zap.Logger) (obs []algorandObservation) {
 

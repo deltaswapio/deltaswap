@@ -286,7 +286,7 @@ func Run(
 
 		if bootstrapNode {
 			logger.Info("We are a bootstrap node.")
-			if networkID == "/wormhole/testnet/2/1" {
+			if networkID == "/deltaswap/testnet/2/1" {
 				gossipParams.Dhi = TESTNET_BOOTSTRAP_DHI
 				logger.Info("We are a bootstrap node in Testnet. Setting gossipParams.Dhi.", zap.Int("gossipParams.Dhi", gossipParams.Dhi))
 			}

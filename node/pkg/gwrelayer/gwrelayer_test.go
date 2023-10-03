@@ -17,21 +17,21 @@ import (
 	"go.uber.org/zap"
 )
 
-func Test_convertBech32AddressToWormhole(t *testing.T) {
+func Test_convertBech32AddressToDeltaswap(t *testing.T) {
 	expectedAddress, err := hex.DecodeString("ade4a5f5803a439835c636395a8d648dee57b2fc90d98dc17fa887159b69638b")
 	require.NoError(t, err)
 
 	// Basic success case.
-	targetAddress, err := convertBech32AddressToWormhole("delta14hj2tavq8fpesdwxxcu44rty3hh90vhujrvcmstl4zr3txmfvw9srrg465")
+	targetAddress, err := convertBech32AddressToDeltaswap("delta14hj2tavq8fpesdwxxcu44rty3hh90vhujrvcmstl4zr3txmfvw9srrg465")
 	require.NoError(t, err)
 	assert.Equal(t, true, bytes.Equal(expectedAddress, targetAddress.Bytes()))
 
 	// Garbage in should generate an error.
-	_, err = convertBech32AddressToWormhole("hello world!")
+	_, err = convertBech32AddressToDeltaswap("hello world!")
 	assert.Error(t, err)
 
 	// Empty input should generate an error.
-	_, err = convertBech32AddressToWormhole("")
+	_, err = convertBech32AddressToDeltaswap("")
 	assert.Error(t, err)
 }
 
@@ -53,7 +53,7 @@ func Test_shouldPublishToIbcTranslator(t *testing.T) {
 		{label: "should publish", payload: decodeBytes("0300000000000000000000000000000000000000000000000000000000000000640000000000000000000000005425890298aed601595a70ab815c96711a31bc650006ade4a5f5803a439835c636395a8d648dee57b2fc90d98dc17fa887159b69638b0C20000000000000000000000000e6990c7e206d418d62b9e50c8e61f59dc360183b7b2262617369635f726563697069656e74223a7b22726563697069656e74223a22633256704d57786c656d3179636d31336348687865575679626e6c344d33706a595768735a4756715958686e4f485a364f484e774d32526f227d7d"), result: true, err: false},
 	}
 
-	targetAddress, err := convertBech32AddressToWormhole("delta14hj2tavq8fpesdwxxcu44rty3hh90vhujrvcmstl4zr3txmfvw9srrg465")
+	targetAddress, err := convertBech32AddressToDeltaswap("delta14hj2tavq8fpesdwxxcu44rty3hh90vhujrvcmstl4zr3txmfvw9srrg465")
 	require.NoError(t, err)
 
 	for _, tc := range tests {
@@ -110,7 +110,7 @@ func Test_shouldPublishToTokenBridge(t *testing.T) {
 		})
 	}
 
-	addr, err := sdktypes.Bech32ifyAddressBytes("wormhole", decodeBytes("aeb534c45c3049d380b9d9b966f9895f53abd4301bfaff407fa09dea8ae7a924"))
+	addr, err := sdktypes.Bech32ifyAddressBytes("deltaswap", decodeBytes("aeb534c45c3049d380b9d9b966f9895f53abd4301bfaff407fa09dea8ae7a924"))
 	require.NoError(t, err)
 	fmt.Println(addr)
 }

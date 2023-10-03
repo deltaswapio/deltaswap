@@ -20,7 +20,7 @@ import (
 	"go.uber.org/zap"
 )
 
-type NearWormholePublishEvent struct {
+type NearDeltaswapPublishEvent struct {
 	Standard    string `json:"standard"`
 	Event       string `json:"event"`
 	Data        string `json:"data"`
@@ -30,8 +30,8 @@ type NearWormholePublishEvent struct {
 	BlockHeight uint64 `json:"block"`
 }
 
-// processTx fetches a transaction's receipt_outcomes and looks for wormhole messages in it.
-// we go through all receipt outcomes (result.receipts_outcome) and look for log emissions from the Wormhole core contract.
+// processTx fetches a transaction's receipt_outcomes and looks for deltaswap messages in it.
+// we go through all receipt outcomes (result.receipts_outcome) and look for log emissions from the Deltaswap core contract.
 // sender_account_id is required to help determine which shard to query.
 func (e *Watcher) processTx(logger *zap.Logger, ctx context.Context, job *transactionProcessingJob) error {
 	logger.Debug("processTx", zap.String("log_msg_type", "info_process_tx"), zap.String("tx_hash", job.txHash))
@@ -73,15 +73,15 @@ func (e *Watcher) processOutcome(logger *zap.Logger, ctx context.Context, job *t
 		return errors.New("NEAR RPC malformed response: receipts_outcome.outcome does not exist")
 	}
 
-	// SECURITY CRITICAL: Check that the outcome relates to the Wormhole core contract on NEAR.
+	// SECURITY CRITICAL: Check that the outcome relates to the Deltaswap core contract on NEAR.
 	// according to near source documentation, executor_id is the id of the account on which the execution happens:
 	// for transaction this is signer_id
 	// for receipt this is receiver_id, i.e. the account on which the receipt has been applied
-	if executor_id.String() == "" || executor_id.String() != e.wormholeAccount {
+	if executor_id.String() == "" || executor_id.String() != e.deltaswapAccount {
 		return nil
 	}
 
-	logger.Debug("Found a Wormhole Transaction... Now checking if it's a valid log emission.", zap.String("tx_hash", job.txHash))
+	logger.Debug("Found a Deltaswap Transaction... Now checking if it's a valid log emission.", zap.String("tx_hash", job.txHash))
 
 	outcomeBlockHash := receiptOutcome.Get("block_hash")
 	if !outcomeBlockHash.Exists() {
@@ -108,7 +108,7 @@ func (e *Watcher) processOutcome(logger *zap.Logger, ctx context.Context, job *t
 	}
 
 	for _, log := range l.Array() {
-		err := e.processWormholeLog(logger, ctx, job, outcomeBlockHeader, successValue.String(), log)
+		err := e.processDeltaswapLog(logger, ctx, job, outcomeBlockHeader, successValue.String(), log)
 		if err != nil {
 			// SECURITY defense-in-depth: If one of the logs is malformed, we skip processing the other logs for defense in depth
 			return err
@@ -117,7 +117,7 @@ func (e *Watcher) processOutcome(logger *zap.Logger, ctx context.Context, job *t
 	return nil // SUCCESS
 }
 
-func (e *Watcher) processWormholeLog(logger *zap.Logger, _ context.Context, job *transactionProcessingJob, outcomeBlockHeader nearapi.BlockHeader, successValue string, log gjson.Result) error {
+func (e *Watcher) processDeltaswapLog(logger *zap.Logger, _ context.Context, job *transactionProcessingJob, outcomeBlockHeader nearapi.BlockHeader, successValue string, log gjson.Result) error {
 	event := log.String()
 
 	// SECURITY CRITICAL: Ensure that we're reading a correct log message.
@@ -130,23 +130,23 @@ func (e *Watcher) processWormholeLog(logger *zap.Logger, _ context.Context, job 
 
 	logger.Info("event", zap.String("log_msg_type", "deltaswap_event"), zap.String("event", eventJsonStr))
 
-	// SECURITY: Wormhole is following NEP-297 (https://nomicon.io/Standards/EventsFormat)
-	// First, check that we're looking at a "publish" event type from the "wormhole" standard.
-	if !isWormholePublishEvent(logger, eventJsonStr) {
+	// SECURITY: Deltaswap is following NEP-297 (https://nomicon.io/Standards/EventsFormat)
+	// First, check that we're looking at a "publish" event type from the "deltaswap" standard.
+	if !isDeltaswapPublishEvent(logger, eventJsonStr) {
 		return nil
 	}
 
 	// SECURITY: If we get this far, the checks below should be true, otherwise something has seriously gone wrong.
 
-	var pubEvent NearWormholePublishEvent
+	var pubEvent NearDeltaswapPublishEvent
 	if err := json.Unmarshal([]byte(eventJsonStr), &pubEvent); err != nil {
-		logger.Error("Wormhole publish event malformed", zap.String("error_type", "malformed_deltaswap_event"), zap.String("json", eventJsonStr))
-		return errors.New("Wormhole publish event malformed")
+		logger.Error("Deltaswap publish event malformed", zap.String("error_type", "malformed_deltaswap_event"), zap.String("json", eventJsonStr))
+		return errors.New("Deltaswap publish event malformed")
 	}
 
-	if pubEvent.Standard != "wormhole" || pubEvent.Event != "publish" || pubEvent.Emitter == "" || pubEvent.Seq <= 0 || pubEvent.BlockHeight == 0 {
-		logger.Error("Wormhole publish event malformed", zap.String("error_type", "malformed_deltaswap_event"), zap.String("json", eventJsonStr))
-		return errors.New("Wormhole publish event malformed")
+	if pubEvent.Standard != "deltaswap" || pubEvent.Event != "publish" || pubEvent.Emitter == "" || pubEvent.Seq <= 0 || pubEvent.BlockHeight == 0 {
+		logger.Error("Deltaswap publish event malformed", zap.String("error_type", "malformed_deltaswap_event"), zap.String("json", eventJsonStr))
+		return errors.New("Deltaswap publish event malformed")
 	}
 
 	successValueInt, err := successValueToInt(successValue)
@@ -161,19 +161,19 @@ func (e *Watcher) processWormholeLog(logger *zap.Logger, _ context.Context, job 
 			zap.Int("int(SuccessValue)", successValueInt),
 			zap.Uint64("log.seq", pubEvent.Seq),
 		)
-		return errors.New("Wormhole publish event.seq does not match SuccessValue")
+		return errors.New("Deltaswap publish event.seq does not match SuccessValue")
 	}
 
 	// SECURITY: For defense-in-depth, check that the block height from the event matches the block height from the RPC node
 	if pubEvent.BlockHeight != outcomeBlockHeader.Height {
 		logger.Error(
-			"Wormhole publish event.block does not equal receipt_outcome[x].block_height",
+			"Deltaswap publish event.block does not equal receipt_outcome[x].block_height",
 			zap.String("error_type", "malformed_deltaswap_event"),
 			zap.String("log_msg_type", "tx_processing_error"),
 			zap.Uint64("event.block", pubEvent.BlockHeight),
 			zap.Uint64("receipt_outcome[x].block_height", outcomeBlockHeader.Height),
 		)
-		return errors.New("Wormhole publish event.block does not equal receipt_outcome[x].block_height")
+		return errors.New("Deltaswap publish event.block does not equal receipt_outcome[x].block_height")
 	}
 
 	// SECURITY: extract emitter address and ensure that it has the correct format
@@ -185,13 +185,13 @@ func (e *Watcher) processWormholeLog(logger *zap.Logger, _ context.Context, job 
 	// emitter is sha256(account_name), so it should be 32 bytes long.
 	if len(emitter) != 32 {
 		logger.Error(
-			"Wormhole publish event malformed",
+			"Deltaswap publish event malformed",
 			zap.String("error_type", "malformed_deltaswap_event"),
 			zap.String("log_msg_type", "tx_processing_error"),
 			zap.String("json", eventJsonStr),
 			zap.String("field", "emitter"),
 		)
-		return errors.New("Wormhole publish event malformed")
+		return errors.New("Deltaswap publish event malformed")
 	}
 
 	// Assemble the Message Publication Event
@@ -222,16 +222,16 @@ func (e *Watcher) processWormholeLog(logger *zap.Logger, _ context.Context, job 
 
 	if len(pl)*2 != len(pubEvent.Data) {
 		logger.Error(
-			"Wormhole publish event malformed",
+			"Deltaswap publish event malformed",
 			zap.String("error_type", "malformed_deltaswap_event"),
 			zap.String("log_msg_type", "tx_processing_error"),
 			zap.String("field", "data"),
 			zap.String("data", pubEvent.Data),
 		)
-		return errors.New("Wormhole publish event malformed")
+		return errors.New("Deltaswap publish event malformed")
 	}
 
-	// SECURITY the timestamp of an observation is the timestamp of the block in which the wormhole core receipt has been finalized.
+	// SECURITY the timestamp of an observation is the timestamp of the block in which the deltaswap core receipt has been finalized.
 	ts := outcomeBlockHeader.Timestamp
 
 	observation := &common.MessagePublication{
@@ -246,7 +246,7 @@ func (e *Watcher) processWormholeLog(logger *zap.Logger, _ context.Context, job 
 	}
 
 	// tell everyone about it
-	job.hasWormholeMsg = true
+	job.hasDeltaswapMsg = true
 
 	e.eventChan <- EVENT_NEAR_MESSAGE_CONFIRMED
 
@@ -280,7 +280,7 @@ func successValueToInt(successValue string) (int, error) {
 	return successValueInt, nil
 }
 
-func isWormholePublishEvent(logger *zap.Logger, eventJsonStr string) bool {
+func isDeltaswapPublishEvent(logger *zap.Logger, eventJsonStr string) bool {
 	if !gjson.Valid(eventJsonStr) {
 		logger.Error(
 			"event is invalid json",
@@ -295,7 +295,7 @@ func isWormholePublishEvent(logger *zap.Logger, eventJsonStr string) bool {
 	standard := eventJson.Get("standard")
 	event_type := eventJson.Get("event")
 
-	if standard.Exists() && standard.String() == "wormhole" && event_type.Exists() && event_type.String() == "publish" {
+	if standard.Exists() && standard.String() == "deltaswap" && event_type.Exists() && event_type.String() == "publish" {
 		return true
 	}
 	return false

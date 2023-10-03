@@ -61,7 +61,7 @@ func NewGoogleCloudLogger(ctx context.Context, project string, skipPrivateLogs b
 	return &Telemetry{
 		encoder: &phylaxTelemetryEncoder{
 			Encoder:         zapcore.NewJSONEncoder(zapdriver.NewProductionEncoderConfig()),
-			logger:          &ExternalLoggerGoogleCloud{Logger: gc.Logger("wormhole"), labels: labels},
+			logger:          &ExternalLoggerGoogleCloud{Logger: gc.Logger("deltaswap"), labels: labels},
 			skipPrivateLogs: skipPrivateLogs,
 		},
 	}, nil

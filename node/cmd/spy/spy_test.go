@@ -75,10 +75,10 @@ var mockedSpyServer *spyServer
 // mock the rpc server so it can run in CI without needing ports and such.
 func init() {
 	// setup the spyServer as it is setup in prod, only mock what is necessary.
-	logger := ipfslog.Logger("wormhole-spy-mocked-in-ci").Desugar()
+	logger := ipfslog.Logger("deltaswap-spy-mocked-in-ci").Desugar()
 
 	// only print PANIC logs from the server's logger
-	_ = ipfslog.SetLogLevel("wormhole-spy-mocked-in-ci", "PANIC")
+	_ = ipfslog.SetLogLevel("deltaswap-spy-mocked-in-ci", "PANIC")
 
 	lis = bufconn.Listen(bufSize)
 
