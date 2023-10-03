@@ -1,6 +1,6 @@
 //@ts-nocheck
 /* eslint-disable */
-import { PhylaxSet } from "../deltaswap/phylax_set";
+import { PhylaxSet } from "../deltaswap/phylax";
 import { Writer, Reader } from "protobufjs/minimal";
 
 export const protobufPackage = "deltaswapio.deltachain.deltaswap";
@@ -39,18 +39,12 @@ export const PhylaxSetUpdateProposal = {
       writer.uint32(18).string(message.description);
     }
     if (message.newPhylaxSet !== undefined) {
-      PhylaxSet.encode(
-        message.newPhylaxSet,
-        writer.uint32(26).fork()
-      ).ldelim();
+      PhylaxSet.encode(message.newPhylaxSet, writer.uint32(26).fork()).ldelim();
     }
     return writer;
   },
 
-  decode(
-    input: Reader | Uint8Array,
-    length?: number
-  ): PhylaxSetUpdateProposal {
+  decode(input: Reader | Uint8Array, length?: number): PhylaxSetUpdateProposal {
     const reader = input instanceof Uint8Array ? new Reader(input) : input;
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = {

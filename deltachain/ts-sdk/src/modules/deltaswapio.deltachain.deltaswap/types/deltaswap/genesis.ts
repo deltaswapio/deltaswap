@@ -1,11 +1,16 @@
 //@ts-nocheck
 /* eslint-disable */
-import { PhylaxSet } from "../deltaswap/phylax_set";
+import {
+  PhylaxSet,
+  PhylaxValidator,
+  ValidatorAllowedAddress,
+  WasmInstantiateAllowedContractCodeId,
+  IbcComposabilityMwContract,
+} from "../deltaswap/phylax";
 import { Config } from "../deltaswap/config";
 import { ReplayProtection } from "../deltaswap/replay_protection";
 import { SequenceCounter } from "../deltaswap/sequence_counter";
 import { ConsensusPhylaxSetIndex } from "../deltaswap/consensus_phylax_set_index";
-import { PhylaxValidator } from "../deltaswap/phylax_validator";
 import { Writer, Reader } from "protobufjs/minimal";
 
 export const protobufPackage = "deltaswapio.deltachain.deltaswap";
@@ -17,8 +22,11 @@ export interface GenesisState {
   replayProtectionList: ReplayProtection[];
   sequenceCounterList: SequenceCounter[];
   consensusPhylaxSetIndex: ConsensusPhylaxSetIndex | undefined;
-  /** this line is used by starport scaffolding # genesis/proto/state */
   phylaxValidatorList: PhylaxValidator[];
+  allowedAddresses: ValidatorAllowedAddress[];
+  wasmInstantiateAllowlist: WasmInstantiateAllowedContractCodeId[];
+  /** this line is used by starport scaffolding # genesis/proto/state */
+  ibcComposabilityMwContract: IbcComposabilityMwContract | undefined;
 }
 
 const baseGenesisState: object = {};
@@ -46,6 +54,21 @@ export const GenesisState = {
     for (const v of message.phylaxValidatorList) {
       PhylaxValidator.encode(v!, writer.uint32(50).fork()).ldelim();
     }
+    for (const v of message.allowedAddresses) {
+      ValidatorAllowedAddress.encode(v!, writer.uint32(58).fork()).ldelim();
+    }
+    for (const v of message.wasmInstantiateAllowlist) {
+      WasmInstantiateAllowedContractCodeId.encode(
+        v!,
+        writer.uint32(66).fork()
+      ).ldelim();
+    }
+    if (message.ibcComposabilityMwContract !== undefined) {
+      IbcComposabilityMwContract.encode(
+        message.ibcComposabilityMwContract,
+        writer.uint32(74).fork()
+      ).ldelim();
+    }
     return writer;
   },
 
@@ -57,13 +80,13 @@ export const GenesisState = {
     message.replayProtectionList = [];
     message.sequenceCounterList = [];
     message.phylaxValidatorList = [];
+    message.allowedAddresses = [];
+    message.wasmInstantiateAllowlist = [];
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.phylaxSetList.push(
-            PhylaxSet.decode(reader, reader.uint32())
-          );
+          message.phylaxSetList.push(PhylaxSet.decode(reader, reader.uint32()));
           break;
         case 2:
           message.config = Config.decode(reader, reader.uint32());
@@ -89,6 +112,22 @@ export const GenesisState = {
             PhylaxValidator.decode(reader, reader.uint32())
           );
           break;
+        case 7:
+          message.allowedAddresses.push(
+            ValidatorAllowedAddress.decode(reader, reader.uint32())
+          );
+          break;
+        case 8:
+          message.wasmInstantiateAllowlist.push(
+            WasmInstantiateAllowedContractCodeId.decode(reader, reader.uint32())
+          );
+          break;
+        case 9:
+          message.ibcComposabilityMwContract = IbcComposabilityMwContract.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -103,10 +142,9 @@ export const GenesisState = {
     message.replayProtectionList = [];
     message.sequenceCounterList = [];
     message.phylaxValidatorList = [];
-    if (
-      object.phylaxSetList !== undefined &&
-      object.phylaxSetList !== null
-    ) {
+    message.allowedAddresses = [];
+    message.wasmInstantiateAllowlist = [];
+    if (object.phylaxSetList !== undefined && object.phylaxSetList !== null) {
       for (const e of object.phylaxSetList) {
         message.phylaxSetList.push(PhylaxSet.fromJSON(e));
       }
@@ -150,6 +188,34 @@ export const GenesisState = {
         message.phylaxValidatorList.push(PhylaxValidator.fromJSON(e));
       }
     }
+    if (
+      object.allowedAddresses !== undefined &&
+      object.allowedAddresses !== null
+    ) {
+      for (const e of object.allowedAddresses) {
+        message.allowedAddresses.push(ValidatorAllowedAddress.fromJSON(e));
+      }
+    }
+    if (
+      object.wasmInstantiateAllowlist !== undefined &&
+      object.wasmInstantiateAllowlist !== null
+    ) {
+      for (const e of object.wasmInstantiateAllowlist) {
+        message.wasmInstantiateAllowlist.push(
+          WasmInstantiateAllowedContractCodeId.fromJSON(e)
+        );
+      }
+    }
+    if (
+      object.ibcComposabilityMwContract !== undefined &&
+      object.ibcComposabilityMwContract !== null
+    ) {
+      message.ibcComposabilityMwContract = IbcComposabilityMwContract.fromJSON(
+        object.ibcComposabilityMwContract
+      );
+    } else {
+      message.ibcComposabilityMwContract = undefined;
+    }
     return message;
   },
 
@@ -189,6 +255,24 @@ export const GenesisState = {
     } else {
       obj.phylaxValidatorList = [];
     }
+    if (message.allowedAddresses) {
+      obj.allowedAddresses = message.allowedAddresses.map((e) =>
+        e ? ValidatorAllowedAddress.toJSON(e) : undefined
+      );
+    } else {
+      obj.allowedAddresses = [];
+    }
+    if (message.wasmInstantiateAllowlist) {
+      obj.wasmInstantiateAllowlist = message.wasmInstantiateAllowlist.map((e) =>
+        e ? WasmInstantiateAllowedContractCodeId.toJSON(e) : undefined
+      );
+    } else {
+      obj.wasmInstantiateAllowlist = [];
+    }
+    message.ibcComposabilityMwContract !== undefined &&
+      (obj.ibcComposabilityMwContract = message.ibcComposabilityMwContract
+        ? IbcComposabilityMwContract.toJSON(message.ibcComposabilityMwContract)
+        : undefined);
     return obj;
   },
 
@@ -198,10 +282,9 @@ export const GenesisState = {
     message.replayProtectionList = [];
     message.sequenceCounterList = [];
     message.phylaxValidatorList = [];
-    if (
-      object.phylaxSetList !== undefined &&
-      object.phylaxSetList !== null
-    ) {
+    message.allowedAddresses = [];
+    message.wasmInstantiateAllowlist = [];
+    if (object.phylaxSetList !== undefined && object.phylaxSetList !== null) {
       for (const e of object.phylaxSetList) {
         message.phylaxSetList.push(PhylaxSet.fromPartial(e));
       }
@@ -244,6 +327,34 @@ export const GenesisState = {
       for (const e of object.phylaxValidatorList) {
         message.phylaxValidatorList.push(PhylaxValidator.fromPartial(e));
       }
+    }
+    if (
+      object.allowedAddresses !== undefined &&
+      object.allowedAddresses !== null
+    ) {
+      for (const e of object.allowedAddresses) {
+        message.allowedAddresses.push(ValidatorAllowedAddress.fromPartial(e));
+      }
+    }
+    if (
+      object.wasmInstantiateAllowlist !== undefined &&
+      object.wasmInstantiateAllowlist !== null
+    ) {
+      for (const e of object.wasmInstantiateAllowlist) {
+        message.wasmInstantiateAllowlist.push(
+          WasmInstantiateAllowedContractCodeId.fromPartial(e)
+        );
+      }
+    }
+    if (
+      object.ibcComposabilityMwContract !== undefined &&
+      object.ibcComposabilityMwContract !== null
+    ) {
+      message.ibcComposabilityMwContract = IbcComposabilityMwContract.fromPartial(
+        object.ibcComposabilityMwContract
+      );
+    } else {
+      message.ibcComposabilityMwContract = undefined;
     }
     return message;
   },

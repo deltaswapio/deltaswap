@@ -168,13 +168,13 @@
               "aliases": []
             },
             {
-              "denom": "worm",
+              "denom": "delta",
               "exponent": 6,
               "aliases": []
             }
           ],
           "base": "udelta",
-          "display": "worm",
+          "display": "delta",
           "name": "Worm Coin",
           "symbol": "WORM"
         }
@@ -187,7 +187,7 @@
     "crisis": {
       "constant_fee": {
         "amount": "1000",
-        "denom": "worm"
+        "denom": "delta"
       }
     },
     "distribution": {

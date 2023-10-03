@@ -87,9 +87,7 @@ export const EventPhylaxSetUpdate = {
     return obj;
   },
 
-  fromPartial(
-    object: DeepPartial<EventPhylaxSetUpdate>
-  ): EventPhylaxSetUpdate {
+  fromPartial(object: DeepPartial<EventPhylaxSetUpdate>): EventPhylaxSetUpdate {
     const message = { ...baseEventPhylaxSetUpdate } as EventPhylaxSetUpdate;
     if (object.old_index !== undefined && object.old_index !== null) {
       message.old_index = object.old_index;
@@ -252,9 +250,7 @@ export const EventPhylaxRegistered = {
   decode(input: Reader | Uint8Array, length?: number): EventPhylaxRegistered {
     const reader = input instanceof Uint8Array ? new Reader(input) : input;
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = {
-      ...baseEventPhylaxRegistered,
-    } as EventPhylaxRegistered;
+    const message = { ...baseEventPhylaxRegistered } as EventPhylaxRegistered;
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -273,9 +269,7 @@ export const EventPhylaxRegistered = {
   },
 
   fromJSON(object: any): EventPhylaxRegistered {
-    const message = {
-      ...baseEventPhylaxRegistered,
-    } as EventPhylaxRegistered;
+    const message = { ...baseEventPhylaxRegistered } as EventPhylaxRegistered;
     if (object.phylax_key !== undefined && object.phylax_key !== null) {
       message.phylax_key = bytesFromBase64(object.phylax_key);
     }
@@ -289,9 +283,7 @@ export const EventPhylaxRegistered = {
     const obj: any = {};
     message.phylax_key !== undefined &&
       (obj.phylax_key = base64FromBytes(
-        message.phylax_key !== undefined
-          ? message.phylax_key
-          : new Uint8Array()
+        message.phylax_key !== undefined ? message.phylax_key : new Uint8Array()
       ));
     message.validator_key !== undefined &&
       (obj.validator_key = base64FromBytes(
@@ -305,9 +297,7 @@ export const EventPhylaxRegistered = {
   fromPartial(
     object: DeepPartial<EventPhylaxRegistered>
   ): EventPhylaxRegistered {
-    const message = {
-      ...baseEventPhylaxRegistered,
-    } as EventPhylaxRegistered;
+    const message = { ...baseEventPhylaxRegistered } as EventPhylaxRegistered;
     if (object.phylax_key !== undefined && object.phylax_key !== null) {
       message.phylax_key = object.phylax_key;
     } else {

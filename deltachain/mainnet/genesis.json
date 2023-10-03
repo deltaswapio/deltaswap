@@ -422,12 +422,12 @@
             },
             {
               "aliases": [],
-              "denom": "worm",
+              "denom": "delta",
               "exponent": 6
             }
           ],
           "description": "Deltachain's native staking asset",
-          "display": "worm",
+          "display": "delta",
           "name": "Worm Coin",
           "symbol": "WORM"
         }
@@ -466,7 +466,7 @@
     "crisis": {
       "constant_fee": {
         "amount": "1000",
-        "denom": "worm"
+        "denom": "delta"
       }
     },
     "distribution": {

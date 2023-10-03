@@ -10,6 +10,239 @@
  * ---------------------------------------------------------------
  */
 
+export interface DeltaswapConfig {
+  /** @format uint64 */
+  phylax_set_expiration?: string;
+
+  /** @format byte */
+  governance_emitter?: string;
+
+  /** @format int64 */
+  governance_chain?: number;
+
+  /** @format int64 */
+  chain_id?: number;
+}
+
+export interface DeltaswapConsensusPhylaxSetIndex {
+  /** @format int64 */
+  index?: number;
+}
+
+export type DeltaswapEmptyResponse = object;
+
+export type DeltaswapMsgAllowlistResponse = object;
+
+export type DeltaswapMsgExecuteGovernanceVAAResponse = object;
+
+export interface DeltaswapMsgInstantiateContractResponse {
+  /** Address is the bech32 address of the new contract instance. */
+  address?: string;
+
+  /** @format byte */
+  data?: string;
+}
+
+/**
+ * MsgMigrateContractResponse returns contract migration result data.
+ */
+export interface DeltaswapMsgMigrateContractResponse {
+  /** @format byte */
+  data?: string;
+}
+
+export type DeltaswapMsgRegisterAccountAsPhylaxResponse = object;
+
+export interface DeltaswapMsgStoreCodeResponse {
+  /** @format uint64 */
+  code_id?: string;
+
+  /** @format byte */
+  checksum?: string;
+}
+
+export type DeltaswapMsgWasmInstantiateAllowlistResponse = object;
+
+export interface DeltaswapPhylaxSet {
+  /** @format int64 */
+  index?: number;
+  keys?: string[];
+
+  /** @format uint64 */
+  expirationTime?: string;
+}
+
+export interface DeltaswapPhylaxValidator {
+  /** @format byte */
+  phylaxKey?: string;
+
+  /** @format byte */
+  validatorAddr?: string;
+}
+
+export interface DeltaswapQueryAllPhylaxSetResponse {
+  PhylaxSet?: DeltaswapPhylaxSet[];
+
+  /**
+   * PageResponse is to be embedded in gRPC response messages where the
+   * corresponding request message has used PageRequest.
+   *
+   *  message SomeResponse {
+   *          repeated Bar results = 1;
+   *          PageResponse page = 2;
+   *  }
+   */
+  pagination?: V1Beta1PageResponse;
+}
+
+export interface DeltaswapQueryAllPhylaxValidatorResponse {
+  phylaxValidator?: DeltaswapPhylaxValidator[];
+
+  /**
+   * PageResponse is to be embedded in gRPC response messages where the
+   * corresponding request message has used PageRequest.
+   *
+   *  message SomeResponse {
+   *          repeated Bar results = 1;
+   *          PageResponse page = 2;
+   *  }
+   */
+  pagination?: V1Beta1PageResponse;
+}
+
+export interface DeltaswapQueryAllReplayProtectionResponse {
+  replayProtection?: DeltaswapReplayProtection[];
+
+  /**
+   * PageResponse is to be embedded in gRPC response messages where the
+   * corresponding request message has used PageRequest.
+   *
+   *  message SomeResponse {
+   *          repeated Bar results = 1;
+   *          PageResponse page = 2;
+   *  }
+   */
+  pagination?: V1Beta1PageResponse;
+}
+
+export interface DeltaswapQueryAllSequenceCounterResponse {
+  sequenceCounter?: DeltaswapSequenceCounter[];
+
+  /**
+   * PageResponse is to be embedded in gRPC response messages where the
+   * corresponding request message has used PageRequest.
+   *
+   *  message SomeResponse {
+   *          repeated Bar results = 1;
+   *          PageResponse page = 2;
+   *  }
+   */
+  pagination?: V1Beta1PageResponse;
+}
+
+export interface DeltaswapQueryAllValidatorAllowlistResponse {
+  allowlist?: DeltaswapValidatorAllowedAddress[];
+
+  /**
+   * PageResponse is to be embedded in gRPC response messages where the
+   * corresponding request message has used PageRequest.
+   *
+   *  message SomeResponse {
+   *          repeated Bar results = 1;
+   *          PageResponse page = 2;
+   *  }
+   */
+  pagination?: V1Beta1PageResponse;
+}
+
+export interface DeltaswapQueryAllWasmInstantiateAllowlistResponse {
+  allowlist?: DeltaswapWasmInstantiateAllowedContractCodeId[];
+
+  /**
+   * PageResponse is to be embedded in gRPC response messages where the
+   * corresponding request message has used PageRequest.
+   *
+   *  message SomeResponse {
+   *          repeated Bar results = 1;
+   *          PageResponse page = 2;
+   *  }
+   */
+  pagination?: V1Beta1PageResponse;
+}
+
+export interface DeltaswapQueryGetConfigResponse {
+  Config?: DeltaswapConfig;
+}
+
+export interface DeltaswapQueryGetConsensusPhylaxSetIndexResponse {
+  ConsensusPhylaxSetIndex?: DeltaswapConsensusPhylaxSetIndex;
+}
+
+export interface DeltaswapQueryGetPhylaxSetResponse {
+  PhylaxSet?: DeltaswapPhylaxSet;
+}
+
+export interface DeltaswapQueryGetPhylaxValidatorResponse {
+  phylaxValidator?: DeltaswapPhylaxValidator;
+}
+
+export interface DeltaswapQueryGetReplayProtectionResponse {
+  replayProtection?: DeltaswapReplayProtection;
+}
+
+export interface DeltaswapQueryGetSequenceCounterResponse {
+  sequenceCounter?: DeltaswapSequenceCounter;
+}
+
+export interface DeltaswapQueryIbcComposabilityMwContractResponse {
+  contractAddress?: string;
+}
+
+export interface DeltaswapQueryLatestPhylaxSetIndexResponse {
+  /** @format int64 */
+  latestPhylaxSetIndex?: number;
+}
+
+export interface DeltaswapQueryValidatorAllowlistResponse {
+  validator_address?: string;
+  allowlist?: DeltaswapValidatorAllowedAddress[];
+
+  /**
+   * PageResponse is to be embedded in gRPC response messages where the
+   * corresponding request message has used PageRequest.
+   *
+   *  message SomeResponse {
+   *          repeated Bar results = 1;
+   *          PageResponse page = 2;
+   *  }
+   */
+  pagination?: V1Beta1PageResponse;
+}
+
+export interface DeltaswapReplayProtection {
+  index?: string;
+}
+
+export interface DeltaswapSequenceCounter {
+  index?: string;
+
+  /** @format uint64 */
+  sequence?: string;
+}
+
+export interface DeltaswapValidatorAllowedAddress {
+  validator_address?: string;
+  allowed_address?: string;
+  name?: string;
+}
+
+export interface DeltaswapWasmInstantiateAllowedContractCodeId {
+  contract_address?: string;
+
+  /** @format uint64 */
+  code_id?: string;
+}
+
 export interface ProtobufAny {
   "@type"?: string;
 }
@@ -82,159 +315,6 @@ export interface V1Beta1PageResponse {
 
   /** @format uint64 */
   total?: string;
-}
-
-export interface DeltaswapConfig {
-  /** @format uint64 */
-  phylax_set_expiration?: string;
-
-  /** @format byte */
-  governance_emitter?: string;
-
-  /** @format int64 */
-  governance_chain?: number;
-
-  /** @format int64 */
-  chain_id?: number;
-}
-
-export interface DeltaswapConsensusPhylaxSetIndex {
-  /** @format int64 */
-  index?: number;
-}
-
-export interface DeltaswapPhylaxSet {
-  /** @format int64 */
-  index?: number;
-  keys?: string[];
-
-  /** @format uint64 */
-  expirationTime?: string;
-}
-
-export interface DeltaswapPhylaxValidator {
-  /** @format byte */
-  phylaxKey?: string;
-
-  /** @format byte */
-  validatorAddr?: string;
-}
-
-export type DeltaswapMsgExecuteGovernanceVAAResponse = object;
-
-export interface DeltaswapMsgInstantiateContractResponse {
-  /** Address is the bech32 address of the new contract instance. */
-  address?: string;
-
-  /** @format byte */
-  data?: string;
-}
-
-export type DeltaswapMsgRegisterAccountAsPhylaxResponse = object;
-
-export interface DeltaswapMsgStoreCodeResponse {
-  /** @format uint64 */
-  code_id?: string;
-}
-
-export interface DeltaswapQueryAllPhylaxSetResponse {
-  PhylaxSet?: DeltaswapPhylaxSet[];
-
-  /**
-   * PageResponse is to be embedded in gRPC response messages where the
-   * corresponding request message has used PageRequest.
-   *
-   *  message SomeResponse {
-   *          repeated Bar results = 1;
-   *          PageResponse page = 2;
-   *  }
-   */
-  pagination?: V1Beta1PageResponse;
-}
-
-export interface DeltaswapQueryAllPhylaxValidatorResponse {
-  phylaxValidator?: DeltaswapPhylaxValidator[];
-
-  /**
-   * PageResponse is to be embedded in gRPC response messages where the
-   * corresponding request message has used PageRequest.
-   *
-   *  message SomeResponse {
-   *          repeated Bar results = 1;
-   *          PageResponse page = 2;
-   *  }
-   */
-  pagination?: V1Beta1PageResponse;
-}
-
-export interface DeltaswapQueryAllReplayProtectionResponse {
-  replayProtection?: DeltaswapReplayProtection[];
-
-  /**
-   * PageResponse is to be embedded in gRPC response messages where the
-   * corresponding request message has used PageRequest.
-   *
-   *  message SomeResponse {
-   *          repeated Bar results = 1;
-   *          PageResponse page = 2;
-   *  }
-   */
-  pagination?: V1Beta1PageResponse;
-}
-
-export interface DeltaswapQueryAllSequenceCounterResponse {
-  sequenceCounter?: DeltaswapSequenceCounter[];
-
-  /**
-   * PageResponse is to be embedded in gRPC response messages where the
-   * corresponding request message has used PageRequest.
-   *
-   *  message SomeResponse {
-   *          repeated Bar results = 1;
-   *          PageResponse page = 2;
-   *  }
-   */
-  pagination?: V1Beta1PageResponse;
-}
-
-export interface DeltaswapQueryGetConfigResponse {
-  Config?: DeltaswapConfig;
-}
-
-export interface DeltaswapQueryGetConsensusPhylaxSetIndexResponse {
-  ConsensusPhylaxSetIndex?: DeltaswapConsensusPhylaxSetIndex;
-}
-
-export interface DeltaswapQueryGetPhylaxSetResponse {
-  PhylaxSet?: DeltaswapPhylaxSet;
-}
-
-export interface DeltaswapQueryGetPhylaxValidatorResponse {
-  phylaxValidator?: DeltaswapPhylaxValidator;
-}
-
-export interface DeltaswapQueryGetReplayProtectionResponse {
-  replayProtection?: DeltaswapReplayProtection;
-}
-
-export interface DeltaswapQueryGetSequenceCounterResponse {
-  sequenceCounter?: DeltaswapSequenceCounter;
-}
-
-export interface DeltaswapQueryLatestPhylaxSetIndexResponse {
-  /** @format int64 */
-  latestPhylaxSetIndex?: number;
-}
-
-export interface DeltaswapReplayProtection {
-  index?: string;
-}
-
-export interface DeltaswapSequenceCounter {
-  index?: string;
-
-  /** @format uint64 */
-  sequence?: string;
 }
 
 export type QueryParamsType = Record<string | number, any>;
@@ -437,6 +517,57 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
    * No description
    *
    * @tags Query
+   * @name QueryAllowlistAll
+   * @request GET:/deltaswapio/deltachain/deltaswap/allowlist
+   */
+  queryAllowlistAll = (
+    query?: {
+      "pagination.key"?: string;
+      "pagination.offset"?: string;
+      "pagination.limit"?: string;
+      "pagination.count_total"?: boolean;
+      "pagination.reverse"?: boolean;
+    },
+    params: RequestParams = {},
+  ) =>
+    this.request<DeltaswapQueryAllValidatorAllowlistResponse, RpcStatus>({
+      path: `/deltaswapio/deltachain/deltaswap/allowlist`,
+      method: "GET",
+      query: query,
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryAllowlist
+   * @request GET:/deltaswapio/deltachain/deltaswap/allowlist/{validator_address}
+   */
+  queryAllowlist = (
+    validator_address: string,
+    query?: {
+      "pagination.key"?: string;
+      "pagination.offset"?: string;
+      "pagination.limit"?: string;
+      "pagination.count_total"?: boolean;
+      "pagination.reverse"?: boolean;
+    },
+    params: RequestParams = {},
+  ) =>
+    this.request<DeltaswapQueryValidatorAllowlistResponse, RpcStatus>({
+      path: `/deltaswapio/deltachain/deltaswap/allowlist/${validator_address}`,
+      method: "GET",
+      query: query,
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
    * @name QueryConfig
    * @summary Queries a config by index.
    * @request GET:/deltaswapio/deltachain/deltaswap/config
@@ -460,6 +591,37 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
   queryConsensusPhylaxSetIndex = (params: RequestParams = {}) =>
     this.request<DeltaswapQueryGetConsensusPhylaxSetIndexResponse, RpcStatus>({
       path: `/deltaswapio/deltachain/deltaswap/consensus_phylax_set_index`,
+      method: "GET",
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryIbcComposabilityMwContract
+   * @request GET:/deltaswapio/deltachain/deltaswap/ibc_composability_mw_contract
+   */
+  queryIbcComposabilityMwContract = (params: RequestParams = {}) =>
+    this.request<DeltaswapQueryIbcComposabilityMwContractResponse, RpcStatus>({
+      path: `/deltaswapio/deltachain/deltaswap/ibc_composability_mw_contract`,
+      method: "GET",
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryLatestPhylaxSetIndex
+   * @summary Queries a list of LatestPhylaxSetIndex items.
+   * @request GET:/deltaswapio/deltachain/deltaswap/latest_phylax_set_index
+   */
+  queryLatestPhylaxSetIndex = (params: RequestParams = {}) =>
+    this.request<DeltaswapQueryLatestPhylaxSetIndexResponse, RpcStatus>({
+      path: `/deltaswapio/deltachain/deltaswap/latest_phylax_set_index`,
       method: "GET",
       format: "json",
       ...params,
@@ -553,22 +715,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
    * No description
    *
    * @tags Query
-   * @name QueryLatestPhylaxSetIndex
-   * @summary Queries a list of LatestPhylaxSetIndex items.
-   * @request GET:/deltaswapio/deltachain/deltaswap/latest_phylax_set_index
-   */
-  queryLatestPhylaxSetIndex = (params: RequestParams = {}) =>
-    this.request<DeltaswapQueryLatestPhylaxSetIndexResponse, RpcStatus>({
-      path: `/deltaswapio/deltachain/deltaswap/latest_phylax_set_index`,
-      method: "GET",
-      format: "json",
-      ...params,
-    });
-
-  /**
-   * No description
-   *
-   * @tags Query
    * @name QueryReplayProtectionAll
    * @summary Queries a list of replayProtection items.
    * @request GET:/deltaswapio/deltachain/deltaswap/replayProtection
@@ -645,6 +791,31 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     this.request<DeltaswapQueryGetSequenceCounterResponse, RpcStatus>({
       path: `/deltaswapio/deltachain/deltaswap/sequenceCounter/${index}`,
       method: "GET",
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryWasmInstantiateAllowlistAll
+   * @request GET:/deltaswapio/deltachain/deltaswap/wasm_instantiate_allowlist
+   */
+  queryWasmInstantiateAllowlistAll = (
+    query?: {
+      "pagination.key"?: string;
+      "pagination.offset"?: string;
+      "pagination.limit"?: string;
+      "pagination.count_total"?: boolean;
+      "pagination.reverse"?: boolean;
+    },
+    params: RequestParams = {},
+  ) =>
+    this.request<DeltaswapQueryAllWasmInstantiateAllowlistResponse, RpcStatus>({
+      path: `/deltaswapio/deltachain/deltaswap/wasm_instantiate_allowlist`,
+      method: "GET",
+      query: query,
       format: "json",
       ...params,
     });

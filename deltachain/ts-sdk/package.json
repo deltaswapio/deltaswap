@@ -19,7 +19,7 @@
   },
   "homepage": "https://github.com/deltaswapio/deltachain#readme",
   "dependencies": {
-    "@deltaswapio/deltaswap-sdk": "^0.2.0",
+    "@deltaswapio/deltaswap-sdk": "^0.10.4",
     "@cosmjs/cosmwasm-stargate": "^0.27.1",
     "@cosmjs/launchpad": "^0.27.1",
     "@cosmjs/math": "^0.27.1",

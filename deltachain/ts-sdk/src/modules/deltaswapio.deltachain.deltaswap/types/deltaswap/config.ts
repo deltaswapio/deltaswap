@@ -43,9 +43,7 @@ export const Config = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.phylax_set_expiration = longToNumber(
-            reader.uint64() as Long
-          );
+          message.phylax_set_expiration = longToNumber(reader.uint64() as Long);
           break;
         case 2:
           message.governance_emitter = reader.bytes();

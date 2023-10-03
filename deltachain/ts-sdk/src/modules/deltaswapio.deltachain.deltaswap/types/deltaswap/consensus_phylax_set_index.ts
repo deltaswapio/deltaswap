@@ -21,10 +21,7 @@ export const ConsensusPhylaxSetIndex = {
     return writer;
   },
 
-  decode(
-    input: Reader | Uint8Array,
-    length?: number
-  ): ConsensusPhylaxSetIndex {
+  decode(input: Reader | Uint8Array, length?: number): ConsensusPhylaxSetIndex {
     const reader = input instanceof Uint8Array ? new Reader(input) : input;
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = {

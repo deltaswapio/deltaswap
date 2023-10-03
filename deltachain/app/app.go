@@ -96,11 +96,11 @@ import (
 	"github.com/tendermint/spm/openapiconsole"
 
 	"github.com/deltaswapio/deltachain/docs"
-	wormholemodule "github.com/deltaswapio/deltachain/x/deltaswap"
-	wormholemoduleante "github.com/deltaswapio/deltachain/x/deltaswap/ante"
-	wormholeclient "github.com/deltaswapio/deltachain/x/deltaswap/client"
-	wormholemodulekeeper "github.com/deltaswapio/deltachain/x/deltaswap/keeper"
-	wormholemoduletypes "github.com/deltaswapio/deltachain/x/deltaswap/types"
+	deltaswapmodule "github.com/deltaswapio/deltachain/x/deltaswap"
+	deltaswapmoduleante "github.com/deltaswapio/deltachain/x/deltaswap/ante"
+	deltaswapclient "github.com/deltaswapio/deltachain/x/deltaswap/client"
+	deltaswapmodulekeeper "github.com/deltaswapio/deltachain/x/deltaswap/keeper"
+	deltaswapmoduletypes "github.com/deltaswapio/deltachain/x/deltaswap/types"
 
 	// this line is used by starport scaffolding # stargate/app/moduleImport
 
@@ -138,8 +138,8 @@ func getGovProposalHandlers() []govclient.ProposalHandler {
 		distrclient.ProposalHandler,
 		upgradeclient.ProposalHandler,
 		upgradeclient.CancelProposalHandler,
-		wormholeclient.PhylaxSetUpdateProposalHandler,
-		wormholeclient.DeltaswapGovernanceMessageProposalHandler,
+		deltaswapclient.PhylaxSetUpdateProposalHandler,
+		deltaswapclient.DeltaswapGovernanceMessageProposalHandler,
 		// this line is used by starport scaffolding # stargate/app/govProposalHandler
 	)
 
@@ -154,7 +154,7 @@ func GetWasmOpts(app *App, appOpts servertypes.AppOptions) []wasm.Option {
 	}
 
 	// add the custom deltaswap query handler
-	wasmOpts = append(wasmOpts, wasmkeeper.WithQueryPlugins(wormholemodulekeeper.NewCustomQueryHandler(app.DeltaswapKeeper)))
+	wasmOpts = append(wasmOpts, wasmkeeper.WithQueryPlugins(deltaswapmodulekeeper.NewCustomQueryHandler(app.DeltaswapKeeper)))
 
 	// Move custom query of token factory to stargate, still use custom msg which is tfOpts[1]
 	bankBaseKeeper, ok := app.BankKeeper.(bankkeeper.BaseKeeper)
@@ -192,7 +192,7 @@ var (
 		evidence.AppModuleBasic{},
 		transfer.AppModuleBasic{},
 		vesting.AppModuleBasic{},
-		wormholemodule.AppModuleBasic{},
+		deltaswapmodule.AppModuleBasic{},
 		// this line is used by starport scaffolding # stargate/app/moduleBasic
 		wasm.AppModuleBasic{},
 		tokenfactory.AppModuleBasic{},
@@ -203,14 +203,14 @@ var (
 
 	// module account permissions
 	maccPerms = map[string][]string{
-		authtypes.FeeCollectorName:     nil,
-		distrtypes.ModuleName:          nil,
-		minttypes.ModuleName:           {authtypes.Minter},
-		stakingtypes.BondedPoolName:    {authtypes.Burner, authtypes.Staking},
-		stakingtypes.NotBondedPoolName: {authtypes.Burner, authtypes.Staking},
-		govtypes.ModuleName:            {authtypes.Burner},
-		ibctransfertypes.ModuleName:    {authtypes.Minter, authtypes.Burner},
-		wormholemoduletypes.ModuleName: nil,
+		authtypes.FeeCollectorName:      nil,
+		distrtypes.ModuleName:           nil,
+		minttypes.ModuleName:            {authtypes.Minter},
+		stakingtypes.BondedPoolName:     {authtypes.Burner, authtypes.Staking},
+		stakingtypes.NotBondedPoolName:  {authtypes.Burner, authtypes.Staking},
+		govtypes.ModuleName:             {authtypes.Burner},
+		ibctransfertypes.ModuleName:     {authtypes.Minter, authtypes.Burner},
+		deltaswapmoduletypes.ModuleName: nil,
 		// this line is used by starport scaffolding # stargate/app/maccPerms
 		wasm.ModuleName:              {authtypes.Burner},
 		tokenfactorytypes.ModuleName: {authtypes.Minter, authtypes.Burner},
@@ -273,7 +273,7 @@ type App struct {
 	ScopedIBCKeeper      capabilitykeeper.ScopedKeeper
 	ScopedTransferKeeper capabilitykeeper.ScopedKeeper
 
-	DeltaswapKeeper    wormholemodulekeeper.Keeper
+	DeltaswapKeeper    deltaswapmodulekeeper.Keeper
 	TokenFactoryKeeper tokenfactorykeeper.Keeper
 
 	// IBC modules
@@ -324,7 +324,7 @@ func New(
 		minttypes.StoreKey, distrtypes.StoreKey, slashingtypes.StoreKey,
 		govtypes.StoreKey, paramstypes.StoreKey, ibchost.StoreKey, upgradetypes.StoreKey, feegrant.StoreKey,
 		evidencetypes.StoreKey, ibctransfertypes.StoreKey, capabilitytypes.StoreKey,
-		wormholemoduletypes.StoreKey, ibccomposabilitytypes.StoreKey,
+		deltaswapmoduletypes.StoreKey, ibccomposabilitytypes.StoreKey,
 		// this line is used by starport scaffolding # stargate/app/storeKey
 		wasm.StoreKey, tokenfactorytypes.StoreKey,
 		ibchookstypes.StoreKey, packetforwardtypes.StoreKey,
@@ -365,10 +365,10 @@ func New(
 		appCodec, keys[banktypes.StoreKey], app.AccountKeeper, app.GetSubspace(banktypes.ModuleName), app.ModuleAccountAddrs(),
 	)
 
-	app.DeltaswapKeeper = *wormholemodulekeeper.NewKeeper(
+	app.DeltaswapKeeper = *deltaswapmodulekeeper.NewKeeper(
 		appCodec,
-		keys[wormholemoduletypes.StoreKey],
-		keys[wormholemoduletypes.MemStoreKey],
+		keys[deltaswapmoduletypes.StoreKey],
+		keys[deltaswapmoduletypes.MemStoreKey],
 
 		app.AccountKeeper,
 		app.BankKeeper,
@@ -426,7 +426,7 @@ func New(
 	// If evidence needs to be handled for the app, set routes in router here and seal
 	app.EvidenceKeeper = *evidenceKeeper
 
-	govRouter.AddRoute(wormholemoduletypes.RouterKey, wormholemodule.NewDeltaswapGovernanceProposalHandler(app.DeltaswapKeeper))
+	govRouter.AddRoute(deltaswapmoduletypes.RouterKey, deltaswapmodule.NewDeltaswapGovernanceProposalHandler(app.DeltaswapKeeper))
 
 	app.GovKeeper = govkeeper.NewKeeper(
 		appCodec, keys[govtypes.StoreKey], app.GetSubspace(govtypes.ModuleName), app.AccountKeeper, app.BankKeeper,
@@ -473,7 +473,7 @@ func New(
 	permissionedWasmKeeper := wasmkeeper.NewDefaultPermissionKeeper(app.wasmKeeper)
 	app.DeltaswapKeeper.SetWasmdKeeper(permissionedWasmKeeper)
 	// the deltaswap module must be instantiated after the wasmd module
-	wormholeModule := wormholemodule.NewAppModule(appCodec, app.DeltaswapKeeper)
+	deltaswapModule := deltaswapmodule.NewAppModule(appCodec, app.DeltaswapKeeper)
 
 	// this line is used by starport scaffolding # stargate/app/keeperDefinition
 
@@ -521,7 +521,7 @@ func New(
 		ibc.NewAppModule(app.IBCKeeper),
 		params.NewAppModule(app.ParamsKeeper),
 		app.RawIcs20TransferAppModule,
-		wormholeModule,
+		deltaswapModule,
 		// this line is used by starport scaffolding # stargate/app/appModule
 		wasm.NewAppModule(appCodec, &app.wasmKeeper, app.StakingKeeper, app.AccountKeeper, app.BankKeeper),
 		tokenfactory.NewAppModule(app.TokenFactoryKeeper, app.AccountKeeper, app.BankKeeper),
@@ -552,7 +552,7 @@ func New(
 		genutiltypes.ModuleName,
 		feegrant.ModuleName,
 		paramstypes.ModuleName,
-		wormholemoduletypes.ModuleName,
+		deltaswapmoduletypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/beginBlockers
 		wasm.ModuleName,
 		tokenfactorytypes.ModuleName,
@@ -579,7 +579,7 @@ func New(
 		upgradetypes.ModuleName,
 		ibchost.ModuleName,
 		ibctransfertypes.ModuleName,
-		wormholemoduletypes.ModuleName,
+		deltaswapmoduletypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/endBlockers
 		wasm.ModuleName,
 		tokenfactorytypes.ModuleName,
@@ -601,7 +601,7 @@ func New(
 		authtypes.ModuleName,
 		banktypes.ModuleName,
 		distrtypes.ModuleName,
-		wormholemoduletypes.ModuleName,
+		deltaswapmoduletypes.ModuleName,
 		stakingtypes.ModuleName,
 		vestingtypes.ModuleName,
 		slashingtypes.ModuleName,
@@ -670,8 +670,8 @@ func New(
 // Wrap the standard cosmos-sdk antehandlers with additional antehandlers:
 // - deltaswap allowlist antehandler
 // - default ibc antehandler
-func WrapAnteHandler(originalHandler sdk.AnteHandler, wormKeeper wormholemodulekeeper.Keeper, ibcKeeper *ibckeeper.Keeper) sdk.AnteHandler {
-	whHandler := wormholemoduleante.NewDeltaswapAllowlistDecorator(wormKeeper)
+func WrapAnteHandler(originalHandler sdk.AnteHandler, wormKeeper deltaswapmodulekeeper.Keeper, ibcKeeper *ibckeeper.Keeper) sdk.AnteHandler {
+	whHandler := deltaswapmoduleante.NewDeltaswapAllowlistDecorator(wormKeeper)
 	ibcHandler := ibcante.NewAnteDecorator(ibcKeeper)
 	newHandlers := sdk.ChainAnteDecorators(whHandler, ibcHandler)
 	return func(ctx sdk.Context, tx sdk.Tx, simulate bool) (sdk.Context, error) {
@@ -833,7 +833,7 @@ func initParamsKeeper(appCodec codec.BinaryCodec, legacyAmino *codec.LegacyAmino
 	paramsKeeper.Subspace(crisistypes.ModuleName)
 	paramsKeeper.Subspace(ibctransfertypes.ModuleName)
 	paramsKeeper.Subspace(ibchost.ModuleName)
-	paramsKeeper.Subspace(wormholemoduletypes.ModuleName)
+	paramsKeeper.Subspace(deltaswapmoduletypes.ModuleName)
 	// this line is used by starport scaffolding # stargate/app/paramSubspace
 	paramsKeeper.Subspace(wasm.ModuleName)
 	paramsKeeper.Subspace(tokenfactorytypes.ModuleName)
@@ -853,7 +853,7 @@ func initParamsKeeper(appCodec codec.BinaryCodec, legacyAmino *codec.LegacyAmino
 // It can be safely skipped when sending.
 //
 // After this, the wasm keeper is required to be set on app.Ics20WasmHooks
-func (app *App) WireICS20PreWasmKeeper(wk *wormholemodulekeeper.Keeper) {
+func (app *App) WireICS20PreWasmKeeper(wk *deltaswapmodulekeeper.Keeper) {
 	// Configure the ibc composability mw keeper
 	ibcComposabilityMwKeeper := ibccomposabilitymwkeeper.NewKeeper(
 		app.appCodec,
