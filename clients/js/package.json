@@ -1,11 +1,11 @@
 {
-  "name": "@wormhole-foundation/wormhole-cli",
+  "name": "@deltaswapio/deltaswap-cli",
   "version": "0.0.3",
   "sideEffects": [
     "src/side-effects.ts"
   ],
-  "description": "CLI for Wormhole related activities",
-  "homepage": "https://wormhole.com",
+  "description": "CLI for Deltaswap related activities",
+  "homepage": "https://deltaswap.io",
   "bin": {
     "worm": "./build/main.js"
   },
@@ -21,10 +21,10 @@
     "prepublishOnly": "npm run check",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Wormhole Contributors",
+  "author": "Deltaswap Contributors",
   "license": "Apache-2.0",
   "keywords": [
-    "wormhole",
+    "deltaswap",
     "bridge",
     "cli"
   ],

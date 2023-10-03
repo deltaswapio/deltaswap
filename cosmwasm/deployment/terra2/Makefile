@@ -1,4 +1,4 @@
-bridge_SOURCE=wormhole
+bridge_SOURCE=deltaswap
 token_bridge_SOURCE=token_bridge_terra
 
 
