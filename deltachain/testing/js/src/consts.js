@@ -1,10 +1,10 @@
 export const TEST_WALLET_MNEMONIC_1 =
-  "notice oak worry limit wrap speak medal online prefer cluster roof addict wrist behave treat actual wasp year salad speed social layer crew genius";
+  "print marble obtain release dose wheel rookie begin clinic treat slot friend flash lady canal immune off permit news hawk simple cactus unable glory";
 export const TEST_WALLET_MNEMONIC_2 =
   "maple pudding enjoy pole real rabbit soft make square city wrestle area aisle dwarf spike voice over still post lend genius bitter exit shoot";
 
 export const TEST_WALLET_ADDRESS_1 =
-  "delta1cyyzpxplxdzkeea7kwsydadg87357qna3zg3tq";
+  "delta1qxfatwtjtupys6vm452dh0vt9d8kzype7zunm6";
 export const TEST_WALLET_ADDRESS_2 =
   "delta1wqwywkce50mg6077huy4j9y8lt80943ks5udzr";
 
@@ -19,10 +19,10 @@ export const DEVNET_PHYLAX2_PRIVATE_KEY =
 
 //This assume phylax 1 uses test wallet 1.
 export const PHYLAX_VALIDATOR_VALADDR =
-  "deltavaloper1cyyzpxplxdzkeea7kwsydadg87357qna87hzv8";
+  "deltavaloper1qxfatwtjtupys6vm452dh0vt9d8kzypew9rwpe";
 // export const PHYLAX_VALIDATOR2_VALADDR = "";
 
-export const PHYLAX_VALIDATOR_BASE64_VALADDR = "wQggmD8zRWznvrOgRvWoP6NPAn0=";
+export const PHYLAX_VALIDATOR_BASE64_VALADDR = "AZPVuXJfAkhpm60U272LK09hEDk=";
 
 //This is a VAA in hex which is for phylax set 2, where Phylax 2 is the only active phylax.
 export const NODE_URL = "http://0.0.0.0:1319";

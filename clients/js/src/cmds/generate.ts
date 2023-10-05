@@ -302,6 +302,8 @@ function parseAddress(chain: ChainName, address: string): string {
     throw Error("Chain unset");
   } else if (isEVMChain(chain)) {
     return "0x" + evm_address(address);
+  } else if (chain === "osmosis") {
+      throw Error("OSMOSIS is not supported yet");
   } else if (isCosmWasmChain(chain)) {
     return "0x" + toHex(fromBech32(address).data).padStart(64, "0");
   } else if (chain === "solana" || chain === "pythnet") {
@@ -311,8 +313,6 @@ function parseAddress(chain: ChainName, address: string): string {
     return "0x" + evm_address(address);
   } else if (chain === "near") {
     return "0x" + evm_address(address);
-  } else if (chain === "osmosis") {
-    throw Error("OSMOSIS is not supported yet");
   } else if (chain === "sui") {
     return "0x" + evm_address(address);
   } else if (chain === "aptos") {
@@ -321,8 +321,6 @@ function parseAddress(chain: ChainName, address: string): string {
     }
 
     return sha3_256(Buffer.from(address)); // address is hash of fully qualified type
-  } else if (chain === "deltachain") {
-    return "0x" + tryNativeToHexString(address, chain);
   } else if (chain === "btc") {
     throw Error("btc is not supported yet");
   } else {

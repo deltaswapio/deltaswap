@@ -3,6 +3,7 @@
 //https://morioh.com/p/195b602b4350
 
 const cosmosjs = require("@cosmostation/cosmosjs");
+const {toBase64, fromValAddress} = require("@deltaswapio/deltachain-sdk");
 
 const chainId = "cosmoshub-2";
 const cosmos = cosmosjs.network(lcdUrl, chainId);

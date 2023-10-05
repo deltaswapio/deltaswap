@@ -34,7 +34,6 @@ test("RegisterPhylaxValidator", async () => {
   const wallet = await getWallet(TEST_WALLET_MNEMONIC_2);
   const signingClient = await getDeltachainSigningClient(TENDERMINT_URL, wallet);
   const registerMsg = signingClient.core.msgRegisterAccountAsPhylax({
-    phylaxPubkey: { key: Buffer.from(DEVNET_PHYLAX_PUBLIC_KEY, "hex") },
     signer: TEST_WALLET_ADDRESS_2,
     signature: signValidatorAddress(
       toValAddress(fromAccAddress(TEST_WALLET_ADDRESS_2)),

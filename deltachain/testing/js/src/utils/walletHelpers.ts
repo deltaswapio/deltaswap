@@ -30,7 +30,7 @@ export async function getSigningClient() {
 
 export async function getBalance(address: string, denom: string) {
   const client = await getQueryClient();
-  const response = await client.bank.queryBalance(address, denom);
+  const response = await client.bank.queryBalance(address, {denom});
   return response.data.balance?.amount || "0";
 }
 

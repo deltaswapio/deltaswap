@@ -178,6 +178,18 @@ const MAINNET = {
     key: undefined,
     chain_id: undefined,
   },
+  cosmoshub: {
+    rpc: undefined,
+    key: undefined,
+  },
+  evmos: {
+    rpc: undefined,
+    key: undefined,
+  },
+  kujira: {
+    rpc: undefined,
+    key: undefined,
+  },
 };
 
 const TESTNET = {
@@ -343,6 +355,18 @@ const TESTNET = {
     key: getEnvVar("ETH_KEY_TESTNET"),
     chain_id: 31,
   },
+  cosmoshub: {
+    rpc: undefined,
+    key: undefined,
+  },
+  evmos: {
+    rpc: undefined,
+    key: undefined,
+  },
+  kujira: {
+    rpc: undefined,
+    key: undefined,
+  },
 };
 
 const DEVNET = {
@@ -485,6 +509,18 @@ const DEVNET = {
     key: undefined,
   },
   rootstock: {
+    rpc: undefined,
+    key: undefined,
+  },
+  cosmoshub: {
+    rpc: undefined,
+    key: undefined,
+  },
+  evmos: {
+    rpc: undefined,
+    key: undefined,
+  },
+  kujira: {
     rpc: undefined,
     key: undefined,
   },

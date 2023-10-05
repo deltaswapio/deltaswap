@@ -154,6 +154,10 @@ export const getWrappedAssetAddress = async (
     }
     case "btc":
     case "osmosis":
+    case "cosmoshub":
+    case "kujira":
+    case "evmos":
+    case "rootstock":
     case "pythnet":
     case "deltachain":
       throw new Error(`${chainName} not supported`);

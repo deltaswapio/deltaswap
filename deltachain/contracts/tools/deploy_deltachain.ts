@@ -88,7 +88,8 @@ async function main() {
   const mnemonic =
     devnetConsts.chains[7077].accounts.deltachainNodeOfPhylax0.mnemonic;
 
-  const wallet = await getWallet(mnemonic);
+  //const wallet = await getWallet(mnemonic);
+  const wallet = await getWallet("print marble obtain release dose wheel rookie begin clinic treat slot friend flash lady canal immune off permit news hawk simple cactus unable glory");
   const client = await getDeltachainSigningClient(host, wallet);
 
   // there are several Cosmos chains in devnet, so check the config is as expected
@@ -125,7 +126,7 @@ async function main() {
         consistencyLevel: 0,
         payload: {
           type: "Other",
-          hex: `0000000000000000000000000000000000000000005761736D644D6F64756C65010${CHAIN_ID_DELTACHAIN.toString(
+          hex: `0000000000000000000000000000000000000000005761736D644D6F64756C6501${CHAIN_ID_DELTACHAIN.toString(
             16
           )}${payload}`,
         },
@@ -141,6 +142,7 @@ async function main() {
         ...ZERO_FEE,
         gas: "10000000",
       });
+      console.log(result.transactionHash)
       const codeId = Number(
         JSON.parse(result.rawLog)[0]
           .events.find(({ type }) => type === "store_code")
@@ -190,7 +192,7 @@ async function main() {
       consistencyLevel: 0,
       payload: {
         type: "Other",
-        hex: `0000000000000000000000000000000000000000005761736D644D6F64756C65020${CHAIN_ID_DELTACHAIN.toString(
+        hex: `0000000000000000000000000000000000000000005761736D644D6F64756C6502${CHAIN_ID_DELTACHAIN.toString(
           16
         )}${fullHash}`,
       },

@@ -153,6 +153,10 @@ export const getProviderForChain = <T extends ChainId | ChainName>(
     case "btc":
     case "osmosis":
     case "pythnet":
+    case "cosmoshub":
+    case "kujira":
+    case "evmos":
+    case "rootstock":
     case "deltachain":
       throw new Error(`${chainName} not supported`);
     default:

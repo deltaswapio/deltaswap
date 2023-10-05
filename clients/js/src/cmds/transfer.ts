@@ -136,7 +136,7 @@ export const handler = async (
     await transferAptos(dstChain, dstAddr, tokenAddr, amount, network, rpc);
   } else if (srcChain === "deltachain") {
     throw Error("Deltachain is not supported yet");
-  } else if (srcChain === "btc") {
+  } else if (srcChain === "btc" || srcChain === "cosmoshub" || srcChain === "kujira" || srcChain === "evmos" || srcChain === undefined) {
     throw Error("btc is not supported yet");
   } else {
     // If you get a type error here, hover over `chain`'s type and it tells you

@@ -1,6 +1,6 @@
 {
   "name": "@deltaswapio/deltaswap-sdk",
-  "version": "0.10.4",
+  "version": "0.10.5",
   "description": "SDK for interacting with Deltaswap",
   "homepage": "https://deltaswap.io",
   "main": "./lib/cjs/index.js",

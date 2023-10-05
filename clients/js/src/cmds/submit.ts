@@ -174,7 +174,7 @@ async function executeSubmit(
     await execute_xpla(parsedVaa.payload, buf, network);
   } else if (chain === "sei") {
     await submitSei(parsedVaa.payload, buf, network);
-  } else if (chain === "osmosis") {
+  } else if (chain === "osmosis" || chain === "cosmoshub" || chain === "evmos" || chain === "kujira") {
     throw Error("OSMOSIS is not supported yet");
   } else if (chain === "sui") {
     await submitSui(parsedVaa.payload, buf, network, rpc);
