@@ -31,6 +31,7 @@ export const CHAINS = {
   base: 30,
   sei: 32,
   rootstock: 33,
+  planq: 7070,
   deltachain: 7077,
   cosmoshub: 4000,
   evmos: 4001,
@@ -64,6 +65,7 @@ export const EVMChainNames = [
   "gnosis",
   "base",
   "rootstock",
+  "planq",
   "sepolia",
 ] as const;
 export type EVMChainName = typeof EVMChainNames[number];
@@ -135,6 +137,11 @@ const MAINNET = {
     core: "0x7A4B5a56256163F07b2C80A7cA55aBE66c4ec4d7",
     token_bridge: "0x5a58505a96D1dbf8dF91cB21B54419FC36e93fdE",
     nft_bridge: "0x90BBd86a6Fe93D3bc3ed6335935447E75fAb7fCf",
+  },
+  planq: {
+    core: undefined,
+    token_bridge: undefined,
+    nft_bridge: undefined,
   },
   avalanche: {
     core: "0x54a8e5f9c4CbA08F9943965859F6c34eAF03E26c",
@@ -332,6 +339,11 @@ const TESTNET = {
     token_bridge: "0x377D55a7928c046E18eEbb61977e714d2a76472a",
     nft_bridge: "0x51a02d0dcb5e52F5b92bdAA38FA013C91c7309A9",
   },
+  planq: {
+    core: undefined,
+    token_bridge: undefined,
+    nft_bridge: undefined,
+  },
   avalanche: {
     core: "0x7bbcE28e64B3F8b84d876Ab298393c38ad7aac4C",
     token_bridge: "0x61E44E506Ca5659E6c0bba9b678586fA2d729756",
@@ -522,6 +534,11 @@ const DEVNET = {
     nft_bridge: "0x26b4afb60d6c903165150c6f0aa14f8016be4aec",
   },
   polygon: {
+    core: undefined,
+    token_bridge: undefined,
+    nft_bridge: undefined,
+  },
+  planq: {
     core: undefined,
     token_bridge: undefined,
     nft_bridge: undefined,
@@ -758,6 +775,7 @@ export const CHAIN_ID_BTC = CHAINS["btc"];
 export const CHAIN_ID_BASE = CHAINS["base"];
 export const CHAIN_ID_SEI = CHAINS["sei"];
 export const CHAIN_ID_ROOTSTOCK = CHAINS["rootstock"];
+export const CHAIN_ID_PLANQ = CHAINS["planq"];
 export const CHAIN_ID_DELTACHAIN = CHAINS["deltachain"];
 export const CHAIN_ID_GATEWAY = CHAIN_ID_DELTACHAIN;
 export const CHAIN_ID_COSMOSHUB = CHAINS["cosmoshub"];

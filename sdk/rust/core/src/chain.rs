@@ -17,6 +17,7 @@ pub enum Chain {
     Terra,
     Bsc,
     Polygon,
+    Planq,
     Avalanche,
     Oasis,
     Algorand,
@@ -85,6 +86,7 @@ impl From<u16> for Chain {
             30 => Chain::Base,
             32 => Chain::Sei,
             33 => Chain::Rootstock,
+            7070 => Chain::Planq,
             7077 => Chain::Deltachain,
             10002 => Chain::Sepolia,
             c => Chain::Unknown(c),
@@ -127,6 +129,7 @@ impl From<Chain> for u16 {
             Chain::Base => 30,
             Chain::Sei => 32,
             Chain::Rootstock => 33,
+            Chain::Planq => 7070,
             Chain::Deltachain => 7077,
             Chain::Sepolia => 10002,
             Chain::Unknown(c) => c,
@@ -143,6 +146,7 @@ impl fmt::Display for Chain {
             Self::Terra => f.write_str("Terra"),
             Self::Bsc => f.write_str("Bsc"),
             Self::Polygon => f.write_str("Polygon"),
+            Self::Planq => f.write_str("Planq"),
             Self::Avalanche => f.write_str("Avalanche"),
             Self::Oasis => f.write_str("Oasis"),
             Self::Algorand => f.write_str("Algorand"),
@@ -218,7 +222,8 @@ impl FromStr for Chain {
             "Sei" | "sei" | "SEI" => Ok(Chain::Sei),
             "Rootstock" | "rootstock" | "ROOTSTOCK" => Ok(Chain::Rootstock),
             "Sepolia" | "sepolia" | "SEPOLIA" => Ok(Chain::Sepolia),
-            "Deltachain" | "deltachain" | "WORMCHAIN" => Ok(Chain::Deltachain),
+            "Planq" | "planq" | "PLANQ" => Ok(Chain::Planq),
+            "Deltachain" | "deltachain" | "DELTACHAIN" => Ok(Chain::Deltachain),
             _ => {
                 let mut parts = s.split(&['(', ')']);
                 let _ = parts

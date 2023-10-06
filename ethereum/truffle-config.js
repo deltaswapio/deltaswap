@@ -46,6 +46,17 @@ module.exports = {
       },
       network_id: "5",
     },
+    planq: {
+      provider: () => {
+        return new HDWalletProvider(
+            process.env.MNEMONIC,
+            "https://evm-rpc.planq.network/"
+        );
+      },
+      network_id: "7070",
+      gas: 70000000,
+      gasPrice: 8000000000,
+    },
     bsc: {
       provider: () => {
         return new HDWalletProvider(

@@ -67,6 +67,9 @@ const MAINNET: { [K in ChainName]?: AddressInfo } = {
   polygon: {
     deltaswapRelayerAddress: "0x27428DD2d3DD32A4D7f7C497eAaa23130d894911",
   },
+  planq: {
+    deltaswapRelayerAddress: "0x27428DD2d3DD32A4D7f7C497eAaa23130d894911",
+  },
   avalanche: {
     deltaswapRelayerAddress: "0x27428DD2d3DD32A4D7f7C497eAaa23130d894911",
   },
@@ -144,6 +147,7 @@ export const RPCS_BY_CHAIN: {
     ethereum: "https://rpc.ankr.com/eth",
     bsc: "https://bsc-dataseed2.defibit.io",
     polygon: "https://rpc.ankr.com/polygon",
+    planq: "https://evm-rpc.planq.network",
     avalanche: "https://rpc.ankr.com/avalanche",
     oasis: "https://emerald.oasis.dev",
     algorand: "https://mainnet-api.algonode.cloud",
@@ -194,14 +198,11 @@ export const RPCS_BY_CHAIN: {
   },
   DEVNET: {
     ethereum: "http://localhost:8545",
+    planq: "http://localhost:8545",
     bsc: "http://localhost:8546",
   },
 };
 
 export const PHYLAX_RPC_HOSTS = [
-  "https://deltaswap-v2-mainnet-api.certus.one",
-  "https://deltaswap.inotel.ro",
-  "https://deltaswap-v2-mainnet-api.mcf.rocks",
-  "https://deltaswap-v2-mainnet-api.chainlayer.network",
-  "https://deltaswap-v2-mainnet-api.staking.fund",
+  "https://mainnet-api.deltaswap.io",
 ];

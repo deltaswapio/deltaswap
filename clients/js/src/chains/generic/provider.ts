@@ -95,6 +95,7 @@ export const getProviderForChain = <T extends ChainId | ChainName>(
     case "neon":
     case "oasis":
     case "optimism":
+    case "planq":
     case "polygon":
     // case "rootstock":
     case "sepolia":

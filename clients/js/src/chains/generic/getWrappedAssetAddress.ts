@@ -68,6 +68,7 @@ export const getWrappedAssetAddress = async (
     case "neon":
     case "oasis":
     case "optimism":
+    case "planq":
     case "polygon":
     // case "rootstock":
     case "sepolia": {

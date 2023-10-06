@@ -39,6 +39,11 @@ const MAINNET = {
     key: getEnvVar("ETH_KEY"),
     chain_id: 56,
   },
+  planq: {
+    rpc: "https://evm-rpc.planq.network/",
+    key: getEnvVar("ETH_KEY"),
+    chain_id: 7070,
+  },
   polygon: {
     rpc: "https://rpc.ankr.com/polygon",
     key: getEnvVar("ETH_KEY"),
@@ -216,6 +221,11 @@ const TESTNET = {
     key: getEnvVar("ETH_KEY_TESTNET"),
     chain_id: 97,
   },
+  planq: {
+    rpc: "https://evm-rpc.planq.network",
+    key: getEnvVar("ETH_KEY_TESTNET"),
+    chain_id: 7070,
+  },
   polygon: {
     rpc: `https://rpc.ankr.com/polygon_mumbai`,
     key: getEnvVar("ETH_KEY_TESTNET"),
@@ -389,6 +399,10 @@ const DEVNET = {
   },
   bsc: {
     rpc: "http://localhost:8546",
+    key: "0x4f3edf983ac636a65a842ce7c78d9aa706d3b113bce9c46f30d7d21715b23b1d",
+  },
+  planq: {
+    rpc: undefined,
     key: "0x4f3edf983ac636a65a842ce7c78d9aa706d3b113bce9c46f30d7d21715b23b1d",
   },
   polygon: {

@@ -164,6 +164,8 @@ func (c ChainID) String() string {
 		return "bsc"
 	case ChainIDPolygon:
 		return "polygon"
+	case ChainIDPlanq:
+		return "planq"
 	case ChainIDAvalanche:
 		return "avalanche"
 	case ChainIDOasis:
@@ -233,6 +235,8 @@ func ChainIDFromString(s string) (ChainID, error) {
 		return ChainIDBSC, nil
 	case "polygon":
 		return ChainIDPolygon, nil
+	case "planq":
+		return ChainIDPlanq, nil
 	case "avalanche":
 		return ChainIDAvalanche, nil
 	case "oasis":
@@ -318,6 +322,7 @@ func GetAllNetworkIDs() []ChainID {
 		ChainIDBtc,
 		ChainIDBase,
 		ChainIDSei,
+		ChainIDPlanq,
 		ChainIDDeltachain,
 		ChainIDSepolia,
 	}
@@ -380,8 +385,9 @@ const (
 	// ChainIDBase is the ChainID of Base
 	ChainIDBase ChainID = 30
 	// ChainIDSei is the ChainID of Sei
-	ChainIDSei ChainID = 32
 	//ChainIDDeltachain is the ChainID of Deltachain
+	ChainIDSei        ChainID = 32
+	ChainIDPlanq      ChainID = 7070
 	ChainIDDeltachain ChainID = 7077
 	// ChainIDSepolia is the ChainID of Sepolia
 	ChainIDSepolia ChainID = 10002
