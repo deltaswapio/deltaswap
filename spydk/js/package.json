@@ -1,8 +1,8 @@
 {
-  "name": "@certusone/wormhole-spydk",
+  "name": "@deltaswapio/deltaswap-spydk",
   "version": "0.1.0",
-  "description": "Wormhole Spy service SDK for use with @deltaswapio/deltaswap-sdk",
-  "homepage": "https://wormholenetwork.com",
+  "description": "Deltaswap Spy service SDK for use with @deltaswapio/deltaswap-sdk",
+  "homepage": "https://deltaswap.io",
   "main": "./lib/cjs/index.js",
   "module": "./lib/esm/index.js",
   "files": [
@@ -23,16 +23,16 @@
     "postversion": "git push && git push --tags"
   },
   "keywords": [
-    "wormhole",
+    "deltaswap",
     "bridge",
     "token",
     "sdk",
     "spy"
   ],
-  "author": "certusone",
+  "author": "deltaswapio",
   "license": "Apache-2.0",
   "devDependencies": {
-    "@deltaswapio/deltaswap-sdk": "^0.1.1",
+    "@deltaswapio/deltaswap-sdk": "^0.10.6",
     "@solana/web3.js": "^1.31.0",
     "@types/jest": "^27.0.2",
     "@types/node": "^16.6.1",
@@ -45,7 +45,7 @@
     "typescript": "^4.3.5"
   },
   "dependencies": {
-    "@deltaswapio/deltaswap-sdk-proto-node": "^0.0.1",
+    "@deltaswapio/deltaswap-sdk-proto-node": "^0.0.6",
     "@grpc/grpc-js": "^1.6.7"
   }
 }
