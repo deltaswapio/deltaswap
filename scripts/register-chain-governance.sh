@@ -51,7 +51,7 @@ if ! command -v phylaxd >/dev/null 2>&1; then
   exit 1
 fi
 
-if ! command -v worm >/dev/null 2>&1; then
+if ! command -v delta >/dev/null 2>&1; then
   echo "ERROR: worm binary not found" >&2
   exit 1
 fi
