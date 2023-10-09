@@ -21,13 +21,13 @@ import (
 
 	"github.com/deltaswapio/deltaswap/node/pkg/watchers/cosmwasm"
 
+	"github.com/deltaswapio/deltaswap/node/pkg/deltaconn"
 	"github.com/deltaswapio/deltaswap/node/pkg/watchers/algorand"
 	"github.com/deltaswapio/deltaswap/node/pkg/watchers/aptos"
 	"github.com/deltaswapio/deltaswap/node/pkg/watchers/evm"
 	"github.com/deltaswapio/deltaswap/node/pkg/watchers/near"
 	"github.com/deltaswapio/deltaswap/node/pkg/watchers/solana"
 	"github.com/deltaswapio/deltaswap/node/pkg/watchers/sui"
-	"github.com/deltaswapio/deltaswap/node/pkg/wormconn"
 
 	"github.com/deltaswapio/deltaswap/node/pkg/db"
 	"github.com/deltaswapio/deltaswap/node/pkg/telemetry"
@@ -987,7 +987,7 @@ func runNode(cmd *cobra.Command, args []string) {
 		deltachainId = "deltachain-testnet-0"
 	}
 
-	var accountantDeltachainConn *wormconn.ClientConn
+	var accountantDeltachainConn *deltaconn.ClientConn
 	if *accountantContract != "" {
 		// TODO: deltachainKeyPath and deltachainKeyPassPhrase are being replaced by accountantKeyPath and accountantKeyPassPhrase.
 		//       Give the phylaxs time to migrate off of the old parameters, but then remove them.
@@ -1022,20 +1022,20 @@ func runNode(cmd *cobra.Command, args []string) {
 			keyPathName = fmt.Sprint(keyPath, idx)
 		}
 
-		deltachainKey, err := wormconn.LoadDeltachainPrivKey(keyPathName, keyPassPhrase)
+		deltachainKey, err := deltaconn.LoadDeltachainPrivKey(keyPathName, keyPassPhrase)
 		if err != nil {
 			logger.Fatal("failed to load deltachain private key", zap.Error(err), zap.String("component", "gacct"))
 		}
 
 		// Connect to deltachain.
 		logger.Info("Connecting to deltachain", zap.String("deltachainURL", *deltachainURL), zap.String("keyPath", keyPathName), zap.String("component", "gacct"))
-		accountantDeltachainConn, err = wormconn.NewConn(rootCtx, *deltachainURL, deltachainKey, deltachainId)
+		accountantDeltachainConn, err = deltaconn.NewConn(rootCtx, *deltachainURL, deltachainKey, deltachainId)
 		if err != nil {
 			logger.Fatal("failed to connect to deltachain", zap.Error(err), zap.String("component", "gacct"))
 		}
 	}
 
-	var gatewayRelayerDeltachainConn *wormconn.ClientConn
+	var gatewayRelayerDeltachainConn *deltaconn.ClientConn
 	if *gatewayRelayerContract != "" {
 		if *deltachainURL == "" {
 			logger.Fatal("if gatewayRelayerContract is specified, deltachainURL is required", zap.String("component", "gwrelayer"))
@@ -1057,13 +1057,13 @@ func runNode(cmd *cobra.Command, args []string) {
 			deltachainKeyPathName = fmt.Sprint(*gatewayRelayerKeyPath, idx)
 		}
 
-		deltachainKey, err := wormconn.LoadDeltachainPrivKey(deltachainKeyPathName, *gatewayRelayerKeyPassPhrase)
+		deltachainKey, err := deltaconn.LoadDeltachainPrivKey(deltachainKeyPathName, *gatewayRelayerKeyPassPhrase)
 		if err != nil {
 			logger.Fatal("failed to load private key", zap.Error(err), zap.String("component", "gwrelayer"))
 		}
 
 		logger.Info("Connecting to deltachain", zap.String("deltachainURL", *deltachainURL), zap.String("keyPath", deltachainKeyPathName), zap.String("component", "gwrelayer"))
-		gatewayRelayerDeltachainConn, err = wormconn.NewConn(rootCtx, *deltachainURL, deltachainKey, deltachainId)
+		gatewayRelayerDeltachainConn, err = deltaconn.NewConn(rootCtx, *deltachainURL, deltachainKey, deltachainId)
 		if err != nil {
 			logger.Fatal("failed to connect to deltachain", zap.Error(err), zap.String("component", "gwrelayer"))
 		}

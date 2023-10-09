@@ -11,6 +11,7 @@ import (
 	"github.com/deltaswapio/deltaswap/node/pkg/accountant"
 	"github.com/deltaswapio/deltaswap/node/pkg/common"
 	"github.com/deltaswapio/deltaswap/node/pkg/db"
+	"github.com/deltaswapio/deltaswap/node/pkg/deltaconn"
 	"github.com/deltaswapio/deltaswap/node/pkg/governor"
 	"github.com/deltaswapio/deltaswap/node/pkg/gwrelayer"
 	"github.com/deltaswapio/deltaswap/node/pkg/p2p"
@@ -21,7 +22,6 @@ import (
 	"github.com/deltaswapio/deltaswap/node/pkg/watchers"
 	"github.com/deltaswapio/deltaswap/node/pkg/watchers/ibc"
 	"github.com/deltaswapio/deltaswap/node/pkg/watchers/interfaces"
-	"github.com/deltaswapio/deltaswap/node/pkg/wormconn"
 	"github.com/deltaswapio/deltaswap/sdk/vaa"
 	"github.com/gorilla/mux"
 	libp2p_crypto "github.com/libp2p/go-libp2p/core/crypto"
@@ -91,7 +91,7 @@ func PhylaxOptionNoAccountant() *PhylaxOption {
 
 // PhylaxOptionAccountant configures the Accountant module.
 // Dependencies: db
-func PhylaxOptionAccountant(contract string, websocket string, enforcing bool, deltachainConn *wormconn.ClientConn) *PhylaxOption {
+func PhylaxOptionAccountant(contract string, websocket string, enforcing bool, deltachainConn *deltaconn.ClientConn) *PhylaxOption {
 	return &PhylaxOption{
 		name:         "accountant",
 		dependencies: []string{"db"},
@@ -156,7 +156,7 @@ func PhylaxOptionGovernor(governorEnabled bool) *PhylaxOption {
 // PhylaxOptionGatewayRelayer configures the Gateway Relayer module. If the gateway relayer smart contract is configured, we will instantiate
 // the GatewayRelayer and signed VAAs will be passed to it for processing when they are published. It will forward payload three transfers destined
 // for the specified contract on deltachain to that contract.
-func PhylaxOptionGatewayRelayer(gatewayRelayerContract string, deltachainConn *wormconn.ClientConn) *PhylaxOption {
+func PhylaxOptionGatewayRelayer(gatewayRelayerContract string, deltachainConn *deltaconn.ClientConn) *PhylaxOption {
 	return &PhylaxOption{
 		name: "gateway-relayer",
 		f: func(ctx context.Context, logger *zap.Logger, g *G) error {

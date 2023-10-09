@@ -14,8 +14,8 @@ import (
 
 	"github.com/deltaswapio/deltaswap/node/pkg/accountant"
 	"github.com/deltaswapio/deltaswap/node/pkg/common"
+	"github.com/deltaswapio/deltaswap/node/pkg/deltaconn"
 	nodev1 "github.com/deltaswapio/deltaswap/node/pkg/proto/node/v1"
-	"github.com/deltaswapio/deltaswap/node/pkg/wormconn"
 	"github.com/deltaswapio/deltaswap/sdk/vaa"
 
 	sdktx "github.com/cosmos/cosmos-sdk/types/tx"
@@ -37,12 +37,12 @@ func main() {
 	contract := "delta14hj2tavq8fpesdwxxcu44rty3hh90vhujrvcmstl4zr3txmfvw9srrg465"
 	phylaxKeyPath := string("./dev.phylax.key")
 
-	deltachainKey, err := wormconn.LoadDeltachainPrivKey(deltachainKeyPath, "test0000")
+	deltachainKey, err := deltaconn.LoadDeltachainPrivKey(deltachainKeyPath, "test0000")
 	if err != nil {
 		logger.Fatal("failed to load devnet deltachain private key", zap.Error(err))
 	}
 
-	deltachainConn, err := wormconn.NewConn(ctx, deltachainURL, deltachainKey, "deltachain")
+	deltachainConn, err := deltaconn.NewConn(ctx, deltachainURL, deltachainKey, "deltachain")
 	if err != nil {
 		logger.Fatal("failed to connect to deltachain", zap.Error(err))
 	}
@@ -97,7 +97,7 @@ func testSubmit(
 	ctx context.Context,
 	logger *zap.Logger,
 	gk *ecdsa.PrivateKey,
-	deltachainConn *wormconn.ClientConn,
+	deltachainConn *deltaconn.ClientConn,
 	contract string,
 	emitterAddressStr string,
 	timestamp time.Time,
@@ -161,7 +161,7 @@ func testBatch(
 	ctx context.Context,
 	logger *zap.Logger,
 	gk *ecdsa.PrivateKey,
-	deltachainConn *wormconn.ClientConn,
+	deltachainConn *deltaconn.ClientConn,
 	contract string,
 	timestamp time.Time,
 	sequence uint64,
@@ -239,7 +239,7 @@ func testBatchWithcommitted(
 	ctx context.Context,
 	logger *zap.Logger,
 	gk *ecdsa.PrivateKey,
-	deltachainConn *wormconn.ClientConn,
+	deltachainConn *deltaconn.ClientConn,
 	contract string,
 	timestamp time.Time,
 	sequence uint64,
@@ -331,7 +331,7 @@ func testBatchWithDigestError(
 	ctx context.Context,
 	logger *zap.Logger,
 	gk *ecdsa.PrivateKey,
-	deltachainConn *wormconn.ClientConn,
+	deltachainConn *deltaconn.ClientConn,
 	contract string,
 	timestamp time.Time,
 	sequence uint64,
@@ -439,7 +439,7 @@ func submit(
 	ctx context.Context,
 	logger *zap.Logger,
 	gk *ecdsa.PrivateKey,
-	deltachainConn *wormconn.ClientConn,
+	deltachainConn *deltaconn.ClientConn,
 	contract string,
 	msgs []*common.MessagePublication,
 ) (*sdktx.BroadcastTxResponse, error) {

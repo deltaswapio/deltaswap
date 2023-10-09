@@ -1,4 +1,4 @@
-package wormconn
+package deltaconn
 
 import (
 	"context"
