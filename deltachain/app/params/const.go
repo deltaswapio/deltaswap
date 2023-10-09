@@ -8,7 +8,7 @@ const (
 	BondDenom = "udelta"
 
 	// DisplayDenom defines the name, symbol, and display value of the worm token.
-	DisplayDenom = "WORM"
+	DisplayDenom = "DELTA"
 
 	// DefaultGasLimit - set to the same value as cosmos-sdk flags.DefaultGasLimit
 	// this value is currently only used in tests.
