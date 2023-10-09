@@ -450,7 +450,7 @@ func submit(
 }
 
 const (
-	PhylaxKeyArmoredBlock = "WORMHOLE PHYLAX PRIVATE KEY"
+	PhylaxKeyArmoredBlock = "DELTASWAP PHYLAX PRIVATE KEY"
 )
 
 // loadPhylaxKey loads a serialized phylax key from disk.

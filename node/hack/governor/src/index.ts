@@ -89,23 +89,23 @@ axios
           if (includeIt) {
             includedTokens.delete(key);
             let chainId = parseInt(chain) as ChainId;
-            let wormholeAddr: string;
+            let deltaswapAddr: string;
             try {
-              wormholeAddr = tryNativeToHexString(data.Address, chainId);
+              deltaswapAddr = tryNativeToHexString(data.Address, chainId);
             } catch (e) {
               if (chainId == CHAIN_ID_ALGORAND) {
-                wormholeAddr = "";
+                deltaswapAddr = "";
                 if (
                   data.Symbol.toLowerCase() === "algo" ||
                   data.Address === "0"
                 ) {
-                  wormholeAddr =
+                  deltaswapAddr =
                     "0000000000000000000000000000000000000000000000000000000000000000";
                 } else if (data.Address === "31566704") {
-                  wormholeAddr =
+                  deltaswapAddr =
                     "0000000000000000000000000000000000000000000000000000000001e1ab70";
                 } else if (data.Address === "312769") {
-                  wormholeAddr =
+                  deltaswapAddr =
                     "000000000000000000000000000000000000000000000000000000000004c5c1";
                 }
               } else if (chainId == CHAIN_ID_SUI) {
@@ -122,17 +122,17 @@ axios
                     CONTRACTS.MAINNET.sui.token_bridge,
                     data.Address
                   );
-                  wormholeAddr = Buffer.from(result.assetAddress).toString(
+                  deltaswapAddr = Buffer.from(result.assetAddress).toString(
                     "hex"
                   );
                 })();
               }
-              if (wormholeAddr === undefined) {
+              if (deltaswapAddr === undefined) {
                 console.log(
                   `Ignoring symbol '${data.Symbol}' on chain ${chainId} because the address '${data.Address}' is undefined`
                 );
                 continue;
-              } else if (wormholeAddr === "") {
+              } else if (deltaswapAddr === "") {
                 console.log(
                   `Ignoring symbol '${data.Symbol}' on chain ${chainId} because the address '${data.Address}' is invalid`
                 );
@@ -144,7 +144,7 @@ axios
               "\t{ chain: " +
               chain +
               ', addr: "' +
-              wormholeAddr +
+              deltaswapAddr +
               '", symbol: "' +
               data.Symbol +
               '", coinGeckoId: "' +
