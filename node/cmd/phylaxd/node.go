@@ -76,6 +76,9 @@ var (
 	planqRPC      *string
 	planqContract *string
 
+	tronRPC      *string
+	tronContract *string
+
 	polygonRPC                      *string
 	polygonContract                 *string
 	polygonRootChainRpc             *string
@@ -238,6 +241,9 @@ func init() {
 
 	planqRPC = NodeCmd.Flags().String("planqRPC", "", "Planq Chain RPC URL")
 	planqContract = NodeCmd.Flags().String("planqContract", "", "Planq Chain contract address")
+
+	tronRPC = NodeCmd.Flags().String("tronRPC", "", "Tron Chain RPC URL")
+	tronContract = NodeCmd.Flags().String("tronContract", "", "Tron Chain contract address")
 
 	polygonRPC = NodeCmd.Flags().String("polygonRPC", "", "Polygon RPC URL")
 	polygonContract = NodeCmd.Flags().String("polygonContract", "", "Polygon contract address")
@@ -479,6 +485,7 @@ func runNode(cmd *cobra.Command, args []string) {
 		// Deterministic ganache ETH devnet address.
 		*ethContract = unsafeDevModeEvmContractAddress(*ethContract)
 		*bscContract = unsafeDevModeEvmContractAddress(*bscContract)
+		*tronContract = unsafeDevModeEvmContractAddress(*tronContract)
 		*planqContract = unsafeDevModeEvmContractAddress(*planqContract)
 		*polygonContract = unsafeDevModeEvmContractAddress(*polygonContract)
 		*avalancheContract = unsafeDevModeEvmContractAddress(*avalancheContract)
@@ -528,6 +535,12 @@ func runNode(cmd *cobra.Command, args []string) {
 	}
 	if *bscContract == "" {
 		logger.Fatal("Please specify --bscContract")
+	}
+	if *tronRPC == "" {
+		logger.Fatal("Please specify --tronRPC")
+	}
+	if *tronContract == "" {
+		logger.Fatal("Please specify --tronContract")
 	}
 	if *planqRPC == "" {
 		logger.Fatal("Please specify --planqRPC")
@@ -874,6 +887,7 @@ func runNode(cmd *cobra.Command, args []string) {
 	rpcMap["oasisRPC"] = *oasisRPC
 	rpcMap["optimismRPC"] = *optimismRPC
 	rpcMap["polygonRPC"] = *polygonRPC
+	rpcMap["tronRPC"] = *tronRPC
 	rpcMap["pythnetRPC"] = *pythnetRPC
 	rpcMap["pythnetWS"] = *pythnetWS
 	rpcMap["sei"] = "IBC"
@@ -1089,6 +1103,18 @@ func runNode(cmd *cobra.Command, args []string) {
 			ChainID:              vaa.ChainIDBSC,
 			Rpc:                  *bscRPC,
 			Contract:             *bscContract,
+			WaitForConfirmations: true,
+		}
+
+		watcherConfigs = append(watcherConfigs, wc)
+	}
+
+	if shouldStart(tronRPC) {
+		wc := &evm.WatcherConfig{
+			NetworkID:            "tron",
+			ChainID:              vaa.ChainIDTron,
+			Rpc:                  *tronRPC,
+			Contract:             *tronContract,
 			WaitForConfirmations: true,
 		}
 
