@@ -190,7 +190,7 @@ func mockPhylaxRunnable(t testing.TB, gs []*mockPhylax, mockPhylaxIndex uint, ob
 			PhylaxOptionNoAccountant(), // disable accountant
 			PhylaxOptionGovernor(true),
 			PhylaxOptionGatewayRelayer("", nil), // disable gateway relayer
-			PhylaxOptionP2P(gs[mockPhylaxIndex].p2pKey, networkID, bootstrapPeers, nodeName, false, cfg.p2pPort, func() string { return "" }),
+			PhylaxOptionP2P(gs[mockPhylaxIndex].p2pKey, networkID, bootstrapPeers, nodeName, false, cfg.p2pPort, "", 0, "", func() string { return "" }),
 			PhylaxOptionPublicRpcSocket(cfg.publicSocket, publicRpcLogDetail),
 			PhylaxOptionPublicrpcTcpService(cfg.publicRpc, publicRpcLogDetail),
 			PhylaxOptionPublicWeb(cfg.publicWeb, cfg.publicSocket, "", false, ""),

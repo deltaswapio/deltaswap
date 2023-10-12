@@ -13,6 +13,7 @@ import (
 	"github.com/deltaswapio/deltaswap/node/pkg/accountant"
 	"github.com/deltaswapio/deltaswap/node/pkg/common"
 	"github.com/deltaswapio/deltaswap/node/pkg/governor"
+	"github.com/deltaswapio/deltaswap/node/pkg/query"
 	"github.com/deltaswapio/deltaswap/node/pkg/version"
 	"github.com/deltaswapio/deltaswap/sdk/vaa"
 	eth_common "github.com/ethereum/go-ethereum/common"
@@ -249,6 +250,12 @@ func Run(
 	components *Components,
 	ibcFeaturesFunc func() string,
 	gatewayRelayerEnabled bool,
+	ccqEnabled bool,
+	signedQueryReqC chan<- *gossipv1.SignedQueryRequest,
+	queryResponseReadC <-chan *query.QueryResponsePublication,
+	ccqBootstrapPeers string,
+	ccqPort uint,
+	ccqAllowedPeers string,
 ) func(ctx context.Context) error {
 	if components == nil {
 		components = DefaultComponents()
@@ -342,6 +349,27 @@ func Run(
 
 		bootTime := time.Now()
 
+		if ccqEnabled {
+			ccqErrC := make(chan error)
+			ccq := newCcqRunP2p(logger, ccqAllowedPeers)
+			if err := ccq.run(ctx, priv, gk, networkID, ccqBootstrapPeers, ccqPort, signedQueryReqC, queryResponseReadC, ccqErrC); err != nil {
+				return fmt.Errorf("failed to start p2p for CCQ: %w", err)
+			}
+			defer ccq.close()
+			go func() {
+				for {
+					select {
+					case <-ctx.Done():
+						return
+					case ccqErr := <-ccqErrC:
+						logger.Error("ccqp2p returned an error", zap.Error(ccqErr), zap.String("component", "ccqp2p"))
+						rootCtxCancel()
+						return
+					}
+				}
+			}()
+		}
+
 		// Periodically run phylax state set cleanup.
 		go func() {
 			ticker := time.NewTicker(15 * time.Second)
@@ -402,6 +430,9 @@ func Run(
 						}
 						if gatewayRelayerEnabled {
 							features = append(features, "gwrelayer")
+						}
+						if ccqEnabled {
+							features = append(features, "ccq")
 						}
 
 						heartbeat := &gossipv1.Heartbeat{

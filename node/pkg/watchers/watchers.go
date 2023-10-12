@@ -3,6 +3,7 @@ package watchers
 import (
 	"github.com/deltaswapio/deltaswap/node/pkg/common"
 	gossipv1 "github.com/deltaswapio/deltaswap/node/pkg/proto/gossip/v1"
+	"github.com/deltaswapio/deltaswap/node/pkg/query"
 	"github.com/deltaswapio/deltaswap/node/pkg/supervisor"
 	"github.com/deltaswapio/deltaswap/node/pkg/watchers/interfaces"
 	"github.com/deltaswapio/deltaswap/sdk/vaa"
@@ -20,6 +21,8 @@ type WatcherConfig interface {
 	Create(
 		msgC chan<- *common.MessagePublication,
 		obsvReqC <-chan *gossipv1.ObservationRequest,
+		queryReqC <-chan *query.PerChainQueryInternal,
+		queryResponseC chan<- *query.PerChainQueryResponseInternal,
 		setC chan<- *common.PhylaxSet,
 		env common.Environment,
 	) (interfaces.L1Finalizer, supervisor.Runnable, error)
