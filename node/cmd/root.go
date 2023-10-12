@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/deltaswapio/deltaswap/node/cmd/ccq"
 	"github.com/deltaswapio/deltaswap/node/cmd/debug"
 	"github.com/deltaswapio/deltaswap/node/cmd/spy"
 	"github.com/deltaswapio/deltaswap/node/pkg/version"
@@ -48,6 +49,7 @@ func init() {
 	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.phylaxd.yaml)")
 	rootCmd.AddCommand(phylaxd.NodeCmd)
 	rootCmd.AddCommand(spy.SpyCmd)
+	rootCmd.AddCommand(ccq.QueryServerCmd)
 	rootCmd.AddCommand(phylaxd.KeygenCmd)
 	rootCmd.AddCommand(phylaxd.AdminCmd)
 	rootCmd.AddCommand(phylaxd.TemplateCmd)
