@@ -541,7 +541,7 @@ abstract contract DeltaswapRelayerSend is DeltaswapRelayerBase, IDeltaswapRelaye
         bytes32 targetAddress,
         bytes memory payload,
         TargetNative receiverValue,
-        LocalNative paymentForExtraReceiverValue,
+        LocalNative,
         bytes memory encodedExecutionParameters,
         uint16 refundChain,
         bytes32 refundAddress,
