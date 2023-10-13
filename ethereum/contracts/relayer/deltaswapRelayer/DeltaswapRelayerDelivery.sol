@@ -12,7 +12,6 @@ import {
     VaaKeysDoNotMatchVaas,
     InvalidOverrideGasLimit,
     InvalidOverrideReceiverValue,
-    InvalidOverrideRefundPerGasUnused,
     RequesterNotDeltaswapRelayer,
     DeliveryProviderCannotReceivePayment,
     MessageKey,
@@ -219,12 +218,6 @@ abstract contract DeltaswapRelayerDelivery is DeltaswapRelayerBase, IDeltaswapRe
             decodeEvmExecutionInfoV1(deliveryOverrides.newExecutionInfo);
         deliveryOverridesReceiverValue = deliveryOverrides.newReceiverValue;
 
-        if (
-            deliveryOverridesExecutionInfo.targetChainRefundPerGasUnused.unwrap()
-                < executionInfo.targetChainRefundPerGasUnused.unwrap()
-        ) {
-            revert InvalidOverrideRefundPerGasUnused();
-        }
         if (deliveryOverridesExecutionInfo.gasLimit < executionInfo.gasLimit) {
             revert InvalidOverrideGasLimit();
         }
