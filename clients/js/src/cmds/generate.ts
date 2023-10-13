@@ -323,6 +323,14 @@ function parseAddress(chain: ChainName, address: string): string {
     return sha3_256(Buffer.from(address)); // address is hash of fully qualified type
   } else if (chain === "btc") {
     throw Error("btc is not supported yet");
+  } else if (chain === "cosmoshub") {
+      throw Error("cosmoshub is not supported yet");
+  } else if (chain === "evmos") {
+      throw Error("evmos is not supported yet");
+  } else if (chain === "kujira") {
+      throw Error("kujira is not supported yet");
+  } else if (chain === "rootstock") {
+      throw Error("rootstock is not supported yet");
   } else {
     impossible(chain);
   }

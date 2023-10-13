@@ -13,6 +13,10 @@ import {
   getDeltaswapRelayer,
   RPCS_BY_CHAIN,
   RELAYER_CONTRACTS,
+  getDeltaswapRelayerAddress,
+  getCircleAPI,
+  getWormscanAPI,
+  CCTP_DOMAIN_TO_NAME
 } from "../consts";
 import {
   parseDeltaswapRelayerPayloadType,
@@ -25,12 +29,15 @@ import {
   VaaKey,
   DeliveryOverrideArgs,
   parseRefundStatus,
+  RedeliveryInstruction,
+  parseDeltaswapRelayerResend,
+  CCTPKey,
 } from "../structs";
+import {InfoRequestParams} from "./info";
 import {
   DeliveryProvider,
   DeliveryProvider__factory,
   Implementation__factory,
-  IDeltaswapRelayerDelivery__factory,
 } from "../../ethers-contracts/";
 import { DeliveryEvent } from "../../ethers-contracts/DeltaswapRelayer";
 import { VaaKeyStruct } from "../../ethers-contracts/IDeltaswapRelayer.sol/IDeltaswapRelayer";
@@ -39,17 +46,18 @@ export type DeliveryTargetInfo = {
   status: DeliveryStatus | string;
   transactionHash: string | null;
   vaaHash: string | null;
-  sourceChain: ChainName;
+  sourceChain: ChainName | null;
   sourceVaaSequence: BigNumber | null;
   gasUsed: BigNumber;
   refundStatus: RefundStatus;
+  timestamp?: number;
   revertString?: string; // Only defined if status is RECEIVER_FAILURE
   overrides?: DeliveryOverrideArgs;
 };
 
 export function parseDeltaswapLog(log: ethers.providers.Log): {
   type: RelayerPayloadId;
-  parsed: DeliveryInstruction | string;
+  parsed: DeliveryInstruction | RedeliveryInstruction | string;
 } {
   const abi = [
     "event LogMessagePublished(address indexed sender, uint64 sequence, uint32 nonce, bytes payload, uint8 consistencyLevel)",
@@ -59,6 +67,8 @@ export function parseDeltaswapLog(log: ethers.providers.Log): {
   const payload = Buffer.from(parsed.args.payload.substring(2), "hex");
   const type = parseDeltaswapRelayerPayloadType(payload);
   if (type == RelayerPayloadId.Delivery) {
+    return {type, parsed: parseDeltaswapRelayerSend(payload)};
+  } else if (type == RelayerPayloadId.Redelivery) {
     return { type, parsed: parseDeltaswapRelayerSend(payload) };
   } else {
     throw Error("Invalid deltaswap log");
@@ -70,6 +80,21 @@ export function printChain(chainId: number) {
     throw Error(`Invalid Chain ID: ${chainId}`);
   return `${CHAIN_ID_TO_NAME[chainId as ChainId]} (Chain ${chainId})`;
 }
+
+export function printCCTPDomain(domain: number) {
+  if (domain >= CCTP_DOMAIN_TO_NAME.length)
+    throw Error(`Invalid cctp domain: ${domain}`);
+  return `${CCTP_DOMAIN_TO_NAME[domain]} (Domain ${domain})`;
+}
+
+export const estimatedAttestationTimeInSeconds = (
+    sourceChain: string,
+    environment: Network
+): number => {
+  const testnetTime = sourceChain === "avalanche" ? 20 : 60;
+  const mainnetTime = sourceChain === "avalanche" ? 20 : 60 * 13;
+  return environment === "TESTNET" ? testnetTime : mainnetTime;
+};
 
 export function getDefaultProvider(
   network: Network,
@@ -98,74 +123,47 @@ export function getDeliveryProvider(
   return contract;
 }
 
-export function getBlockRange(
-  provider: ethers.providers.Provider,
-  timestamp?: number
-): [ethers.providers.BlockTag, ethers.providers.BlockTag] {
-  return [-2040, "latest"];
-}
-
 export async function getDeltaswapRelayerInfoBySourceSequence(
   environment: Network,
   targetChain: ChainName,
   targetChainProvider: ethers.providers.Provider,
-  sourceChain: ChainName,
-  sourceVaaSequence: BigNumber,
-  blockStartNumber: ethers.providers.BlockTag,
-  blockEndNumber: ethers.providers.BlockTag,
+  sourceChain: ChainName | undefined,
+  sourceVaaSequence: BigNumber | undefined,
+  blockRange:
+      | [ethers.providers.BlockTag, ethers.providers.BlockTag]
+      | undefined,
   targetDeltaswapRelayerAddress: string
-): Promise<{ chain: ChainName; events: DeliveryTargetInfo[] }> {
+): Promise<DeliveryTargetInfo[]> {
   const deliveryEvents = await getDeltaswapRelayerDeliveryEventsBySourceSequence(
     environment,
     targetChain,
     targetChainProvider,
     sourceChain,
     sourceVaaSequence,
-    blockStartNumber,
-    blockEndNumber,
-    targetDeltaswapRelayerAddress
+      blockRange,
+      targetDeltaswapRelayerAddress
   );
-  if (deliveryEvents.length == 0) {
-    let status = `Delivery didn't happen on ${targetChain} within blocks ${blockStartNumber} to ${blockEndNumber}.`;
-    try {
-      const blockStart = await targetChainProvider.getBlock(blockStartNumber);
-      const blockEnd = await targetChainProvider.getBlock(blockEndNumber);
-      status = `Delivery didn't happen on ${targetChain} within blocks ${
-        blockStart.number
-      } to ${blockEnd.number} (within times ${new Date(
-        blockStart.timestamp * 1000
-      ).toString()} to ${new Date(blockEnd.timestamp * 1000).toString()})`;
-    } catch (e) {}
-    deliveryEvents.push({
-      status,
-      transactionHash: null,
-      vaaHash: null,
-      sourceChain: sourceChain,
-      sourceVaaSequence,
-      gasUsed: BigNumber.from(0),
-      refundStatus: RefundStatus.RefundFail,
-    });
-  }
-  const targetChainStatus = {
-    chain: targetChain,
-    events: deliveryEvents,
-  };
 
-  return targetChainStatus;
+  return deliveryEvents;
 }
 
 export async function getDeltaswapRelayerDeliveryEventsBySourceSequence(
   environment: Network,
   targetChain: ChainName,
   targetChainProvider: ethers.providers.Provider,
-  sourceChain: ChainName,
-  sourceVaaSequence: BigNumber,
-  blockStartNumber: ethers.providers.BlockTag,
-  blockEndNumber: ethers.providers.BlockTag,
+  sourceChain: ChainName | undefined,
+  sourceVaaSequence: BigNumber | undefined,
+  blockRange:
+      | [ethers.providers.BlockTag, ethers.providers.BlockTag]
+      | undefined,
   targetDeltaswapRelayerAddress: string
 ): Promise<DeliveryTargetInfo[]> {
-  const sourceChainId = CHAINS[sourceChain];
-  if (!sourceChainId) throw Error(`Invalid source chain: ${sourceChain}`);
+  let sourceChainId = undefined;
+  if (sourceChain) {
+    sourceChainId = CHAINS[sourceChain];
+    if (!sourceChainId) throw Error(`Invalid source chain: ${sourceChain}`);
+  }
+
   const deltaswapRelayer = getDeltaswapRelayer(
     targetChain,
     environment,
@@ -173,71 +171,27 @@ export async function getDeltaswapRelayerDeliveryEventsBySourceSequence(
     targetDeltaswapRelayerAddress
   );
 
-  const deliveryEvents = deltaswapRelayer.filters.Delivery(
+  const deliveryEventsFilter = deltaswapRelayer.filters.Delivery(
     null,
     sourceChainId,
     sourceVaaSequence
   );
 
-  const deliveryEventsPreFilter: DeliveryEvent[] =
-    await deltaswapRelayer.queryFilter(
-      deliveryEvents,
-      blockStartNumber,
-      blockEndNumber
-    );
+  const deliveryEvents: DeliveryEvent[] = await deltaswapRelayer.queryFilter(
+      deliveryEventsFilter,
+      blockRange ? blockRange[0] : -2000,
+      blockRange ? blockRange[1] : "latest"
+  );
 
-  const isValid: boolean[] = await Promise.all(
-    deliveryEventsPreFilter.map((deliveryEvent) =>
-      areSignaturesValid(
-        deliveryEvent.getTransaction(),
-        targetChain,
-        targetChainProvider,
-        environment
-      )
+  const timestamps = await Promise.all(
+      deliveryEvents.map(
+          async (e) =>
+              (await targetChainProvider.getBlock(e.blockNumber)).timestamp * 1000
     )
   );
 
   // There is a max limit on RPCs sometimes for how many blocks to query
-  return await transformDeliveryEvents(
-    deliveryEventsPreFilter.filter((deliveryEvent, i) => isValid[i])
-  );
-}
-
-async function areSignaturesValid(
-  transaction: Promise<ethers.Transaction>,
-  targetChain: ChainName,
-  targetChainProvider: ethers.providers.Provider,
-  environment: Network
-) {
-  const coreAddress = CONTRACTS[environment][targetChain].core;
-  if (!coreAddress)
-    throw Error(
-      `No Deltaswap Address for chain ${targetChain}, network ${environment}`
-    );
-
-  const deltaswap = Implementation__factory.connect(
-    coreAddress,
-    targetChainProvider
-  );
-  const decodedData =
-    IDeltaswapRelayerDelivery__factory.createInterface().parseTransaction(
-      await transaction
-    );
-
-  const vaaIsValid = async (vaa: ethers.utils.BytesLike): Promise<boolean> => {
-    const [, result, reason] = await deltaswap.parseAndVerifyVM(vaa);
-    if (!result) console.log(`Invalid vaa! Reason: ${reason}`);
-    return result;
-  };
-
-  const vaas = decodedData.args[0];
-  for (let i = 0; i < vaas.length; i++) {
-    if (!(await vaaIsValid(vaas[i]))) {
-      return false;
-    }
-  }
-
-  return true;
+  return await transformDeliveryEvents(deliveryEvents, timestamps);
 }
 
 export function deliveryStatus(status: number) {
@@ -251,20 +205,23 @@ export function deliveryStatus(status: number) {
   }
 }
 
-export function transformDeliveryLog(log: {
-  args: [
-    string,
-    number,
-    BigNumber,
-    string,
-    number,
-    BigNumber,
-    number,
-    string,
-    string
-  ];
-  transactionHash: string;
-}): DeliveryTargetInfo {
+export function transformDeliveryLog(
+    log: {
+      args: [
+        string,
+        number,
+        BigNumber,
+        string,
+        number,
+        BigNumber,
+        number,
+        string,
+        string
+      ];
+      transactionHash: string;
+    },
+    timestamp: number
+): DeliveryTargetInfo {
   const status = deliveryStatus(log.args[4]);
   if (!isChain(log.args[1]))
     throw Error(`Invalid source chain id: ${log.args[1]}`);
@@ -279,6 +236,7 @@ export function transformDeliveryLog(log: {
     refundStatus: parseRefundStatus(log.args[6]),
     revertString:
       status == DeliveryStatus.ReceiverFailure ? log.args[7] : undefined,
+    timestamp,
     overrides:
       Buffer.from(log.args[8].substring(2), "hex").length > 0
         ? parseOverrideInfoFromDeliveryEvent(
@@ -289,17 +247,19 @@ export function transformDeliveryLog(log: {
 }
 
 async function transformDeliveryEvents(
-  events: DeliveryEvent[]
+    events: DeliveryEvent[],
+    timestamps: number[]
 ): Promise<DeliveryTargetInfo[]> {
-  return events.map((x) => transformDeliveryLog(x));
+  return events.map((x, i) => transformDeliveryLog(x, timestamps[i]));
 }
 
-export function getDeltaswapRelayerLog(
+export function getDeltaswapLog(
   receipt: ContractReceipt,
   bridgeAddress: string,
   emitterAddress: string,
-  index: number
-): { log: ethers.providers.Log; sequence: string } {
+  index: number,
+  sequence?: number
+): { log: ethers.providers.Log; sequence: string; payload: string } {
   const bridgeLogs = receipt.logs.filter((l) => {
     return l.address === bridgeAddress;
   });
@@ -314,17 +274,23 @@ export function getDeltaswapRelayerLog(
       sequence: log.args[1].toString(),
       nonce: log.args[2].toString(),
       emitterAddress: tryNativeToHexString(log.args[0].toString(), "ethereum"),
+      payload: log.args[3],
       log: bridgeLog,
     };
   });
 
-  const filtered = parsed.filter(
-    (x) => x.emitterAddress == emitterAddress.toLowerCase()
-  );
+  const filtered = parsed.filter((x) => {
+    return (
+        x.emitterAddress == emitterAddress.toLowerCase() &&
+        (sequence === undefined ? true : x.sequence + "" === sequence + "")
+    );
+  });
 
   if (filtered.length == 0) {
     throw Error(
-      "No DeltaswapRelayer contract interactions found for this transaction."
+        `No deltaswap contract interactions found for this transaction, with emitter address ${emitterAddress} ${
+            sequence === undefined ? "" : `and sequence ${sequence}`
+        }`
     );
   }
 
@@ -334,6 +300,7 @@ export function getDeltaswapRelayerLog(
     return {
       log: filtered[index].log,
       sequence: filtered[index].sequence,
+      payload: filtered[index].payload,
     };
   }
 }
@@ -348,6 +315,145 @@ export function vaaKeyToVaaKeyStruct(vaaKey: VaaKey): VaaKeyStruct {
   };
 }
 
+export async function getDeltaswapRelayerInfoByHash(
+    deliveryHash: string,
+    targetChain: ChainName,
+    sourceChain: ChainName | undefined,
+    sourceVaaSequence: number | undefined,
+    infoRequest?: InfoRequestParams
+): Promise<DeliveryTargetInfo[]> {
+  const environment = infoRequest?.environment || "MAINNET";
+  const targetChainProvider =
+      infoRequest?.targetChainProviders?.get(targetChain) ||
+      getDefaultProvider(environment, targetChain);
+
+  if (!targetChainProvider) {
+    throw Error(
+        "No default RPC for this chain; pass in your own provider (as targetChainProvider)"
+    );
+  }
+  const targetDeltaswapRelayerAddress =
+      infoRequest?.deltaswapRelayerAddresses?.get(targetChain) ||
+      getDeltaswapRelayerAddress(targetChain, environment);
+  const wormholeRelayer = getDeltaswapRelayer(
+      targetChain,
+      environment,
+      targetChainProvider,
+      targetDeltaswapRelayerAddress
+  );
+
+  const blockNumberSuccess = await wormholeRelayer.deliverySuccessBlock(
+      deliveryHash
+  );
+  const blockNumberFailure = await wormholeRelayer.deliveryFailureBlock(
+      deliveryHash
+  );
+  const blockNumber = blockNumberSuccess.gt(0)
+      ? blockNumberSuccess
+      : blockNumberFailure;
+
+  if (blockNumber.toNumber() === 0) return [];
+
+  // There is weirdness with arbitrum where if you call 'block.number', it gives you the L1 block number (the ethereum one) - and this is what is stored in the 'replay protection mapping' - so basically that value isn't useful in finding the delivery here
+  const blockRange =
+      infoRequest?.targetBlockRange ||
+      (targetChain === "arbitrum"
+          ? undefined
+          : [blockNumber.toNumber(), blockNumber.toNumber()]);
+
+  return await getDeltaswapRelayerInfoBySourceSequence(
+      environment,
+      targetChain,
+      targetChainProvider,
+      sourceChain,
+      BigNumber.from(sourceVaaSequence),
+      blockRange,
+      targetDeltaswapRelayerAddress
+  );
+}
+
+export function getDeliveryHashFromVaaFields(
+    sourceChain: number,
+    emitterAddress: string,
+    sequence: number,
+    timestamp: number,
+    nonce: number,
+    consistencyLevel: number,
+    deliveryVaaPayload: string
+): string {
+  const body = ethers.utils.solidityPack(
+      ["uint32", "uint32", "uint16", "bytes32", "uint64", "uint8", "bytes"],
+
+      [
+        timestamp,
+        nonce,
+        sourceChain,
+        emitterAddress,
+        sequence,
+        consistencyLevel,
+        deliveryVaaPayload,
+      ]
+  );
+  const deliveryHash = ethers.utils.keccak256(ethers.utils.keccak256(body));
+  return deliveryHash;
+}
+
+export async function getWormscanInfo(
+    network: Network,
+    sourceChain: ChainName,
+    sequence: number,
+    emitterAddress: string
+) {
+  const wormscanAPI = getWormscanAPI(network);
+  const emitterAddressBytes32 = tryNativeToHexString(
+      emitterAddress,
+      sourceChain
+  );
+  const sourceChainId = CHAINS[sourceChain];
+  const result = await fetch(
+      `${wormscanAPI}api/v1/vaas/${sourceChainId}/${emitterAddressBytes32}/${sequence}`
+  );
+  return result;
+}
+
+export async function getWormscanRelayerInfo(
+    sourceChain: ChainName,
+    sequence: number,
+    optionalParams?: {
+      network?: Network;
+      provider?: ethers.providers.Provider;
+      wormholeRelayerAddress?: string;
+    }
+): Promise<Response> {
+  const network = optionalParams?.network || "MAINNET";
+  const wormholeRelayerAddress =
+      optionalParams?.wormholeRelayerAddress ||
+      getDeltaswapRelayerAddress(sourceChain, network);
+  return getWormscanInfo(
+      network,
+      sourceChain,
+      sequence,
+      wormholeRelayerAddress
+  );
+}
+
+export async function getRelayerTransactionHashFromWormscan(
+    sourceChain: ChainName,
+    sequence: number,
+    optionalParams?: {
+      network?: Network;
+      provider?: ethers.providers.Provider;
+      wormholeRelayerAddress?: string;
+    }
+): Promise<string> {
+  const wormscanData = (
+      await (
+          await getWormscanRelayerInfo(sourceChain, sequence, optionalParams)
+      ).json()
+  ).data;
+  return "0x" + wormscanData.txHash;
+}
+
 export async function getDeliveryHash(
   rx: ethers.ContractReceipt,
   sourceChain: ChainName,
@@ -355,6 +461,7 @@ export async function getDeliveryHash(
     network?: Network;
     provider?: ethers.providers.Provider;
     index?: number;
+    deltaswapRelayerAddress?: string;
   }
 ): Promise<string> {
   const network: Network = optionalParams?.network || "MAINNET";
@@ -365,6 +472,7 @@ export async function getDeliveryHash(
     throw Error(`No deltaswap contract on ${sourceChain} for ${network}`);
   }
   const deltaswapRelayerAddress =
+      optionalParams?.deltaswapRelayerAddress ||
     RELAYER_CONTRACTS[network][sourceChain]?.deltaswapRelayerAddress;
   if (!deltaswapRelayerAddress) {
     throw Error(
@@ -385,23 +493,71 @@ export async function getDeliveryHash(
         index > 0 ? ` (the ${index}-th deltaswap relayer log was requested)` : ""
       }`
     );
-  const log = logs[index];
-  const deltaswapPublishedMessage =
-    Implementation__factory.createInterface().parseLog(log);
-  const block = await provider.getBlock(rx.blockHash);
-  const body = ethers.utils.solidityPack(
-    ["uint32", "uint32", "uint16", "bytes32", "uint64", "uint8", "bytes"],
+  return getDeliveryHashFromLog(
+      logs[index],
+      CHAINS[sourceChain],
+      provider,
+      rx.blockHash
+  );
+}
 
-    [
+export async function getDeliveryHashFromLog(
+    deltaswapLog: ethers.providers.Log,
+    sourceChain: ChainId,
+    provider: ethers.providers.Provider,
+    blockHash: string
+): Promise<string> {
+  const deltaswapPublishedMessage =
+      Implementation__factory.createInterface().parseLog(deltaswapLog);
+
+  const block = await provider.getBlock(blockHash);
+
+  return getDeliveryHashFromVaaFields(
+      sourceChain,
+      deltaswapLog.topics[1],
+      deltaswapPublishedMessage.args["sequence"],
       block.timestamp,
       deltaswapPublishedMessage.args["nonce"],
-      CHAINS[sourceChain],
-      log.topics[1],
-      deltaswapPublishedMessage.args["sequence"],
       deltaswapPublishedMessage.args["consistencyLevel"],
-      deltaswapPublishedMessage.args["payload"],
-    ]
+      deltaswapPublishedMessage.args["payload"]
   );
-  const deliveryHash = ethers.utils.keccak256(ethers.utils.keccak256(body));
-  return deliveryHash;
+}
+
+export async function getCCTPMessageLogURL(
+    cctpKey: CCTPKey,
+    sourceChain: ChainName,
+    receipt: ethers.providers.TransactionReceipt,
+    environment: Network
+) {
+  let cctpLog;
+  let messageSentLog;
+  const DepositForBurnTopic =
+      ethers.utils.keccak256("DepositForBurn(uint64,address,uint256,address,bytes32,uint32,bytes32,bytes32)");
+  const MessageSentTopic = ethers.utils.keccak256("MessageSent(bytes)")
+  try {
+    if (CCTP_DOMAIN_TO_NAME[cctpKey.domain] === sourceChain) {
+      const cctpLogFilter = (log: ethers.providers.Log) => {
+        return (
+            log.topics[0] === DepositForBurnTopic &&
+            parseInt(log.topics[1]) === cctpKey.nonce.toNumber()
+        );
+      };
+      cctpLog = receipt.logs.find(cctpLogFilter);
+      const index = receipt.logs.findIndex(cctpLogFilter);
+      const messageSentLogs = receipt.logs.filter((log, i) => {
+        return log.topics[0] === MessageSentTopic && i <= index;
+      });
+      messageSentLog = messageSentLogs[messageSentLogs.length - 1];
+    }
+  } catch (e) {
+    console.log(e);
+  }
+  if (!cctpLog || !messageSentLog) return undefined;
+
+  const message = new ethers.utils.Interface([
+    "event MessageSent(bytes message)",
+  ]).parseLog(messageSentLog).args.message;
+  const msgHash = ethers.utils.keccak256(message);
+  const url = getCircleAPI(environment) + msgHash;
+  return {message, cctpLog, url};
 }

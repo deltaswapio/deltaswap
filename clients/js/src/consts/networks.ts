@@ -186,14 +186,17 @@ const MAINNET = {
   cosmoshub: {
     rpc: undefined,
     key: undefined,
+    chain_id: undefined,
   },
   evmos: {
     rpc: undefined,
     key: undefined,
+    chain_id: undefined,
   },
   kujira: {
     rpc: undefined,
     key: undefined,
+    chain_id: undefined,
   },
 };
 
@@ -368,14 +371,17 @@ const TESTNET = {
   cosmoshub: {
     rpc: undefined,
     key: undefined,
+    chain_id: undefined,
   },
   evmos: {
     rpc: undefined,
     key: undefined,
+    chain_id: undefined,
   },
   kujira: {
     rpc: undefined,
     key: undefined,
+    chain_id: undefined,
   },
 };
 
