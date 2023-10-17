@@ -54,8 +54,10 @@ module.exports = {
         );
       },
       network_id: "7070",
-      gas: 70000000,
-      gasPrice: 8000000000,
+      gas: 10000000,
+      gasPrice: 7000000000,
+      confirmations: 3,
+      timeoutBlocks: 10,
     },
     bsc: {
       provider: () => {
