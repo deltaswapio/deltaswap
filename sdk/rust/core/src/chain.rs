@@ -18,6 +18,7 @@ pub enum Chain {
     Bsc,
     Polygon,
     Planq,
+    Tron,
     Avalanche,
     Oasis,
     Algorand,
@@ -147,6 +148,7 @@ impl fmt::Display for Chain {
             Self::Ethereum => f.write_str("Ethereum"),
             Self::Terra => f.write_str("Terra"),
             Self::Bsc => f.write_str("Bsc"),
+            Self::Tron => f.write_str("Tron"),
             Self::Polygon => f.write_str("Polygon"),
             Self::Planq => f.write_str("Planq"),
             Self::Avalanche => f.write_str("Avalanche"),
@@ -224,6 +226,7 @@ impl FromStr for Chain {
             "Sei" | "sei" | "SEI" => Ok(Chain::Sei),
             "Rootstock" | "rootstock" | "ROOTSTOCK" => Ok(Chain::Rootstock),
             "Sepolia" | "sepolia" | "SEPOLIA" => Ok(Chain::Sepolia),
+            "Tron" | "tron" | "TRON" => Ok(Chain::Tron),
             "Planq" | "planq" | "PLANQ" => Ok(Chain::Planq),
             "Deltachain" | "deltachain" | "DELTACHAIN" => Ok(Chain::Deltachain),
             _ => {
