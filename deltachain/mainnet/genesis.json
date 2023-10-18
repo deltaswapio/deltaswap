@@ -1,10 +1,7 @@
 {
-  "app_hash": "",
-  "app_state": {
+  "app_message": {
     "auth": {
-      "accounts": [
-
-      ],
+      "accounts": [],
       "params": {
         "max_memo_characters": "256",
         "sig_verify_cost_ed25519": "590",
@@ -19,7 +16,7 @@
           "address": "delta1h778rq4vhaxxh72cl7a2rs4f3xv20d6y6053qh",
           "coins": [
             {
-              "amount": "10000",
+              "amount": "100000000",
               "denom": "udelta"
             }
           ]
@@ -28,7 +25,7 @@
           "address": "delta13jmalgg73gm2l25lwagxj09prxh2k92tpp6qlm",
           "coins": [
             {
-              "amount": "10000",
+              "amount": "100000000",
               "denom": "udelta"
             }
           ]
@@ -80,7 +77,7 @@
       },
       "supply": [
         {
-          "amount": "20000",
+          "amount": "200000000",
           "denom": "udelta"
         }
       ]
@@ -111,17 +108,41 @@
         "denom": "delta"
       }
     },
-    "distribution": {
-      "delegator_starting_infos": [
-
+    "deltaswap": {
+      "config": {
+        "chain_id": 7077,
+        "governance_chain": 1,
+        "governance_emitter": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQ=",
+        "phylax_set_expiration": "86400"
+      },
+      "consensusPhylaxSetIndex": {
+        "index": 0
+      },
+      "phylaxSetList": [
+        {
+          "expirationTime": "0",
+          "index": 0,
+          "keys": [
+            "UVJPHdFaS352y182RQqL6uYjnjA="
+          ]
+        }
       ],
+      "phylaxValidatorList": [
+        {
+          "phylaxKey": "UVJPHdFaS352y182RQqL6uYjnjA=",
+          "validatorAddr": "v7xxgqy/TGv5WP+6ocKpiZint0Q="
+        }
+      ],
+      "replayProtectionList": [],
+      "sequenceCounterList": []
+    },
+    "distribution": {
+      "delegator_starting_infos": [],
       "delegator_withdraw_infos": [],
       "fee_pool": {
         "community_pool": []
       },
-      "outstanding_rewards": [
-
-      ],
+      "outstanding_rewards": [],
       "params": {
         "base_proposer_reward": "0.010000000000000000",
         "bonus_proposer_reward": "0.040000000000000000",
@@ -129,15 +150,9 @@
         "withdraw_addr_enabled": true
       },
       "previous_proposer": "",
-      "validator_accumulated_commissions": [
-
-      ],
-      "validator_current_rewards": [
-
-      ],
-      "validator_historical_rewards": [
-
-      ],
+      "validator_accumulated_commissions": [],
+      "validator_current_rewards": [],
+      "validator_historical_rewards": [],
       "validator_slash_events": []
     },
     "evidence": {
@@ -147,7 +162,69 @@
       "allowances": []
     },
     "genutil": {
-      "gen_txs": []
+      "gen_txs": [
+        {
+          "auth_info": {
+            "fee": {
+              "amount": [],
+              "gas_limit": "200000",
+              "granter": "",
+              "payer": ""
+            },
+            "signer_infos": [
+              {
+                "mode_info": {
+                  "single": {
+                    "mode": "SIGN_MODE_DIRECT"
+                  }
+                },
+                "public_key": {
+                  "@type": "/cosmos.crypto.secp256k1.PubKey",
+                  "key": "AzeMv8zAoPNa968Jg8vkfO3jiOa19rNjo7c35i+4pWaZ"
+                },
+                "sequence": "0"
+              }
+            ]
+          },
+          "body": {
+            "extension_options": [],
+            "memo": "ecaf8f632bedf225d75a6d26897516e1641272a2@0.0.0.0:26656",
+            "messages": [
+              {
+                "@type": "/cosmos.staking.v1beta1.MsgCreateValidator",
+                "commission": {
+                  "max_change_rate": "0.010000000000000000",
+                  "max_rate": "0.200000000000000000",
+                  "rate": "0.100000000000000000"
+                },
+                "delegator_address": "delta1h778rq4vhaxxh72cl7a2rs4f3xv20d6y6053qh",
+                "description": {
+                  "details": "",
+                  "identity": "",
+                  "moniker": "Delta One",
+                  "security_contact": "",
+                  "website": ""
+                },
+                "min_self_delegation": "1",
+                "pubkey": {
+                  "@type": "/cosmos.crypto.ed25519.PubKey",
+                  "key": "D+c7hSdop1o0JnQcb0I8KMfMJ8QACJ1PYMF7FYTxaxk="
+                },
+                "validator_address": "deltavaloper1h778rq4vhaxxh72cl7a2rs4f3xv20d6y2gtv65",
+                "value": {
+                  "amount": "100",
+                  "denom": "udelta"
+                }
+              }
+            ],
+            "non_critical_extension_options": [],
+            "timeout_height": "0"
+          },
+          "signatures": [
+            "yCi2jFxuvcJ5a5tFyeLJZcSSs7+/M3XWifS2v16rKIsYQ2JiFbNGczTpR/Lb6ye+MOSuX7y8jsclr79vEx5rqw=="
+          ]
+        }
+      ]
     },
     "gov": {
       "deposit_params": {
@@ -220,16 +297,14 @@
       }
     },
     "packetfowardmiddleware": {
+      "in_flight_packets": {},
       "params": {
         "fee_percentage": "0.000000000000000000"
-      },
-      "in_flight_packets": {}
+      }
     },
     "params": null,
     "slashing": {
-      "missed_blocks": [
-
-      ],
+      "missed_blocks": [],
       "params": {
         "downtime_jail_duration": "600s",
         "min_signed_per_window": "0.500000000000000000",
@@ -237,19 +312,13 @@
         "slash_fraction_double_sign": "0.050000000000000000",
         "slash_fraction_downtime": "0.010000000000000000"
       },
-      "signing_infos": [
-
-      ]
+      "signing_infos": []
     },
     "staking": {
-      "delegations": [
-
-      ],
+      "delegations": [],
       "exported": true,
       "last_total_power": "1",
-      "last_validator_powers": [
-
-      ],
+      "last_validator_powers": [],
       "params": {
         "bond_denom": "udelta",
         "historical_entries": 10000,
@@ -259,16 +328,14 @@
       },
       "redelegations": [],
       "unbonding_delegations": [],
-      "validators": [
-
-      ]
+      "validators": []
     },
     "tokenfactory": {
+      "factory_denoms": [],
       "params": {
         "denom_creation_fee": [],
         "denom_creation_gas_consume": "0"
-      },
-      "factory_denoms": []
+      }
     },
     "transfer": {
       "denom_traces": [],
@@ -301,58 +368,7 @@
           "value": "1"
         }
       ]
-    },
-    "deltaswap": {
-      "config": {
-        "chain_id": 7077,
-        "governance_chain": 1,
-        "governance_emitter": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQ=",
-        "phylax_set_expiration": "86400"
-      },
-      "consensusPhylaxSetIndex": {
-        "index": 0
-      },
-      "phylaxSetList": [
-        {
-          "expirationTime": "0",
-          "index": 0,
-          "keys": [
-            "UVJPHdFaS352y182RQqL6uYjnjA="
-          ]
-        }
-      ],
-      "phylaxValidatorList": [
-        {
-          "phylaxKey": "UVJPHdFaS352y182RQqL6uYjnjA=",
-          "validatorAddr": "v7xxgqy/TGv5WP+6ocKpiZint0Q="
-        }
-      ],
-      "replayProtectionList": [],
-      "sequenceCounterList": []
     }
   },
-  "chain_id": "deltachain",
-  "consensus_params": {
-    "block": {
-      "max_bytes": "22020096",
-      "max_gas": "-1",
-      "time_iota_ms": "1000"
-    },
-    "evidence": {
-      "max_age_duration": "172800000000000",
-      "max_age_num_blocks": "100000",
-      "max_bytes": "1048576"
-    },
-    "validator": {
-      "pub_key_types": [
-        "ed25519"
-      ]
-    },
-    "version": {}
-  },
-  "genesis_time": "2023-10-18T13:37:33.044644477Z",
-  "initial_height": "1",
-  "validators": [
-
-  ]
+  "chain_id": "deltachain"
 }
