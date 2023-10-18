@@ -20,7 +20,16 @@
           "coins": [
             {
               "amount": "10000",
-              "denom": "utest"
+              "denom": "udelta"
+            }
+          ]
+        },
+        {
+          "address": "delta13jmalgg73gm2l25lwagxj09prxh2k92tpp6qlm",
+          "coins": [
+            {
+              "amount": "10000",
+              "denom": "udelta"
             }
           ]
         }
@@ -71,8 +80,8 @@
       },
       "supply": [
         {
-          "amount": "10000",
-          "denom": "utest"
+          "amount": "20000",
+          "denom": "udelta"
         }
       ]
     },
