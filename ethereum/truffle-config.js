@@ -54,8 +54,8 @@ module.exports = {
         );
       },
       network_id: "7070",
-      gas: 10000000,
-      gasPrice: 7000000000,
+      gas: 8000000,
+      gasPrice: 40000000000,
       confirmations: 3,
       timeoutBlocks: 10,
     },
