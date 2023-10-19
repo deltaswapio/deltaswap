@@ -23,7 +23,22 @@
   "app_hash": "",
   "app_state": {
     "auth": {
-      "accounts": [],
+      "accounts": [
+        {
+          "@type": "/cosmos.auth.v1beta1.BaseAccount",
+          "address": "delta1h778rq4vhaxxh72cl7a2rs4f3xv20d6y6053qh",
+          "pub_key": null,
+          "account_number": "0",
+          "sequence": "0"
+        },
+        {
+          "@type": "/cosmos.auth.v1beta1.BaseAccount",
+          "address": "delta13jmalgg73gm2l25lwagxj09prxh2k92tpp6qlm",
+          "pub_key": null,
+          "account_number": "0",
+          "sequence": "0"
+        }
+      ],
       "params": {
         "max_memo_characters": "256",
         "sig_verify_cost_ed25519": "590",
