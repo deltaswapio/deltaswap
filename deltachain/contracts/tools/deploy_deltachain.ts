@@ -231,15 +231,16 @@ async function main() {
 
   const registrations: { [chainName: string]: string } = {
     // keys are only used for logging success/failure
-    solana: String(process.env.REGISTER_SOL_TOKEN_BRIDGE_VAA),
+    //solana: String(process.env.REGISTER_SOL_TOKEN_BRIDGE_VAA),
     ethereum: String(process.env.REGISTER_ETH_TOKEN_BRIDGE_VAA),
     bsc: String(process.env.REGISTER_BSC_TOKEN_BRIDGE_VAA),
-    algo: String(process.env.REGISTER_ALGO_TOKEN_BRIDGE_VAA),
-    terra: String(process.env.REGISTER_TERRA_TOKEN_BRIDGE_VAA),
-    near: String(process.env.REGISTER_NEAR_TOKEN_BRIDGE_VAA),
-    terra2: String(process.env.REGISTER_TERRA2_TOKEN_BRIDGE_VAA),
-    aptos: String(process.env.REGISTER_APTOS_TOKEN_BRIDGE_VAA),
-    sui: String(process.env.REGISTER_SUI_TOKEN_BRIDGE_VAA),
+    //algo: String(process.env.REGISTER_ALGO_TOKEN_BRIDGE_VAA),
+    //terra: String(process.env.REGISTER_TERRA_TOKEN_BRIDGE_VAA),
+    //near: String(process.env.REGISTER_NEAR_TOKEN_BRIDGE_VAA),
+    //terra2: String(process.env.REGISTER_TERRA2_TOKEN_BRIDGE_VAA),
+    //aptos: String(process.env.REGISTER_APTOS_TOKEN_BRIDGE_VAA),
+    //sui: String(process.env.REGISTER_SUI_TOKEN_BRIDGE_VAA),
+    planq: String(process.env.REGISTER_PLANQ_TOKEN_BRIDGE_VAA),
   };
 
   const instantiateMsg = {};
