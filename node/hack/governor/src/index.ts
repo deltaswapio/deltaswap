@@ -9,6 +9,7 @@ import {
 } from "@deltaswapio/deltaswap-sdk";
 
 import { Connection, JsonRpcProvider } from "@mysten/sui.js";
+import {arrayify, zeroPad} from "ethers/lib/utils";
 
 const MinNotional = 0;
 
@@ -49,7 +50,7 @@ if (fs.existsSync(IncludeFileName)) {
 
 axios
   .get(
-    "https://europe-west3-wormhole-message-db-mainnet.cloudfunctions.net/tvl"
+      "https://europe-west3-deltaswap-message-db-mainnet.cloudfunctions.net/tvl"
   )
   .then(async (res) => {
     if (res.status != 200) {
@@ -90,53 +91,53 @@ axios
             includedTokens.delete(key);
             let chainId = parseInt(chain) as ChainId;
             let deltaswapAddr: string;
-            try {
-              deltaswapAddr = tryNativeToHexString(data.Address, chainId);
-            } catch (e) {
-              if (chainId == CHAIN_ID_ALGORAND) {
-                deltaswapAddr = "";
-                if (
+            if (chainId == CHAIN_ID_ALGORAND) {
+              if (
                   data.Symbol.toLowerCase() === "algo" ||
                   data.Address === "0"
-                ) {
-                  deltaswapAddr =
+              ) {
+                deltaswapAddr =
                     "0000000000000000000000000000000000000000000000000000000000000000";
-                } else if (data.Address === "31566704") {
-                  deltaswapAddr =
-                    "0000000000000000000000000000000000000000000000000000000001e1ab70";
-                } else if (data.Address === "312769") {
-                  deltaswapAddr =
-                    "000000000000000000000000000000000000000000000000000000000004c5c1";
-                }
-              } else if (chainId == CHAIN_ID_SUI) {
-                // For Sui we look up the symbol from the RPC.
-                await (async () => {
-                  const provider = new JsonRpcProvider(
-                    new Connection({
-                      // fullnode: "https://fullnode.mainnet.sui.io",
-                      fullnode: "https://sui-mainnet-rpc.allthatnode.com",
-                    })
-                  );
-                  const result = await getOriginalAssetSui(
-                    provider,
-                    CONTRACTS.MAINNET.sui.token_bridge,
-                    data.Address
-                  );
-                  deltaswapAddr = Buffer.from(result.assetAddress).toString(
-                    "hex"
-                  );
-                })();
+              } else {
+                // For Algorand, the address field is actually the asset ID so we can't do the usual tryNativeToHexString. Just convert it to hex and left pad with zeros.
+                deltaswapAddr = Buffer.from(
+                    zeroPad(arrayify(Number.parseInt(data.Address)), 32)
+                ).toString("hex");
               }
-              if (deltaswapAddr === undefined) {
-                console.log(
-                  `Ignoring symbol '${data.Symbol}' on chain ${chainId} because the address '${data.Address}' is undefined`
-                );
-                continue;
-              } else if (deltaswapAddr === "") {
-                console.log(
-                  `Ignoring symbol '${data.Symbol}' on chain ${chainId} because the address '${data.Address}' is invalid`
-                );
-                continue;
+            } else {
+              try {
+                deltaswapAddr = tryNativeToHexString(data.Address, chainId);
+              } catch (e) {
+                if (chainId == CHAIN_ID_SUI) {
+                  // For Sui we look up the symbol from the RPC.
+                  await (async () => {
+                    const provider = new JsonRpcProvider(
+                        new Connection({
+                          // fullnode: "https://fullnode.mainnet.sui.io",
+                          fullnode: "https://sui-mainnet-rpc.allthatnode.com",
+                        })
+                    );
+                    const result = await getOriginalAssetSui(
+                        provider,
+                        CONTRACTS.MAINNET.sui.token_bridge,
+                        data.Address
+                    );
+                    deltaswapAddr = Buffer.from(result.assetAddress).toString(
+                        "hex"
+                    );
+                  })();
+                }
+                if (deltaswapAddr === undefined) {
+                  console.log(
+                      `Ignoring symbol '${data.Symbol}' on chain ${chainId} because the address '${data.Address}' is undefined`
+                  );
+                  continue;
+                } else if (deltaswapAddr === "") {
+                  console.log(
+                      `Ignoring symbol '${data.Symbol}' on chain ${chainId} because the address '${data.Address}' is invalid`
+                  );
+                  continue;
+                }
               }
             }
 
