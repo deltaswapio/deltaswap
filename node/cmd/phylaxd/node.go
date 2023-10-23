@@ -1479,7 +1479,7 @@ func runNode(cmd *cobra.Command, args []string) {
 		node.PhylaxOptionAccountant(*accountantContract, *accountantWS, *accountantCheckEnabled, accountantDeltachainConn),
 		node.PhylaxOptionGovernor(*chainGovernorEnabled),
 		node.PhylaxOptionGatewayRelayer(*gatewayRelayerContract, gatewayRelayerDeltachainConn),
-		node.PhylaxOptionAdminService(*adminSocketPath, ethRPC, ethContract, rpcMap),
+		node.PhylaxOptionAdminService(*adminSocketPath, planqRPC, planqContract, rpcMap),
 		node.PhylaxOptionP2P(p2pKey, *p2pNetworkID, *p2pBootstrap, *nodeName, *disableHeartbeatVerify, *p2pPort, ibc.GetFeatures),
 		node.PhylaxOptionStatusServer(*statusAddr),
 		node.PhylaxOptionProcessor(),
