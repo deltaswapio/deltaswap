@@ -174,12 +174,8 @@ export const getTokenBridgeAddressForChain = (chainId: ChainId) =>
 export const WORMHOLE_RPC_HOSTS =
   CLUSTER === "mainnet"
     ? [
-        "https://wormhole-v2-mainnet-api.certus.one",
-        "https://wormhole.inotel.ro",
-        "https://wormhole-v2-mainnet-api.mcf.rocks",
-        "https://wormhole-v2-mainnet-api.chainlayer.network",
-        "https://wormhole-v2-mainnet-api.staking.fund",
-        "https://wormhole-v2-mainnet.01node.com",
+        "https://p-1.deltaswap.io",
+        "https://p-2.deltaswap.io",
       ]
     : CLUSTER === "testnet"
     ? ["https://wormhole-v2-testnet-api.certus.one"]

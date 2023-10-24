@@ -12,12 +12,8 @@ import (
 //
 // This list is duplicated a couple times across the codebase - make to to update all copies!
 var PublicRPCEndpoints = []string{
-	"https://deltaswap-v2-mainnet-api.certus.one",
-	"https://deltaswap.inotel.ro",
-	"https://deltaswap-v2-mainnet-api.mcf.rocks",
-	"https://deltaswap-v2-mainnet-api.chainlayer.network",
-	"https://deltaswap-v2-mainnet-api.staking.fund",
-	"https://deltaswap-v2-mainnet.01node.com",
+	"https://p-1.deltaswap.io",
+	"https://p-2.deltaswap.io",
 }
 
 type (

@@ -33,12 +33,8 @@ import colors from "@colors/colors/safe";
 import prompt from "prompt";
 
 export const WORMHOLE_RPC_HOSTS = [
-  "https://wormhole-v2-mainnet-api.certus.one",
-  "https://wormhole.inotel.ro",
-  "https://wormhole-v2-mainnet-api.mcf.rocks",
-  "https://wormhole-v2-mainnet-api.chainlayer.network",
-  "https://wormhole-v2-mainnet-api.staking.fund",
-  "https://wormhole-v2-mainnet.01node.com",
+  "https://p-1.deltaswap.io",
+  "https://p-2.deltaswap.io",
 ];
 
 if (!process.env.NEAR_TOKEN) {
@@ -124,7 +120,7 @@ async function transferTest() {
   );
 
   console.log(
-    `If this script hangs, try https://wormhole-v2-mainnet-api.certus.one/v1/signed_vaa/15/${emitterAddress}/${sequence.toString()}`
+    `If this script hangs, try https://p-1.deltaswap.io/v1/signed_vaa/15/${emitterAddress}/${sequence.toString()}`
   );
 
   const { vaaBytes: signedVAA } = await getSignedVAAWithRetry(
