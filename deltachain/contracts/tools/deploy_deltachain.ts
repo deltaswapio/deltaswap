@@ -88,8 +88,7 @@ async function main() {
   const mnemonic =
     devnetConsts.chains[7077].accounts.deltachainNodeOfPhylax0.mnemonic;
 
-  //const wallet = await getWallet(mnemonic);
-  const wallet = await getWallet("print marble obtain release dose wheel rookie begin clinic treat slot friend flash lady canal immune off permit news hawk simple cactus unable glory");
+  const wallet = await getWallet(mnemonic);
   const client = await getDeltachainSigningClient(host, wallet);
 
   // there are several Cosmos chains in devnet, so check the config is as expected
