@@ -129,9 +129,9 @@ const MAINNET = {
     nft_bridge: undefined,
   },
   bsc: {
-    core: "0x98f3c9e6E3fAce36bAAd05FE09d375Ef1464288B",
-    token_bridge: "0xB6F6D86a8f9879A9c87f643768d9efc38c1Da6E7",
-    nft_bridge: "0x5a58505a96D1dbf8dF91cB21B54419FC36e93fdE",
+    core: "0x825E560FeBA3Fd7821186b1B9e640a8D712e3EBc",
+    token_bridge: "0xC891aBa0b42818fb4c975Bf6461033c62BCE75ff",
+    nft_bridge: "0x2a1280866Fa742E50c93472B68B5026B558596e8",
   },
   polygon: {
     core: "0x7A4B5a56256163F07b2C80A7cA55aBE66c4ec4d7",
@@ -139,9 +139,9 @@ const MAINNET = {
     nft_bridge: "0x90BBd86a6Fe93D3bc3ed6335935447E75fAb7fCf",
   },
   planq: {
-    core: undefined,
-    token_bridge: undefined,
-    nft_bridge: undefined,
+    core: "0xF6266C4D2dAC62e3047ad70f490D35c1A771f37D",
+    token_bridge: "0x4FD8625cfE4B0034642140005b78291D26183df1",
+    nft_bridge: "0x853348a8b1Db0db0A0F1e955fD7A90F84B03D050",
   },
   avalanche: {
     core: "0x54a8e5f9c4CbA08F9943965859F6c34eAF03E26c",
