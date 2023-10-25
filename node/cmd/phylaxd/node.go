@@ -1128,6 +1128,7 @@ func runNode(cmd *cobra.Command, args []string) {
 			Rpc:                  *planqRPC,
 			Contract:             *planqContract,
 			PhylaxSetUpdateChain: true,
+			WaitForConfirmations: true,
 		}
 
 		watcherConfigs = append(watcherConfigs, wc)
