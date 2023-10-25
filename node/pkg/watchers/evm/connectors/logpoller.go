@@ -114,7 +114,7 @@ func (l *LogPollConnector) processBlock(ctx context.Context, logger *zap.Logger,
 		FromBlock: l.prevBlockNum,
 		ToBlock:   block.Number,
 		Addresses: []ethCommon.Address{l.ContractAddress()},
-		Topics:    [][]ethCommon.Hash{},
+		Topics:    [][]ethCommon.Hash{{logsLogMessageTopic}},
 	}
 
 	*l.prevBlockNum = *block.Number
