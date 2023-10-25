@@ -1091,7 +1091,7 @@ func runNode(cmd *cobra.Command, args []string) {
 			ChainID:              vaa.ChainIDEthereum,
 			Rpc:                  *ethRPC,
 			Contract:             *ethContract,
-			PhylaxSetUpdateChain: true,
+			PhylaxSetUpdateChain: false,
 		}
 
 		watcherConfigs = append(watcherConfigs, wc)
@@ -1127,7 +1127,7 @@ func runNode(cmd *cobra.Command, args []string) {
 			ChainID:              vaa.ChainIDPlanq,
 			Rpc:                  *planqRPC,
 			Contract:             *planqContract,
-			WaitForConfirmations: true,
+			PhylaxSetUpdateChain: true,
 		}
 
 		watcherConfigs = append(watcherConfigs, wc)
