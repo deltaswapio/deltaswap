@@ -116,7 +116,11 @@ const phylaxs = new MockPhylaxs(PHYLAX_SET_INDEX, PHYLAX_KEYS);
 // for generating governance deltaswap messages
 const governance = new GovernanceEmitter(GOVERNANCE_EMITTER_ADDRESS);
 
-const phylaxIndices = ci ? [0, 1] : [0];
+const phylaxIndices = process.env.NUM_PHYLAXS
+    ? [...Array(parseInt(process.env.NUM_PHYLAXS)).keys()]
+    : ci
+        ? [0, 1]
+        : [0];
 
 const REASONABLE_GAS_LIMIT = 500000;
 const TOO_LOW_GAS_LIMIT = 10000;
