@@ -24,16 +24,70 @@ async function run() {
   console.log("Start! " + processName);
 
   // TODO: to send txs concurrently, the cross-registrations need to be separated out
-  for (const operatingChain of operation.operatingChains) {
-    await registerChainsDeltaswapRelayer(operatingChain);
-    await registerOnExistingChainsDeltaswapRelayer(operatingChain);
+  // for (const operatingChain of operation.operatingChains) {
+  // await registerChainsDeltaswapRelayer(operatingChain);
+  // await registerOnExistingChainsDeltaswapRelayer(operatingChain);
+  //}
+  for (const myChain of allChains) {
+    registerChainsDeltaswapRelayerIfUnregistered(myChain);
   }
+}
+
+async function registerChainsDeltaswapRelayerIfUnregistered(
+  operatingChain: ChainInfo
+) {
+  console.log(
+    "[START] Registering all the deltaswap relayers onto Deltaswap Relayer " +
+      operatingChain.chainId
+  );
+
+  const deltaswapRelayer = await getDeltaswapRelayer(operatingChain);
+  for (const targetChain of allChains) {
+    let currentRegisteredContract;
+    try {
+      currentRegisteredContract = (await deltaswapRelayer.getRegisteredDeltaswapRelayerContract(
+        targetChain.chainId
+      ))
+    } catch (e) {
+      console.log(`Error getting the deltaswap relayer for chain ${operatingChain.chainId}, rpc ${operatingChain.rpc}`)
+    }
+    if (
+       currentRegisteredContract === zeroBytes32
+    ) {
+      console.log(
+        `[start] This chain ${targetChain.chainId} is not registered onto chain ${operatingChain.chainId} yet`
+      );
+      try {
+        await registerDeltaswapRelayer(
+          deltaswapRelayer,
+          operatingChain,
+          targetChain
+        );
+      } catch(error) {
+        console.log(`[error] Registering ${targetChain.chainId} onto ${operatingChain.chainId} failed`)
+        console.log(`The error was ${error}`)
+      }
+      console.log(
+        `[done] Now this chain ${targetChain.chainId} is registered onto chain ${operatingChain.chainId}`
+      );
+    } else {
+      // This doesn't check that the registered address is correct - only that it exists and is not zero
+      console.log(
+        `This chain ${targetChain.chainId} is already registered onto chain ${operatingChain.chainId}`
+      );
+    }
+  }
+
+  console.log(
+    "Did all contract registrations for the core relayer on " +
+      operatingChain.chainId
+  );
 }
 
 async function registerChainsDeltaswapRelayer(operatingChain: ChainInfo) {
   console.log(
     "Registering all the deltaswap relayers onto Deltaswap Relayer " +
-      operatingChain.chainId,
+      operatingChain.chainId
   );
 
   const deltaswapRelayer = await getDeltaswapRelayer(operatingChain);
@@ -43,7 +97,7 @@ async function registerChainsDeltaswapRelayer(operatingChain: ChainInfo) {
 
   console.log(
     "Did all contract registrations for the core relayer on " +
-      operatingChain.chainId,
+      operatingChain.chainId
   );
 }
 
@@ -51,19 +105,19 @@ async function registerOnExistingChainsDeltaswapRelayer(targetChain: ChainInfo) 
   console.log(
     "Registering Deltaswap Relayer " +
       targetChain.chainId +
-      " onto all the deltaswap relayers",
+      " onto all the deltaswap relayers"
   );
   const tasks = await Promise.allSettled(
     operation.supportedChains.map(async (operatingChain) => {
       const coreRelayer = await getDeltaswapRelayer(operatingChain);
 
       return registerDeltaswapRelayer(coreRelayer, operatingChain, targetChain);
-    }),
+    })
   );
   for (const task of tasks) {
     if (task.status === "rejected") {
       console.log(
-        `Failed cross registration. ${task.reason?.stack || task.reason}`,
+        `Failed cross registration. ${task.reason?.stack || task.reason}`
       );
     }
   }
@@ -71,18 +125,18 @@ async function registerOnExistingChainsDeltaswapRelayer(targetChain: ChainInfo) 
   console.log(
     "Did all contract registrations of the core relayer on " +
       targetChain.chainId +
-      " onto the existing (non operating) chains",
+      " onto the existing (non operating) chains"
   );
 }
 
 async function registerDeltaswapRelayer(
   deltaswapRelayer: DeltaswapRelayer,
   operatingChain: ChainInfo,
-  targetChain: ChainInfo,
+  targetChain: ChainInfo
 ) {
   const registration =
     await deltaswapRelayer.getRegisteredDeltaswapRelayerContract(
-      targetChain.chainId,
+      targetChain.chainId
     );
   if (registration !== zeroBytes32) {
     const registrationAddress = await getDeltaswapRelayerAddress(targetChain);
@@ -95,7 +149,7 @@ Actual: ${registration}`);
     }
 
     console.log(
-      `Chain ${targetChain.chainId} on chain ${operatingChain.chainId} is already registered`,
+      `Chain ${targetChain.chainId} on chain ${operatingChain.chainId} is already registered`
     );
     return;
   }
@@ -103,19 +157,19 @@ Actual: ${registration}`);
   const vaa = await createRegisterChainVAA(targetChain);
 
   console.log(
-    `Registering chain ${targetChain.chainId} onto chain ${operatingChain.chainId}`,
+    `Registering chain ${targetChain.chainId} onto chain ${operatingChain.chainId}`
   );
   try {
     const overrides = await buildOverrides(
       () => deltaswapRelayer.estimateGas.registerDeltaswapRelayerContract(vaa),
-      operatingChain,
+      operatingChain
     );
     await deltaswapRelayer
       .registerDeltaswapRelayerContract(vaa, overrides)
       .then(wait);
   } catch (error) {
     console.log(
-      `Error in registering chain ${targetChain.chainId} onto ${operatingChain.chainId}`,
+      `Error in registering chain ${targetChain.chainId} onto ${operatingChain.chainId}`
     );
     console.log((error as any)?.stack || error);
   }
