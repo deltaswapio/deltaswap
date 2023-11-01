@@ -180,7 +180,7 @@ func (w *Watcher) Run(parentCtx context.Context) error {
 	ctx, watcherContextCancelFunc := context.WithCancel(parentCtx)
 	defer watcherContextCancelFunc()
 
-	useFinalizedBlocks := ((w.chainID == vaa.ChainIDEthereum || w.chainID == vaa.ChainIDSepolia) && (!w.unsafeDevMode))
+	useFinalizedBlocks := ((w.chainID == vaa.ChainIDEthereum || w.chainID == vaa.ChainIDSepolia || w.chainID == vaa.ChainIDPlanq) && (!w.unsafeDevMode))
 	if (w.chainID == vaa.ChainIDKarura || w.chainID == vaa.ChainIDAcala) && (!w.unsafeDevMode) {
 		ufb, err := w.getAcalaMode(ctx)
 		if err != nil {
