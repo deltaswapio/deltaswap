@@ -4,7 +4,7 @@ const jsonfile = require("jsonfile");
 const {getRandomBytes} = require("truffle/build/5521.bundled");
 const Deltaswap = artifacts.require("Deltaswap");
 const ImplementationFullABI = jsonfile.readFileSync("../build/contracts/Implementation.json").abi;
-const messageFeeVAA = process.env.MESSAGE_FEE_VAA
+const transferFeeVAA = process.env.TRANSFER_FEE_VAA
 
 module.exports = async function (callback) {
     try {
@@ -17,7 +17,7 @@ module.exports = async function (callback) {
         );
 
         console.log("Setting message fee");
-        await deltaswap.methods.submitSetMessageFee("0x" + messageFeeVAA).send({
+        await deltaswap.methods.submitTransferFees("0x" + transferFeeVAA).send({
             value: 0,
             from: accounts[0],
             gasLimit: 2000000,
