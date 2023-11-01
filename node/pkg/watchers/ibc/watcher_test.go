@@ -216,9 +216,11 @@ func TestParseIbcAllChannelChainsQueryResults(t *testing.T) {
 }
 
 func TestConvertingWsUrlToHttpUrl(t *testing.T) {
-	assert.Equal(t, "http://deltachain:26657", convertWsUrlToHttpUrl("ws://deltachain:26657/websocket"))
-	assert.Equal(t, "http://deltachain:26657", convertWsUrlToHttpUrl("ws://deltachain:26657"))
-	assert.Equal(t, "http://deltachain:26657", convertWsUrlToHttpUrl("deltachain:26657"))
+	assert.Equal(t, "http://wormchain:26657", convertWsUrlToHttpUrl("ws://deltachain:26657/websocket"))
+	assert.Equal(t, "http://wormchain:26657", convertWsUrlToHttpUrl("ws://deltachain:26657"))
+	assert.Equal(t, "http://wormchain:26657", convertWsUrlToHttpUrl("wss://deltachain:26657/websocket"))
+	assert.Equal(t, "http://wormchain:26657", convertWsUrlToHttpUrl("wss://deltachain:26657"))
+	assert.Equal(t, "http://wormchain:26657", convertWsUrlToHttpUrl("deltachain:26657"))
 }
 
 func TestParseAbciInfoResults(t *testing.T) {

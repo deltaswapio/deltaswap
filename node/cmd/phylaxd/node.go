@@ -145,9 +145,10 @@ var (
 	deltachainKeyPath       *string
 	deltachainKeyPassPhrase *string
 
-	ibcWS       *string
-	ibcLCD      *string
-	ibcContract *string
+	ibcWS             *string
+	ibcLCD            *string
+	ibcBlockHeightURL *string
+	ibcContract       *string
 
 	accountantContract      *string
 	accountantWS            *string
@@ -316,6 +317,7 @@ func init() {
 
 	ibcWS = NodeCmd.Flags().String("ibcWS", "", "Websocket used to listen to the IBC receiver smart contract on deltachain")
 	ibcLCD = NodeCmd.Flags().String("ibcLCD", "", "Path to LCD service root for http calls")
+	ibcBlockHeightURL = NodeCmd.Flags().String("ibcBlockHeightURL", "", "Optional URL to query for the block height (generated from ibcWS if not specified)")
 	ibcContract = NodeCmd.Flags().String("ibcContract", "", "Address of the IBC smart contract on deltachain")
 
 	accountantWS = NodeCmd.Flags().String("accountantWS", "", "Websocket used to listen to the accountant smart contract on deltachain")
@@ -867,6 +869,7 @@ func runNode(cmd *cobra.Command, args []string) {
 	rpcMap["celoRPC"] = *celoRPC
 	rpcMap["ethRPC"] = *ethRPC
 	rpcMap["fantomRPC"] = *fantomRPC
+	rpcMap["ibcBlockHeightURL"] = *ibcBlockHeightURL
 	rpcMap["ibcLCD"] = *ibcLCD
 	rpcMap["ibcWS"] = *ibcWS
 	rpcMap["karuraRPC"] = *karuraRPC
@@ -1423,9 +1426,10 @@ func runNode(cmd *cobra.Command, args []string) {
 	var ibcWatcherConfig *node.IbcWatcherConfig = nil
 	if shouldStart(ibcWS) {
 		ibcWatcherConfig = &node.IbcWatcherConfig{
-			Websocket: *ibcWS,
-			Lcd:       *ibcLCD,
-			Contract:  *ibcContract,
+			Websocket:      *ibcWS,
+			Lcd:            *ibcLCD,
+			BlockHeightURL: *ibcBlockHeightURL,
+			Contract:       *ibcContract,
 		}
 	}
 
