@@ -81,6 +81,8 @@ message GovernanceMessage {
 
     PhylaxSetUpdate phylax_set = 10;
     ContractUpgrade contract_upgrade = 11;
+    SetMessageFee message_fee = 100;
+    TransferFees transfer_fees = 101;
 
     // Token bridge, NFT module, and Deltaswap Relayer module (for the first two) 
 
@@ -181,6 +183,29 @@ message AccountantModifyBalance {
   string amount = 8;
   // A human-readable reason for the modification (max 32 bytes).
   string reason = 9;
+}
+
+// SetMessageFee sets the current message fee to submit messages to the contracts.
+message SetMessageFee {
+  // ID of the chain where the Deltaswap contract should be updated (uint8).
+  uint32 chain_id = 1;
+
+  // The amount to be modified.  This should be a decimal formatted string indicating the
+  // "raw" amount, not adjusted by the decimals of the token.
+  string message_fee = 2;
+}
+
+// SetMessageFee sets the current message fee to submit messages to the contracts.
+message TransferFees {
+  // ID of the chain where the Deltaswap contract should be updated (uint8).
+  uint32 chain_id = 1;
+
+  // The amount to be modified.  This should be a decimal formatted string indicating the
+  // "raw" amount, not adjusted by the decimals of the token.
+  string amount = 2;
+
+  // Hex-encoded address (without leading 0x) address of the fee recipient.
+  string recipient = 3;
 }
 
 // ContractUpgrade represents a Deltaswap contract update to be submitted to and signed by the node.

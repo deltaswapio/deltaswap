@@ -27,6 +27,7 @@ var templatePhylaxIndex *int
 var chainID *string
 var address *string
 var module *string
+var amount *string
 
 var circleIntegrationChainID *string
 var circleIntegrationFinality *string
@@ -68,6 +69,17 @@ func init() {
 
 	setUpdateNumPhylaxs = AdminClientPhylaxSetTemplateCmd.Flags().Int("num", 1, "Number of devnet phylaxs in example file")
 	TemplateCmd.AddCommand(AdminClientPhylaxSetTemplateCmd)
+
+	feeFlagSet := pflag.NewFlagSet("fees", pflag.ExitOnError)
+	amount = feeFlagSet.String("amount", "", "Amount (This should be in wei)")
+
+	AdminClientSetMessageFeeTemplateCmd.Flags().AddFlagSet(governanceFlagSet)
+	AdminClientSetMessageFeeTemplateCmd.Flags().AddFlagSet(feeFlagSet)
+	TemplateCmd.AddCommand(AdminClientSetMessageFeeTemplateCmd)
+
+	AdminClientTransferFeesTemplateCmd.Flags().AddFlagSet(governanceFlagSet)
+	AdminClientTransferFeesTemplateCmd.Flags().AddFlagSet(feeFlagSet)
+	TemplateCmd.AddCommand(AdminClientTransferFeesTemplateCmd)
 
 	AdminClientContractUpgradeTemplateCmd.Flags().AddFlagSet(governanceFlagSet)
 	TemplateCmd.AddCommand(AdminClientContractUpgradeTemplateCmd)
@@ -170,6 +182,18 @@ var AdminClientPhylaxSetTemplateCmd = &cobra.Command{
 	Use:   "phylax-set-update",
 	Short: "Generate an empty phylax set template",
 	Run:   runPhylaxSetTemplate,
+}
+
+var AdminClientSetMessageFeeTemplateCmd = &cobra.Command{
+	Use:   "set-message-fee",
+	Short: "Generate an empty set message fee template",
+	Run:   runSetMessageFeeTemplate,
+}
+
+var AdminClientTransferFeesTemplateCmd = &cobra.Command{
+	Use:   "transfer-fees",
+	Short: "Generate an empty transfer fees template",
+	Run:   runTransferFeeTemplate,
 }
 
 var AdminClientContractUpgradeTemplateCmd = &cobra.Command{
@@ -293,6 +317,69 @@ func runPhylaxSetTemplate(cmd *cobra.Command, args []string) {
 				Nonce:    rand.Uint32(),
 				Payload: &nodev1.GovernanceMessage_PhylaxSet{
 					PhylaxSet: &nodev1.PhylaxSetUpdate{Phylaxs: phylaxs},
+				},
+			},
+		},
+	}
+
+	b, err := prototext.MarshalOptions{Multiline: true}.Marshal(m)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Print(string(b))
+}
+
+func runSetMessageFeeTemplate(cmd *cobra.Command, args []string) {
+	chainID, err := parseChainID(*chainID)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	m := &nodev1.InjectGovernanceVAARequest{
+		CurrentSetIndex: uint32(*templatePhylaxIndex),
+		Messages: []*nodev1.GovernanceMessage{
+			{
+				Sequence: rand.Uint64(),
+				Nonce:    rand.Uint32(),
+				Payload: &nodev1.GovernanceMessage_MessageFee{
+					MessageFee: &nodev1.SetMessageFee{
+						ChainId:    uint32(chainID),
+						MessageFee: *amount,
+					},
+				},
+			},
+		},
+	}
+
+	b, err := prototext.MarshalOptions{Multiline: true}.Marshal(m)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Print(string(b))
+}
+
+func runTransferFeeTemplate(cmd *cobra.Command, args []string) {
+	address, err := parseAddress(*address)
+	if err != nil {
+		log.Fatal(err)
+	}
+	chainID, err := parseChainID(*chainID)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	m := &nodev1.InjectGovernanceVAARequest{
+		CurrentSetIndex: uint32(*templatePhylaxIndex),
+		Messages: []*nodev1.GovernanceMessage{
+			{
+				Sequence: rand.Uint64(),
+				Nonce:    rand.Uint32(),
+				Payload: &nodev1.GovernanceMessage_TransferFees{
+					TransferFees: &nodev1.TransferFees{
+						ChainId:   uint32(chainID),
+						Amount:    *amount,
+						Recipient: address,
+					},
 				},
 			},
 		},

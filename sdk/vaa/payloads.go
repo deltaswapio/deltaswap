@@ -114,6 +114,17 @@ type (
 		NewIndex uint32
 	}
 
+	BodySetMessageFee struct {
+		ChainID    ChainID
+		MessageFee *uint256.Int
+	}
+
+	BodyTransferFees struct {
+		ChainID   ChainID
+		Amount    *uint256.Int
+		Recipient Address
+	}
+
 	// BodyTokenBridgeRegisterChain is a governance message to register a chain on the token bridge
 	BodyTokenBridgeRegisterChain struct {
 		Module         string
@@ -241,6 +252,40 @@ func (b BodyPhylaxSetUpdate) Serialize() []byte {
 	for _, k := range b.Keys {
 		buf.Write(k[:])
 	}
+
+	return buf.Bytes()
+}
+
+func (b BodySetMessageFee) Serialize() []byte {
+	buf := new(bytes.Buffer)
+
+	// Module
+	buf.Write(CoreModule)
+	// Action
+	MustWrite(buf, binary.BigEndian, ActionCoreSetMessageFee)
+	// ChainID
+	MustWrite(buf, binary.BigEndian, uint16(b.ChainID))
+
+	amount_bytes := b.MessageFee.Bytes32()
+	buf.Write(amount_bytes[:])
+
+	return buf.Bytes()
+}
+
+func (b BodyTransferFees) Serialize() []byte {
+	buf := new(bytes.Buffer)
+
+	// Module
+	buf.Write(CoreModule)
+	// Action
+	MustWrite(buf, binary.BigEndian, ActionCoreTransferFees)
+	// ChainID
+	MustWrite(buf, binary.BigEndian, uint16(b.ChainID))
+
+	amount_bytes := b.Amount.Bytes32()
+	buf.Write(amount_bytes[:])
+
+	buf.Write(b.Recipient[:])
 
 	return buf.Bytes()
 }

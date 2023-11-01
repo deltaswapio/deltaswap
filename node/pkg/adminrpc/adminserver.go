@@ -123,6 +123,75 @@ func adminPhylaxSetUpdateToVAA(req *nodev1.PhylaxSetUpdate, timestamp time.Time,
 	return v, nil
 }
 
+// adminSetMessageFee converts a nodev1.SetMessageFee message to its canonical VAA representation.
+// Returns an error if the data is invalid.
+func adminSetMessageFee(req *nodev1.SetMessageFee, timestamp time.Time, phylaxSetIndex uint32, nonce uint32, sequence uint64) (*vaa.VAA, error) {
+	amount_big := big.NewInt(0)
+	amount_big, ok := amount_big.SetString(req.MessageFee, 10)
+	if !ok {
+		return nil, errors.New("invalid amount")
+	}
+
+	// uint256 has Bytes32 method for easier serialization
+	amount, overflow := uint256.FromBig(amount_big)
+	if overflow {
+		return nil, errors.New("amount overflow")
+	}
+
+	if req.ChainId > math.MaxUint16 {
+		return nil, errors.New("invalid chain_id")
+	}
+
+	v := vaa.CreateGovernanceVAA(timestamp, nonce, sequence, phylaxSetIndex,
+		vaa.BodySetMessageFee{
+			ChainID:    vaa.ChainID(req.ChainId),
+			MessageFee: amount,
+		}.Serialize())
+
+	return v, nil
+}
+
+// adminSetMessageFee converts a nodev1.SetMessageFee message to its canonical VAA representation.
+// Returns an error if the data is invalid.
+func adminTransferFees(req *nodev1.TransferFees, timestamp time.Time, phylaxSetIndex uint32, nonce uint32, sequence uint64) (*vaa.VAA, error) {
+	b, err := hex.DecodeString(req.Recipient)
+	if err != nil {
+		return nil, errors.New("invalid new contract address encoding (expected hex)")
+	}
+
+	if len(b) != 32 {
+		return nil, errors.New("invalid new_contract address")
+	}
+
+	amount_big := big.NewInt(0)
+	amount_big, ok := amount_big.SetString(req.Amount, 10)
+	if !ok {
+		return nil, errors.New("invalid amount")
+	}
+
+	// uint256 has Bytes32 method for easier serialization
+	amount, overflow := uint256.FromBig(amount_big)
+	if overflow {
+		return nil, errors.New("amount overflow")
+	}
+
+	if req.ChainId > math.MaxUint16 {
+		return nil, errors.New("invalid chain_id")
+	}
+
+	recipient := vaa.Address{}
+	copy(recipient[:], b)
+
+	v := vaa.CreateGovernanceVAA(timestamp, nonce, sequence, phylaxSetIndex,
+		vaa.BodyTransferFees{
+			ChainID:   vaa.ChainID(req.ChainId),
+			Amount:    amount,
+			Recipient: recipient,
+		}.Serialize())
+
+	return v, nil
+}
+
 // adminContractUpgradeToVAA converts a nodev1.ContractUpgrade message to its canonical VAA representation.
 // Returns an error if the data is invalid.
 func adminContractUpgradeToVAA(req *nodev1.ContractUpgrade, timestamp time.Time, phylaxSetIndex uint32, nonce uint32, sequence uint64) (*vaa.VAA, error) {
@@ -551,6 +620,10 @@ func GovMsgToVaa(message *nodev1.GovernanceMessage, currentSetIndex uint32, time
 	)
 
 	switch payload := message.Payload.(type) {
+	case *nodev1.GovernanceMessage_MessageFee:
+		v, err = adminSetMessageFee(payload.MessageFee, timestamp, currentSetIndex, message.Nonce, message.Sequence)
+	case *nodev1.GovernanceMessage_TransferFees:
+		v, err = adminTransferFees(payload.TransferFees, timestamp, currentSetIndex, message.Nonce, message.Sequence)
 	case *nodev1.GovernanceMessage_PhylaxSet:
 		v, err = adminPhylaxSetUpdateToVAA(payload.PhylaxSet, timestamp, currentSetIndex, message.Nonce, message.Sequence)
 	case *nodev1.GovernanceMessage_ContractUpgrade:
