@@ -180,7 +180,7 @@ func (w *Watcher) Run(parentCtx context.Context) error {
 	ctx, watcherContextCancelFunc := context.WithCancel(parentCtx)
 	defer watcherContextCancelFunc()
 
-	useFinalizedBlocks := ((w.chainID == vaa.ChainIDEthereum || w.chainID == vaa.ChainIDSepolia || w.chainID == vaa.ChainIDPlanq) && (!w.unsafeDevMode))
+	useFinalizedBlocks := ((w.chainID == vaa.ChainIDEthereum || w.chainID == vaa.ChainIDSepolia) && (!w.unsafeDevMode))
 	if (w.chainID == vaa.ChainIDKarura || w.chainID == vaa.ChainIDAcala) && (!w.unsafeDevMode) {
 		ufb, err := w.getAcalaMode(ctx)
 		if err != nil {
@@ -247,6 +247,29 @@ func (w *Watcher) Run(parentCtx context.Context) error {
 			return fmt.Errorf("creating block poll connector failed: %w", err)
 		}
 	} else if w.chainID == vaa.ChainIDNeon && !w.unsafeDevMode {
+		if w.l1Finalizer == nil {
+			return fmt.Errorf("unable to create neon watcher because the l1 finalizer is not set")
+		}
+		baseConnector, err := connectors.NewEthereumConnector(timeout, w.networkName, w.url, w.contract, logger)
+		if err != nil {
+			ethConnectionErrors.WithLabelValues(w.networkName, "dial_error").Inc()
+			p2p.DefaultRegistry.AddErrorCount(w.chainID, 1)
+			return fmt.Errorf("dialing eth client failed: %w", err)
+		}
+		finalizer := finalizers.NewNeonFinalizer(logger, w.l1Finalizer)
+		pollConnector, err := connectors.NewBlockPollConnector(ctx, baseConnector, finalizer, 250*time.Millisecond, false, false)
+		if err != nil {
+			ethConnectionErrors.WithLabelValues(w.networkName, "dial_error").Inc()
+			p2p.DefaultRegistry.AddErrorCount(w.chainID, 1)
+			return fmt.Errorf("creating block poll connector failed: %w", err)
+		}
+		w.ethConn, err = connectors.NewLogPollConnector(ctx, pollConnector, baseConnector.Client())
+		if err != nil {
+			ethConnectionErrors.WithLabelValues(w.networkName, "dial_error").Inc()
+			p2p.DefaultRegistry.AddErrorCount(w.chainID, 1)
+			return fmt.Errorf("creating poll connector failed: %w", err)
+		}
+	} else if w.chainID == vaa.ChainIDPlanq && !w.unsafeDevMode {
 		if w.l1Finalizer == nil {
 			return fmt.Errorf("unable to create neon watcher because the l1 finalizer is not set")
 		}
