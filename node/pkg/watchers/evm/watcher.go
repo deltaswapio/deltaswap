@@ -270,16 +270,13 @@ func (w *Watcher) Run(parentCtx context.Context) error {
 			return fmt.Errorf("creating poll connector failed: %w", err)
 		}
 	} else if w.chainID == vaa.ChainIDPlanq && !w.unsafeDevMode {
-		if w.l1Finalizer == nil {
-			return fmt.Errorf("unable to create neon watcher because the l1 finalizer is not set")
-		}
 		baseConnector, err := connectors.NewEthereumConnector(timeout, w.networkName, w.url, w.contract, logger)
 		if err != nil {
 			ethConnectionErrors.WithLabelValues(w.networkName, "dial_error").Inc()
 			p2p.DefaultRegistry.AddErrorCount(w.chainID, 1)
 			return fmt.Errorf("dialing eth client failed: %w", err)
 		}
-		finalizer := finalizers.NewNeonFinalizer(logger, w.l1Finalizer)
+		finalizer := finalizers.NewDefaultFinalizer()
 		pollConnector, err := connectors.NewBlockPollConnector(ctx, baseConnector, finalizer, 250*time.Millisecond, false, false)
 		if err != nil {
 			ethConnectionErrors.WithLabelValues(w.networkName, "dial_error").Inc()
