@@ -75,7 +75,7 @@ func adminServiceRunnable(
 	var evmConnector connectors.Connector
 	if ethRpc != nil && ethContract != nil {
 		contract := ethcommon.HexToAddress(*ethContract)
-		evmConnector, err = connectors.NewEthereumConnector(ctx, "planq", *ethRpc, contract, logger)
+		evmConnector, err = connectors.NewEthereumBaseConnector(ctx, "planq", *ethRpc, contract, logger)
 		if err != nil {
 			return nil, fmt.Errorf("failed to connect to to planq")
 		}
