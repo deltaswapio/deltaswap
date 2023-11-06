@@ -4,7 +4,7 @@
 pragma solidity ^0.8.0;
 
 import {BytesParsing} from "../relayer/libraries/BytesParsing.sol";
-import "../interfaces/IWormhole.sol";
+import "../interfaces/IDeltaswap.sol";
 
 // @dev ParsedQueryResponse is returned by QueryResponse.parseAndVerifyQueryResponse().
 struct ParsedQueryResponse {
@@ -95,8 +95,8 @@ abstract contract QueryResponse {
     }
     
     /// @dev parseAndVerifyQueryResponse verifies the query response and returns the parsed response.
-    function parseAndVerifyQueryResponse(address wormhole, bytes memory response, IWormhole.Signature[] memory signatures) public view returns (ParsedQueryResponse memory r) {
-        verifyQueryResponseSignatures(wormhole, response, signatures);
+    function parseAndVerifyQueryResponse(address deltaswap, bytes memory response, IDeltaswap.Signature[] memory signatures) public view returns (ParsedQueryResponse memory r) {
+        verifyQueryResponseSignatures(deltaswap, response, signatures);
 
         uint index = 0;
         
@@ -327,46 +327,46 @@ abstract contract QueryResponse {
     }
 
     /**
-     * @dev verifyQueryResponseSignatures verifies the signatures on a query response. It calls into the Wormhole contract.
-     * IWormhole.Signature expects the last byte to be bumped by 27 
+     * @dev verifyQueryResponseSignatures verifies the signatures on a query response. It calls into the Deltaswap contract.
+     * IDeltaswap.Signature expects the last byte to be bumped by 27
      * see https://github.com/deltaswapio/deltaswap/blob/637b1ee657de7de05f783cbb2078dd7d8bfda4d0/ethereum/contracts/Messages.sol#L174
      */
-    function verifyQueryResponseSignatures(address _wormhole, bytes memory response, IWormhole.Signature[] memory signatures) public view {
-        IWormhole wormhole = IWormhole(_wormhole);
+    function verifyQueryResponseSignatures(address _deltaswap, bytes memory response, IDeltaswap.Signature[] memory signatures) public view {
+        IDeltaswap deltaswap = IDeltaswap(_deltaswap);
         // It might be worth adding a verifyCurrentQuorum call on the core bridge so that there is only 1 cross call instead of 4.
-        uint32 gsi = wormhole.getCurrentGuardianSetIndex();
-        IWormhole.GuardianSet memory guardianSet = wormhole.getGuardianSet(gsi);
+        uint32 gsi = deltaswap.getCurrentPhylaxSetIndex();
+        IDeltaswap.PhylaxSet memory phylaxSet = deltaswap.getPhylaxSet(gsi);
 
         bytes32 responseHash = getResponseDigest(response);
 
        /**
-        * @dev Checks whether the guardianSet has zero keys
-        * WARNING: This keys check is critical to ensure the guardianSet has keys present AND to ensure
-        * that guardianSet key size doesn't fall to zero and negatively impact quorum assessment.  If guardianSet
+        * @dev Checks whether the phylaxSet has zero keys
+        * WARNING: This keys check is critical to ensure the phylaxSet has keys present AND to ensure
+        * that phylaxSet key size doesn't fall to zero and negatively impact quorum assessment.  If phylaxSet
         * key length is 0 and vm.signatures length is 0, this could compromise the integrity of both vm and
         * signature verification.
         */
-        if(guardianSet.keys.length == 0){
-            revert("invalid guardian set");
+        if (phylaxSet.keys.length == 0) {
+            revert("invalid phylax set");
         }
 
        /**
         * @dev We're using a fixed point number transformation with 1 decimal to deal with rounding.
-        *   WARNING: This quorum check is critical to assessing whether we have enough Guardian signatures to validate a VM
-        *   if making any changes to this, obtain additional peer review. If guardianSet key length is 0 and
+        *   WARNING: This quorum check is critical to assessing whether we have enough Phylax signatures to validate a VM
+        *   if making any changes to this, obtain additional peer review. If phylaxSet key length is 0 and
         *   vm.signatures length is 0, this could compromise the integrity of both vm and signature verification.
         */
-        if (signatures.length < wormhole.quorum(guardianSet.keys.length)){
+        if (signatures.length < deltaswap.quorum(phylaxSet.keys.length)) {
             revert("no quorum");
         }
 
-        /// @dev Verify the proposed vm.signatures against the guardianSet
-        (bool signaturesValid, string memory invalidReason) = wormhole.verifySignatures(responseHash, signatures, guardianSet);
+        /// @dev Verify the proposed vm.signatures against the phylaxSet
+        (bool signaturesValid, string memory invalidReason) = deltaswap.verifySignatures(responseHash, signatures, phylaxSet);
         if(!signaturesValid){
             revert(invalidReason);
         }
 
-        /// If we are here, we've validated the VM is a valid multi-sig that matches the current guardianSet.
+        /// If we are here, we've validated the VM is a valid multi-sig that matches the current phylaxSet.
     }
 
     /// @dev checkLength verifies that the message was fully consumed.

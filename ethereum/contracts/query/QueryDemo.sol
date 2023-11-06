@@ -4,14 +4,14 @@
 pragma solidity ^0.8.0;
 
 import "../libraries/external/BytesLib.sol";
-import "../interfaces/IWormhole.sol";
+import "../interfaces/IDeltaswap.sol";
 import "./QueryResponse.sol";
 
 error InvalidOwner();
 // @dev for the onlyOwner modifier
 error InvalidCaller();
 error InvalidContractAddress();
-error InvalidWormholeAddress();
+    error InvalidDeltaswapAddress();
 error InvalidForeignChainID();
 error ObsoleteUpdate();
 error StaleUpdate();
@@ -32,23 +32,23 @@ contract QueryDemo is QueryResponse {
     }
 
     address private immutable owner;
-    address private immutable wormhole;
+    address private immutable deltaswap;
     uint16 private immutable myChainID;
     mapping(uint16 => ChainEntry) private counters;
     uint16[] private foreignChainIDs;
 
     bytes4 GetMyCounter = bytes4(hex"916d5743");
 
-    constructor(address _owner, address _wormhole, uint16 _myChainID) {
+    constructor(address _owner, address _deltaswap, uint16 _myChainID) {
         if (_owner == address(0)) {
             revert InvalidOwner();
         }
         owner = _owner;
 
-        if (_wormhole == address(0)) {
-            revert InvalidWormholeAddress();
+        if (_deltaswap == address(0)) {
+            revert InvalidDeltaswapAddress();
         }
-        wormhole = _wormhole;  
+        deltaswap = _deltaswap;
         myChainID = _myChainID;
         counters[_myChainID] = ChainEntry(_myChainID, address(this), 0, 0, 0);
     }
@@ -85,9 +85,9 @@ contract QueryDemo is QueryResponse {
     }
 
     // @notice Takes the cross chain query response for the other counters, stores the results for the other chains, and updates the counter for this chain.
-    function updateCounters(bytes memory response, IWormhole.Signature[] memory signatures) public {
+    function updateCounters(bytes memory response, IDeltaswap.Signature[] memory signatures) public {
         uint256 adjustedBlockTime;
-        ParsedQueryResponse memory r = parseAndVerifyQueryResponse(address(wormhole), response, signatures);
+        ParsedQueryResponse memory r = parseAndVerifyQueryResponse(address(deltaswap), response, signatures);
         uint numResponses = r.responses.length;
         if (numResponses != foreignChainIDs.length) {
             revert UnexpectedResultLength();
@@ -105,7 +105,7 @@ contract QueryDemo is QueryResponse {
                 revert ObsoleteUpdate();
             }
 
-            // wormhole time is in microseconds, timestamp is in seconds
+            // deltaswap time is in microseconds, timestamp is in seconds
             adjustedBlockTime = eqr.blockTime / 1_000_000;
             if (adjustedBlockTime <= block.timestamp - 300) {
                 revert StaleUpdate();
