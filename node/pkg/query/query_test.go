@@ -410,7 +410,7 @@ func createQueryHandlerForTestWithoutPublisher(t *testing.T, ctx context.Context
 	md := mockData{}
 	var err error
 
-	md.sk, err = common.LoadPhylaxKey("dev.guardian.key", true)
+	md.sk, err = common.LoadPhylaxKey("dev.phylax.key", true)
 	require.NoError(t, err)
 	require.NotNil(t, md.sk)
 

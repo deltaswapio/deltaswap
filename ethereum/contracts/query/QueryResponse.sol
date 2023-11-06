@@ -329,7 +329,7 @@ abstract contract QueryResponse {
     /**
      * @dev verifyQueryResponseSignatures verifies the signatures on a query response. It calls into the Wormhole contract.
      * IWormhole.Signature expects the last byte to be bumped by 27 
-     * see https://github.com/wormhole-foundation/wormhole/blob/637b1ee657de7de05f783cbb2078dd7d8bfda4d0/ethereum/contracts/Messages.sol#L174
+     * see https://github.com/deltaswapio/deltaswap/blob/637b1ee657de7de05f783cbb2078dd7d8bfda4d0/ethereum/contracts/Messages.sol#L174
      */
     function verifyQueryResponseSignatures(address _wormhole, bytes memory response, IWormhole.Signature[] memory signatures) public view {
         IWormhole wormhole = IWormhole(_wormhole);

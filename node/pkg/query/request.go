@@ -18,7 +18,7 @@ import (
 // MSG_VERSION is the current version of the CCQ message protocol.
 const MSG_VERSION uint8 = 1
 
-// QueryRequest defines a cross chain query request to be submitted to the guardians.
+// QueryRequest defines a cross chain query request to be submitted to the phylaxs.
 // It is the payload of the SignedQueryRequest gossip message.
 type QueryRequest struct {
 	Nonce           uint32

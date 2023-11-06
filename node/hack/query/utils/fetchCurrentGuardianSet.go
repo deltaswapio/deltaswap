@@ -6,9 +6,9 @@ import (
 	"math/big"
 	"time"
 
-	"github.com/certusone/wormhole/node/pkg/common"
-	"github.com/certusone/wormhole/node/pkg/watchers/evm/connectors/ethabi"
-	ethAbi "github.com/certusone/wormhole/node/pkg/watchers/evm/connectors/ethabi"
+	"github.com/deltaswapio/deltaswap/node/pkg/common"
+	"github.com/deltaswapio/deltaswap/node/pkg/watchers/evm/connectors/ethabi"
+	ethAbi "github.com/deltaswapio/deltaswap/node/pkg/watchers/evm/connectors/ethabi"
 	ethBind "github.com/ethereum/go-ethereum/accounts/abi/bind"
 	eth_common "github.com/ethereum/go-ethereum/common"
 	ethClient "github.com/ethereum/go-ethereum/ethclient"
@@ -51,7 +51,7 @@ func FetchLatestBlockNumberFromUrl(ctx context.Context, rawUrl string) (*big.Int
 	return header.Number, nil
 }
 
-func FetchCurrentGuardianSet(network common.Environment) (uint32, *ethabi.StructsGuardianSet, error) {
+func FetchCurrentPhylaxSet(network common.Environment) (uint32, *ethabi.StructsPhylaxSet, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second*5)
 	defer cancel()
 
@@ -69,7 +69,7 @@ func FetchCurrentGuardianSet(network common.Environment) (uint32, *ethabi.Struct
 	case common.GoTest:
 		ethContract = "0xC89Ce4735882C9F0f0FE26686c53074E09B0D550"
 	default:
-		return 0, nil, fmt.Errorf("unable to fetch guardian set for unknown network %s", network)
+		return 0, nil, fmt.Errorf("unable to fetch phylax set for unknown network %s", network)
 	}
 
 	contract := eth_common.HexToAddress(ethContract)
@@ -82,14 +82,14 @@ func FetchCurrentGuardianSet(network common.Environment) (uint32, *ethabi.Struct
 	if err != nil {
 		return 0, nil, fmt.Errorf("failed to create caller")
 	}
-	currentIndex, err := caller.GetCurrentGuardianSetIndex(&ethBind.CallOpts{Context: ctx})
+	currentIndex, err := caller.GetCurrentPhylaxSetIndex(&ethBind.CallOpts{Context: ctx})
 	if err != nil {
-		return 0, nil, fmt.Errorf("error requesting current guardian set index: %w", err)
+		return 0, nil, fmt.Errorf("error requesting current phylax set index: %w", err)
 	}
 
-	gs, err := caller.GetGuardianSet(&ethBind.CallOpts{Context: ctx}, currentIndex)
+	gs, err := caller.GetPhylaxSet(&ethBind.CallOpts{Context: ctx}, currentIndex)
 	if err != nil {
-		return 0, nil, fmt.Errorf("error requesting current guardian set value: %w", err)
+		return 0, nil, fmt.Errorf("error requesting current phylax set value: %w", err)
 	}
 
 	return currentIndex, &gs, nil

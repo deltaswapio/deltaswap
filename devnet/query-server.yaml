@@ -29,9 +29,9 @@ spec:
     spec:
       containers:
         - name: query-server
-          image: guardiand-image
+          image: phylaxd-image
           command:
-            - /guardiand
+            - /phylaxd
             - query-server
             - --env
             - dev
@@ -47,9 +47,9 @@ spec:
             - http://eth-devnet:8545
             - --ethContract
             - "0xC89Ce4735882C9F0f0FE26686c53074E09B0D550"
-            # Hardcoded devnet bootstrap (generated from deterministic key in guardiand)
+            # Hardcoded devnet bootstrap (generated from deterministic key in phylaxd)
             - --bootstrap
-            - /dns4/guardian-0.guardian/udp/8996/quic/p2p/12D3KooWL3XJ9EMCyZvmmGXL2LMiVBtrVa2BuESsJiXkSj7333Jw
+            - /dns4/phylax-0.phylax/udp/8996/quic/p2p/12D3KooWL3XJ9EMCyZvmmGXL2LMiVBtrVa2BuESsJiXkSj7333Jw
             - --logLevel=info
           ports:
             - containerPort: 6069

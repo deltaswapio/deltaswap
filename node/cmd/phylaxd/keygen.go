@@ -21,7 +21,7 @@ func init() {
 
 var KeygenCmd = &cobra.Command{
 	Use:   "keygen [KEYFILE]",
-	Short: "Create guardian key at the specified path",
+	Short: "Create phylax key at the specified path",
 	Run:   runKeygen,
 	Args:  cobra.ExactArgs(1),
 }

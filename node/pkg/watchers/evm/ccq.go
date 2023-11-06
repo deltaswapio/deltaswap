@@ -7,7 +7,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/certusone/wormhole/node/pkg/watchers/evm/connectors"
+	"github.com/deltaswapio/deltaswap/node/pkg/watchers/evm/connectors"
 
 	"github.com/ethereum/go-ethereum/rpc"
 
@@ -15,7 +15,7 @@ import (
 	eth_hexutil "github.com/ethereum/go-ethereum/common/hexutil"
 	"go.uber.org/zap"
 
-	"github.com/certusone/wormhole/node/pkg/query"
+	"github.com/deltaswapio/deltaswap/node/pkg/query"
 )
 
 // ccqSendQueryResponseForError sends an error response back to the query handler.

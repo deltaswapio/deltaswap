@@ -31,7 +31,7 @@ var governanceVAACommand = &cobra.Command{
 
 var postMessageCommand = &cobra.Command{
 	Use:   "post_message [NONCE] [NUM_CONFIRMATIONS] [MESSAGE]",
-	Short: "Post a message to wormhole",
+	Short: "Post a message to deltaswap",
 	Run:   postMessage,
 	Args:  cobra.ExactArgs(3),
 }

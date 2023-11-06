@@ -64,7 +64,7 @@ func (msg *MessagePublication) Marshal() ([]byte, error) {
 const oldMinMsgLength = 83 // Old marshalled length with empty payload
 
 // UnmarshalOldMessagePublicationBeforeIsReobservation deserializes a MessagePublication from prior to the addition of IsReobservation.
-// This function can be deleted once all guardians have been upgraded. That's why the code is just duplicated.
+// This function can be deleted once all phylaxs have been upgraded. That's why the code is just duplicated.
 func UnmarshalOldMessagePublicationBeforeIsReobservation(data []byte) (*MessagePublication, error) {
 	if len(data) < oldMinMsgLength {
 		return nil, errors.New("message is too short")

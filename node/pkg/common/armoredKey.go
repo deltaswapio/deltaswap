@@ -18,7 +18,7 @@ const (
 	PhylaxKeyArmoredBlock = "DELTASWAP PHYLAX PRIVATE KEY"
 )
 
-// LoadGuardianKey loads a serialized guardian key from disk.
+// LoadPhylaxKey loads a serialized phylax key from disk.
 func LoadPhylaxKey(filename string, unsafeDevMode bool) (*ecdsa.PrivateKey, error) {
 	return LoadArmoredKey(filename, PhylaxKeyArmoredBlock, unsafeDevMode)
 }

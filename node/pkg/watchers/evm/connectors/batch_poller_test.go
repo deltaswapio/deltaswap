@@ -13,7 +13,7 @@ import (
 
 	"go.uber.org/zap"
 
-	ethAbi "github.com/certusone/wormhole/node/pkg/watchers/evm/connectors/ethabi"
+	ethAbi "github.com/deltaswapio/deltaswap/node/pkg/watchers/evm/connectors/ethabi"
 
 	ethereum "github.com/ethereum/go-ethereum"
 	ethCommon "github.com/ethereum/go-ethereum/common"
@@ -60,12 +60,12 @@ func (e *mockConnectorForBatchPoller) ContractAddress() ethCommon.Address {
 	return e.address
 }
 
-func (e *mockConnectorForBatchPoller) GetCurrentGuardianSetIndex(ctx context.Context) (uint32, error) {
+func (e *mockConnectorForBatchPoller) GetCurrentPhylaxSetIndex(ctx context.Context) (uint32, error) {
 	return 0, fmt.Errorf("not implemented")
 }
 
-func (e *mockConnectorForBatchPoller) GetGuardianSet(ctx context.Context, index uint32) (ethAbi.StructsGuardianSet, error) {
-	return ethAbi.StructsGuardianSet{}, fmt.Errorf("not implemented")
+func (e *mockConnectorForBatchPoller) GetPhylaxSet(ctx context.Context, index uint32) (ethAbi.StructsPhylaxSet, error) {
+	return ethAbi.StructsPhylaxSet{}, fmt.Errorf("not implemented")
 }
 
 func (e *mockConnectorForBatchPoller) WatchLogMessagePublished(ctx context.Context, errC chan error, sink chan<- *ethAbi.AbiLogMessagePublished) (ethEvent.Subscription, error) {

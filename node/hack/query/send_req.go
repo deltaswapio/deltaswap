@@ -13,11 +13,11 @@ import (
 	"strings"
 	"time"
 
-	"github.com/certusone/wormhole/node/hack/query/utils"
-	"github.com/certusone/wormhole/node/pkg/common"
-	"github.com/certusone/wormhole/node/pkg/p2p"
-	gossipv1 "github.com/certusone/wormhole/node/pkg/proto/gossip/v1"
-	"github.com/certusone/wormhole/node/pkg/query"
+	"github.com/deltaswapio/deltaswap/node/hack/query/utils"
+	"github.com/deltaswapio/deltaswap/node/pkg/common"
+	"github.com/deltaswapio/deltaswap/node/pkg/p2p"
+	gossipv1 "github.com/deltaswapio/deltaswap/node/pkg/proto/gossip/v1"
+	"github.com/deltaswapio/deltaswap/node/pkg/query"
 	"github.com/ethereum/go-ethereum/accounts/abi"
 	"github.com/ethereum/go-ethereum/common/hexutil"
 	ethCrypto "github.com/ethereum/go-ethereum/crypto"
@@ -49,18 +49,18 @@ func main() {
 
 	p2pNetworkID := "/wormhole/dev"
 	var p2pPort uint = 8998 // don't collide with spy so we can run from the same container in tilt
-	p2pBootstrap := "/dns4/guardian-0.guardian/udp/8996/quic/p2p/12D3KooWL3XJ9EMCyZvmmGXL2LMiVBtrVa2BuESsJiXkSj7333Jw"
+	p2pBootstrap := "/dns4/phylax-0.phylax/udp/8996/quic/p2p/12D3KooWL3XJ9EMCyZvmmGXL2LMiVBtrVa2BuESsJiXkSj7333Jw"
 	nodeKeyPath := "./querier.key"
 
 	ctx := context.Background()
 	logger, _ := zap.NewDevelopment()
 
-	signingKeyPath := string("./dev.guardian.key")
+	signingKeyPath := string("./dev.phylax.key")
 
 	logger.Info("Loading signing key", zap.String("signingKeyPath", signingKeyPath))
-	sk, err := common.LoadGuardianKey(signingKeyPath, true)
+	sk, err := common.LoadPhylaxKey(signingKeyPath, true)
 	if err != nil {
-		logger.Fatal("failed to load guardian key", zap.Error(err))
+		logger.Fatal("failed to load phylax key", zap.Error(err))
 	}
 	logger.Info("Signing key loaded", zap.String("publicKey", ethCrypto.PubkeyToAddress(sk.PublicKey).Hex()))
 
@@ -207,7 +207,7 @@ func main() {
 }
 
 const (
-	GuardianKeyArmoredBlock = "WORMHOLE GUARDIAN PRIVATE KEY"
+	PhylaxKeyArmoredBlock = "WORMHOLE GUARDIAN PRIVATE KEY"
 )
 
 func createQueryRequest(callRequest *query.EthCallQueryRequest) *query.QueryRequest {

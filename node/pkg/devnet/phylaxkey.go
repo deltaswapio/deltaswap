@@ -8,7 +8,7 @@ import (
 	ethcrypto "github.com/ethereum/go-ethereum/crypto"
 )
 
-// GenerateAndStoreDevnetGuardianKey returns a deterministic testnet key.
+// GenerateAndStoreDevnetPhylaxKey returns a deterministic testnet key.
 func GenerateAndStoreDevnetPhylaxKey(filename string) error {
 	// Figure out our devnet index
 	idx, err := GetDevnetIndex()
@@ -16,12 +16,12 @@ func GenerateAndStoreDevnetPhylaxKey(filename string) error {
 		return err
 	}
 
-	// Generate the guardian key.
+	// Generate the phylax key.
 	gk := InsecureDeterministicEcdsaKeyByIndex(ethcrypto.S256(), uint64(idx))
 
 	// Store it to disk.
 	if err := common.WriteArmoredKey(gk, "auto-generated deterministic devnet key", filename, common.PhylaxKeyArmoredBlock, true); err != nil {
-		return fmt.Errorf("failed to store generated guardian key: %w", err)
+		return fmt.Errorf("failed to store generated phylax key: %w", err)
 	}
 
 	return nil

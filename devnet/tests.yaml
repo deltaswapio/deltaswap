@@ -84,7 +84,7 @@ spec:
       restartPolicy: Never
       containers:
         - name: query-ci-tests
-          image: guardiand-image
+          image: phylaxd-image
           command:
             - /bin/sh
             - -c
