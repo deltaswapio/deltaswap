@@ -100,7 +100,7 @@ func NewG(t *testing.T, nodeName string) *G {
 // The expectation is that hosts that send this information will become "protected" by the Connection Manager.
 func TestWatermark(t *testing.T) {
 	logger := zap.NewNop()
-	err := evaluateCutOver(logger, "/wormhole/dev")
+	err := evaluateCutOver(logger, "/deltaswap/dev")
 	require.NoError(t, err)
 
 	ctx, cancel := context.WithCancel(context.Background())

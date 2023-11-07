@@ -47,7 +47,7 @@ func main() {
 	// BEGIN SETUP
 	//
 
-	p2pNetworkID := "/wormhole/dev"
+	p2pNetworkID := "/deltaswap/dev"
 	var p2pPort uint = 8998 // don't collide with spy so we can run from the same container in tilt
 	p2pBootstrap := "/dns4/phylax-0.phylax/udp/8996/quic/p2p/12D3KooWL3XJ9EMCyZvmmGXL2LMiVBtrVa2BuESsJiXkSj7333Jw"
 	nodeKeyPath := "./querier.key"

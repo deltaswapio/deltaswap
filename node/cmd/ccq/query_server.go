@@ -38,7 +38,7 @@ var (
 	telemetryNodeName *string
 )
 
-const DEV_NETWORK_ID = "/wormhole/dev"
+const DEV_NETWORK_ID = "/deltaswap/dev"
 
 func init() {
 	envStr = QueryServerCmd.Flags().String("env", "", "environment (dev, test, prod)")

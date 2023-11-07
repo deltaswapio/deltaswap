@@ -61,12 +61,12 @@ var (
 		}, []string{"eth_network"})
 	currentEthSafeHeight = promauto.NewGaugeVec(
 		prometheus.GaugeOpts{
-			Name: "wormhole_eth_current_safe_height",
+			Name: "deltaswap_eth_current_safe_height",
 			Help: "Current Ethereum safe block height",
 		}, []string{"eth_network"})
 	currentEthFinalizedHeight = promauto.NewGaugeVec(
 		prometheus.GaugeOpts{
-			Name: "wormhole_eth_current_finalized_height",
+			Name: "deltaswap_eth_current_finalized_height",
 			Help: "Current Ethereum finalized block height",
 		}, []string{"eth_network"})
 	queryLatency = promauto.NewHistogramVec(

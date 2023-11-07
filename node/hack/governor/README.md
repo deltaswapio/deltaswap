@@ -22,7 +22,7 @@ npm run start
 
 ## Manually Included Tokens
 The governor also makes use of a list of manually added tokens. These are tokens that do not exist
-in the notional TVL data. These tokens are listed in wormhole/node/pkg/governor/manual_tokens.go
+in the notional TVL data. These tokens are listed in deltaswap/node/pkg/governor/manual_tokens.go
 
 ## Verifying the Token Lists
 To verify that the Coin Gecko query still works with the new token list, do:
@@ -32,7 +32,7 @@ go run check_query.go
 
 Before committing the generated file, you should run the governor tests and ensure that they pass:
 ```
-cd wormhole/node/pkg/governor
+cd deltaswap/node/pkg/governor
 go test
 ```
 

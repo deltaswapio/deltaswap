@@ -180,7 +180,7 @@ func main() {
 						}
 						if tx == nil {
 							offset += 1
-							log.Printf("not a Wormhole tx, offset +1")
+							log.Printf("not a Deltaswap tx, offset +1")
 							time.Sleep(1 * time.Second)
 							continue
 						}
@@ -286,7 +286,7 @@ func process(txRpc *rpc.TransactionWithMeta) (*solana.PublicKey, error) {
 		return nil, nil
 	}
 
-	log.Printf("found Wormhole tx in %s", signature)
+	log.Printf("found Deltaswap tx in %s", signature)
 
 	txs := make([]solana.CompiledInstruction, 0, len(tx.Message.Instructions))
 	txs = append(txs, tx.Message.Instructions...)

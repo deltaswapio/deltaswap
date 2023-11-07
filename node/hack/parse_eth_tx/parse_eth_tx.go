@@ -19,7 +19,7 @@ import (
 )
 
 var (
-	flagChainID      = flag.Int("chainID", 2, "Wormhole chain ID")
+	flagChainID      = flag.Int("chainID", 2, "Deltaswap chain ID")
 	flagEthRPC       = flag.String("ethRPC", "http://localhost:8545", "Ethereum JSON-RPC endpoint")
 	flagContractAddr = flag.String("contractAddr", "0x98f3c9e6E3fAce36bAAd05FE09d375Ef1464288B", "Ethereum contract address")
 	flagTx           = flag.String("tx", "", "Transaction to parse")

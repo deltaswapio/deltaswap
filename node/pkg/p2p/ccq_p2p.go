@@ -26,12 +26,12 @@ import (
 var (
 	ccqP2pMessagesSent = promauto.NewCounter(
 		prometheus.CounterOpts{
-			Name: "wormhole_ccqp2p_broadcast_messages_sent_total",
+			Name: "deltaswap_ccqp2p_broadcast_messages_sent_total",
 			Help: "Total number of ccq p2p pubsub broadcast messages sent",
 		})
 	ccqP2pMessagesReceived = promauto.NewCounterVec(
 		prometheus.CounterOpts{
-			Name: "wormhole_ccqp2p_broadcast_messages_received_total",
+			Name: "deltaswap_ccqp2p_broadcast_messages_received_total",
 			Help: "Total number of ccq p2p pubsub broadcast messages received",
 		}, []string{"type"})
 )
