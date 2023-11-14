@@ -607,7 +607,7 @@ func Run(
 									zap.String("from", envelope.GetFrom().String()))
 							} else {
 								phylaxAddr := eth_common.BytesToAddress(s.PhylaxAddr)
-								if phylaxAddr != ethcrypto.PubkeyToAddress(gk.PublicKey) {
+								if gk == nil || phylaxAddr != ethcrypto.PubkeyToAddress(gk.PublicKey) {
 									prevPeerId, ok := components.ProtectedHostByPhylaxKey[phylaxAddr]
 									if ok {
 										if prevPeerId != peerId {
