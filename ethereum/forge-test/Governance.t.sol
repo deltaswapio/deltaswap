@@ -792,8 +792,10 @@ contract TestGovernance is TestUtils {
         return
             // Avoid precompiled contracts
             addr <= address(0x9) ||
-            // Deltaswap contract does not accept assets
+            // Deltaswap implementation does not accept assets
             addr == address(impl) ||
+            // Deltaswap proxy contract does not accept assets
+            addr == address(proxied) ||
 			// Setup contract
 			addr == address(setup) ||
 			// Test contract
