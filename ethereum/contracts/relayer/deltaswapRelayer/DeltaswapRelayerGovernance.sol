@@ -40,7 +40,7 @@ abstract contract DeltaswapRelayerGovernance is DeltaswapRelayerBase, ERC1967Upg
      *   - https://github.com/deltaswapio/deltaswap/blob/main/whitepapers/0002_governance_messaging.md
      */
 
-    //Right shifted ascii encoding of "DeltaswapRelayer"
+    //Right shifted ascii encoding of "WormholeRelayer"
     bytes32 private constant module =
         0x0000000000000000000000000000000000576f726d686f6c6552656c61796572;
 
