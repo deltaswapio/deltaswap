@@ -335,17 +335,17 @@ export async function getDeltaswapRelayerInfoByHash(
   const targetDeltaswapRelayerAddress =
       infoRequest?.deltaswapRelayerAddresses?.get(targetChain) ||
       getDeltaswapRelayerAddress(targetChain, environment);
-  const wormholeRelayer = getDeltaswapRelayer(
+  const deltaswapRelayer = getDeltaswapRelayer(
       targetChain,
       environment,
       targetChainProvider,
       targetDeltaswapRelayerAddress
   );
 
-  const blockNumberSuccess = await wormholeRelayer.deliverySuccessBlock(
+  const blockNumberSuccess = await deltaswapRelayer.deliverySuccessBlock(
       deliveryHash
   );
-  const blockNumberFailure = await wormholeRelayer.deliveryFailureBlock(
+  const blockNumberFailure = await deltaswapRelayer.deliveryFailureBlock(
       deliveryHash
   );
   const blockNumber = blockNumberSuccess.gt(0)
@@ -422,18 +422,18 @@ export async function getWormscanRelayerInfo(
     optionalParams?: {
       network?: Network;
       provider?: ethers.providers.Provider;
-      wormholeRelayerAddress?: string;
+      deltaswapRelayerAddress?: string;
     }
 ): Promise<Response> {
   const network = optionalParams?.network || "MAINNET";
-  const wormholeRelayerAddress =
-      optionalParams?.wormholeRelayerAddress ||
+  const deltaswapRelayerAddress =
+      optionalParams?.deltaswapRelayerAddress ||
       getDeltaswapRelayerAddress(sourceChain, network);
   return getWormscanInfo(
       network,
       sourceChain,
       sequence,
-      wormholeRelayerAddress
+      deltaswapRelayerAddress
   );
 }
 
@@ -443,7 +443,7 @@ export async function getRelayerTransactionHashFromWormscan(
     optionalParams?: {
       network?: Network;
       provider?: ethers.providers.Provider;
-      wormholeRelayerAddress?: string;
+      deltaswapRelayerAddress?: string;
     }
 ): Promise<string> {
   const wormscanData = (

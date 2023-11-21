@@ -105,7 +105,7 @@ type Components struct {
 	WarnChannelOverflow bool
 	// SignedHeartbeatLogLevel is the log level at which SignedHeartbeatReceived events will be logged.
 	SignedHeartbeatLogLevel zapcore.Level
-	// GossipParams is used to configure the GossipSub instance used by the Guardian.
+	// GossipParams is used to configure the GossipSub instance used by the Phylax.
 	GossipParams pubsub.GossipSubParams
 }
 

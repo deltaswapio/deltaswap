@@ -27,7 +27,7 @@ import {
   getDefaultProvider,
   getWormscanInfo,
 } from "./helpers";
-import {InfoRequestParams, getWormholeRelayerInfo} from "./info";
+import {InfoRequestParams, getDeltaswapRelayerInfo} from "./info";
 
 export type CCTPTransferParsed = {
   amount: bigint; // decimals is 6
@@ -83,7 +83,7 @@ export async function manualDelivery(
     overrides?: DeliveryOverrideArgs,
     signer?: ethers.Signer
 ): Promise<{ quote: BigNumber; targetChain: ChainName; txHash?: string }> {
-  const info = await getWormholeRelayerInfo(
+  const info = await getDeltaswapRelayerInfo(
       sourceChain,
       sourceTransaction,
       infoRequest
@@ -93,15 +93,15 @@ export async function manualDelivery(
       infoRequest?.sourceChainProvider ||
       getDefaultProvider(environment, sourceChain);
   const receipt = await sourceProvider.getTransactionReceipt(sourceTransaction);
-  const wormholeRelayerAddress =
-      infoRequest?.wormholeRelayerAddresses?.get(sourceChain) ||
-      getWormholeRelayerAddress(sourceChain, environment);
+  const deltaswapRelayerAddress =
+      infoRequest?.deltaswapRelayerAddresses?.get(sourceChain) ||
+      getDeltaswapRelayerAddress(sourceChain, environment);
   const response = await (
       await getWormscanInfo(
           environment,
           info.sourceChain,
           info.sourceDeliverySequenceNumber,
-          wormholeRelayerAddress
+          deltaswapRelayerAddress
       )
   ).json();
 

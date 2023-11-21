@@ -106,10 +106,10 @@ func (ccq *ccqP2p) run(
 			if _, found := ccq.allowedPeers[peerID.String()]; found {
 				return true
 			}
-			ccq.p2pComponents.ProtectedHostByGuardianKeyLock.Lock()
-			defer ccq.p2pComponents.ProtectedHostByGuardianKeyLock.Unlock()
-			for _, guardianPeerID := range ccq.p2pComponents.ProtectedHostByGuardianKey {
-				if peerID == guardianPeerID {
+			ccq.p2pComponents.ProtectedHostByPhylaxKeyLock.Lock()
+			defer ccq.p2pComponents.ProtectedHostByPhylaxKeyLock.Unlock()
+			for _, phylaxPeerID := range ccq.p2pComponents.ProtectedHostByPhylaxKey {
+				if peerID == phylaxPeerID {
 					return true
 				}
 			}

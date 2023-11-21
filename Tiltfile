@@ -599,7 +599,7 @@ if ci_tests:
         "query-ci-tests",
         labels = ["ci"],
         trigger_mode = trigger_mode,
-        resource_deps = [], # node/hack/query/test/test_query.sh handles waiting for guardian, not having deps gets the build earlier
+        resource_deps = [], # node/hack/query/test/test_query.sh handles waiting for phylax, not having deps gets the build earlier
     )
     k8s_resource(
         "query-sdk-ci-tests",
@@ -922,7 +922,7 @@ if query_server:
 
     k8s_resource(
         "query-server",
-        resource_deps = ["guardian"],
+        resource_deps = ["phylax"],
         port_forwards = [
             port_forward(6069, name = "REST [:6069]", host = webHost),
             port_forward(6068, name = "Status [:6068]", host = webHost)

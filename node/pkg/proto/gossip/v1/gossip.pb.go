@@ -1219,7 +1219,7 @@ type SignedQueryResponse struct {
 
 	// Serialized QueryResponse message.
 	QueryResponse []byte `protobuf:"bytes,1,opt,name=query_response,json=queryResponse,proto3" json:"query_response,omitempty"`
-	// ECDSA signature using the node's guardian public key.
+	// ECDSA signature using the node's phylax public key.
 	Signature []byte `protobuf:"bytes,2,opt,name=signature,proto3" json:"signature,omitempty"`
 }
 

@@ -211,7 +211,7 @@ func runP2P(ctx context.Context, priv crypto.PrivKey, port uint, networkID, boot
 					logger.Warn("received observation by unknown phylax - is our phylax set outdated?",
 						zap.String("digest", digest.Hex()), zap.String("address", signerAddress.Hex()),
 					)
-					inboundP2pError.WithLabelValues("unknown_guardian").Inc()
+					inboundP2pError.WithLabelValues("unknown_phylax").Inc()
 				}
 			default:
 				// Since CCQ gossip is isolated, this really shouldn't happen.

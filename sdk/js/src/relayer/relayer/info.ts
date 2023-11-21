@@ -480,11 +480,11 @@ export function stringifyDeltaswapRelayerInfo(
                       )})`
               }`;
               if (tokenTransferInfo.signedVaaTimestamp) {
-                result += `\ntransfer signed by guardians: ${new Date(
+                result += `\ntransfer signed by phylaxs: ${new Date(
                     tokenTransferInfo.signedVaaTimestamp
                 ).toString()}`;
               } else {
-                result += `\ntransfer not yet signed by guardians`;
+                result += `\ntransfer not yet signed by phylaxs`;
               }
             }
           } else if (msgKey.keyType == KeyType.CCTP) {
@@ -574,11 +574,11 @@ export function stringifyDeltaswapRelayerInfo(
       stringifiedInfo += `Sent: ${new Date(info.sourceTimestamp).toString()}\n`;
     }
     if (info.signingOfVaaTimestamp) {
-      stringifiedInfo += `Delivery vaa signed by guardians: ${new Date(
+      stringifiedInfo += `Delivery vaa signed by phylaxs: ${new Date(
           info.signingOfVaaTimestamp
       ).toString()}\n`;
     } else {
-      stringifiedInfo += `Delivery not yet signed by guardians - check https://deltaswap-foundation.github.io/deltaswap-dashboard/#/ for status\n`;
+      stringifiedInfo += `Delivery not yet signed by phylaxs - check https://deltaswap-foundation.github.io/deltaswap-dashboard/#/ for status\n`;
     }
     stringifiedInfo += `\n`;
     if (info.targetChainStatus.events.length === 0) {

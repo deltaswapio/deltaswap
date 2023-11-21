@@ -96,7 +96,7 @@ body:
     id:  node-operators 
     attributes:
       label: Technical requirements for running a node
-      description: "If there are no extra requirements for guardians, please use the following message: `None - [chain] will emit messages to Gateway via IBC. Guardians should not have to run anything additional (except for guardians who may run IBC relayers).`"
+      description: "If there are no extra requirements for phylaxs, please use the following message: `None - [chain] will emit messages to Gateway via IBC. Phylaxs should not have to run anything additional (except for phylaxs who may run IBC relayers).`"
     validations:
       required: true
 
@@ -107,8 +107,8 @@ body:
       description: "Please describe how IBC relaying between Deltaswap Gateway and your chain will be handled."
       value: |
         <!---
-        - Are you asking one of the Deltaswap Guardians to handle IBC relaying?
-        - Do you already have an IBC relaying provider who is not a Deltaswap Guardian? If so, please include as much information as possible on who they are and what kind of service agreement you have with them.
+        - Are you asking one of the Deltaswap Phylaxs to handle IBC relaying?
+        - Do you already have an IBC relaying provider who is not a Deltaswap Phylax? If so, please include as much information as possible on who they are and what kind of service agreement you have with them.
         -->
     validations:
       required: true

@@ -29,7 +29,7 @@ import { BinaryWriter } from "../query/BinaryWriter";
  * anvil -f https://ethereum-goerli.publicnode.com
  * ```
  *
- * You can use the following command to switch the guardian address to the devnet / mock guardian
+ * You can use the following command to switch the phylax address to the devnet / mock phylax
  *
  * Where the `-a` parameter is the core bridge address on that chain
  *

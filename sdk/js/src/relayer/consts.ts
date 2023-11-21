@@ -13,7 +13,7 @@ type AddressInfo = {
 
 const TESTNET: { [K in ChainName]?: AddressInfo } = {
   ethereum: {
-    wormholeRelayerAddress: "0x28D8F1Be96f97C1387e94A53e00eCcFb4E75175a",
+    deltaswapRelayerAddress: "0x28D8F1Be96f97C1387e94A53e00eCcFb4E75175a",
     mockDeliveryProviderAddress: "0xD1463B4fe86166768d2ff51B1A928beBB5c9f375",
     mockIntegrationAddress: "0xb81bc199b73AB34c393a4192C163252116a03370",
   },
@@ -43,12 +43,12 @@ const TESTNET: { [K in ChainName]?: AddressInfo } = {
     mockIntegrationAddress: "0x3bF0c43d88541BBCF92bE508ec41e540FbF28C56",
   },
   arbitrum: {
-    wormholeRelayerAddress: "0xAd753479354283eEE1b86c9470c84D42f229FF43",
+    deltaswapRelayerAddress: "0xAd753479354283eEE1b86c9470c84D42f229FF43",
     mockDeliveryProviderAddress: "0x90995DBd1aae85872451b50A569dE947D34ac4ee",
     mockIntegrationAddress: "0x0de48f34E14d08934DA1eA2286Be1b2BED5c062a",
   },
   optimism: {
-    wormholeRelayerAddress: "0x01A957A525a5b7A72808bA9D10c389674E459891",
+    deltaswapRelayerAddress: "0x01A957A525a5b7A72808bA9D10c389674E459891",
     mockDeliveryProviderAddress: "0xfCe1Df3EF22fe5Cb7e2f5988b7d58fF633a313a7",
     mockIntegrationAddress: "0x421e0bb71dDeeC727Af79766423d33D8FD7dB963",
   },
@@ -237,8 +237,8 @@ export const getWormscanAPI = (_network: Network) => {
     case "TESTNET":
       return "https://api.testnet.wormholescan.io/";
     default:
-      // possible extension for tilt/ci - search through the guardian api
-      // at localhost:7071 (tilt) or guardian:7071 (ci)
+      // possible extension for tilt/ci - search through the phylax api
+      // at localhost:7071 (tilt) or phylax:7071 (ci)
       throw new Error("Not testnet or mainnet - so no wormscan api access");
   }
 };

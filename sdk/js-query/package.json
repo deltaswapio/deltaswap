@@ -1,7 +1,7 @@
 {
   "name": "@wormhole-foundation/wormhole-query-sdk",
   "version": "0.0.6",
-  "description": "Wormhole cross-chain query SDK",
+  "description": "Deltaswap cross-chain query SDK",
   "homepage": "https://wormhole.com",
   "main": "./lib/cjs/index.js",
   "module": "./lib/esm/index.js",
@@ -20,7 +20,7 @@
     "cross-chain",
     "query"
   ],
-  "author": "Wormhole Foundation",
+  "author": "Deltaswap Foundation",
   "license": "Apache-2.0",
   "devDependencies": {
     "axios": "^1.4.0",

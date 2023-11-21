@@ -4,8 +4,8 @@
 # It supports all of devnet (localhost), testnet, and mainnet.
 #
 # A VAA may be provided, in which case the script uses that.
-# Otherwise, in devnet, it generates a VAA using the devnet guardian secret.
-# In testnet, it generates a VAA using the testnet guardian secret as long as
+# Otherwise, in devnet, it generates a VAA using the devnet phylax secret.
+# In testnet, it generates a VAA using the testnet phylax secret as long as
 # it's set in the environment variable GUARDIAN_SECRET.
 # In mainnet, a VAA is required.
 
