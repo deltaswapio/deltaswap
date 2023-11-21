@@ -201,7 +201,7 @@ const MAINNET = {
   },
   near: {
     core: undefined,
-    token_bridge: ,
+    token_bridge: undefined,
     nft_bridge: undefined,
   },
   injective: {
@@ -417,7 +417,7 @@ const TESTNET = {
   },
   near: {
     core: undefined,
-    token_bridge: ,
+    token_bridge: undefined,
     nft_bridge: undefined,
   },
   injective: {
