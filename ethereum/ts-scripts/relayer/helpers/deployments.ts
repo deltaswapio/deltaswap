@@ -126,8 +126,6 @@ export async function deployDeltaswapRelayerImplementation(
 ): Promise<Deployment> {
   console.log("deployDeltaswapRelayerImplementation " + chain.chainId);
 
-  const result = await new DeltaswapRelayer__factory(getSigner(chain))
-    .deploy(chain.deltaswapAddress)
   const signer = await getSigner(chain);
   const factory = new DeltaswapRelayer__factory(signer);
 

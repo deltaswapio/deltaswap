@@ -95,7 +95,6 @@ async function configureChainsDeliveryProvider(chain: ChainInfo) {
       isSupported: true,
       buffer: 5,
       bufferDenominator: 100,
-      newDeltaswapFee: 0,
       newGasOverhead: targetChainPriceUpdate.deliverGasOverhead,
       gasPrice: targetChainPriceUpdate.updatePriceGas,
       nativeCurrencyPrice: targetChainPriceUpdate.updatePriceNative,

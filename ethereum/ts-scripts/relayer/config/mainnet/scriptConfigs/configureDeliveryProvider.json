@@ -122,6 +122,13 @@
       "updatePriceGas": "1200000",
       "updatePriceNative": "1828220000",
       "maximumBudget": "109396024500000000"
+    },
+    {
+      "chainId": 7070,
+      "deliverGasOverhead": "455816769",
+      "updatePriceGas": "1200000",
+      "updatePriceNative": "1828220000",
+      "maximumBudget": "109396024500000000"
     }
   ]
 }
