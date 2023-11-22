@@ -148,7 +148,7 @@ export function encodeAndSignGovernancePayload(payload: string): string {
 export function extractChainToBeRegisteredFromRegisterChainVaa(vaa: Buffer): number {
   // Structure of a register chain Vaa
   // version: uint8 <-- should be 1
-  // guardianSetIndex: uint32
+  // phylaxSetIndex: uint32
   // signaturesLength: uint8
   // signatures: bytes66[signaturesLength]
   // timestamp: uint32
@@ -157,7 +157,7 @@ export function extractChainToBeRegisteredFromRegisterChainVaa(vaa: Buffer): num
   // emitterContract: bytes32 <-- should be wh governance
   // sequence: uint64
   // consistencyLevel: uint8
-  // module: bytes32 <-- should be wormhole relayer
+  // module: bytes32 <-- should be deltaswap relayer
   // action: uint8 <-- should be register chain
   // chain: uint16 <-- should be broadcast
   // emitterChain: uint16 <-- need to extract
@@ -167,14 +167,14 @@ export function extractChainToBeRegisteredFromRegisterChainVaa(vaa: Buffer): num
   const uint32Size = uint8Size * 4;
   const uint64Size = uint8Size * 8;
   const bytes32Size = 32;
-  // Each signature has the guardian index in one byte (uint8) and (r, s, v) tuple in 65 bytes
+  // Each signature has the phylax index in one byte (uint8) and (r, s, v) tuple in 65 bytes
   const signatureSize = 66;
 
   const governanceChain = 1;
   const governanceContract =
     "0x0000000000000000000000000000000000000000000000000000000000000004";
-  // See WormholeRelayerGovernance.sol
-  const GOVERNANCE_ACTION_REGISTER_WORMHOLE_RELAYER_CONTRACT = 1;
+  // See DeltaswapRelayerGovernance.sol
+  const GOVERNANCE_ACTION_REGISTER_DELTASWAP_RELAYER_CONTRACT = 1;
   const TARGET_CHAIN_BROADCAST = 0;
 
   // We'll do some very basic sanity checks
@@ -215,7 +215,7 @@ export function extractChainToBeRegisteredFromRegisterChainVaa(vaa: Buffer): num
     emitterContractOffset + bytes32Size + uint64Size + uint8Size;
   const moduleBuf = vaa.subarray(moduleOffset, moduleOffset + bytes32Size);
   if (
-    !moduleBuf.equals(Buffer.from(wormholeRelayerModule.substring(2), "hex"))
+    !moduleBuf.equals(Buffer.from(deltaswapRelayerModule.substring(2), "hex"))
   ) {
     throw new Error(
       `Unexpected governance module ${"0x" + moduleBuf.toString("hex")}`,
@@ -224,9 +224,9 @@ export function extractChainToBeRegisteredFromRegisterChainVaa(vaa: Buffer): num
 
   const actionOffset = moduleOffset + bytes32Size;
   const action = vaa.readUint8(actionOffset);
-  if (action !== GOVERNANCE_ACTION_REGISTER_WORMHOLE_RELAYER_CONTRACT) {
+  if (action !== GOVERNANCE_ACTION_REGISTER_DELTASWAP_RELAYER_CONTRACT) {
     throw new Error(
-      `Unexpected wormhole relayer governance action id ${action}`,
+      `Unexpected deltaswap relayer governance action id ${action}`,
     );
   }
 

@@ -139,7 +139,7 @@ export async function deployDeltaswapRelayerImplementation(
     .then(deployed);
 
   console.log(
-    `Successfully deployed WormholeRelayer contract at ${result.address}`,
+    `Successfully deployed DeltaswapRelayer contract at ${result.address}`,
   );
   return { address: result.address, chainId: chain.chainId };
 }
@@ -196,7 +196,7 @@ export async function deployDeltaswapRelayerProxy(
     console.error("Computed address does not match desired");
   }
 
-  console.log(`Successfully deployed contract WormholeRelayerProxy at ${computedAddr}`);
+  console.log(`Successfully deployed contract DeltaswapRelayerProxy at ${computedAddr}`);
   return { address: computedAddr, chainId: chain.chainId };
 }
 

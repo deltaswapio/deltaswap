@@ -256,23 +256,23 @@ export function loadMockIntegrations(): Deployment[] {
   }
 }
 
-export function loadWormholeRelayerImplementations(): Deployment[] {
+export function loadDeltaswapRelayerImplementations(): Deployment[] {
   const contracts = readContracts();
 
   if (contracts.useLastRun) {
     const lastRunFile = fs.readFileSync(
-      `./ts-scripts/relayer/output/${env}/deployWormholeRelayerImplementation/lastrun.json`,
+      `./ts-scripts/relayer/output/${env}/deployDeltaswapRelayerImplementation/lastrun.json`,
     );
     if (!lastRunFile) {
       throw Error(
-        "Failed to find last run file for the deployWormholeRelayerImplementation process!",
+        "Failed to find last run file for the deployDeltaswapRelayerImplementation process!",
       );
     }
     const lastRun = JSON.parse(lastRunFile.toString());
-    return lastRun.wormholeRelayerImplementations;
+    return lastRun.deltaswapRelayerImplementations;
   }
 
-  return contracts.wormholeRelayerImplementations;
+  return contracts.deltaswapRelayerImplementations;
 }
 
 export function loadCreate2Factories(): Deployment[] {

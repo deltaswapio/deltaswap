@@ -1,1 +1,0 @@
-npx tsx ./ts-scripts/relayer/wormholeRelayer/verifyWormholeRelayerDeployedByteCode.ts

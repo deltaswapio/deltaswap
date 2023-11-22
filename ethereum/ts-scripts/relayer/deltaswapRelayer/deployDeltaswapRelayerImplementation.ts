@@ -1,5 +1,5 @@
 import {
-  deployWormholeRelayerImplementation,
+  deployDeltaswapRelayerImplementation,
 } from "../helpers/deployments";
 import {
   init,
@@ -8,33 +8,33 @@ import {
   Deployment,
 } from "../helpers/env";
 
-const processName = "deployWormholeRelayerImplementation";
+const processName = "deployDeltaswapRelayerImplementation";
 init();
 const operatingChains = getOperatingChains();
 
-interface WormholeRelayerUpgrade {
-  wormholeRelayerImplementations: Deployment[];
+interface DeltaswapRelayerUpgrade {
+  deltaswapRelayerImplementations: Deployment[];
 }
 
 async function run() {
   console.log("Start!");
-  const output: WormholeRelayerUpgrade = {
-    wormholeRelayerImplementations: [],
+  const output: DeltaswapRelayerUpgrade = {
+    deltaswapRelayerImplementations: [],
     
   };
 
   const tasks = await Promise.allSettled(
     operatingChains.map(async (chain) => {
-      const implementation = await deployWormholeRelayerImplementation(chain);
+      const implementation = await deployDeltaswapRelayerImplementation(chain);
       return implementation;
     }),
   );
 
   for (const task of tasks) {
     if (task.status === "rejected") {
-      console.log(`WormholeRelayer upgrade failed. ${task.reason?.stack || task.reason}`);
+      console.log(`DeltaswapRelayer upgrade failed. ${task.reason?.stack || task.reason}`);
     } else {
-      output.wormholeRelayerImplementations.push(task.value);
+      output.deltaswapRelayerImplementations.push(task.value);
     }
   }
 

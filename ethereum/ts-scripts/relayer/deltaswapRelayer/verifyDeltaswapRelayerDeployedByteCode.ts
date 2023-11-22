@@ -7,21 +7,21 @@ import {
   Deployment,
   getOperationDescriptor,
   getProvider,
-  loadWormholeRelayerImplementations,
+  loadDeltaswapRelayerImplementations,
   ChainInfo
 } from "../helpers/env";
 
-const processName = "verifyWormholeRelayerDeployedByteCode";
+const processName = "verifyDeltaswapRelayerDeployedByteCode";
 init();
 const operation = getOperationDescriptor();
 
-const WORMHOLE_RELAYER_ABI_PATH = "./build-forge/WormholeRelayer.sol/WormholeRelayer.json";
-const WORMHOLE_RELAYER_BASE_ABI_PATH = "./build-forge/WormholeRelayerBase.sol/WormholeRelayerBase.json";
+const DELTASWAP_RELAYER_ABI_PATH = "./build-forge/DeltaswapRelayer.sol/DeltaswapRelayer.json";
+const DELTASWAP_RELAYER_BASE_ABI_PATH = "./build-forge/DeltaswapRelayerBase.sol/DeltaswapRelayerBase.json";
 
 async function run() {
   console.log("Start! " + processName);
 
-  const implementationAddresses: Deployment[] = loadWormholeRelayerImplementations();
+  const implementationAddresses: Deployment[] = loadDeltaswapRelayerImplementations();
 
   for (const chain of operation.operatingChains) {
     const deployedImplementationAddress = implementationAddresses.find((deploy) => {
@@ -50,17 +50,17 @@ async function run() {
 
     let implementation: SolidityCompilerOutput;
     try {
-      implementation = JSON.parse(fs.readFileSync(WORMHOLE_RELAYER_ABI_PATH, "utf8"));
+      implementation = JSON.parse(fs.readFileSync(DELTASWAP_RELAYER_ABI_PATH, "utf8"));
     } catch (e) {
-      console.error(`Failed to read WormholeRelayer contract data. Error: ${e}`);
+      console.error(`Failed to read DeltaswapRelayer contract data. Error: ${e}`);
       continue;
     }
 
     let baseImplementation: SolidityCompilerOutput;
     try {
-      baseImplementation = JSON.parse(fs.readFileSync(WORMHOLE_RELAYER_BASE_ABI_PATH, "utf8"));
+      baseImplementation = JSON.parse(fs.readFileSync(DELTASWAP_RELAYER_BASE_ABI_PATH, "utf8"));
     } catch (e) {
-      console.error(`Failed to read WormholeRelayerBase contract data. Error: ${e}`);
+      console.error(`Failed to read DeltaswapRelayerBase contract data. Error: ${e}`);
       continue;
     }
 
@@ -112,11 +112,11 @@ interface SolidityCompilerOutput {
 }
 
 const knownRefs = {
-  // the wormhole core contract address on the respective chain
-  "wormhole_": (chain: ChainInfo, valueLength: number): Buffer => {
-    return toBufferOfLength(strip0x(chain.wormholeAddress), valueLength);
+  // the deltaswap core contract address on the respective chain
+  "deltaswap_": (chain: ChainInfo, valueLength: number): Buffer => {
+    return toBufferOfLength(strip0x(chain.deltaswapAddress), valueLength);
   },
-  // the wormhole chain id of the respective chain
+  // the deltaswap chain id of the respective chain
   "chainId_": (chain: ChainInfo, valueLength: number): Buffer => {
     return uint16To32BytesBuffer(chain.chainId);
   },

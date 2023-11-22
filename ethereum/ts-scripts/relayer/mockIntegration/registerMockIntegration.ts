@@ -7,7 +7,7 @@ import {
   getOperatingChains,
 } from "../helpers/env";
 import { buildOverrides } from "../helpers/deployments";
-import { tryNativeToHexString } from "@certusone/wormhole-sdk";
+import { tryNativeToHexString } from "@certusone/deltaswap-sdk";
 import { XAddressStruct } from "../../../ethers-contracts/MockRelayerIntegration";
 
 const processName = "registerMockIntegration";

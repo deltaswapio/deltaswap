@@ -1,20 +1,20 @@
-import { ChainId } from "@certusone/wormhole-sdk";
+import { ChainId } from "@certusone/deltaswap-sdk";
 import {
   init,
   getOperatingChains,
-  getWormholeRelayer,
+  getDeltaswapRelayer,
   ChainInfo,
 } from "../helpers/env";
 import { buildOverrides } from "../helpers/deployments";
 
 import { inspect } from "util";
 
-const processName = "submitWormholeRelayerImplementationUpgrade";
+const processName = "submitDeltaswapRelayerImplementationUpgrade";
 init();
 const chains = getOperatingChains();
 
 /**
- * These are wormhole-relayer implementation upgrade VAAs for mainnet.
+ * These are deltaswap-relayer implementation upgrade VAAs for mainnet.
  */
 const implementationUpgradeVaas: Partial<Record<ChainId, string>> = {
   // [chainId:number]: [vaa:string] (base64 encoded)
@@ -31,7 +31,7 @@ async function run() {
       }
       
       console.log(`Submitting upgrade VAA ${vaa} to chain ${chain.chainId}`);
-      return submitWormholeRelayerUpgradeVaa(chain, Buffer.from(vaa, "base64"));
+      return submitDeltaswapRelayerUpgradeVaa(chain, Buffer.from(vaa, "base64"));
     }),
   );
 
@@ -44,19 +44,19 @@ async function run() {
   }
 }
 
-async function submitWormholeRelayerUpgradeVaa(
+async function submitDeltaswapRelayerUpgradeVaa(
   chain: ChainInfo,
   vaa: Uint8Array,
 ) {
-  console.log(`Upgrading WormholeRelayer in chain ${chain.chainId}...`);
+  console.log(`Upgrading DeltaswapRelayer in chain ${chain.chainId}...`);
 
-  const wormholeRelayer = await getWormholeRelayer(chain);
+  const deltaswapRelayer = await getDeltaswapRelayer(chain);
 
   const overrides = await buildOverrides(
-    () => wormholeRelayer.estimateGas.submitContractUpgrade(vaa),
+    () => deltaswapRelayer.estimateGas.submitContractUpgrade(vaa),
     chain,
   );
-  const tx = await wormholeRelayer.submitContractUpgrade(vaa, overrides);
+  const tx = await deltaswapRelayer.submitContractUpgrade(vaa, overrides);
 
   const receipt = await tx.wait();
 
@@ -66,7 +66,7 @@ async function submitWormholeRelayerUpgradeVaa(
     );
   }
   console.log(
-    "Successfully upgraded the wormhole relayer contract on " + chain.chainId,
+    "Successfully upgraded the deltaswap relayer contract on " + chain.chainId,
   );
   return chain.chainId;
 }

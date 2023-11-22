@@ -1,30 +1,46 @@
-import { deployDeltaswapRelayerImplementation } from "../helpers/deployments";
+import {
+  buildOverrides,
+  deployDeltaswapRelayerImplementation,
+} from "../helpers/deployments";
 import {
   init,
   ChainInfo,
   getDeltaswapRelayer,
   writeOutputFiles,
   getOperatingChains,
+  Deployment,
 } from "../helpers/env";
 import { createDeltaswapRelayerUpgradeVAA } from "../helpers/vaa";
 
 const processName = "upgradeDeltaswapRelayerSelfSign";
 init();
-const chains = getOperatingChains();
+const operatingChains = getOperatingChains();
+
+interface DeltaswapRelayerUpgrade {
+  deltaswapRelayerImplementations: Deployment[];
+}
 
 async function run() {
   console.log("Start!");
-  const output: any = {
-    deltaswapRelayerImplementations: []
+  const output: DeltaswapRelayerUpgrade = {
+    deltaswapRelayerImplementations: [],
   };
 
-  for (const chain of chains) {
-    const coreRelayerImplementation = await deployDeltaswapRelayerImplementation(
-      chain
-    );
-    await upgradeDeltaswapRelayer(chain, coreRelayerImplementation.address);
+  const tasks = await Promise.allSettled(
+    operatingChains.map(async (chain) => {
+      const implementation = await deployDeltaswapRelayerImplementation(chain);
+      await upgradeDeltaswapRelayer(chain, implementation.address);
 
-    output.deltaswapRelayerImplementations.push(coreRelayerImplementation);
+      return implementation;
+    }),
+  );
+
+  for (const task of tasks) {
+    if (task.status === "rejected") {
+      console.log(`DeltaswapRelayer upgrade failed. ${task.reason?.stack || task.reason}`);
+    } else {
+      output.deltaswapRelayerImplementations.push(task.value);
+    }
   }
 
   writeOutputFiles(output, processName);
@@ -32,20 +48,29 @@ async function run() {
 
 async function upgradeDeltaswapRelayer(
   chain: ChainInfo,
-  newImplementationAddress: string
+  newImplementationAddress: string,
 ) {
   console.log("upgradeDeltaswapRelayer " + chain.chainId);
 
-  const coreRelayer = await getDeltaswapRelayer(chain);
+  const deltaswapRelayer = await getDeltaswapRelayer(chain);
 
-  const tx = await coreRelayer.submitContractUpgrade(
-    createDeltaswapRelayerUpgradeVAA(chain, newImplementationAddress)
+  const vaa = createDeltaswapRelayerUpgradeVAA(chain, newImplementationAddress);
+
+  const overrides = await buildOverrides(
+    () => deltaswapRelayer.estimateGas.submitContractUpgrade(vaa),
+    chain,
   );
+  const tx = await deltaswapRelayer.submitContractUpgrade(vaa, overrides);
 
-  await tx.wait();
+  const receipt = await tx.wait();
 
+  if (receipt.status !== 1) {
+    throw new Error(
+      `Failed to upgrade on chain ${chain.chainId}, tx id: ${tx.hash}`,
+    );
+  }
   console.log(
-    "Successfully upgraded the core relayer contract on " + chain.chainId
+    "Successfully upgraded the core relayer contract on " + chain.chainId,
   );
 }
 

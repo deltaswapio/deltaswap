@@ -1,0 +1,1 @@
+npx tsx ./ts-scripts/relayer/deltaswapRelayer/submitDeltaswapRelayerImplementation.ts

@@ -1,7 +1,7 @@
 import {
   init,
   getOperatingChains,
-  getWormholeRelayer,
+  getDeltaswapRelayer,
   ChainInfo,
 } from "../helpers/env";
 import { buildOverrides } from "../helpers/deployments";
@@ -15,7 +15,7 @@ interface RegisterChainDescriptor {
   chainToRegister: number;
 }
 
-const processName = "registerWormholeRelayer";
+const processName = "registerDeltaswapRelayer";
 init();
 const chains = getOperatingChains();
 
@@ -66,13 +66,13 @@ async function register(
   chain: ChainInfo,
   registrationVaas: RegisterChainDescriptor[],
 ) {
-  console.log(`Registering WormholeRelayers in chain ${chain.chainId}...`);
-  const wormholeRelayer = await getWormholeRelayer(chain);
+  console.log(`Registering DeltaswapRelayers in chain ${chain.chainId}...`);
+  const deltaswapRelayer = await getDeltaswapRelayer(chain);
 
   // TODO: check for already registered VAAs
   for (const { vaa, chainToRegister } of registrationVaas) {
     const registrationAddress =
-      await wormholeRelayer.getRegisteredWormholeRelayerContract(
+      await deltaswapRelayer.getRegisteredDeltaswapRelayerContract(
         chainToRegister,
       );
     if (registrationAddress !== zeroBytes32) {
@@ -82,10 +82,10 @@ async function register(
     }
 
     const overrides = await buildOverrides(
-      () => wormholeRelayer.estimateGas.registerWormholeRelayerContract(vaa),
+      () => deltaswapRelayer.estimateGas.registerDeltaswapRelayerContract(vaa),
       chain,
     );
-    const tx = await wormholeRelayer.registerWormholeRelayerContract(
+    const tx = await deltaswapRelayer.registerDeltaswapRelayerContract(
       vaa,
       overrides,
     );
