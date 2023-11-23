@@ -2,47 +2,51 @@
   "addresses": [
     {
       "chainId": 2,
-      "rewardAddress": "0x53207E216540125e322CdA8A693b0b89576DEb46"
+      "rewardAddress": "0x507A200B998273cE168579A1CA2De4b6F58A34e5"
     },
     {
       "chainId": 4,
-      "rewardAddress": "0x53207E216540125e322CdA8A693b0b89576DEb46"
+      "rewardAddress": "0x507A200B998273cE168579A1CA2De4b6F58A34e5"
     },
     {
       "chainId": 5,
-      "rewardAddress": "0x53207E216540125e322CdA8A693b0b89576DEb46"
+      "rewardAddress": "0x507A200B998273cE168579A1CA2De4b6F58A34e5"
     },
     {
       "chainId": 6,
-      "rewardAddress": "0x53207E216540125e322CdA8A693b0b89576DEb46"
+      "rewardAddress": "0x507A200B998273cE168579A1CA2De4b6F58A34e5"
     },
     {
       "chainId": 10,
-      "rewardAddress": "0x53207E216540125e322CdA8A693b0b89576DEb46"
+      "rewardAddress": "0x507A200B998273cE168579A1CA2De4b6F58A34e5"
     },
     {
       "chainId": 13,
-      "rewardAddress": "0x53207E216540125e322CdA8A693b0b89576DEb46"
+      "rewardAddress": "0x507A200B998273cE168579A1CA2De4b6F58A34e5"
     },
     {
       "chainId": 14,
-      "rewardAddress": "0x53207E216540125e322CdA8A693b0b89576DEb46"
+      "rewardAddress": "0x507A200B998273cE168579A1CA2De4b6F58A34e5"
     },
     {
       "chainId": 16,
-      "rewardAddress": "0x53207E216540125e322CdA8A693b0b89576DEb46"
+      "rewardAddress": "0x507A200B998273cE168579A1CA2De4b6F58A34e5"
     },
     {
       "chainId": 23,
-      "rewardAddress": "0x53207E216540125e322CdA8A693b0b89576DEb46"
+      "rewardAddress": "0x507A200B998273cE168579A1CA2De4b6F58A34e5"
     },
     {
       "chainId": 24,
-      "rewardAddress": "0x53207E216540125e322CdA8A693b0b89576DEb46"
+      "rewardAddress": "0x507A200B998273cE168579A1CA2De4b6F58A34e5"
     },
     {
       "chainId": 30,
-      "rewardAddress": "0x53207E216540125e322CdA8A693b0b89576DEb46"
+      "rewardAddress": "0x507A200B998273cE168579A1CA2De4b6F58A34e5"
+    },
+    {
+      "chainId": 7070,
+      "rewardAddress": "0x507A200B998273cE168579A1CA2De4b6F58A34e5"
     }
   ],
   "pricingInfo": [

@@ -13,7 +13,7 @@
       "description": "Planq",
       "evmNetworkId": 7070,
       "chainId": 7070,
-      "rpc": "https://evm.planq.network",
+      "rpc": "https://evm-rpc.planq.network",
       "deltaswapAddress": "0xF6266C4D2dAC62e3047ad70f490D35c1A771f37D"
     }
   ]
