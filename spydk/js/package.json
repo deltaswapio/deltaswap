@@ -32,7 +32,7 @@
   "author": "deltaswapio",
   "license": "Apache-2.0",
   "devDependencies": {
-    "@deltaswapio/deltaswap-sdk": "^0.10.6",
+    "@deltaswapio/deltaswap-sdk": "^0.10.7",
     "@solana/web3.js": "^1.31.0",
     "@types/jest": "^27.0.2",
     "@types/node": "^16.6.1",
