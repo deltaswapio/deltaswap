@@ -1,6 +1,6 @@
 {
   "name": "@deltaswapio/deltaswap-spydk",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Deltaswap Spy service SDK for use with @deltaswapio/deltaswap-sdk",
   "homepage": "https://deltaswap.io",
   "main": "./lib/cjs/index.js",
