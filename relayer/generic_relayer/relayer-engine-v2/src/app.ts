@@ -20,12 +20,12 @@ import { loadAppConfig } from "./env";
 
 export type GRContext = StandardRelayerContext & {
   deliveryProviders: Record<EVMChainId, string>;
-  wormholeRelayers: Record<EVMChainId, string>;
+  deltaswapRelayers: Record<EVMChainId, string>;
   opts: StandardRelayerAppOpts;
 };
 
 async function main() {
-  const { env, opts, deliveryProviders, wormholeRelayers } = await loadAppConfig();
+  const { env, opts, deliveryProviders, deltaswapRelayers } = await loadAppConfig();
   const logger = opts.logger!;
   logger.debug("Redis config: ", opts.redis);
 
@@ -37,7 +37,7 @@ async function main() {
     redis,
     redisCluster,
     redisClusterEndpoints,
-    wormholeRpcs,
+    deltaswapRpcs,
   } = opts;
   app.spy(spyEndpoint);
   const store = new RedisStorage({
@@ -59,7 +59,7 @@ async function main() {
       redis,
       redisCluster,
       redisClusterEndpoints,
-      wormholeRpcs,
+      deltaswapRpcs,
     })
   );
   app.use(providers(opts.providers));
@@ -80,13 +80,13 @@ async function main() {
   // Set up middleware
   app.use(async (ctx: GRContext, next: Next) => {
     ctx.deliveryProviders = deepCopy(deliveryProviders);
-    ctx.wormholeRelayers = deepCopy(wormholeRelayers);
+    ctx.deltaswapRelayers = deepCopy(deltaswapRelayers);
     ctx.opts = { ...opts };
     next();
   });
 
   // Set up routes
-  app.multiple(deepCopy(wormholeRelayers), processGenericRelayerVaa);
+  app.multiple(deepCopy(deltaswapRelayers), processGenericRelayerVaa);
 
   app.listen();
   runApi(store, opts, logger);

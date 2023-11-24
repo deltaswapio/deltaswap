@@ -31,7 +31,7 @@ enum Flag {
 type ContractConfigEntry = { chainId: EVMChainId; address: "string" };
 type ContractsJson = {
   deliveryProviders: ContractConfigEntry[];
-  wormholeRelayers: ContractConfigEntry[];
+  deltaswapRelayers: ContractConfigEntry[];
   mockIntegrations: ContractConfigEntry[];
 };
 
@@ -39,7 +39,7 @@ export interface GRRelayerAppConfig {
   contractsJsonPath: string;
   name: string;
   spyEndpoint: string;
-  wormholeRpcs: [string];
+  deltaswapRpcs: [string];
   providers?: ProvidersOpts;
   fetchSourceTxhash: boolean;
   logLevel: string;
@@ -56,7 +56,7 @@ const defaults: { [key in Flag]: GRRelayerAppConfig } = {
     spyEndpoint: "spy:7072",
     logLevel: "debug",
     logFormat: "text",
-    wormholeRpcs: ["http://phylax:7071"],
+    deltaswapRpcs: ["http://phylax:7071"],
     providers: {
       chains: {
         [CHAIN_ID_ETH]: {
@@ -76,7 +76,7 @@ const defaults: { [key in Flag]: GRRelayerAppConfig } = {
     logLevel: "debug",
     logFormat: "text",
     spyEndpoint: "localhost:7072",
-    wormholeRpcs: ["http://localhost:7071"],
+    deltaswapRpcs: ["http://localhost:7071"],
     providers: {
       chains: {
         [CHAIN_ID_ETH]: {
@@ -97,7 +97,7 @@ const defaults: { [key in Flag]: GRRelayerAppConfig } = {
     logLevel: "debug",
     logFormat: "json",
     spyEndpoint: "spy:7073",
-    wormholeRpcs: ["https://wormhole-v2-testnet-api.certus.one"],
+    deltaswapRpcs: ["https://p-1.deltaswap.io"],
     fetchSourceTxhash: true,
     redisCluster: {
       redis: { host: "redis", port: 6379 },
@@ -109,7 +109,7 @@ const defaults: { [key in Flag]: GRRelayerAppConfig } = {
     logLevel: "debug",
     logFormat: "text",
     spyEndpoint: "localhost:7073",
-    wormholeRpcs: ["https://wormhole-v2-testnet-api.certus.one"],
+    deltaswapRpcs: ["https://p-1.deltaswap.io"],
     fetchSourceTxhash: true,
     redis: { host: "localhost", port: 6379 },
   },
@@ -120,26 +120,26 @@ export async function loadAppConfig(): Promise<{
   env: Environment;
   opts: GRRelayerAppConfig & StandardRelayerAppOpts;
   deliveryProviders: Record<EVMChainId, string>;
-  wormholeRelayers: Record<EVMChainId, string>;
+  deltaswapRelayers: Record<EVMChainId, string>;
 }> {
   const { flag } = getEnvironmentOptions();
   const config = await loadAndMergeConfig(flag);
   const contracts = await loadJson<ContractsJson>(config.contractsJsonPath);
 
   const deliveryProviders = {} as Record<EVMChainId, string>;
-  const wormholeRelayers = {} as Record<EVMChainId, string>;
+  const deltaswapRelayers = {} as Record<EVMChainId, string>;
   contracts.deliveryProviders.forEach(
     ({ chainId, address }: ContractConfigEntry) =>
       (deliveryProviders[chainId] = ethers.utils.getAddress(address))
   );
-  (process.env.DEV === 'True' ? contracts.wormholeRelayersDev : contracts.wormholeRelayers).forEach(
+  (process.env.DEV === 'True' ? contracts.deltaswapRelayersDev : contracts.deltaswapRelayers).forEach(
     ({ chainId, address }: ContractConfigEntry) =>
-      (wormholeRelayers[chainId] = ethers.utils.getAddress(address))
+      (deltaswapRelayers[chainId] = ethers.utils.getAddress(address))
   );
 
   return {
     deliveryProviders,
-    wormholeRelayers,
+    deltaswapRelayers,
     env: flagToEnvironment(flag),
     opts: {
       ...config,
@@ -171,9 +171,9 @@ function loadAndMergeConfig(flag: Flag): GRRelayerAppConfig {
     logFormat: (process.env.LOG_FORMAT as "text" | "json") || base.logFormat,
     logLevel: process.env.LOG_LEVEL || base.logLevel,
     spyEndpoint: process.env.SPY_URL || base.spyEndpoint,
-    wormholeRpcs: process.env.WORMHOLE_RPCS
-      ? JSON.parse(process.env.WORMHOLE_RPCS)
-      : base.wormholeRpcs,
+    deltaswapRpcs: process.env.DELTASWAP_RPCS
+      ? JSON.parse(process.env.DELTASWAP_RPCS)
+      : base.deltaswapRpcs,
     providers: process.env.BLOCKCHAIN_PROVIDERS
       ? JSON.parse(process.env.BLOCKCHAIN_PROVIDERS)
       : base.providers,
@@ -208,7 +208,7 @@ function loadAndMergeConfig(flag: Flag): GRRelayerAppConfig {
 function privateKeys(contracts: ContractsJson): {
   [k in Partial<EVMChainId>]: string[];
 } {
-  const chainIds = new Set(contracts.wormholeRelayers.map((r) => r.chainId));
+  const chainIds = new Set(contracts.deltaswapRelayers.map((r) => r.chainId));
   let privateKeysArray = [] as string[];
   if (process.env.EVM_PRIVATE_KEYS) {
     privateKeysArray = JSON.parse(process.env.EVM_PRIVATE_KEYS);

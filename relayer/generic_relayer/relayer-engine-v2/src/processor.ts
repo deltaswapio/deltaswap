@@ -311,8 +311,8 @@ async function processDeliveryInstruction(
       executionRecord.deliveryRecord!.walletNonce =
         await wallet.getTransactionCount();
 
-      const wormholeRelayer = DeltaswapRelayer__factory.connect(
-        ctx.wormholeRelayers[chainId],
+      const deltaswapRelayer = DeltaswapRelayer__factory.connect(
+        ctx.deltaswapRelayers[chainId],
         wallet
       );
 
@@ -324,7 +324,7 @@ async function processDeliveryInstruction(
         overrides: overrides ? packOverrides(overrides) : [],
       };
 
-      const gasUnitsEstimate = await wormholeRelayer.estimateGas.deliver(
+      const gasUnitsEstimate = await deltaswapRelayer.estimateGas.deliver(
         results.map((v) => v.bytes),
         deliveryVaa,
         wallet.address,
@@ -335,7 +335,7 @@ async function processDeliveryInstruction(
         }
       );
 
-      const gasPrice = await wormholeRelayer.provider.getGasPrice();
+      const gasPrice = await deltaswapRelayer.provider.getGasPrice();
       const estimatedTransactionFee = gasPrice.mul(gasUnitsEstimate);
       const estimatedTransactionFeeEther = ethers.utils.formatEther(
         estimatedTransactionFee
@@ -364,7 +364,7 @@ async function processDeliveryInstruction(
       ctx.logger.debug("Sending 'deliver' tx...");
 
       executionRecord.deliveryRecord!.transactionSubmitTimeStart = Date.now();
-      const receipt = await wormholeRelayer
+      const receipt = await deltaswapRelayer
         .deliver(
           results.map((v) => v.bytes),
           deliveryVaa,
@@ -399,7 +399,7 @@ function logResults(
   executionRecord: DeliveryExecutionRecord
 ) {
   const relayerContractLog = receipt.logs?.find((x: any) => {
-    return x.address === ctx.wormholeRelayers[chainId];
+    return x.address === ctx.deltaswapRelayers[chainId];
   });
   if (relayerContractLog) {
     const parsedLog = DeltaswapRelayer__factory.createInterface().parseLog(
