@@ -3,9 +3,10 @@ import yargs from "yargs";
 import {
   Environment,
   ProvidersOpts,
-  RedisOptions,
+  RedisConnectionOpts,
   StandardRelayerAppOpts,
 } from "relayer-engine";
+
 import {
   CHAIN_ID_ETH,
   CHAIN_ID_BSC,
@@ -44,7 +45,7 @@ export interface GRRelayerAppConfig {
   fetchSourceTxhash: boolean;
   logLevel: string;
   logFormat: "json" | "text";
-  redis?: RedisOptions;
+  redis?: RedisConnectionOpts;
   redisCluster?: StandardRelayerAppOpts["redisCluster"];
   redisClusterEndpoints?: StandardRelayerAppOpts["redisClusterEndpoints"];
 }
@@ -68,7 +69,7 @@ const defaults: { [key in Flag]: GRRelayerAppConfig } = {
       },
     },
     fetchSourceTxhash: false,
-    redis: { host: "redis", port: 6379 },
+    redis: { redis: { host: "redis", port: 6379 }, }
   },
   [Flag.Tilt]: {
     name: "GenericRelayer",
@@ -88,7 +89,7 @@ const defaults: { [key in Flag]: GRRelayerAppConfig } = {
       },
     },
     fetchSourceTxhash: false,
-    redis: { host: "localhost", port: 6379 },
+    redis: { redis: { host: "localhost", port: 6379 }, },
   },
   // TODO
   [Flag.K8sTestnet]: {
@@ -111,7 +112,7 @@ const defaults: { [key in Flag]: GRRelayerAppConfig } = {
     spyEndpoint: "localhost:7073",
     deltaswapRpcs: ["https://p-1.deltaswap.io"],
     fetchSourceTxhash: true,
-    redis: { host: "localhost", port: 6379 },
+    redis: { redis: { host: "localhost", port: 6379 }, },
   },
   [Flag.Mainnet]: {} as any,
 };
@@ -132,7 +133,7 @@ export async function loadAppConfig(): Promise<{
     ({ chainId, address }: ContractConfigEntry) =>
       (deliveryProviders[chainId] = ethers.utils.getAddress(address))
   );
-  (process.env.DEV === 'True' ? contracts.deltaswapRelayersDev : contracts.deltaswapRelayers).forEach(
+  (process.env.DEV === 'True' ? contracts.deltaswapRelayers : contracts.deltaswapRelayers).forEach(
     ({ chainId, address }: ContractConfigEntry) =>
       (deltaswapRelayers[chainId] = ethers.utils.getAddress(address))
   );
@@ -187,20 +188,21 @@ function loadAndMergeConfig(flag: Flag): GRRelayerAppConfig {
           dnsLookup: (address: any, callback: any) => callback(null, address),
           slotsRefreshTimeout: 1000,
           redisOptions: {
-            tls: process.env.REDIS_TLS ? {} : base.redis?.tls,
+            tls: process.env.REDIS_TLS ? {} : base.redis?.redis?.tls,
             username: process.env.REDIS_USERNAME,
             password: process.env.REDIS_PASSWORD,
           },
         }
       : undefined,
-    redis: <RedisOptions>{
-      tls: process.env.REDIS_TLS ? {} : base.redis?.tls,
-      host: process.env.REDIS_HOST ? process.env.REDIS_HOST : base.redis?.host,
+    redis: <RedisConnectionOpts>{ redis: {
+      tls: process.env.REDIS_TLS ? {} : base.redis?.redis?.tls,
+      host: process.env.REDIS_HOST ? process.env.REDIS_HOST : base.redis?.redis?.host,
       port: process.env.REDIS_CLUSTER_ENDPOINTS
         ? undefined
-        : Number(process.env.REDIS_PORT) || base.redis?.port,
+        : Number(process.env.REDIS_PORT) || base.redis?.redis?.port,
       username: process.env.REDIS_USERNAME,
       password: process.env.REDIS_PASSWORD,
+      }
     },
   };
 }

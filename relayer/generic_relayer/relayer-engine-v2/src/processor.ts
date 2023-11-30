@@ -12,7 +12,7 @@ import {
   DeliveryInstruction,
   packOverrides,
   DeliveryOverrideArgs,
-  parseEVMExecutionInfoV1,
+  parseEVMExecutionInfoV1, parseVaaKey,
 } from "@deltaswapio/deltaswap-sdk/lib/cjs/relayer";
 import { EVMChainId } from "@deltaswapio/deltaswap-sdk";
 import { GRContext } from "./app";
@@ -228,28 +228,28 @@ async function processDeliveryInstruction(
   executionRecord.deliveryRecord.deliveryInstructionsPrintable =
     deliveryInstructionsPrintable(delivery).toString();
   executionRecord.deliveryRecord.hasAdditionalVaas =
-    delivery.vaaKeys.length > 0;
+    delivery.messageKeys.length > 0;
 
   //TODO this check is not quite correct
   if (
-    delivery.vaaKeys.findIndex(
-      (m) => !m.emitterAddress || !m.sequence || !m.chainId
+    delivery.messageKeys.findIndex(
+      (m) => !parseVaaKey(m.key).emitterAddress || !parseVaaKey(m.key).sequence || !parseVaaKey(m.key).chainId
     ) != -1
   ) {
     executionRecord.deliveryRecord.additionalVaaKeysFormatValid = false;
     throw new Error(`Received an invalid additional VAA key`);
   }
-  const vaaKeysString = delivery.vaaKeys.map((m) => vaaKeyPrintable(m));
+  const vaaKeysString = delivery.messageKeys.map((m) => vaaKeyPrintable(parseVaaKey(m.key)));
   ctx.logger.info(`Fetching vaas from parsed delivery vaa manifest...`, {
     vaaKeys: vaaKeysString,
   });
   executionRecord.deliveryRecord.additionalVaaKeysPrintable =
     vaaKeysString.toString();
 
-  const vaaIds = delivery.vaaKeys.map((m) => ({
-    emitterAddress: m.emitterAddress!,
-    emitterChain: m.chainId! as wh.ChainId,
-    sequence: m.sequence!.toBigInt(),
+  const vaaIds = delivery.messageKeys.map((m) => ({
+    emitterAddress: parseVaaKey(m.key).emitterAddress!,
+    emitterChain: parseVaaKey(m.key).chainId! as wh.ChainId,
+    sequence: parseVaaKey(m.key).sequence!.toBigInt(),
   }));
 
   let results: ParsedVaaWithBytes[];

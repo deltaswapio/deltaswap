@@ -7,11 +7,11 @@ import {
   StandardRelayerContext,
   logging,
   wallets,
-  missedVaas,
+  spawnMissedVaaWorker,
   providers,
   sourceTx,
 } from "relayer-engine";
-import { RedisStorage } from "relayer-engine/lib/storage/redis-storage";
+import { RedisStorage } from "relayer-engine/lib/cjs/storage/redis-storage";
 import { EVMChainId } from "@deltaswapio/deltaswap-sdk";
 import { processGenericRelayerVaa } from "./processor";
 import { Logger } from "winston";
@@ -52,16 +52,7 @@ async function main() {
   app.useStorage(store);
   app.logger(logger);
   app.use(logging(logger));
-  app.use(
-    missedVaas(app, {
-      namespace: name,
-      logger,
-      redis,
-      redisCluster,
-      redisClusterEndpoints,
-      deltaswapRpcs,
-    })
-  );
+
   app.use(providers(opts.providers));
   if (opts.privateKeys && Object.keys(opts.privateKeys).length) {
     app.use(
@@ -69,13 +60,30 @@ async function main() {
         logger,
         namespace: name,
         privateKeys: privateKeys!,
-        metrics: { registry: store.registry},
+        metrics: { enabled: true, registry: store.registry},
       })
     );
   }
   if (opts.fetchSourceTxhash) {
     app.use(sourceTx());
   }
+
+  spawnMissedVaaWorker(app, {
+    namespace: name,
+    registry: store.registry,
+    logger,
+    redis,
+    redisCluster,
+    redisClusterEndpoints,
+    deltaswapRpcs,
+    concurrency: opts.missedVaaOptions?.concurrency,
+    checkInterval: opts.missedVaaOptions?.checkInterval,
+    fetchVaaRetries: opts.missedVaaOptions?.fetchVaaRetries,
+    vaasFetchConcurrency: opts.missedVaaOptions?.vaasFetchConcurrency,
+    storagePrefix: opts.missedVaaOptions?.storagePrefix,
+    startingSequenceConfig: opts.missedVaaOptions?.startingSequenceConfig,
+    forceSeenKeysReindex: opts.missedVaaOptions?.forceSeenKeysReindex,
+  });
 
   // Set up middleware
   app.use(async (ctx: GRContext, next: Next) => {
