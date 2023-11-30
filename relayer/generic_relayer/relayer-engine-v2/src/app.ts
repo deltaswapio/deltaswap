@@ -8,10 +8,10 @@ import {
   logging,
   wallets,
   spawnMissedVaaWorker,
+  RedisStorage,
   providers,
   sourceTx,
 } from "relayer-engine";
-import { RedisStorage } from "relayer-engine/lib/cjs/storage/redis-storage";
 import { EVMChainId } from "@deltaswapio/deltaswap-sdk";
 import { processGenericRelayerVaa } from "./processor";
 import { Logger } from "winston";
