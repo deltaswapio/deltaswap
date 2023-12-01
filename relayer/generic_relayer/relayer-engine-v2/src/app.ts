@@ -30,6 +30,8 @@ async function main() {
   logger.debug("Redis config: ", opts.redis);
 
   const app = new RelayerApp<GRContext>(env, opts);
+  opts.redis = opts.redis?.redis;
+
   const {
     privateKeys,
     name,
