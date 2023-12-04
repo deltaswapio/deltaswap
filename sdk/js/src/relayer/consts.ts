@@ -73,47 +73,11 @@ const DEVNET: { [K in ChainName]?: AddressInfo } = {
 };
 
 const MAINNET: { [K in ChainName]?: AddressInfo } = {
-  ethereum: {
-    deltaswapRelayerAddress: "0x27428DD2d3DD32A4D7f7C497eAaa23130d894911",
+   bsc: {
+    deltaswapRelayerAddress: "0x65C7192b3017Bc4f1E30a6c8F6D88a321c313814",
   },
-  bsc: {
-    deltaswapRelayerAddress: "0x27428DD2d3DD32A4D7f7C497eAaa23130d894911",
-  },
-  polygon: {
-    deltaswapRelayerAddress: "0x27428DD2d3DD32A4D7f7C497eAaa23130d894911",
-  },
-  planq: {
-    deltaswapRelayerAddress: "0x27428DD2d3DD32A4D7f7C497eAaa23130d894911",
-  },
-  avalanche: {
-    deltaswapRelayerAddress: "0x27428DD2d3DD32A4D7f7C497eAaa23130d894911",
-  },
-  fantom: {
-    deltaswapRelayerAddress: "0x27428DD2d3DD32A4D7f7C497eAaa23130d894911",
-  },
-  klaytn: {
-    deltaswapRelayerAddress: "0x27428DD2d3DD32A4D7f7C497eAaa23130d894911",
-  },
-  celo: {
-    deltaswapRelayerAddress: "0x27428DD2d3DD32A4D7f7C497eAaa23130d894911",
-  },
-  acala: {
-    deltaswapRelayerAddress: "0x27428DD2d3DD32A4D7f7C497eAaa23130d894911",
-  },
-  karura: {
-    deltaswapRelayerAddress: "0x27428DD2d3DD32A4D7f7C497eAaa23130d894911",
-  },
-  moonbeam: {
-    deltaswapRelayerAddress: "0x27428DD2d3DD32A4D7f7C497eAaa23130d894911",
-  },
-  arbitrum: {
-    deltaswapRelayerAddress: "0x27428DD2d3DD32A4D7f7C497eAaa23130d894911",
-  },
-  optimism: {
-    deltaswapRelayerAddress: "0x27428DD2d3DD32A4D7f7C497eAaa23130d894911",
-  },
-  base: {
-    deltaswapRelayerAddress: "0x706f82e9bb5b0813501714ab5974216704980e31",
+   planq: {
+    deltaswapRelayerAddress: "0xE38bbE6efF54C60f0FF3Ad30F5C429F633B117C6",
   },
 };
 
