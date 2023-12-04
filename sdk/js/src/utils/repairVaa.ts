@@ -5,7 +5,7 @@ import { parseVaa, PhylaxSignature } from "../vaa";
 import { hexToUint8Array } from "./array";
 import { keccak256 } from "../utils";
 
-const ETHEREUM_CORE_BRIDGE = CONTRACTS["MAINNET"].ethereum.core;
+const ETHEREUM_CORE_BRIDGE = CONTRACTS["MAINNET"].planq.core;
 
 function hex(x: string): string {
   return ethers.utils.hexlify(x, { allowMissingPrefix: true });
