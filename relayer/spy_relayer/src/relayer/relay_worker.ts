@@ -166,7 +166,7 @@ async function findWorkableItems(
       const si_value = await redisClient.get(si_key);
       if (si_value) {
         relayLogger.info(si_value);
-        if(!isJsonString(si_value) || !isNumeric(si_value)) {
+        if(!isJsonString(si_value) || isNumeric(si_value)) {
           continue
         }
         let storePayload: StorePayload = storePayloadFromJson(si_value);
