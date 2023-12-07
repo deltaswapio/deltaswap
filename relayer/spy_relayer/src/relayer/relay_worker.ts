@@ -160,9 +160,7 @@ async function findWorkableItems(
     for await (const si_key of redisClient.scanIterator()) {
       const si_value = await redisClient.get(si_key);
       if (si_value) {
-        logger.info(si_value)
-        if(!isJsonString(si_value) || si_value == "0") {
-          logger.info("skip")
+        if(!isJsonString(si_value) || typeof si_value === "number") {
           continue
         }
         let storePayload: StorePayload = storePayloadFromJson(si_value);
