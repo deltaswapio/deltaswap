@@ -1,5 +1,5 @@
 import { hexToUint8Array } from "@deltaswapio/deltaswap-sdk";
-import { importCoreWasm } from "@deltaswapio/deltaswap-sdk/lib/cjs/solana/wasm";
+import { importCoreWasm } from "@deltaswapio/deltaswap-sdk-wasm";
 import { getRelayerEnvironment, RelayerEnvironment } from "../configureEnv";
 import { getLogger, getScopedLogger, ScopedLogger } from "../helpers/logHelper";
 import { PromHelper } from "../helpers/promHelpers";

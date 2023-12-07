@@ -4,13 +4,12 @@ import {
   CHAIN_ID_TERRA,
   tryHexToNativeString,
   hexToUint8Array,
-  importCoreWasm,
   isEVMChain,
   parseTransferPayload,
   CHAIN_ID_UNSET,
   isTerraChain,
 } from "@deltaswapio/deltaswap-sdk";
-
+import { importCoreWasm }  from "@deltaswapio/deltaswap-sdk-wasm";
 import { REDIS_RETRY_MS, AUDIT_INTERVAL_MS, Relayer } from "../definitions";
 import { getScopedLogger, ScopedLogger } from "../../helpers/logHelper";
 import {
@@ -106,7 +105,7 @@ export class TokenBridgeRelayer implements Relayer {
         const transferPayload = parseTransferPayload(
           Buffer.from(parsedVAA.payload)
         );
-        targetChain = transferPayload.targetChain;
+        targetChain = transferPayload.targetChain as ChainId;
       } catch (e) {}
       let retry: boolean = false;
       if (relayResult.status !== Status.Completed) {
@@ -232,10 +231,10 @@ export class TokenBridgeRelayer implements Relayer {
 
               await redisClient.del(si_key);
               if (rr.status === Status.Completed) {
-                metrics.incConfirmed(workerInfo.targetChainId);
+                metrics.incConfirmed(workerInfo.targetChainId as ChainId);
               } else {
                 auditLogger.info("Detected a rollback on " + si_key);
-                metrics.incRollback(workerInfo.targetChainId);
+                metrics.incRollback(workerInfo.targetChainId as ChainId);
                 // Remove this item from the WORKING table and move it to INCOMING
                 await redisClient.select(RedisTables.INCOMING);
                 await redisClient.set(
@@ -269,7 +268,7 @@ export class TokenBridgeRelayer implements Relayer {
   /** Parse the target chain id from the payload */
   targetChainId(payload: Buffer): ChainId {
     const transferPayload = parseTransferPayload(payload);
-    return transferPayload.targetChain;
+    return transferPayload.targetChain as ChainId;
   }
 
   async relay(
@@ -287,7 +286,7 @@ export class TokenBridgeRelayer implements Relayer {
         Buffer.from(parsedVAA.payload)
       );
 
-      const chainConfigInfo = getChainConfigInfo(transferPayload.targetChain);
+      const chainConfigInfo = getChainConfigInfo(transferPayload.targetChain as ChainId);
       if (!chainConfigInfo) {
         logger.error(
           "relay: improper chain ID: " + transferPayload.targetChain
@@ -301,12 +300,12 @@ export class TokenBridgeRelayer implements Relayer {
         };
       }
 
-      if (isEVMChain(transferPayload.targetChain)) {
+      if (isEVMChain(transferPayload.targetChain as ChainId)) {
         let nativeOrigin: string;
         try {
           nativeOrigin = tryHexToNativeString(
             transferPayload.originAddress,
-            transferPayload.originChain
+            transferPayload.originChain  as ChainId
           );
         } catch (e: any) {
           return {
@@ -358,7 +357,7 @@ export class TokenBridgeRelayer implements Relayer {
         return rResult;
       }
 
-      if (isTerraChain(transferPayload.targetChain)) {
+      if (isTerraChain(transferPayload.targetChain as ChainId)) {
         let rResult: RelayResult = { status: Status.Error, result: "" };
         const retVal = await relayTerra(
           chainConfigInfo,

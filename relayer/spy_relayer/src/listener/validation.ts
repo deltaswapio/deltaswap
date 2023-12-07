@@ -1,5 +1,5 @@
 import { ChainId } from "@deltaswapio/deltaswap-sdk";
-import { importCoreWasm } from "@deltaswapio/deltaswap-sdk/lib/cjs/solana/wasm";
+import { importCoreWasm } from "@deltaswapio/deltaswap-sdk-wasm";
 
 //TODO move these to the official SDK
 export async function parseVaaTyped(signedVAA: Uint8Array) {

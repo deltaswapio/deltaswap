@@ -1,10 +1,11 @@
 import {
+  CHAIN_ID_TO_NAME,
   ChainId,
   hexToUint8Array,
-  importCoreWasm,
   parseTransferPayload,
   uint8ArrayToHex,
 } from "@deltaswapio/deltaswap-sdk";
+import { importCoreWasm } from "@deltaswapio/deltaswap-sdk-wasm";
 import { Mutex } from "async-mutex";
 import { createClient, RedisClientType } from "redis";
 import { getCommonEnvironment } from "../configureEnv";
@@ -308,11 +309,11 @@ export async function incrementSourceToTargetMap(
   );
   if (
     sourceToTargetMap[parsedKey.chain_id as ChainId]?.[
-      parsedPayload.targetChain
+        parsedPayload.targetChain as ChainId
     ] !== undefined
   ) {
     sourceToTargetMap[parsedKey.chain_id as ChainId][
-      parsedPayload.targetChain
+      parsedPayload.targetChain as ChainId
     ]++;
   }
 }

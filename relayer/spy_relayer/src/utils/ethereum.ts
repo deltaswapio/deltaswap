@@ -1,4 +1,4 @@
-import { TokenImplementation__factory } from "@deltaswapio/deltaswap-sdk";
+import { TokenImplementation__factory } from "@deltaswapio/deltaswap-sdk/lib/cjs/ethers-contracts";
 import { ethers } from "ethers";
 
 export async function getEthereumToken(

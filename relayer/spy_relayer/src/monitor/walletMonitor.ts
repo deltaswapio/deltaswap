@@ -1,5 +1,4 @@
 import {
-  Bridge__factory,
   ChainId,
   CHAIN_ID_SOLANA,
   getForeignAssetTerra,
@@ -10,6 +9,7 @@ import {
   TerraChainId,
   WSOL_DECIMALS,
 } from "@deltaswapio/deltaswap-sdk";
+import {Bridge__factory} from "@deltaswapio/deltaswap-sdk/lib/cjs/ethers-contracts";
 import { TOKEN_PROGRAM_ID } from "@solana/spl-token";
 import { Connection, Keypair } from "@solana/web3.js";
 import { LCDClient, MnemonicKey } from "@terra-money/terra.js";

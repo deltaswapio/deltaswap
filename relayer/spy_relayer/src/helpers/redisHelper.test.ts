@@ -5,9 +5,10 @@ process.env.REDIS_PORT = "0";
 
 import {
   ChainId,
-  importCoreWasm,
-  setDefaultWasm,
+
 } from "@deltaswapio/deltaswap-sdk";
+import {   importCoreWasm,
+  setDefaultWasm } from "@deltaswapio/deltaswap-sdk-wasm";
 import { chainIDStrings } from "../utils/deltaswap";
 import {
   createSourceToTargetMap,

@@ -1,14 +1,14 @@
 import {
-  CHAIN_ID_SOLANA,
+  CHAIN_ID_SOLANA, CHAIN_ID_TO_NAME, ChainId,
   getForeignAssetSolana,
   getIsTransferCompletedSolana,
-  hexToUint8Array,
-  importCoreWasm,
+  hexToUint8Array, isChain,
   parseTransferPayload,
   postVaaSolanaWithRetry,
-  redeemOnSolana,
+  redeemOnSolana, toChainName,
   tryHexToNativeAssetString,
 } from "@deltaswapio/deltaswap-sdk";
+import { importCoreWasm } from "@deltaswapio/deltaswap-sdk-wasm";
 import {
   ASSOCIATED_TOKEN_PROGRAM_ID,
   Token,
@@ -91,7 +91,7 @@ export async function relaySolana(
       : await getForeignAssetSolana(
           connection,
           chainConfigInfo.tokenBridgeAddress,
-          transferPayload.originChain,
+            CHAIN_ID_TO_NAME[transferPayload.originChain as ChainId],
           hexToUint8Array(transferPayload.originAddress)
         );
   if (!solanaMintAddress) {
