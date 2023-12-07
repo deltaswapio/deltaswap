@@ -1,0 +1,18 @@
+[
+  {
+    "chainId": 4,
+    "chainName": "Binance Smart Chain",
+    "nativeCurrencySymbol": "BNB",
+    "nodeUrl": "",
+    "tokenBridgeAddress": "0xC891aBa0b42818fb4c975Bf6461033c62BCE75ff",
+    "wrappedAsset": "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c"
+  },
+  {
+    "chainId": 7070,
+    "chainName": "Planq",
+    "nativeCurrencySymbol": "PLQ",
+    "nodeUrl": "",
+    "tokenBridgeAddress": "0x4FD8625cfE4B0034642140005b78291D26183df1",
+    "wrappedAsset": "0x5EBCdf1De1781e8B5D41c016B0574aD53E2F6E1A"
+  }
+]
