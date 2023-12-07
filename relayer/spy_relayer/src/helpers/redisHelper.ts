@@ -47,10 +47,9 @@ export async function connectToRedis() {
         host: redisHost,
         port: redisPort,
       },
+      password: redisLogin
     });
-    if(redisLogin != "") {
-      rClient.auth({password: redisLogin})
-    }
+
     rClient.on("connect", function (err) {
       if (err) {
         logger.error(
