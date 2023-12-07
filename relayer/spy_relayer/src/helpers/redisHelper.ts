@@ -47,7 +47,8 @@ export async function connectToRedis() {
         host: redisHost,
         port: redisPort,
       },
-      password: redisLogin
+      password: redisLogin,
+      database: 1
     });
 
     rClient.on("connect", function (err) {
