@@ -131,6 +131,16 @@ export async function run(ph: PromHelper) {
   }
 }
 
+function isJsonString(str: string) : boolean {
+  try {
+    JSON.parse(str);
+  } catch (e) {
+    return false;
+  }
+  return true;
+}
+
+
 // Redis does not guarantee ordering.  Therefore, it is possible that if workItems are
 // pulled out one at a time, then some workItems could stay in the table indefinitely.
 // This function gathers all the items available at this moment to work on.
@@ -150,6 +160,9 @@ async function findWorkableItems(
     for await (const si_key of redisClient.scanIterator()) {
       const si_value = await redisClient.get(si_key);
       if (si_value) {
+        if(!isJsonString(si_value)) {
+          continue
+        }
         let storePayload: StorePayload = storePayloadFromJson(si_value);
         // Check to see if this worker should handle this VAA
         if (workerInfo.targetChainId !== 0) {
