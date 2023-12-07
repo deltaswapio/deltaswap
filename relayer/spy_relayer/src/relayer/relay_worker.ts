@@ -140,6 +140,11 @@ function isJsonString(str: string) : boolean {
   return true;
 }
 
+function isNumeric(str: string) : boolean {
+  if (typeof str != "string") return false // we only process strings!
+  return !isNaN(Number(str)) && // use type coercion to parse the _entirety_ of the string (`parseFloat` alone does not do this)...
+      !isNaN(parseFloat(str)) // ...and ensure strings of whitespace fail
+}
 
 // Redis does not guarantee ordering.  Therefore, it is possible that if workItems are
 // pulled out one at a time, then some workItems could stay in the table indefinitely.
@@ -160,7 +165,7 @@ async function findWorkableItems(
     for await (const si_key of redisClient.scanIterator()) {
       const si_value = await redisClient.get(si_key);
       if (si_value) {
-        if(!isJsonString(si_value) || typeof si_value === "number") {
+        if(!isJsonString(si_value) || !isNumeric(si_value)) {
           continue
         }
         let storePayload: StorePayload = storePayloadFromJson(si_value);
