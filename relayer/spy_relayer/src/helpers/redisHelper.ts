@@ -292,12 +292,24 @@ export function createSourceToTargetMap(
   return sourceToTargetMap;
 }
 
+function isJsonString(str: string) : boolean {
+  try {
+    JSON.parse(str);
+  } catch (e) {
+    return false;
+  }
+  return true;
+}
+
 export async function incrementSourceToTargetMap(
   key: string,
   redisClient: RedisClientType<any>,
   parse_vaa: Function,
   sourceToTargetMap: SourceToTargetMap
 ): Promise<void> {
+  if(!isJsonString(key)) {
+    return
+  }
   const parsedKey = storeKeyFromJson(key);
   const si_value = await redisClient.get(key);
   if (!si_value) {
