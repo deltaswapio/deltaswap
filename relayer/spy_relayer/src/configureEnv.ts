@@ -17,6 +17,7 @@ export type CommonEnvironment = {
   readinessPort?: number;
   logDir?: string;
   redisHost: string;
+  redisLogin: string;
   redisPort: number;
 };
 
@@ -38,6 +39,7 @@ function createCommonEnvironment(): CommonEnvironment {
   let readinessPort;
   let logDir;
   let redisHost;
+  let redisLogin;
   let redisPort;
 
   if (!process.env.LOG_LEVEL) {
@@ -70,18 +72,25 @@ function createCommonEnvironment(): CommonEnvironment {
     redisHost = process.env.REDIS_HOST;
   }
 
+  if (process.env.REDIS_LOGIN) {
+    redisLogin = process.env.REDIS_LOGIN;
+  } else {
+    redisLogin = '';
+  }
+
   if (!process.env.REDIS_PORT) {
     throw new Error("Missing required environment variable: REDIS_PORT");
   } else {
     redisPort = parseInt(process.env.REDIS_PORT);
   }
 
-  return { logLevel, promPort, readinessPort, logDir, redisHost, redisPort };
+  return { logLevel, promPort, readinessPort, logDir, redisHost, redisPort, redisLogin };
 }
 
 export type RelayerEnvironment = {
   supportedChains: ChainConfigInfo[];
   redisHost: string;
+  redisLogin: string;
   redisPort: number;
   clearRedisOnInit: boolean;
   demoteWorkingOnInit: boolean;
@@ -229,6 +238,7 @@ export const getRelayerEnvironment: () => RelayerEnvironment = () => {
 const createRelayerEnvironment: () => RelayerEnvironment = () => {
   let supportedChains: ChainConfigInfo[] = [];
   let redisHost: string;
+  let redisLogin: string;
   let redisPort: number;
   let clearRedisOnInit: boolean;
   let demoteWorkingOnInit: boolean;
@@ -240,7 +250,11 @@ const createRelayerEnvironment: () => RelayerEnvironment = () => {
   } else {
     redisHost = process.env.REDIS_HOST;
   }
-
+  if (process.env.REDIS_LOGIN) {
+    redisLogin = process.env.REDIS_LOGIN;
+  } else {
+    redisLogin = "";
+  }
   if (!process.env.REDIS_PORT) {
     throw new Error("Missing required environment variable: REDIS_PORT");
   } else {
@@ -300,6 +314,7 @@ const createRelayerEnvironment: () => RelayerEnvironment = () => {
     supportedChains,
     redisHost,
     redisPort,
+    redisLogin,
     clearRedisOnInit,
     demoteWorkingOnInit,
     supportedTokens,

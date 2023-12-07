@@ -17,7 +17,7 @@ import { sleep } from "./utils";
 
 const logger = getScopedLogger(["redisHelper"]);
 const commonEnv = getCommonEnvironment();
-const { redisHost, redisPort } = commonEnv;
+const { redisHost, redisPort, redisLogin } = commonEnv;
 let promHelper: PromHelper;
 
 //Module internals
@@ -48,7 +48,9 @@ export async function connectToRedis() {
         port: redisPort,
       },
     });
-
+    if(redisLogin != "") {
+      rClient.auth({password: redisLogin})
+    }
     rClient.on("connect", function (err) {
       if (err) {
         logger.error(
