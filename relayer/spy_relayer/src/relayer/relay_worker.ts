@@ -161,7 +161,7 @@ async function findWorkableItems(
       const si_value = await redisClient.get(si_key);
       if (si_value) {
         logger.info(si_value)
-        if(!isJsonString(si_value)) {
+        if(!isJsonString(si_value) || si_value == "0") {
           logger.info("skip")
           continue
         }
