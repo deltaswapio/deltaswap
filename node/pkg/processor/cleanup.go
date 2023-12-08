@@ -64,7 +64,7 @@ const (
 )
 
 var (
-	FirstRetryMinWait = time.Minute * 5
+	FirstRetryMinWait = time.Second * 25
 )
 
 // handleCleanup handles periodic retransmissions and cleanup of observations
