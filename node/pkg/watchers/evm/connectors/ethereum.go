@@ -87,7 +87,14 @@ func (e *EthereumBaseConnector) TransactionReceipt(ctx context.Context, txHash e
 
 func (e *EthereumBaseConnector) TimeOfBlockByHash(ctx context.Context, hash ethCommon.Hash) (uint64, error) {
 	block, err := e.client.HeaderByHash(ctx, hash)
+
 	if err != nil {
+		// retry once after 5 seconds, otherwise return error
+		time.Sleep(5 * time.Second)
+		block, err = e.client.HeaderByHash(ctx, hash)
+		if err == nil {
+			return block.Time, err
+		}
 		return 0, err
 	}
 
