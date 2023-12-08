@@ -1080,11 +1080,10 @@ func runNode(cmd *cobra.Command, args []string) {
 
 	if shouldStart(bscRPC) {
 		wc := &evm.WatcherConfig{
-			NetworkID:            "bsc",
-			ChainID:              vaa.ChainIDBSC,
-			Rpc:                  *bscRPC,
-			Contract:             *bscContract,
-			WaitForConfirmations: true,
+			NetworkID: "bsc",
+			ChainID:   vaa.ChainIDBSC,
+			Rpc:       *bscRPC,
+			Contract:  *bscContract,
 		}
 
 		watcherConfigs = append(watcherConfigs, wc)
