@@ -675,7 +675,7 @@ func (w *Watcher) Run(parentCtx context.Context) error {
 
 					// Transaction is now ready
 					if pLock.height+expectedConfirmations <= blockNumberU {
-						timeout, cancel := context.WithTimeout(ctx, 5*time.Second)
+						timeout, cancel := context.WithTimeout(ctx, 15*time.Second)
 						tx, err := w.ethConn.TransactionReceipt(timeout, pLock.message.TxHash)
 						cancel()
 

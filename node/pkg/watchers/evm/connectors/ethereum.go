@@ -82,7 +82,14 @@ func (e *EthereumBaseConnector) WatchLogMessagePublished(ctx context.Context, er
 }
 
 func (e *EthereumBaseConnector) TransactionReceipt(ctx context.Context, txHash ethCommon.Hash) (*ethTypes.Receipt, error) {
-	return e.client.TransactionReceipt(ctx, txHash)
+	receipt, err := e.client.TransactionReceipt(ctx, txHash)
+	if err != nil {
+		// retry once after 5 seconds, otherwise return error
+		time.Sleep(5 * time.Second)
+		receipt, err = e.client.TransactionReceipt(ctx, txHash)
+	}
+
+	return receipt, err
 }
 
 func (e *EthereumBaseConnector) TimeOfBlockByHash(ctx context.Context, hash ethCommon.Hash) (uint64, error) {
