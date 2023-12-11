@@ -15,8 +15,6 @@ See [DEVELOP.md](DEVELOP.md) for instructions on how to set up a local devnet, [
 
 See [docs/operations.md](docs/operations.md) for node operator instructions.
 
-![](docs/images/overview.svg)
-
 ⚠ **This software is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
 implied. See the License for the specific language governing permissions and limitations under the License.** Or plainly
 spoken - this is a very complex piece of software which targets a bleeding-edge, experimental smart contract runtime.
