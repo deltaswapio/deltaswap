@@ -154,52 +154,57 @@ async function findWorkableItems(
   relayLogger: ScopedLogger
 ): Promise<WorkableItem[]> {
   const logger = getScopedLogger(["findWorkableItems"], relayLogger);
+  let workableItems: WorkableItem[] = [];
   try {
-    let workableItems: WorkableItem[] = [];
     const redisClient = await connectToRedis();
     if (!redisClient) {
       logger.error("Failed to connect to redis inside findWorkableItems()!");
       return workableItems;
     }
+
     await redisClient.select(RedisTables.INCOMING);
     for await (const si_key of redisClient.scanIterator()) {
-      const si_value = await redisClient.get(si_key);
-      if (si_value) {
-        relayLogger.info(si_value);
-        if(!isJsonString(si_value) || isNumeric(si_value)) {
-          continue
-        }
-        let storePayload: StorePayload = storePayloadFromJson(si_value);
-        // Check to see if this worker should handle this VAA
-        if (workerInfo.targetChainId !== 0) {
-          const { parse_vaa } = await importCoreWasm();
-          const parsedVAA = parse_vaa(hexToUint8Array(storePayload.vaa_bytes));
-          const payloadBuffer: Buffer = Buffer.from(parsedVAA.payload);
-          const tgtChainId = getBackend().relayer.targetChainId(payloadBuffer);
-          if (tgtChainId !== workerInfo.targetChainId) {
-            // Skipping mismatched chainId
-            continue;
+      try {
+        const si_value = await redisClient.get(si_key);
+        if (si_value) {
+          relayLogger.info(si_value);
+          if(!isJsonString(si_value) || isNumeric(si_value)) {
+            continue
           }
-        }
+          let storePayload: StorePayload = storePayloadFromJson(si_value);
+          // Check to see if this worker should handle this VAA
+          if (workerInfo.targetChainId !== 0) {
+            const { parse_vaa } = await importCoreWasm();
+            const parsedVAA = parse_vaa(hexToUint8Array(storePayload.vaa_bytes));
+            const payloadBuffer: Buffer = Buffer.from(parsedVAA.payload);
+            const tgtChainId = getBackend().relayer.targetChainId(payloadBuffer);
+            if (tgtChainId !== workerInfo.targetChainId) {
+              // Skipping mismatched chainId
+              continue;
+            }
+          }
 
-        // Check to see if this is a retry and if it is time to retry
-        if (storePayload.retries > 0) {
-          const BACKOFF_TIME = 1000; // 1 second in milliseconds
-          const MAX_BACKOFF_TIME = 4 * 60 * 60 * 1000; // 4 hours in milliseconds
-          // calculate retry time
-          const now: Date = new Date();
-          const old: Date = new Date(storePayload.timestamp);
-          const timeDelta: number = now.getTime() - old.getTime(); // delta is in mS
-          const waitTime: number = Math.min(
-            BACKOFF_TIME * 10 ** storePayload.retries, //First retry is 10 second, then 100, 1,000... Max of 4 hours.
-            MAX_BACKOFF_TIME
-          );
-          if (timeDelta < waitTime) {
-            // Not enough time has passed
-            continue;
+          // Check to see if this is a retry and if it is time to retry
+          if (storePayload.retries > 0) {
+            const BACKOFF_TIME = 1000; // 1 second in milliseconds
+            const MAX_BACKOFF_TIME = 4 * 60 * 60 * 1000; // 4 hours in milliseconds
+            // calculate retry time
+            const now: Date = new Date();
+            const old: Date = new Date(storePayload.timestamp);
+            const timeDelta: number = now.getTime() - old.getTime(); // delta is in mS
+            const waitTime: number = Math.min(
+              BACKOFF_TIME * 10 ** storePayload.retries, //First retry is 10 second, then 100, 1,000... Max of 4 hours.
+              MAX_BACKOFF_TIME
+            );
+            if (timeDelta < waitTime) {
+              // Not enough time has passed
+              continue;
+            }
           }
+          workableItems.push({ key: si_key, value: si_value });
         }
-        workableItems.push({ key: si_key, value: si_value });
+      } catch (e: any) {
+        
       }
     }
     redisClient.quit();
