@@ -12,8 +12,7 @@ FLATTEN_FILES:= contracts/Implementation.sol \
                 contracts/nft/NFTBridgeImplementation.sol \
                 contracts/nft/NFTBridgeEntrypoint.sol \
                 contracts/nft/token/NFT.sol \
-                contracts/nft/token/NFTImplementation.sol \
-                contracts/nft/token/NFT.sol
+                contracts/nft/token/NFTImplementation.sol
 
 .PHONY: dependencies test clean all
 
