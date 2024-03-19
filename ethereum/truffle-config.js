@@ -82,12 +82,14 @@ module.exports = {
       provider: () => {
         return new HDWalletProvider(
           process.env.MNEMONIC,
-          "https://polygon-rpc.com"
+            "https://polygon-bor-rpc.publicnode.com"
         );
       },
       network_id: "137",
       gas: 10000000,
-      gasPrice: 700000000000,
+      gasPrice: 100000000000,
+      pollingInterval: 1800000,
+      deploymentPollingInterval: 1800000,
     },
     polygon_testnet: {
       provider: () => {
@@ -365,10 +367,12 @@ module.exports = {
       provider: () => {
         return new HDWalletProvider(
           process.env.MNEMONIC,
-          "https://developer-access-mainnet.base.org"
+            "https://base-rpc.publicnode.com"
         );
       },
       network_id: 8453,
+      pollingInterval: 1800000,
+      deploymentPollingInterval: 1800000,
     },
     base_testnet: {
       provider: () => {

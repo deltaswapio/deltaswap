@@ -140,9 +140,9 @@ const MAINNET = {
     nft_bridge: "0x2a1280866Fa742E50c93472B68B5026B558596e8",
   },
   polygon: {
-    core: undefined,
-    token_bridge: undefined,
-    nft_bridge: undefined,
+    core: "0xCaB387Db2819f874dE32B15ea0dcC8FB95908aCE",
+    token_bridge: "0x8Eb8fB8B3c3d50140a19D35A71B3046543B37097",
+    nft_bridge: "0x3379714f3720Dd57577456571D411Ec66C2f4551",
   },
   tron: {
     core: undefined,
@@ -275,9 +275,9 @@ const MAINNET = {
     nft_bridge: undefined,
   },
   base: {
-    core: undefined,
-    token_bridge: undefined,
-    nft_bridge: undefined,
+    core: "0x2cf9491C28FEAc84fa5C3A91ebF7Bc3428c90281",
+    token_bridge: "0x547169332126A398F67E02D1006d0F3955Eb552C",
+    nft_bridge: "0x33Ceb839c428c8244F30EDA589A0f52c747643e2",
   },
   sei: {
     core: undefined,
