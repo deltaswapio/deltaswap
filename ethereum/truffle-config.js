@@ -87,7 +87,7 @@ module.exports = {
       },
       network_id: "137",
       gas: 10000000,
-      gasPrice: 100000000000,
+      gasPrice: 700000000000,
       pollingInterval: 1800000,
       deploymentPollingInterval: 1800000,
     },

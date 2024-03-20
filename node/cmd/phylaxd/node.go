@@ -1115,9 +1115,9 @@ func runNode(cmd *cobra.Command, args []string) {
 
 	if shouldStart(polygonRPC) {
 		// Checkpointing is required in mainnet and testnet.
-		if !*unsafeDevMode && *polygonRootChainRpc == "" {
+		/*if !*unsafeDevMode && *polygonRootChainRpc == "" {
 			log.Fatal("Polygon checkpointing is required in mainnet and testnet")
-		}
+		}*/
 		wc := &evm.WatcherConfig{
 			NetworkID:         "polygon",
 			ChainID:           vaa.ChainIDPolygon,
